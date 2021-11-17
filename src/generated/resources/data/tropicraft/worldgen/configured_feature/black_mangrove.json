@@ -45,7 +45,12 @@
     },
     "sapling_provider": {
       "state": {
-        "Name": "minecraft:air"
+        "Properties": {
+          "waterlogged": "false",
+          "stage": "0",
+          "planted": "true"
+        },
+        "Name": "tropicraft:black_mangrove_propagule"
       },
       "type": "minecraft:simple_state_provider"
     },

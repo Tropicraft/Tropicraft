@@ -40,7 +40,10 @@
             },
             "sapling_provider": {
               "state": {
-                "Name": "minecraft:air"
+                "Properties": {
+                  "stage": "0"
+                },
+                "Name": "tropicraft:papaya_sapling"
               },
               "type": "minecraft:simple_state_provider"
             },

@@ -34,10 +34,12 @@ public final class TropicraftAddWeightedSubBiomesLayer implements C0Transformer 
 
     @Override
     public int apply(Context random, int center) {
+
         if (center == baseID) {
-            if (biomeLookup.size() > 0) {
-                return biomeLookup.getInt(WeighedRandom.getWeightedItem(biomeWeights, random.nextRandom(totalWeight)));
-            }
+            //TODO [PORT]: Issue with getting weighted item, will need to be fixed for the future as it constantly returned a 0 value all the time mean
+//            if (biomeLookup.size() > 0) {
+//                return biomeLookup.getInt(WeighedRandom.getWeightedItem(biomeWeights, random.nextRandom(totalWeight)));
+//            }
             return subBiomeIDs[random.nextRandom(subBiomeIDs.length)];
         } else {
             return center;

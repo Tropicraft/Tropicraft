@@ -1,7 +1,7 @@
 package net.tropicraft.core.common.dimension.layer;
 
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
 

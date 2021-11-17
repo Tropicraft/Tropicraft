@@ -4,11 +4,11 @@
   "sea_level": 127,
   "min_surface_level": 96,
   "disable_mob_generation": false,
-  "noise_caves_enabled": false,
-  "noodle_caves_enabled": false,
+  "noise_caves_enabled": true,
+  "noodle_caves_enabled": true,
   "deepslate_enabled": true,
-  "ore_veins_enabled": false,
-  "aquifers_enabled": false,
+  "ore_veins_enabled": true,
+  "aquifers_enabled": true,
   "structures": {
     "stronghold": {
       "distance": 32,

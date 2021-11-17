@@ -179,7 +179,7 @@ public final class TropicraftConfiguredFeatures {
                         new SimpleStateProvider(TropicraftBlocks.PAPAYA_LOG.get().defaultBlockState()),
                         new StraightTrunkPlacer(5, 2, 3),
                         new SimpleStateProvider(TropicraftBlocks.PAPAYA_LEAVES.get().defaultBlockState()),
-                        new SimpleStateProvider(Blocks.AIR.defaultBlockState()),
+                        new SimpleStateProvider(TropicraftBlocks.PAPAYA_SAPLING.get().defaultBlockState()),
                         new PapayaFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0)),
                         new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
                 ).decorators(ImmutableList.of(Features.Decorators.BEEHIVE_005, new PapayaTreeDecorator())).build(),
@@ -207,7 +207,7 @@ public final class TropicraftConfiguredFeatures {
                         redMangroveLog,
                         redMangroveTrunk,
                         redMangroveLeaves,
-                        new SimpleStateProvider(Blocks.AIR.defaultBlockState()),
+                        new SimpleStateProvider(TropicraftBlocks.RED_MANGROVE_PROPAGULE.get().defaultBlockState()),
                         mangroveFoliage,
                         mangroveMinimumSize)
                         .decorators(ImmutableList.of(Features.Decorators.BEEHIVE_002, PianguasTreeDecorator.REGULAR)).build()
@@ -219,7 +219,7 @@ public final class TropicraftConfiguredFeatures {
                         redMangroveLog,
                         new SmallMangroveTrunkPlacer(2, 1, 0, redMangroveRoots),
                         redMangroveLeaves,
-                        new SimpleStateProvider(Blocks.AIR.defaultBlockState()),
+                        new SimpleStateProvider(TropicraftBlocks.RED_MANGROVE_PROPAGULE.get().defaultBlockState()),
                         new SmallMangroveFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0)),
                         mangroveMinimumSize
                 ).decorators(ImmutableList.of(Features.Decorators.BEEHIVE_002, PianguasTreeDecorator.SMALL)).build()
@@ -233,7 +233,7 @@ public final class TropicraftConfiguredFeatures {
                         lightMangroveLog,
                         new MangroveTrunkPlacer(7, 4, 2, lightMangroveRoots, false, false),
                         tallMangroveLeaves,
-                        new SimpleStateProvider(Blocks.AIR.defaultBlockState()),
+                        new SimpleStateProvider(TropicraftBlocks.TALL_MANGROVE_PROPAGULE.get().defaultBlockState()),
                         mangroveFoliage,
                         mangroveMinimumSize
                 ).decorators(ImmutableList.of(Features.Decorators.BEEHIVE_002, PianguasTreeDecorator.REGULAR)).build()
@@ -246,7 +246,7 @@ public final class TropicraftConfiguredFeatures {
                         lightMangroveLog,
                         new MangroveTrunkPlacer(5, 3, 0, lightMangroveRoots, false, true),
                         teaMangroveLeaves,
-                        new SimpleStateProvider(Blocks.AIR.defaultBlockState()),
+                        new SimpleStateProvider(TropicraftBlocks.TEA_MANGROVE_PROPAGULE.get().defaultBlockState()),
                         mangroveFoliage,
                         mangroveMinimumSize
                 ).decorators(ImmutableList.of(Features.Decorators.BEEHIVE_002, PianguasTreeDecorator.REGULAR, teaMangrovePneumatophores)).build()
@@ -259,7 +259,7 @@ public final class TropicraftConfiguredFeatures {
                         blackMangroveLog,
                         new MangroveTrunkPlacer(4, 3, 0, blackMangroveRoots, true, false),
                         blackMangroveLeaves,
-                        new SimpleStateProvider(Blocks.AIR.defaultBlockState()),
+                        new SimpleStateProvider(TropicraftBlocks.BLACK_MANGROVE_PROPAGULE.get().defaultBlockState()),
                         mangroveFoliage,
                         mangroveMinimumSize
                 ).decorators(ImmutableList.of(Features.Decorators.BEEHIVE_002, PianguasTreeDecorator.REGULAR, blackMangrovePneumatophores)).build()
