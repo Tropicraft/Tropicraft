@@ -484,9 +484,6 @@ public final class TropicraftBiomes {
         DefaultBiomeFeatures.withOverworldOres(generation);
         DefaultBiomeFeatures.withCommonOverworldBlocks(generation);
 
-        generation.withStructure(structures.homeTree);
-        generation.withStructure(structures.koaVillage);
-
         return generation;
     }
 

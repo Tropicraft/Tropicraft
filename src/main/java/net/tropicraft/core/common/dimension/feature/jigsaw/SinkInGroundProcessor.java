@@ -15,6 +15,7 @@ import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.Template.BlockInfo;
 import net.tropicraft.Constants;
+import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 import javax.annotation.Nullable;
@@ -24,7 +25,8 @@ public class SinkInGroundProcessor extends CheatyStructureProcessor {
 
     static final IStructureProcessorType<SinkInGroundProcessor> TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Constants.MODID + ":sink_in_ground", () -> CODEC);
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public BlockInfo process(IWorldReader world, BlockPos worldPos, BlockPos sourcePos, BlockInfo sourceInfo, BlockInfo worldInfo, PlacementSettings placement, @Nullable Template template) {
         worldPos = worldInfo.pos;
 
@@ -58,23 +60,11 @@ public class SinkInGroundProcessor extends CheatyStructureProcessor {
             
             // Only sink solid blocks, or blocks that are above air/water -- delete all others
             if (Block.isOpaque(worldInfo.state.getShape(world, worldPos.down())) || isAirOrWater(world, worldPos.down())) {
-                return new BlockInfo(worldPos.down(), worldInfo.state, worldInfo.nbt);
+                worldInfo = new BlockInfo(worldPos = worldPos.down(), worldInfo.state, worldInfo.nbt);
             }
-            return null;
         }
-        
-        removeObstructions(world, worldPos.up(), worldPos.up(2));
 
         return worldInfo;
-    }
-    
-    private void removeObstructions(IWorldReader world, BlockPos... positions) {
-        for (BlockPos pos : positions) {
-            BlockState current = world.getBlockState(pos);
-            if (current.isIn(BlockTags.LEAVES) || current.isIn(BlockTags.LOGS)) {
-                setBlockState(world, pos, Blocks.AIR.getDefaultState());
-            }
-        }
     }
 
     @Override
