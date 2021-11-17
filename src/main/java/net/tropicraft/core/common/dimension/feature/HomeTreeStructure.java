@@ -20,8 +20,6 @@ import net.minecraft.world.gen.feature.template.TemplateManager;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.dimension.feature.jigsaw.piece.NoRotateSingleJigsawPiece;
 
-import net.minecraft.world.gen.feature.structure.Structure.IStartFactory;
-
 public class HomeTreeStructure extends Structure<VillageConfig> {
     public HomeTreeStructure(Codec<VillageConfig> codec) {
         super(codec);
@@ -80,25 +78,25 @@ public class HomeTreeStructure extends Structure<VillageConfig> {
     public static class Piece extends AbstractVillagePiece {
         public Piece(TemplateManager templates, JigsawPiece piece, BlockPos pos, int groundLevelDelta, Rotation rotation, MutableBoundingBox bounds) {
             super(templates, piece, pos, groundLevelDelta, rotation, bounds);
+            this.boundingBox = this.growFeaturePieceBoundingBox(this.boundingBox);
         }
 
         public Piece(TemplateManager templates, CompoundNBT data) {
             super(templates, data);
+            this.boundingBox = this.growFeaturePieceBoundingBox(this.boundingBox);
         }
 
-        @Override
-        public MutableBoundingBox getBoundingBox() {
+        private MutableBoundingBox growFeaturePieceBoundingBox(MutableBoundingBox bounds) {
             if (this.jigsawPiece instanceof FeatureJigsawPiece) {
-                MutableBoundingBox ret = super.getBoundingBox();
-                ret = new MutableBoundingBox(ret);
-                ret.minX -= 32;
-                ret.minY -= 32;
-                ret.minZ -= 32;
-                ret.maxX += 32;
-                ret.maxY += 32;
-                ret.maxZ += 32;
+                bounds = new MutableBoundingBox(bounds);
+                bounds.minX -= 32;
+                bounds.minY -= 32;
+                bounds.minZ -= 32;
+                bounds.maxX += 32;
+                bounds.maxY += 32;
+                bounds.maxZ += 32;
             }
-            return super.getBoundingBox();
+            return bounds;
         }
 
         @Override
