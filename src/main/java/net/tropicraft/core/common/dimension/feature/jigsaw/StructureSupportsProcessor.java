@@ -70,7 +70,7 @@ public class StructureSupportsProcessor extends CheatyStructureProcessor {
     }
     
     protected boolean canPassThrough(IWorldReader world, BlockPos pos) {
-        return isAirOrWater(world, pos) || world.getHeight(Type.WORLD_SURFACE_WG, pos).getY() < pos.getY();
+        return isAirOrWater(world, pos) || world.getHeight(Type.WORLD_SURFACE, pos).getY() < pos.getY();
     }
 
     @Override

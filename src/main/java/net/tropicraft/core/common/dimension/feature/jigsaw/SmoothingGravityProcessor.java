@@ -41,7 +41,7 @@ public class SmoothingGravityProcessor extends PathStructureProcessor {
 
     @Override
     public BlockInfo process(IWorldReader world, BlockPos seedPos, BlockPos pos2, BlockInfo originalBlockInfo, BlockInfo blockInfo, PlacementSettings placementSettingsIn, Template template) {
-        Axis pathDir = getPathDirection(seedPos, blockInfo, placementSettingsIn, template);
+        Axis pathDir = getPathDirection(world, seedPos, blockInfo, placementSettingsIn, template);
         if (pathDir == null) {
             pathDir = Axis.X; // Better than nothing
         }

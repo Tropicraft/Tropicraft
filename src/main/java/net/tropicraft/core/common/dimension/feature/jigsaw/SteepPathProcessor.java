@@ -1,11 +1,16 @@
 package net.tropicraft.core.common.dimension.feature.jigsaw;
 
 import com.mojang.serialization.Codec;
+
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.GlazedTerracottaBlock;
 import net.minecraft.block.LadderBlock;
 import net.minecraft.block.StairsBlock;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Mirror;
 import net.minecraft.util.Direction.AxisDirection;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.IWorldReader;
@@ -26,11 +31,11 @@ public class SteepPathProcessor extends PathStructureProcessor {
     public BlockInfo process(IWorldReader worldReaderIn, BlockPos seedPos, BlockPos pos2, BlockInfo originalBlockInfo, BlockInfo blockInfo, PlacementSettings placementSettingsIn, Template template) {
         BlockPos pos = blockInfo.pos;
 
-        if (originalBlockInfo.pos.getY() != 1 || originalBlockInfo.state.getBlock() == TropicraftBlocks.BAMBOO_STAIRS.get()) {
+        if (originalBlockInfo.pos.getY() != 1 || originalBlockInfo.state.getBlock() == TropicraftBlocks.BAMBOO_STAIRS.get() || originalBlockInfo.state.isAir()) {
             return blockInfo;
         }
 
-        Direction.Axis axis = getPathDirection(seedPos, blockInfo, placementSettingsIn, template);
+        Direction.Axis axis = getPathDirection(worldReaderIn, seedPos, blockInfo, placementSettingsIn, template);
         if (axis == null) {
             return blockInfo;
         }
@@ -51,15 +56,28 @@ public class SteepPathProcessor extends PathStructureProcessor {
                 break;
             }
         }
+//        Rotation antiRotate = placementSettingsIn.getRotation();
+//        if (antiRotate == Rotation.CLOCKWISE_90) {
+//        	antiRotate = Rotation.COUNTERCLOCKWISE_90;
+//        } else if (antiRotate == Rotation.COUNTERCLOCKWISE_90) {
+//        	antiRotate = Rotation.CLOCKWISE_90;
+//        }
+//        Mirror antiMirror = placementSettingsIn.getMirror();
+//        BlockState debugState = Blocks.MAGENTA_GLAZED_TERRACOTTA.getDefaultState()
+//        		.with(GlazedTerracottaBlock.HORIZONTAL_FACING, Direction.getFacingFromAxis(AxisDirection.POSITIVE, axis))
+//        		.rotate(antiRotate)
+//        		.mirror(antiMirror);
         if (ladder == null) {
-            return blockInfo; // Nothing to do here, we're on flat ground
+            return blockInfo;//new BlockInfo(blockInfo.pos, debugState, blockInfo.nbt); // Nothing to do here, we're on flat ground
         }
         // The facing the ladder stores is opposite to the direction it's placed (i.e. it faces "outward")
         Direction dir = ladder.get(LadderBlock.FACING).getOpposite();
         pos = pos.up();
         if (bridgeTo == pos.getY() && canPlaceLadderAt(worldReaderIn, pos.up(), dir) == null) {
-            // If the next spot up can't support a ladder, this is a one block step, so place a stair block
-            setBlockState(worldReaderIn, pos, TropicraftBlocks.THATCH_STAIRS.get().getDefaultState().with(StairsBlock.FACING, dir));
+        	if (pos.getY() > 127) {
+	            // If the next spot up can't support a ladder, this is a one block step, so place a stair block
+	            setBlockState(worldReaderIn, pos, TropicraftBlocks.THATCH_STAIRS.get().getDefaultState().with(StairsBlock.FACING, dir));
+        	}
         } else {
             // Otherwise, place ladders upwards until we find air (bridging over an initial gap if required)
             while (bridgeTo >= pos.getY() || canPlaceLadderAt(worldReaderIn, pos, dir) != null) {
@@ -68,7 +86,7 @@ public class SteepPathProcessor extends PathStructureProcessor {
                 pos = pos.up();
             }
         }
-        return blockInfo;
+        return blockInfo;//new BlockInfo(blockInfo.pos, debugState, blockInfo.nbt);
     }
     
     // Check that there is a solid block behind the ladder at this pos, and return the correct ladder state
