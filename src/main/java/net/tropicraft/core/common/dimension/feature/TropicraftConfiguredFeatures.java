@@ -174,7 +174,7 @@ public final class TropicraftConfiguredFeatures {
                 ).build(),
                 0, 0.05f, 1);
 
-        this.papaya = features.tree("papaya",
+        this.papaya = features.papaya("papaya",
                 new TreeConfiguration.TreeConfigurationBuilder(
                         new SimpleStateProvider(TropicraftBlocks.PAPAYA_LOG.get().defaultBlockState()),
                         new StraightTrunkPlacer(5, 2, 3),
@@ -184,7 +184,7 @@ public final class TropicraftConfiguredFeatures {
                         new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
                 ).decorators(ImmutableList.of(Features.Decorators.BEEHIVE_005, new PapayaTreeDecorator())).build(),
                 0, 0.2f, 1
-        ).decorated(Features.Decorators.HEIGHTMAP_OCEAN_FLOOR).decorated(FeatureDecorator.WATER_DEPTH_THRESHOLD.configured(new WaterDepthThresholdConfiguration(1)));
+            );
 
         FoliagePlacer mangroveFoliage = new MangroveFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0));
         BlockStateProvider redMangroveLog = new SimpleStateProvider(TropicraftBlocks.RED_MANGROVE_LOG.get().defaultBlockState());
@@ -560,6 +560,15 @@ public final class TropicraftConfiguredFeatures {
             return this.register(id, Feature.TREE, feature -> {
                 return feature.configured(config)
                         .decorated(Features.Decorators.HEIGHTMAP_SQUARE)
+                        .decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(count, extraChance, extraCount)));
+            });
+        }
+
+        public <F extends Feature<?>> ConfiguredFeature<?, ?> papaya(String id, TreeConfiguration config, int count, float extraChance, int extraCount) {
+            return this.register(id, Feature.TREE, feature -> {
+                return feature.configured(config)
+                        .decorated(Features.Decorators.HEIGHTMAP_WORLD_SURFACE)
+                        .decorated(FeatureDecorator.WATER_DEPTH_THRESHOLD.configured(new WaterDepthThresholdConfiguration(1))).squared()
                         .decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(count, extraChance, extraCount)));
             });
         }

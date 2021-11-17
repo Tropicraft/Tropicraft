@@ -49,29 +49,7 @@
       "tropicraft:curved_palm_tree",
       "tropicraft:large_palm_tree",
       "tropicraft:eih",
-      {
-        "config": {
-          "feature": {
-            "config": {
-              "feature": "tropicraft:papaya",
-              "decorator": {
-                "config": {
-                  "heightmap": "OCEAN_FLOOR"
-                },
-                "type": "minecraft:heightmap"
-              }
-            },
-            "type": "minecraft:decorated"
-          },
-          "decorator": {
-            "config": {
-              "max_water_depth": 1
-            },
-            "type": "minecraft:water_depth_threshold"
-          }
-        },
-        "type": "minecraft:decorated"
-      },
+      "tropicraft:papaya",
       "tropicraft:tropics_flowers",
       "tropicraft:iris_flowers",
       "tropicraft:pineapple_patch",
