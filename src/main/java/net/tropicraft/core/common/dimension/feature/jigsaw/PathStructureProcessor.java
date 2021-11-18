@@ -1,10 +1,12 @@
 package net.tropicraft.core.common.dimension.feature.jigsaw;
 
 import com.google.common.base.Preconditions;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.JigsawBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -38,11 +40,11 @@ public abstract class PathStructureProcessor extends CheatyStructureProcessor {
                     // Add 1 block to each side
                     .expandTowards(ortho).expandTowards(ortho.reverse())
                     // Cover a good amount of vertical space
-                    .inflate(0, 3, 0));
+                    .inflate(0, 48, 0));
         }
 
         boolean contains(BlockPos pos, StructurePlaceSettings settings) {
-            return bb.isInside(StructureTemplate.calculateRelativePosition(settings, pos));
+            return bb.isInside(pos);
         }
 
         private BoundingBox toMutable(AABB bb) {
@@ -53,7 +55,7 @@ public abstract class PathStructureProcessor extends CheatyStructureProcessor {
     // Cache vectors for this structure to avoid redoing work
     private static final WeakHashMap<StructurePlaceSettings, List<PathVector>> VECTOR_CACHE = new WeakHashMap<>(); 
 
-    protected @Nullable Axis getPathDirection(BlockPos seedPos, StructureBlockInfo current, StructurePlaceSettings settings, StructureTemplate template) {
+    protected @Nullable Axis getPathDirection(LevelReader world, BlockPos seedPos, StructureBlockInfo current, StructurePlaceSettings settings, StructureTemplate template) {
         /*
          *  Use special marker jigsaw blocks to represent "vectors" of paths.
          *
@@ -62,13 +64,21 @@ public abstract class PathStructureProcessor extends CheatyStructureProcessor {
          *  the jigsaw block to the end of the structure in that direction, and 1 block to
          *  either side.
          */
+
+        final StructurePlaceSettings infiniteBounds = settings.copy();
+        infiniteBounds.setBoundingBox(BoundingBox.infinite()); //TODO [PORT]: DOUBLE CHECK THIS IS CORRECTLY PORTED
+
         return VECTOR_CACHE.computeIfAbsent(settings, s ->
-                template.filterBlocks(seedPos, settings, Blocks.JIGSAW).stream() // Find all jigsaw blocks
-                        .filter(b -> b.nbt.getString("attachement_type").equals(Constants.MODID + ":path_center")) // Filter for vector markers
-                        .map(bi -> new PathVector(bi.pos.subtract(seedPos), JigsawBlock.getFrontFacing(bi.state))) // Convert pos to structure local, extract facing
+//                template.filterBlocks(seedPos, settings, Blocks.JIGSAW).stream() // Find all jigsaw blocks
+//                        .filter(b -> b.nbt.getString("attachement_type").equals(Constants.MODID + ":path_center")) // Filter for vector markers
+//                        .map(bi -> new PathVector(bi.pos.subtract(seedPos), JigsawBlock.getFrontFacing(bi.state))) // Convert pos to structure local, extract facing
+
+                template.filterBlocks(seedPos, settings, Blocks.JIGSAW, true).stream() // Find all jigsaw blocks
+                        .filter(b -> b.nbt.getString("target").equals(Constants.MODID + ":path_center")) // Filter for vector markers
+                        .map(bi -> new PathVector(world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, bi.pos).subtract(seedPos), JigsawBlock.getFrontFacing(bi.state)))
                         .collect(Collectors.toList()))
                 .stream()
-                .filter(pv -> pv.contains(current.pos, settings)) // Find vectors that contain this block
+                .filter(pv -> pv.contains(current.pos.subtract(seedPos), settings)) // Find vectors that contain this block
                 .findFirst() // If there's more than one, we just choose the first, better some attempt than nothing
                 .map(pv -> pv.dir.getAxis())
                 .orElse(null);

@@ -122,7 +122,7 @@ public final class MangroveRootsBlock extends Block implements SimpleWaterlogged
         return this.getConnectedState(world, currentPos);
     }
 
-    private BlockState getConnectedState(BlockGetter world, BlockPos pos) {
+    private BlockState getConnectedState(LevelAccessor world, BlockPos pos) {
         BlockState state = this.defaultBlockState()
                 .setValue(WATERLOGGED, world.getFluidState(pos).getType() == Fluids.WATER)
                 .setValue(GROUNDED, this.isGrounded(world, pos));
@@ -133,7 +133,7 @@ public final class MangroveRootsBlock extends Block implements SimpleWaterlogged
                 .setValue(SOUTH, this.getConnectionFor(world, pos, Direction.SOUTH))
                 .setValue(WEST, this.getConnectionFor(world, pos, Direction.WEST));
 
-        if (!this.isTall(state) && !world.getBlockState(pos.above()).is(this)) {
+        if (!this.isTall(state) && !this.shouldConnectTo(world, pos.above())){
             state = state.setValue(TALL, false)
                     .setValue(NORTH, state.getValue(NORTH).shorten())
                     .setValue(EAST, state.getValue(EAST).shorten())
@@ -144,7 +144,7 @@ public final class MangroveRootsBlock extends Block implements SimpleWaterlogged
         return state;
     }
 
-    private Connection getConnectionFor(BlockGetter world, BlockPos pos, Direction direction) {
+    private Connection getConnectionFor(LevelAccessor world, BlockPos pos, Direction direction) {
         BlockPos adjacentPos = pos.relative(direction);
         BlockState adjacentState = world.getBlockState(adjacentPos);
 
@@ -165,9 +165,8 @@ public final class MangroveRootsBlock extends Block implements SimpleWaterlogged
         return Connection.NONE;
     }
 
-    private boolean isAdjacentTall(BlockGetter world, BlockPos pos, Direction sourceDirection) {
-        BlockState aboveState = world.getBlockState(pos.above());
-        if (aboveState.is(this) || aboveState.isFaceSturdy(world, pos, Direction.DOWN, SupportType.CENTER)) {
+    private boolean isAdjacentTall(LevelAccessor world, BlockPos pos, Direction sourceDirection) {
+        if (this.shouldConnectTo(world, pos.north())) {
             return true;
         }
 
@@ -195,6 +194,11 @@ public final class MangroveRootsBlock extends Block implements SimpleWaterlogged
 
     private boolean canConnectTo(BlockState state, BlockGetter world, BlockPos pos, Direction direction) {
         return (state.is(this) || state.isFaceSturdy(world, pos, direction)) && !FenceBlock.isExceptionForConnection(state);
+    }
+
+    private boolean shouldConnectTo(LevelAccessor world, BlockPos pos) {
+        BlockState state = world.getBlockState(pos);
+        return state.is(this) || Block.canSupportCenter(world, pos, Direction.DOWN);
     }
 
     private boolean isGrounded(BlockGetter world, BlockPos pos) {

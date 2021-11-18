@@ -26,11 +26,11 @@ public class SteepPathProcessor extends PathStructureProcessor {
     public StructureBlockInfo process(LevelReader worldReaderIn, BlockPos seedPos, BlockPos pos2, StructureBlockInfo originalBlockInfo, StructureBlockInfo blockInfo, StructurePlaceSettings placementSettingsIn, StructureTemplate template) {
         BlockPos pos = blockInfo.pos;
 
-        if (originalBlockInfo.pos.getY() != 1 || originalBlockInfo.state.getBlock() == TropicraftBlocks.BAMBOO_STAIRS.get()) {
+        if (originalBlockInfo.pos.getY() != 1 || originalBlockInfo.state.getBlock() == TropicraftBlocks.BAMBOO_STAIRS.get() || originalBlockInfo.state.isAir()) {
             return blockInfo;
         }
 
-        Direction.Axis axis = getPathDirection(seedPos, blockInfo, placementSettingsIn, template);
+        Direction.Axis axis = getPathDirection(worldReaderIn, seedPos, blockInfo, placementSettingsIn, template);
         if (axis == null) {
             return blockInfo;
         }
@@ -58,8 +58,10 @@ public class SteepPathProcessor extends PathStructureProcessor {
         Direction dir = ladder.getValue(LadderBlock.FACING).getOpposite();
         pos = pos.above();
         if (bridgeTo == pos.getY() && canPlaceLadderAt(worldReaderIn, pos.above(), dir) == null) {
-            // If the next spot up can't support a ladder, this is a one block step, so place a stair block
-            setBlockState(worldReaderIn, pos, TropicraftBlocks.THATCH_STAIRS.get().defaultBlockState().setValue(StairBlock.FACING, dir));
+            if(pos.getY() > 127) {
+                // If the next spot up can't support a ladder, this is a one block step, so place a stair block
+                setBlockState(worldReaderIn, pos, TropicraftBlocks.THATCH_STAIRS.get().defaultBlockState().setValue(StairBlock.FACING, dir));
+            }
         } else {
             // Otherwise, place ladders upwards until we find air (bridging over an initial gap if required)
             while (bridgeTo >= pos.getY() || canPlaceLadderAt(worldReaderIn, pos, dir) != null) {

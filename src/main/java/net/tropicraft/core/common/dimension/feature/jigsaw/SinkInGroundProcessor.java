@@ -34,7 +34,7 @@ public class SinkInGroundProcessor extends CheatyStructureProcessor {
         }
         
         // Get height of the ground at this spot
-        BlockPos groundCheck = world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, worldPos);
+        BlockPos groundCheck = world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE, worldPos);
         // y == 2, we're above the path, remove fence blocks that are above sea level or next to some other block
         if (sourceInfo.pos.getY() == 2 && sourceInfo.state.getBlock() == TropicraftBlocks.BAMBOO_FENCE.get()) {
             if (groundCheck.getY() > 127 || !isAirOrWater(world, worldPos.below(2))) {
