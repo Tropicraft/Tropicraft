@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.dimension.feature;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.core.BlockPos;
@@ -67,9 +68,9 @@ public class HomeTreeBranchFeature<T extends HomeTreeBranchConfig> extends Featu
         genLeafCircle(world, branchX2, y2, branchZ2, leafCircleSizeConstant + 6, 0, leaf, true);
         genLeafCircle(world, branchX2, y2 + 1, branchZ2, leafCircleSizeConstant + 10, 0, leaf, true);
         genLeafCircle(world, branchX2, y2 + 2, branchZ2, leafCircleSizeConstant + 9, 0, leaf, true);
-        if(world.isAreaLoaded(new BlockPos(branchX2, y2 - 1, branchZ2), 0)) {
+        //if(world.isAreaLoaded(new BlockPos(branchX2, y2 - 1, branchZ2), 0)) {
             this.vinesFeature.place(world, generator, rand, new BlockPos(branchX2, y2 - 1, branchZ2));
-        }
+        //}
 
 
         return false;
@@ -82,7 +83,7 @@ public class HomeTreeBranchFeature<T extends HomeTreeBranchConfig> extends Featu
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 
         //TODO [PORT]: This must be fixed but this will allow for testing other features while this is getting a fix {Error: We are asking a region for a chunk out of bound}
-        try {
+        //try {
             for (int i = -outerRadius + x; i <= outerRadius + x; i++) {
                 for (int k = -outerRadius + z; k <= outerRadius + z; k++) {
                     double d = (x - i) * (x - i) + (z - k) * (z - k);
@@ -97,7 +98,7 @@ public class HomeTreeBranchFeature<T extends HomeTreeBranchConfig> extends Featu
                 }
             }
 
-        } catch(Exception ignored) {}
+        //} catch(Exception ignored) {}
     }
 
     private void placeBlockLine(final LevelAccessor world, int[] ai, int[] ai1, BlockState state) {
@@ -136,9 +137,9 @@ public class HomeTreeBranchFeature<T extends HomeTreeBranchConfig> extends Featu
             ai3[byte2] = Mth.floor(ai[byte2] + k * d1 + 0.5D);
 
             //TODO [PORT]: This must be fixed but this will allow for testing other features while this is getting a fix {Error: We are asking a region for a chunk out of bound}
-            try {
+            //try {
             world.setBlock(new BlockPos(ai3[0], ai3[1], ai3[2]), state, 3);
-            } catch(Exception ignored) {}
+            //} catch(Exception ignored) {}
 
 
         }

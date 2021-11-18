@@ -1,17 +1,14 @@
 package net.tropicraft.core.common.dimension.feature.jigsaw;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.tropicraft.Constants;
@@ -24,6 +21,7 @@ public class SinkInGroundProcessor extends CheatyStructureProcessor {
 
     static final StructureProcessorType<SinkInGroundProcessor> TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Constants.MODID + ":sink_in_ground", () -> CODEC);
 
+    @SuppressWarnings("deprecation")
     @Override
     public StructureBlockInfo process(LevelReader world, BlockPos worldPos, BlockPos sourcePos, StructureBlockInfo sourceInfo, StructureBlockInfo worldInfo, StructurePlaceSettings placement, @Nullable StructureTemplate template) {
         worldPos = worldInfo.pos;
@@ -58,23 +56,11 @@ public class SinkInGroundProcessor extends CheatyStructureProcessor {
             
             // Only sink solid blocks, or blocks that are above air/water -- delete all others
             if (Block.isShapeFullBlock(worldInfo.state.getShape(world, worldPos.below())) || isAirOrWater(world, worldPos.below())) {
-                return new StructureBlockInfo(worldPos.below(), worldInfo.state, worldInfo.nbt);
+                worldInfo = new StructureBlockInfo( (worldPos = worldPos.below()), worldInfo.state, worldInfo.nbt);
             }
-            return null;
         }
-        
-        removeObstructions(world, worldPos.above(), worldPos.above(2));
 
         return worldInfo;
-    }
-    
-    private void removeObstructions(LevelReader world, BlockPos... positions) {
-        for (BlockPos pos : positions) {
-            BlockState current = world.getBlockState(pos);
-            if (current.is(BlockTags.LEAVES) || current.is(BlockTags.LOGS)) {
-                setBlockState(world, pos, Blocks.AIR.defaultBlockState());
-            }
-        }
     }
 
     @Override

@@ -87,20 +87,19 @@ public class HomeTreeStructure extends StructureFeature<JigsawConfiguration> {
     public static class Piece extends PoolElementStructurePiece {
         public Piece(StructureManager templates, StructurePoolElement piece, BlockPos pos, int groundLevelDelta, Rotation rotation, BoundingBox bounds) {
             super(templates, piece, pos, groundLevelDelta, rotation, bounds);
+            this.boundingBox = this.growFeaturePieceBoundingBox(this.boundingBox);
         }
 
         public Piece(ServerLevel serverWorld, CompoundTag nbtCompound) {
             super(serverWorld, nbtCompound);
+            this.boundingBox = this.growFeaturePieceBoundingBox(this.boundingBox);
         }
 
-        @Override
-        public BoundingBox getBoundingBox() {
+        private BoundingBox growFeaturePieceBoundingBox(BoundingBox bounds){
             if (this.element instanceof FeaturePoolElement) {
-                BoundingBox ret = super.getBoundingBox();
-                //ret = new BoundingBox(ret);
-                ret.inflate(32);
+                bounds = bounds.inflate(32);
             }
-            return super.getBoundingBox();
+            return bounds;
         }
 
         @Override

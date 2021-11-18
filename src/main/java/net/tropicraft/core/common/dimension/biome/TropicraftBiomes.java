@@ -489,9 +489,6 @@ public final class TropicraftBiomes {
         BiomeDefaultFeatures.addDefaultOres(generation);
         BiomeDefaultFeatures.addDefaultUndergroundVariety(generation);
 
-        generation.addStructureStart(structures.homeTree);
-        generation.addStructureStart(structures.koaVillage);
-
         return generation;
     }
 
