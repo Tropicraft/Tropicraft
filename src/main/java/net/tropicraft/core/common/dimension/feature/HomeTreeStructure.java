@@ -26,6 +26,7 @@ import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.dimension.feature.jigsaw.piece.NoRotateSingleJigsawPiece;
+import net.tropicraft.core.common.dimension.feature.jigsaw.piece.PieceWithGenerationBounds;
 
 public class HomeTreeStructure extends StructureFeature<JigsawConfiguration> {
     public HomeTreeStructure(Codec<JigsawConfiguration> codec) {
@@ -87,19 +88,20 @@ public class HomeTreeStructure extends StructureFeature<JigsawConfiguration> {
     public static class Piece extends PoolElementStructurePiece {
         public Piece(StructureManager templates, StructurePoolElement piece, BlockPos pos, int groundLevelDelta, Rotation rotation, BoundingBox bounds) {
             super(templates, piece, pos, groundLevelDelta, rotation, bounds);
-            this.boundingBox = this.growFeaturePieceBoundingBox(this.boundingBox);
+            this.boundingBox = this.fixGenerationBoundingBox(templates);
         }
 
         public Piece(ServerLevel serverWorld, CompoundTag nbtCompound) {
             super(serverWorld, nbtCompound);
-            this.boundingBox = this.growFeaturePieceBoundingBox(this.boundingBox);
+            this.boundingBox = this.fixGenerationBoundingBox(serverWorld.getStructureManager());
         }
 
-        private BoundingBox growFeaturePieceBoundingBox(BoundingBox bounds){
-            if (this.element instanceof FeaturePoolElement) {
-                bounds = bounds.inflate(32);
+        private BoundingBox fixGenerationBoundingBox(StructureManager templates){
+            StructurePoolElement piece = getElement();
+            if (this.element instanceof PieceWithGenerationBounds) {
+                return ((PieceWithGenerationBounds) piece).getGenerationBounds(templates, this.getPosition(), Rotation.NONE);
             }
-            return bounds;
+            return boundingBox;
         }
 
         @Override

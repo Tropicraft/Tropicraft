@@ -57,6 +57,7 @@ import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
 import net.tropicraft.core.common.dimension.feature.block_placer.TropicraftBlockPlacerTypes;
 import net.tropicraft.core.common.dimension.feature.block_state_provider.TropicraftBlockStateProviders;
 import net.tropicraft.core.common.dimension.feature.jigsaw.*;
+import net.tropicraft.core.common.dimension.feature.jigsaw.piece.HomeTreeBranchPiece;
 import net.tropicraft.core.common.dimension.feature.jigsaw.piece.NoRotateSingleJigsawPiece;
 import net.tropicraft.core.common.dimension.feature.jigsaw.piece.SingleNoAirJigsawPiece;
 import net.tropicraft.core.common.dimension.feature.pools.TropicraftTemplatePools;
@@ -175,7 +176,7 @@ public class Tropicraft {
         TropicraftBiomeProvider.register();
 
         Reflection.initialize(
-                SingleNoAirJigsawPiece.class, NoRotateSingleJigsawPiece.class,
+                SingleNoAirJigsawPiece.class, NoRotateSingleJigsawPiece.class, HomeTreeBranchPiece.class,
                 AdjustBuildingHeightProcessor.class, AirToCaveAirProcessor.class, SinkInGroundProcessor.class,
                 SmoothingGravityProcessor.class, SteepPathProcessor.class, StructureSupportsProcessor.class,
                 StructureVoidProcessor.class,

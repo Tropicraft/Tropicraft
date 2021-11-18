@@ -30,7 +30,6 @@ import net.tropicraft.core.common.block.TropicraftTrees;
 import net.tropicraft.core.common.data.WorldgenDataConsumer;
 import net.tropicraft.core.common.dimension.feature.block_placer.HugePlantBlockPlacer;
 import net.tropicraft.core.common.dimension.feature.block_state_provider.NoiseFromTagBlockStateProvider;
-import net.tropicraft.core.common.dimension.feature.config.HomeTreeBranchConfig;
 import net.tropicraft.core.common.dimension.feature.config.RainforestVinesConfig;
 import net.tropicraft.core.common.dimension.feature.tree.*;
 import net.tropicraft.core.common.dimension.feature.tree.mangrove.*;
@@ -107,22 +106,6 @@ public final class TropicraftConfiguredFeatures {
     public final ConfiguredFeature<?, ?> manganese;
     public final ConfiguredFeature<?, ?> shaka;
 
-    public final ConfiguredFeature<?, ?> homeTreeBranchSouth;
-    public final ConfiguredFeature<?, ?> homeTreeBranchSouthExact;
-    public final ConfiguredFeature<?, ?> homeTreeBranchSouthEast;
-    public final ConfiguredFeature<?, ?> homeTreeBranchSouthEastExact;
-    public final ConfiguredFeature<?, ?> homeTreeBranchEast;
-    public final ConfiguredFeature<?, ?> homeTreeBranchEastExact;
-    public final ConfiguredFeature<?, ?> homeTreeBranchNorthEast;
-    public final ConfiguredFeature<?, ?> homeTreeBranchNorthEastExact;
-    public final ConfiguredFeature<?, ?> homeTreeBranchNorth;
-    public final ConfiguredFeature<?, ?> homeTreeBranchNorthExact;
-    public final ConfiguredFeature<?, ?> homeTreeBranchNorthWest;
-    public final ConfiguredFeature<?, ?> homeTreeBranchNorthWestExact;
-    public final ConfiguredFeature<?, ?> homeTreeBranchWest;
-    public final ConfiguredFeature<?, ?> homeTreeBranchWestExact;
-    public final ConfiguredFeature<?, ?> homeTreeBranchSouthWest;
-    public final ConfiguredFeature<?, ?> homeTreeBranchSouthWestExact;
 
     public TropicraftConfiguredFeatures(WorldgenDataConsumer<? extends ConfiguredFeature<?, ?>> worldgen) {
         Register features = new Register(worldgen);
@@ -431,26 +414,6 @@ public final class TropicraftConfiguredFeatures {
                     .squared().count(6);
         });
 
-        // 0 = south
-        // 90 = east
-        // 180 = north
-        // 270 = west
-        this.homeTreeBranchSouth = features.homeTreeBranch("home_tree/branch/south", -30, 30);
-        this.homeTreeBranchSouthExact = features.homeTreeBranch("home_tree/branch/south_exact", 0, 0);
-        this.homeTreeBranchSouthEast = features.homeTreeBranch("home_tree/branch/southeast", 30, 60);
-        this.homeTreeBranchSouthEastExact = features.homeTreeBranch("home_tree/branch/southeast_exact", 45, 45);
-        this.homeTreeBranchEast = features.homeTreeBranch("home_tree/branch/east", 60, 120);
-        this.homeTreeBranchEastExact = features.homeTreeBranch("home_tree/branch/east_exact", 90, 90);
-        this.homeTreeBranchNorthEast = features.homeTreeBranch("home_tree/branch/northeast", 120, 150);
-        this.homeTreeBranchNorthEastExact = features.homeTreeBranch("home_tree/branch/northeast_exact", 135, 135);
-        this.homeTreeBranchNorth = features.homeTreeBranch("home_tree/branch/north", 150, 210);
-        this.homeTreeBranchNorthExact = features.homeTreeBranch("home_tree/branch/north_exact", 180, 180);
-        this.homeTreeBranchNorthWest = features.homeTreeBranch("home_tree/branch/northwest", 210, 240);
-        this.homeTreeBranchNorthWestExact = features.homeTreeBranch("home_tree/branch/northwest_exact", 225, 225);
-        this.homeTreeBranchWest = features.homeTreeBranch("home_tree/branch/west", 240, 300);
-        this.homeTreeBranchWestExact = features.homeTreeBranch("home_tree/branch/west_exact", 270, 270);
-        this.homeTreeBranchSouthWest = features.homeTreeBranch("home_tree/branch/southwest", 300, 330);
-        this.homeTreeBranchSouthWestExact = features.homeTreeBranch("home_tree/branch/southwest_exact", 315, 315);
     }
 
     public void addFruitTrees(BiomeGenerationSettings.Builder generation) {
@@ -626,12 +589,6 @@ public final class TropicraftConfiguredFeatures {
                         .collect(Collectors.toList()));
                 return feature.configured(config);
             });
-        }
-
-        public <C extends FeatureConfiguration, F extends Feature<C>> ConfiguredFeature<?, ?> homeTreeBranch(String id, float minAngle, float maxAngle) {
-            return this.register(id, TropicraftFeatures.HOME_TREE_BRANCH,
-                    f -> f.configured(new HomeTreeBranchConfig(minAngle, maxAngle))
-            );
         }
     }
 }
