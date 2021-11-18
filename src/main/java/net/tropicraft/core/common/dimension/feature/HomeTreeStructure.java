@@ -12,13 +12,13 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.feature.jigsaw.FeatureJigsawPiece;
 import net.minecraft.world.gen.feature.jigsaw.JigsawManager;
 import net.minecraft.world.gen.feature.jigsaw.JigsawPiece;
 import net.minecraft.world.gen.feature.structure.*;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.dimension.feature.jigsaw.piece.NoRotateSingleJigsawPiece;
+import net.tropicraft.core.common.dimension.feature.jigsaw.piece.PieceWithGenerationBounds;
 
 public class HomeTreeStructure extends Structure<VillageConfig> {
     public HomeTreeStructure(Codec<VillageConfig> codec) {
@@ -78,25 +78,21 @@ public class HomeTreeStructure extends Structure<VillageConfig> {
     public static class Piece extends AbstractVillagePiece {
         public Piece(TemplateManager templates, JigsawPiece piece, BlockPos pos, int groundLevelDelta, Rotation rotation, MutableBoundingBox bounds) {
             super(templates, piece, pos, groundLevelDelta, rotation, bounds);
-            this.boundingBox = this.growFeaturePieceBoundingBox(this.boundingBox);
+            this.boundingBox = this.fixGenerationBoundingBox(templates);
         }
 
         public Piece(TemplateManager templates, CompoundNBT data) {
             super(templates, data);
-            this.boundingBox = this.growFeaturePieceBoundingBox(this.boundingBox);
+            this.boundingBox = this.fixGenerationBoundingBox(templates);
         }
 
-        private MutableBoundingBox growFeaturePieceBoundingBox(MutableBoundingBox bounds) {
-            if (this.jigsawPiece instanceof FeatureJigsawPiece) {
-                bounds = new MutableBoundingBox(bounds);
-                bounds.minX -= 32;
-                bounds.minY -= 32;
-                bounds.minZ -= 32;
-                bounds.maxX += 32;
-                bounds.maxY += 32;
-                bounds.maxZ += 32;
+        private MutableBoundingBox fixGenerationBoundingBox(TemplateManager templates) {
+            JigsawPiece piece = jigsawPiece;
+            if (piece instanceof PieceWithGenerationBounds) {
+                return ((PieceWithGenerationBounds) piece).getGenerationBounds(templates, this.pos, Rotation.NONE);
+            } else {
+                return boundingBox;
             }
-            return bounds;
         }
 
         @Override

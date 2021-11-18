@@ -11,6 +11,7 @@ import net.tropicraft.core.common.data.WorldgenDataConsumer;
 import net.tropicraft.core.common.dimension.feature.TropicraftConfiguredFeatures;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
 import net.tropicraft.core.common.dimension.feature.jigsaw.TropicraftProcessorLists;
+import net.tropicraft.core.common.dimension.feature.jigsaw.piece.HomeTreeBranchPiece;
 import net.tropicraft.core.common.dimension.feature.jigsaw.piece.NoRotateSingleJigsawPiece;
 import net.tropicraft.core.common.dimension.feature.jigsaw.piece.SingleNoAirJigsawPiece;
 
@@ -138,50 +139,50 @@ public final class TropicraftTemplatePools {
         this.homeTreeBranchesSouth = pools.register(
                 "home_tree/branches/south",
                 JigsawPattern.PlacementBehaviour.RIGID,
-                feature(features.homeTreeBranchSouth, 4),
-                feature(features.homeTreeBranchSouthExact, 1)
+                homeTreeBranch(-30, 30, 4),
+                homeTreeBranch(0, 0, 1)
         );
         this.homeTreeBranchesSouthEast = pools.register(
                 "home_tree/branches/southeast",
                 JigsawPattern.PlacementBehaviour.RIGID,
-                feature(features.homeTreeBranchSouthEast, 4),
-                feature(features.homeTreeBranchSouthEastExact, 1)
+                homeTreeBranch(30, 60, 4),
+                homeTreeBranch(45, 45, 1)
         );
         this.homeTreeBranchesEast = pools.register(
                 "home_tree/branches/east",
                 JigsawPattern.PlacementBehaviour.RIGID,
-                feature(features.homeTreeBranchEast, 4),
-                feature(features.homeTreeBranchEastExact, 1)
+                homeTreeBranch(60, 120, 4),
+                homeTreeBranch(90, 90, 1)
         );
         this.homeTreeBranchesNorthEast = pools.register(
                 "home_tree/branches/northeast",
                 JigsawPattern.PlacementBehaviour.RIGID,
-                feature(features.homeTreeBranchNorthEast, 4),
-                feature(features.homeTreeBranchNorthEastExact, 1)
+                homeTreeBranch(120, 150, 4),
+                homeTreeBranch(135, 135, 1)
         );
         this.homeTreeBranchesNorth = pools.register(
                 "home_tree/branches/north",
                 JigsawPattern.PlacementBehaviour.RIGID,
-                feature(features.homeTreeBranchNorth, 4),
-                feature(features.homeTreeBranchNorthExact, 1)
+                homeTreeBranch(150, 210, 4),
+                homeTreeBranch(180, 180, 1)
         );
         this.homeTreeBranchesNorthWest = pools.register(
                 "home_tree/branches/northwest",
                 JigsawPattern.PlacementBehaviour.RIGID,
-                feature(features.homeTreeBranchNorthWest, 4),
-                feature(features.homeTreeBranchNorthWestExact, 1)
+                homeTreeBranch(210, 240, 4),
+                homeTreeBranch(225, 225, 1)
         );
         this.homeTreeBranchesWest = pools.register(
                 "home_tree/branches/west",
                 JigsawPattern.PlacementBehaviour.RIGID,
-                feature(features.homeTreeBranchWest, 4),
-                feature(features.homeTreeBranchWestExact, 1)
+                homeTreeBranch(240, 300, 4),
+                homeTreeBranch(270, 270, 1)
         );
         this.homeTreeBranchesSouthWest = pools.register(
                 "home_tree/branches/southwest",
                 JigsawPattern.PlacementBehaviour.RIGID,
-                feature(features.homeTreeBranchSouthWest, 4),
-                feature(features.homeTreeBranchSouthWestExact, 1)
+                homeTreeBranch(300, 330, 4),
+                homeTreeBranch(315, 315, 1)
         );
     }
 
@@ -223,6 +224,13 @@ public final class TropicraftTemplatePools {
     private static Pair<Function<JigsawPattern.PlacementBehaviour, ? extends JigsawPiece>, Integer> feature(ConfiguredFeature<?, ?> feature, int weight) {
         return new Pair<>(
                 JigsawPiece.func_242845_a(feature),
+                weight
+        );
+    }
+
+    private static Pair<Function<JigsawPattern.PlacementBehaviour, ? extends JigsawPiece>, Integer> homeTreeBranch(float minAngle, float maxAngle, int weight) {
+        return new Pair<>(
+                HomeTreeBranchPiece.create(minAngle, maxAngle),
                 weight
         );
     }

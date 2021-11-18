@@ -16,7 +16,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.dimension.feature.config.FruitTreeConfig;
-import net.tropicraft.core.common.dimension.feature.config.HomeTreeBranchConfig;
 import net.tropicraft.core.common.dimension.feature.config.RainforestVinesConfig;
 import net.tropicraft.core.common.dimension.feature.jigsaw.SinkInGroundProcessor;
 import net.tropicraft.core.common.dimension.feature.jigsaw.SmoothingGravityProcessor;
@@ -48,7 +47,6 @@ public class TropicraftFeatures {
 
     public static final RegistryObject<Structure<VillageConfig>> KOA_VILLAGE = registerStructure("koa_village", new KoaVillageStructure(VillageConfig.field_236533_a_), GenerationStage.Decoration.SURFACE_STRUCTURES);
     public static final RegistryObject<Structure<VillageConfig>> HOME_TREE = registerStructure("home_tree", new HomeTreeStructure(VillageConfig.field_236533_a_), GenerationStage.Decoration.SURFACE_STRUCTURES);
-    public static final RegistryObject<HomeTreeBranchFeature<HomeTreeBranchConfig>> HOME_TREE_BRANCH = register("home_tree_branch", () -> new HomeTreeBranchFeature<>(HomeTreeBranchConfig.CODEC));
     public static final RegistryObject<CoffeePlantFeature> COFFEE_BUSH = register("coffee_bush", () -> new CoffeePlantFeature(NoFeatureConfig.CODEC));
 
     public static final RegistryObject<ReedsFeature> REEDS = register("reeds", () -> new ReedsFeature(NoFeatureConfig.CODEC));
