@@ -279,9 +279,9 @@ public class ClientSetup {
 
 
     public static void setupScubaGearModels(){
-        ModelScubaGear.HEAD = ModelScubaGear.createModel(HEAD_SCUBA_LAYER, null, EquipmentSlot.CHEST);
+        ModelScubaGear.HEAD = ModelScubaGear.createModel(HEAD_SCUBA_LAYER, null, EquipmentSlot.HEAD);
         ModelScubaGear.CHEST = ModelScubaGear.createModel(CHEST_SCUBA_LAYER, null, EquipmentSlot.CHEST);
-        ModelScubaGear.FEET = ModelScubaGear.createModel(FEET_SCUBA_LAYER, null, EquipmentSlot.CHEST);
+        ModelScubaGear.FEET = ModelScubaGear.createModel(FEET_SCUBA_LAYER, null, EquipmentSlot.FEET);
 
         ModelScubaGear.tankModel = ModelScubaGear.createModel(TANK_SCUBA_LAYER, null, EquipmentSlot.CHEST);
     }

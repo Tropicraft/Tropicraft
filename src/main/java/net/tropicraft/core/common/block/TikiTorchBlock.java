@@ -68,7 +68,7 @@ public class TikiTorchBlock extends Block {
         super.createBlockStateDefinition(builder);
         builder.add(SECTION);
     }
-    
+
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
         TorchSection section = state.getValue(SECTION);
