@@ -7,7 +7,12 @@ import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
+import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -21,7 +26,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.IExtensionPoint;
 import net.minecraftforge.fml.ModList;
@@ -34,6 +41,7 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.fmlserverevents.FMLServerStartingEvent;
 import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
+import net.minecraftforge.resource.PathResourcePack;
 import net.tropicraft.core.client.BasicColorHandler;
 import net.tropicraft.core.client.ClientSetup;
 import net.tropicraft.core.client.data.TropicraftBlockstateProvider;
@@ -73,9 +81,11 @@ import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.item.scuba.ScubaGogglesItem;
 import net.tropicraft.core.common.network.TropicraftPackets;
 
+import java.io.IOException;
 import java.util.regex.Pattern;
 
 @Mod(Constants.MODID)
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Tropicraft {
     public static final CreativeModeTab TROPICRAFT_ITEM_GROUP = (new CreativeModeTab("tropicraft") {
         @OnlyIn(Dist.CLIENT)
@@ -231,5 +241,25 @@ public class Tropicraft {
                 return new TropicraftBiomes(consumer, features, structures, carvers, surfaceBuilders);
             });
         }));
+    }
+
+    @SubscribeEvent
+    public static void addJappaPack(AddPackFindersEvent event) {
+        try {
+            if (event.getPackType() == PackType.CLIENT_RESOURCES) {
+                var resourcePath = ModList.get().getModFileById(Constants.MODID).getFile().findResource("jappatextures");
+                var pack = new PathResourcePack(ModList.get().getModFileById(Constants.MODID).getFile().getFileName() + ":" + resourcePath, resourcePath);
+                var metadataSection = pack.getMetadataSection(PackMetadataSection.SERIALIZER);
+                if (metadataSection != null) {
+                    event.addRepositorySource((packConsumer, packConstructor) ->
+                            packConsumer.accept(packConstructor.create(
+                                    "builtin/tropicraft_jappa_resources", new TextComponent("Tropicraft Jappafied"), false,
+                                    () -> pack, metadataSection, Pack.Position.TOP, PackSource.BUILT_IN, false)));
+                }
+            }
+        }
+        catch(IOException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }
