@@ -1,30 +1,27 @@
 package net.tropicraft.core.common.block;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.BonemealableBlock;
-import net.minecraft.world.level.block.TallFlowerBlock;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.TallFlowerBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.common.util.Constants;
 
 import java.util.Random;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class PineappleBlock extends TallFlowerBlock implements BonemealableBlock, IPlantable {
 
@@ -85,14 +82,14 @@ public class PineappleBlock extends TallFlowerBlock implements BonemealableBlock
             if (growth >= TOTAL_GROW_TICKS - 1) {
                 // Set current state
                 BlockState growthState = state.setValue(STAGE, TOTAL_GROW_TICKS);
-                world.setBlock(pos, growthState, Constants.BlockFlags.DEFAULT | Constants.BlockFlags.NO_RERENDER);
+                world.setBlock(pos, growthState, Block.UPDATE_ALL | Block.UPDATE_INVISIBLE);
 
                 // Place actual pineapple plant above stem
                 BlockState fullGrowth = growthState.setValue(HALF, DoubleBlockHalf.UPPER);
-                world.setBlock(pos.above(), fullGrowth, Constants.BlockFlags.DEFAULT);
+                world.setBlock(pos.above(), fullGrowth, Block.UPDATE_ALL);
             } else {
                 BlockState growthState = state.setValue(STAGE, growth + 1);
-                world.setBlock(pos, growthState, Constants.BlockFlags.DEFAULT | Constants.BlockFlags.NO_RERENDER);
+                world.setBlock(pos, growthState, Block.UPDATE_ALL | Block.UPDATE_INVISIBLE);
             }
         }
     }

@@ -1,16 +1,15 @@
 package net.tropicraft.core.common.dimension.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import net.minecraftforge.common.util.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 import java.util.Random;
@@ -60,17 +59,17 @@ public class CoffeePlantFeature extends Feature<NoneFeatureConfiguration> {
         }
 
         final BlockPos waterPos = new BlockPos(genPos.getX() + viableDirection.getStepX(), pos.getY() - 1, genPos.getZ() + viableDirection.getStepZ());
-        world.setBlock(waterPos, WATER, Constants.BlockFlags.DEFAULT);
-        world.setBlock(genPos.below(), FARMLAND, Constants.BlockFlags.DEFAULT);
+        world.setBlock(waterPos, WATER, Block.UPDATE_ALL);
+        world.setBlock(genPos.below(), FARMLAND, Block.UPDATE_ALL);
 
         for (final Direction dir : Direction.Plane.HORIZONTAL) {
-            world.setBlock(waterPos.relative(dir), GRASS_BLOCK, Constants.BlockFlags.DEFAULT);
+            world.setBlock(waterPos.relative(dir), GRASS_BLOCK, Block.UPDATE_ALL);
         }
 
         for (int i = 0; i < 3; ++i) {
             final BlockPos upPos = genPos.above(i);
             if (world.isEmptyBlock(upPos)) {
-                world.setBlock(upPos, COFE, Constants.BlockFlags.DEFAULT);
+                world.setBlock(upPos, COFE, Block.UPDATE_ALL);
             } else {
                 break;
             }

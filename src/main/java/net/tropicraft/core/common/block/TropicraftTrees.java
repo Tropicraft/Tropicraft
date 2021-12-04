@@ -29,7 +29,6 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStatePr
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
 import net.minecraft.world.level.levelgen.placement.FeatureDecorator;
 import net.minecraft.world.level.levelgen.placement.WaterDepthThresholdConfiguration;
-import net.minecraftforge.common.util.Constants;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
 import net.tropicraft.core.common.dimension.feature.tree.CitrusFoliagePlacer;
 import net.tropicraft.core.common.dimension.feature.tree.CitrusTrunkPlacer;
@@ -137,11 +136,11 @@ public class TropicraftTrees {
                     return false;
                 }
 
-                world.setBlock(pos, Blocks.AIR.defaultBlockState(), Constants.BlockFlags.NO_RERENDER);
+                world.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_INVISIBLE);
                 if (feature.place(world, generator, random, pos)) {
                     return true;
                 } else {
-                    world.setBlock(pos, sapling, Constants.BlockFlags.NO_RERENDER);
+                    world.setBlock(pos, sapling, Block.UPDATE_INVISIBLE);
                     return false;
                 }
             }

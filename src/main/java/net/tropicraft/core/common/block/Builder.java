@@ -10,6 +10,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.fmllegacy.RegistryObject;
+import net.tropicraft.Tropicraft;
+import net.tropicraft.core.common.block.experimental.TropicraftExperimentalLeaveBlock;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -111,7 +113,7 @@ public class Builder {
     }
 
     public static Supplier<LeavesBlock> leaves(boolean decay) {
-        return block(decay ? LeavesBlock::new : TropicraftLeavesBlock::new, lazyProp(Blocks.OAK_LEAVES.delegate));
+        return block(decay ? LeavesBlock::new : ( Tropicraft.EXPERIMENTALMODE ? TropicraftExperimentalLeaveBlock::new : TropicraftLeavesBlock::new), lazyProp(Blocks.OAK_LEAVES.delegate));
     }
 
     public static Supplier<LeavesBlock> mangroveLeaves(Supplier<RegistryObject<PropaguleBlock>> propagule) {

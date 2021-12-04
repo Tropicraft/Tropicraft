@@ -3,6 +3,7 @@ package net.tropicraft.core.common.dimension.feature.jigsaw.piece;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.JigsawBlock;
@@ -24,7 +25,6 @@ import net.minecraft.world.level.levelgen.feature.structures.StructurePoolElemen
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
-import net.minecraftforge.common.util.Constants.BlockFlags;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
@@ -152,7 +152,7 @@ public final class HomeTreeBranchPiece extends StructurePoolElement implements P
             double distanceSquared = pos.distSqr(origin);
             if (distanceSquared <= outerRadiusSquared && distanceSquared >= innerRadiusSquared) {
                 if (world.isEmptyBlock(pos) || world.getBlockState(pos).getBlock() == state.getBlock()) {
-                    world.setBlock(pos, state, BlockFlags.DEFAULT);
+                    world.setBlock(pos, state, Block.UPDATE_ALL);
                 }
             }
         }
@@ -183,7 +183,7 @@ public final class HomeTreeBranchPiece extends StructurePoolElement implements P
                     from.getZ() + length * stepZ + 0.5
             );
             if (chunkBounds.isInside(pos)) {
-                world.setBlock(pos, state, BlockFlags.DEFAULT);
+                world.setBlock(pos, state, Block.UPDATE_ALL);
             }
         }
     }

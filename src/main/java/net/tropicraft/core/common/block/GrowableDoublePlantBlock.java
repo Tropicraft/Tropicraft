@@ -7,13 +7,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.tropicraft.core.common.block.huge_plant.HugePlantBlock;
 
@@ -53,7 +53,7 @@ public final class GrowableDoublePlantBlock extends DoublePlantBlock implements 
         HugePlantBlock growBlock = this.growInto.get().get();
         BlockState growState = growBlock.defaultBlockState();
         if (growState.canSurvive(world, lowerPos)) {
-            growBlock.placeAt(world, lowerPos, Constants.BlockFlags.BLOCK_UPDATE);
+            growBlock.placeAt(world, lowerPos, Block.UPDATE_CLIENTS);
         }
     }
 

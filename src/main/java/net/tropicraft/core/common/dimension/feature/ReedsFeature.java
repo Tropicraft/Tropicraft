@@ -1,17 +1,16 @@
 package net.tropicraft.core.common.dimension.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import net.minecraftforge.common.util.Constants;
 import net.tropicraft.core.common.block.ReedsBlock;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
@@ -115,7 +114,7 @@ public final class ReedsFeature extends Feature<NoneFeatureConfiguration> {
                 .setValue(ReedsBlock.TYPE, ReedsBlock.Type.SINGLE)
                 .setValue(ReedsBlock.WATERLOGGED, false);
 
-        world.setBlock(pos, state, Constants.BlockFlags.BLOCK_UPDATE);
+        world.setBlock(pos, state, Block.UPDATE_CLIENTS);
     }
 
     private boolean generateTall(WorldGenLevel world, BlockPos pos, int height, BlockPos.MutableBlockPos mutablePos) {
@@ -126,7 +125,7 @@ public final class ReedsFeature extends Feature<NoneFeatureConfiguration> {
                     .setValue(ReedsBlock.TYPE, y == height - 1 ? ReedsBlock.Type.TOP : ReedsBlock.Type.BOTTOM)
                     .setValue(ReedsBlock.WATERLOGGED, world.getBlockState(mutablePos).is(Blocks.WATER));
 
-            world.setBlock(mutablePos, state, Constants.BlockFlags.BLOCK_UPDATE);
+            world.setBlock(mutablePos, state, Block.UPDATE_CLIENTS);
         }
 
         return true;

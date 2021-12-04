@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.dimension.feature;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SeaPickleBlock;
@@ -37,7 +38,7 @@ public class UndergroundSeaPickleFeature extends Feature<NoneFeatureConfiguratio
             }
 
             BlockState pickle = Blocks.SEA_PICKLE.defaultBlockState().setValue(SeaPickleBlock.PICKLES, count);
-            world.setBlock(pos, pickle, Constants.BlockFlags.BLOCK_UPDATE);
+            world.setBlock(pos, pickle, Block.UPDATE_CLIENTS);
             return true;
         }
 

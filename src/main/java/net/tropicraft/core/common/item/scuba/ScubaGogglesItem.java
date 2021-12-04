@@ -46,7 +46,7 @@ import java.util.UUID;
 
 @EventBusSubscriber(modid = Constants.MODID, bus = Bus.FORGE, value = Dist.CLIENT)
 public class ScubaGogglesItem extends ScubaArmorItem {
-    
+
     public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(ForgeRegistries.ATTRIBUTES, Constants.MODID);
 
     // This is never registered to any entities, so it's not used in any logic
@@ -75,9 +75,8 @@ public class ScubaGogglesItem extends ScubaArmorItem {
     @OnlyIn(Dist.CLIENT)
     public static void renderWaterFog(FogDensity event) {
         Camera info = event.getInfo();
-        //FluidState fluid = info.getFluidInCamera();
         FogType fogType = info.getFluidInCamera();
-        if (/*fluid.is(FluidTags.WATER) &&*/fogType == FogType.WATER && info.getEntity() instanceof LocalPlayer player) {
+        if (fogType == FogType.WATER && info.getEntity() instanceof LocalPlayer player) {
             if (player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof ScubaGogglesItem) {
                 float f = 192.0F;
                 f *= Math.max(0.25F, player.getWaterVision());

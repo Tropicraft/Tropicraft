@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.dimension.feature.block_placer;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelAccessor;
@@ -18,7 +19,7 @@ public final class HugePlantBlockPlacer extends BlockPlacer {
     @Override
     public void place(LevelAccessor world, BlockPos pos, BlockState state, Random random) {
         HugePlantBlock block = (HugePlantBlock) state.getBlock();
-        block.placeAt(world, pos, Constants.BlockFlags.BLOCK_UPDATE);
+        block.placeAt(world, pos, Block.UPDATE_CLIENTS);
     }
 
     @Override
