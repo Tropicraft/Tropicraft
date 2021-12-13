@@ -118,11 +118,11 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             noDrops(TropicraftEntities.SEA_TURTLE_EGG);
             noDrops(TropicraftEntities.TROPI_BEE);
             noDrops(TropicraftEntities.COWKTAIL);
-            dropItemsWithEnchantBonus(TropicraftEntities.MAN_O_WAR, Items.SLIME_BALL, UniformGenerator.between(3, 4));
+            dropItemsWithEnchantBonus(TropicraftEntities.MAN_O_WAR, Items.SLIME_BALL, UniformGenerator.between(1, 2));
             noDrops(TropicraftEntities.TAPIR);
             noDrops(TropicraftEntities.JAGUAR);
-            dropItemsWithEnchantBonus(TropicraftEntities.BROWN_BASILISK_LIZARD, TropicraftItems.SCALE, ConstantValue.exactly(3));
-            dropItemsWithEnchantBonus(TropicraftEntities.GREEN_BASILISK_LIZARD, TropicraftItems.SCALE, ConstantValue.exactly(3));
+            dropItemsWithEnchantBonus(TropicraftEntities.BROWN_BASILISK_LIZARD, TropicraftItems.SCALE, UniformGenerator.between(1,2));
+            dropItemsWithEnchantBonus(TropicraftEntities.GREEN_BASILISK_LIZARD, TropicraftItems.SCALE, UniformGenerator.between(1,2));
             dropItemsWithEnchantBonus(TropicraftEntities.HUMMINGBIRD, Items.FEATHER, UniformGenerator.between(1, 2));
             noDrops(TropicraftEntities.FIDDLER_CRAB);
             noDrops(TropicraftEntities.SPIDER_MONKEY);

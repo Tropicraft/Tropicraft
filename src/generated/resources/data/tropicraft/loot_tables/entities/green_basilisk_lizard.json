@@ -2,7 +2,11 @@
   "type": "minecraft:entity",
   "pools": [
     {
-      "rolls": 3.0,
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 1.0,
+        "max": 2.0
+      },
       "bonus_rolls": 0.0,
       "entries": [
         {
