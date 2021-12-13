@@ -121,6 +121,8 @@ public class TropicraftTags {
         public static final Named<Item> FRUITS = modTag("fruits");
         public static final Named<Item> MEATS = modTag("meats");
 
+        public static final Named<Item> MUSIC_DISCS = modTag("music_discs");
+
         static Named<Item> tag(String modid, String name) {
             return tag(ItemTags::bind, modid, name);
         }
