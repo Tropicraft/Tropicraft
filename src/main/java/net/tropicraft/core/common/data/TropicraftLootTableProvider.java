@@ -75,11 +75,14 @@ public class TropicraftLootTableProvider extends LootTableProvider {
                                     EntityPredicate.Builder.entity().of(EntityTypeTags.SKELETONS))))));
             dropItemsWithEnchantBonus(TropicraftEntities.IGUANA, TropicraftItems.IGUANA_LEATHER, TropicraftItems.SCALE,
                     ConstantValue.exactly(3));
-            noDrops(TropicraftEntities.TROPI_SKELLY);
+            this.add(TropicraftEntities.TROPI_SKELLY.get(),
+                    LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
+                            .add(LootItem.lootTableItem(Items.BONE).apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
+                                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
             dropItemsWithEnchantBonus(TropicraftEntities.EIH, TropicraftBlocks.CHUNK.get().asItem(), ConstantValue.exactly(3));
             dropItem(TropicraftEntities.SEA_TURTLE, TropicraftItems.TURTLE_SHELL);
             dropItemsWithEnchantBonus(TropicraftEntities.MARLIN, TropicraftItems.FRESH_MARLIN, UniformGenerator.between(1, 3));
-            noDrops(TropicraftEntities.FAILGULL);
+            dropItemsWithEnchantBonus(TropicraftEntities.FAILGULL, Items.FEATHER, UniformGenerator.between(1, 2));
             dropItemsWithEnchantBonus(TropicraftEntities.DOLPHIN, TropicraftItems.TROPICAL_FERTILIZER,
                     UniformGenerator.between(1, 3));
             noDrops(TropicraftEntities.SEAHORSE);
@@ -100,7 +103,14 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             dropItem(TropicraftEntities.PIRANHA, TropicraftItems.RAW_FISH);
             dropItem(TropicraftEntities.TROPICAL_FISH, TropicraftItems.RAW_FISH);
             dropItem(TropicraftEntities.EAGLE_RAY, TropicraftItems.RAW_RAY);
-            noDrops(TropicraftEntities.TROPI_SPIDER);
+            this.add(TropicraftEntities.TROPI_SPIDER.get(),
+                    LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(LootItem.lootTableItem(Items.STRING)
+                            .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
+                            .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))))
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(LootItem.lootTableItem(Items.SPIDER_EYE)
+                            .apply(SetItemCountFunction.setCount(UniformGenerator.between(-1.0F, 1.0F)))
+                            .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))
+                            .when(LootItemKilledByPlayerCondition.killedByPlayer())));
             noDrops(TropicraftEntities.TROPI_SPIDER_EGG);
             noDrops(TropicraftEntities.ASHEN);
             dropItemsWithEnchantBonus(TropicraftEntities.HAMMERHEAD, TropicraftItems.TROPICAL_FERTILIZER,
@@ -109,6 +119,15 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             noDrops(TropicraftEntities.TROPI_BEE);
             noDrops(TropicraftEntities.COWKTAIL);
             dropItemsWithEnchantBonus(TropicraftEntities.MAN_O_WAR, Items.SLIME_BALL, UniformGenerator.between(3, 4));
+            noDrops(TropicraftEntities.TAPIR);
+            noDrops(TropicraftEntities.JAGUAR);
+            dropItemsWithEnchantBonus(TropicraftEntities.BROWN_BASILISK_LIZARD, TropicraftItems.SCALE, ConstantValue.exactly(3));
+            dropItemsWithEnchantBonus(TropicraftEntities.GREEN_BASILISK_LIZARD, TropicraftItems.SCALE, ConstantValue.exactly(3));
+            dropItemsWithEnchantBonus(TropicraftEntities.HUMMINGBIRD, Items.FEATHER, UniformGenerator.between(1, 2));
+            noDrops(TropicraftEntities.FIDDLER_CRAB);
+            noDrops(TropicraftEntities.SPIDER_MONKEY);
+            noDrops(TropicraftEntities.WHITE_LIPPED_PECCARY);
+            noDrops(TropicraftEntities.CUBERA);
         }
 
         // Drops a single item, not affected by enchantment, and several other items
