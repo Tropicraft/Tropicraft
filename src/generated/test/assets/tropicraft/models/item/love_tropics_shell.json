@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "tropicraft:item/ltshell",
-    "layer1": "tropicraft:item/ltshell_inverted"
-  }
-}

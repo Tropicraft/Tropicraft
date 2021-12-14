@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/door_bottom",
-  "textures": {
-    "bottom": "tropicraft:block/mahogany_door_bottom",
-    "top": "tropicraft:block/mahogany_door_top"
-  }
-}

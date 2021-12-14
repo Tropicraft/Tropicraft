@@ -1,6 +1,0 @@
-{
-  "parent": "tropicraft:block/boardwalk/tall_connection",
-  "textures": {
-    "planks": "tropicraft:block/mangrove_planks"
-  }
-}

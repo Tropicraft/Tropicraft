@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/cross",
-  "textures": {
-    "cross": "tropicraft:block/small_golden_leather_fern"
-  }
-}

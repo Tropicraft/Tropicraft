@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": {
-    "tag": "forge:ores/eudialyte"
-  },
-  "result": "tropicraft:eudialyte_gem",
-  "experience": 0.5,
-  "cookingtime": 100
-}

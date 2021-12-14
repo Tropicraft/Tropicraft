@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/potted_lily_of_the_valley",
-  "textures": {
-    "flowerpot": "tropicraft:block/bamboo_flower_pot",
-    "dirt": "minecraft:block/dirt",
-    "particle": "tropicraft:block/bamboo_side"
-  }
-}

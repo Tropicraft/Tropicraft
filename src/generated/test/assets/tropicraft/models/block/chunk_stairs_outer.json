@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/outer_stairs",
-  "textures": {
-    "side": "tropicraft:block/chunk",
-    "bottom": "tropicraft:block/chunk",
-    "top": "tropicraft:block/chunk"
-  }
-}

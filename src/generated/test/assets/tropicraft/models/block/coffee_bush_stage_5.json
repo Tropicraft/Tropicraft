@@ -1,6 +1,0 @@
-{
-  "parent": "tropicraft:block/coffee_bush",
-  "textures": {
-    "bush": "tropicraft:block/coffee_bush_stage5"
-  }
-}

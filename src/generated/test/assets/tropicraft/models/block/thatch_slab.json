@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab",
-  "textures": {
-    "side": "tropicraft:block/thatch_side",
-    "bottom": "tropicraft:block/thatch_end",
-    "top": "tropicraft:block/thatch_end"
-  }
-}

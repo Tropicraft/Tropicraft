@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smoking",
-  "ingredient": {
-    "item": "tropicraft:fresh_marlin"
-  },
-  "result": "tropicraft:seared_marlin",
-  "experience": 0.15,
-  "cookingtime": 100
-}

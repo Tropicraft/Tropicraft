@@ -1,9 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    "#tropicraft:wooden_stairs",
-    "tropicraft:bamboo_stairs",
-    "tropicraft:chunk_stairs",
-    "tropicraft:thatch_stairs"
-  ]
-}

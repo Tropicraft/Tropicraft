@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "tropicraft:item/man_o_war_spawn_egg"
-  }
-}

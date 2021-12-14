@@ -1,7 +1,0 @@
-{
-  "config": {
-    "start_pool": "tropicraft:home_tree/starts",
-    "size": 7
-  },
-  "type": "tropicraft:home_tree"
-}

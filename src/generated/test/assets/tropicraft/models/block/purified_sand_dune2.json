@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/cube_top",
-  "textures": {
-    "side": "tropicraft:block/purified_sand",
-    "top": "tropicraft:block/purified_sand_dune2"
-  }
-}

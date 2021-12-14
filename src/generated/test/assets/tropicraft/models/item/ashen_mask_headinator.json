@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "tropicraft:item/ashen_mask_headinator"
-  }
-}

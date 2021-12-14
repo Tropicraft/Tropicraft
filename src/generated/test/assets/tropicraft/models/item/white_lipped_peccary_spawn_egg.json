@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "tropicraft:item/white_lipped_peccary_spawn_egg"
-  }
-}

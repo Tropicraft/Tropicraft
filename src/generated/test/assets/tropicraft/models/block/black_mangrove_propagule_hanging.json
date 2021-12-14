@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/cross",
-  "textures": {
-    "cross": "tropicraft:block/black_mangrove_propagule"
-  }
-}
