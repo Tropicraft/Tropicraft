@@ -16,6 +16,7 @@ import net.tropicraft.Constants;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.item.AshenMaskItem;
+import net.tropicraft.core.common.item.TropicalMusicDiscItem;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import java.util.Arrays;
@@ -78,6 +79,11 @@ public class TropicraftItemTagsProvider extends ItemTagsProvider {
         addItemsToTag(FRUITS, TropicraftItems.GRAPEFRUIT, TropicraftItems.LEMON, TropicraftItems.LIME, TropicraftItems.ORANGE);
 
         addItemsToTag(MEATS, Items.BEEF, Items.PORKCHOP, Items.CHICKEN, Items.RABBIT, Items.MUTTON);
+
+        for (RegistryObject<TropicalMusicDiscItem> item : TropicraftItems.MUSIC_DISCS.values()) {
+            addItemsToTag(MUSIC_DISCS, item);
+        }
+        appendToTag(ItemTags.MUSIC_DISCS, MUSIC_DISCS);
 
         // Copy block tags
         copy(TropicraftTags.Blocks.SAND, SAND);

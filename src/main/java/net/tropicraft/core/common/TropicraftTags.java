@@ -111,6 +111,8 @@ public class TropicraftTags {
         public static final INamedTag<Item> FRUITS = modTag("fruits");
         public static final INamedTag<Item> MEATS = modTag("meats");
 
+        public static final INamedTag<Item> MUSIC_DISCS = modTag("music_discs");
+
         static INamedTag<Item> tag(String modid, String name) {
             return tag(ItemTags::makeWrapperTag, modid, name);
         }
