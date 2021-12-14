@@ -14,7 +14,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.IWorldGenerationReader;
 import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
 import net.minecraft.world.gen.feature.TreeFeature;
@@ -67,13 +66,11 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
 
         boolean placeDirtOnOrigin = true;
         if (this.canGenerateRaised) {
-            // If we're allowed to, we can raise the mangrove up a little depending on the water depth
-            int floorY = world.getHeight(Heightmap.Type.OCEAN_FLOOR, origin).getY();
-            int surfaceY = world.getHeight(Heightmap.Type.WORLD_SURFACE, origin).getY();
-            int waterDepth = surfaceY - floorY; // Water depth is the distance from the surface to the floor
+            int waterDepth = getWaterDepthAt(world, origin, 3);
 
             // If we're in 1 or 2 deep water or land, we have a 1/2 chance of making the mangrove raised from the surface of the water
             if (waterDepth <= 2 && random.nextInt(2) == 0) {
+                int surfaceY = origin.getY() + waterDepth;
                 origin = new BlockPos(origin.getX(), surfaceY + 1, origin.getZ());
                 placeDirtOnOrigin = false;
             }
@@ -103,6 +100,21 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         this.growBranches(world, random, height, origin, logs, bounds, config, leafNodes);
 
         return leafNodes;
+    }
+
+    private int getWaterDepthAt(IWorldGenerationReader world, BlockPos origin, int maxDepth) {
+        BlockPos.Mutable pos = origin.toMutable();
+
+        int depth = 0;
+        while (depth <= maxDepth) {
+            pos.setY(origin.getY() + depth);
+            if (!isWaterAt(world, pos)) {
+                break;
+            }
+            depth++;
+        }
+
+        return depth;
     }
 
     private void growBranches(IWorldGenerationReader world, Random random, int height, BlockPos origin, Set<BlockPos> logs, MutableBoundingBox bounds, BaseTreeFeatureConfig config, List<FoliagePlacer.Foliage> leafNodes) {
