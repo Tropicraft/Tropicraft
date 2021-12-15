@@ -24,7 +24,7 @@ boolean dev = System.getenv('RELEASE') == null || System.getenv('RELEASE').equal
 
 ext.buildnumber = 0
 
-if (System.getenv('GITHUB_RUN_NUMBER') {
+if (System.getenv('GITHUB_RUN_NUMBER')) {
     project.buildnumber = System.getenv('GITHUB_RUN_NUMBER')
     version = "${mod_version}-${release_type}+${buildnumber}-gha"
 } else {
