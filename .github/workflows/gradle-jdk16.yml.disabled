@@ -1,0 +1,27 @@
+name: Java CI with Gradle (OpenJDK 16)
+
+on: [push]
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up JDK 16
+      uses: actions/setup-java@v2
+      with:
+        java-version: '16'
+        distribution: 'temurin'
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+
+    - name: Build with Gradle
+      run: ./gradlew build
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2.2.3
+      with:
+          name: jdk16
+          path: build/libs/**/*.jar
