@@ -1,13 +1,19 @@
 package net.tropicraft.core.common.dimension;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
+import net.minecraft.network.protocol.game.ClientboundLevelEventPacket;
+import net.minecraft.network.protocol.game.ClientboundPlayerAbilitiesPacket;
+import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.players.PlayerList;
 import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.biome.Biome;
@@ -17,6 +23,7 @@ import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
+import net.minecraft.world.level.portal.PortalInfo;
 import net.minecraft.world.level.storage.LevelResource;
 import net.minecraft.world.level.storage.LevelStorageSource;
 import net.minecraftforge.common.ForgeHooks;
@@ -117,6 +124,14 @@ public class TropicraftDimension {
         }
     }
 
+    public static void teleportPlayerWithPortal(ServerPlayer player, ServerLevel currentWorld, ResourceKey<Level> dimensionType) {
+        if (currentWorld.dimension() == dimensionType) {
+            teleportPlayerPortal(player, currentWorld, Level.OVERWORLD);
+        } else {
+            teleportPlayerPortal(player, currentWorld, dimensionType);
+        }
+    }
+
     /**
      * Finds the top Y position relative to the dimension the player is teleporting to and places
      * the entity at that position. Avoids portal generation by using player.teleport() instead of
@@ -140,6 +155,29 @@ public class TropicraftDimension {
         LevelChunk chunk = world.getChunk(x >> 4, z >> 4);
         int topY = chunk.getHeight(Heightmap.Types.WORLD_SURFACE, x & 15, z & 15);
         player.teleportTo(world, x + 0.5, topY + 1.0, z + 0.5, player.getYRot(), player.getXRot());
+
+        BasicEventHooks.firePlayerChangedDimensionEvent(player, destination, destination);
+    }
+
+    public static void teleportPlayerPortal(ServerPlayer player, ServerLevel currentWorld, ResourceKey<Level> destination) {
+        ServerLevel world = player.server.getLevel(destination);
+        if (world == null) {
+            LOGGER.error("Cannot teleport player to dimension {} as it does not exist!", destination.location());
+            return;
+        }
+        TeleporterTropics teleporter = new TeleporterTropics(world);
+
+        if (!ForgeHooks.onTravelToDimension(player, destination)) return;
+
+        int x = Mth.floor(player.getX());
+        int z = Mth.floor(player.getZ());
+
+        LevelChunk chunk = world.getChunk(x >> 4, z >> 4);
+        int topY = chunk.getHeight(Heightmap.Types.WORLD_SURFACE, x & 15, z & 15);
+
+        player.unRide();
+        player.changeDimension(world, teleporter);
+        //player.teleportTo(world, x + 0.5, topY + 1.0, z + 0.5, player.getYRot(), player.getXRot());
 
         BasicEventHooks.firePlayerChangedDimensionEvent(player, destination, destination);
     }

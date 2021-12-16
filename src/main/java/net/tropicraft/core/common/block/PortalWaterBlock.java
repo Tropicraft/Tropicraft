@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.block;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.entity.Entity;
@@ -23,8 +24,8 @@ public class PortalWaterBlock extends LiquidBlock {
     @Override
     public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
         super.entityInside(state, worldIn, pos, entityIn);
-        if (!worldIn.isClientSide && entityIn instanceof ServerPlayer && entityIn.getPortalWaitTime() <= 0 && !entityIn.isPassenger() && !entityIn.isPassenger() && entityIn.canChangeDimensions()) {
-            TropicraftDimension.teleportPlayer((ServerPlayer) entityIn, TropicraftDimension.WORLD);
+        if (!worldIn.isClientSide && entityIn instanceof ServerPlayer && entityIn.getPortalWaitTime() <= 1 && !entityIn.isPassenger() && entityIn.canChangeDimensions()) {
+            TropicraftDimension.teleportPlayerWithPortal((ServerPlayer) entityIn,(ServerLevel) worldIn, TropicraftDimension.WORLD);
         }
     }
 
