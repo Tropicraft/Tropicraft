@@ -4,21 +4,17 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -30,13 +26,9 @@ import net.tropicraft.core.common.Foods;
 import net.tropicraft.core.common.block.TikiTorchBlock.TorchSection;
 import net.tropicraft.core.common.block.huge_plant.HugePlantBlock;
 import net.tropicraft.core.common.block.jigarbov.JigarbovTorchType;
-import net.tropicraft.core.common.block.tileentity.AirCompressorTileEntity;
-import net.tropicraft.core.common.block.tileentity.BambooChestTileEntity;
-import net.tropicraft.core.common.block.tileentity.DrinkMixerTileEntity;
 import net.tropicraft.core.common.block.tileentity.TropicraftTileEntityTypes;
 
 import java.util.*;
-import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -48,6 +40,9 @@ public class TropicraftBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Constants.MODID);
     public static final DeferredRegister<Item> BLOCKITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Constants.MODID);
     
+    public static final RegistryObject<TeleportPortalWaterBlock> TELEPORT_PORTAL_WATER = registerNoItem(
+            "teleport_portal_water", () -> new TeleportPortalWaterBlock(Block.Properties.of(Material.WATER).noDrops()));
+
     public static final RegistryObject<PortalWaterBlock> PORTAL_WATER = registerNoItem(
             "portal_water", () -> new PortalWaterBlock(Block.Properties.of(Material.WATER).noDrops()));
 

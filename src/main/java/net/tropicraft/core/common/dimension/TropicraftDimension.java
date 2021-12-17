@@ -26,6 +26,7 @@ import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.portal.PortalInfo;
 import net.minecraft.world.level.storage.LevelResource;
 import net.minecraft.world.level.storage.LevelStorageSource;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -124,11 +125,11 @@ public class TropicraftDimension {
         }
     }
 
-    public static void teleportPlayerWithPortal(ServerPlayer player, ServerLevel currentWorld, ResourceKey<Level> dimensionType) {
-        if (currentWorld.dimension() == dimensionType) {
-            teleportPlayerPortal(player, currentWorld, Level.OVERWORLD);
+    public static void teleportPlayerWithPortal(ServerPlayer player, ResourceKey<Level> dimensionType) {
+        if (player.level.dimension() == dimensionType) {
+            teleportPlayerPortal(player, Level.OVERWORLD);
         } else {
-            teleportPlayerPortal(player, currentWorld, dimensionType);
+            teleportPlayerPortal(player, dimensionType);
         }
     }
 
@@ -159,27 +160,31 @@ public class TropicraftDimension {
         BasicEventHooks.firePlayerChangedDimensionEvent(player, destination, destination);
     }
 
-    public static void teleportPlayerPortal(ServerPlayer player, ServerLevel currentWorld, ResourceKey<Level> destination) {
-        ServerLevel world = player.server.getLevel(destination);
-        if (world == null) {
+    public static void teleportPlayerPortal(ServerPlayer player, ResourceKey<Level> destination) {
+        ServerLevel destlevel = player.server.getLevel(destination);
+        ServerLevel currentLevel = player.getLevel();
+
+        if (destlevel == null) {
             LOGGER.error("Cannot teleport player to dimension {} as it does not exist!", destination.location());
             return;
         }
-        TeleporterTropics teleporter = new TeleporterTropics(world);
+        TeleporterTropics teleporter = new TeleporterTropics(destlevel);
 
         if (!ForgeHooks.onTravelToDimension(player, destination)) return;
 
         int x = Mth.floor(player.getX());
         int z = Mth.floor(player.getZ());
 
-        LevelChunk chunk = world.getChunk(x >> 4, z >> 4);
+        LevelChunk chunk = destlevel.getChunk(x >> 4, z >> 4);
         int topY = chunk.getHeight(Heightmap.Types.WORLD_SURFACE, x & 15, z & 15);
 
         player.unRide();
-        player.changeDimension(world, teleporter);
-        //player.teleportTo(world, x + 0.5, topY + 1.0, z + 0.5, player.getYRot(), player.getXRot());
+        player.changeDimension(destlevel, teleporter);
+        //player.moveTo(playerPos.x, playerPos.y, playerPos.z, player.getYRot(), 0.0F);
+        //player.moveTo(playerPos.x, playerPos.y, playerPos.z, player.getYRot(), 0.0F);
 
-        BasicEventHooks.firePlayerChangedDimensionEvent(player, destination, destination);
+        //player.teleportTo(world, x + 0.5, topY + 1.0, z + 0.5, player.getYRot(), player.getXRot());
+        //BasicEventHooks.firePlayerChangedDimensionEvent(player, destination, destination);
     }
 
     // hack to get the correct sea level given a world: the vanilla IWorldReader.getSeaLevel() is deprecated and always returns 63 despite the chunk generator

@@ -28,7 +28,7 @@ public class Drink {
         @Override
         public void onDrink(Player player) {
             if (!player.level.isClientSide && isSunset(player.level) && player.getVehicle() instanceof ChairEntity) {
-                TropicraftDimension.teleportPlayerWithPortal((ServerPlayer) player, (ServerLevel) player.level, TropicraftDimension.WORLD);
+                TropicraftDimension.teleportPlayerWithPortal((ServerPlayer) player, TropicraftDimension.WORLD);
             }
         }
 
