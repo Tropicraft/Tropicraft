@@ -54,6 +54,7 @@ import net.tropicraft.core.common.command.CommandTropicsTeleport;
 import net.tropicraft.core.common.command.MapBiomesCommand;
 import net.tropicraft.core.common.data.*;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
+import net.tropicraft.core.common.dimension.TropicraftPoiTypes;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomeProvider;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
 import net.tropicraft.core.common.dimension.carver.TropicraftCarvers;
@@ -118,6 +119,7 @@ public class Tropicraft {
         // Registry objects
         TropicraftBlocks.BLOCKS.register(modBus);
         TropicraftBlocks.BLOCKITEMS.register(modBus);
+        TropicraftPoiTypes.POI_TYPE.register(modBus);
         TropicraftItems.ITEMS.register(modBus);
         ScubaGogglesItem.ATTRIBUTES.register(modBus);
         MixerRecipes.addMixerRecipes();
