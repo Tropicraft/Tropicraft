@@ -1,59 +1,33 @@
 
 package net.tropicraft.core.common.dimension;
 
-import com.mojang.math.Vector3d;
-import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
-import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.longs.LongIterator;
-import it.unimi.dsi.fastutil.objects.Object2LongMap;
-import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
-import net.minecraft.BlockUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Vec3i;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ColumnPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.TicketType;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.village.poi.PoiManager;
 import net.minecraft.world.entity.ai.village.poi.PoiRecord;
-import net.minecraft.world.entity.ai.village.poi.PoiType;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.pattern.BlockPattern;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.portal.PortalForcer;
 import net.minecraft.world.level.portal.PortalInfo;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.ITeleporter;
-import net.tropicraft.Constants;
-import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.block.TikiTorchBlock;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.block.tileentity.BambooChestTileEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.util.Supplier;
-import org.spongepowered.asm.logging.ILogger;
 
 import javax.annotation.Nullable;
-import java.awt.*;
-import java.util.*;
 import java.util.List;
+import java.util.Random;
 import java.util.function.Function;
-import java.util.stream.Stream;
-
 
 public class TeleporterTropics implements ITeleporter {
 
@@ -80,12 +54,12 @@ public class TeleporterTropics implements ITeleporter {
             createPortal(entity);
 
             long finishTime = System.currentTimeMillis();
-            System.out.printf("It took %f seconds for TeleporterTropics.placeInPortal to complete\n", (finishTime - startTime) / 1000.0F);
+            LOGGER.info(String.format("[Tropicraft Portal Time]: It took %f seconds for TeleporterTropics.placeInPortal to complete", (finishTime - startTime) / 1000.0F));
 
             return findPortalInfoPoi(entity, destWorld);
         } else {
             long finishTime = System.currentTimeMillis();
-            System.out.printf("It took %f seconds for TeleporterTropics.placeInPortal to complete\n", (finishTime - startTime) / 1000.0F);
+            LOGGER.info(String.format("[Tropicraft Portal Time]: It took %f seconds for TeleporterTropics.placeInPortal to complete", (finishTime - startTime) / 1000.0F));
 
             return portalInfo;
         }
@@ -130,7 +104,7 @@ public class TeleporterTropics implements ITeleporter {
                         pos1 = pos1.below();
                     }
 
-                    LOGGER.info("[Tropicraft Portal Info]: Found a portal close to the player!");
+                    LOGGER.info("[Tropicraft Portal]: Found a portal close to the player!");
                     foundClosePortal = true;
 
                     pos1.above();
@@ -220,7 +194,7 @@ public class TeleporterTropics implements ITeleporter {
             //               }
             //          }
 
-            LOGGER.info(String.format("[Tropicraft Portal]: Portal Information given to the player [x: %f, y: %f, z: %f]", newLocX, newLocY + 3, newLocZ));
+            LOGGER.debug(String.format("[Tropicraft Portal]: Portal Information given to the player [x: %f, y: %f, z: %f]", newLocX, newLocY + 3, newLocZ));
             return new PortalInfo(new Vec3(newLocX, newLocY + 3, newLocZ), Vec3.ZERO, entity.getYRot(), entity.getXRot());
         }
         else{
@@ -375,7 +349,7 @@ public class TeleporterTropics implements ITeleporter {
 //    }
 
     public boolean createPortal(Entity entity) {
-        LOGGER.info("[Tropicraft Portal]: Start make portal");
+        LOGGER.debug("[Tropicraft Portal]: Start make portal");
         int searchArea = 16;
         double closestSpot = -1D;
         int entityX = Mth.floor(entity.getX());
@@ -492,11 +466,11 @@ public class TeleporterTropics implements ITeleporter {
         }
 
         world.getPoiManager().add(new BlockPos(worldSpawnX, worldSpawnY + 1, worldSpawnZ), TropicraftPoiTypes.TROPICRAFT_PORTAL.get());
-        LOGGER.info(String.format("[Tropicraft Portal]: Setting Poi postion at [X: %d , Y: %d , Z: %d ]", worldSpawnX, (worldSpawnY + 1), worldSpawnZ));
+        LOGGER.debug(String.format("[Tropicraft Portal]: Setting Poi postion at [X: %d , Y: %d , Z: %d ]", worldSpawnX, (worldSpawnY + 1), worldSpawnZ));
 
         buildTeleporterAt(worldSpawnX, worldSpawnY + 1, worldSpawnZ, entity);
 
-        LOGGER.info("[Tropicraft Portal]: End makePortal");
+        LOGGER.debug("[Tropicraft Portal]: End makePortal");
         return true;
     }
 
@@ -559,7 +533,7 @@ public class TeleporterTropics implements ITeleporter {
     }
 
     public void buildTeleporterAt(int x, int y, int z, Entity entity) {
-        LOGGER.info("[Tropicraft Portal]: Start buildTeleporterAt");
+        LOGGER.debug("[Tropicraft Portal]: Start buildTeleporterAt");
         y = Math.max(y, 9);
 
         for (int yOffset = 4; yOffset >= -7; yOffset--) {
