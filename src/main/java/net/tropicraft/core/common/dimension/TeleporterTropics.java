@@ -65,32 +65,6 @@ public class TeleporterTropics implements ITeleporter {
     private final ServerLevel world;
     private final Random random;
 
-    /**
-     * Stores successful portal placement locations for rapid lookup.
-     */
-
-    private static final Long2ObjectMap<PortalPosition> destinationCoordinateCache = new Long2ObjectOpenHashMap<>(4096);
-    private final Object2LongMap<ColumnPos> columnPosCache = new Object2LongOpenHashMap<>();
-
-    static class PortalPosition {
-        final ResourceKey<Level> key;
-        final BlockPos pos;
-        long lastUpdateTime;
-
-        PortalPosition(final BlockPos pos, final long lastUpdateTime, ResourceKey<Level> key) {
-            this.key = key;
-            this.pos = pos;
-            this.lastUpdateTime = lastUpdateTime;
-        }
-    }
-
-    /**
-     * A list of valid keys for the destinationCoordainteCache. These are based on the X & Z of the players initial
-     * location.
-     */
-
-    private final List<?> destinationCoordinateKeys = new ArrayList<>();
-
     public TeleporterTropics(ServerLevel world) {
         this.world = world;
         this.random = new Random(world.getSeed());
@@ -122,81 +96,57 @@ public class TeleporterTropics implements ITeleporter {
         int foundX = 0;
         int foundY = 0;
         int foundZ = 0;
-        BlockPos blockpos = BlockPos.ZERO;
-        boolean notInCache = true;
 
         List<PoiRecord> poiRecords;
         boolean foundClosePortal = false;
 
-        long j1 = ChunkPos.asLong(entity.getBlockX(), entity.getBlockZ());
+        PoiManager poimanager = this.world.getPoiManager();
+        poimanager.ensureLoadedAndValid(this.world, entity.getOnPos(), searchArea);
 
-        if (destinationCoordinateCache.containsKey(j1) && destinationCoordinateCache.get(j1).key == destWorld.dimension()) {
-            LOGGER.info("[Tropicraft Portal Info]: A already stored portal value has been found at the chunk position");
-            PortalPosition portalposition = (PortalPosition) destinationCoordinateCache.get(j1);
+        poiRecords = poimanager.getInSquare((p_77654_) -> p_77654_ == TropicraftPoiTypes.TROPICRAFT_PORTAL.get(), entity.getOnPos(), searchArea, PoiManager.Occupancy.ANY).toList();
 
-            foundClosePortal = true;
-            blockpos = portalposition.pos;
-            portalposition.lastUpdateTime = world.getGameTime();
-            notInCache = false;
-
-            foundX = blockpos.getX();
-            foundY = blockpos.getY();
-            foundZ = blockpos.getZ();
-
+        if (poiRecords.isEmpty()) {
+            return null;
         }
-        else{
-            PoiManager poimanager = this.world.getPoiManager();
-            poimanager.ensureLoadedAndValid(this.world, entity.getOnPos(), searchArea);
 
-            poiRecords = poimanager.getInSquare((p_77654_) -> p_77654_ == TropicraftPoiTypes.TROPICRAFT_PORTAL.get(), entity.getOnPos(), searchArea, PoiManager.Occupancy.ANY).toList();
+        for (PoiRecord poiRecord : poiRecords) {
+            BlockPos portalPoi = poiRecord.getPos();
 
-            if (poiRecords.isEmpty()) {
-                return null;
-            }
+            boolean fl1 = world.getBlockState(portalPoi.north()).getBlock() == PORTAL_BLOCK
+                    && world.getBlockState(portalPoi.south()).getBlock() == PORTAL_BLOCK
+                    && world.getBlockState(portalPoi.east()).getBlock() == PORTAL_BLOCK
+                    && world.getBlockState(portalPoi.west()).getBlock() == PORTAL_BLOCK
+                    && world.getBlockState(portalPoi.below()).getBlock() == PORTAL_BLOCK;
 
-            for (PoiRecord poiRecord : poiRecords) {
-                BlockPos portalPoi = poiRecord.getPos();
-
-                boolean fl1 = world.getBlockState(portalPoi.north()).getBlock() == PORTAL_BLOCK
-                        && world.getBlockState(portalPoi.south()).getBlock() == PORTAL_BLOCK
-                        && world.getBlockState(portalPoi.east()).getBlock() == PORTAL_BLOCK
-                        && world.getBlockState(portalPoi.west()).getBlock() == PORTAL_BLOCK
-                        && world.getBlockState(portalPoi.below()).getBlock() == PORTAL_BLOCK;
-
-                if (fl1) {
-                    BlockPos pos1 = portalPoi;
-                    if (world.getBlockState(pos1).getBlock() == PORTAL_BLOCK) //TODO: Change the portal water to a custom water block that can be checked for !!!! PORTAL_BLOCK
+            if (fl1) {
+                BlockPos pos1 = portalPoi;
+                if (world.getBlockState(pos1).getBlock() == PORTAL_BLOCK) //TODO: Change the portal water to a custom water block that can be checked for !!!! PORTAL_BLOCK
+                {
+                    int y = portalPoi.getY();
+                    pos1 = pos1.below();
+                    while (world.getBlockState(pos1).getBlock() == PORTAL_BLOCK) //TODO: Change the portal water to a custom water block that can be checked for
                     {
-                        int y = portalPoi.getY();
+                        --y;
                         pos1 = pos1.below();
-                        while (world.getBlockState(pos1).getBlock() == PORTAL_BLOCK) //TODO: Change the portal water to a custom water block that can be checked for
-                        {
-                            --y;
-                            pos1 = pos1.below();
-                        }
-
-                        LOGGER.info("[Tropicraft Portal Info]: Found a portal close to the player!");
-                        foundClosePortal = true;
-
-                        pos1.above();
-
-                        blockpos = new BlockPos(pos1.getX(), y, pos1.getZ());
-
-                        foundX = pos1.getX();
-                        foundY = y;
-                        foundZ = pos1.getZ();
-
-                        LOGGER.info(String.format("[Tropicraft Portal]: Current block Pos Values that was found using poi finder [x: %d, y: %d, z: %d]", foundX, foundY, foundZ));
-                        break;
                     }
+
+                    LOGGER.info("[Tropicraft Portal Info]: Found a portal close to the player!");
+                    foundClosePortal = true;
+
+                    pos1.above();
+
+                    foundX = pos1.getX();
+                    foundY = y;
+                    foundZ = pos1.getZ();
+
+                    LOGGER.info(String.format("[Tropicraft Portal]: Current block Pos Values that was found using poi finder [x: %d, y: %d, z: %d]", foundX, foundY, foundZ));
+                    break;
                 }
             }
         }
 
+
         if (foundClosePortal) {
-            if (notInCache) {
-                destinationCoordinateCache.put(j1, new PortalPosition(blockpos, this.world.getGameTime(), destWorld.dimension()));
-            }
 
             double newLocX = foundX + 0.5D;
             double newLocY = foundY + 0.5D;
@@ -670,46 +620,6 @@ public class TeleporterTropics implements ITeleporter {
         }
 
         LOGGER.info("[Tropicraft Portal]: End buildTeleporterAt");
-    }
-
-    public void tick(long worldTime) {
-        if (worldTime % 100L == 0L) {
-            this.pruneColumnPosCache(worldTime);
-            this.pruneCoordinateCache(worldTime);
-        }
-    }
-
-    private void pruneColumnPosCache(long gameTime) {
-        LongIterator longiterator = columnPosCache.values().iterator();
-
-        while(longiterator.hasNext()) {
-            long i = longiterator.nextLong();
-            if (i <= gameTime) {
-                longiterator.remove();
-            }
-        }
-    }
-
-    private void pruneCoordinateCache(long gameTime) {
-        long i = gameTime - 300L;
-        Iterator iterator = this.destinationCoordinateCache.entrySet().iterator();
-
-        while(iterator.hasNext()) {
-            Map.Entry<ColumnPos, PortalPosition> entry = (Map.Entry)iterator.next();
-            PortalPosition position = entry.getValue();
-            if (position.lastUpdateTime < i) {
-                ColumnPos columnpos = entry.getKey();
-                Logger logger = LOGGER;
-                Supplier[] asupplier = new Supplier[2];
-                DimensionType dimension = this.world.dimensionType();
-                asupplier[0] = () -> dimension;
-                asupplier[1] = () -> columnpos;
-                logger.debug("Removing tropics portal ticket for {}:{}", asupplier);
-                this.world.getChunkSource().registerTickingTicket(TicketType.PORTAL, new ChunkPos(position.pos), 3, position.pos);
-                iterator.remove();
-            }
-        }
-
     }
 
     /**
