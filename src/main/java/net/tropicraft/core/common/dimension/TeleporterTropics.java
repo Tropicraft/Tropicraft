@@ -9,6 +9,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.village.poi.PoiManager;
 import net.minecraft.world.entity.ai.village.poi.PoiRecord;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.StairBlock;
@@ -21,12 +23,15 @@ import net.minecraftforge.common.util.ITeleporter;
 import net.tropicraft.core.common.block.TikiTorchBlock;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.block.tileentity.BambooChestTileEntity;
+import net.tropicraft.core.common.block.tileentity.TropicraftTileEntityTypes;
+import net.tropicraft.core.common.item.TropicraftItems;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.function.Function;
 
 public class TeleporterTropics implements ITeleporter {
@@ -94,11 +99,11 @@ public class TeleporterTropics implements ITeleporter {
 
             if (fl1) {
                 BlockPos pos1 = portalPoi;
-                if (world.getBlockState(pos1).getBlock() == PORTAL_BLOCK) //TODO: Change the portal water to a custom water block that can be checked for !!!! PORTAL_BLOCK
+                if (world.getBlockState(pos1).getBlock() == PORTAL_BLOCK)
                 {
                     int y = portalPoi.getY();
                     pos1 = pos1.below();
-                    while (world.getBlockState(pos1).getBlock() == PORTAL_BLOCK) //TODO: Change the portal water to a custom water block that can be checked for
+                    while (world.getBlockState(pos1).getBlock() == PORTAL_BLOCK)
                     {
                         --y;
                         pos1 = pos1.below();
@@ -133,66 +138,65 @@ public class TeleporterTropics implements ITeleporter {
             if (world.getBlockState(pos2.north()).getBlock() == PORTAL_BLOCK) newLocZ -= 0.5D;
             if (world.getBlockState(pos2.south()).getBlock() == PORTAL_BLOCK) newLocZ += 0.5D;
 
-//            //entity.setLocationAndAngles();
-//            int worldSpawnX = Mth.floor(newLocX);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
-//            int worldSpawnZ = Mth.floor(newLocZ);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
-//            int worldSpawnY = foundY + 5; // Move to top of portal
-//
-//            entity.setDeltaMovement(0, 0, 0);
+            //entity.setLocationAndAngles();
+            int worldSpawnX = Mth.floor(newLocX);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
+            int worldSpawnZ = Mth.floor(newLocZ);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
+            int worldSpawnY = foundY + 5; // Move to top of portal
 
-            // If the player is entering the tropics, spawn an Encyclopedia Tropica
-            // in the spawn portal chest (if they don't already have one AND one isn't
-            // already in the chest)
-            //TODO
-//            if (entity instanceof EntityPlayer) {
-//                EntityPlayer player = (EntityPlayer) entity;
-//                if (world.provider instanceof WorldProviderTropicraft) {
-//                    //TODO improve this logical check to an NBT tag or something?
-//                    if (!player.inventory.hasItemStack(new ItemStack(ItemRegistry.encyclopedia))) {
-//                        // Search for the spawn chest
-//                        TileEntityBambooChest chest = null;
-//                        int chestX = MathHelper.floor(newLocX);
-//                        int chestZ = MathHelper.floor(newLocZ);
-//                        chestSearch:
-//                            for (int searchX = -3; searchX < 4; searchX++) {
-//                                for (int searchZ = -3; searchZ < 4; searchZ++) {
-//                                    for (int searchY = -4; searchY < 5; searchY++) {
-//                                        BlockPos chestPos = new BlockPos(chestX + searchX, worldSpawnY + searchY, chestZ + searchZ);
-//                                        if (world.getBlockState(chestPos).getBlock() == BlockRegistry.bambooChest) {
-//                                            chest = (TileEntityBambooChest)world.getTileEntity(chestPos);
-//                                            if (chest != null && chest.isUnbreakable()) {
-//                                                break chestSearch;
-//                                            }
-//                                        }
-//                                    }
-//                                }
-//                            }
-//
-//                        // Make sure chest doesn't have the encyclopedia
-//                        ///TODO
-////                        if (chest!= null && chest.isUnbreakable()) {
-////                            boolean hasEncyclopedia = false;
-////                            for (int inv = 0; inv < chest.getSizeInventory(); inv++) {
-////                                ItemStack stack = chest.getStackInSlot(inv);
-////                                if (stack.getItem() == ItemRegistry.encyclopedia) {
-////                                    hasEncyclopedia = true;
-////                                }
-////                            }
-////
-////                            // Give out a new encyclopedia
-////                            if (!hasEncyclopedia) {
-////                                for (int inv = 0; inv < chest.getSizeInventory(); inv++) {
-////                                    ItemStack stack = chest.getStackInSlot(inv);
-////                                    if (stack.isEmpty()) {
-////                                        chest.setInventorySlotContents(inv, new ItemStack(ItemRegistry.encyclopedia, 1));
-////                                        break;
-////                                    }
-////                                }
-////                            }
-////                        }
-//                   }
-            //               }
-            //          }
+            entity.setDeltaMovement(0, 0, 0);
+
+            //If the player is entering the tropics, spawn an Encyclopedia Tropica
+            //in the spawn portal chest (if they don't already have one AND one isn't
+            //already in the chest)
+            //TODO [1.17] Possible rework this search code if this is too slow, possible add a POI value for the chest separately or something
+            if (entity instanceof Player player) {
+                if (this.world.dimension() == TropicraftDimension.WORLD) {
+                    //TODO improve this logical check to an NBT tag or something?
+                    if (!player.getInventory().contains(new ItemStack(TropicraftItems.NIGEL_STACHE.get()))) { //TODO [1.17]: Replace Nigel Stache item with encyclopedia when reimplemented
+                        // Search for the spawn chest
+                        BambooChestTileEntity chest = null;
+                        int chestX = Mth.floor(newLocX);
+                        int chestZ = Mth.floor(newLocZ);
+                        chestSearch:
+                            for (int searchX = -3; searchX < 4; searchX++) {
+                                for (int searchZ = -3; searchZ < 4; searchZ++) {
+                                    for (int searchY = -4; searchY < 5; searchY++) {
+                                        BlockPos chestPos = new BlockPos(chestX + searchX, worldSpawnY + searchY, chestZ + searchZ);
+                                        if (world.getBlockState(chestPos).getBlock() == TropicraftBlocks.BAMBOO_CHEST.get()) {
+                                            chest = (BambooChestTileEntity)world.getBlockEntity(chestPos);
+                                            if (chest != null && chest.isUnbreakable()) {
+                                                break chestSearch;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                        // Make sure chest doesn't have the encyclopedia
+                        ///TODO
+                        if (chest!= null && chest.isUnbreakable()) {
+                            boolean hasEncyclopedia = false;
+                            for (int inv = 0; inv < chest.getContainerSize(); inv++) {
+                                ItemStack stack = chest.getItem(inv);
+                                if (stack.getItem() == TropicraftItems.NIGEL_STACHE.get()) { //TODO [1.17]: Replace Nigel Stache item with encyclopedia when reimplemented
+                                    hasEncyclopedia = true;
+                                }
+                            }
+
+                            // Give out a new encyclopedia
+                            if (!hasEncyclopedia) {
+                                for (int inv = 0; inv < chest.getContainerSize(); inv++) {
+                                    ItemStack stack = chest.getItem(inv);
+                                    if (stack.isEmpty()) {
+                                        chest.setItem(inv, new ItemStack(TropicraftItems.NIGEL_STACHE.get(), 1));
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                   }
+                           }
+                      }
 
             LOGGER.debug(String.format("[Tropicraft Portal]: Portal Information given to the player [x: %f, y: %f, z: %f]", newLocX, newLocY + 3, newLocZ));
             return new PortalInfo(new Vec3(newLocX, newLocY + 3, newLocZ), Vec3.ZERO, entity.getYRot(), entity.getXRot());
@@ -202,151 +206,6 @@ public class TeleporterTropics implements ITeleporter {
             return null;
         }
     }
-
-//    @Override
-//    public PortalInfo placeInExistingPortal(BlockPos pos, Vec3 motion, Direction directionIn, double posX, double posZ, boolean isPlayer) {
-//        int searchArea = 148;
-//        double closestPortal = -1D;
-//        int foundX = 0;
-//        int foundY = 0;
-//        int foundZ = 0;
-//        int entityX = (int) Math.floor(posX);
-//        int entityZ = (int) Math.floor(posZ);
-//        BlockPos blockpos = BlockPos.ZERO;
-//        boolean notInCache = true;
-//
-//        long j1 = ChunkPos.asLong(entityX, entityZ);
-//
-//        if (destinationCoordinateCache.containsKey(j1)) {
-//            //    System.out.println("Setting closest portal to 0");
-//            PortalPosition portalposition = (PortalPosition)destinationCoordinateCache.get(j1);
-//            closestPortal = 0.0D;
-//            blockpos = portalposition.pos;
-//            portalposition.lastUpdateTime = world.getGameTime();
-//            notInCache = false;
-//        } else {
-//            for (int x = entityX - searchArea; x <= entityX + searchArea; x ++)
-//            {
-//                double distX = x + 0.5D - posX;
-//
-//                for (int z = entityZ - searchArea; z <= entityZ + searchArea; z ++)
-//                {
-//                    double distZ = z + 0.5D - posZ;
-//
-//                    for (int y = world.getHeight() - 1; y >= 0; y--)
-//                    {
-//                        BlockPos pos1 = new BlockPos(x, y, z);
-//                        if (world.getBlockState(pos1).getBlock() == PORTAL_BLOCK)
-//                        {
-//                            pos1 = pos1.below();
-//                            while (world.getBlockState(pos1).getBlock() == PORTAL_BLOCK)
-//                            {
-//                                --y;
-//                                pos1 = pos1.below();
-//                            }
-//
-//                            double distY = y + 0.5D - pos.getY();
-//                            double distance = distX * distX + distY * distY + distZ * distZ;
-//                            if (closestPortal < 0.0D || distance < closestPortal)
-//                            {
-//                                closestPortal = distance;
-//                                foundX = x;
-//                                foundY = y;
-//                                foundZ = z;
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//        //    System.out.println("Setting closest portal to " + closestPortal);
-//
-//        if (closestPortal >= 0.0D)
-//        {
-//            if (notInCache) {
-//                this.destinationCoordinateCache.put(j1, new PortalPosition(blockpos, this.world.getGameTime()));
-//            }
-//
-//            int x = foundX;
-//            int y = foundY;
-//            int z = foundZ;
-//            double newLocX = x + 0.5D;
-//            double newLocY = y + 0.5D;
-//            double newLocZ = z + 0.5D;
-//
-//            BlockPos pos2 = new BlockPos(x, y, z);
-//
-//            if (world.getBlockState(pos2.west()).getBlock() == PORTAL_BLOCK) newLocX -= 0.5D;
-//            if (world.getBlockState(pos2.east()).getBlock() == PORTAL_BLOCK) newLocX += 0.5D;
-//            if (world.getBlockState(pos2.north()).getBlock() == PORTAL_BLOCK) newLocZ -= 0.5D;
-//            if (world.getBlockState(pos2.south()).getBlock() == PORTAL_BLOCK) newLocZ += 0.5D;
-////            entity.setLocationAndAngles();
-////            int worldSpawnX = MathHelper.floor(newLocX);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
-////            int worldSpawnZ = MathHelper.floor(newLocZ);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
-////            int worldSpawnY = foundY + 5; // Move to top of portal
-////
-////            entity.setDeltaMovement(0, 0, 0);
-//
-//            // If the player is entering the tropics, spawn an Encyclopedia Tropica
-//            // in the spawn portal chest (if they don't already have one AND one isn't
-//            // already in the chest)
-//            //TODO
-////            if (entity instanceof EntityPlayer) {
-////                EntityPlayer player = (EntityPlayer) entity;
-////                if (world.provider instanceof WorldProviderTropicraft) {
-////                    //TODO improve this logical check to an NBT tag or something?
-////                    if (!player.inventory.hasItemStack(new ItemStack(ItemRegistry.encyclopedia))) {
-////                        // Search for the spawn chest
-////                        TileEntityBambooChest chest = null;
-////                        int chestX = MathHelper.floor(newLocX);
-////                        int chestZ = MathHelper.floor(newLocZ);
-////                        chestSearch:
-////                            for (int searchX = -3; searchX < 4; searchX++) {
-////                                for (int searchZ = -3; searchZ < 4; searchZ++) {
-////                                    for (int searchY = -4; searchY < 5; searchY++) {
-////                                        BlockPos chestPos = new BlockPos(chestX + searchX, worldSpawnY + searchY, chestZ + searchZ);
-////                                        if (world.getBlockState(chestPos).getBlock() == BlockRegistry.bambooChest) {
-////                                            chest = (TileEntityBambooChest)world.getTileEntity(chestPos);
-////                                            if (chest != null && chest.isUnbreakable()) {
-////                                                break chestSearch;
-////                                            }
-////                                        }
-////                                    }
-////                                }
-////                            }
-////
-////                        // Make sure chest doesn't have the encyclopedia
-////                        ///TODO
-//////                        if (chest!= null && chest.isUnbreakable()) {
-//////                            boolean hasEncyclopedia = false;
-//////                            for (int inv = 0; inv < chest.getSizeInventory(); inv++) {
-//////                                ItemStack stack = chest.getStackInSlot(inv);
-//////                                if (stack.getItem() == ItemRegistry.encyclopedia) {
-//////                                    hasEncyclopedia = true;
-//////                                }
-//////                            }
-//////
-//////                            // Give out a new encyclopedia
-//////                            if (!hasEncyclopedia) {
-//////                                for (int inv = 0; inv < chest.getSizeInventory(); inv++) {
-//////                                    ItemStack stack = chest.getStackInSlot(inv);
-//////                                    if (stack.isEmpty()) {
-//////                                        chest.setInventorySlotContents(inv, new ItemStack(ItemRegistry.encyclopedia, 1));
-//////                                        break;
-//////                                    }
-//////                                }
-//////                            }
-//////                        }
-////                   }
-// //               }
-//  //          }
-//
-//            return new PortalInfo(new Vec3(newLocX, newLocY + 2, newLocZ), motion, directionIn.toYRot(), 0);
-//        } else {
-//            return null;
-//        }
-//    }
 
     public boolean createPortal(Entity entity) {
         LOGGER.debug("[Tropicraft Portal]: Start make portal");
@@ -593,7 +452,7 @@ public class TeleporterTropics implements ITeleporter {
             }
         }
 
-        LOGGER.info("[Tropicraft Portal]: End buildTeleporterAt");
+        LOGGER.debug("[Tropicraft Portal]: End buildTeleporterAt");
     }
 
     /**
