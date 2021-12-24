@@ -37,19 +37,18 @@ If you prefer to use IRC, you can join [#Tropicraft on EsperNet](https://webchat
 
 **Can I use Tropicraft in my public/private mod pack?**   
 Most likely! Find Cojo on Discord or IRC to receive permission and find out what is required from you.
-   
-   
+<br /><br /><br />
    
 <p align="center">
-  <a href="https://lovetropics.com/">
-  <img src="https://cdn.tropicraft.net/LoveTropics.png">
+  <a href="https://lovetropics.org/">
+  <img src="https://static.lovetropics.org/21/logo.png" height="200px">
   </a>
 </p>
 
 Love Tropics
 ===
-Love Tropics is a weekend-long charity livestream ran by the Tropicraft Dev Team and the Tropibros, focused on raising funds to help rebuild Puerto Rico.
+Love Tropics is a weekend-long charity livestream ran by the Tropicraft Devs, bros and Love Tropics helpers, focused on raising funds to fight climate change in the regions impacted the most.
 
-In 2017 we raised $10,155USD for Direct Relief to help with medical supplies and aid, and in 2018 we raised $35,255.46USD for Team Rubicon to help put roofs back onto houses. This year we have bigger and better things planned, so keep your eyes peeled!
+Since inception in 2017, over US$200,000 has been raised for various different causes.
 
 Click on the logo above to learn more about the event.
