@@ -223,13 +223,13 @@ public class ChairEntity extends FurnitureEntity {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.getEntityData().define(COMESAILAWAY, new Byte((byte)0));
+        this.getEntityData().define(COMESAILAWAY, Byte.valueOf((byte)0));
     }
 
     @Override
     protected void readAdditionalSaveData(CompoundTag nbt) {
         super.readAdditionalSaveData(nbt);
-        this.setComeSailAway(Boolean.valueOf(nbt.getBoolean("COME_SAIL_AWAY")));
+        this.setComeSailAway(nbt.getBoolean("COME_SAIL_AWAY"));
     }
 
     @Override
