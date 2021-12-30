@@ -265,7 +265,7 @@ public class TropicraftBlocks {
 
     public static final RegistryObject<HugePlantBlock> LARGE_GOLDEN_LEATHER_FERN = registerNoItem(
             "golden_leather_fern", // TODO: update name before release
-            () -> new HugePlantBlock(Block.Properties.from(Blocks.LARGE_FERN))
+            () -> new HugePlantBlock(Block.Properties.create(Material.PLANTS).doesNotBlockMovement().zeroHardnessAndResistance().sound(SoundType.PLANT))
                     .setPickItem(() -> TropicraftBlocks.GOLDEN_LEATHER_FERN)
     );
 
