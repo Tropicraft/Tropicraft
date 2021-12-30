@@ -7,6 +7,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.tropicraft.core.common.config.TropicraftConfig;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 import net.tropicraft.core.common.entity.projectile.ExplodingCoconutEntity;
 
@@ -20,12 +21,9 @@ public class ExplodingCoconutItem extends Item {
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-        // TODO config option
-        final boolean canPlayerThrow = player.isCreative() || player.canUseCommandBlock();
-        //allow to use anywhere but in the main area of the server
-        final boolean ltOverride = world.getDimensionKey() != TropicraftDimension.WORLD;
+        final boolean hasPermission = player.canUseCommandBlock() || TropicraftConfig.coconutBombWhitelist.get().contains(player.getUniqueID().toString());
         ItemStack itemstack = player.getHeldItem(hand);
-        if (!canPlayerThrow && !ltOverride) {
+        if (!hasPermission) {
             if (!world.isRemote) {
                 player.sendStatusMessage(new TranslationTextComponent("tropicraft.coconutBombWarning"), false);
             }
@@ -37,10 +35,10 @@ public class ExplodingCoconutItem extends Item {
         }
         world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
         if (!world.isRemote) {
-            ExplodingCoconutEntity snowballentity = new ExplodingCoconutEntity(world, player);
-            snowballentity.setItem(itemstack);
-            snowballentity.setDirectionAndMovement(player, player.rotationPitch, player.rotationYaw, 0.0F, 1.5F, 1.0F);
-            world.addEntity(snowballentity);
+            ExplodingCoconutEntity coconutBomb = new ExplodingCoconutEntity(world, player);
+            coconutBomb.setItem(itemstack);
+            coconutBomb.setDirectionAndMovement(player, player.rotationPitch, player.rotationYaw, 0.0F, 1.5F, 1.0F);
+            world.addEntity(coconutBomb);
         }
 
         player.addStat(Stats.ITEM_USED.get(this));

@@ -33,16 +33,8 @@ public class ExplodingCoconutEntity extends ProjectileItemEntity {
     @Override
     protected void onImpact(RayTraceResult result) {
         if (!world.isRemote) {
-            final Entity shooter = getShooter();
-            if (shooter != null) {
-                final boolean isOp = shooter instanceof PlayerEntity && ((PlayerEntity)shooter).canUseCommandBlock();
-
-                // OPs and whitelisted users can use coconut bombs
-                if (isOp || TropicraftConfig.coconutBombWhitelist.get().contains(shooter.getUniqueID().toString())) {
-                    world.createExplosion(this, getPosX(), getPosY(), getPosZ(), 2.4F, Explosion.Mode.DESTROY);
-                    remove();
-                }
-            }
+            world.createExplosion(this, getPosX(), getPosY(), getPosZ(), 2.4F, Explosion.Mode.DESTROY);
+            remove();
         }
     }
 
