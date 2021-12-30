@@ -66,7 +66,7 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
 
         boolean placeDirtOnOrigin = true;
         if (this.canGenerateRaised) {
-            int waterDepth = getWaterDepthAt(world, origin, 3);
+            int waterDepth = getWaterDepthAbove(world, origin, 3);
 
             // If we're in 1 or 2 deep water or land, we have a 1/2 chance of making the mangrove raised from the surface of the water
             if (waterDepth <= 2 && random.nextInt(2) == 0) {
@@ -102,7 +102,7 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         return leafNodes;
     }
 
-    private int getWaterDepthAt(IWorldGenerationReader world, BlockPos origin, int maxDepth) {
+    private int getWaterDepthAbove(IWorldGenerationReader world, BlockPos origin, int maxDepth) {
         BlockPos.Mutable pos = origin.toMutable();
 
         int depth = 0;

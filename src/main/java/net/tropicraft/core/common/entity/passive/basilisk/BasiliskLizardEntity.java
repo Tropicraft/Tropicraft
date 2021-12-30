@@ -1,10 +1,7 @@
 package net.tropicraft.core.common.entity.passive.basilisk;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.MoverType;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.LookAtGoal;
@@ -18,15 +15,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.tropicraft.core.common.Easings;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.item.TropicraftItems;
 
@@ -115,11 +115,41 @@ public final class BasiliskLizardEntity extends AnimalEntity {
             if (this.runningAnimation < RUNNING_ANIMATION_LENGTH) {
                 this.runningAnimation++;
             }
+
+            this.spawnRunningParticles();
         } else {
             if (this.runningAnimation > 0) {
-                this.runningAnimation--;
+                this.runningAnimation = Math.max(this.runningAnimation - 2, 0);
             }
         }
+    }
+
+    private void spawnRunningParticles() {
+        for (int i = 0; i < 2; i++) {
+            Vector3d motion = this.getMotion();
+            double surfaceY = MathHelper.floor(this.getPosY()) + 1.0;
+
+            double dx = (this.rand.nextDouble() * 2.0 - 1.0) * 0.25;
+            double dz = (this.rand.nextDouble() * 2.0 - 1.0) * 0.25;
+
+            this.world.addParticle(
+                    this.rand.nextBoolean() ? ParticleTypes.BUBBLE : ParticleTypes.SPLASH,
+                    this.getPosX() + dx, surfaceY, this.getPosZ() + dz,
+                    motion.x, motion.y - this.rand.nextDouble() * 0.2F, motion.z
+            );
+        }
+    }
+
+    @Override
+    protected void doWaterSplashEffect() {
+        // duplicating vanilla logic to add splash sounds but disable the particles
+        float volume = (float) (this.getMotion().mul(0.5, 1.0, 0.5).length() * 0.2F);
+        volume = Math.min(volume, 1.0F);
+
+        float pitch = 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F;
+
+        SoundEvent sound = volume < 0.25 ? this.getSplashSound() : this.getHighspeedSplashSound();
+        this.playSound(sound, volume, pitch);
     }
 
     private void tickMovementTimer() {
@@ -176,6 +206,6 @@ public final class BasiliskLizardEntity extends AnimalEntity {
 
     public float getRunningAnimation(float partialTicks) {
         float animation = MathHelper.lerp(partialTicks, prevRunningAnimation, runningAnimation);
-        return animation / RUNNING_ANIMATION_LENGTH;
+        return Easings.inOutSine(animation / RUNNING_ANIMATION_LENGTH);
     }
 }

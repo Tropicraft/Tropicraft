@@ -111,6 +111,8 @@ public class BasiliskLizardModel<T extends BasiliskLizardEntity> extends EntityM
             leg_front_right.rotateAngleX = FRONT_LEG_ANGLE + walk.eval(1.0F, 1.0F, 0.0F, 1.0F);
             leg_back_left.rotateAngleX = BACK_LEG_ANGLE + walk.eval(-1.0F, -0.9F, 0.0F, -0.9F);
             leg_back_right.rotateAngleX = BACK_LEG_ANGLE + walk.eval(1.0F, -0.9F, 0.0F, -0.9F);
+
+            body_base.rotateAngleX += walk.eval(0.5F, running * 0.1F);
         }
     }
 
