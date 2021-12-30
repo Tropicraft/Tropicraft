@@ -1,7 +1,6 @@
 package net.tropicraft.core.common.entity.passive;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.block.*;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -17,10 +16,13 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.pathfinding.FlyingPathNavigator;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.state.IntegerProperty;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -29,6 +31,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.util.Constants;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nullable;
@@ -37,6 +40,10 @@ import java.util.Random;
 
 public class HummingbirdEntity extends AnimalEntity implements IFlyingAnimal {
     private static final Direction[] HORIZONTALS = new Direction[] { Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST };
+
+    private static final int POLLINATE_THRESHOLD = 5;
+
+    private int pollenCollected;
 
     public HummingbirdEntity(EntityType<? extends HummingbirdEntity> type, World world) {
         super(type, world);
@@ -105,6 +112,48 @@ public class HummingbirdEntity extends AnimalEntity implements IFlyingAnimal {
         return new ItemStack(TropicraftItems.HUMMINGBIRD_SPAWN_EGG.get());
     }
 
+    private void tryPollinatePlant(BlockPos pos) {
+        if (++pollenCollected >= POLLINATE_THRESHOLD) {
+            pollenCollected = 0;
+            tryGrowPlant(pos);
+        }
+    }
+
+    private void tryGrowPlant(BlockPos pos) {
+        BlockState state = world.getBlockState(pos);
+        IntegerProperty age = getPlantAgeProperty(state);
+
+        if (age != null) {
+            int nextAge = state.get(age) + 1;
+            if (age.getAllowedValues().contains(nextAge)) {
+                world.playEvent(Constants.WorldEvents.BONEMEAL_PARTICLES, pos, 0);
+                world.setBlockState(pos, state.with(age, nextAge));
+            }
+        }
+    }
+
+    @Nullable
+    private IntegerProperty getPlantAgeProperty(BlockState state) {
+        if (state.hasProperty(BlockStateProperties.AGE_0_3)) {
+            return BlockStateProperties.AGE_0_3;
+        } else if (state.hasProperty(BlockStateProperties.AGE_0_7)) {
+            return BlockStateProperties.AGE_0_7;
+        }
+        return null;
+    }
+
+    @Override
+    public void writeAdditional(CompoundNBT nbt) {
+        super.writeAdditional(nbt);
+        nbt.putByte("pollen_collected", (byte) pollenCollected);
+    }
+
+    @Override
+    public void readAdditional(CompoundNBT nbt) {
+        super.readAdditional(nbt);
+        pollenCollected = nbt.getByte("pollen_collected");
+    }
+
     final class FeedFromPlantsGoal extends FlyingGoal {
         private static final int SEARCH_TRIES = 50;
         private static final int SEARCH_RADIUS = 5;
@@ -153,8 +202,12 @@ public class HummingbirdEntity extends AnimalEntity implements IFlyingAnimal {
 
         private void tickFoundFood(Vector3d target) {
             if (this.feedingTicks > 0) {
-                HummingbirdEntity.this.getLookController().setLookPosition(target);
-                this.feedingTicks--;
+                HummingbirdEntity bird = HummingbirdEntity.this;
+                bird.getLookController().setLookPosition(target);
+
+                if (--this.feedingTicks == 0) {
+                    bird.tryPollinatePlant(new BlockPos(target));
+                }
             }
         }
 
@@ -207,7 +260,7 @@ public class HummingbirdEntity extends AnimalEntity implements IFlyingAnimal {
 
         private boolean canFeedFrom(BlockState state) {
             if (state.isAir()) return false;
-            return state.isIn(BlockTags.LEAVES) || state.isIn(BlockTags.FLOWERS);
+            return state.isIn(BlockTags.LEAVES) || state.isIn(BlockTags.FLOWERS) || state.isIn(BlockTags.BEE_GROWABLES);
         }
     }
 
