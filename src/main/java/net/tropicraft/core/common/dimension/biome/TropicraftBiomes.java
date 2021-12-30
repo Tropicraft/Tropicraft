@@ -9,6 +9,8 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.*;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.blockplacer.DoublePlantBlockPlacer;
+import net.minecraft.world.gen.blockplacer.SimpleBlockPlacer;
+import net.minecraft.world.gen.blockstateprovider.BlockStateProvider;
 import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
 import net.minecraft.world.gen.feature.BlockClusterFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
@@ -22,12 +24,15 @@ import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.tropicraft.Constants;
+import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.block.TropicraftBlocks;
+import net.tropicraft.core.common.config.TropicraftConfig;
 import net.tropicraft.core.common.data.WorldgenDataConsumer;
 import net.tropicraft.core.common.dimension.carver.TropicraftConfiguredCarvers;
 import net.tropicraft.core.common.dimension.feature.TropicraftConfiguredFeatures;
 import net.tropicraft.core.common.dimension.feature.TropicraftConfiguredStructures;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
+import net.tropicraft.core.common.dimension.feature.block_state_provider.NoiseFromTagBlockStateProvider;
 import net.tropicraft.core.common.dimension.surfacebuilders.TropicraftConfiguredSurfaceBuilders;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 
@@ -119,32 +124,79 @@ public final class TropicraftBiomes {
 
         BiomeGenerationSettingsBuilder generation = event.getGeneration();
 
-        if (category == Biome.Category.BEACH) {
-            generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION,
-                    TropicraftFeatures.NORMAL_PALM_TREE.get().withConfiguration(NoFeatureConfig.INSTANCE)
-                            .withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
-                            .withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(0, 0.08F, 1)))
-            );
-            generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION,
-                    TropicraftFeatures.CURVED_PALM_TREE.get().withConfiguration(NoFeatureConfig.INSTANCE)
-                            .withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
-                            .withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(0, 0.08F, 1)))
-            );
-            generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION,
-                    TropicraftFeatures.LARGE_PALM_TREE.get().withConfiguration(NoFeatureConfig.INSTANCE)
-                            .withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
-                            .withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(0, 0.08F, 1)))
-            );
+        if (isValidPalmTreeBiome(category)) {
+            if (TropicraftConfig.generatePalmTreesInOverworld.get()) {
+                generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION,
+                        TropicraftFeatures.NORMAL_PALM_TREE.get().withConfiguration(NoFeatureConfig.INSTANCE)
+                                .withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
+                                .withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(0, 0.08F, TropicraftConfig.palmTreeDensityInOverworld.get())))
+                );
+                generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION,
+                        TropicraftFeatures.CURVED_PALM_TREE.get().withConfiguration(NoFeatureConfig.INSTANCE)
+                                .withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
+                                .withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(0, 0.08F, TropicraftConfig.palmTreeDensityInOverworld.get())))
+                );
+                generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION,
+                        TropicraftFeatures.LARGE_PALM_TREE.get().withConfiguration(NoFeatureConfig.INSTANCE)
+                                .withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
+                                .withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(0, 0.08F, TropicraftConfig.palmTreeDensityInOverworld.get())))
+                );
+            }
         } else if (category == Biome.Category.JUNGLE) {
-            SimpleBlockStateProvider state = new SimpleBlockStateProvider(TropicraftBlocks.PINEAPPLE.get().getDefaultState());
-            generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION,
-                    Feature.RANDOM_PATCH.withConfiguration(new BlockClusterFeatureConfig.Builder(state, new DoublePlantBlockPlacer())
-                            .tries(6)
-                            .replaceable()
-                            .build()
-                    ).withPlacement(Features.Placements.PATCH_PLACEMENT)
-            );
+            if (TropicraftConfig.generatePineapplesInOverworld.get()) {
+                SimpleBlockStateProvider state = new SimpleBlockStateProvider(TropicraftBlocks.PINEAPPLE.get().getDefaultState());
+                generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION,
+                        Feature.RANDOM_PATCH.withConfiguration(new BlockClusterFeatureConfig.Builder(state, new DoublePlantBlockPlacer())
+                                .tries(6)
+                                .replaceable()
+                                .build()
+                        ).withPlacement(Features.Placements.PATCH_PLACEMENT)
+                );
+            }
+
+            if (TropicraftConfig.generateEIHInOverworld.get()) {
+                generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION,
+                        TropicraftFeatures.EIH.get().withConfiguration(NoFeatureConfig.INSTANCE)
+                                .withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
+                                .withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(0, 0.01F, 1)))
+                );
+            }
+        } else if (category == Biome.Category.PLAINS || category == Biome.Category.FOREST) {
+            if (TropicraftConfig.generateTropicraftFlowersInOverworld.get()) {
+                BlockStateProvider flowersStateProvider = new NoiseFromTagBlockStateProvider(TropicraftTags.Blocks.TROPICS_FLOWERS);
+                BlockStateProvider rainforestFlowersStateProvider = new NoiseFromTagBlockStateProvider(TropicraftTags.Blocks.RAINFOREST_FLOWERS);
+                BlockStateProvider irisStateProvider = new SimpleBlockStateProvider(TropicraftBlocks.IRIS.get().getDefaultState());
+
+                BlockClusterFeatureConfig flowersConfig = new BlockClusterFeatureConfig.Builder(flowersStateProvider, SimpleBlockPlacer.PLACER).tries(64).build();
+                BlockClusterFeatureConfig rainforestFlowersConfig = new BlockClusterFeatureConfig.Builder(rainforestFlowersStateProvider, SimpleBlockPlacer.PLACER).tries(64).preventProjection().build();
+                BlockClusterFeatureConfig irisConfig = new BlockClusterFeatureConfig.Builder(irisStateProvider, new DoublePlantBlockPlacer()).tries(64).preventProjection().build();
+
+                generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION,
+                        Feature.FLOWER.withConfiguration(flowersConfig)
+                                .withPlacement(Features.Placements.VEGETATION_PLACEMENT
+                                        .withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT).count(12))
+                );
+
+                generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION,
+                        Feature.FLOWER.withConfiguration(rainforestFlowersConfig)
+                                .withPlacement(Features.Placements.VEGETATION_PLACEMENT
+                                        .withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT).count(4))
+                );
+
+                generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION,
+                        Feature.RANDOM_PATCH.withConfiguration(irisConfig)
+                                .withPlacement(Features.Placements.VEGETATION_PLACEMENT
+                                        .withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT).count(10))
+                );
+            }
         }
+    }
+
+    private static boolean isValidPalmTreeBiome(Biome.Category category) {
+        if (TropicraftConfig.generatePalmTreesInOverworldBeachesOnly.get()) {
+            return category == Biome.Category.BEACH;
+        }
+        return category == Biome.Category.BEACH || category == Biome.Category.DESERT || category == Biome.Category.MESA;
     }
 
     private Biome createTropics() {
