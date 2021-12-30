@@ -488,6 +488,7 @@
   "scuba.tropicraft.dive_time": "Dive Time: %s",
   "scuba.tropicraft.max_depth": "Max Depth: %s",
   "scuba.tropicraft.scuba.visibility": "Underwater Fog Reduction",
+  "tropicraft.coconutBombWarning": "You don't have permission to throw this! Edit the coconut bomb whitelist in the Tropicraft server config",
   "tropicraft.container.bambooChest": "Bamboo Chest",
   "tropicraft.container.bambooChestDouble": "Large Bamboo Chest"
 }

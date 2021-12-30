@@ -468,6 +468,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         
         add(Tropicraft.TROPICRAFT_ITEM_GROUP, "Tropicraft");
         add("attribute.name." + ForgeMod.SWIM_SPEED.get().getRegistryName().getPath(), "Swim Speed");
+        add("tropicraft.coconutBombWarning", "You don't have permission to throw this! Edit the coconut bomb whitelist in the Tropicraft server config");
 
         // Koa
         add("entity.tropicraft.koa.female.hunter.name", "Koa Hunter");
