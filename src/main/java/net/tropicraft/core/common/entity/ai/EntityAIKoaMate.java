@@ -56,13 +56,13 @@ public class EntityAIKoaMate extends Goal
         }
         else
         {
-            if (this.canTownHandleMoreVillagers() && this.villagerObj.getIsWillingToMate(true)) {
+            if (this.canTownHandleMoreVillagers() && this.villagerObj.canBreed()) {
                 List<EntityKoaBase> listEntities = this.world.getEntitiesOfClass(EntityKoaBase.class, this.villagerObj.getBoundingBox().inflate(8.0D, 3.0D, 8.0D));
                 EntityKoaBase clEnt = null;
                 double clDist = 9999;
                 for (EntityKoaBase ent : listEntities) {
                     if (ent != villagerObj) {
-                        if (villagerObj.willBone(ent)) {
+                        if (ent.canBreed() && !ent.isBaby() && !this.villagerObj.isBaby()) {
                             if (villagerObj.distanceTo(ent) < clDist) {
                                 clEnt = ent;
                                 clDist = villagerObj.distanceTo(ent);
@@ -133,9 +133,7 @@ public class EntityAIKoaMate extends Goal
         {
             this.mate.setMating(false);
             //System.out.println("mate complete");
-            if (villagerObj.getOrientation() == EntityKoaBase.Orientations.STRAIT) {
-                this.giveBirth();
-            }
+            this.giveBirth();
         }
 
         if (this.villagerObj.getRandom().nextInt(35) == 0)

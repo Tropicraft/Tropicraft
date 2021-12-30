@@ -81,12 +81,9 @@ public class EntityKoaBase extends Villager {
 
     private static final EntityDataAccessor<Integer> ROLE = SynchedEntityData.defineId(EntityKoaBase.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> GENDER = SynchedEntityData.defineId(EntityKoaBase.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> ORIENTATION = SynchedEntityData.defineId(EntityKoaBase.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(EntityKoaBase.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DANCING = SynchedEntityData.defineId(EntityKoaBase.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> LURE_ID = SynchedEntityData.defineId(EntityKoaBase.class, EntityDataSerializers.INT);
-
-    private final Goal taskFishing = new EntityAIGoneFishin(this);
 
     private float clientHealthLastTracked = 0;
 
@@ -147,15 +144,6 @@ public class EntityKoaBase extends Villager {
         public static Roles get(int intValue) { return lookup.get(intValue); }
     }
 
-    public enum Orientations {
-        STRAIT,
-        GAY;
-
-        private static final Map<Integer, Orientations> lookup = new HashMap<>();
-        static { for(Orientations e : EnumSet.allOf(Orientations.class)) { lookup.put(e.ordinal(), e); } }
-        public static Orientations get(int intValue) { return lookup.get(intValue); }
-    }
-
     public EntityKoaBase(EntityType<? extends EntityKoaBase> type, Level worldIn) {
         super(type, worldIn);
         this.setPersistenceRequired();
@@ -189,10 +177,6 @@ public class EntityKoaBase extends Villager {
         return Roles.get(this.getEntityData().get(ROLE));
     }
 
-    public Orientations getOrientation() {
-        return Orientations.get(this.getEntityData().get(ORIENTATION));
-    }
-
     public boolean isSitting() {
         return this.getEntityData().get(SITTING);
     }
@@ -214,7 +198,6 @@ public class EntityKoaBase extends Villager {
         super.defineSynchedData();
         this.getEntityData().define(ROLE, 0);
         this.getEntityData().define(GENDER, 0);
-        this.getEntityData().define(ORIENTATION, 0);
         this.getEntityData().define(SITTING, false);
         this.getEntityData().define(DANCING, false);
         this.getEntityData().define(LURE_ID, -1);
@@ -488,7 +471,7 @@ public class EntityKoaBase extends Villager {
         this.goalSelector.addGoal(curPri++, new EntityAIPartyTime(this));
 
         if (canFish()) {
-            this.goalSelector.addGoal(curPri++, taskFishing);
+            this.goalSelector.addGoal(curPri++, new EntityAIGoneFishin(this));
         }
 
         if (isBaby()) {
@@ -742,7 +725,6 @@ public class EntityKoaBase extends Villager {
 
         rollDiceRole();
         rollDiceGender();
-        rollDiceOrientation();
 
         updateUniqueEntityAI();
 
@@ -776,14 +758,6 @@ public class EntityKoaBase extends Villager {
     public void rollDiceGender() {
         int randValGender = this.level.random.nextInt(Genders.values().length);
         this.getEntityData().set(GENDER, Integer.valueOf(randValGender));
-    }
-
-    public void rollDiceOrientation() {
-        this.getEntityData().set(ORIENTATION, Integer.valueOf(Orientations.STRAIT.ordinal()));
-        int chance = 5;
-        if (chance >= this.level.random.nextInt(100)) {
-            this.getEntityData().set(ORIENTATION, Orientations.GAY.ordinal());
-        }
     }
 
     @Override
@@ -820,7 +794,6 @@ public class EntityKoaBase extends Villager {
 
         compound.putInt("role_id", this.getEntityData().get(ROLE));
         compound.putInt("gender_id", this.getEntityData().get(GENDER));
-        compound.putInt("orientation_id", this.getEntityData().get(ORIENTATION));
 
         compound.putInt("village_id", villageID);
 
@@ -882,11 +855,6 @@ public class EntityKoaBase extends Villager {
             this.getEntityData().set(GENDER, compound.getInt("gender_id"));
         } else {
             rollDiceGender();
-        }
-        if (compound.contains("orientation_id")) {
-            this.getEntityData().set(ORIENTATION, compound.getInt("orientation_id"));
-        } else {
-            rollDiceOrientation();
         }
 
         this.lastTradeTime = compound.getLong("lastTradeTime");
@@ -1398,18 +1366,6 @@ public class EntityKoaBase extends Villager {
 
     public void setIsWillingToMate(boolean b) {
         //NO-OP
-    }
-
-    public boolean willBone(EntityKoaBase bonie) {
-        EntityKoaBase boner = this;
-        if (!bonie.getIsWillingToMate(true)) return false;
-        if (boner.isBaby() || bonie.isBaby()) return false;
-        if (boner.getOrientation() == Orientations.STRAIT) {
-            return boner.getGender() != bonie.getGender();
-        } else if (boner.getOrientation() == Orientations.GAY) {
-            return boner.getGender() == bonie.getGender();
-        }
-        return true;
     }
 
     public int getVillageID() {
