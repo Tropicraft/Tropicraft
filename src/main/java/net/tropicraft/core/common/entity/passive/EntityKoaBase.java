@@ -69,12 +69,9 @@ public class EntityKoaBase extends VillagerEntity {
 
     private static final DataParameter<Integer> ROLE = EntityDataManager.createKey(EntityKoaBase.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> GENDER = EntityDataManager.createKey(EntityKoaBase.class, DataSerializers.VARINT);
-    private static final DataParameter<Integer> ORIENTATION = EntityDataManager.createKey(EntityKoaBase.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(EntityKoaBase.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> DANCING = EntityDataManager.createKey(EntityKoaBase.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> LURE_ID = EntityDataManager.createKey(EntityKoaBase.class, DataSerializers.VARINT);
-
-    private final Goal taskFishing = new EntityAIGoneFishin(this);
 
     private float clientHealthLastTracked = 0;
 
@@ -135,15 +132,6 @@ public class EntityKoaBase extends VillagerEntity {
         public static Roles get(int intValue) { return lookup.get(intValue); }
     }
 
-    public enum Orientations {
-        STRAIT,
-        GAY;
-
-        private static final Map<Integer, Orientations> lookup = new HashMap<>();
-        static { for(Orientations e : EnumSet.allOf(Orientations.class)) { lookup.put(e.ordinal(), e); } }
-        public static Orientations get(int intValue) { return lookup.get(intValue); }
-    }
-
     public EntityKoaBase(EntityType<? extends EntityKoaBase> type, World worldIn) {
         super(type, worldIn);
         this.enablePersistence();
@@ -177,10 +165,6 @@ public class EntityKoaBase extends VillagerEntity {
         return Roles.get(this.getDataManager().get(ROLE));
     }
 
-    public Orientations getOrientation() {
-        return Orientations.get(this.getDataManager().get(ORIENTATION));
-    }
-
     public boolean isSitting() {
         return this.getDataManager().get(SITTING);
     }
@@ -202,7 +186,6 @@ public class EntityKoaBase extends VillagerEntity {
         super.registerData();
         this.getDataManager().register(ROLE, 0);
         this.getDataManager().register(GENDER, 0);
-        this.getDataManager().register(ORIENTATION, 0);
         this.getDataManager().register(SITTING, false);
         this.getDataManager().register(DANCING, false);
         this.getDataManager().register(LURE_ID, -1);
@@ -476,7 +459,7 @@ public class EntityKoaBase extends VillagerEntity {
         this.goalSelector.addGoal(curPri++, new EntityAIPartyTime(this));
 
         if (canFish()) {
-            this.goalSelector.addGoal(curPri++, taskFishing);
+            this.goalSelector.addGoal(curPri++, new EntityAIGoneFishin(this));
         }
 
         if (isChild()) {
@@ -730,7 +713,6 @@ public class EntityKoaBase extends VillagerEntity {
 
         rollDiceRole();
         rollDiceGender();
-        rollDiceOrientation();
 
         updateUniqueEntityAI();
 
@@ -764,15 +746,7 @@ public class EntityKoaBase extends VillagerEntity {
     public void rollDiceGender() {
         int randValGender = this.world.rand.nextInt(Genders.values().length);
         this.getDataManager().set(GENDER, Integer.valueOf(randValGender));
-    }
-
-    public void rollDiceOrientation() {
-        this.getDataManager().set(ORIENTATION, Integer.valueOf(Orientations.STRAIT.ordinal()));
-        int chance = 5;
-        if (chance >= this.world.rand.nextInt(100)) {
-            this.getDataManager().set(ORIENTATION, Orientations.GAY.ordinal());
-        }
-    }
+}
 
     @Override
     public void writeAdditional(CompoundNBT compound) {
@@ -808,7 +782,6 @@ public class EntityKoaBase extends VillagerEntity {
 
         compound.putInt("role_id", this.getDataManager().get(ROLE));
         compound.putInt("gender_id", this.getDataManager().get(GENDER));
-        compound.putInt("orientation_id", this.getDataManager().get(ORIENTATION));
 
         compound.putInt("village_id", villageID);
 
@@ -870,11 +843,6 @@ public class EntityKoaBase extends VillagerEntity {
             this.getDataManager().set(GENDER, compound.getInt("gender_id"));
         } else {
             rollDiceGender();
-        }
-        if (compound.contains("orientation_id")) {
-            this.getDataManager().set(ORIENTATION, compound.getInt("orientation_id"));
-        } else {
-            rollDiceOrientation();
         }
 
         this.lastTradeTime = compound.getLong("lastTradeTime");
@@ -1386,18 +1354,6 @@ public class EntityKoaBase extends VillagerEntity {
 
     public void setIsWillingToMate(boolean b) {
         //NO-OP
-    }
-
-    public boolean willBone(EntityKoaBase bonie) {
-        EntityKoaBase boner = this;
-        if (!bonie.getIsWillingToMate(true)) return false;
-        if (boner.isChild() || bonie.isChild()) return false;
-        if (boner.getOrientation() == Orientations.STRAIT) {
-            return boner.getGender() != bonie.getGender();
-        } else if (boner.getOrientation() == Orientations.GAY) {
-            return boner.getGender() == bonie.getGender();
-        }
-        return true;
     }
 
     public int getVillageID() {

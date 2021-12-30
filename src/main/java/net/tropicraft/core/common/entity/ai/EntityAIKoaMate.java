@@ -64,7 +64,7 @@ public class EntityAIKoaMate extends Goal
                 double clDist = 9999;
                 for (EntityKoaBase ent : listEntities) {
                     if (ent != villagerObj) {
-                        if (villagerObj.willBone(ent)) {
+                        if (ent.getIsWillingToMate(true) && !ent.isChild() && !this.villagerObj.isChild()) {
                             if (villagerObj.getDistance(ent) < clDist) {
                                 clEnt = ent;
                                 clDist = villagerObj.getDistance(ent);
@@ -135,9 +135,7 @@ public class EntityAIKoaMate extends Goal
         {
             this.mate.setMating(false);
             //System.out.println("mate complete");
-            if (villagerObj.getOrientation() == EntityKoaBase.Orientations.STRAIT) {
-                this.giveBirth();
-            }
+            this.giveBirth();
         }
 
         if (this.villagerObj.getRNG().nextInt(35) == 0)
