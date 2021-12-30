@@ -33,10 +33,10 @@ import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.tropicraft.Constants;
-import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.block.PapayaBlock;
 import net.tropicraft.core.common.block.TikiTorchBlock;
 import net.tropicraft.core.common.block.TropicraftBlocks;
+import net.tropicraft.core.common.data.loot.MatchSwordCondition;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.neutral.TreeFrogEntity;
 import net.tropicraft.core.common.item.RecordMusic;
@@ -461,7 +461,7 @@ public class TropicraftLootTableProvider extends LootTableProvider {
         
         private static LootPool.Builder droppingChunksPool(Block block, Supplier<? extends ItemLike> chunk) {
             return LootPool.lootPool().add(LootItem.lootTableItem(chunk.get())
-                    .when(MatchTool.toolMatches(ItemPredicate.Builder.item().of(TropicraftTags.Items.SWORDS)))
+                    .when(MatchSwordCondition.builder())
                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 4.0F)))
                     .otherwise(applyExplosionCondition(block, LootItem.lootTableItem(block))));
         }

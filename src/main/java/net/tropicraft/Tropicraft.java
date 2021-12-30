@@ -48,6 +48,7 @@ import net.tropicraft.core.common.block.TropicraftFlower;
 import net.tropicraft.core.common.block.tileentity.TropicraftTileEntityTypes;
 import net.tropicraft.core.common.command.CommandTropics;
 import net.tropicraft.core.common.data.*;
+import net.tropicraft.core.common.data.loot.TropicraftLootConditions;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 import net.tropicraft.core.common.dimension.TropicraftPoiTypes;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomeProvider;
@@ -189,7 +190,8 @@ public class Tropicraft {
                 AdjustBuildingHeightProcessor.class, AirToCaveAirProcessor.class, SinkInGroundProcessor.class,
                 SmoothingGravityProcessor.class, SteepPathProcessor.class, StructureSupportsProcessor.class,
                 StructureVoidProcessor.class,
-                TropicraftTrunkPlacers.class
+                TropicraftTrunkPlacers.class,
+                TropicraftLootConditions.class
         );
     }
 

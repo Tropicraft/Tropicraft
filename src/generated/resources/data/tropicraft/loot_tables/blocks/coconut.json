@@ -12,10 +12,7 @@
               "type": "minecraft:item",
               "conditions": [
                 {
-                  "condition": "minecraft:match_tool",
-                  "predicate": {
-                    "tag": "forge:swords"
-                  }
+                  "condition": "tropicraft:match_sword"
                 }
               ],
               "functions": [
