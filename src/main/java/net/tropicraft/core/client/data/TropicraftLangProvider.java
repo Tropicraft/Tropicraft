@@ -463,6 +463,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         addBiome(TropicraftBiomes.MANGROVES);
         addBiome(TropicraftBiomes.OVERGROWN_MANGROVES);
         addBiome(TropicraftBiomes.OSA_RAINFOREST);
+        addBiome(TropicraftBiomes.LAKE);
 
         // MISC
         

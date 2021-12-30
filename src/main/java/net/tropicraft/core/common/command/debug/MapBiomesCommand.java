@@ -43,6 +43,7 @@ public class MapBiomesCommand {
         COLORS.put(TropicraftBiomes.TROPICS_OCEAN.getLocation(), 0x4fc1c9);
         COLORS.put(TropicraftBiomes.TROPICS_RIVER.getLocation(), 0x4fc1c9);
         COLORS.put(TropicraftBiomes.KELP_FOREST.getLocation(), 0x4fc9af);
+        COLORS.put(TropicraftBiomes.LAKE.getLocation(), 0x4fc1c9);
 
         COLORS.put(TropicraftBiomes.TROPICS_BEACH.getLocation(), 0xe8e397);
     }

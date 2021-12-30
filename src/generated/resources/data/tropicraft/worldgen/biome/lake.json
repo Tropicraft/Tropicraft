@@ -36,7 +36,8 @@
     [
       "tropicraft:tropics_flowers",
       "tropicraft:iris_flowers",
-      "tropicraft:seagrass"
+      "tropicraft:seagrass",
+      "tropicraft:mangrove_reeds"
     ]
   ],
   "starts": [
@@ -140,6 +141,6 @@
   "temperature": 1.5,
   "downfall": 1.25,
   "category": "river",
-  "depth": -0.7,
+  "depth": -0.5,
   "scale": 0.05
 }

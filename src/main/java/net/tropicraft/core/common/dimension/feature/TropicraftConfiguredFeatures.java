@@ -92,6 +92,7 @@ public final class TropicraftConfiguredFeatures {
     public final ConfiguredFeature<?, ?> undergroundSeaPickles;
 
     public final ConfiguredFeature<?, ?> mangroveReeds;
+    public final ConfiguredFeature<?, ?> lakeReeds;
 
     public final ConfiguredFeature<?, ?> azurite;
     public final ConfiguredFeature<?, ?> eudialyte;
@@ -365,6 +366,10 @@ public final class TropicraftConfiguredFeatures {
 
         this.mangroveReeds = features.noConfig("mangrove_reeds", TropicraftFeatures.REEDS, feature -> {
             return feature.withPlacement(Features.Placements.SEAGRASS_DISK_PLACEMENT).count(2);
+        });
+
+        this.lakeReeds = features.noConfig("lake_reeds", TropicraftFeatures.REEDS, feature -> {
+            return feature.withPlacement(Features.Placements.SEAGRASS_DISK_PLACEMENT).count(4); // Higher count but only spawns on coasts so it works out
         });
 
         this.azurite = features.register("azurite", Feature.ORE, f -> {

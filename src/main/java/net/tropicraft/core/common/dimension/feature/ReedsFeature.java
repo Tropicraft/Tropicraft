@@ -113,7 +113,7 @@ public final class ReedsFeature extends Feature<NoFeatureConfig> {
         world.setBlockState(pos, state, Constants.BlockFlags.BLOCK_UPDATE);
     }
 
-    private boolean generateTall(ISeedReader world, BlockPos pos, int height, BlockPos.Mutable mutablePos) {
+    private void generateTall(ISeedReader world, BlockPos pos, int height, BlockPos.Mutable mutablePos) {
         for (int y = 0; y < height; y++) {
             mutablePos.setY(pos.getY() + y);
 
@@ -124,6 +124,5 @@ public final class ReedsFeature extends Feature<NoFeatureConfig> {
             world.setBlockState(mutablePos, state, Constants.BlockFlags.BLOCK_UPDATE);
         }
 
-        return true;
     }
 }

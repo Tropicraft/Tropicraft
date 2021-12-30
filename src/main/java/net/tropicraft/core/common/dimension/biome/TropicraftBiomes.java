@@ -52,6 +52,7 @@ public final class TropicraftBiomes {
     public static final RegistryKey<Biome> MANGROVES = key("mangroves");
     public static final RegistryKey<Biome> OVERGROWN_MANGROVES = key("overgrown_mangroves");
     public static final RegistryKey<Biome> OSA_RAINFOREST = key("osa_rainforest");
+    public static final RegistryKey<Biome> LAKE = key("lake");
 
     private static RegistryKey<Biome> key(String id) {
         return RegistryKey.getOrCreateKey(Registry.BIOME_KEY, new ResourceLocation(Constants.MODID, id));
@@ -73,6 +74,7 @@ public final class TropicraftBiomes {
     public final Biome mangroves;
     public final Biome overgrownMangroves;
     public final Biome osaRainforest;
+    public final Biome lake;
 
     private final TropicraftConfiguredFeatures features;
     private final TropicraftConfiguredStructures structures;
@@ -96,11 +98,13 @@ public final class TropicraftBiomes {
         this.tropicsOcean = worldgen.register(TROPICS_OCEAN, createTropicsOcean());
         this.kelpForest = worldgen.register(KELP_FOREST, createKelpForest());
 
-        this.tropicsRiver = worldgen.register(TROPICS_RIVER, createTropicsRiver());
+        this.tropicsRiver = worldgen.register(TROPICS_RIVER, createTropicsRiver(-0.7F));
 
         this.mangroves = worldgen.register(MANGROVES, createMangroves(false));
         this.overgrownMangroves = worldgen.register(OVERGROWN_MANGROVES, createMangroves(true));
         this.osaRainforest = worldgen.register(OSA_RAINFOREST, createOsaRainforest(0.25F, 0.1F));
+
+        this.lake = worldgen.register(LAKE, createLake(-0.5F));
     }
 
     @SubscribeEvent
@@ -367,20 +371,45 @@ public final class TropicraftBiomes {
                 .build();
     }
 
-    private Biome createTropicsRiver() {
+    private Biome createLake(float depth) {
         BiomeGenerationSettings.Builder generation = defaultGeneration()
                 .withSurfaceBuilder(surfaces.sandy);
 
         carvers.addLand(generation);
 
         features.addTropicsFlowers(generation);
+        features.addRegularSeagrass(generation);
+        generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, features.mangroveReeds);
 
         MobSpawnInfo.Builder spawns = defaultSpawns();
         addRiverWaterCreatures(spawns);
 
         return new Biome.Builder()
                 .precipitation(Biome.RainType.RAIN)
-                .depth(-0.7F).scale(0.05F)
+                .depth(depth).scale(0.05F)
+                .temperature(1.5F).downfall(1.25F)
+                .category(Biome.Category.RIVER)
+                .withGenerationSettings(generation.build())
+                .withMobSpawnSettings(spawns.build())
+                .setEffects(defaultAmbience(false).build())
+                .build();
+    }
+
+    private Biome createTropicsRiver(float depth) {
+        BiomeGenerationSettings.Builder generation = defaultGeneration()
+                .withSurfaceBuilder(surfaces.sandy);
+
+        carvers.addLand(generation);
+
+        features.addTropicsFlowers(generation);
+        features.addRegularSeagrass(generation);
+
+        MobSpawnInfo.Builder spawns = defaultSpawns();
+        addRiverWaterCreatures(spawns);
+
+        return new Biome.Builder()
+                .precipitation(Biome.RainType.RAIN)
+                .depth(depth).scale(0.05F)
                 .temperature(1.5F).downfall(1.25F)
                 .category(Biome.Category.RIVER)
                 .withGenerationSettings(generation.build())
