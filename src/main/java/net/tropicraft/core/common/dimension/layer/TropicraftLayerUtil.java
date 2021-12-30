@@ -28,6 +28,7 @@ public class TropicraftLayerUtil {
         IAreaFactory<T> zoomLayer = ZoomLayer.NORMAL.apply(context.apply(2000), addIslandLayer);
 
         IAreaFactory<T> oceanLayer = new TropicraftAddInlandLayer(20, biomeIds).apply(context.apply(9), zoomLayer);
+        oceanLayer = new TropicraftLagoonifyLayer(biomeIds).apply(context.apply(15), oceanLayer);
         oceanLayer = ZoomLayer.NORMAL.apply(context.apply(9), oceanLayer);
         addIslandLayer = TropicraftAddIslandLayer.rainforest13(biomeIds).apply(context.apply(6), oceanLayer);
         zoomLayer = ZoomLayer.NORMAL.apply(context.apply(2001), addIslandLayer);

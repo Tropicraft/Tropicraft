@@ -20,6 +20,7 @@ public final class TropicraftBiomeIds {
     public final int overgrownMangroves;
     public final int osaRainforest;
     public final int lake;
+    public final int lagoon;
 
     public TropicraftBiomeIds(Registry<Biome> biomes) {
         this.ocean = getId(biomes, TropicraftBiomes.TROPICS_OCEAN);
@@ -36,6 +37,7 @@ public final class TropicraftBiomeIds {
         this.overgrownMangroves = getId(biomes, TropicraftBiomes.OVERGROWN_MANGROVES);
         this.osaRainforest = getId(biomes, TropicraftBiomes.OSA_RAINFOREST);
         this.lake = getId(biomes, TropicraftBiomes.LAKE);
+        this.lagoon = getId(biomes, TropicraftBiomes.LAGOON);
     }
 
     private static int getId(Registry<Biome> biomes, RegistryKey<Biome> key) {
@@ -44,6 +46,10 @@ public final class TropicraftBiomeIds {
 
     public boolean isOcean(final int biome) {
         return biome == this.ocean || biome == this.kelpForest;
+    }
+
+    public boolean isRiverExluclded(final int biome) {
+        return biome == this.ocean || biome == this.kelpForest || biome == this.lagoon;
     }
 
     public boolean isRiver(final int biome) {

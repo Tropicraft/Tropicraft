@@ -53,6 +53,7 @@ public final class TropicraftBiomes {
     public static final RegistryKey<Biome> OVERGROWN_MANGROVES = key("overgrown_mangroves");
     public static final RegistryKey<Biome> OSA_RAINFOREST = key("osa_rainforest");
     public static final RegistryKey<Biome> LAKE = key("lake");
+    public static final RegistryKey<Biome> LAGOON = key("lagoon");
 
     private static RegistryKey<Biome> key(String id) {
         return RegistryKey.getOrCreateKey(Registry.BIOME_KEY, new ResourceLocation(Constants.MODID, id));
@@ -68,6 +69,7 @@ public final class TropicraftBiomes {
 
     public final Biome tropicsOcean;
     public final Biome kelpForest;
+    public final Biome lagoon;
 
     public final Biome tropicsRiver;
 
@@ -105,6 +107,7 @@ public final class TropicraftBiomes {
         this.osaRainforest = worldgen.register(OSA_RAINFOREST, createOsaRainforest(0.25F, 0.1F));
 
         this.lake = worldgen.register(LAKE, createLake(-0.5F));
+        this.lagoon = worldgen.register(LAGOON, createLagoon());
     }
 
     @SubscribeEvent
@@ -311,6 +314,38 @@ public final class TropicraftBiomes {
                 .withGenerationSettings(generation.build())
                 .withMobSpawnSettings(spawns.build())
                 .setEffects(defaultAmbience(true).build())
+                .build();
+    }
+
+    private Biome createLagoon() {
+        BiomeGenerationSettings.Builder generation = defaultGeneration()
+                .withSurfaceBuilder(surfaces.sandy);
+
+        carvers.addUnderwater(generation);
+
+        features.addTropicsMetals(generation);
+
+        generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.WARM_OCEAN_VEGETATION);
+        generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.KELP_COLD);
+
+        generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.SEAGRASS_WARM);
+        features.addUndergroundSeagrass(generation);
+
+        generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.SEA_PICKLE);
+        features.addUndergroundPickles(generation);
+
+        MobSpawnInfo.Builder spawns = defaultSpawns();
+        this.addOceanWaterCreatures(spawns);
+        spawns.withSpawner(EntityClassification.AMBIENT, new MobSpawnInfo.Spawners(TropicraftEntities.FAILGULL.get(), 15, 5, 10));
+
+        return new Biome.Builder()
+                .precipitation(Biome.RainType.RAIN)
+                .depth(-0.325F).scale(0.025F)
+                .temperature(1.5F).downfall(1.25F)
+                .category(Biome.Category.OCEAN)
+                .withGenerationSettings(generation.build())
+                .withMobSpawnSettings(spawns.build())
+                .setEffects(defaultAmbience(false).build())
                 .build();
     }
 

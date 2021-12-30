@@ -17,7 +17,7 @@ public final class TropicraftRiverMixLayer implements IAreaTransformer2, IDimOff
         final int biome = parent1.getValue(getOffsetX(x), getOffsetZ(y));
         final int river = parent2.getValue(getOffsetX(x), getOffsetZ(y));
 
-        if (!biomeIds.isOcean(biome)) {
+        if (!biomeIds.isRiverExluclded(biome)) {
             if (biomeIds.isRiver(river)) {
                 return river;
             }
