@@ -13,7 +13,7 @@ import net.minecraft.client.model.geom.builders.*;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 
 public class KoaModel extends HumanoidModel<EntityKoaBase> {
-    //TODO: 1.17 has completly broken this so IDk if its needed as it had the renderSystem cull call commented
+    //TODO [1.17]: has completly broken this so IDk if its needed as it had the renderSystem cull call commented
 //    private static class ModelRendererCull extends ModelPart {
 //
 //        public ModelRendererCull(Model model, int texOffX, int texOffY) {

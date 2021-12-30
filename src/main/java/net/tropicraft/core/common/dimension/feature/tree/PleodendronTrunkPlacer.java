@@ -84,7 +84,7 @@ public class PleodendronTrunkPlacer extends TrunkPlacer {
                 //setBlock(world, local, config.trunkProvider.getState(random, local).setValue(RotatedPillarBlock.AXIS, axis), bounds);
                 pBlockSetter.accept(local, config.trunkProvider.getState(random, local).setValue(RotatedPillarBlock.AXIS, axis));
 
-                //TODO [PORT]: Um idk if this is still needed
+                //TODO [1.17]: Um idk if this is still needed
                 //logs.add(local);
 
                 // Add leaves around the branch

@@ -81,7 +81,7 @@ public class TropiBeeModel extends BeeModel<TropiBeeEntity> {
         return modelData;
     }
 
-    //TODO: CHECK IF THIS IS WORKING PROPERLY AS BEFORE IT MAY HAVE BEEN CORRECT
+    //TODO [1.17]: CHECK IF THIS IS WORKING PROPERLY AS BEFORE IT MAY HAVE BEEN CORRECT
     public ModelPart getBody() {
         ModelPart bone = null;
         for (ModelPart b : bodyParts()) {

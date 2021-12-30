@@ -32,7 +32,7 @@ public final class PapayaFoliagePlacer extends FoliagePlacer {
         return TropicraftFoliagePlacers.PAPAYA.get();
     }
 
-    //TODO [PORT]: Double check that this is correctly ported for the changes with trees
+    //TODO [1.17]: Double check that this is correctly ported for the changes with trees
     @Override
     protected void createFoliage(LevelSimulatedReader pLevel, BiConsumer<BlockPos, BlockState> pBlockSetter, Random pRandom, TreeConfiguration pConfig, int pMaxFreeTreeHeight, FoliageAttachment pAttachment, int pFoliageHeight, int pFoliageRadius, int pOffset) {
         this.placeLeavesRow(pLevel, pBlockSetter, pRandom, pConfig, pAttachment.pos(), 1, 1, pAttachment.doubleTrunk());

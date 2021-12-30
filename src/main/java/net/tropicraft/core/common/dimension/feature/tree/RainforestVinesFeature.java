@@ -32,7 +32,7 @@ public class RainforestVinesFeature extends Feature<RainforestVinesConfig> {
 
         BlockPos.MutableBlockPos mutablePos = pos.mutable();
 
-        //TODO [PORT]: This must be fixed but this will allow for testing other features while this is getting a fix {Error: We are asking a region for a chunk out of bound}
+        //TODO [1.17]: This must be fixed but this will allow for testing other features while this is getting a fix {Error: We are asking a region for a chunk out of bound}
         //try {
             int maxY = Math.min(pos.getY() + config.height, world.getHeight());
             for (int y = pos.getY(); y < maxY; ++y) {

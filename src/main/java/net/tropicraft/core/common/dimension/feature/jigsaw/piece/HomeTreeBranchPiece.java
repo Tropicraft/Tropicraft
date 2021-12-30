@@ -226,7 +226,6 @@ public final class HomeTreeBranchPiece extends StructurePoolElement implements P
         return TYPE;
     }
 
-    //TODO [PORT]: DOUBLE CHECK THIS IS CORRECT
     @Override
     public Vec3i getSize(StructureManager pStructureManager, Rotation pRotation) {
         return new Vec3i(MAX_SIZE, MAX_SIZE, MAX_SIZE);

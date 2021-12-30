@@ -381,7 +381,7 @@ public final class TropicraftConfiguredFeatures {
             return feature.decorated(Features.Decorators.TOP_SOLID_HEIGHTMAP_SQUARE).count(2);
         });
 
-        //TODO [PORT]: Double check that the ore gen ranges are correct
+        //TODO [1.17]: Double check that the ore gen ranges are correct
 
         this.azurite = features.register("azurite", Feature.ORE, f -> {
             return f.configured(new OreConfiguration(OreConfiguration.Predicates.NATURAL_STONE, TropicraftBlocks.AZURITE_ORE.get().defaultBlockState(), 8))

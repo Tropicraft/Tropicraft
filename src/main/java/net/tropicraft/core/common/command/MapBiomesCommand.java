@@ -57,7 +57,7 @@ public class MapBiomesCommand {
     }
 
     private static int execute(CommandSourceStack source) {
-        //TODO [PORT]: MAY NOT BE WORKING
+        //TODO [1.17]: MAY NOT BE WORKING
 
         if (!source.getLevel().dimension().equals(TropicraftDimension.WORLD)) {
             source.sendFailure(new TextComponent("Can't execute this in non-tropicraft world!"));

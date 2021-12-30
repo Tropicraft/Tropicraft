@@ -20,7 +20,7 @@ public final class TropicraftConfiguredCarvers {
     public final ConfiguredWorldCarver<?> underwaterCave;
     public final ConfiguredWorldCarver<?> underwaterCanyon;
 
-    //TODO [PORT]: I attempted to do a 1-1 port but I have yet to find out if it is correct within 1.17
+    //TODO [1.17]: I attempted to do a 1-1 port but I have yet to find out if it is correct within 1.17
 
     public static CaveCarverConfiguration tropicraftCaveCarverConfig = new CaveCarverConfiguration(0.25F,
             BiasedToBottomHeight.of(VerticalAnchor.absolute(0), VerticalAnchor.absolute(248), 8),

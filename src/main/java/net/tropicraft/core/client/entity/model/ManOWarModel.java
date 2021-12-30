@@ -7,7 +7,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.tropicraft.core.common.entity.underdasea.ManOWarEntity;
 
-//TODO: Fixed by using fixed values instead of using the values based off of DERP
+//TODO [1.17]: Fixed by using fixed values instead of using the values based off of DERP
 public class ManOWarModel extends ListModel<ManOWarEntity> {
     ModelPart Body;
     ModelPart CenterTent;

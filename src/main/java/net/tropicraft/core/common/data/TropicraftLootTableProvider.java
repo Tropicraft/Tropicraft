@@ -151,7 +151,7 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             dropItemsWithEnchantBonus(entity, loot.get(), range);
         }
 
-        // TODO: MAY BE INCORRECT IN PORTING THIS METHOD
+        // TODO [1.17]: MAY BE INCORRECT IN PORTING THIS METHOD
         // Drops several items that are affected by Enchantment
         // Looting will at most double yield with Looting III
         public <T extends LivingEntity> void dropItemsWithEnchantBonus(RegistryObject<EntityType<T>> entity, Item loot, NumberProvider range) {
