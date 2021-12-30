@@ -13,8 +13,8 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
-import net.tropicraft.core.common.TropicsConfigs;
 import net.tropicraft.core.common.block.TropicraftBlocks;
+import net.tropicraft.core.common.config.TropicraftConfig;
 import net.tropicraft.core.common.dimension.chunk.VolcanoGenerator;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.projectile.LavaBallEntity;
@@ -52,7 +52,7 @@ public class VolcanoTileEntity extends TileEntity implements ITickableTileEntity
 
 	@Override
 	public void tick() {
-		if (!TropicsConfigs.allowVolcanoEruption)
+		if (!TropicraftConfig.allowVolcanoEruption.get())
 		{
 			return;
 		}

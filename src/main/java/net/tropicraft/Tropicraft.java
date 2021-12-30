@@ -1,6 +1,7 @@
 package net.tropicraft;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.google.common.reflect.Reflection;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.block.Block;
@@ -18,11 +19,13 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.*;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
@@ -39,6 +42,7 @@ import net.tropicraft.core.common.block.TropicraftFlower;
 import net.tropicraft.core.common.block.tileentity.TropicraftTileEntityTypes;
 import net.tropicraft.core.common.command.CommandTropicsTeleport;
 import net.tropicraft.core.common.command.debug.MapBiomesCommand;
+import net.tropicraft.core.common.config.TropicraftConfig;
 import net.tropicraft.core.common.data.*;
 import net.tropicraft.core.common.data.loot.TropicraftLootConditions;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
@@ -71,6 +75,9 @@ import net.tropicraft.core.common.item.scuba.ScubaGogglesItem;
 import net.tropicraft.core.common.network.TropicraftPackets;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 @Mod(Constants.MODID)
@@ -82,6 +89,14 @@ public class Tropicraft {
         }
     });
 
+    private static final ForgeConfigSpec SERVER_CONFIG;
+
+    static {
+        ForgeConfigSpec.Builder configBuilder = new ForgeConfigSpec.Builder();
+        setupConfig(configBuilder);
+        SERVER_CONFIG = configBuilder.build();
+    }
+
     public Tropicraft() {
         // Compatible with all versions that match the semver (excluding the qualifier e.g. "-beta+42")
         ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> Pair.of(Tropicraft::getCompatVersion, (s, v) -> Tropicraft.isCompatibleVersion(s)));
@@ -90,6 +105,8 @@ public class Tropicraft {
         // General mod setup
         modBus.addListener(this::setup);
         modBus.addListener(this::gatherData);
+
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, SERVER_CONFIG);
 
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
             // Client setup
@@ -127,6 +144,66 @@ public class Tropicraft {
                     .put(TropicraftItems.BAMBOO_ITEM_FRAME.getId(), frameState)
                     .build();
         });
+    }
+
+    private static void setupConfig(ForgeConfigSpec.Builder builder) {
+        builder.comment(" Welcome to the Tropicraft per-world configuration!");
+        builder.push(" Overworld Generation Values");
+
+        TropicraftConfig.palmTreeDensityInOverworld = builder.comment(" Higher number = more palm trees generate closer together in the overworld")
+            .defineInRange("palm_tree_density_overworld", 1, 1, 5);
+
+        TropicraftConfig.generatePalmTreesInOverworld = getBooleanConfig(builder,
+                "Should Tropicraft palm trees generate in the overworld? NOTE: You need these to get to the tropics dimension",
+                "generate_palm_trees_in_overworld",
+                true);
+
+        TropicraftConfig.generatePalmTreesInOverworldBeachesOnly = getBooleanConfig(builder,
+                "In the overworld, should Tropicraft palms only generate in beach biomes?",
+                "generate_palm_trees_in_overworld_beaches_only",
+                false);
+
+        TropicraftConfig.generateEIHInOverworld = getBooleanConfig(builder,
+                "In the overworld, should Easter Island Head statues generate?",
+                "generate_eih_in_overworld",
+                false);
+
+        TropicraftConfig.generateTropicraftFlowersInOverworld = getBooleanConfig(builder,
+                "In the overworld, should Tropicraft flowers generate?",
+                "generate_tropicraft_flowers_in_overworld",
+                false);
+
+        TropicraftConfig.generatePineapplesInOverworld = getBooleanConfig(builder,
+                "In the overworld, should pineapples generate? NOTE: You need these to get to the tropics dimension",
+                "generate_pineapples_in_overworld",
+                true);
+
+        builder.pop();
+        builder.push(" Behavior settings");
+        TropicraftConfig.allowVolcanoEruption = getBooleanConfig(builder,
+                "Should Tropicraft volanoes erupt, spewing lava everywhere over the land?",
+                "allow_volcano_eruption",
+              true);
+
+        builder.pop();
+        builder.push(" User-specific settings");
+
+        TropicraftConfig.coconutBombWhitelist = builder.comment(" List of UUIDs (not usernames) of users that can use coconut bombs. These are DANGEROUS and EXPLOSIVE so give this power out wisely.")
+            .defineList("coconut_bomb_whitelist", Lists.newArrayList(""), entry -> {
+                if (!(entry instanceof String)) {
+                    return false;
+                }
+                try {
+                    UUID.fromString((String) entry);
+                    return true;
+                } catch (IllegalArgumentException e) {
+                    return false;
+                }
+            });
+    }
+
+    private static ForgeConfigSpec.BooleanValue getBooleanConfig(final ForgeConfigSpec.Builder builder, final String comment, final String id, final boolean value) {
+        return builder.comment(" " + comment).define(id, value);
     }
 
     private static final Pattern QUALIFIER = Pattern.compile("-\\w+\\+\\d+");
