@@ -20,7 +20,6 @@ public class AshenModel extends ListModel<AshenEntity> implements ArmedModel {
     public ModelPart leftLeg;
     public ModelPart body;
     public ModelPart head;
-    public ModelPart mask;
     public ModelPart rightArm;
     public ModelPart leftArm;
     public ModelPart rightArmSub;
@@ -37,7 +36,6 @@ public class AshenModel extends ListModel<AshenEntity> implements ArmedModel {
         this.leftLeg = root.getChild("left_leg");
         this.body = root.getChild("body");
         this.head = root.getChild("head");
-        //this.mask = root.getChild("mask");
         this.rightArm = root.getChild("right_arm");
         this.leftArm = root.getChild("left_arm");
         this.rightArmSub = this.rightArm.getChild("right_arm_sub");
@@ -150,7 +148,7 @@ public class AshenModel extends ListModel<AshenEntity> implements ArmedModel {
         final float subStraight = 1.570795F;
 
         switch (actionState) {
-            case LOST_MASK:                                             //Mask off
+            case LOST_MASK -> {                                             //Mask off
                 headAngle = -0.4F;
                 rightArm.zRot = -armRotater;
                 rightArmSub.zRot = -5.1F;
@@ -160,8 +158,8 @@ public class AshenModel extends ListModel<AshenEntity> implements ArmedModel {
                 rightArm.xRot = subStraight;
                 rightArm.yRot = -.5F;
                 leftArm.yRot = .5F;
-                break;
-            case HOSTILE:
+            }
+            case HOSTILE -> {
                 headAngle = 0.0F;
                 leftArm.xRot = 1.65F + limbSwing / 125F;
                 leftArm.yRot = .9F + limbSwingAmount / 125F;
@@ -170,14 +168,13 @@ public class AshenModel extends ListModel<AshenEntity> implements ArmedModel {
                 rightArm.zRot = 0.0F - Mth.sin(limbSwingAmount * 0.75F) * 0.0220F;
                 rightArm.yRot = 0.0F;
                 rightArmSub.zRot = 0.0F;
-
                 if (swinging) {
                     rightArm.xRot += Mth.sin(limbSwingAmount * 0.75F) * 0.0520F;
                 } else {
                     rightArm.xRot = 0.0F;
                 }
-                break;
-            default:
+            }
+            default -> {
                 headAngle = 0;
                 rightArm.zRot = -armRotater;
                 rightArmSub.zRot = -subStraight;
@@ -185,7 +182,7 @@ public class AshenModel extends ListModel<AshenEntity> implements ArmedModel {
                 leftArmSub.zRot = subStraight;
                 rightArm.yRot = 0F;
                 leftArm.yRot = 0F;
-                break;
+            }
         }
 
         leftArm.zRot += Mth.sin(ageInTicks * 0.25F) * 0.020F;

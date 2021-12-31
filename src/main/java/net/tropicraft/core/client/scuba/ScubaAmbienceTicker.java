@@ -11,6 +11,7 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.level.material.FogType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
@@ -38,7 +39,7 @@ public class ScubaAmbienceTicker {
             Entity renderViewEntity = mc.getCameraEntity();
             if (renderInfo != null && renderViewEntity instanceof Player) {
                 Player player = (Player) renderViewEntity;
-                if (renderInfo.getFluidInCamera().is(FluidTags.WATER) && player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ScubaArmorItem) {
+                if (renderInfo.getFluidInCamera() == FogType.WATER && player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ScubaArmorItem) {
                     if (ScubaData.getDepth(player) < 60) {
                         play(SHALLOW_SCUBA);
                         return;

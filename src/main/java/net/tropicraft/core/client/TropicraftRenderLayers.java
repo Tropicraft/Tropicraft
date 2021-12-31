@@ -5,12 +5,14 @@ import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.core.client.entity.model.*;
 import net.tropicraft.core.client.entity.render.HummingbirdRenderer;
+import net.tropicraft.core.client.scuba.ModelScubaGear;
 import net.tropicraft.core.common.item.AshenMaskItem;
 import net.tropicraft.core.common.item.TropicraftItems;
 
@@ -67,6 +69,10 @@ public class TropicraftRenderLayers {
     public static ModelLayerLocation TAPIR_LAYER;
     public static ModelLayerLocation SPIDER_MONKEY_LAYER;
     public static ModelLayerLocation WHITE_LIPPED_PECCARY_LAYER;
+    public static ModelLayerLocation CHEST_SCUBA_LAYER;
+    public static ModelLayerLocation FEET_SCUBA_LAYER;
+    public static ModelLayerLocation HEAD_SCUBA_LAYER;
+    public static ModelLayerLocation TANK_SCUBA_LAYER;
 
     @SubscribeEvent
     public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
@@ -127,13 +133,25 @@ public class TropicraftRenderLayers {
 
         STACHE_LAYER = registerMain("nigel_stache", PlayerHeadpieceModel::create, event);
 
+        HEAD_SCUBA_LAYER = registerMain("scuba_goggles", ModelScubaGear::create, event);
+        CHEST_SCUBA_LAYER = registerMain("scuba_harness", ModelScubaGear::create, event);
+        FEET_SCUBA_LAYER = registerMain("scuba_flippers", ModelScubaGear::create, event);
+        TANK_SCUBA_LAYER = registerMain("pony_bottle", ModelScubaGear::create, event);
 
+        setupScubaGearModels();
     }
-
 
     private static ModelLayerLocation registerMain(String id, Supplier<LayerDefinition> layerDefinition, EntityRenderersEvent.RegisterLayerDefinitions event) {
         ModelLayerLocation modelLayer = new ModelLayerLocation(new ResourceLocation(Constants.MODID, id), "main");
         event.registerLayerDefinition(modelLayer, layerDefinition);
         return modelLayer;
+    }
+
+    public static void setupScubaGearModels(){
+        ModelScubaGear.HEAD = ModelScubaGear.createModel(HEAD_SCUBA_LAYER, null, EquipmentSlot.HEAD);
+        ModelScubaGear.CHEST = ModelScubaGear.createModel(CHEST_SCUBA_LAYER, null, EquipmentSlot.CHEST);
+        ModelScubaGear.FEET = ModelScubaGear.createModel(FEET_SCUBA_LAYER, null, EquipmentSlot.FEET);
+
+        ModelScubaGear.tankModel = ModelScubaGear.createModel(TANK_SCUBA_LAYER, null, EquipmentSlot.CHEST);
     }
 }

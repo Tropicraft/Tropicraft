@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartNames;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.world.entity.Entity;
 
@@ -29,6 +30,24 @@ public class CuberaModel<T extends Entity> extends EntityModel<T> {
     public boolean inWater;
 
     public CuberaModel(ModelPart root) {
+        body_base = root.getChild(PartNames.BODY);
+        fin_anal = root.getChild("fin_anal");
+        fin_pelvic_right = root.getChild("fin_pelvic_right");
+        fin_pelvic_right_r1 = root.getChild("fin_pelvic_right_r1");
+        fin_pelvic_left = root.getChild("fin_pelvic_left");
+        fin_pelvic_left_r1 = root.getChild("fin_pelvic_left_r1");
+        fin_pectoral_left = root.getChild("fin_pectoral_left");
+        fin_pectoral_right = root.getChild("fin_pectoral_right");
+        fin_dorsal = root.getChild("fin_dorsal");
+        body_connection = root.getChild("body_connection");
+        jaw_lower = root.getChild("jaw_lower");
+        head_base = root.getChild(PartNames.HEAD);
+        head_snout = root.getChild("head_snout");
+        head_snout_r1 = root.getChild("head_snout_r1");
+        tail_base = root.getChild(PartNames.TAIL);
+        tail_main = root.getChild("tail_main");
+        fin_tail = root.getChild(PartNames.TAIL_FIN);
+
         texWidth = 64;
         texHeight = 64;
 
