@@ -2,17 +2,17 @@ package net.tropicraft.core.common.dimension.feature.jigsaw;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.Direction.AxisDirection;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.level.levelgen.structure.templatesystem.GravityProcessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.tropicraft.Constants;
@@ -40,21 +40,21 @@ public class SmoothingGravityProcessor extends PathStructureProcessor {
     }
 
     @Override
-    public StructureBlockInfo process(LevelReader world, BlockPos seedPos, BlockPos pos2, StructureBlockInfo originalBlockInfo, StructureBlockInfo blockInfo, StructurePlaceSettings placementSettingsIn, StructureTemplate template) {
-        Axis pathDir = getPathDirection(seedPos, blockInfo, placementSettingsIn, template);
+    public StructureBlockInfo process(LevelReader level, BlockPos seedPos, BlockPos pos2, StructureBlockInfo originalBlockInfo, StructureBlockInfo blockInfo, StructurePlaceSettings placementSettingsIn, StructureTemplate template) {
+        Axis pathDir = getPathDirection(level, seedPos, blockInfo, placementSettingsIn, template);
         if (pathDir == null) {
             pathDir = Axis.X; // Better than nothing
         }
         BlockPos pos = blockInfo.pos;
         BlockPos posForward = pos.relative(Direction.get(AxisDirection.POSITIVE, pathDir));
         BlockPos posBackward = pos.relative(Direction.get(AxisDirection.NEGATIVE, pathDir));
-        int heightForward = world.getHeight(heightmap, posForward.getX(), posForward.getZ()) + offset;
-        int heightBackward = world.getHeight(heightmap, posBackward.getX(), posBackward.getZ()) + offset;
-        int height = world.getHeight(heightmap, pos.getX(), pos.getZ()) + offset;
+        int heightForward = level.getHeight(heightmap, posForward.getX(), posForward.getZ()) + offset;
+        int heightBackward = level.getHeight(heightmap, posBackward.getX(), posBackward.getZ()) + offset;
+        int height = level.getHeight(heightmap, pos.getX(), pos.getZ()) + offset;
         if (heightForward > height && heightBackward > height) {
             return new StructureBlockInfo(new BlockPos(pos.getX(), Math.min(heightForward, heightBackward), pos.getZ()), blockInfo.state, blockInfo.nbt);
         }
-        return baseline.process(world, seedPos, pos2, originalBlockInfo, blockInfo, placementSettingsIn, template);
+        return baseline.process(level, seedPos, pos2, originalBlockInfo, blockInfo, placementSettingsIn, template);
     }
 
     @Override

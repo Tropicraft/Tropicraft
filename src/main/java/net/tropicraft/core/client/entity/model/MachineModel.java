@@ -7,11 +7,11 @@ import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.resources.ResourceLocation;
-import net.tropicraft.core.common.block.tileentity.IMachineTile;
+import net.tropicraft.core.common.block.tileentity.IMachineBlock;
 
 import java.util.function.Function;
 
-public abstract class MachineModel<T extends BlockEntity & IMachineTile> extends Model {
+public abstract class MachineModel<T extends BlockEntity & IMachineBlock> extends Model {
     public MachineModel(Function<ResourceLocation, RenderType> renderTypeIn) {
         super(renderTypeIn);
     }

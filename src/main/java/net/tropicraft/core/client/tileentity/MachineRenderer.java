@@ -13,9 +13,9 @@ import net.minecraft.util.Mth;
 import com.mojang.math.Vector3f;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.MachineModel;
-import net.tropicraft.core.common.block.tileentity.IMachineTile;
+import net.tropicraft.core.common.block.tileentity.IMachineBlock;
 
-public abstract class MachineRenderer<T extends BlockEntity & IMachineTile> extends BlockEntityRenderer<T> {
+public abstract class MachineRenderer<T extends BlockEntity & IMachineBlock> extends BlockEntityRenderer<T> {
     private final Block block;
     protected final MachineModel<T> model;
 

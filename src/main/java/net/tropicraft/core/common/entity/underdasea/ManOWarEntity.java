@@ -1,38 +1,36 @@
 package net.tropicraft.core.common.entity.underdasea;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.entity.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.WaterAnimal;
-import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EntitySelector;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import java.util.List;
-
-import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MoverType;
-import net.minecraft.world.entity.Pose;
 
 public class ManOWarEntity extends WaterAnimal {
     public float squidPitch;
@@ -78,11 +76,6 @@ public class ManOWarEntity extends WaterAnimal {
     @Override
     protected float getSoundVolume() {
         return 0.4F;
-    }
-
-    @Override
-    protected boolean isMovementNoisy() {
-        return false;
     }
 
     @Override
@@ -154,11 +147,11 @@ public class ManOWarEntity extends WaterAnimal {
             }
 
             Vec3 motion = this.getDeltaMovement();
-            float lvt_2_1_ = Mth.sqrt(getHorizontalDistanceSqr(motion));
+            double horizontalDistance = motion.horizontalDistance();
             this.yBodyRot += (-((float)Mth.atan2(motion.x, motion.z)) * 57.295776F - this.yBodyRot) * 0.1F;
-            this.yRot = this.yBodyRot;
+            this.setYRot(this.yBodyRot);
             this.squidYaw = (float)((double)this.squidYaw + 3.141592653589793D * (double)this.rotateSpeed * 1.5D);
-            this.squidPitch += (-((float)Mth.atan2(lvt_2_1_, motion.y)) * 57.295776F - this.squidPitch) * 0.1F;
+            this.squidPitch += (-((float)Mth.atan2(horizontalDistance, motion.y)) * 57.295776F - this.squidPitch) * 0.1F;
         } else {
             this.tentacleAngle = Mth.abs(Mth.sin(this.squidRotation)) * 3.1415927F * 0.25F;
             if (!this.level.isClientSide) {

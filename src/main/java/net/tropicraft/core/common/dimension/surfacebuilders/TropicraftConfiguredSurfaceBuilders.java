@@ -1,14 +1,14 @@
 package net.tropicraft.core.common.dimension.surfacebuilders;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.LazyLoadedValue;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.surfacebuilders.ConfiguredSurfaceBuilder;
-import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderConfiguration;
 import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderBaseConfiguration;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderConfiguration;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.BlockTropicraftSand;
 import net.tropicraft.core.common.block.TropicraftBlocks;
@@ -43,7 +43,7 @@ public final class TropicraftConfiguredSurfaceBuilders {
         );
 
         this.mangrove = surfaceBuilders.register("mangrove", TropicraftSurfaceBuilders.MANGROVE, new SurfaceBuilderBaseConfiguration(grass, dirt, dirt));
-        this.osaRainforest = surfaceBuilders.register("osa_rainforest", TropicraftSurfaceBuilders.OSA_RAINFOREST, new SurfaceBuilderConfig(grass, dirt, dirt));
+        this.osaRainforest = surfaceBuilders.register("osa_rainforest", TropicraftSurfaceBuilders.OSA_RAINFOREST, new SurfaceBuilderBaseConfiguration(grass, dirt, dirt));
     }
 
     static final class Register {

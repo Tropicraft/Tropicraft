@@ -6,11 +6,12 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.JigsawBlock;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.FrontAndTop;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.SharedSeedRandom;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.ISeedReader;
@@ -18,12 +19,18 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.jigsaw.IJigsawDeserializer;
 import net.minecraft.world.gen.feature.jigsaw.JigsawOrientation;
-import net.minecraft.world.gen.feature.jigsaw.JigsawPiece;
-import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.template.Template;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.JigsawBlock;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.JigsawBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.structures.StructurePoolElement;
+import net.minecraft.world.level.levelgen.feature.structures.StructurePoolElementType;
 import net.minecraft.world.level.levelgen.feature.structures.StructureTemplatePool;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraftforge.common.util.Constants.BlockFlags;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
@@ -33,7 +40,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
 
-public final class HomeTreeBranchPiece extends JigsawPiece implements PieceWithGenerationBounds {
+public final class HomeTreeBranchPiece extends StructurePoolElement implements PieceWithGenerationBounds {
     public static final Codec<HomeTreeBranchPiece> CODEC = RecordCodecBuilder.create(instance -> {
         return instance.group(
                 Codec.FLOAT.fieldOf("min_angle").forGetter(c -> c.minAngle),
@@ -44,7 +51,7 @@ public final class HomeTreeBranchPiece extends JigsawPiece implements PieceWithG
     private static final int MAX_SIZE = 32;
     private static final Direction.Axis[] ALL_AXIS = Direction.Axis.values();
 
-    private static final IJigsawDeserializer<HomeTreeBranchPiece> TYPE = IJigsawDeserializer.func_236851_a_(Constants.MODID + ":home_tree_branch", CODEC);
+    private static final StructurePoolElementType<HomeTreeBranchPiece> TYPE = StructurePoolElementType.register(Constants.MODID + ":home_tree_branch", CODEC);
 
     private static final CompoundTag JIGSAW_NBT = createJigsawNbt();
 
@@ -73,28 +80,28 @@ public final class HomeTreeBranchPiece extends JigsawPiece implements PieceWithG
     }
 
     @Override
-    public List<Template.BlockInfo> getJigsawBlocks(TemplateManager templates, BlockPos pos, Rotation rotation, Random random) {
-        JigsawOrientation orientation = JigsawOrientation.func_239641_a_(Direction.DOWN, Direction.SOUTH);
-        BlockState state = Blocks.JIGSAW.getDefaultState().with(JigsawBlock.ORIENTATION, orientation);
-        return ImmutableList.of(new Template.BlockInfo(pos, state, JIGSAW_NBT));
+    public List<StructureTemplate.StructureBlockInfo> getShuffledJigsawBlocks(StructureManager templates, BlockPos pos, Rotation rotation, Random random) {
+        FrontAndTop orientation = FrontAndTop.fromFrontAndTop(Direction.DOWN, Direction.SOUTH);
+        BlockState state = Blocks.JIGSAW.defaultBlockState().setValue(JigsawBlock.ORIENTATION, orientation);
+        return ImmutableList.of(new StructureTemplate.StructureBlockInfo(pos, state, JIGSAW_NBT));
     }
 
     @Override
-    public MutableBoundingBox getGenerationBounds(TemplateManager templates, BlockPos pos, Rotation rotation) {
-        return new MutableBoundingBox(
+    public BoundingBox getGenerationBounds(StructureManager templates, BlockPos pos, Rotation rotation) {
+        return new BoundingBox(
                 pos.getX() - MAX_SIZE, pos.getY() - MAX_SIZE, pos.getZ() - MAX_SIZE,
                 pos.getX() + MAX_SIZE, pos.getY() + MAX_SIZE, pos.getZ() + MAX_SIZE
         );
     }
 
     @Override
-    public MutableBoundingBox getBoundingBox(TemplateManager templates, BlockPos pos, Rotation rotation) {
+    public BoundingBox getBoundingBox(StructureManager templates, BlockPos pos, Rotation rotation) {
         // hack: return an empty bounding box when running jigsaw assembly so that we can intersect with other branches
-        return new MutableBoundingBox(pos, pos);
+        return new BoundingBox(pos);
     }
 
     @Override
-    public boolean func_230378_a_(TemplateManager templates, ISeedReader world, StructureManager structures, ChunkGenerator generator, BlockPos origin, BlockPos p_230378_6_, Rotation rotation, MutableBoundingBox chunkBounds, Random random, boolean p_230378_10_) {
+    public boolean func_230378_a_(StructureManager templates, ISeedReader world, StructureManager structures, ChunkGenerator generator, BlockPos origin, BlockPos p_230378_6_, Rotation rotation, MutableBoundingBox chunkBounds, Random random, boolean p_230378_10_) {
         SharedSeedRandom rand = new SharedSeedRandom();
         rand.setDecorationSeed(world.getSeed(), origin.getX(), origin.getZ());
 

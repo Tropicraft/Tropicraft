@@ -2,14 +2,8 @@ package net.tropicraft.core.common.block;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import net.minecraft.block.*;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
@@ -46,7 +40,6 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.IItemRenderProperties;
-import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -57,17 +50,16 @@ import net.tropicraft.core.common.Foods;
 import net.tropicraft.core.common.block.TikiTorchBlock.TorchSection;
 import net.tropicraft.core.common.block.huge_plant.HugePlantBlock;
 import net.tropicraft.core.common.block.jigarbov.JigarbovTorchType;
-import net.tropicraft.core.common.block.tileentity.AirCompressorTileEntity;
-import net.tropicraft.core.common.block.tileentity.BambooChestTileEntity;
-import net.tropicraft.core.common.block.tileentity.DrinkMixerTileEntity;
-import net.tropicraft.core.common.block.tileentity.TropicraftTileEntityTypes;
+import net.tropicraft.core.common.block.tileentity.AirCompressorBlockEntity;
+import net.tropicraft.core.common.block.tileentity.BambooChestBlockEntity;
+import net.tropicraft.core.common.block.tileentity.DrinkMixerBlockEntity;
+import net.tropicraft.core.common.block.tileentity.TropicraftBlockEntityTypes;
 
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -149,7 +141,7 @@ public class TropicraftBlocks {
             "chunk_stairs", Builder.stairs(CHUNK));
 
     public static final RegistryObject<Block> COCONUT = register(
-            "coconut", () -> new CoconutBlock(Block.Properties.of(Material.VEGETABLE).strength(2.0f).harvestTool(ToolType.AXE).sound(SoundType.STONE)));
+            "coconut", () -> new CoconutBlock(Block.Properties.of(Material.VEGETABLE).strength(2.0f).sound(SoundType.STONE)));
 
     public static final RegistryObject<SlabBlock> BAMBOO_SLAB = register(
             "bamboo_slab", Builder.slab(BAMBOO_BUNDLE));
@@ -216,7 +208,7 @@ public class TropicraftBlocks {
     public static final RegistryObject<TrapDoorBlock> MANGROVE_TRAPDOOR = register("mangrove_trapdoor", () -> new TrapDoorBlock(Block.Properties.copy(MANGROVE_DOOR.get())) {});
 
     public static final RegistryObject<ReedsBlock> REEDS = register("reeds", () -> new ReedsBlock(Block.Properties.copy(Blocks.SUGAR_CANE)));
-    public static final RegistryObject<PapayaBlock> PAPAYA = registerWithFood("papaya", () -> new PapayaBlock(AbstractBlock.Properties.create(Material.PLANTS).tickRandomly().hardnessAndResistance(0.2F, 3.0F).sound(SoundType.WOOD).notSolid()), Foods.PAPAYA);
+    public static final RegistryObject<PapayaBlock> PAPAYA = registerWithFood("papaya", () -> new PapayaBlock(Block.Properties.of(Material.PLANT).randomTicks().strength(0.2F, 3.0F).sound(SoundType.WOOD).noOcclusion()), Foods.PAPAYA);
 
     public static final RegistryObject<FenceBlock> BAMBOO_FENCE = register("bamboo_fence", Builder.fence(BAMBOO_BUNDLE));
     public static final RegistryObject<FenceBlock> THATCH_FENCE = register("thatch_fence", Builder.fence(THATCH_BUNDLE));
@@ -268,16 +260,16 @@ public class TropicraftBlocks {
     public static final RegistryObject<Block> MANGROVE_BOARDWALK = register("mangrove_boardwalk", () -> new BoardwalkBlock(Block.Properties.copy(MANGROVE_SLAB.get()).noOcclusion()));
 
     public static final RegistryObject<BambooChestBlock> BAMBOO_CHEST = register(
-            "bamboo_chest", () -> new BambooChestBlock(Block.Properties.copy(BAMBOO_BUNDLE.get()).strength(1), () -> TropicraftTileEntityTypes.BAMBOO_CHEST.get()),
-            () -> chestRenderer());
+            "bamboo_chest", () -> new BambooChestBlock(Block.Properties.copy(BAMBOO_BUNDLE.get()).strength(1), TropicraftBlockEntityTypes.BAMBOO_CHEST::get),
+            TropicraftBlocks::chestRenderer);
     public static final RegistryObject<SifterBlock> SIFTER = register(
             "sifter", () -> new SifterBlock(Block.Properties.copy(Blocks.OAK_PLANKS).noOcclusion()));
     public static final RegistryObject<DrinkMixerBlock> DRINK_MIXER = register(
             "drink_mixer", () -> new DrinkMixerBlock(Block.Properties.of(Material.STONE).strength(2, 30).noOcclusion()),
-            () -> drinkMixerRenderer());
+            TropicraftBlocks::drinkMixerRenderer);
     public static final RegistryObject<AirCompressorBlock> AIR_COMPRESSOR = register(
             "air_compressor", () -> new AirCompressorBlock(Block.Properties.of(Material.STONE).strength(2, 30).noOcclusion()),
-            () -> airCompressorRenderer());
+            TropicraftBlocks::airCompressorRenderer);
     public static final RegistryObject<VolcanoBlock> VOLCANO = registerNoItem(
             "volcano", () -> new VolcanoBlock(Block.Properties.copy(Blocks.BEDROCK).noDrops()));
     
@@ -353,7 +345,7 @@ public class TropicraftBlocks {
         return register(name, sup, TropicraftBlocks::itemDefault);
     }
 
-    private static <T extends Block> RegistryObject<T> registerWithFood(String name, Supplier<? extends T> sup, Food foo) {
+    private static <T extends Block> RegistryObject<T> registerWithFood(String name, Supplier<? extends T> sup, FoodProperties food) {
         return register(name, sup, TropicraftBlocks::itemDefault);
     }
     
@@ -401,19 +393,19 @@ public class TropicraftBlocks {
     private static Supplier<BlockItem> item(final RegistryObject<? extends Block> block, final CreativeModeTab itemGroup) {
         return () -> new BlockItem(block.get(), new Item.Properties().tab(itemGroup));
     }
-    
+
     @OnlyIn(Dist.CLIENT)
-    private static Callable<BlockEntityWithoutLevelRenderer> chestRenderer() {
-        return () -> new SimpleItemStackRenderer<>(BambooChestTileEntity::new);
+    private static Supplier<BlockEntityWithoutLevelRenderer> chestRenderer() {
+        return () -> new SimpleItemStackRenderer<>(() -> new BambooChestBlockEntity(BlockPos.ZERO, BAMBOO_CHEST.get().defaultBlockState()));
     }
-    
+
     @OnlyIn(Dist.CLIENT)
-    private static Callable<BlockEntityWithoutLevelRenderer> drinkMixerRenderer() {
-        return () -> new SimpleItemStackRenderer<>(DrinkMixerTileEntity::new);
+    private static Supplier<BlockEntityWithoutLevelRenderer> drinkMixerRenderer() {
+        return () -> new SimpleItemStackRenderer<>(() -> new DrinkMixerBlockEntity(BlockPos.ZERO, DRINK_MIXER.get().defaultBlockState()));
     }
-    
+
     @OnlyIn(Dist.CLIENT)
-    private static Callable<BlockEntityWithoutLevelRenderer> airCompressorRenderer() {
-        return () -> new SimpleItemStackRenderer<>(AirCompressorTileEntity::new);
+    private static Supplier<BlockEntityWithoutLevelRenderer> airCompressorRenderer() {
+        return () -> new SimpleItemStackRenderer<>(() -> new AirCompressorBlockEntity(BlockPos.ZERO, AIR_COMPRESSOR.get().defaultBlockState()));
     }
 }

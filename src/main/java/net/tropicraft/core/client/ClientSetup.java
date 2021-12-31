@@ -25,7 +25,7 @@ import net.tropicraft.core.client.tileentity.BambooChestRenderer;
 import net.tropicraft.core.client.tileentity.DrinkMixerRenderer;
 import net.tropicraft.core.client.tileentity.SifterRenderer;
 import net.tropicraft.core.common.block.TropicraftBlocks;
-import net.tropicraft.core.common.block.tileentity.TropicraftTileEntityTypes;
+import net.tropicraft.core.common.block.tileentity.TropicraftBlockEntityTypes;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.item.AshenMaskItem;
@@ -256,10 +256,10 @@ public class ClientSetup {
     }
 
     public static void setupTileEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerBlockEntityRenderer(TropicraftTileEntityTypes.BAMBOO_CHEST.get(), BambooChestRenderer::new);
-        event.registerBlockEntityRenderer(TropicraftTileEntityTypes.SIFTER.get(), SifterRenderer::new);
-        event.registerBlockEntityRenderer(TropicraftTileEntityTypes.DRINK_MIXER.get(), DrinkMixerRenderer::new);
-        event.registerBlockEntityRenderer(TropicraftTileEntityTypes.AIR_COMPRESSOR.get(), AirCompressorRenderer::new);
+        event.registerBlockEntityRenderer(TropicraftBlockEntityTypes.BAMBOO_CHEST.get(), BambooChestRenderer::new);
+        event.registerBlockEntityRenderer(TropicraftBlockEntityTypes.SIFTER.get(), SifterRenderer::new);
+        event.registerBlockEntityRenderer(TropicraftBlockEntityTypes.DRINK_MIXER.get(), DrinkMixerRenderer::new);
+        event.registerBlockEntityRenderer(TropicraftBlockEntityTypes.AIR_COMPRESSOR.get(), AirCompressorRenderer::new);
     }
 
     public static void setupDimensionRenderInfo() {

@@ -1,13 +1,13 @@
 package net.tropicraft.core.common.network.message;
 
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
+import net.tropicraft.core.common.block.tileentity.AirCompressorBlockEntity;
+
 import java.util.function.Supplier;
 
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.fml.network.NetworkEvent;
-import net.tropicraft.core.common.block.tileentity.AirCompressorTileEntity;
-
-public class MessageAirCompressorInventory extends MessageTileEntity<AirCompressorTileEntity> {
+public class MessageAirCompressorInventory extends MessageTileEntity<AirCompressorBlockEntity> {
 
     private ItemStack tank = ItemStack.EMPTY;
 
@@ -15,7 +15,7 @@ public class MessageAirCompressorInventory extends MessageTileEntity<AirCompress
         super();
     }
 
-    public MessageAirCompressorInventory(AirCompressorTileEntity airCompressor) {
+    public MessageAirCompressorInventory(AirCompressorBlockEntity airCompressor) {
         super(airCompressor);
         this.tank = airCompressor.getTankStack();
     }
@@ -34,7 +34,7 @@ public class MessageAirCompressorInventory extends MessageTileEntity<AirCompress
 
     public static void handle(final MessageAirCompressorInventory message, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            AirCompressorTileEntity compressor = message.getClientTileEntity();
+            AirCompressorBlockEntity compressor = message.getClientTileEntity();
             if (compressor != null) {
                 if (!message.tank.isEmpty()) {
                     compressor.addTank(message.tank);

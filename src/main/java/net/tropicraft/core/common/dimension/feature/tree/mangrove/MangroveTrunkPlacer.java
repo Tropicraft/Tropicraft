@@ -3,10 +3,21 @@ package net.tropicraft.core.common.dimension.feature.tree.mangrove;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.ints.IntArrayFIFOQueue;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.LevelSimulatedRW;
+import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.feature.TreeFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.FancyTrunkPlacer;
+import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.tags.BlockTags;
@@ -227,7 +238,7 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         return setRootsAt(world, pos, this.rootsBlock);
     }
 
-    public static boolean setRootsAt(LevelSimulatedRW world, BlockPos pos, Block rootsBlock) {
+    public static boolean setRootsAt(LevelSimulatedReader world, BlockPos pos, Block rootsBlock) {
         if (isReplaceableAt(world, pos)) {
             BlockState state = rootsBlock.defaultBlockState()
                     .setValue(MangroveRootsBlock.WATERLOGGED, isWaterAt(world, pos));
@@ -238,7 +249,7 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         }
     }
 
-    public static boolean isReplaceableAt(LevelSimulatedRW world, BlockPos pos) {
+    public static boolean isReplaceableAt(LevelSimulatedReader world, BlockPos pos) {
         return world.isStateAtPosition(pos, state -> {
             return state.isAir()
                     || state.is(BlockTags.LEAVES)
@@ -250,7 +261,7 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         });
     }
 
-    public static boolean isWaterAt(LevelSimulatedRW world, BlockPos pos) {
+    public static boolean isWaterAt(LevelSimulatedReader world, BlockPos pos) {
         return world.isStateAtPosition(pos, state -> state.getFluidState().getType() == Fluids.WATER);
     }
 

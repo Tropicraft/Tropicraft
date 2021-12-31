@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.entity.passive;
 
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.util.RandomPos;
@@ -151,7 +152,7 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
 
 	@Nullable
 	@Override
-	public AgableMob getBreedOffspring(ServerLevel world, AgableMob partner) {
+	public AgeableMob getBreedOffspring(ServerLevel world, AgeableMob partner) {
 		return null;
 	}
 

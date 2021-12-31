@@ -1,18 +1,18 @@
 package net.tropicraft.core.common.block.tileentity;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.Containers;
-import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.Containers;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
-import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
 import net.tropicraft.core.common.block.DrinkMixerBlock;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.Drinks;
@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class DrinkMixerTileEntity extends BlockEntity implements TickableBlockEntity, IMachineTile {
+public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock {
     /** Number of ticks to mix */
     private static final int TICKS_TO_MIX = 4*20;
     private static final int MAX_NUM_INGREDIENTS = 3;
@@ -40,15 +40,15 @@ public class DrinkMixerTileEntity extends BlockEntity implements TickableBlockEn
     private boolean mixing;
     public ItemStack result = ItemStack.EMPTY;
 
-    public DrinkMixerTileEntity() {
-        super(TropicraftTileEntityTypes.DRINK_MIXER.get());
+    public DrinkMixerBlockEntity(final BlockPos pos, final BlockState state) {
+        super(TropicraftBlockEntityTypes.DRINK_MIXER.get(), pos, state);
         mixing = false;
         ingredients = NonNullList.withSize(MAX_NUM_INGREDIENTS, ItemStack.EMPTY);
     }
 
     @Override
-    public void load(BlockState blockState, @Nonnull CompoundTag nbt) {
-        super.load(blockState, nbt);
+    public void load(@Nonnull CompoundTag nbt) {
+        super.load(nbt);
         ticks = nbt.getInt("MixTicks");
         mixing = nbt.getBoolean("Mixing");
 
@@ -82,8 +82,11 @@ public class DrinkMixerTileEntity extends BlockEntity implements TickableBlockEn
         return nbt;
     }
 
-    @Override
-    public void tick() {
+    public static void mixTick(Level level, BlockPos pos, BlockState state, DrinkMixerBlockEntity mixer) {
+        mixer.tick();
+    }
+
+    private void tick() {
         if (ticks < TICKS_TO_MIX && mixing) {
             ticks++;
             if (ticks == TICKS_TO_MIX) {
@@ -99,7 +102,7 @@ public class DrinkMixerTileEntity extends BlockEntity implements TickableBlockEn
     public NonNullList<ItemStack> getIngredients() {
         return this.ingredients;
     }
-    
+
     public static List<Ingredient> listIngredients(@Nonnull ItemStack stack) {
         List<Ingredient> is = new ArrayList<>();
 
@@ -122,7 +125,7 @@ public class DrinkMixerTileEntity extends BlockEntity implements TickableBlockEn
             TropicraftPackets.sendToDimension(new MessageMixerStart(this), level);
         }
     }
-    
+
     private void dropItem(@Nonnull ItemStack stack, @Nullable Player at) {
         if (at == null) {
             BlockPos pos = getBlockPos().relative(getBlockState().getValue(DrinkMixerBlock.FACING));
@@ -149,7 +152,7 @@ public class DrinkMixerTileEntity extends BlockEntity implements TickableBlockEn
         if (result.isEmpty()) {
             return;
         }
-        
+
         dropItem(result, at);
 
         for (int i = 0; i < MAX_NUM_INGREDIENTS; i++) {
@@ -244,19 +247,19 @@ public class DrinkMixerTileEntity extends BlockEntity implements TickableBlockEn
     public boolean canMix() {
         return !mixing && isMixerFull();
     }
-    
+
     /* == IMachineTile == */
-    
+
     @Override
     public boolean isActive() {
         return isMixing();
     }
-    
+
     @Override
     public float getProgress(float partialTicks) {
         return (ticks + partialTicks) / TICKS_TO_MIX;
     }
-    
+
     @Override
     public Direction getDirection(BlockState state) {
         return state.getValue(DrinkMixerBlock.FACING);
@@ -273,7 +276,7 @@ public class DrinkMixerTileEntity extends BlockEntity implements TickableBlockEn
      */
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        load(getBlockState(), pkt.getTag());
+        load(pkt.getTag());
     }
 
     protected void syncInventory() {

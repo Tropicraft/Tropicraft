@@ -14,10 +14,10 @@ import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.EIHMachineModel;
 import net.tropicraft.core.client.scuba.ModelScubaGear;
 import net.tropicraft.core.common.block.TropicraftBlocks;
-import net.tropicraft.core.common.block.tileentity.AirCompressorTileEntity;
+import net.tropicraft.core.common.block.tileentity.AirCompressorBlockEntity;
 import net.tropicraft.core.common.item.scuba.ScubaArmorItem;
 
-public class AirCompressorRenderer extends MachineRenderer<AirCompressorTileEntity> {
+public class AirCompressorRenderer extends MachineRenderer<AirCompressorBlockEntity> {
     
     private final ModelScubaGear tankModel = new ModelScubaGear(0, EquipmentSlot.CHEST); // Can't reuse the main one with a different scale
 
@@ -30,7 +30,7 @@ public class AirCompressorRenderer extends MachineRenderer<AirCompressorTileEnti
         return TropicraftRenderUtils.getTEMaterial("drink_mixer");
     }
     @Override
-    protected void animationTransform(AirCompressorTileEntity te, final PoseStack stack, float partialTicks) {
+    protected void animationTransform(AirCompressorBlockEntity te, final PoseStack stack, float partialTicks) {
         float progress = te.getBreatheProgress(partialTicks);
         float sin = 1 + Mth.cos(progress);
         float sc = 1 + 0.05f * sin;
@@ -44,7 +44,7 @@ public class AirCompressorRenderer extends MachineRenderer<AirCompressorTileEnti
     }
 
     @Override
-    protected void renderIngredients(AirCompressorTileEntity te, PoseStack stack, MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn) {
+    protected void renderIngredients(AirCompressorBlockEntity te, PoseStack stack, MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn) {
         if (te.isActive()) {
             stack.pushPose();
             stack.translate(-0.5f, 0.5f, 0);

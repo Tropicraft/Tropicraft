@@ -1,15 +1,16 @@
 package net.tropicraft.core.common.block.tileentity;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.core.Direction;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
 import net.tropicraft.core.common.block.AirCompressorBlock;
 import net.tropicraft.core.common.item.scuba.ScubaArmorItem;
 import net.tropicraft.core.common.network.TropicraftPackets;
@@ -18,7 +19,7 @@ import net.tropicraft.core.common.network.message.MessageAirCompressorInventory;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class AirCompressorTileEntity extends BlockEntity implements TickableBlockEntity, IMachineTile {
+public class AirCompressorBlockEntity extends BlockEntity implements IMachineBlock {
 
     /** Is the compressor currently giving air */
     private boolean compressing;
@@ -28,21 +29,21 @@ public class AirCompressorTileEntity extends BlockEntity implements TickableBloc
 
     /** Amount of PSI (ticks of air time) to fill per tick */
     private static final int fillRate = 5; // fills 5x faster than it's used
-    
+
     /** The stack that is currently being filled */
     @Nonnull
     private ItemStack stack;
-    
+
     private ScubaArmorItem tank;
 
-    public AirCompressorTileEntity() {
-        super(TropicraftTileEntityTypes.AIR_COMPRESSOR.get());
+    public AirCompressorBlockEntity(final BlockPos pos, final BlockState state) {
+        super(TropicraftBlockEntityTypes.AIR_COMPRESSOR.get(), pos, state);
         this.stack = ItemStack.EMPTY;
     }
 
     @Override
-    public void load(BlockState blockState, CompoundTag nbt) {
-        super.load(blockState, nbt);
+    public void load(CompoundTag nbt) {
+        super.load(nbt);
         this.compressing = nbt.getBoolean("Compressing");
 
         if (nbt.contains("Tank")) {
@@ -60,27 +61,30 @@ public class AirCompressorTileEntity extends BlockEntity implements TickableBloc
         CompoundTag var4 = new CompoundTag();
         this.stack.save(var4);
         nbt.put("Tank", var4);
-        
+
         return nbt;
     }
-    
+
     public void setTank(@Nonnull ItemStack tankItemStack) {
         this.stack = tankItemStack;
         this.tank = !(stack.getItem() instanceof ScubaArmorItem) ? null : (ScubaArmorItem) stack.getItem();
     }
-    
+
     @Nonnull
     public ItemStack getTankStack() {
         return stack;
     }
-    
+
     @Nullable
     public ScubaArmorItem getTank() {
         return tank;
     }
 
-    @Override
-    public void tick() {
+    public static void compressTick(Level level, BlockPos pos, BlockState state, AirCompressorBlockEntity te) {
+        te.tick();
+    }
+
+    private void tick() {
         if (tank == null)
             return;
 
@@ -146,26 +150,26 @@ public class AirCompressorTileEntity extends BlockEntity implements TickableBloc
         this.ticks = 0;
         syncInventory();
     }
-    
+
     public float getBreatheProgress(float partialTicks) {
         if (isDoneCompressing()) {
             return 0;
         }
         return (float) (((((ticks + partialTicks) / 20) * Math.PI) + Math.PI) % (Math.PI * 2));
     }
-    
+
     /* == IMachineTile == */
-    
+
     @Override
     public boolean isActive() {
         return !getTankStack().isEmpty();
     }
-    
+
     @Override
     public float getProgress(float partialTicks) {
         return getTickRatio(partialTicks);
     }
-    
+
     @Override
     public Direction getDirection(BlockState state) {
         return state.getValue(AirCompressorBlock.FACING);
@@ -182,7 +186,7 @@ public class AirCompressorTileEntity extends BlockEntity implements TickableBloc
      */
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        this.load(getBlockState(), pkt.getTag());
+        this.load(pkt.getTag());
     }
 
     protected void syncInventory() {

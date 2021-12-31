@@ -1,14 +1,14 @@
 package net.tropicraft.core.common.network.message;
 
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.core.NonNullList;
-import net.minecraftforge.fml.network.NetworkEvent;
-import net.tropicraft.core.common.block.tileentity.DrinkMixerTileEntity;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
+import net.tropicraft.core.common.block.tileentity.DrinkMixerBlockEntity;
 
 import java.util.function.Supplier;
 
-public class MessageMixerInventory extends MessageTileEntity<DrinkMixerTileEntity> {
+public class MessageMixerInventory extends MessageTileEntity<DrinkMixerBlockEntity> {
 	private NonNullList<ItemStack> inventory;
 	private ItemStack result = ItemStack.EMPTY;
 
@@ -16,7 +16,7 @@ public class MessageMixerInventory extends MessageTileEntity<DrinkMixerTileEntit
 		super();
 	}
 
-	public MessageMixerInventory(final DrinkMixerTileEntity mixer) {
+	public MessageMixerInventory(final DrinkMixerBlockEntity mixer) {
 		super(mixer);
 		inventory = mixer.ingredients;
 		result = mixer.result;
@@ -48,7 +48,7 @@ public class MessageMixerInventory extends MessageTileEntity<DrinkMixerTileEntit
 
 	public static void handle(final MessageMixerInventory message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
-			final DrinkMixerTileEntity mixer = message.getClientTileEntity();
+			final DrinkMixerBlockEntity mixer = message.getClientTileEntity();
 			if (mixer != null) {
 				mixer.ingredients = message.inventory;
 				mixer.result = message.result;

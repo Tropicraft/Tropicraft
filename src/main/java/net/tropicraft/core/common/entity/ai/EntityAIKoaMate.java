@@ -1,18 +1,15 @@
 package net.tropicraft.core.common.entity.ai;
 
-import net.minecraft.world.entity.AgableMob;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 
 import java.util.EnumSet;
 import java.util.List;
-
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class EntityAIKoaMate extends Goal
 {
@@ -66,7 +63,7 @@ public class EntityAIKoaMate extends Goal
                 for (EntityKoaBase ent : listEntities) {
                     if (ent != villagerObj) {
                         if (ent.getIsWillingToMate(true) && !ent.isBaby() && !this.villagerObj.isBaby()) {
-                            if (villagerObj.getDistance(ent) < clDist) {
+                            if (villagerObj.distanceTo(ent) < clDist) {
                                 clEnt = ent;
                                 clDist = villagerObj.distanceTo(ent);
                             }

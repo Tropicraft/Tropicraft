@@ -1,28 +1,40 @@
 package net.tropicraft.core.common.block;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.EntityBlock;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.tropicraft.core.common.block.tileentity.SifterTileEntity;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.BlockHitResult;
+import net.tropicraft.core.common.block.tileentity.SifterBlockEntity;
+import net.tropicraft.core.common.block.tileentity.TropicraftBlockEntityTypes;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
-public class SifterBlock extends Block implements EntityBlock {
+public class SifterBlock extends BaseEntityBlock {
 
     public SifterBlock(final Properties properties) {
         super(properties);
+    }
+
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new SifterBlockEntity(pos, state);
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        return createTickerHelper(type, TropicraftBlockEntityTypes.SIFTER.get(), SifterBlockEntity::siftTick);
     }
 
     @Override
@@ -36,7 +48,7 @@ public class SifterBlock extends Block implements EntityBlock {
         }
 
         if (!world.isClientSide) {
-            final SifterTileEntity sifter = (SifterTileEntity) world.getBlockEntity(pos);
+            final SifterBlockEntity sifter = (SifterBlockEntity) world.getBlockEntity(pos);
             if (sifter != null && !stack.isEmpty() && !sifter.isSifting()) {
                 final ItemStack addItem;
                 if (!player.isCreative()) {
@@ -53,10 +65,4 @@ public class SifterBlock extends Block implements EntityBlock {
 
         return InteractionResult.SUCCESS;
     } // /o/ \o\ /o\ \o\ /o\ \o/ /o/ /o/ \o\ \o\ /o/ /o/ \o/ /o\ \o/ \o/ /o\ /o\ \o/ \o/ /o/ \o\o\o\o\o\o\o\o\o\ :D
-
-    @Nullable
-    @Override
-    public BlockEntity newBlockEntity(final BlockGetter world) {
-        return new SifterTileEntity();
-    }
 }

@@ -3,19 +3,24 @@ package net.tropicraft.core.common.network;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.PacketDistributor;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.minecraftforge.fmllegacy.network.NetworkRegistry;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
+import net.minecraftforge.fmllegacy.network.simple.SimpleChannel;
 import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
-import net.tropicraft.core.common.network.message.*;
+import net.tropicraft.core.common.network.message.MessageAirCompressorInventory;
+import net.tropicraft.core.common.network.message.MessageMixerInventory;
+import net.tropicraft.core.common.network.message.MessageMixerStart;
+import net.tropicraft.core.common.network.message.MessageSifterInventory;
+import net.tropicraft.core.common.network.message.MessageSifterStart;
+import net.tropicraft.core.common.network.message.MessageUpdateScubaData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class TropicraftPackets {
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
             new ResourceLocation(Constants.MODID, "main"),
-            () -> Tropicraft.getCompatVersion(),
+            Tropicraft::getCompatVersion,
             Tropicraft::isCompatibleVersion,
             Tropicraft::isCompatibleVersion
     );

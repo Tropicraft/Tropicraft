@@ -3,7 +3,7 @@ package net.tropicraft.core.common.block.tileentity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.Direction;
 
-public interface IMachineTile {
+public interface IMachineBlock {
     
     boolean isActive();
     

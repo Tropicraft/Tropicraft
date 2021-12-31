@@ -4,9 +4,9 @@ import com.mojang.serialization.Codec;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.LevelSimulatedRW;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.tropicraft.core.common.block.TropicraftBlocks;
@@ -21,14 +21,18 @@ public class UndergrowthFeature extends Feature<NoneFeatureConfiguration> {
     public UndergrowthFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
     }
-    
+
     @Override
-    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, NoneFeatureConfiguration config) {
+    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
+        WorldGenLevel world = context.level();
+        Random rand = context.random();
+        BlockPos pos = context.origin();
+
         int size = 2;
         if (rand.nextInt(LARGE_BUSH_CHANCE) == 0) {
             size = 3;
         }
-        
+
         if (!isValidPosition(world, pos)) {
             return false;
         }
@@ -68,7 +72,7 @@ public class UndergrowthFeature extends Feature<NoneFeatureConfiguration> {
 
         return count > 0;
     }
-    
+
     protected boolean isValidPosition(LevelSimulatedRW world, BlockPos pos) {
         return TreeFeature.isAirOrLeaves(world, pos) && !world.isStateAtPosition(pos, Blocks.CAVE_AIR.defaultBlockState()::equals);
     }

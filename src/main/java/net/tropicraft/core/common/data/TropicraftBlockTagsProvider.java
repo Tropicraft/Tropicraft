@@ -6,7 +6,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.Tag.Named;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.TropicraftTags;
 
@@ -95,6 +95,24 @@ public class TropicraftBlockTagsProvider extends BlockTagsProvider {
         createAndAppend(TropicraftTags.Blocks.FLOWER_POTS, BlockTags.FLOWER_POTS,
                 Stream.concat(BAMBOO_POTTED_TROPICS_PLANTS.stream(), Stream.concat(BAMBOO_POTTED_VANILLA_PLANTS.stream(), VANILLA_POTTED_TROPICS_PLANTS.stream()))
                         .toArray(RegistryObject[]::new));
+
+        createTag(BlockTags.MINEABLE_WITH_AXE,
+                MAHOGANY_PLANKS, MAHOGANY_LOG, MAHOGANY_STAIRS, MAHOGANY_SLAB, MAHOGANY_FENCE, MAHOGANY_DOOR, MAHOGANY_TRAPDOOR, MAHOGANY_BOARDWALK, MAHOGANY_FENCE_GATE, MAHOGANY_WOOD,
+                BLACK_MANGROVE_ROOTS, RED_MANGROVE_ROOTS, LIGHT_MANGROVE_ROOTS,
+                PALM_PLANKS, PALM_LOG, PALM_STAIRS, PALM_SLAB, PALM_FENCE, PALM_DOOR, PALM_TRAPDOOR, PALM_BOARDWALK, PALM_FENCE_GATE, PALM_WOOD,
+                LIGHT_MANGROVE_LOG, LIGHT_MANGROVE_WOOD,
+                COCONUT);
+
+        createTag(BlockTags.MINEABLE_WITH_SHOVEL,
+                MUD, MUD_WITH_PIANGUAS, PURIFIED_SAND, CORAL_SAND, FOAMY_SAND, MINERAL_SAND, VOLCANIC_SAND);
+
+        createTag(BlockTags.MINEABLE_WITH_PICKAXE,
+                AZURITE_ORE, ZIRCON_ORE, EUDIALYTE_ORE, SHAKA_ORE, MANGANESE_ORE,
+                AZURITE_BLOCK, ZIRCON_BLOCK, EUDIALYTE_BLOCK, SHAKA_BLOCK, MANGANESE_BLOCK);
+
+        createTag(BlockTags.NEEDS_IRON_TOOL,
+                AZURITE_ORE, ZIRCON_ORE, EUDIALYTE_ORE, SHAKA_ORE, MANGANESE_ORE,
+                AZURITE_BLOCK, ZIRCON_BLOCK, EUDIALYTE_BLOCK, SHAKA_BLOCK, MANGANESE_BLOCK);
 
         createTag(TropicraftTags.Blocks.BONGOS, SMALL_BONGO_DRUM, MEDIUM_BONGO_DRUM, LARGE_BONGO_DRUM);
     }

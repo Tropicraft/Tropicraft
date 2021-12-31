@@ -1,6 +1,5 @@
 package net.tropicraft.core.common.entity.passive.basilisk;
 
-import com.mojang.math.Vector3d;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -24,6 +23,7 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
@@ -129,16 +129,16 @@ public final class BasiliskLizardEntity extends Animal {
 
     private void spawnRunningParticles() {
         for (int i = 0; i < 2; i++) {
-            Vector3d motion = this.getMotion();
-            double surfaceY = MathHelper.floor(this.getPosY()) + 1.0;
+            Vec3 motion = getDeltaMovement();
+            double surfaceY = Mth.floor(getY()) + 1.0;
 
-            double dx = (this.rand.nextDouble() * 2.0 - 1.0) * 0.25;
-            double dz = (this.rand.nextDouble() * 2.0 - 1.0) * 0.25;
+            double dx = (random.nextDouble() * 2.0 - 1.0) * 0.25;
+            double dz = (random.nextDouble() * 2.0 - 1.0) * 0.25;
 
-            this.world.addParticle(
-                    this.rand.nextBoolean() ? ParticleTypes.BUBBLE : ParticleTypes.SPLASH,
-                    this.getPosX() + dx, surfaceY, this.getPosZ() + dz,
-                    motion.x, motion.y - this.rand.nextDouble() * 0.2F, motion.z
+            level.addParticle(
+                random.nextBoolean() ? ParticleTypes.BUBBLE : ParticleTypes.SPLASH,
+                getX() + dx, surfaceY, getZ() + dz,
+                motion.x, motion.y - random.nextDouble() * 0.2F, motion.z
             );
         }
     }
@@ -146,12 +146,12 @@ public final class BasiliskLizardEntity extends Animal {
     @Override
     protected void doWaterSplashEffect() {
         // duplicating vanilla logic to add splash sounds but disable the particles
-        float volume = (float) (this.getMotion().mul(0.5, 1.0, 0.5).length() * 0.2F);
+        float volume = (float) (this.getDeltaMovement().multiply(0.5, 1.0, 0.5).length() * 0.2F);
         volume = Math.min(volume, 1.0F);
 
-        float pitch = 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F;
+        float pitch = 1.0F + (random.nextFloat() - random.nextFloat()) * 0.4F;
 
-        SoundEvent sound = volume < 0.25 ? this.getSplashSound() : this.getHighspeedSplashSound();
+        SoundEvent sound = volume < 0.25 ? this.getSwimSplashSound() : this.getSwimHighSpeedSplashSound();
         this.playSound(sound, volume, pitch);
     }
 

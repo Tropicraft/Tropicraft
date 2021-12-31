@@ -21,14 +21,14 @@ public class SteepPathProcessor extends PathStructureProcessor {
     static final StructureProcessorType<SteepPathProcessor> TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Constants.MODID + ":steep_path", () -> CODEC);
 
     @Override
-    public StructureTemplate.StructureBlockInfo process(LevelReader worldReaderIn, BlockPos seedPos, BlockPos pos2, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo blockInfo, StructurePlaceSettings placementSettingsIn, StructureTemplate template) {
+    public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos seedPos, BlockPos pos2, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo blockInfo, StructurePlaceSettings placementSettingsIn, StructureTemplate template) {
         BlockPos pos = blockInfo.pos;
 
         if (originalBlockInfo.pos.getY() != 1 || originalBlockInfo.state.getBlock() == TropicraftBlocks.BAMBOO_STAIRS.get() || originalBlockInfo.state.isAir()) {
             return blockInfo;
         }
 
-        Direction.Axis axis = getPathDirection(worldReaderIn, seedPos, blockInfo, placementSettingsIn, template);
+        Direction.Axis axis = getPathDirection(level, seedPos, blockInfo, placementSettingsIn, template);
         if (axis == null) {
             return blockInfo;
         }
@@ -40,7 +40,7 @@ public class SteepPathProcessor extends PathStructureProcessor {
         for (Direction.AxisDirection axisDir : Direction.AxisDirection.values()) {
             Direction dir = Direction.get(axisDir, axis);
             // Detect an overhang by checking if the heightmap between spots differs by >2
-            BlockPos nextHeight = worldReaderIn.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, pos.relative(dir)).below();
+            BlockPos nextHeight = level.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, pos.relative(dir)).below();
             if (nextHeight.getY() > pos.getY()) {
                 ladder = getLadderState(dir);
                 bridgeTo = nextHeight.getY();
@@ -66,16 +66,16 @@ public class SteepPathProcessor extends PathStructureProcessor {
         // The facing the ladder stores is opposite to the direction it's placed (i.e. it faces "outward")
         Direction dir = ladder.getValue(LadderBlock.FACING).getOpposite();
         pos = pos.above();
-        if (bridgeTo == pos.getY() && canPlaceLadderAt(worldReaderIn, pos.above(), dir) == null) {
+        if (bridgeTo == pos.getY() && canPlaceLadderAt(level, pos.above(), dir) == null) {
         	if (pos.getY() > 127) {
 	            // If the next spot up can't support a ladder, this is a one block step, so place a stair block
-	            setBlockState(worldReaderIn, pos, TropicraftBlocks.THATCH_STAIRS.get().defaultBlockState().setValue(StairBlock.FACING, dir));
+	            setBlockState(level, pos, TropicraftBlocks.THATCH_STAIRS.get().defaultBlockState().setValue(StairBlock.FACING, dir));
         	}
         } else {
             // Otherwise, place ladders upwards until we find air (bridging over an initial gap if required)
-            while (bridgeTo >= pos.getY() || canPlaceLadderAt(worldReaderIn, pos, dir) != null) {
-                setBlockState(worldReaderIn, pos, ladder);
-                setBlockState(worldReaderIn, pos.relative(dir), TropicraftBlocks.THATCH_BUNDLE.get().defaultBlockState());
+            while (bridgeTo >= pos.getY() || canPlaceLadderAt(level, pos, dir) != null) {
+                setBlockState(level, pos, ladder);
+                setBlockState(level, pos.relative(dir), TropicraftBlocks.THATCH_BUNDLE.get().defaultBlockState());
                 pos = pos.above();
             }
         }
@@ -84,12 +84,12 @@ public class SteepPathProcessor extends PathStructureProcessor {
     
     // Check that there is a solid block behind the ladder at this pos, and return the correct ladder state
     // Returns null if placement is not possible
-    private BlockState canPlaceLadderAt(LevelReader worldReaderIn, BlockPos pos, Direction dir) {
+    private BlockState canPlaceLadderAt(LevelReader level, BlockPos pos, Direction dir) {
         BlockPos check = pos.relative(dir);
-        BlockState state = worldReaderIn.getBlockState(check);
-        if (!state.isAir(worldReaderIn, check)) {
+        BlockState state = level.getBlockState(check);
+        if (!state.isAir()) {
             BlockState ladderState = getLadderState(dir);
-            if (ladderState.canSurvive(worldReaderIn, pos)) {
+            if (ladderState.canSurvive(level, pos)) {
                 return ladderState;
             }
         }

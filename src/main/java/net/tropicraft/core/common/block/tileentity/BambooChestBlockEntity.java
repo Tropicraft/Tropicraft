@@ -1,19 +1,20 @@
 package net.tropicraft.core.common.block.tileentity;
 
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.tropicraft.Constants;
 
-public class BambooChestTileEntity extends ChestBlockEntity {
+public class BambooChestBlockEntity extends ChestBlockEntity {
 
     /** Is this chest unbreakble (Koa chest) */
     private boolean unbreakable = false;
 
-    public BambooChestTileEntity() {
-        super(TropicraftTileEntityTypes.BAMBOO_CHEST.get());
+    public BambooChestBlockEntity(final BlockPos pos, final BlockState state) {
+        super(TropicraftBlockEntityTypes.BAMBOO_CHEST.get(), pos, state);
     }
 
     @Override
@@ -27,8 +28,8 @@ public class BambooChestTileEntity extends ChestBlockEntity {
     }
 
     @Override
-    public void load(BlockState blockState, CompoundTag compound) {
-        super.load(blockState, compound);
+    public void load(CompoundTag compound) {
+        super.load(compound);
         unbreakable = compound.getBoolean("unbreakable");
     }
 

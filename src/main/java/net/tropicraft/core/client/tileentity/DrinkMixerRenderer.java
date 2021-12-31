@@ -19,10 +19,10 @@ import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.BambooMugModel;
 import net.tropicraft.core.client.entity.model.EIHMachineModel;
 import net.tropicraft.core.common.block.TropicraftBlocks;
-import net.tropicraft.core.common.block.tileentity.DrinkMixerTileEntity;
+import net.tropicraft.core.common.block.tileentity.DrinkMixerBlockEntity;
 import net.tropicraft.core.common.item.CocktailItem;
 
-public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerTileEntity> {
+public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerBlockEntity> {
     private final BambooMugModel modelBambooMug = new BambooMugModel(RenderType::entityCutout);
     private final ItemRenderer renderItem;
     private ItemEntity dummyEntityItem;
@@ -50,7 +50,7 @@ public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerTileEntity> {
     }
 
     @Override
-    public void renderIngredients(final DrinkMixerTileEntity te, final PoseStack stack, final MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn) {
+    public void renderIngredients(final DrinkMixerBlockEntity te, final PoseStack stack, final MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn) {
         if (dummyEntityItem == null) {
              dummyEntityItem = new ItemEntity(Minecraft.getInstance().level, 0.0, 0.0, 0.0, new ItemStack(Items.SUGAR));
         }

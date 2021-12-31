@@ -4,10 +4,13 @@ import it.unimi.dsi.fastutil.objects.Reference2ByteMap;
 import it.unimi.dsi.fastutil.objects.Reference2ByteOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.Mirror;
@@ -120,29 +123,29 @@ public final class MangroveRootsBlock extends Block implements SimpleWaterlogged
         return this.getConnectedState(world, currentPos);
     }
 
-    private BlockState getConnectedState(BlockGetter world, BlockPos pos) {
-        BlockState state = this.getDefaultState()
-                .with(WATERLOGGED, world.getFluidState(pos).getFluid() == Fluids.WATER)
-                .with(GROUNDED, this.isGrounded(world, pos));
+    private BlockState getConnectedState(LevelReader world, BlockPos pos) {
+        BlockState state = this.defaultBlockState()
+                .setValue(WATERLOGGED, world.getFluidState(pos).is(FluidTags.WATER))
+                .setValue(GROUNDED, this.isGrounded(world, pos));
 
         state = state
-                .with(NORTH, this.getConnectionFor(world, pos, Direction.NORTH))
-                .with(EAST, this.getConnectionFor(world, pos, Direction.EAST))
-                .with(SOUTH, this.getConnectionFor(world, pos, Direction.SOUTH))
-                .with(WEST, this.getConnectionFor(world, pos, Direction.WEST));
+                .setValue(NORTH, this.getConnectionFor(world, pos, Direction.NORTH))
+                .setValue(EAST, this.getConnectionFor(world, pos, Direction.EAST))
+                .setValue(SOUTH, this.getConnectionFor(world, pos, Direction.SOUTH))
+                .setValue(WEST, this.getConnectionFor(world, pos, Direction.WEST));
 
-        if (!this.isTall(state) && !this.canConnectUp(world, pos.up())) {
-            state = state.with(TALL, false)
-                    .with(NORTH, state.get(NORTH).shorten())
-                    .with(EAST, state.get(EAST).shorten())
-                    .with(SOUTH, state.get(SOUTH).shorten())
-                    .with(WEST, state.get(WEST).shorten());
+        if (!this.isTall(state) && !this.canConnectUp(world, pos.above())) {
+            state = state.setValue(TALL, false)
+                    .setValue(NORTH, state.getValue(NORTH).shorten())
+                    .setValue(EAST, state.getValue(EAST).shorten())
+                    .setValue(SOUTH, state.getValue(SOUTH).shorten())
+                    .setValue(WEST, state.getValue(WEST).shorten());
         }
 
         return state;
     }
 
-    private Connection getConnectionFor(BlockGetter world, BlockPos pos, Direction direction) {
+    private Connection getConnectionFor(LevelReader world, BlockPos pos, Direction direction) {
         BlockPos adjacentPos = pos.relative(direction);
         BlockState adjacentState = world.getBlockState(adjacentPos);
 
@@ -163,8 +166,8 @@ public final class MangroveRootsBlock extends Block implements SimpleWaterlogged
         return Connection.NONE;
     }
 
-    private boolean isAdjacentTall(BlockGetter world, BlockPos pos, Direction sourceDirection) {
-        if (this.canConnectUp(world, pos.up())) {
+    private boolean isAdjacentTall(LevelReader world, BlockPos pos, Direction sourceDirection) {
+        if (this.canConnectUp(world, pos.above())) {
             return true;
         }
 
@@ -194,7 +197,7 @@ public final class MangroveRootsBlock extends Block implements SimpleWaterlogged
         return (state.is(this) || state.isFaceSturdy(world, pos, direction)) && !FenceBlock.isExceptionForConnection(state);
     }
 
-    private boolean canConnectUp(BlockGetter world, BlockPos pos) {
+    private boolean canConnectUp(LevelReader world, BlockPos pos) {
         BlockState state = world.getBlockState(pos);
         return state.is(this) || Block.canSupportCenter(world, pos, Direction.DOWN);
     }

@@ -1,18 +1,18 @@
 package net.tropicraft.core.common.network.message;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.fml.network.NetworkEvent;
-import net.tropicraft.core.common.block.tileentity.DrinkMixerTileEntity;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
+import net.tropicraft.core.common.block.tileentity.DrinkMixerBlockEntity;
 
 import java.util.function.Supplier;
 
-public class MessageMixerStart extends MessageTileEntity<DrinkMixerTileEntity> {
+public class MessageMixerStart extends MessageTileEntity<DrinkMixerBlockEntity> {
 
 	public MessageMixerStart() {
 		super();
 	}
 
-	public MessageMixerStart(DrinkMixerTileEntity sifter) {
+	public MessageMixerStart(DrinkMixerBlockEntity sifter) {
 		super(sifter);
 	}
 
@@ -28,7 +28,7 @@ public class MessageMixerStart extends MessageTileEntity<DrinkMixerTileEntity> {
 
 	public static void handle(final MessageMixerStart message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
-			final DrinkMixerTileEntity te = message.getClientTileEntity();
+			final DrinkMixerBlockEntity te = message.getClientTileEntity();
 			if (te != null) {
 				te.startMixing();
 			}

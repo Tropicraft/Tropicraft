@@ -1,6 +1,8 @@
 package net.tropicraft.core.common.dimension.feature;
 
 import com.google.common.collect.ImmutableList;
+import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.resources.ResourceLocation;
@@ -16,6 +18,7 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.gen.placement.*;
 import net.minecraft.world.gen.trunkplacer.StraightTrunkPlacer;
 import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.block.TropicraftBlocks;
@@ -527,7 +530,7 @@ public final class TropicraftConfiguredFeatures {
             TreeConfiguration config = new TreeConfiguration.TreeConfigurationBuilder(
                     new SimpleStateProvider(Blocks.OAK_LOG.defaultBlockState()),
                     new WeightedStateProvider().add(TropicraftBlocks.FRUIT_LEAVES.get().defaultBlockState(), 1).add(fruitLeaves.get().defaultBlockState(), 1),
-                    new CitrusFoliagePlacer(UniformInt.fixed(0), UniformInt.fixed(0)),
+                    new CitrusFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0)),
                     new CitrusTrunkPlacer(6, 3, 0),
                     new TwoLayersFeatureSize(1, 0, 2)
             ).build();

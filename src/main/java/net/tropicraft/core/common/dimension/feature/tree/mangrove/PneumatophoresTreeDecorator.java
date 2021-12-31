@@ -2,12 +2,12 @@ package net.tropicraft.core.common.dimension.feature.tree.mangrove;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
-import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.LevelSimulatedReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
 import net.tropicraft.core.common.Util;
@@ -15,11 +15,11 @@ import net.tropicraft.core.common.dimension.feature.tree.TropicraftTreeDecorator
 
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
+import java.util.function.BiConsumer;
 
-import static net.minecraft.world.gen.feature.TreeFeature.validTreePos;
+import static net.minecraft.world.level.levelgen.feature.TreeFeature.validTreePos;
 
-public clasnet.minecraft.world.level.levelgen.feature.TreeFeatureecorator {
+public class PneumatophoresTreeDecorator extends TreeDecorator {
     public static final Codec<PneumatophoresTreeDecorator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Registry.BLOCK.fieldOf("roots_block").forGetter(c -> c.rootsBlock),
             Codec.INT.fieldOf("min_count").forGetter(c -> c.minCount),
@@ -45,8 +45,8 @@ public clasnet.minecraft.world.level.levelgen.feature.TreeFeatureecorator {
     }
 
     @Override
-    public void place(WorldGenLevel world, Random random, List<BlockPos> logs, List<BlockPos> leaves, Set<BlockPos> placed, BoundingBox box) {
-        BlockPos origin = Util.findLowestBlock(logs);
+    public void place(LevelSimulatedReader pLevel, BiConsumer<BlockPos, BlockState> pBlockSetter, Random random, List<BlockPos> pLogPositions, List<BlockPos> pLeafPositions) {
+        BlockPos origin = Util.findLowestBlock(pLogPositions);
         if (origin == null) return;
 
         int spread = this.spread;
@@ -55,7 +55,7 @@ public clasnet.minecraft.world.level.levelgen.feature.TreeFeatureecorator {
         int minBottomY = origin.getY() - 6;
 
         BlockPos.MutableBlockPos mutablePos = origin.mutable();
-        while (MangroveTrunkPlacer.isWaterAt(world, mutablePos) && mutablePos.getY() < maxTopY) {
+        while (MangroveTrunkPlacer.isWaterAt(pLevel, mutablePos) && mutablePos.getY() < maxTopY) {
             mutablePos.move(Direction.UP);
         }
 
@@ -73,7 +73,7 @@ public clasnet.minecraft.world.level.levelgen.feature.TreeFeatureecorator {
             for (int y = topY; y >= minBottomY; y--) {
                 mutablePos.setY(y);
 
-                if (!validTreePos(world, mutablePos)) {
+                if (!validTreePos(pLevel, mutablePos)) {
                     canGenerate = true;
                     minY = y;
                     break;
@@ -87,7 +87,7 @@ public clasnet.minecraft.world.level.levelgen.feature.TreeFeatureecorator {
             int y = topY;
             while (y >= minY) {
                 mutablePos.setY(y--);
-                MangroveTrunkPlacer.setRootsAt(world, mutablePos, this.rootsBlock);
+                MangroveTrunkPlacer.setRootsAt(pLevel, mutablePos, this.rootsBlock);
             }
         }
     }

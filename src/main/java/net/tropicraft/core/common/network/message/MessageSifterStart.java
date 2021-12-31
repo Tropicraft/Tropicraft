@@ -1,18 +1,18 @@
 package net.tropicraft.core.common.network.message;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.fml.network.NetworkEvent;
-import net.tropicraft.core.common.block.tileentity.SifterTileEntity;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
+import net.tropicraft.core.common.block.tileentity.SifterBlockEntity;
 
 import java.util.function.Supplier;
 
-public class MessageSifterStart extends MessageTileEntity<SifterTileEntity> {
+public class MessageSifterStart extends MessageTileEntity<SifterBlockEntity> {
 
 	public MessageSifterStart() {
 		super();
 	}
 
-	public MessageSifterStart(SifterTileEntity sifter) {
+	public MessageSifterStart(SifterBlockEntity sifter) {
 		super(sifter);
 	}
 
@@ -28,7 +28,7 @@ public class MessageSifterStart extends MessageTileEntity<SifterTileEntity> {
 
 	public static void handle(final MessageSifterStart message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
-			final SifterTileEntity sifter = message.getClientTileEntity();
+			final SifterBlockEntity sifter = message.getClientTileEntity();
 			if (sifter != null) {
 				sifter.startSifting();
 			}

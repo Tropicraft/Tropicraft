@@ -1,26 +1,26 @@
 package net.tropicraft.core.common.block;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.CompoundContainer;
-import net.minecraft.world.Container;
-import net.minecraft.world.inventory.ChestMenu;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.level.block.entity.ChestBlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.DoubleBlockCombiner;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.CompoundContainer;
+import net.minecraft.world.Container;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.DoubleBlockCombiner;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.tropicraft.Constants;
-import net.tropicraft.core.common.block.tileentity.BambooChestTileEntity;
+import net.tropicraft.core.common.block.tileentity.BambooChestBlockEntity;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -90,8 +90,8 @@ public class BambooChestBlock extends ChestBlock {
     }
 
     @Override
-    public BlockEntity newBlockEntity(BlockGetter world) {
-        return new BambooChestTileEntity();
+    public BlockEntity newBlockEntity(final BlockPos pos, final BlockState state) {
+        return new BambooChestBlockEntity(pos, state);
     }
 
     @Override
@@ -102,13 +102,11 @@ public class BambooChestBlock extends ChestBlock {
 
     /**
      * Get the hardness of this Block relative to the ability of the given player
-     * 
-     * @deprecated call via {@link BlockState#getPlayerRelativeBlockHardness(PlayerEntity, IBlockReader, BlockPos)} whenever possible. Implementing/overriding is fine.
      */
     @Override
     @Deprecated
     public float getDestroyProgress(BlockState state, Player player, BlockGetter world, BlockPos pos) {
-        final BambooChestTileEntity tileEntity = (BambooChestTileEntity) world.getBlockEntity(pos);
+        final BambooChestBlockEntity tileEntity = (BambooChestBlockEntity) world.getBlockEntity(pos);
         if (tileEntity != null && tileEntity.isUnbreakable()) {
             return 0.0f;
         }

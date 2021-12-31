@@ -1,47 +1,46 @@
 package net.tropicraft.core.common.dimension.feature.tree;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.CocoaBlock;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.treedecorator.TreeDecorator;
-import net.minecraft.world.gen.treedecorator.TreeDecoratorType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.LevelSimulatedReader;
+import net.minecraft.world.level.block.CocoaBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
+import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
 import net.tropicraft.core.common.block.PapayaBlock;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
+import java.util.function.BiConsumer;
 
 public final class PapayaTreeDecorator extends TreeDecorator {
     public static final Codec<PapayaTreeDecorator> CODEC = Codec.unit(new PapayaTreeDecorator());
 
-    protected TreeDecoratorType<?> getDecoratorType() {
+    @Override
+    protected TreeDecoratorType<?> type() {
         return TropicraftTreeDecorators.PAPAYA.get();
     }
 
-    public void func_225576_a_(ISeedReader world, Random rand, List<BlockPos> logs, List<BlockPos> leaves, Set<BlockPos> changed, MutableBoundingBox bounds) {
+    @Override
+    public void place(LevelSimulatedReader pLevel, BiConsumer<BlockPos, BlockState> pBlockSetter, Random pRandom, List<BlockPos> logs, List<BlockPos> pLeafPositions) {
         int y = logs.get(logs.size() - 1).getY();
 
         for (BlockPos log : logs) {
             if (log.getY() > y - 4) {
-                if (rand.nextInt(2) == 0) {
-                    Direction direction = Direction.Plane.HORIZONTAL.random(rand);
+                if (pRandom.nextInt(2) == 0) {
+                    Direction direction = Direction.Plane.HORIZONTAL.getRandomDirection(pRandom);
 
-                    BlockPos pos = log.offset(direction);
+                    BlockPos pos = log.relative(direction);
 
-                    if (Feature.isAirAt(world, pos)) {
-                        BlockState blockstate = TropicraftBlocks.PAPAYA.get().getDefaultState()
-                                .with(PapayaBlock.AGE, rand.nextInt(2))
-                                .with(CocoaBlock.HORIZONTAL_FACING, direction.getOpposite());
+                    if (Feature.isAir(pLevel, pos)) {
+                        BlockState blockstate = TropicraftBlocks.PAPAYA.get().defaultBlockState()
+                                .setValue(PapayaBlock.AGE, pRandom.nextInt(2))
+                                .setValue(CocoaBlock.FACING, direction.getOpposite());
 
-                        world.setBlockState(pos, blockstate, 3);
+                        pBlockSetter.accept(pos, blockstate);
                     }
                 }
             }

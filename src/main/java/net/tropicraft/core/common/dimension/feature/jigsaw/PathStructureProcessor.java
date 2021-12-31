@@ -3,8 +3,11 @@ package net.tropicraft.core.common.dimension.feature.jigsaw;
 import com.google.common.base.Preconditions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.JigsawBlock;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
@@ -51,8 +54,8 @@ public abstract class PathStructureProcessor extends CheatyStructureProcessor {
     // Cache vectors for this structure to avoid redoing work
     private static final WeakHashMap<StructurePlaceSettings, List<PathVector>> VECTOR_CACHE = new WeakHashMap<>(); 
 
-    protected @Nullable
-    Direction.Axis getPathDirection(BlockPos seedPos, StructureTemplate.StructureBlockInfo current, StructurePlaceSettings settings, StructureTemplate template) {
+    @Nullable
+    protected Direction.Axis getPathDirection(LevelReader level, BlockPos seedPos, StructureTemplate.StructureBlockInfo current, StructurePlaceSettings settings, StructureTemplate template) {
         /*
          *  Use special marker jigsaw blocks to represent "vectors" of paths.
          *
@@ -67,7 +70,7 @@ public abstract class PathStructureProcessor extends CheatyStructureProcessor {
                         template.filterBlocks(seedPos, infiniteBounds, Blocks.JIGSAW, true).stream() // Find all jigsaw blocks
                                 .filter(b -> b.nbt.getString("target").equals(Constants.MODID + ":path_center")) // Filter for vector markers
 //                		.peek(bi -> setBlockState(world, world.getHeight(Type.WORLD_SURFACE_WG, bi.pos), bi.state))
-                                .map(bi -> new PathVector(world.getHeightmapPos(Type.WORLD_SURFACE_WG, bi.pos).subtract(seedPos), JigsawBlock.getFrontFacing(bi.state))) // Convert pos to structure local, extract facing
+                                .map(bi -> new PathVector(level.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, bi.pos).subtract(seedPos), JigsawBlock.getFrontFacing(bi.state))) // Convert pos to structure local, extract facing
                                 .collect(Collectors.toList()))
                 .stream()
                 .filter(pv -> pv.contains(current.pos.subtract(seedPos), settings)) // Find vectors that contain this block

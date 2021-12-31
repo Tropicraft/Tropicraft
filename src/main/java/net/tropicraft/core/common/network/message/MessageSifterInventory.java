@@ -1,13 +1,13 @@
 package net.tropicraft.core.common.network.message;
 
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.fml.network.NetworkEvent;
-import net.tropicraft.core.common.block.tileentity.SifterTileEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
+import net.tropicraft.core.common.block.tileentity.SifterBlockEntity;
 
 import java.util.function.Supplier;
 
-public class MessageSifterInventory extends MessageTileEntity<SifterTileEntity> {
+public class MessageSifterInventory extends MessageTileEntity<SifterBlockEntity> {
 
 	private ItemStack siftItem;
 
@@ -15,7 +15,7 @@ public class MessageSifterInventory extends MessageTileEntity<SifterTileEntity> 
 		super();
 	}
 
-	public MessageSifterInventory(SifterTileEntity sifter) {
+	public MessageSifterInventory(SifterBlockEntity sifter) {
 		super(sifter);
 		siftItem = sifter.getSiftItem();
 	}
@@ -34,7 +34,7 @@ public class MessageSifterInventory extends MessageTileEntity<SifterTileEntity> 
 
 	public static void handle(final MessageSifterInventory message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
-			SifterTileEntity sifter = message.getClientTileEntity();
+			SifterBlockEntity sifter = message.getClientTileEntity();
 			if (sifter != null) {
 				sifter.setSiftItem(message.siftItem);
 			}
