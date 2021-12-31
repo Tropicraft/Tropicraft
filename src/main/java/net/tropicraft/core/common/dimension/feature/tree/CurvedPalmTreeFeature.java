@@ -1,13 +1,13 @@
 package net.tropicraft.core.common.dimension.feature.tree;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.LevelWriter;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.LevelSimulatedRW;
+import net.minecraft.world.level.LevelWriter;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 import java.util.Random;
@@ -31,10 +31,14 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
     }
 
     @Override
-    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, NoneFeatureConfiguration config) {
+    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
+        WorldGenLevel world = context.level();
+        Random random = context.random();
+        BlockPos pos = context.origin();
+
         pos = pos.immutable();
 
-        final int height = 9 + rand.nextInt(3);
+        final int height = 9 + random.nextInt(3);
 
         if (goesBeyondWorldSize(world, pos.getY(), height)) {
             return false;
@@ -54,7 +58,7 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
 
         final int x = pos.getX(), y = pos.getY(), z = pos.getZ();
 
-        int dir = this.pickDirection(world, rand, x, z);
+        int dir = this.pickDirection(world, random, x, z);
         this.setDir(dir);
         this.setOrigin(x, z);
 
@@ -87,7 +91,7 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
                 placeBlockWithDir(world, xx, yy + y, 0, getLog());
             }
             if (yy == height - 2) {
-                spawnCoconuts(world, getPosWithDir(xx, yy + y, 0), rand, 2, getLeaf());
+                spawnCoconuts(world, getPosWithDir(xx, yy + y, 0), random, 2, getLeaf());
             }
         }
 

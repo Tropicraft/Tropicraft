@@ -7,6 +7,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.gen.feature.jigsaw.JigsawPiece;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.block.Rotation;
@@ -34,17 +35,17 @@ public class HomeTreeStructure extends StructureFeature<JigsawConfiguration> {
     }
 
     @Override
-    protected boolean isFeatureChunk(ChunkGenerator generator, BiomeSource biomes, long seed, WorldgenRandom random, int chunkX, int chunkZ, Biome biome, ChunkPos startChunkPos, JigsawConfiguration config) {
-        BlockPos pos = new BlockPos((chunkX << 4) + 8, 0, (chunkZ << 4) + 8);
-        int centerY = generator.getBaseHeight(pos.getX(), pos.getZ(), Heightmap.Types.WORLD_SURFACE_WG);
-        return isValid(generator, pos.offset(-4, 0, -4), centerY) &&
-                isValid(generator, pos.offset(-4, 0, 4), centerY) &&
-                isValid(generator, pos.offset(4, 0, 4), centerY) &&
-                isValid(generator, pos.offset(4, 0, -4), centerY);
+    protected boolean isFeatureChunk(ChunkGenerator generator, BiomeSource biomes, long seed, WorldgenRandom random, ChunkPos chunkPos, Biome biome, ChunkPos potentialPos, JigsawConfiguration config, LevelHeightAccessor level) {
+        BlockPos pos = new BlockPos((chunkPos.x << 4) + 8, 0, (chunkPos.z << 4) + 8);
+        int centerY = generator.getBaseHeight(pos.getX(), pos.getZ(), Heightmap.Types.WORLD_SURFACE_WG, level);
+        return isValid(generator, pos.offset(-4, 0, -4), centerY, level) &&
+                isValid(generator, pos.offset(-4, 0, 4), centerY, level) &&
+                isValid(generator, pos.offset(4, 0, 4), centerY, level) &&
+                isValid(generator, pos.offset(4, 0, -4), centerY, level);
     }
 
-    private boolean isValid(ChunkGenerator generator, BlockPos pos, int startY) {
-        int y = generator.getBaseHeight(pos.getX(), pos.getZ(), Heightmap.Types.WORLD_SURFACE_WG);
+    private boolean isValid(ChunkGenerator generator, BlockPos pos, int startY, final LevelHeightAccessor level) {
+        int y = generator.getBaseHeight(pos.getX(), pos.getZ(), Heightmap.Types.WORLD_SURFACE_WG, level);
         return y >= generator.getSeaLevel()
                 && Math.abs(y - startY) < 10
                 && y < 150
@@ -64,8 +65,8 @@ public class HomeTreeStructure extends StructureFeature<JigsawConfiguration> {
         }
 
         @Override
-        public void generatePieces(RegistryAccess registries, ChunkGenerator generator, StructureManager templates, int chunkX, int chunkZ, Biome biome, JigsawConfiguration config) {
-            BlockPos pos = new BlockPos(chunkX << 4, 0, chunkZ << 4);
+        public void generatePieces(RegistryAccess registries, ChunkGenerator generator, StructureManager templates, ChunkPos chunkPos, Biome biome, JigsawConfiguration config, LevelHeightAccessor pLevel) {
+            BlockPos pos = chunkPos.getWorldPosition();
             JigsawPlacement.addPieces(registries, config, Piece::new, generator, templates, pos, this.pieces, this.random, true, true);
             this.calculateBoundingBox();
         }

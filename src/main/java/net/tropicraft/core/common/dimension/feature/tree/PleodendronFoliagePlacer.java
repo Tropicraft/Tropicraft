@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.Random;
 import java.util.Set;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.LevelSimulatedRW;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
@@ -21,7 +22,7 @@ public class PleodendronFoliagePlacer extends FoliagePlacer {
 
    protected final int height;
 
-   public PleodendronFoliagePlacer(UniformInt radius, UniformInt offset, int height) {
+   public PleodendronFoliagePlacer(IntProvider radius, IntProvider offset, int height) {
       super(radius, offset);
       this.height = height;
    }
@@ -35,7 +36,7 @@ public class PleodendronFoliagePlacer extends FoliagePlacer {
 
       for(int j = start; j >= start - i; --j) {
          int k = y + foliage.radiusOffset() + 1 - j;
-         this.placeLeavesRow(world, random, config, foliage.foliagePos(), k, leaves, j, foliage.doubleTrunk(), bounds);
+         this.placeLeavesRow(world, random, config, foliage.pos(), k, leaves, j, foliage.doubleTrunk(), bounds);
       }
 
    }

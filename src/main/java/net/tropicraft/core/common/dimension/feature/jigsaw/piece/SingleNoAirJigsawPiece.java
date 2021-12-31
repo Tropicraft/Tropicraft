@@ -3,29 +3,25 @@ package net.tropicraft.core.common.dimension.feature.jigsaw.piece;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.data.worldgen.ProcessorLists;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.feature.structures.SinglePoolElement;
 import net.minecraft.world.level.levelgen.feature.structures.StructurePoolElementType;
 import net.minecraft.world.level.levelgen.feature.structures.StructureTemplatePool;
-import net.minecraft.world.level.levelgen.feature.structures.SinglePoolElement;
-import net.minecraft.world.gen.feature.template.*;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.tropicraft.Constants;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import net.minecraft.data.worldgen.ProcessorLists;
-import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-
 public class SingleNoAirJigsawPiece extends SinglePoolElement {
-    public static final Codec<SingleNoAirJigsawPiece> CODEC = RecordCodecBuilder.create(instance -> {
-        return instance.group(templateCodec(), processorsCodec(), projectionCodec())
-                .apply(instance, SingleNoAirJigsawPiece::new);
-    });
+    public static final Codec<SingleNoAirJigsawPiece> CODEC = RecordCodecBuilder.create(instance -> instance.group(templateCodec(), processorsCodec(), projectionCodec())
+            .apply(instance, SingleNoAirJigsawPiece::new));
 
     private static final StructurePoolElementType<SingleNoAirJigsawPiece> TYPE = StructurePoolElementType.register(Constants.MODID + ":single_no_air", CODEC);
 

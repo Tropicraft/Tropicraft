@@ -2,18 +2,19 @@ package net.tropicraft.core.common.dimension.feature.tree;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.gen.IWorldGenerationReader;
-import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
-import net.minecraft.world.gen.feature.FeatureSpread;
-import net.minecraft.world.gen.feature.TreeFeature;
-import net.minecraft.world.gen.foliageplacer.FoliagePlacer;
-import net.minecraft.world.gen.foliageplacer.FoliagePlacerType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.world.level.LevelSimulatedReader;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.TreeFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 
 import java.util.Random;
 import java.util.Set;
+import java.util.function.BiConsumer;
 
 public final class PapayaFoliagePlacer extends FoliagePlacer {
     private static final Direction[] DIRECTIONS = new Direction[] { Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST };
@@ -21,13 +22,18 @@ public final class PapayaFoliagePlacer extends FoliagePlacer {
         return func_242830_b(instance).apply(instance, PapayaFoliagePlacer::new);
     });
 
-    public PapayaFoliagePlacer(FeatureSpread radius, FeatureSpread offset) {
+    public PapayaFoliagePlacer(ConstantInt radius, ConstantInt offset) {
         super(radius, offset);
     }
 
     @Override
-    protected FoliagePlacerType<?> getPlacerType() {
+    protected FoliagePlacerType<?> type() {
         return TropicraftFoliagePlacers.PAPAYA.get();
+    }
+
+    @Override
+    protected void createFoliage(LevelSimulatedReader pLevel, BiConsumer<BlockPos, BlockState> pBlockSetter, Random pRandom, TreeConfiguration pConfig, int pMaxFreeTreeHeight, FoliageAttachment pAttachment, int pFoliageHeight, int pFoliageRadius, int pOffset) {
+
     }
 
     @Override
@@ -68,12 +74,13 @@ public final class PapayaFoliagePlacer extends FoliagePlacer {
     }
 
     @Override
-    public int func_230374_a_(Random random, int p_230374_2_, BaseTreeFeatureConfig config) {
+    public int foliageHeight(Random pRandom, int pHeight, TreeConfiguration pConfig) {
         return 0;
     }
 
     @Override
-    protected boolean func_230373_a_(Random random, int dx, int y, int dz, int radius, boolean giantTrunk) {
+    protected boolean shouldSkipLocation(Random random, int dx, int y, int dz, int radius, boolean giantTrunk) {
         return radius != 0 && dx == radius && dz == radius;
     }
+
 }

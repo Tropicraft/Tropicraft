@@ -1,16 +1,16 @@
 package net.tropicraft.core.common.dimension.feature.tree;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.VineBlock;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.tropicraft.core.common.dimension.feature.config.RainforestVinesConfig;
 
 import java.util.Random;
@@ -24,7 +24,12 @@ public class RainforestVinesFeature extends Feature<RainforestVinesConfig> {
     }
 
     @Override
-    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, RainforestVinesConfig config) {
+    public boolean place(FeaturePlaceContext<RainforestVinesConfig> context) {
+        WorldGenLevel world = context.level();
+        Random rand = context.random();
+        BlockPos pos = context.origin();
+        RainforestVinesConfig config = context.config();
+
         BlockPos.MutableBlockPos mutablePos = pos.mutable();
 
         int maxY = Math.min(pos.getY() + config.height, world.getHeight());
@@ -42,7 +47,7 @@ public class RainforestVinesFeature extends Feature<RainforestVinesConfig> {
                                 mutablePos.move(direction.getOpposite());
                                 int len = rand.nextInt(3) + 2;
                                 for (int j = 0; j < len && world.isEmptyBlock(mutablePos); j++) {
-                                    world.setBlock(mutablePos, Blocks.VINE.defaultBlockState().setValue(VineBlock.getPropertyForFace(direction), true), Constants.BlockFlags.BLOCK_UPDATE);
+                                    world.setBlock(mutablePos, Blocks.VINE.defaultBlockState().setValue(VineBlock.getPropertyForFace(direction), true), Block.UPDATE_CLIENTS);
                                     mutablePos.move(Direction.DOWN);
                                 }
                                 break;

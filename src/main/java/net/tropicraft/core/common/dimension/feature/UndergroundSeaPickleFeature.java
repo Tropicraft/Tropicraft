@@ -1,15 +1,15 @@
 package net.tropicraft.core.common.dimension.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SeaPickleBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SeaPickleBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import net.minecraftforge.common.util.Constants;
 
 import java.util.Random;
 
@@ -19,7 +19,11 @@ public class UndergroundSeaPickleFeature extends Feature<NoneFeatureConfiguratio
     }
 
     @Override
-    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random random, BlockPos pos, NoneFeatureConfiguration config) {
+    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
+        WorldGenLevel world = context.level();
+        Random random = context.random();
+        BlockPos pos = context.origin();
+
         BlockState surface = world.getBlockState(pos.below());
         if (!surface.is(Blocks.STONE) && !surface.is(Blocks.DIRT)) {
             return false;
@@ -32,7 +36,7 @@ public class UndergroundSeaPickleFeature extends Feature<NoneFeatureConfiguratio
             }
 
             BlockState pickle = Blocks.SEA_PICKLE.defaultBlockState().setValue(SeaPickleBlock.PICKLES, count);
-            world.setBlock(pos, pickle, Constants.BlockFlags.BLOCK_UPDATE);
+            world.setBlock(pos, pickle, Block.UPDATE_CLIENTS);
             return true;
         }
 

@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.Codec;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.levelgen.carver.CaveCarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.UnderwaterCaveWorldCarver;
 import net.minecraft.world.level.levelgen.feature.configurations.ProbabilityFeatureConfiguration;
 import net.tropicraft.core.common.block.TropicraftBlocks;
@@ -12,7 +13,7 @@ import java.util.Random;
 
 public class TropicsUnderwaterCaveCarver extends UnderwaterCaveWorldCarver {
 
-    public TropicsUnderwaterCaveCarver(Codec<ProbabilityFeatureConfiguration> codec) {
+    public TropicsUnderwaterCaveCarver(Codec<CaveCarverConfiguration> codec) {
         super(codec);
         this.replaceableBlocks = ImmutableSet.<Block> builder().addAll(this.replaceableBlocks)
                 .add(TropicraftBlocks.CORAL_SAND.get())

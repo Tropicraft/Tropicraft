@@ -1,15 +1,14 @@
 package net.tropicraft.core.common.dimension.feature.tree;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.LevelSimulatedRW;
+import net.minecraft.world.level.LevelSimulatedReader;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.tropicraft.core.common.dimension.feature.config.FruitTreeConfig;
 
@@ -24,8 +23,14 @@ public class FruitTreeFeature extends Feature<FruitTreeConfig> {
 	}
 
 	@Override
-	public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, FruitTreeConfig config) {
+	public boolean place(FeaturePlaceContext<FruitTreeConfig> context) {
+		WorldGenLevel world = context.level();
+		Random rand = context.random();
+		BlockPos pos = context.origin();
+		FruitTreeConfig config = context.config();
+
 		pos = pos.immutable();
+
 		int height = rand.nextInt(3) + 4;
 
 		if (goesBeyondWorldSize(world, pos.getY(), height)) {
@@ -76,10 +81,7 @@ public class FruitTreeFeature extends Feature<FruitTreeConfig> {
 	}
 
 	protected static boolean isDirt(LevelSimulatedReader world, BlockPos pos) {
-		return world.isStateAtPosition(pos, (state) -> {
-			Block block = state.getBlock();
-			return isDirt(block) && block != Blocks.GRASS_BLOCK && block != Blocks.MYCELIUM;
-		});
+		return world.isStateAtPosition(pos, (state) -> isDirt(state) && !state.is(Blocks.GRASS_BLOCK) && !state.is(Blocks.MYCELIUM));
 	}
 
 	protected void setDirt(LevelSimulatedRW world, BlockPos pos) {

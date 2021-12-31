@@ -1,12 +1,12 @@
 package net.tropicraft.core.common.dimension.feature.tree;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 import java.util.Random;
 
@@ -19,7 +19,11 @@ public class NormalPalmTreeFeature extends PalmTreeFeature {
     }
 
     @Override
-    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random random, BlockPos pos, NoneFeatureConfiguration config) {
+    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
+        WorldGenLevel world = context.level();
+        Random random = context.random();
+        BlockPos pos = context.origin();
+
         pos = pos.immutable();
 
         int height = random.nextInt(4) + 6;

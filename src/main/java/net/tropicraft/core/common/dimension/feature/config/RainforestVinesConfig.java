@@ -5,13 +5,11 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
 public class RainforestVinesConfig implements FeatureConfiguration {
-    public static final Codec<RainforestVinesConfig> CODEC = RecordCodecBuilder.create(instance -> {
-        return instance.group(
-                Codec.INT.fieldOf("height").forGetter(c -> c.height),
-                Codec.INT.fieldOf("xz_spread").forGetter(c -> c.xzSpread),
-                Codec.INT.fieldOf("rolls_per_y").forGetter(c -> c.rollsPerY)
-        ).apply(instance, RainforestVinesConfig::new);
-    });
+    public static final Codec<RainforestVinesConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            Codec.INT.fieldOf("height").forGetter(c -> c.height),
+            Codec.INT.fieldOf("xz_spread").forGetter(c -> c.xzSpread),
+            Codec.INT.fieldOf("rolls_per_y").forGetter(c -> c.rollsPerY)
+    ).apply(instance, RainforestVinesConfig::new));
 
     // TODO make home tree radius configurable
     public final int height;

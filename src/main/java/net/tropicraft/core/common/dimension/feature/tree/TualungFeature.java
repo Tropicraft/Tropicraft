@@ -1,10 +1,10 @@
 package net.tropicraft.core.common.dimension.feature.tree;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 import java.util.Random;
@@ -25,7 +25,11 @@ public class TualungFeature extends RainforestTreeFeature {
     }
 
     @Override
-    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, NoneFeatureConfiguration config) {
+    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
+        WorldGenLevel world = context.level();
+        Random rand = context.random();
+        BlockPos pos = context.origin();
+
         pos = pos.immutable();
         int i = pos.getX(); int j = pos.getY(); int k = pos.getZ();
         int height = rand.nextInt(maxHeight - baseHeight) + baseHeight + j;

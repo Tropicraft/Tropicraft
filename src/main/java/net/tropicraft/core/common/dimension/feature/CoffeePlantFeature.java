@@ -1,13 +1,13 @@
 package net.tropicraft.core.common.dimension.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraftforge.common.util.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
@@ -25,7 +25,11 @@ public class CoffeePlantFeature extends Feature<NoneFeatureConfiguration> {
     }
 
     @Override
-    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random random, BlockPos pos, NoneFeatureConfiguration config) {
+    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
+        WorldGenLevel world = context.level();
+        Random random = context.random();
+        BlockPos pos = context.origin();
+
         final BlockPos genPos = new BlockPos(
                 (pos.getX() + random.nextInt(8)) - random.nextInt(8),
                 pos.getY(),

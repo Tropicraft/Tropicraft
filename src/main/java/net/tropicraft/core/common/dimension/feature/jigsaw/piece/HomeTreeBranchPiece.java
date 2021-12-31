@@ -9,6 +9,7 @@ import net.minecraft.block.JigsawBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;
+import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.SharedSeedRandom;
@@ -20,6 +21,7 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.jigsaw.IJigsawDeserializer;
 import net.minecraft.world.gen.feature.jigsaw.JigsawOrientation;
 import net.minecraft.world.gen.feature.template.Template;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.JigsawBlock;
 import net.minecraft.world.level.block.Rotation;
@@ -136,14 +138,14 @@ public final class HomeTreeBranchPiece extends StructurePoolElement implements P
         return true;
     }
 
-    public void genLeafCircle(final IWorld world, final int x, final int y, final int z, int outerRadius, int innerRadius, BlockState state, MutableBoundingBox chunkBounds) {
+    public void genLeafCircle(final Level world, final int x, final int y, final int z, int outerRadius, int innerRadius, BlockState state, BoundingBox chunkBounds) {
         int outerRadiusSquared = outerRadius * outerRadius;
         int innerRadiusSquared = innerRadius * innerRadius;
 
         BlockPos origin = new BlockPos(x, y, z);
-        MutableBoundingBox bounds = intersection(
+        BoundingBox bounds = intersection(
                 chunkBounds,
-                new MutableBoundingBox(
+                new BoundingBox(
                         origin.add(-outerRadius, 0, -outerRadius),
                         origin.add(outerRadius, 0, outerRadius)
                 )
@@ -154,19 +156,19 @@ public final class HomeTreeBranchPiece extends StructurePoolElement implements P
             return;
         }
 
-        for (BlockPos pos : BlockPos.getAllInBoxMutable(bounds.minX, bounds.minY, bounds.minZ, bounds.maxX, bounds.maxY, bounds.maxZ)) {
-            double distanceSquared = pos.distanceSq(origin);
+        for (BlockPos pos : BlockPos.betweenClosed(bounds.minX(), bounds.minY(), bounds.minZ(), bounds.maxX(), bounds.maxY(), bounds.maxZ())) {
+            double distanceSquared = pos.distSqr(origin);
             if (distanceSquared <= outerRadiusSquared && distanceSquared >= innerRadiusSquared) {
-                if (world.isAirBlock(pos) || world.getBlockState(pos).getBlock() == state.getBlock()) {
-                    world.setBlockState(pos, state, BlockFlags.DEFAULT);
+                if (world.isEmptyBlock(pos) || world.getBlockState(pos).getBlock() == state.getBlock()) {
+                    world.setBlockAndUpdate(pos, state);
                 }
             }
         }
     }
 
-    private void placeBlockLine(final IWorld world, BlockPos from, BlockPos to, BlockState state, MutableBoundingBox chunkBounds) {
-        MutableBoundingBox lineBounds = new MutableBoundingBox(from, to);
-        if (!chunkBounds.intersectsWith(lineBounds)) {
+    private void placeBlockLine(final Level world, BlockPos from, BlockPos to, BlockState state, BoundingBox chunkBounds) {
+        BoundingBox lineBounds = new BoundingBox(from, to);
+        if (!chunkBounds.intersects(lineBounds)) {
             return;
         }
 
@@ -189,7 +191,7 @@ public final class HomeTreeBranchPiece extends StructurePoolElement implements P
                     from.getZ() + length * stepZ + 0.5
             );
             if (chunkBounds.isVecInside(pos)) {
-                world.setBlockState(pos, state, BlockFlags.DEFAULT);
+                world.setBlockAndUpdate(pos, state);
             }
         }
     }
@@ -208,27 +210,27 @@ public final class HomeTreeBranchPiece extends StructurePoolElement implements P
     }
 
     @Nullable
-    private static MutableBoundingBox intersection(MutableBoundingBox left, MutableBoundingBox right) {
-        if (!left.intersectsWith(right)) {
+    private static BoundingBox intersection(BoundingBox left, BoundingBox right) {
+        if (!left.intersects(right)) {
             return null;
         }
 
-        return new MutableBoundingBox(
-                Math.max(left.minX, right.minX),
-                Math.max(left.minY, right.minY),
-                Math.max(left.minZ, right.minZ),
-                Math.min(left.maxX, right.maxX),
-                Math.min(left.maxY, right.maxY),
-                Math.min(left.maxZ, right.maxZ)
+        return new BoundingBox(
+                Math.max(left.minX(), right.minX()),
+                Math.max(left.minY(), right.minY()),
+                Math.max(left.minZ(), right.minZ()),
+                Math.min(left.maxX(), right.maxX()),
+                Math.min(left.maxY(), right.maxY()),
+                Math.min(left.maxZ(), right.maxZ())
         );
     }
 
-    private static int getCoordinateAlong(Vector3i pos, Direction.Axis axis) {
-        return axis.getCoordinate(pos.getX(), pos.getY(), pos.getZ());
+    private static int getCoordinateAlong(Vec3i pos, Direction.Axis axis) {
+        return axis.choose(pos.getX(), pos.getY(), pos.getZ());
     }
 
     @Override
-    public IJigsawDeserializer<?> getType() {
+    public StructurePoolElementType<?> getType() {
         return TYPE;
     }
 }

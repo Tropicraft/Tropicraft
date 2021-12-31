@@ -1,9 +1,9 @@
 package net.tropicraft.core.common.dimension.feature.jigsaw.piece;
 
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 
 /*
  * Hack interface used by home trees to support using a different bounding box for generation than jigsaw allocation.
@@ -12,5 +12,5 @@ import net.minecraft.world.gen.feature.template.TemplateManager;
  * one when populating the piece into the world so that it gets called for all the appropriate chunks.
  */
 public interface PieceWithGenerationBounds {
-    MutableBoundingBox getGenerationBounds(TemplateManager templates, BlockPos pos, Rotation rotation);
+    BoundingBox getGenerationBounds(StructureManager templates, BlockPos pos, Rotation rotation);
 }

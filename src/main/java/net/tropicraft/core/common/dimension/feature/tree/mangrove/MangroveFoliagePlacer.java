@@ -3,6 +3,7 @@ package net.tropicraft.core.common.dimension.feature.tree.mangrove;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.LevelSimulatedRW;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
@@ -21,7 +22,7 @@ public final class MangroveFoliagePlacer extends FoliagePlacer {
         return foliagePlacerParts(instance).apply(instance, MangroveFoliagePlacer::new);
     });
 
-    public MangroveFoliagePlacer(UniformInt radius, UniformInt offset) {
+    public MangroveFoliagePlacer(ConstantInt radius, ConstantInt offset) {
         super(radius, offset);
     }
 
@@ -32,9 +33,9 @@ public final class MangroveFoliagePlacer extends FoliagePlacer {
 
     @Override
     protected void createFoliage(LevelSimulatedRW world, Random random, TreeConfiguration config, int p_230372_4_, FoliageAttachment node, int p_230372_6_, int radius, Set<BlockPos> leaves, int p_230372_9_, BoundingBox bounds) {
-        this.placeLeavesRow(world, random, config, node.foliagePos(), node.radiusOffset(), leaves, 1, node.doubleTrunk(), bounds);
-        this.placeLeavesRow(world, random, config, node.foliagePos(), node.radiusOffset() + 1, leaves, 0, node.doubleTrunk(), bounds);
-        this.placeLeavesRow(world, random, config, node.foliagePos(), node.radiusOffset(), leaves, -1, node.doubleTrunk(), bounds);
+        this.placeLeavesRow(world, random, config, node.pos(), node.radiusOffset(), leaves, 1, node.doubleTrunk(), bounds);
+        this.placeLeavesRow(world, random, config, node.pos(), node.radiusOffset() + 1, leaves, 0, node.doubleTrunk(), bounds);
+        this.placeLeavesRow(world, random, config, node.pos(), node.radiusOffset(), leaves, -1, node.doubleTrunk(), bounds);
     }
 
     @Override

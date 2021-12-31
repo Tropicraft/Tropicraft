@@ -23,6 +23,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
+import net.minecraftforge.fmlserverevents.FMLServerStartingEvent;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.block.VolcanicSandBlock;

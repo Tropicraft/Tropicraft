@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.levelgen.carver.CanyonCarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.CanyonWorldCarver;
 import net.minecraft.world.level.levelgen.feature.configurations.ProbabilityFeatureConfiguration;
 import net.tropicraft.core.common.block.TropicraftBlocks;
@@ -18,7 +19,7 @@ import java.util.function.Function;
 public class TropicsCanyonCarver extends CanyonWorldCarver {
     private final float[] rs = new float[1024];
 
-    public TropicsCanyonCarver(Codec<ProbabilityFeatureConfiguration> codec) {
+    public TropicsCanyonCarver(Codec<CanyonCarverConfiguration> codec) {
         super(codec);
         this.replaceableBlocks = ImmutableSet.<Block> builder().addAll(this.replaceableBlocks)
                 .add(TropicraftBlocks.CORAL_SAND.get())

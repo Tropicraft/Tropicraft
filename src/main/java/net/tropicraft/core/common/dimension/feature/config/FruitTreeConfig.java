@@ -11,14 +11,12 @@ import net.tropicraft.core.common.block.TropicraftBlocks;
 import java.util.function.Supplier;
 
 public final class FruitTreeConfig implements FeatureConfiguration {
-    public static final Codec<FruitTreeConfig> CODEC = RecordCodecBuilder.create(instance -> {
-        return instance.group(
-                BlockState.CODEC.fieldOf("wood").forGetter(c -> c.wood),
-                BlockState.CODEC.fieldOf("sapling").forGetter(c -> c.sapling),
-                BlockState.CODEC.fieldOf("leaves").forGetter(c -> c.leaves),
-                BlockState.CODEC.fieldOf("fruit_leaves").forGetter(c -> c.fruitLeaves)
-        ).apply(instance, FruitTreeConfig::new);
-    });
+    public static final Codec<FruitTreeConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            BlockState.CODEC.fieldOf("wood").forGetter(c -> c.wood),
+            BlockState.CODEC.fieldOf("sapling").forGetter(c -> c.sapling),
+            BlockState.CODEC.fieldOf("leaves").forGetter(c -> c.leaves),
+            BlockState.CODEC.fieldOf("fruit_leaves").forGetter(c -> c.fruitLeaves)
+    ).apply(instance, FruitTreeConfig::new));
 
     public final BlockState wood;
     public final BlockState sapling;
