@@ -47,10 +47,10 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
             stack.mulPose(new Quaternion(getRockingAxis(), rockingAngle, true));
         }
 
-        final int color = furniture.getColor().getColorValue();
-        red = ColorHelper.getRed(color);
-        green = ColorHelper.getGreen(color);
-        blue = ColorHelper.getBlue(color);
+        final float[] color = furniture.getColor().getTextureDiffuseColors();
+        red = color[0];
+        green = color[1];
+        blue = color[2];
 
         // Draw uncolored layer
         VertexConsumer ivertexbuilder = buffer.getBuffer(model.renderType(TropicraftRenderUtils.getTextureEntity(textureName + "_base_layer")));

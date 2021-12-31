@@ -44,8 +44,8 @@ public class BambooItemFrameRenderer extends EntityRenderer<BambooItemFrame> {
         matrixStackIn.translate(-Vector3d.x, -Vector3d.y, -Vector3d.z);
         double d0 = 0.46875D;
         matrixStackIn.translate((double)direction.getStepX() * 0.46875D, (double)direction.getStepY() * 0.46875D, (double)direction.getStepZ() * 0.46875D);
-        matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(entityIn.xRot));
-        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180.0F - entityIn.yRot));
+        matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(entityIn.getXRot()));
+        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180.0F - entityIn.getYRot()));
         BlockRenderDispatcher blockrendererdispatcher = this.mc.getBlockRenderer();
         ModelManager modelmanager = blockrendererdispatcher.getBlockModelShaper().getModelManager();
         ModelResourceLocation modelresourcelocation = entityIn.getItem().getItem() instanceof MapItem ? LOCATION_MODEL_MAP : LOCATION_MODEL;
@@ -55,7 +55,7 @@ public class BambooItemFrameRenderer extends EntityRenderer<BambooItemFrame> {
         matrixStackIn.popPose();
         ItemStack itemstack = entityIn.getItem();
         if (!itemstack.isEmpty()) {
-            MapItemSavedData mapdata = MapItem.getOrCreateSavedData(itemstack, entityIn.level);
+            MapItemSavedData mapdata = MapItem.getSavedData(itemstack, entityIn.level);
             matrixStackIn.translate(0.0D, 0.0D, 0.4375D);
             int i = mapdata != null ? entityIn.getRotation() % 4 * 2 : entityIn.getRotation();
             matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees((float)i * 360.0F / 8.0F));
@@ -65,12 +65,14 @@ public class BambooItemFrameRenderer extends EntityRenderer<BambooItemFrame> {
                 matrixStackIn.scale(0.0078125F, 0.0078125F, 0.0078125F);
                 matrixStackIn.translate(-64.0D, -64.0D, 0.0D);
                 matrixStackIn.translate(0.0D, 0.0D, -1.0D);
-                if (mapdata != null) {
-                    this.mc.gameRenderer.getMapRenderer().render(matrixStackIn, bufferIn, mapdata, true, packedLightIn);
+                Integer id = MapItem.getMapId(itemstack);
+
+                if (mapdata != null && id != null) {
+                    this.mc.gameRenderer.getMapRenderer().render(matrixStackIn, bufferIn, id, mapdata, true, packedLightIn);
                 }
             } else {
                 matrixStackIn.scale(0.5F, 0.5F, 0.5F);
-                this.itemRenderer.renderStatic(itemstack, ItemTransforms.TransformType.FIXED, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+                this.itemRenderer.renderStatic(itemstack, ItemTransforms.TransformType.FIXED, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, entityIn.getId());
             }
         }
 

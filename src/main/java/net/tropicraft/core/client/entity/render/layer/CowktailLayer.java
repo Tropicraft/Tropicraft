@@ -15,41 +15,40 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.core.common.entity.passive.CowktailEntity;
 
 @OnlyIn(Dist.CLIENT)
-public class CowktailLayer<T extends CowktailEntity> extends RenderLayer<T, CowModel<T>>
-{
+public class CowktailLayer<T extends CowktailEntity> extends RenderLayer<T, CowModel<T>> {
    public CowktailLayer(RenderLayerParent<T, CowModel<T>> rendererIn) {
       super(rendererIn);
    }
 
-   public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+   public void render(PoseStack stack, MultiBufferSource bufferIn, int packedLightIn, T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
       if (!entitylivingbaseIn.isBaby() && !entitylivingbaseIn.isInvisible()) {
-         BlockRenderDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRenderer();
-         BlockState blockstate = entitylivingbaseIn.getCowktailType().getRenderState();
-         int i = LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F);
-         matrixStackIn.pushPose();
-         matrixStackIn.translate((double)0.2F, (double)-0.35F, 0.5D);
-         matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-48.0F));
-         matrixStackIn.scale(-1.0F, -1.0F, 1.0F);
-         matrixStackIn.translate(-0.5D, -0.5D, -0.5D);
-         blockrendererdispatcher.renderSingleBlock(blockstate, matrixStackIn, bufferIn, packedLightIn, i);
-         matrixStackIn.popPose();
-         matrixStackIn.pushPose();
-         matrixStackIn.translate((double)0.2F, (double)-0.35F, 0.5D);
-         matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(42.0F));
-         matrixStackIn.translate((double)0.1F, 0.0D, (double)-0.6F);
-         matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-48.0F));
-         matrixStackIn.scale(-1.0F, -1.0F, 1.0F);
-         matrixStackIn.translate(-0.5D, -0.5D, -0.5D);
-         blockrendererdispatcher.renderSingleBlock(blockstate, matrixStackIn, bufferIn, packedLightIn, i);
-         matrixStackIn.popPose();
-         matrixStackIn.pushPose();
-         this.getParentModel().getHead().translateAndRotate(matrixStackIn);
-         matrixStackIn.translate(0.0D, (double)-0.7F, (double)-0.2F);
-         matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-78.0F));
-         matrixStackIn.scale(-1.0F, -1.0F, 1.0F);
-         matrixStackIn.translate(-0.5D, -0.5D, -0.5D);
-         blockrendererdispatcher.renderSingleBlock(blockstate, matrixStackIn, bufferIn, packedLightIn, i);
-         matrixStackIn.popPose();
+         BlockRenderDispatcher renderer = Minecraft.getInstance().getBlockRenderer();
+         BlockState blockState = entitylivingbaseIn.getCowktailType().getRenderState();
+         int overlayCoords = LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F);
+         stack.pushPose();
+         stack.translate(0.2F, -0.35F, 0.5D);
+         stack.mulPose(Vector3f.YP.rotationDegrees(-48.0F));
+         stack.scale(-1.0F, -1.0F, 1.0F);
+         stack.translate(-0.5D, -0.5D, -0.5D);
+         renderer.renderSingleBlock(blockState, stack, bufferIn, packedLightIn, overlayCoords);
+         stack.popPose();
+         stack.pushPose();
+         stack.translate(0.2F, -0.35F, 0.5D);
+         stack.mulPose(Vector3f.YP.rotationDegrees(42.0F));
+         stack.translate(0.1F, 0.0D, -0.6F);
+         stack.mulPose(Vector3f.YP.rotationDegrees(-48.0F));
+         stack.scale(-1.0F, -1.0F, 1.0F);
+         stack.translate(-0.5D, -0.5D, -0.5D);
+         renderer.renderSingleBlock(blockState, stack, bufferIn, packedLightIn, overlayCoords);
+         stack.popPose();
+         stack.pushPose();
+         this.getParentModel().getHead().translateAndRotate(stack);
+         stack.translate(0.0D, -0.7F, -0.2F);
+         stack.mulPose(Vector3f.YP.rotationDegrees(-78.0F));
+         stack.scale(-1.0F, -1.0F, 1.0F);
+         stack.translate(-0.5D, -0.5D, -0.5D);
+         renderer.renderSingleBlock(blockState, stack, bufferIn, packedLightIn, overlayCoords);
+         stack.popPose();
       }
    }
 }

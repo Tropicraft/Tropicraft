@@ -77,7 +77,7 @@ public class AshenHeldItemLayer<T extends AshenEntity, M extends EntityModel<T> 
                 stack.mulPose(Vector3f.ZP.rotationDegrees(10F));
 
                 stack.scale(scale, scale, scale);
-                Minecraft.getInstance().getItemRenderer().renderStatic(entity, itemstack, ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, false, stack, buffer, entity.level, combinedLightIn, OverlayTexture.NO_OVERLAY);
+                Minecraft.getInstance().getItemRenderer().renderStatic(entity, itemstack, ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, false, stack, buffer, entity.level, combinedLightIn, OverlayTexture.NO_OVERLAY, entity.getId());
                 stack.popPose();
             } else {
                 stack.pushPose();
@@ -87,7 +87,7 @@ public class AshenHeldItemLayer<T extends AshenEntity, M extends EntityModel<T> 
                 stack.mulPose(Vector3f.YP.rotationDegrees(90F));
                 stack.scale(scale, scale, scale);
                 
-                Minecraft.getInstance().getItemRenderer().renderStatic(entity, itemstack, ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND, false, stack, buffer, entity.level, combinedLightIn, OverlayTexture.NO_OVERLAY);
+                Minecraft.getInstance().getItemRenderer().renderStatic(entity, itemstack, ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND, false, stack, buffer, entity.level, combinedLightIn, OverlayTexture.NO_OVERLAY, entity.getId());
                 stack.popPose();
             }
         }

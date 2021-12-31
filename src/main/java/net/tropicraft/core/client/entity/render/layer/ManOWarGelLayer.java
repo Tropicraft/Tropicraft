@@ -15,11 +15,12 @@ import net.tropicraft.core.common.entity.underdasea.ManOWarEntity;
 @OnlyIn(Dist.CLIENT)
 public class ManOWarGelLayer extends RenderLayer<ManOWarEntity, ManOWarModel> {
     private final ManOWarRenderer mowRenderer;
-    private final ManOWarModel mowModel = new ManOWarModel(0, 20, false);
+    private final ManOWarModel mowModel;// = new ManOWarModel(0, 20, false);
 
-    public ManOWarGelLayer(ManOWarRenderer manOWarRenderer) {
+    public ManOWarGelLayer(ManOWarRenderer manOWarRenderer, final ManOWarModel mowModel) {
         super(manOWarRenderer);
         mowRenderer = manOWarRenderer;
+        this.mowModel = mowModel; // TODO 1.17 use bigger size
     }
 
     @Override
