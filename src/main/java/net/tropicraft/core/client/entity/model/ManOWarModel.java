@@ -103,7 +103,15 @@ public class ManOWarModel extends ListModel<ManOWarEntity> {
          */
     }
 
-    public static LayerDefinition create() {
+    public static LayerDefinition createOuterModel() {
+        return create(32, 20, true);
+    }
+
+    public static LayerDefinition createGelLayerModel() {
+        return create(0, 20, false);
+    }
+
+    private static LayerDefinition create(final int i, final int j, final boolean derp) {
         MeshDefinition modelData = new MeshDefinition();
         PartDefinition modelPartData = modelData.getRoot();
 
@@ -114,7 +122,7 @@ public class ManOWarModel extends ListModel<ManOWarEntity> {
         PartDefinition ModelPartBody = modelPartData.addOrReplaceChild("Body",
                 CubeListBuilder.create()
                         .mirror()
-                        .addBox("float", -2F, -4F, -2F, 4, 4, 8, delta, 0, 20)
+                        .addBox("float", -2F, -4F, -2F, 4, 4, 8, delta, i, j)
                         .addBox("Shape1", 0F, -6F, -2F, 0, 6, 10, delta, 15, -10)//derp ? 32 : 15, derp ? 20 : -10)
                         .addBox("tentbase", -2F, 0F, -2F, 4, 2, 4, delta, tbOX, tbOY),
                 PartPose.offset(0F, 18F, 0F));
