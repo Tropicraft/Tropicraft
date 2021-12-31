@@ -1,14 +1,12 @@
 package net.tropicraft.core.common.entity.ai.fishies;
 
-import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.entity.underdasea.TropicraftFishEntity;
 
 import java.util.EnumSet;
 import java.util.Random;
-
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class AvoidWallsGoal extends Goal {
     public TropicraftFishEntity entity;

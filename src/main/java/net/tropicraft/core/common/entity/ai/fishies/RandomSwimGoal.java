@@ -6,8 +6,6 @@ import net.tropicraft.core.common.entity.underdasea.TropicraftFishEntity;
 import java.util.EnumSet;
 import java.util.Random;
 
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
-
 public class RandomSwimGoal extends Goal {
     public TropicraftFishEntity entity;
     public Random rand;

@@ -1,9 +1,7 @@
 package net.tropicraft.core.common.entity.hostile;
 
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -147,7 +145,7 @@ public class AshenEntity extends TropicraftCreatureEntity implements RangedAttac
         double d0 = target.getX() - getX();
         double d1 = target.getBoundingBox().minY + (double)(target.getBbHeight() / 3.0F) - tippedArrow.getY();
         double d2 = target.getZ() - getZ();
-        double d3 = Mth.sqrt(d0 * d0 + d2 * d2);
+        double d3 = Mth.sqrt((float) (d0 * d0 + d2 * d2));
         tippedArrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, velocity);
 
         tippedArrow.setBaseDamage(1);
@@ -187,7 +185,7 @@ public class AshenEntity extends TropicraftCreatureEntity implements RangedAttac
         setActionState(AshenState.LOST_MASK);
         maskToTrack = new AshenMaskEntity(TropicraftEntities.ASHEN_MASK.get(), level);
         maskToTrack.setMaskType(getMaskType());
-        maskToTrack.absMoveTo(getX(), getY(), getZ(), yRot, 0);
+        maskToTrack.absMoveTo(getX(), getY(), getZ(), getYRot(), 0);
         level.addFreshEntity(maskToTrack);
     }
 
@@ -195,7 +193,7 @@ public class AshenEntity extends TropicraftCreatureEntity implements RangedAttac
         setActionState(AshenState.HOSTILE);
         maskToTrack = null;
         setMaskType(mask.getMaskType());
-        mask.remove();
+        mask.remove(RemovalReason.DISCARDED);
     }
 
     @Override

@@ -3,6 +3,7 @@ package net.tropicraft.core.common.entity.underdasea;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.player.Player;
@@ -31,7 +32,7 @@ public class SharkEntity extends TropicraftFishEntity {
     private static final EntityDataAccessor<Boolean> IS_BOSS = SynchedEntityData.defineId(SharkEntity.class, EntityDataSerializers.BOOLEAN);
 
     private final ServerBossEvent bossInfo = new ServerBossEvent(getDisplayName(), BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS);
-    private ArrayList<ServerPlayer> bossTargets = new ArrayList<>();
+    private final ArrayList<ServerPlayer> bossTargets = new ArrayList<>();
     private boolean hasSetBoss = false;
 
     public SharkEntity(EntityType<? extends WaterAnimal> type, Level world) {
@@ -100,7 +101,7 @@ public class SharkEntity extends TropicraftFishEntity {
                 // Search for suitable target
                 Player nearest = level.getNearestPlayer(this, 64D);
                 if (nearest != null) {
-                    if (canSee(nearest) && nearest.isInWater() && !nearest.isCreative() && nearest.isAlive()) {
+                    if (hasLineOfSight(nearest) && nearest.isInWater() && !nearest.isCreative() && nearest.isAlive()) {
                         aggressTarget = nearest;
                         setTargetHeading(aggressTarget.getX(), aggressTarget.getY() + 1, aggressTarget.getZ(), true);
                         // Show health bar to target player
@@ -123,7 +124,7 @@ public class SharkEntity extends TropicraftFishEntity {
                     this.spawnAnim();
                 }
                 // Update health bar
-                this.bossInfo.setPercent(this.rangeMap(this.getHealth(), 0, this.getMaxHealth(), 0, 1));
+                this.bossInfo.setProgress(this.rangeMap(this.getHealth(), 0, this.getMaxHealth(), 0, 1));
             }
         }
     }

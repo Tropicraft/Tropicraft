@@ -2,6 +2,7 @@ package net.tropicraft.core.common.entity.ai;
 
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.pathfinder.Path;
@@ -39,7 +40,7 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal {
 
     public EntityAIAvoidEntityOnLowHealth(PathfinderMob theEntityIn, Class<T> classToAvoidIn, Predicate<Entity> avoidTargetSelectorIn, float avoidDistanceIn, double farSpeedIn, double nearSpeedIn, float healthToAvoid)
     {
-        this.canBeSeenSelector = entity -> entity.isAlive() && theEntity.getSensing().canSee(entity);
+        this.canBeSeenSelector = entity -> entity.isAlive() && theEntity.getSensing().hasLineOfSight(entity);
         this.theEntity = theEntityIn;
         this.classToAvoid = classToAvoidIn;
         this.avoidTargetSelector = avoidTargetSelectorIn;
@@ -69,7 +70,7 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal {
             return false;
         } else {
             this.closestLivingEntity = list.get(0);
-            Vec3 Vector3d = RandomPos.getPosAvoid(this.theEntity, 16, 7, new Vec3(this.closestLivingEntity.getX(), this.closestLivingEntity.getY(), this.closestLivingEntity.getZ()));
+            Vec3 Vector3d = DefaultRandomPos.getPosAway(this.theEntity, 16, 7, new Vec3(this.closestLivingEntity.getX(), this.closestLivingEntity.getY(), this.closestLivingEntity.getZ()));
 
             if (Vector3d == null) {
                 return false;

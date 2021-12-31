@@ -1,11 +1,11 @@
 package net.tropicraft.core.common.entity.hostile;
 
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Blocks;
 
 public class TropicraftCreatureEntity extends PathfinderMob {
 

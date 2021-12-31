@@ -3,7 +3,7 @@ package net.tropicraft.core.common.entity.passive;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoublePlantBlock;
-import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.MobSpawnType;
@@ -26,7 +26,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.IForgeShearable;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.block.TropicraftFlower;
 import net.tropicraft.core.common.drinks.Drink;
@@ -66,7 +66,7 @@ public class CowktailEntity extends Cow implements IForgeShearable {
 	public InteractionResult mobInteract(Player player, InteractionHand hand) {
 		ItemStack itemstack = player.getItemInHand(hand);
 		if (itemstack.getItem() == TropicraftItems.BAMBOO_MUG.get() && !this.isBaby()) {
-			if (player.abilities.instabuild) {
+			if (player.getAbilities().instabuild) {
 				itemstack.shrink(1);
 			}
 
@@ -77,7 +77,7 @@ public class CowktailEntity extends Cow implements IForgeShearable {
 
 			if (itemstack.isEmpty()) {
 				player.setItemInHand(hand, cocktailItem);
-			} else if (!player.inventory.add(cocktailItem)) {
+			} else if (!player.getInventory().add(cocktailItem)) {
 				player.drop(cocktailItem, false);
 			}
 
@@ -112,15 +112,15 @@ public class CowktailEntity extends Cow implements IForgeShearable {
 	}
 
 	@Override
-	public CowktailEntity getBreedOffspring(ServerLevel world, AgableMob ageable) {
+	public CowktailEntity getBreedOffspring(ServerLevel world, AgeableMob ageable) {
 		CowktailEntity child = TropicraftEntities.COWKTAIL.get().create(this.level);
-		child.setCowktailType(this.getOffspringType((CowktailEntity)ageable));
+		child.setCowktailType(getOffspringType((CowktailEntity)ageable));
 		return child;
 	}
 
-	private CowktailEntity.Type getOffspringType(CowktailEntity p_213445_1_) {
+	private CowktailEntity.Type getOffspringType(CowktailEntity cowktail) {
 		CowktailEntity.Type CowktailEntity$type = this.getCowktailType();
-		CowktailEntity.Type CowktailEntity$type1 = p_213445_1_.getCowktailType();
+		CowktailEntity.Type CowktailEntity$type1 = cowktail.getCowktailType();
 		CowktailEntity.Type CowktailEntity$type2;
 		if (CowktailEntity$type == CowktailEntity$type1 && this.random.nextInt(1024) == 0) {
 			CowktailEntity$type2 = Type.getRandomType(random);
@@ -142,9 +142,9 @@ public class CowktailEntity extends Cow implements IForgeShearable {
 		java.util.List<ItemStack> ret = new java.util.ArrayList<>();
 		this.level.addParticle(ParticleTypes.EXPLOSION, this.getX(), this.getY(0.5D), this.getZ(), 0.0D, 0.0D, 0.0D);
 		if (!this.level.isClientSide) {
-			this.remove();
+			this.remove(RemovalReason.DISCARDED);
 			Cow cowentity = EntityType.COW.create(this.level);
-			cowentity.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, this.xRot);
+			cowentity.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
 			cowentity.setHealth(this.getHealth());
 			cowentity.yBodyRot = this.yBodyRot;
 			if (this.hasCustomName()) {

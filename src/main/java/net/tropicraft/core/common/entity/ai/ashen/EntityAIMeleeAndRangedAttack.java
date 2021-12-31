@@ -1,18 +1,16 @@
 package net.tropicraft.core.common.entity.ai.ashen;
 
-import net.minecraft.world.entity.monster.RangedAttackMob;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.util.Mth;
 import net.tropicraft.core.common.entity.hostile.AshenEntity;
 import net.tropicraft.core.common.item.AshenMaskItem;
 
 import java.util.EnumSet;
-
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class EntityAIMeleeAndRangedAttack extends Goal
 {
@@ -26,13 +24,13 @@ public class EntityAIMeleeAndRangedAttack extends Goal
      * maxRangedAttackTime.
      */
     private int rangedAttackTime;
-    private double entityMoveSpeed;
+    private final double entityMoveSpeed;
     private int seeTime;
-    private int maxMeleeAttackTime;
+    private final int maxMeleeAttackTime;
     /** The maximum time the AI has to wait before peforming another ranged attack. */
-    private int maxRangedAttackTime;
-    private float shootCutoffRange;
-    private float shootCutoffRangeSqr;
+    private final int maxRangedAttackTime;
+    private final float shootCutoffRange;
+    private final float shootCutoffRangeSqr;
     private float meleeHitRange = 2F;
 
     public EntityAIMeleeAndRangedAttack(AshenEntity attacker, double movespeed, int maxMeleeAttackTime, int maxRangedAttackTime, float maxAttackDistanceIn) {
@@ -97,7 +95,7 @@ public class EntityAIMeleeAndRangedAttack extends Goal
             }
         }
         double d0 = entityHost.distanceToSqr(attackTarget.getX(), attackTarget.getBoundingBox().minY, attackTarget.getZ());
-        boolean flag = entityHost.getSensing().canSee(attackTarget);
+        boolean flag = entityHost.getSensing().hasLineOfSight(attackTarget);
 
         if (flag) {
             ++seeTime;
@@ -121,7 +119,7 @@ public class EntityAIMeleeAndRangedAttack extends Goal
         //System.out.println(rangedAttackTime);
 
         if (--rangedAttackTime <= 0) {
-            f = Mth.sqrt(d0) / shootCutoffRange;
+            f = Mth.sqrt((float) d0) / shootCutoffRange;
             float f1 = f;
 
             if (f < 0.1F) {

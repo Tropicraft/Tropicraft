@@ -40,7 +40,7 @@ public class TropiCreeperSwellGoal extends Goal {
             this.creeper.setCreeperState(-1);
         } else if (this.creeper.distanceToSqr(this.target) > 49.0D) {
             this.creeper.setCreeperState(-1);
-        } else if (!this.creeper.getSensing().canSee(this.target)) {
+        } else if (!this.creeper.getSensing().hasLineOfSight(this.target)) {
             this.creeper.setCreeperState(-1);
         } else {
             this.creeper.setCreeperState(1);

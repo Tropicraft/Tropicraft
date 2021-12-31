@@ -35,7 +35,7 @@ public class WallItemEntity extends BambooItemFrame {
     @Override
     protected void dropItem(@Nullable Entity entityIn, boolean p_146065_2_) {
         super.dropItem(entityIn, false);
-        this.remove();
+        this.remove(RemovalReason.DISCARDED);
     }
 
     @Override

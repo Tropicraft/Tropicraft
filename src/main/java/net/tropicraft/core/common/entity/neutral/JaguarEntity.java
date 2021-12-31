@@ -1,26 +1,12 @@
 package net.tropicraft.core.common.entity.neutral;
 
 import com.google.common.base.Suppliers;
-import net.minecraft.world.entity.AgableMob;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
-import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
-import net.tropicraft.core.common.TropicraftTags;
-import net.tropicraft.core.common.entity.TropicraftEntities;
-import net.tropicraft.core.common.entity.passive.WhiteLippedPeccaryEntity;
-import net.tropicraft.core.common.item.TropicraftItems;
-
-import java.util.function.Supplier;
-
 import net.minecraft.world.entity.ai.goal.BreedGoal;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.FollowParentGoal;
@@ -30,6 +16,18 @@ import net.minecraft.world.entity.ai.goal.OcelotAttackGoal;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.HitResult;
+import net.tropicraft.core.common.TropicraftTags;
+import net.tropicraft.core.common.entity.TropicraftEntities;
+import net.tropicraft.core.common.entity.passive.WhiteLippedPeccaryEntity;
+import net.tropicraft.core.common.item.TropicraftItems;
+
+import java.util.function.Supplier;
 
 public class JaguarEntity extends Animal {
     private static final Supplier<Ingredient> BREEDING_ITEMS = Suppliers.memoize(() -> Ingredient.of(TropicraftTags.Items.MEATS));
@@ -65,7 +63,7 @@ public class JaguarEntity extends Animal {
     }
 
     @Override
-    public JaguarEntity getBreedOffspring(ServerLevel world, AgableMob mate) {
+    public JaguarEntity getBreedOffspring(ServerLevel world, AgeableMob mate) {
         return TropicraftEntities.JAGUAR.get().create(this.level);
     }
 

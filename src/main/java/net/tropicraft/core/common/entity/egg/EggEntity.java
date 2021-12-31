@@ -26,7 +26,7 @@ public abstract class EggEntity extends LivingEntity {
         rotationRand = 0;
         noCulling = true;
        
-        yRot = random.nextInt(360);
+        setYRot(random.nextInt(360));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -102,7 +102,7 @@ public abstract class EggEntity extends LivingEntity {
                     final Entity ent = onHatch();
                     ent.moveTo(getX(), getY(), getZ(), 0.0F, 0.0F);
                     level.addFreshEntity(ent);
-                    remove();
+                    remove(RemovalReason.DISCARDED);
                 }
             }
         } 

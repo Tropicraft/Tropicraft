@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.entity.ai;
 
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.Container;
@@ -99,7 +100,7 @@ public class EntityAIEatToHeal extends Goal
                     boolean success = false;
 
                     if (this.entityObj.distanceToSqr(Vec3.atCenterOf(blockposGoal)) > 256.0D) {
-                        Vec3 Vector3d = RandomPos.getLandPosTowards(this.entityObj, 14, 3, new Vec3((double) i + 0.5D, (double) j, (double) k + 0.5D));
+                        Vec3 Vector3d = DefaultRandomPos.getPosTowards(this.entityObj, 14, 3, new Vec3((double) i + 0.5D, j, (double) k + 0.5D), (float)Math.PI / 2F);
 
                         if (Vector3d != null) {
                             success = this.entityObj.getNavigation().moveTo(Vector3d.x, Vector3d.y, Vector3d.z, 1.0D);

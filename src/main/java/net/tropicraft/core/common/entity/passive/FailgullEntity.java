@@ -1,8 +1,10 @@
 package net.tropicraft.core.common.entity.passive;
 
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
+import net.minecraft.world.entity.ai.util.AirRandomPos;
+import net.minecraft.world.entity.ai.util.HoverRandomPos;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -33,9 +35,6 @@ import net.tropicraft.core.common.item.TropicraftItems;
 import javax.annotation.Nullable;
 import java.util.*;
 
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
-
-import net.minecraft.world.entity.AgableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -107,11 +106,6 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
 
 	@Override
 	protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
-	}
-
-	@Override
-	protected boolean makeFlySound() {
-		return false;
 	}
 
 	@Override
@@ -194,16 +188,22 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
 			}
 		}
 
-		Vec3 Vector3d = getViewVector(0.0F);
+		Vec3 direction = getViewVector(0.0F);
+		final float maxAngle = ((float) Math.PI / 2F);
 
-		Vec3 Vector3d2 = RandomPos.getAboveLandPos(FailgullEntity.this, 40, 3, Vector3d, ((float)Math.PI / 2F), 2, 1);
-		final Vec3 groundTarget = RandomPos.getAirPos(FailgullEntity.this, 40, 4, -2, Vector3d, (double) ((float) Math.PI / 2F));
-		return Vector3d2 != null ? new BlockPos(Vector3d2) : groundTarget != null ? new BlockPos(groundTarget) : null;
+		Vec3 target = HoverRandomPos.getPos(FailgullEntity.this, 40, 3, direction.x, direction.z, maxAngle, 2, 1);
+		final Vec3 groundPos = AirAndWaterRandomPos.getPos(FailgullEntity.this, 40, 4, -2, direction.x, direction.z, maxAngle);
+		return target != null ? new BlockPos(target) : groundPos != null ? new BlockPos(groundPos) : null;
 	}
 
 	@Override
 	public ItemStack getPickedResult(HitResult target) {
 		return new ItemStack(TropicraftItems.FAILGULL_SPAWN_EGG.get());
+	}
+
+	@Override
+	public boolean isFlying() {
+		return !this.onGround;
 	}
 
 	class FollowLeaderGoal extends Goal {

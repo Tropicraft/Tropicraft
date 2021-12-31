@@ -66,8 +66,8 @@ public abstract class TropicraftFishEntity extends WaterAnimal {
         // Client Side
         if (level.isClientSide) {
             // TODO if we ever use this class with turtles again - if(!(this instanceof IAmphibian)) {
-                this.xRot = -this.swimPitch;
-                this.yRot = -this.swimYaw;
+                this.setXRot(-this.swimPitch);
+                this.setYRot(-this.swimYaw);
                 this.yHeadRot = -this.swimYaw;
                 this.yHeadRotO = -this.prevSwimYaw;
                 this.yBodyRot = 0;
@@ -91,7 +91,7 @@ public abstract class TropicraftFishEntity extends WaterAnimal {
                 if (this.getY() == this.yo) {
                     pitch = this.swimPitch;
                 } else {
-                    pitch = (float) (-((Math.atan2(y, Mth.sqrt(x * x + z * z)) * 180D) / Math.PI));
+                    pitch = (float) (-((Math.atan2(y, Mth.sqrt((float) (x * x + z * z))) * 180D) / Math.PI));
                 }
 
                 this.swimYaw = lerp(swimYaw, (int)-yaw, this.swimSpeedTurn*4);
@@ -273,7 +273,7 @@ public abstract class TropicraftFishEntity extends WaterAnimal {
         double y = (int) (posY - this.getY());
         double z = (int) (posZ - this.getZ());
         float yaw = (float) ((Math.atan2(z, x) * 180D) / Math.PI) - 90f;
-        float pitch = (float) (-((Math.atan2(y, Mth.sqrt(x * x + z * z)) * 180D) / Math.PI));
+        float pitch = (float) (-((Math.atan2(y, Mth.sqrt((float) (x * x + z * z))) * 180D) / Math.PI));
         targetVector = new Vec3((int) posX, (int) posY, (int) posZ);
         targetVectorHeading = new Vec2(yaw, pitch);
         return true;
@@ -319,7 +319,7 @@ public abstract class TropicraftFishEntity extends WaterAnimal {
         double y = ent.getY() - this.getY();
         double z = ent.getZ() - this.getZ();
         float yaw = (float) ((Math.atan2(z, x) * 180D) / Math.PI) - 90F;
-        float pitch = (float) (-((Math.atan2(y, Mth.sqrt(x * x + z * z)) * 180D) / Math.PI));
+        float pitch = (float) (-((Math.atan2(y, Mth.sqrt((float) (x * x + z * z))) * 180D) / Math.PI));
 
         if (targetVector == null) {
             targetVector = new Vec3(ent.getX(), ent.getY() - 5 + random.nextInt(10), ent.getZ());

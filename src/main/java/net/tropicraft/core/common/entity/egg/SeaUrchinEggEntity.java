@@ -1,13 +1,10 @@
 package net.tropicraft.core.common.entity.egg;
 
-import com.google.common.collect.ImmutableList;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.util.HandSide;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.HitResult;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.underdasea.SeaUrchinEntity;
 import net.tropicraft.core.common.item.TropicraftItems;

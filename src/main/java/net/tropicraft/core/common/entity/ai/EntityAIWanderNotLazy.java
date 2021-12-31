@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.entity.ai;
 
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.Vec3;
@@ -51,7 +52,7 @@ public class EntityAIWanderNotLazy extends Goal {
             }
         }
 
-        Vec3 vec = RandomPos.getPos(this.entity, 10, 7);
+        Vec3 vec = DefaultRandomPos.getPos(this.entity, 10, 7);
         if (vec == null)
         {
             return false;

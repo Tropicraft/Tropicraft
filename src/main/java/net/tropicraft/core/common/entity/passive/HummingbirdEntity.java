@@ -2,8 +2,10 @@ package net.tropicraft.core.common.entity.passive;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,8 +20,11 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
+import net.minecraft.world.entity.ai.util.HoverRandomPos;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -28,6 +33,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
@@ -93,7 +99,12 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
     }
 
     @Override
-    public boolean causeFallDamage(float distance, float damageMultiplier) {
+    public boolean isFlying() {
+        return !this.onGround;
+    }
+
+    @Override
+    public boolean causeFallDamage(float pFallDistance, float pMultiplier, DamageSource pSource) {
         return false;
     }
 
@@ -124,37 +135,37 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
     }
 
     private void tryGrowPlant(BlockPos pos) {
-        BlockState state = world.getBlockState(pos);
+        BlockState state = level.getBlockState(pos);
         IntegerProperty age = getPlantAgeProperty(state);
 
         if (age != null) {
-            int nextAge = state.get(age) + 1;
-            if (age.getAllowedValues().contains(nextAge)) {
-                world.playEvent(Constants.WorldEvents.BONEMEAL_PARTICLES, pos, 0);
-                world.setBlockState(pos, state.with(age, nextAge));
+            int nextAge = state.getValue(age) + 1;
+            if (age.getPossibleValues().contains(nextAge)) {
+                level.levelEvent(LevelEvent.PARTICLES_PLANT_GROWTH, pos, 0);
+                level.setBlockAndUpdate(pos, state.setValue(age, nextAge));
             }
         }
     }
 
     @Nullable
     private IntegerProperty getPlantAgeProperty(BlockState state) {
-        if (state.hasProperty(BlockStateProperties.AGE_0_3)) {
-            return BlockStateProperties.AGE_0_3;
-        } else if (state.hasProperty(BlockStateProperties.AGE_0_7)) {
-            return BlockStateProperties.AGE_0_7;
+        if (state.hasProperty(BlockStateProperties.AGE_3)) {
+            return BlockStateProperties.AGE_3;
+        } else if (state.hasProperty(BlockStateProperties.AGE_7)) {
+            return BlockStateProperties.AGE_7;
         }
         return null;
     }
 
     @Override
-    public void writeAdditional(CompoundNBT nbt) {
-        super.writeAdditional(nbt);
+    public void addAdditionalSaveData(CompoundTag nbt) {
+        super.addAdditionalSaveData(nbt);
         nbt.putByte("pollen_collected", (byte) pollenCollected);
     }
 
     @Override
-    public void readAdditional(CompoundNBT nbt) {
-        super.readAdditional(nbt);
+    public void readAdditionalSaveData(CompoundTag nbt) {
+        super.readAdditionalSaveData(nbt);
         pollenCollected = nbt.getByte("pollen_collected");
     }
 
@@ -349,12 +360,8 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
 
         @Nullable
         final Vec3 generateTargetInDirection(Vec3 direction, double maxAngle) {
-            Vec3 target = RandomPos.getAboveLandPos(HummingbirdEntity.this, 8, 7, direction, (float) maxAngle, 2, 1);
-            if (target == null) {
-                target = RandomPos.getAirPos(HummingbirdEntity.this, 8, 4, -2, direction, (float) maxAngle);
-            }
-
-            return target;
+            Vec3 target = HoverRandomPos.getPos(HummingbirdEntity.this, 8, 7, direction.x, direction.z, (float) maxAngle, 2, 1);
+            return target != null ? target : AirAndWaterRandomPos.getPos(HummingbirdEntity.this, 8, 4, -2, direction.x, direction.z, (float) maxAngle);
         }
     }
 }

@@ -1,42 +1,37 @@
 package net.tropicraft.core.common.entity.passive;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.entity.*;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.entity.ai.goal.*;
-import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
-import net.tropicraft.core.common.item.TropicraftItems;
-
-import java.util.Random;
-
-import net.minecraft.world.entity.ai.control.MoveControl.Operation;
-
-import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.PanicGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.phys.HitResult;
+import net.tropicraft.core.common.item.TropicraftItems;
+
+import java.util.Random;
 
 public final class FiddlerCrabEntity extends Animal {
     public FiddlerCrabEntity(EntityType<? extends FiddlerCrabEntity> type, Level world) {
@@ -76,7 +71,7 @@ public final class FiddlerCrabEntity extends Animal {
         double deltaZ = getZ() - zo;
         float deltaYaw = Mth.wrapDegrees(yBodyRot - yBodyRotO);
 
-        float move = Mth.sqrt(deltaX * deltaX + deltaZ * deltaZ);
+        float move = Mth.sqrt((float) (deltaX * deltaX + deltaZ * deltaZ));
         float rotate = Math.abs(deltaYaw);
 
         float targetAmount = move * 4.0F + rotate * 0.25F;
@@ -97,7 +92,7 @@ public final class FiddlerCrabEntity extends Animal {
     }
 
     @Override
-    public FiddlerCrabEntity getBreedOffspring(ServerLevel world, AgableMob mate) {
+    public FiddlerCrabEntity getBreedOffspring(ServerLevel world, AgeableMob mate) {
         return null;
     }
 
@@ -177,13 +172,13 @@ public final class FiddlerCrabEntity extends Animal {
             float leftTarget = forward - 90.0F;
             float rightTarget = forward + 90.0F;
 
-            float yaw = this.mob.yRot;
+            float yaw = this.mob.getYRot();
             float targetYaw = closerAngle(yaw, leftTarget, rightTarget);
 
             float speed = (float) (this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED));
             float strafe = targetYaw < forward ? -1.0F : 1.0F;
 
-            this.mob.yRot = this.rotlerp(yaw, targetYaw, 10.0F);
+            this.mob.setYRot(this.rotlerp(yaw, targetYaw, 10.0F));
 
             this.mob.setSpeed(speed);
             this.mob.setZza(0.0F);

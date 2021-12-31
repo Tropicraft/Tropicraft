@@ -2,6 +2,7 @@ package net.tropicraft.core.common.entity.ai;
 
 import com.google.common.collect.Lists;
 import com.mojang.authlib.GameProfile;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.NoteBlock;
 import net.minecraft.world.entity.ai.util.RandomPos;
@@ -132,7 +133,7 @@ public class EntityAIPartyTime extends Goal
                 //entityObj.setSitting(true);
                 entityObj.setDancing(true);
                 this.entityObj.getJumpControl().jump();
-                this.entityObj.yRot = entityObj.level.random.nextInt(360);
+                this.entityObj.setYRot(entityObj.level.random.nextInt(360));
             } else {
                 entityObj.setDancing(false);
                 if (true || lookUpdateTimer <= 0) {
@@ -256,7 +257,7 @@ public class EntityAIPartyTime extends Goal
                 boolean success = false;
 
                 if (this.entityObj.distanceToSqr(Vec3.atCenterOf(blockposGoal)) > 256.0) {
-                    Vec3 Vector3d = RandomPos.getLandPosTowards(this.entityObj, 14, 3, new Vec3((double) i + 0.5D, (double) j, (double) k + 0.5D));
+                    Vec3 Vector3d = DefaultRandomPos.getPosTowards(this.entityObj, 14, 3, new Vec3((double) i + 0.5D, (double) j, (double) k + 0.5D), (float)Math.PI / 2F);
 
                     if (Vector3d != null) {
                         success = this.entityObj.getNavigation().moveTo(Vector3d.x, Vector3d.y, Vector3d.z, 1.0D);
@@ -265,7 +266,7 @@ public class EntityAIPartyTime extends Goal
                         //System.out.println("success? " + success);
                     }
                 } else {
-                    success = this.entityObj.getNavigation().moveTo((double) i + 0.5D, (double) j, (double) k + 0.5D, 1.0D);
+                    success = this.entityObj.getNavigation().moveTo((double) i + 0.5D, j, (double) k + 0.5D, 1.0D);
                 }
 
                 if (!success) {

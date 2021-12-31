@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.entity.ai;
 
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.Vec3;
@@ -60,7 +61,7 @@ public class EntityAIPlayKoa extends Goal
 
             if (this.targetVillager == null)
             {
-                Vec3 vec = RandomPos.getPos(this.villagerObj, 16, 3);
+                Vec3 vec = DefaultRandomPos.getPos(this.villagerObj, 16, 3);
                 return vec != null;
             }
 
@@ -122,7 +123,7 @@ public class EntityAIPlayKoa extends Goal
         }
         else if (this.villagerObj.getNavigation().isDone())
         {
-            Vec3 vec = RandomPos.getPos(this.villagerObj, 16, 3);
+            Vec3 vec = DefaultRandomPos.getPos(this.villagerObj, 16, 3);
             if (vec == null)
             {
                 return;

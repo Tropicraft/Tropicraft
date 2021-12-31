@@ -1,29 +1,17 @@
 package net.tropicraft.core.common.entity.neutral;
 
-import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.common.ToolType;
-import net.tropicraft.core.common.block.TropicraftBlocks;
-import net.tropicraft.core.common.entity.hostile.TropicraftCreatureEntity;
-import net.tropicraft.core.common.item.TropicraftItems;
-import net.tropicraft.core.common.sound.Sounds;
-
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LeapAtTargetGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -31,6 +19,16 @@ import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.PickaxeItem;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import net.tropicraft.core.common.block.TropicraftBlocks;
+import net.tropicraft.core.common.entity.hostile.TropicraftCreatureEntity;
+import net.tropicraft.core.common.item.TropicraftItems;
+import net.tropicraft.core.common.sound.Sounds;
 
 public class EIHEntity extends TropicraftCreatureEntity {
 
@@ -127,15 +125,15 @@ public class EIHEntity extends TropicraftCreatureEntity {
         }
 
         if (!isAsleep()) {
-            yRotO = yRot;
-            xRotO = xRot;
+            yRotO = getYRot();
+            xRotO = getXRot();
         }
 
         if (tickCount % 20 == 0) {
             final LivingEntity attackTarget = getTarget();
             if (attackTarget == null) {
                 final Player closestPlayer = level.getNearestPlayer(this, 10);
-                if (closestPlayer != null && !closestPlayer.abilities.instabuild && !closestPlayer.isSpectator()) {
+                if (closestPlayer != null && !closestPlayer.getAbilities().instabuild && !closestPlayer.isSpectator()) {
                     setTarget(closestPlayer);
                 }
             } else if (distanceTo(attackTarget) > 16) {
@@ -148,11 +146,11 @@ public class EIHEntity extends TropicraftCreatureEntity {
             if (attackTarget != null && !isPathFinding() && !isAngry()) {
                 if (attackTarget instanceof Player) {
                     final Player player = (Player) attackTarget;
-                    if (!player.abilities.instabuild && !player.isSpectator()) {
+                    if (!player.getAbilities().instabuild && !player.isSpectator()) {
                         final float distance = distanceTo(player);
                         if (distance < 10F) {
                             setAwake(true);
-                            final ItemStack itemstack = player.inventory.getSelected();
+                            final ItemStack itemstack = player.getInventory().getSelected();
 
                             if (!itemstack.isEmpty()) {
                                 if (isAware() && itemstack.getItem() == TropicraftBlocks.CHUNK.get().asItem()) {
@@ -255,11 +253,11 @@ public class EIHEntity extends TropicraftCreatureEntity {
 
         if (source.getDirectEntity() instanceof Player) {
             Player player = (Player) source.getDirectEntity();
-            if (player.abilities.instabuild || player.isSpectator()) {
+            if (player.getAbilities().instabuild || player.isSpectator()) {
                 return super.hurt(source, amount);
             }
             ItemStack heldItem = player.getMainHandItem();
-            if (!heldItem.isEmpty() && heldItem.getItem().getHarvestLevel(heldItem, ToolType.PICKAXE, player, null) >= 1) {
+            if (!heldItem.isEmpty() && heldItem.getItem() instanceof PickaxeItem) {/* TODO 1.17 how to do this? && heldItem.getItem().getHarvestLevel(heldItem, ToolType.PICKAXE, player, null) >= 1*/
                 return super.hurt(source, amount);
             } else {
                 playSound(Sounds.HEAD_LAUGHING, getSoundVolume(), getVoicePitch());

@@ -69,8 +69,8 @@ public class ChairEntity extends FurnitureEntity {
         int j;
 
         if (/*this.getComeSailAway() && */d10 > 0.26249999999999996D) {
-            d2 = Math.cos((double) this.yRot * Math.PI / 180.0D);
-            d4 = Math.sin((double) this.yRot * Math.PI / 180.0D);
+            d2 = Math.cos((double) this.getYRot() * Math.PI / 180.0D);
+            d4 = Math.sin((double) this.getYRot() * Math.PI / 180.0D);
 
             if (this.getComeSailAway())
                 for (j = 0; (double)j < 1.0D + d10 * 60.0D; ++j) {
@@ -107,7 +107,7 @@ public class ChairEntity extends FurnitureEntity {
 
             if (this.getComeSailAway() && this.getControllingPassenger() != null && this.getControllingPassenger() instanceof LivingEntity) {
                 LivingEntity entitylivingbase = (LivingEntity)this.getControllingPassenger();
-                float f = this.getControllingPassenger().yRot + -entitylivingbase.xxa * 90.0F;
+                float f = this.getControllingPassenger().getYRot() + -entitylivingbase.xxa * 90.0F;
                 double moveX = -Math.sin((double)(f * (float)Math.PI / 180.0F)) * this.speedMultiplier * (double)entitylivingbase.zza * 0.05000000074505806D;
                 double moveZ = Math.cos((double)(f * (float)Math.PI / 180.0F)) * this.speedMultiplier * (double)entitylivingbase.zza * 0.05000000074505806D;
                 setDeltaMovement(getDeltaMovement().add(moveX, 0, moveZ));
@@ -171,8 +171,8 @@ public class ChairEntity extends FurnitureEntity {
                 setDeltaMovement(getDeltaMovement().multiply(0.9900000095367432D, 0.949999988079071D, 0.9900000095367432D));
             }
 
-            this.xRot = 0.0F;
-            d4 = (double)this.yRot;
+            this.setXRot(0.0F);
+            d4 = this.getYRot();
             d11 = this.xo - this.getX();
             d12 = this.zo - this.getZ();
 
@@ -180,7 +180,7 @@ public class ChairEntity extends FurnitureEntity {
                 d4 = (double)((float)(Math.atan2(d12, d11) * 180.0D / Math.PI));
             }
 
-            double d7 = Mth.wrapDegrees(d4 - (double)this.yRot);
+            double d7 = Mth.wrapDegrees(d4 - (double)this.getYRot());
 
             if (d7 > 20.0D) {
                 d7 = 20.0D;
@@ -190,8 +190,8 @@ public class ChairEntity extends FurnitureEntity {
                 d7 = -20.0D;
             }
 
-            this.yRot = (float)((double)this.yRot + d7);
-            this.setRot(this.yRot, this.xRot);
+            this.setYRot((float)((double)this.getYRot() + d7));
+            this.setRot(this.getYRot(), this.getXRot());
 
             if (!this.level.isClientSide) {
                 List<?> list = this.level.getEntities(this, this.getBoundingBox().inflate(0.20000000298023224D, 0.0D, 0.20000000298023224D));
@@ -223,13 +223,13 @@ public class ChairEntity extends FurnitureEntity {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.getEntityData().define(COMESAILAWAY, new Byte((byte)0));
+        this.getEntityData().define(COMESAILAWAY, (byte) 0);
     }
 
     @Override
     protected void readAdditionalSaveData(CompoundTag nbt) {
         super.readAdditionalSaveData(nbt);
-        this.setComeSailAway(Boolean.valueOf(nbt.getBoolean("COME_SAIL_AWAY")));
+        this.setComeSailAway(nbt.getBoolean("COME_SAIL_AWAY"));
     }
 
     @Override
@@ -271,7 +271,7 @@ public class ChairEntity extends FurnitureEntity {
     @Override
     public void positionRider(Entity passenger) {
         if (this.hasPassenger(passenger)) {
-            Vec3 xzOffset = new Vec3(0, 0, -0.125).yRot((float) Math.toRadians(-yRot));
+            Vec3 xzOffset = new Vec3(0, 0, -0.125).yRot((float) Math.toRadians(-getYRot()));
             passenger.setPos(getX() + xzOffset.x, getY() + getPassengersRidingOffset() + passenger.getMyRidingOffset(), getZ() + xzOffset.z);
         }
     }

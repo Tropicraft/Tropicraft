@@ -1,18 +1,16 @@
 package net.tropicraft.core.common.entity.ai.fishies;
 
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.phys.AABB;
 import net.tropicraft.core.common.entity.underdasea.TropicraftFishEntity;
 
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Random;
-
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class TargetPreyGoal extends Goal {
     public TropicraftFishEntity entity;
@@ -55,7 +53,7 @@ public class TargetPreyGoal extends Goal {
 //                        }
 //                    }
                     if(!ent.isInWater()) skip = true;                
-                    if(!entity.canSee(ent)) skip = true;
+                    if(!entity.hasLineOfSight(ent)) skip = true;
                     
                     if(!skip) {
                         if (ent instanceof LivingEntity){
@@ -81,19 +79,19 @@ public class TargetPreyGoal extends Goal {
                     // Was eaten, cancel smoke
                     AABB aggressBB = entity.aggressTarget.getBoundingBox();
                     if(entityBB.maxY - entityBB.minY > aggressBB.maxY - aggressBB.minY) {
-                        entity.aggressTarget.remove();
+                        entity.aggressTarget.remove(Entity.RemovalReason.KILLED);
                         entity.heal(1);
                         entity.eatenFishAmount++;
                     }
                 }
                 entity.setRandomTargetHeading();
             }else {
-                if(entity.canSee(entity.aggressTarget) && entity.tickCount % 20 == 0) {
+                if(entity.hasLineOfSight(entity.aggressTarget) && entity.tickCount % 20 == 0) {
                     entity.setTargetHeading(entity.aggressTarget.getX(), entity.aggressTarget.getY(), entity.aggressTarget.getZ(), true);
                 }
             }
             if(entity.aggressTarget != null) {
-                if(!entity.canSee(entity.aggressTarget) || !entity.aggressTarget.isInWater()) {
+                if(!entity.hasLineOfSight(entity.aggressTarget) || !entity.aggressTarget.isInWater()) {
                     entity.aggressTarget = null;
                     entity.setRandomTargetHeading();
                 }

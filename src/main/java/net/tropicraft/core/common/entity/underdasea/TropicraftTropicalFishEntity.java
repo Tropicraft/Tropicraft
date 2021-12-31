@@ -107,7 +107,7 @@ public class TropicraftTropicalFishEntity extends AbstractSchoolingFish implemen
     }
 
     @Override
-    protected ItemStack getBucketItemStack() {
+    public ItemStack getBucketItemStack() {
         return new ItemStack(TropicraftItems.TROPICAL_FISH_BUCKET.get());
     }
 
@@ -148,7 +148,7 @@ public class TropicraftTropicalFishEntity extends AbstractSchoolingFish implemen
             final int firstHotbarSlot = 0;
             int bucketSlot = -1;
             for (int i = 0; i < Inventory.getSelectionSize(); i++) {
-                ItemStack s = player.inventory.getItem(firstHotbarSlot + i);
+                ItemStack s = player.getInventory().getItem(firstHotbarSlot + i);
                 if (isFishHolder(s)) {
                     bucketSlot = firstHotbarSlot + i;
                     break;
@@ -160,15 +160,15 @@ public class TropicraftTropicalFishEntity extends AbstractSchoolingFish implemen
             }
 
             if (bucketSlot >= 0) {
-                ItemStack fishHolder = player.inventory.getItem(bucketSlot);
+                ItemStack fishHolder = player.getInventory().getItem(bucketSlot);
                 if (fishHolder.getItem() == Items.WATER_BUCKET) {
                     fishHolder = new ItemStack(TropicraftItems.TROPICAL_FISH_BUCKET.get());
-                    player.inventory.setItem(bucketSlot, fishHolder);
+                    player.getInventory().setItem(bucketSlot, fishHolder);
                 }
                 saveToBucketTag(fishHolder);
                 player.swing(hand);
                 level.playSound(player, blockPosition(), SoundEvents.GENERIC_SWIM, SoundSource.PLAYERS, 0.25f, 1f + (random.nextFloat() * 0.4f));
-                remove();
+                remove(RemovalReason.DISCARDED);
                 return InteractionResult.SUCCESS;
             }
         }
@@ -192,7 +192,7 @@ public class TropicraftTropicalFishEntity extends AbstractSchoolingFish implemen
      * Add extra data to the bucket that just picked this fish up
      */
     @Override
-    protected void saveToBucketTag(final ItemStack bucket) {
+    public void saveToBucketTag(final ItemStack bucket) {
         super.saveToBucketTag(bucket);
         CompoundTag compoundnbt = bucket.getOrCreateTag();
         compoundnbt.putInt("BucketVariantTag", getFishType().id);
