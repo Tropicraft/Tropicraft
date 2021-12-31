@@ -1,26 +1,24 @@
 package net.tropicraft.core.common.item.scuba;
 
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.Capability.IStorage;
-import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
@@ -34,7 +32,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent.PlayerRespawnEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 import net.tropicraft.core.common.network.TropicraftPackets;
@@ -48,27 +46,33 @@ import java.util.WeakHashMap;
 
 @EventBusSubscriber(modid = Constants.MODID, bus = Bus.FORGE)
 public class ScubaData implements INBTSerializable<CompoundTag> {
-    
-    @CapabilityInject(ScubaData.class)
-    public static final Capability<ScubaData> CAPABILITY = null;
 
-    public static void registerCapability() {
-        CapabilityManager.INSTANCE.register(ScubaData.class, new IStorage<ScubaData>() {
+    // TODO 1.17 this is 100000% wrong
+   // @CapabilityInject(ScubaData.class)
+   public static final Capability<ScubaData> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
+       @Override
+       public String toString() {
+           return super.toString();
+       }
+   });
 
-            @Override
-            @Nullable
-            public Tag writeNBT(Capability<ScubaData> capability, ScubaData instance, Direction side) {
-                return instance.serializeNBT();
-            }
-
-            @Override
-            public void readNBT(Capability<ScubaData> capability, ScubaData instance, Direction side, Tag nbt) {
-                instance.deserializeNBT((CompoundTag) nbt);
-            }
-            
-        }, ScubaData::new);
-    }
-    
+//    public static void registerCapability() {
+//        CapabilityManager.INSTANCE.register(ScubaData.class, new IStorage<ScubaData>() {
+//
+//            @Override
+//            @Nullable
+//            public Tag writeNBT(Capability<ScubaData> capability, ScubaData instance, Direction side) {
+//                return instance.serializeNBT();
+//            }
+//
+//            @Override
+//            public void readNBT(Capability<ScubaData> capability, ScubaData instance, Direction side, Tag nbt) {
+//                instance.deserializeNBT((CompoundTag) nbt);
+//            }
+//
+//        }, ScubaData::new);
+//    }
+//
     @SubscribeEvent
     public static void onCapabilityAttach(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof Player) {

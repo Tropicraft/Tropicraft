@@ -1,12 +1,6 @@
 package net.tropicraft.core.common.item;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.ItemStack;
-import net.tropicraft.Constants;
-
-import net.minecraft.world.item.Item.Properties;
 
 public class ScaleArmorItem extends TropicraftArmorItem {
     public ScaleArmorItem(EquipmentSlot slotType, Properties properties) {

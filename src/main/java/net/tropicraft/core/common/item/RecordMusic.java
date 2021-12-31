@@ -23,7 +23,7 @@ public enum RecordMusic {
     public final String author;
     public final String url;
     
-    private RecordMusic(Supplier<SoundEvent> sound, String author, String url) {
+    RecordMusic(Supplier<SoundEvent> sound, String author, String url) {
         this.name = Util.toEnglishName(name());
         this.sound = sound;
         this.author = author;

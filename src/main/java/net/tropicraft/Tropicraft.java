@@ -19,6 +19,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
@@ -182,7 +183,6 @@ public class Tropicraft {
 
     private void setup(final FMLCommonSetupEvent event) {
         TropicraftPackets.init();
-        ScubaData.registerCapability();
         TropicraftEntities.registerSpawns();
 
         TropicraftChunkGenerator.register();
@@ -196,6 +196,10 @@ public class Tropicraft {
                 TropicraftTrunkPlacers.class,
                 TropicraftLootConditions.class
         );
+    }
+
+    private void registerCaps(RegisterCapabilitiesEvent event) {
+        event.register(ScubaData.class);
     }
 
     private void onServerStarting(final FMLServerStartingEvent event) {

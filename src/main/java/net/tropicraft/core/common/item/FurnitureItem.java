@@ -37,8 +37,9 @@ public class FurnitureItem<T extends FurnitureEntity> extends Item implements IC
     }
 
     @Override
+    // TODO 1.17 i doubt this color is right
     public int getColor(ItemStack stack, int pass) {
-        return (pass == 0 ? 16777215 : color.getColorValue());
+        return (pass == 0 ? 16777215 : color.getMaterialColor().col);
     }
 
     @Override
@@ -69,7 +70,7 @@ public class FurnitureItem<T extends FurnitureEntity> extends Item implements IC
                 final T entity = this.entityType.get().create(world);
                 entity.moveTo(new BlockPos(hitVec.x, hitVec.y, hitVec.z), 0, 0);
                 entity.setDeltaMovement(Vec3.ZERO);
-                entity.setRotation(placer.yRot + 180);
+                entity.setRotation(placer.getYRot() + 180);
                 entity.setColor(this.color);
 
                 if (!world.noCollision(entity, entity.getBoundingBox().inflate(-0.1D))) {
@@ -79,7 +80,7 @@ public class FurnitureItem<T extends FurnitureEntity> extends Item implements IC
                         world.addFreshEntity(entity);
                     }
 
-                    if (!placer.abilities.instabuild) {
+                    if (!placer.getAbilities().instabuild) {
                         heldItem.shrink(1);
                     }
 

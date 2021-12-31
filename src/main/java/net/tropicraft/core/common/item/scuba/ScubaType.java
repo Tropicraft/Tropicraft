@@ -7,7 +7,7 @@ public enum ScubaType {
 
     private final String textureName;
 
-    private ScubaType(String textureName) {
+    ScubaType(String textureName) {
         this.textureName = textureName;
     }
     

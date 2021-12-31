@@ -1,23 +1,21 @@
 package net.tropicraft.core.common.item;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.AbstractFlowerFeature;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.DecoratedFeatureConfiguration;
-import net.minecraft.world.level.levelgen.feature.AbstractFlowerFeature;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.util.Constants;
 
 import java.util.List;
 import java.util.Random;
-
-import net.minecraft.world.item.Item.Properties;
 
 public class TropicalFertilizerItem extends BoneMealItem {
 
@@ -48,7 +46,7 @@ public class TropicalFertilizerItem extends BoneMealItem {
                                 }
                             }
 
-                            if (!blockstate2.isAir(world, blockpos1)) {
+                            if (!blockstate2.isAir()) {
                                 break;
                             }
 
@@ -66,7 +64,7 @@ public class TropicalFertilizerItem extends BoneMealItem {
                             }
 
                             if (blockstate1.canSurvive(world, blockpos1)) {
-                                world.setBlock(blockpos1, blockstate1, Constants.BlockFlags.DEFAULT);
+                                world.setBlockAndUpdate(blockpos1, blockstate1);
                             }
                             break;
                         }

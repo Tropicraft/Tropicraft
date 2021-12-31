@@ -58,7 +58,7 @@ public class BlowGunItem extends ProjectileWeaponItem {
         ItemStack heldStack = player.getItemInHand(hand);
         ItemStack ammo = getAmmo(player, heldStack);
         if (!ammo.isEmpty()) {
-            fireProjectile(world, player, hand, heldStack, ammo, 1.0F, player.abilities.instabuild, 10, 0);
+            fireProjectile(world, player, hand, heldStack, ammo, 1.0F, player.getAbilities().instabuild, 10, 0);
             return new InteractionResultHolder<>(InteractionResult.SUCCESS, heldStack);
         } else {
             return new InteractionResultHolder<>(InteractionResult.FAIL, heldStack);
@@ -66,7 +66,7 @@ public class BlowGunItem extends ProjectileWeaponItem {
     }
 
     private static ItemStack getAmmo(LivingEntity entityIn, ItemStack stack) {
-        final boolean isCreativeMode = entityIn instanceof Player && ((Player)entityIn).abilities.instabuild;
+        final boolean isCreativeMode = entityIn instanceof Player && ((Player) entityIn).getAbilities().instabuild;
         final ItemStack ammo = entityIn.getProjectile(stack);
         if (isCreativeMode) {
             return getProjectile();
@@ -103,7 +103,7 @@ public class BlowGunItem extends ProjectileWeaponItem {
 
             projectile.split(1);
             if (projectile.isEmpty() && shooter instanceof Player) {
-                ((Player) shooter).inventory.removeItem(projectile);
+                ((Player) shooter).getInventory().removeItem(projectile);
             }
 
             world.addFreshEntity(arrowEntity);

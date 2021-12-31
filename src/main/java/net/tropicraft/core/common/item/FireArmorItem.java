@@ -1,24 +1,22 @@
 package net.tropicraft.core.common.item;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.ParticleStatus;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Random;
-
-import net.minecraft.world.item.Item.Properties;
 
 public class FireArmorItem extends TropicraftArmorItem {
     public FireArmorItem(EquipmentSlot slotType, Properties properties) {
@@ -164,8 +162,8 @@ public class FireArmorItem extends TropicraftArmorItem {
             float look = -180F;
             double dist = 0.5F;
 
-            double gatherX = player.getX() + (-Math.sin((player.yRot+look) / 180.0F * 3.1415927F) * Math.cos(player.xRot / 180.0F * 3.1415927F) * dist);
-            double gatherZ = player.getZ() + (Math.cos((player.yRot+look) / 180.0F * 3.1415927F) * Math.cos(player.xRot / 180.0F * 3.1415927F) * dist);
+            double gatherX = player.getX() + (-Math.sin((player.getYRot() + look) / 180.0F * 3.1415927F) * Math.cos(player.getXRot() / 180.0F * 3.1415927F) * dist);
+            double gatherZ = player.getZ() + (Math.cos((player.getYRot() + look) / 180.0F * 3.1415927F) * Math.cos(player.getXRot() / 180.0F * 3.1415927F) * dist);
 
             SimpleParticleType particle = ParticleTypes.FLAME;
             if (rand.nextInt(2) == 0) particle = ParticleTypes.LARGE_SMOKE;
@@ -186,8 +184,8 @@ public class FireArmorItem extends TropicraftArmorItem {
 
             range = 2F;
 
-            double gatherX = player.getX() + (-Math.sin((player.yRot+look) / 180.0F * 3.1415927F) * Math.cos(player.xRot / 180.0F * 3.1415927F) * dist);
-            double gatherZ = player.getZ() + (Math.cos((player.yRot+look) / 180.0F * 3.1415927F) * Math.cos(player.xRot / 180.0F * 3.1415927F) * dist);
+            double gatherX = player.getX() + (-Math.sin((player.getYRot() + look) / 180.0F * 3.1415927F) * Math.cos(player.getXRot() / 180.0F * 3.1415927F) * dist);
+            double gatherZ = player.getZ() + (Math.cos((player.getYRot() + look) / 180.0F * 3.1415927F) * Math.cos(player.getXRot() / 180.0F * 3.1415927F) * dist);
 
             SimpleParticleType particle = ParticleTypes.FLAME;
             if (rand.nextInt(2) == 0) particle = ParticleTypes.LARGE_SMOKE;

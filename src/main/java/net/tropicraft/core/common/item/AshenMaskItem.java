@@ -38,6 +38,7 @@ public class AshenMaskItem extends ArmorItem implements IItemRenderProperties{
     /**
      * Called when this item is used when targetting a Block
      */
+    @Override
     public InteractionResult useOn(UseOnContext context) {
         BlockPos pos = context.getClickedPos();
         Direction direction = context.getClickedFace();
