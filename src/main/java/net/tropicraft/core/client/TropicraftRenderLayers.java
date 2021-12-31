@@ -98,16 +98,14 @@ public class TropicraftRenderLayers {
         AIRCOMPRESSOR_LAYER = registerMain("air_compressor", () -> EIHMachineModel.create(), event);
 
         //ArrayList<MaskArmorProvider> MASK_PROVIDER = new ArrayList<>();
-        final List<RegistryObject<AshenMaskItem>> values = TropicraftItems.ASHEN_MASKS.values().asList();
-        final int size = values.size();
+        final List<RegistryObject<AshenMaskItem>> masks = TropicraftItems.ASHEN_MASKS.values().asList();
 
-        for (int i = 0; i < size; i++) {
-            RegistryObject<AshenMaskItem> maskItem = values.get(i);
-            ModelLayerLocation ashen_mask_layer = registerMain("ashen_mask_" + maskItem.get().getMaskType().name().toLowerCase(Locale.ROOT), () -> PlayerHeadpieceModel.create(), event);
+        for (RegistryObject<AshenMaskItem> maskItem : masks) {
+            ModelLayerLocation ashen_mask_layer = registerMain("ashen_mask_" + maskItem.get().getMaskType().name().toLowerCase(Locale.ROOT), PlayerHeadpieceModel::create, event);
             ASHEN_MASK_LAYERS.add(ashen_mask_layer);
         }
 
-        STACHE_LAYER = registerMain("nigel_stache", () -> PlayerHeadpieceModel.create(), event);
+        STACHE_LAYER = registerMain("nigel_stache", PlayerHeadpieceModel::create, event);
 
 
     }

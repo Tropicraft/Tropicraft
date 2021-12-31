@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -17,8 +18,8 @@ import javax.annotation.Nullable;
 @OnlyIn(Dist.CLIENT)
 public class PoisonBlotRenderer extends EntityRenderer<PoisonBlotEntity> {
 
-    public PoisonBlotRenderer(EntityRenderDispatcher renderManager) {
-        super(renderManager);
+    public PoisonBlotRenderer(EntityRendererProvider.Context context) {
+        super(context);
     }
 
     public void render(final PoisonBlotEntity entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource bufferIn, int packedLightIn) {

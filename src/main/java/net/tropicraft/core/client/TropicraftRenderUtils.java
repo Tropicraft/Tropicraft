@@ -105,11 +105,11 @@ public class TropicraftRenderUtils {
     }
 
     public static ResourceLocation bindTexture(ResourceLocation resource) {
-        Minecraft.getInstance().getTextureManager().bind(resource);
+        Minecraft.getInstance().getTextureManager().bindForSetup(resource);
         return resource;
     }
 
-    public static void renderItem(ItemStack itemStack, final float scale, boolean leftHand, PoseStack stack, MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn, BakedModel modelIn) {
+    public static void renderItem(ItemStack itemStack, final float scale, boolean leftHand, PoseStack stack, MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn, BakedModel modelIn, final int seed) {
         if (!itemStack.isEmpty()) {
             stack.pushPose();
             stack.scale(scale, scale, scale);
@@ -118,7 +118,7 @@ public class TropicraftRenderUtils {
             if (/*!Minecraft.getInstance().getItemRenderer().shouldRenderItemIn3D(stack) || */itemStack.getItem() instanceof PlayerHeadItem) {
                 stack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
             }
-            Minecraft.getInstance().getItemRenderer().renderStatic(itemStack, ItemTransforms.TransformType.FIXED, combinedLightIn, combinedOverlayIn, stack, buffer);
+            Minecraft.getInstance().getItemRenderer().renderStatic(itemStack, ItemTransforms.TransformType.FIXED, combinedLightIn, combinedOverlayIn, stack, buffer, seed);
             stack.popPose();
         }
     }

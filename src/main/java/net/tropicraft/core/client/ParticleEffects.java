@@ -33,7 +33,8 @@ public final class ParticleEffects {
                         double xOffset = currX * xDist + x1;
                         double yOffset = currY * yDist + y1;
                         double zOffset = currZ * zDist + z1;
-                        particles.add((new TerrainParticle((ClientLevel) level, (double) pos.getX() + xOffset, (double) pos.getY() + yOffset, (double) pos.getZ() + zOffset, currX - 0.5D, currY - 0.5D, currZ - 0.5D, state)).setBlockPos(pos));
+                        // TODO 1.17 used to call .setBlockPos near the end of this
+                        particles.add((new TerrainParticle((ClientLevel) level, (double) pos.getX() + xOffset, (double) pos.getY() + yOffset, (double) pos.getZ() + zOffset, currX - 0.5D, currY - 0.5D, currZ - 0.5D, state)));
                     }
                 }
             }

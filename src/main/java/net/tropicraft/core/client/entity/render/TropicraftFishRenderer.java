@@ -1,5 +1,6 @@
 package net.tropicraft.core.client.entity.render;
 
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.tropicraft.core.client.entity.model.AbstractFishModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,8 +24,8 @@ public class TropicraftFishRenderer<T extends AbstractFish, M extends AbstractFi
     private TropicraftSpecialRenderHelper renderHelper;
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public TropicraftFishRenderer(final EntityRenderDispatcher manager, M modelbase, float f) {
-        super(manager, modelbase, f);
+    public TropicraftFishRenderer(final EntityRendererProvider.Context context, M modelbase, float f) {
+        super(context, modelbase, f);
         renderHelper = new TropicraftSpecialRenderHelper();
     }
 
