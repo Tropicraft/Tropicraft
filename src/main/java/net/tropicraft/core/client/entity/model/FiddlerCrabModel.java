@@ -4,7 +4,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.newbiome.layer.Layer;
 
 public class FiddlerCrabModel<T extends Entity> extends EntityModel<T> {
     private final ModelPart body_base;
@@ -29,7 +31,7 @@ public class FiddlerCrabModel<T extends Entity> extends EntityModel<T> {
     private final ModelPart leg_right_baa;
     private final ModelPart leg_right_bab;
 
-    public FiddlerCrabModel() {
+    public FiddlerCrabModel(final ModelPart root) {
         texWidth = 32;
         texHeight = 32;
 
@@ -136,6 +138,11 @@ public class FiddlerCrabModel<T extends Entity> extends EntityModel<T> {
         leg_right_bab.texOffs(0, 10).addBox(0.0F, -1.0F, -0.5F, 2.0F, 1.0F, 1.0F, 0.0F, false);
 
         this.setDefaultRotationAngles();
+    }
+
+    public static LayerDefinition create() {
+        // TODO 1.17
+        return null;
     }
 
     private void setDefaultRotationAngles() {

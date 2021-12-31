@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.tropicraft.core.common.entity.passive.monkey.SpiderMonkeyEntity;
 
 public class SpiderMonkeyModel<T extends SpiderMonkeyEntity> extends EntityModel<T> {
@@ -19,7 +20,7 @@ public class SpiderMonkeyModel<T extends SpiderMonkeyEntity> extends EntityModel
     private final ModelPart leg_right_a_r1;
     private final ModelPart arm_right_a;
 
-    public SpiderMonkeyModel() {
+    public SpiderMonkeyModel(final ModelPart root) {
         texWidth = 64;
         texHeight = 64;
 
@@ -131,5 +132,10 @@ public class SpiderMonkeyModel<T extends SpiderMonkeyEntity> extends EntityModel
         part.xRot = x * ModelAnimator.DEG_TO_RAD;
         part.yRot = y * ModelAnimator.DEG_TO_RAD;
         part.zRot = z * ModelAnimator.DEG_TO_RAD;
+    }
+
+    public static LayerDefinition create() {
+        // TODO 1.17
+        return null;
     }
 }

@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.world.entity.Entity;
 
 public class HummingbirdModel<T extends Entity> extends EntityModel<T> {
@@ -14,7 +15,7 @@ public class HummingbirdModel<T extends Entity> extends EntityModel<T> {
     private final ModelPart beak_base;
     private final ModelPart wing_right;
 
-    public HummingbirdModel() {
+    public HummingbirdModel(final ModelPart root) {
         texWidth = 32;
         texHeight = 32;
 
@@ -50,6 +51,11 @@ public class HummingbirdModel<T extends Entity> extends EntityModel<T> {
         wing_right.setPos(-1.0F, -2.0F, 1.0F);
         body_base.addChild(wing_right);
         wing_right.texOffs(0, 11).addBox(-4.0F, 0.0F, 0.0F, 4.0F, 2.0F, 0.0F, 0.0F, false);
+    }
+
+    public static LayerDefinition create() {
+        // TODO 1.17
+        return null;
     }
 
     @Override

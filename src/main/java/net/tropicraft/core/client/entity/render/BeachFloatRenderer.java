@@ -3,13 +3,15 @@ package net.tropicraft.core.client.entity.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import com.mojang.math.Vector3f;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.entity.model.BeachFloatModel;
 import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
 
 public class BeachFloatRenderer extends FurnitureRenderer<BeachFloatEntity> {
 
-    public BeachFloatRenderer(EntityRenderDispatcher rendererManager) {
-        super(rendererManager, "beach_float", new BeachFloatModel());
+    public BeachFloatRenderer(final EntityRendererProvider.Context context) {
+        super(context, "beach_float", new BeachFloatModel(context.bakeLayer(TropicraftRenderLayers.BEACH_FLOAT_LAYER)));
         shadowRadius = .5F;
     }
     

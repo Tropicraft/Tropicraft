@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.RenderType;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.tropicraft.core.client.TropicraftRenderUtils;
@@ -28,8 +29,8 @@ public class StarfishRenderer extends EntityRenderer<StarfishEntity> {
 	 */
 	public static final float ADULT_RENDER_SCALE = 1f;
 
-	public StarfishRenderer(EntityRenderDispatcher renderManager) {
-		super(renderManager);
+	public StarfishRenderer(final EntityRendererProvider.Context context) {
+		super(context);
 	}
 
 	@Override

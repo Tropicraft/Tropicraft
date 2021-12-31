@@ -2,14 +2,15 @@ package net.tropicraft.core.client.entity.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
-import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import com.mojang.math.Matrix3f;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
 import net.tropicraft.core.client.entity.model.EggModel;
@@ -17,8 +18,8 @@ import net.tropicraft.core.common.entity.egg.EggEntity;
 
 public class EggRenderer extends LivingEntityRenderer<EggEntity, EggModel> {
 
-	public EggRenderer(final EntityRenderDispatcher rendererManager) {
-		super(rendererManager, new EggModel(), 1f);
+	public EggRenderer(final EntityRendererProvider.Context context, final ModelLayerLocation modelLayerLocation) {
+		super(context, new EggModel(context.bakeLayer(modelLayerLocation)), 1f);
 		shadowStrength = 0.5f;
 	}
 

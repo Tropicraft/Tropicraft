@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.world.entity.Entity;
 
 public class CuberaModel<T extends Entity> extends EntityModel<T> {
@@ -27,7 +28,7 @@ public class CuberaModel<T extends Entity> extends EntityModel<T> {
 
     public boolean inWater;
 
-    public CuberaModel() {
+    public CuberaModel(ModelPart root) {
         texWidth = 64;
         texHeight = 64;
 
@@ -123,6 +124,11 @@ public class CuberaModel<T extends Entity> extends EntityModel<T> {
         fin_tail.setPos(0.0F, 0.0F, 3.0F);
         tail_main.addChild(fin_tail);
         fin_tail.texOffs(17, 15).addBox(0.0F, -2.0F, -1.0F, 0.0F, 8.0F, 5.0F, 0.0F, false);
+    }
+
+    public static LayerDefinition create() {
+        // TODO 1.17
+        return null;
     }
 
     @Override

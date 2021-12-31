@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -29,8 +30,8 @@ public class BambooItemFrameRenderer extends EntityRenderer<BambooItemFrame> {
     private final Minecraft mc = Minecraft.getInstance();
     private final net.minecraft.client.renderer.entity.ItemRenderer itemRenderer;
 
-    public BambooItemFrameRenderer(EntityRenderDispatcher renderManagerIn) {
-        super(renderManagerIn);
+    public BambooItemFrameRenderer(final EntityRendererProvider.Context context) {
+        super(context);
         itemRenderer = mc.getItemRenderer();
     }
 

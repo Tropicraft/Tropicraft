@@ -1,6 +1,7 @@
 package net.tropicraft.core.client;
 
 import net.minecraft.client.model.CowModel;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.resources.ResourceLocation;
@@ -9,6 +10,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.core.client.entity.model.*;
+import net.tropicraft.core.client.entity.render.HummingbirdRenderer;
 import net.tropicraft.core.common.item.AshenMaskItem;
 import net.tropicraft.core.common.item.TropicraftItems;
 
@@ -56,6 +58,14 @@ public class TropicraftRenderLayers {
     public static ModelLayerLocation BAMBOO_DOUBLE_CHEST_RIGHT;
     public static ModelLayerLocation EIHMACHINE_LAYER;
     public static ModelLayerLocation AIRCOMPRESSOR_LAYER;
+    public static ModelLayerLocation BASILISK_LIZARD_LAYER;
+    public static ModelLayerLocation CUBERA_LAYER;
+    public static ModelLayerLocation FIDDLER_CRAB_LAYER;
+    public static ModelLayerLocation HUMMINGBIRD_LAYER;
+    public static ModelLayerLocation JAGUAR_LAYER;
+    public static ModelLayerLocation TAPIR_LAYER;
+    public static ModelLayerLocation SPIDER_MONKEY_LAYER;
+    public static ModelLayerLocation WHITE_LIPPED_PECCARY_LAYER;
 
     @SubscribeEvent
     public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
@@ -96,6 +106,14 @@ public class TropicraftRenderLayers {
         //BAMBOO_DOUBLE_CHEST_RIGHT = registerMain("bamboo_double_chest_right", () -> BambooChestBlockEntityRenderer.getRightDoubleTexturedModelData());
         EIHMACHINE_LAYER = registerMain("drink_mixer", () -> EIHMachineModel.create(), event);
         AIRCOMPRESSOR_LAYER = registerMain("air_compressor", () -> EIHMachineModel.create(), event);
+        BASILISK_LIZARD_LAYER = registerMain("basilisk_lizard", BasiliskLizardModel::create, event);
+        CUBERA_LAYER = registerMain("cubera", CuberaModel::create, event);
+        FIDDLER_CRAB_LAYER = registerMain("fiddler_crab", FiddlerCrabModel::create, event);
+        HUMMINGBIRD_LAYER = registerMain("hummingbird", HummingbirdModel::create, event);
+        JAGUAR_LAYER = registerMain("jaguar", JaguarModel::create, event);
+        TAPIR_LAYER = registerMain("tapir", TapirModel::create, event);
+        SPIDER_MONKEY_LAYER = registerMain("spider_monkey", SpiderMonkeyModel::create, event);
+        WHITE_LIPPED_PECCARY_LAYER = registerMain("white_lipped_peccary", WhiteLippedPeccaryModel::create, event);
 
         //ArrayList<MaskArmorProvider> MASK_PROVIDER = new ArrayList<>();
         final List<RegistryObject<AshenMaskItem>> masks = TropicraftItems.ASHEN_MASKS.values().asList();

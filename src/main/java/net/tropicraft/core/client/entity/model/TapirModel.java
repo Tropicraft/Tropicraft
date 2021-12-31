@@ -1,6 +1,7 @@
 package net.tropicraft.core.client.entity.model;
 
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.world.entity.Entity;
 
 public class TapirModel<T extends Entity> extends TropicraftAgeableModel<T> {
@@ -18,7 +19,7 @@ public class TapirModel<T extends Entity> extends TropicraftAgeableModel<T> {
     private final ModelPart leg_back_left;
     private final ModelPart leg_back_right;
 
-    public TapirModel() {
+    public TapirModel(final ModelPart root) {
         texWidth = 128;
         texHeight = 128;
 
@@ -118,5 +119,10 @@ public class TapirModel<T extends Entity> extends TropicraftAgeableModel<T> {
         modelRenderer.xRot = x;
         modelRenderer.yRot = y;
         modelRenderer.zRot = z;
+    }
+
+    public static LayerDefinition create() {
+        // TODO 1.17
+        return null;
     }
 }
