@@ -51,7 +51,7 @@ public class TropicraftTrees {
                 new SimpleStateProvider(TropicraftBlocks.PAPAYA_SAPLING.get().defaultBlockState()),
                 new PapayaFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0)),
                 new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
-        ).decorators(ImmutableList.of(Features.Decorators.BEEHIVE_005, new PapayaTreeDecorator())).maxWaterDepth(1).build();
+        ).decorators(ImmutableList.of(Features.Decorators.BEEHIVE_005, new PapayaTreeDecorator())).build();
 
         return Feature.TREE.configured(config);
     });

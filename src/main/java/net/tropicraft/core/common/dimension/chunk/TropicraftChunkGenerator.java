@@ -3,19 +3,20 @@ package net.tropicraft.core.common.dimension.chunk;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.core.Registry;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraft.world.gen.*;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.Constants;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
@@ -50,7 +51,7 @@ public class TropicraftChunkGenerator extends NoiseBasedChunkGenerator {
         new PerlinSimplexNoise(random, IntStream.rangeClosed(-3, 0));
 
         random.consumeCount(2620);
-        this.depthNoise = new PerlinNoise(random, IntStream.rangeClosed(-15, 0));
+        new PerlinNoise(random, IntStream.rangeClosed(-15, 0));
     }
 
     public static void register() {
@@ -69,21 +70,22 @@ public class TropicraftChunkGenerator extends NoiseBasedChunkGenerator {
     }
 
     @Override
-    public int getSpawnHeight() {
-        return getSeaLevel() + 1;
+    public CompletableFuture<ChunkAccess> fillFromNoise(Executor executor, StructureFeatureManager structures, ChunkAccess chunk) {
+        CompletableFuture<ChunkAccess> future = super.fillFromNoise(executor, structures, chunk);
+
+        // TODO 1.17: is thenAccept the right method here?
+        future.thenAccept(chunkAccess -> {
+            ChunkPos chunkPos = chunk.getPos();
+            WorldgenRandom random = new WorldgenRandom(this.seed);
+            volcano.generate(chunkPos.x, chunkPos.z, chunk, random);
+        });
+
+        return future;
     }
 
     @Override
-    public void fillFromNoise(LevelAccessor world, StructureFeatureManager structures, ChunkAccess chunk) {
-        super.fillFromNoise(world, structures, chunk);
-
-        ChunkPos chunkPos = chunk.getPos();
-        volcano.generate(chunkPos.x, chunkPos.z, chunk, random);
-    }
-
-    @Override
-    public int getBaseHeight(int x, int z, Types heightmapType) {
-        int height = super.getBaseHeight(x, z, heightmapType);
+    public int getBaseHeight(int x, int z, Types heightmapType, LevelHeightAccessor accessor) {
+        int height = super.getBaseHeight(x, z, heightmapType, accessor);
         if (heightmapType != Types.OCEAN_FLOOR && heightmapType != Types.OCEAN_FLOOR_WG) {
             return Math.max(height, this.volcano.getVolcanoHeight(height, x, z));
         }

@@ -28,13 +28,13 @@ import java.util.OptionalInt;
 public class WorldSettingsImportMixin {
     @Shadow
     @Final
-    private RegistryAccess.RegistryHolder dynamicRegistries;
+    private RegistryAccess.RegistryHolder registryAccess;
 
     /**
      * Add the tropicraft dimension to both new worlds and existing worlds when they get loaded.
      */
     @Inject(
-            method = "decode(Lnet/minecraft/util/registry/SimpleRegistry;Lnet/minecraft/util/RegistryKey;Lcom/mojang/serialization/Codec;)Lcom/mojang/serialization/DataResult;",
+            method = "decodeElements(Lnet/minecraft/core/MappedRegistry;Lnet/minecraft/resources/ResourceKey;Lcom/mojang/serialization/Codec;)Lcom/mojang/serialization/DataResult;",
             at = @At("HEAD")
     )
     @SuppressWarnings("unchecked")
@@ -55,9 +55,9 @@ public class WorldSettingsImportMixin {
         long seed = overworld.generator().strongholdSeed;
 
         LevelStem dimension = TropicraftDimension.createDimension(
-                this.dynamicRegistries.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY),
-                this.dynamicRegistries.registryOrThrow(Registry.BIOME_REGISTRY),
-                this.dynamicRegistries.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY),
+                this.registryAccess.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY),
+                this.registryAccess.registryOrThrow(Registry.BIOME_REGISTRY),
+                this.registryAccess.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY),
                 seed
         );
         registry.registerOrOverride(OptionalInt.empty(), TropicraftDimension.DIMENSION, dimension, Lifecycle.stable());
@@ -66,21 +66,22 @@ public class WorldSettingsImportMixin {
     /**
      * Remove the experimental world settings warning screen for tropicraft content.
      */
-    @ModifyVariable(
-            method = "createRegistry",
-            at = @At(
-                    value = "INVOKE_ASSIGN",
-                    target = "Lnet/minecraft/util/registry/WorldSettingsImport$IResourceAccess;decode(Lcom/mojang/serialization/DynamicOps;Lnet/minecraft/util/RegistryKey;Lnet/minecraft/util/RegistryKey;Lcom/mojang/serialization/Decoder;)Lcom/mojang/serialization/DataResult;"
-            ),
-            ordinal = 1
-    )
-    private <E> DataResult<Pair<E, OptionalInt>> modifyDataResult(
-            DataResult<Pair<E, OptionalInt>> result,
-            ResourceKey<? extends Registry<E>> registryKey, WritableRegistry<E> registry, Codec<E> mapCodec, ResourceLocation id
-    ) {
-        if (id.getNamespace().equals(Constants.MODID)) {
-            return result.setLifecycle(Lifecycle.stable());
-        }
-        return result;
-    }
+    // TODO: 1.17: reimplement!
+//    @ModifyVariable(
+//            method = "createRegistry",
+//            at = @At(
+//                    value = "INVOKE_ASSIGN",
+//                    target = "Lnet/minecraft/util/registry/WorldSettingsImport$IResourceAccess;decode(Lcom/mojang/serialization/DynamicOps;Lnet/minecraft/util/RegistryKey;Lnet/minecraft/util/RegistryKey;Lcom/mojang/serialization/Decoder;)Lcom/mojang/serialization/DataResult;"
+//            ),
+//            ordinal = 1
+//    )
+//    private <E> DataResult<Pair<E, OptionalInt>> modifyDataResult(
+//            DataResult<Pair<E, OptionalInt>> result,
+//            ResourceKey<? extends Registry<E>> registryKey, WritableRegistry<E> registry, Codec<E> mapCodec, ResourceLocation id
+//    ) {
+//        if (id.getNamespace().equals(Constants.MODID)) {
+//            return result.setLifecycle(Lifecycle.stable());
+//        }
+//        return result;
+//    }
 }

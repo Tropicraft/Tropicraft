@@ -66,7 +66,7 @@ public class HomeTreeStructure extends StructureFeature<JigsawConfiguration> {
         @Override
         public void generatePieces(RegistryAccess registries, ChunkGenerator generator, StructureManager templates, ChunkPos chunkPos, Biome biome, JigsawConfiguration config, LevelHeightAccessor pLevel) {
             BlockPos pos = chunkPos.getWorldPosition();
-            JigsawPlacement.addPieces(registries, config, Piece::new, generator, templates, pos, this.pieces, this.random, true, true);
+            JigsawPlacement.addPieces(registries, config, Piece::new, generator, templates, pos, this, this.random, true, true, pLevel);
             // TODO 1.17 this.calculateBoundingBox();
         }
 

@@ -20,6 +20,7 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
 import net.minecraft.world.level.levelgen.heightproviders.HeightProvider;
 import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
+import net.minecraft.world.level.levelgen.placement.*;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.TropicraftTags;
@@ -53,10 +54,6 @@ import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConf
 import net.minecraft.world.level.levelgen.feature.configurations.SimpleRandomFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
-import net.minecraft.world.level.levelgen.placement.CarvingMaskDecoratorConfiguration;
-import net.minecraft.world.level.levelgen.placement.FeatureDecorator;
-import net.minecraft.world.level.levelgen.placement.FrequencyWithExtraChanceDecoratorConfiguration;
-import net.minecraft.world.level.levelgen.placement.NoiseCountFactorDecoratorConfiguration;
 
 public final class TropicraftConfiguredFeatures {
     public final ConfiguredFeature<?, ?> grapefruitTree;
@@ -240,7 +237,8 @@ public final class TropicraftConfiguredFeatures {
         this.redMangroveShort = features.mangrove("red_mangrove_short",
                 new TreeConfiguration.TreeConfigurationBuilder(redMangroveLog, redMangroveTrunk, redMangroveLeaves, redMangrovePropagule, mangroveFoliage, mangroveMinimumSize)
                         .decorators(ImmutableList.of(Features.Decorators.BEEHIVE_002, PianguasTreeDecorator.REGULAR))
-                        .maxWaterDepth(1).build()
+                        .build(),
+                1
         );
         this.redMangroveSmall = features.mangrove("red_mangrove_small",
                 new TreeConfiguration.TreeConfigurationBuilder(
@@ -250,7 +248,8 @@ public final class TropicraftConfiguredFeatures {
                         redMangrovePropagule,
                         new SmallMangroveFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0)),
                         mangroveMinimumSize
-                ).decorators(ImmutableList.of(Features.Decorators.BEEHIVE_002, PianguasTreeDecorator.SMALL)).build()
+                ).decorators(ImmutableList.of(Features.Decorators.BEEHIVE_002, PianguasTreeDecorator.SMALL)).build(),
+                0
         );
         this.redMangrove = features.random("red_mangrove", this.redMangroveShort, this.redMangroveSmall);
 
@@ -262,7 +261,8 @@ public final class TropicraftConfiguredFeatures {
                         tallMangrovePropagule,
                         mangroveFoliage,
                         mangroveMinimumSize
-                ).decorators(ImmutableList.of(Features.Decorators.BEEHIVE_002, PianguasTreeDecorator.REGULAR)).maxWaterDepth(2).build()
+                ).decorators(ImmutableList.of(Features.Decorators.BEEHIVE_002, PianguasTreeDecorator.REGULAR)).build(),
+                2
         );
 
         PneumatophoresTreeDecorator teaMangrovePneumatophores = new PneumatophoresTreeDecorator(lightMangroveRoots, 2, 6, 4);
@@ -274,7 +274,8 @@ public final class TropicraftConfiguredFeatures {
                         teaMangrovePropagule,
                         mangroveFoliage,
                         mangroveMinimumSize
-                ).decorators(ImmutableList.of(Features.Decorators.BEEHIVE_002, PianguasTreeDecorator.REGULAR, teaMangrovePneumatophores)).maxWaterDepth(1).build()
+                ).decorators(ImmutableList.of(Features.Decorators.BEEHIVE_002, PianguasTreeDecorator.REGULAR, teaMangrovePneumatophores)).build(),
+                1
         );
 
         PneumatophoresTreeDecorator blackMangrovePneumatophores = new PneumatophoresTreeDecorator(blackMangroveRoots, 8, 16, 6);
@@ -286,7 +287,8 @@ public final class TropicraftConfiguredFeatures {
                         blackMangrovePropagule,
                         mangroveFoliage,
                         mangroveMinimumSize
-                ).decorators(ImmutableList.of(Features.Decorators.BEEHIVE_002, PianguasTreeDecorator.REGULAR, blackMangrovePneumatophores)).maxWaterDepth(1).build()
+                ).decorators(ImmutableList.of(Features.Decorators.BEEHIVE_002, PianguasTreeDecorator.REGULAR, blackMangrovePneumatophores)).build(),
+                1
         );
         this.lightMangroves = features.random("light_mangroves", this.tallMangrove, this.teaMangrove, this.blackMangrove);
 
@@ -582,8 +584,16 @@ public final class TropicraftConfiguredFeatures {
             });
         }
 
-        public ConfiguredFeature<?, ?> mangrove(String id, TreeConfiguration config) {
-            return this.register(id, TropicraftFeatures.MANGROVE_TREE.get(), feature -> feature.configured(config));
+        public ConfiguredFeature<?, ?> mangrove(String id, TreeConfiguration config, int maxWaterDepth) {
+            return this.register(id, TropicraftFeatures.MANGROVE_TREE.get(), feature -> {
+                ConfiguredFeature<TreeConfiguration, ?> configured = feature.configured(config);
+
+                if (maxWaterDepth > 0) {
+                    return configured.decorated(FeatureDecorator.WATER_DEPTH_THRESHOLD.configured(new WaterDepthThresholdConfiguration(maxWaterDepth)));
+                }
+
+                return configured;
+            });
         }
 
         public ConfiguredFeature<?, ?> random(String id, ConfiguredFeature<?, ?>... choices) {
