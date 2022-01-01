@@ -19,9 +19,9 @@ public class EagleRayModel extends ListModel<EagleRayEntity> {
 	/**
 	 * Wing joint amplitudes, linearly interpolated between previous tick and this tick using partialTicks.
 	 */
-	private float[] interpolatedWingAmplitudes = new float[EagleRayEntity.WING_JOINTS];
+	private final float[] interpolatedWingAmplitudes = new float[EagleRayEntity.WING_JOINTS];
 
-	private ModelPart body;
+	private final ModelPart body;
 
 	public EagleRayModel(ModelPart root) {
 		this.body = root.getChild("body");

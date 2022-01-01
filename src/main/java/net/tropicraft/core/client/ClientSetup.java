@@ -35,56 +35,13 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.function.Supplier;
 
+import static net.tropicraft.core.client.TropicraftRenderLayers.SEA_TURTLE_EGG_LAYER;
+import static net.tropicraft.core.client.TropicraftRenderLayers.SEA_URCHIN_EGG_ENTITY_LAYER;
+import static net.tropicraft.core.client.TropicraftRenderLayers.STARFISH_EGG_LAYER;
+import static net.tropicraft.core.client.TropicraftRenderLayers.TROPI_SPIDER_EGG_LAYER;
+
 @Mod.EventBusSubscriber(modid = Constants.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientSetup {
-
-    public static ModelLayerLocation KOA_HUNTER_LAYER;
-    public static ModelLayerLocation TROPI_CREEPER_LAYER;
-    public static ModelLayerLocation IGUANA_LAYER;
-    public static ModelLayerLocation UMBRELLA_LAYER;
-    public static ModelLayerLocation BEACH_FLOAT_LAYER;
-    public static ModelLayerLocation CHAIR_LAYER;
-    public static ModelLayerLocation TROPI_SKELLY_LAYER;
-    public static ModelLayerLocation EIH_LAYER;
-    public static ModelLayerLocation SEA_TURTLE_LAYER;
-    public static ModelLayerLocation MARLIN_LAYER;
-    public static ModelLayerLocation FAILGULL_LAYER;
-    public static ModelLayerLocation DOLPHIN_LAYER;
-    public static ModelLayerLocation SEAHORSE_LAYER;
-    public static ModelLayerLocation TREE_FROG_LAYER;
-    public static ModelLayerLocation SEA_URCHIN_LAYER;
-    public static ModelLayerLocation SEA_URCHIN_EGG_ENTITY_LAYER;
-    public static ModelLayerLocation STARFISH_EGG_LAYER;
-    public static ModelLayerLocation V_MONKEY_LAYER;
-    public static ModelLayerLocation PIRANHA_LAYER;
-    public static ModelLayerLocation RIVER_SARDINE_LAYER;
-    public static ModelLayerLocation TROPICAL_FISH_LAYER;
-    public static ModelLayerLocation EAGLE_RAY_LAYER;
-    public static ModelLayerLocation TROPI_SPIDER_EGG_LAYER;
-    public static ModelLayerLocation ASHEN_LAYER;
-    public static ModelLayerLocation HAMMERHEAD_LAYER;
-    public static ModelLayerLocation SEA_TURTLE_EGG_LAYER;
-    public static ModelLayerLocation TROPI_BEE_LAYER;
-    public static ModelLayerLocation COWKTAIL_LAYER;
-    public static ModelLayerLocation MAN_O_WAR_LAYER;
-    public static ModelLayerLocation TAPIR_LAYER;
-    public static ModelLayerLocation JAGUAR_LAYER;
-    public static ModelLayerLocation BROWN_BASILISK_LIZARD_LAYER;
-    public static ModelLayerLocation GREEN_BASILISK_LIZARD_LAYER;
-    public static ModelLayerLocation HUMMINGBIRD_LAYER;
-    public static ModelLayerLocation FIDDLER_CRAB_LAYER;
-    public static ModelLayerLocation SPIDER_MONKEY_LAYER;
-    public static ModelLayerLocation WHITE_LIPPED_PECCARY_LAYER;
-    public static ModelLayerLocation CUBERA_LAYER;
-    public static ModelLayerLocation BAMBOO_MUG;
-    public static ModelLayerLocation EIHMACHINE_LAYER;
-    public static ModelLayerLocation AIRCOMPRESSOR_LAYER;
-    public static ArrayList<ModelLayerLocation> ASHEN_MASK_LAYERS = new ArrayList<>();//= registerMain("mask", PlayerHeadpieceModel::getTexturedModelData);
-    public static ModelLayerLocation STACHE_LAYER;
-    public static ModelLayerLocation CHEST_SCUBA_LAYER;
-    public static ModelLayerLocation FEET_SCUBA_LAYER;
-    public static ModelLayerLocation HEAD_SCUBA_LAYER;
-    public static ModelLayerLocation TANK_SCUBA_LAYER;
 
     public static void setupBlockRenderLayers() {
         RenderType cutout = RenderType.cutout();
@@ -136,70 +93,6 @@ public class ClientSetup {
         for (RegistryObject<RedstoneWallTorchBlock> block : TropicraftBlocks.JIGARBOV_WALL_TORCHES.values()) {
             ItemBlockRenderTypes.setRenderLayer(block.get(), cutoutMipped);
         }
-    }
-
-    @SubscribeEvent
-    public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        KOA_HUNTER_LAYER = registerLayer("koa_hunter", () -> KoaModel.create(), event);
-        TROPI_CREEPER_LAYER = registerLayer("tropi_creeper", () -> TropiCreeperModel.create(), event);
-        IGUANA_LAYER = registerLayer("iguana", () -> IguanaModel.create(), event);
-        UMBRELLA_LAYER = registerLayer("umbrella", () -> UmbrellaModel.create(), event);
-        BEACH_FLOAT_LAYER = registerLayer("beach_float", () -> BeachFloatModel.create(), event);
-        CHAIR_LAYER = registerLayer("chair", () -> ChairModel.create(), event);
-        TROPI_SKELLY_LAYER = registerLayer("tropi_skelly", () -> TropiSkellyModel.create(), event);
-        EIH_LAYER = registerLayer("eih", () -> EIHModel.create(), event);
-        SEA_TURTLE_LAYER = registerLayer("sea_turtle", () -> SeaTurtleModel.create(), event);
-        MARLIN_LAYER = registerLayer("marlin", () -> MarlinModel.create(), event);
-        FAILGULL_LAYER = registerLayer("failgull", () -> FailgullModel.create(), event);
-        DOLPHIN_LAYER = registerLayer("dolphin", () -> TropicraftDolphinModel.create(), event);
-        SEAHORSE_LAYER = registerLayer("seahorse", () -> SeahorseModel.create(), event);
-        TREE_FROG_LAYER = registerLayer("tree_frog", () -> TreeFrogModel.create(), event);
-        SEA_URCHIN_LAYER = registerLayer("sea_urchin", () -> SeaUrchinModel.create(), event);
-        SEA_URCHIN_EGG_ENTITY_LAYER = registerLayer("sea_urchin_egg", () -> EggModel.create(), event);
-        STARFISH_EGG_LAYER = registerLayer("starfish_egg", () -> EggModel.create(), event);
-        V_MONKEY_LAYER = registerLayer("v_monkey", () -> VMonkeyModel.create(), event);
-        PIRANHA_LAYER = registerLayer("piranha", () -> PiranhaModel.create(), event);
-        RIVER_SARDINE_LAYER = registerLayer("river_sardine", () -> SardineModel.create(), event);
-        TROPICAL_FISH_LAYER = registerLayer("tropical_fish", () -> TropicraftTropicalFishModel.create(), event);
-        EAGLE_RAY_LAYER = registerLayer("eagle_ray", () ->  EagleRayModel.create(), event);
-        TROPI_SPIDER_EGG_LAYER = registerLayer("tropi_spider_egg", () -> EggModel.create(), event);
-        ASHEN_LAYER = registerLayer("ashen", () -> AshenModel.create(), event);
-        HAMMERHEAD_LAYER = registerLayer("hammerhead", () -> SharkModel.create(), event);
-        SEA_TURTLE_EGG_LAYER  = registerLayer("turtle_egg", () -> EggModel.create(), event);
-        TROPI_BEE_LAYER = registerLayer("tropi_bee", () -> TropiBeeModel.createBodyLayer(), event);
-        COWKTAIL_LAYER = registerLayer("cowktail", () -> CowModel.createBodyLayer(), event);
-        MAN_O_WAR_LAYER = registerLayer("man_o_war", () -> ManOWarModel.create(), event);
-        TAPIR_LAYER = registerLayer("tapir", () -> TapirModel.create(), event);
-        JAGUAR_LAYER = registerLayer("jaguar", () -> JaguarModel.create(), event);
-        BROWN_BASILISK_LIZARD_LAYER = registerLayer("brown_basilisk_lizard", () -> BasiliskLizardModel.create(), event);
-        GREEN_BASILISK_LIZARD_LAYER = registerLayer("green_basilisk_lizard", () -> BasiliskLizardModel.create(), event);
-        HUMMINGBIRD_LAYER = registerLayer("hummingbird", () -> HummingbirdModel.create(), event);
-        FIDDLER_CRAB_LAYER = registerLayer("fiddler_crab", () -> FiddlerCrabModel.create(), event);
-        SPIDER_MONKEY_LAYER = registerLayer("spider_monkey", () -> SpiderMonkeyModel.create(), event);
-        WHITE_LIPPED_PECCARY_LAYER = registerLayer("white_lipped_peccary", () -> WhiteLippedPeccaryModel.create(), event);
-        CUBERA_LAYER = registerLayer("cubera", () -> CuberaModel.create(), event);
-
-        //Misc Layers
-        BAMBOO_MUG = registerLayer("bamboo_mug", () -> BambooMugModel.create(), event);
-
-        //Block Entity's Layers
-        EIHMACHINE_LAYER = registerLayer("drink_mixer", () -> EIHMachineModel.create(), event);
-        AIRCOMPRESSOR_LAYER = registerLayer("air_compressor", () -> EIHMachineModel.create(), event);
-
-        //Armor Layers
-        for(RegistryObject<AshenMaskItem> maskItem : TropicraftItems.ASHEN_MASKS.values().asList()){
-            ModelLayerLocation ashen_mask_layer = registerLayer("ashen_mask_" + maskItem.get().getMaskType().name().toLowerCase(Locale.ROOT), PlayerHeadpieceModel::create, event);
-            ASHEN_MASK_LAYERS.add(ashen_mask_layer);
-        }
-        STACHE_LAYER = registerLayer("nigel_stache", () -> PlayerHeadpieceModel.create(), event);
-
-        HEAD_SCUBA_LAYER = registerLayer("scuba_goggles", () -> ModelScubaGear.create(), event);
-        CHEST_SCUBA_LAYER = registerLayer("scuba_harness", () -> ModelScubaGear.create(), event);
-        FEET_SCUBA_LAYER = registerLayer("scuba_flippers", () -> ModelScubaGear.create(), event);
-
-        TANK_SCUBA_LAYER = registerLayer("pony_bottle", () -> ModelScubaGear.create(), event);
-
-        setupScubaGearModels();
     }
 
     //@OnlyIn(Dist.CLIENT)
@@ -274,19 +167,5 @@ public class ClientSetup {
                 return false;
             }
         });
-    }
-
-    public static void setupScubaGearModels(){
-        ModelScubaGear.HEAD = ModelScubaGear.createModel(HEAD_SCUBA_LAYER, null, EquipmentSlot.HEAD);
-        ModelScubaGear.CHEST = ModelScubaGear.createModel(CHEST_SCUBA_LAYER, null, EquipmentSlot.CHEST);
-        ModelScubaGear.FEET = ModelScubaGear.createModel(FEET_SCUBA_LAYER, null, EquipmentSlot.FEET);
-
-        ModelScubaGear.tankModel = ModelScubaGear.createModel(TANK_SCUBA_LAYER, null, EquipmentSlot.CHEST);
-    }
-
-    private static ModelLayerLocation registerLayer(String id, Supplier<LayerDefinition> layerDefinition, EntityRenderersEvent.RegisterLayerDefinitions event) {
-        ModelLayerLocation modelLayer = new ModelLayerLocation(new ResourceLocation(Constants.MODID, id), "main");
-        event.registerLayerDefinition(modelLayer, layerDefinition);
-        return modelLayer;
     }
 }

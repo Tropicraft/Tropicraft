@@ -5,6 +5,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
+import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.RenderType;
@@ -386,6 +387,11 @@ public class ModelScubaGear extends HumanoidModel<LivingEntity> {
         head.addChild(hose3);
         head.addChild(hose4);
         head.addChild(hose5);
+    }
+
+    public static LayerDefinition create() {
+        // TODO 1.17
+        return null;
     }
 
     @Override

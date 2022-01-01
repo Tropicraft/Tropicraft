@@ -11,8 +11,8 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.animal.AbstractFish;
 
 public abstract class AbstractFishModel<T extends AbstractFish> extends ListModel<T> {
-    public static ModelPart body;
-    public static ModelPart tail;
+    public ModelPart body;
+    public ModelPart tail;
 
     public AbstractFishModel(ModelPart root) {
         this.body = root.getChild("body");

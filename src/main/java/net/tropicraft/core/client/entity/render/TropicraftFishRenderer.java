@@ -22,7 +22,6 @@ import net.tropicraft.core.common.entity.underdasea.IAtlasFish;
 
 public class TropicraftFishRenderer<T extends AbstractFish, M extends AbstractFishModel<T>> extends MobRenderer<T, M> {
     private TropicraftSpecialRenderHelper renderHelper;
-    private static final Logger LOGGER = LogManager.getLogger();
 
     public TropicraftFishRenderer(final EntityRendererProvider.Context context, M modelbase, float f) {
         super(context, modelbase, f);

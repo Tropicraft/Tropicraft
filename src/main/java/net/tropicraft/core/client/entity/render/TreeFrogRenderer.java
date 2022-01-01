@@ -1,16 +1,17 @@
 package net.tropicraft.core.client.entity.render;
 
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.TreeFrogModel;
 import net.tropicraft.core.common.entity.neutral.TreeFrogEntity;
 
 public class TreeFrogRenderer extends MobRenderer<TreeFrogEntity, TreeFrogModel> {
 
-    public TreeFrogRenderer(final EntityRenderDispatcher rendererManager) {
-        super(rendererManager, new TreeFrogModel(), 0.5F);
+    public TreeFrogRenderer(final EntityRendererProvider.Context context) {
+        super(context, new TreeFrogModel(context.bakeLayer(TropicraftRenderLayers.TREE_FROG_LAYER)), 0.5F);
         shadowStrength = 0.5f;
         shadowRadius = 0.3f;
     }

@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartNames;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.world.entity.Entity;
 
@@ -16,6 +17,13 @@ public class HummingbirdModel<T extends Entity> extends EntityModel<T> {
     private final ModelPart wing_right;
 
     public HummingbirdModel(final ModelPart root) {
+        body_base = root.getChild(PartNames.BODY);
+        tail_base = root.getChild(PartNames.TAIL);
+        wing_left = root.getChild(PartNames.LEFT_WING);
+        wing_right = root.getChild(PartNames.RIGHT_WING);
+        head_base = root.getChild(PartNames.HEAD);
+        beak_base = root.getChild(PartNames.BEAK);
+
         texWidth = 32;
         texHeight = 32;
 
