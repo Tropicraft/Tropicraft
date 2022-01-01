@@ -2,14 +2,14 @@ package net.tropicraft.core.common.dimension.feature.block_state_provider;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.tags.Tag;
-import net.minecraft.tags.SerializationTags;
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.Tag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProviderType;
 
@@ -19,7 +19,7 @@ import java.util.Random;
 public final class NoiseFromTagBlockStateProvider extends BlockStateProvider {
     public static final Codec<NoiseFromTagBlockStateProvider> CODEC = RecordCodecBuilder.create(instance -> {
         return instance.group(
-                Tag.codec(() -> SerializationTags.getInstance().getBlocks()).fieldOf("tag").forGetter(c -> c.tag)
+                Tag.codec(BlockTags::getAllTags).fieldOf("tag").forGetter(c -> c.tag)
         ).apply(instance, NoiseFromTagBlockStateProvider::new);
     });
 
