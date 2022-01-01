@@ -5,16 +5,18 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.Util;
 import net.minecraft.advancements.critereon.EntityFlagsPredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.critereon.NbtPredicate;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.loot.BlockLoot;
 import net.minecraft.data.loot.EntityLoot;
 import net.minecraft.data.loot.LootTableProvider;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
@@ -32,12 +34,17 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.ValidationContext;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
+import net.minecraft.world.level.storage.loot.functions.LootingEnchantFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.BonusLevelTableCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.PapayaBlock;
@@ -80,25 +87,25 @@ public class TropicraftLootTableProvider extends LootTableProvider {
         protected void addTables() {
             add(TropicraftEntities.TROPI_CREEPER.get(),
 			LootTable.lootTable().withPool(LootPool.lootPool().add(LootItem.lootTableItem(TropicraftItems.MUSIC_DISCS.get(RecordMusic.EASTERN_ISLES).get()))
-			        .when(EntityHasProperty.builder(LootContext.EntityTarget.KILLER,
-			                        EntityPredicate.Builder.entity().type(EntityTypeTags.SKELETONS)))));
+			        .when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.KILLER,
+			                        EntityPredicate.Builder.entity().of(EntityTypeTags.SKELETONS)))));
             dropItemsWithEnchantBonus(TropicraftEntities.IGUANA, TropicraftItems.IGUANA_LEATHER, TropicraftItems.SCALE,
-                    ConstantIntValue.of(3));
+                    ConstantValue.exactly(3));
             noDrops(TropicraftEntities.TROPI_SKELLY);
-            dropItemsWithEnchantBonus(TropicraftEntities.EIH, TropicraftBlocks.CHUNK.get().asItem(), ConstantRange.of(3));
+            dropItemsWithEnchantBonus(TropicraftEntities.EIH, TropicraftBlocks.CHUNK.get().asItem(), ConstantValue.exactly(3));
             dropItem(TropicraftEntities.SEA_TURTLE, TropicraftItems.TURTLE_SHELL);
-            dropItemsWithEnchantBonus(TropicraftEntities.MARLIN, TropicraftItems.FRESH_MARLIN, RandomValueRange.of(1, 3));
+            dropItemsWithEnchantBonus(TropicraftEntities.MARLIN, TropicraftItems.FRESH_MARLIN, UniformGenerator.between(1, 3));
             noDrops(TropicraftEntities.FAILGULL);
             dropItemsWithEnchantBonus(TropicraftEntities.DOLPHIN, TropicraftItems.TROPICAL_FERTILIZER,
-                    RandomValueRange.of(1, 3));
+                    UniformGenerator.between(1, 3));
             noDrops(TropicraftEntities.SEAHORSE);
             add(TropicraftEntities.TREE_FROG.get(),
-			LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantIntValue.of(1)).acceptCondition(EntityHasProperty.builder(LootContext.EntityTarget.THIS,
+			    LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS,
 			        EntityPredicate.Builder.entity().flags(new EntityFlagsPredicate(null, null, null, null, false))
-			                .nbt(new NBTPredicate(Util.make(new CompoundNBT(), c -> c.putInt("Type", TreeFrogEntity.Type.GREEN.ordinal()))))))
-			        .addEntry(ItemLootEntry.builder(TropicraftItems.POISON_FROG_SKIN.get())))
-			.addLootPool(LootPool.builder().rolls(ConstantIntValue.of(2))
-			        .addEntry(ItemLootEntry.builder(TropicraftItems.FROG_LEG.get()))));
+			                .nbt(new NbtPredicate(Util.make(new CompoundTag(), c -> c.putInt("Type", TreeFrogEntity.Type.GREEN.ordinal()))))))
+			        .add(LootItem.lootTableItem(TropicraftItems.POISON_FROG_SKIN.get())))
+			    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(2))
+			        .add(LootItem.lootTableItem(TropicraftItems.FROG_LEG.get()))));
             dropItem(TropicraftEntities.SEA_URCHIN, TropicraftItems.SEA_URCHIN_ROE);
             noDrops(TropicraftEntities.SEA_URCHIN_EGG_ENTITY);
             dropItem(TropicraftEntities.STARFISH, TropicraftItems.STARFISH);
@@ -113,11 +120,11 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             noDrops(TropicraftEntities.TROPI_SPIDER_EGG);
             noDrops(TropicraftEntities.ASHEN);
             dropItemsWithEnchantBonus(TropicraftEntities.HAMMERHEAD, TropicraftItems.TROPICAL_FERTILIZER,
-                    RandomValueBounds.of(1, 3));
+                    UniformGenerator.between(1, 3));
             noDrops(TropicraftEntities.SEA_TURTLE_EGG);
             noDrops(TropicraftEntities.TROPI_BEE);
             noDrops(TropicraftEntities.COWKTAIL);
-            dropItemsWithEnchantBonus(TropicraftEntities.MAN_O_WAR, Items.SLIME_BALL, RandomValueBounds.of(3, 4));
+            dropItemsWithEnchantBonus(TropicraftEntities.MAN_O_WAR, Items.SLIME_BALL, UniformGenerator.between(3, 4));
 
             noDrops(TropicraftEntities.TAPIR);
             noDrops(TropicraftEntities.JAGUAR);
@@ -134,37 +141,39 @@ public class TropicraftLootTableProvider extends LootTableProvider {
         // that are affected by Enchantment
         // Looting will at most double yield with Looting III
         public <T extends LivingEntity> void dropItemsWithEnchantBonus(RegistryObject<EntityType<T>> entity,
-                                                                       RegistryObject<Item> loot, RegistryObject<Item> multiLoot, IRandomRange range) {
-            this.registerLootTable(entity.get(), LootTable.builder()
-                    .addLootPool(
-                            LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(loot.get())))
-                    .addLootPool(LootPool.builder().rolls(range).addEntry(ItemLootEntry.builder(multiLoot.get())
-                            .acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0F, 1F / 3F))))));
+                                                                       RegistryObject<Item> loot,
+                                                                       RegistryObject<Item> multiLoot,
+                                                                       NumberProvider range) {
+            this.add(entity.get(), LootTable.lootTable()
+                    .withPool(
+                            LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(loot.get())))
+                    .withPool(LootPool.lootPool().setRolls(range).add(LootItem.lootTableItem(multiLoot.get())
+                            .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0F, 1F / 3F))))));
         }
 
         // Just drops a single item, not affected by enchantment
         public <T extends LivingEntity> void dropItem(RegistryObject<EntityType<T>> entity,
                 RegistryObject<Item> loot) {
-            this.registerLootTable(entity.get(), LootTable.builder().addLootPool(
-                    LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(loot.get()))));
+            this.add(entity.get(), LootTable.lootTable().withPool(
+                    LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(loot.get()))));
         }
 
         public <T extends LivingEntity> void dropItemsWithEnchantBonus(RegistryObject<EntityType<T>> entity,
-                RegistryObject<Item> loot, IRandomRange range) {
+                RegistryObject<Item> loot, NumberProvider range) {
             dropItemsWithEnchantBonus(entity, loot.get(), range);
         }
 
         // Drops several items that are affected by Enchantment
         // Looting will at most double yield with Looting III
         public <T extends LivingEntity> void dropItemsWithEnchantBonus(RegistryObject<EntityType<T>> entity, Item loot,
-                IRandomRange range) {
-            this.registerLootTable(entity.get(),
-                    LootTable.builder().addLootPool(LootPool.builder().rolls(range).addEntry(ItemLootEntry.builder(loot)
-                            .acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0F, 1F / 3F))))));
+                                                                       NumberProvider range) {
+            this.add(entity.get(),
+                    LootTable.lootTable().withPool(LootPool.lootPool().setRolls(range).add(LootItem.lootTableItem(loot)
+                            .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0F, 1F / 3F))))));
         }
 
         public <T extends LivingEntity> void noDrops(RegistryObject<EntityType<T>> entity) {
-            this.registerLootTable(entity.get(), LootTable.builder());
+            this.add(entity.get(), LootTable.lootTable());
         }
 
         @Override
@@ -342,10 +351,10 @@ public class TropicraftLootTableProvider extends LootTableProvider {
                                 DoublePlantBlock.HALF, DoubleBlockHalf.UPPER))));
 
             dropsSelf(TropicraftBlocks.REEDS);
-            registerLootTable(TropicraftBlocks.PAPAYA.get(), b -> {
-                return LootTable.builder().addLootPool(LootPool.builder().rolls(ConstantRange.of(1))
-                        .addEntry(withExplosionDecay(b, ItemLootEntry.builder(TropicraftBlocks.PAPAYA.get().asItem()).acceptFunction(SetCount.builder(ConstantRange.of(2))
-                                .acceptCondition(BlockStateProperty.builder(b).fromProperties(StatePropertiesPredicate.Builder.newBuilder().withIntProp(PapayaBlock.AGE, 1)))))));
+            add(TropicraftBlocks.PAPAYA.get(), b -> {
+                return LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                        .add(applyExplosionDecay(b, LootItem.lootTableItem(TropicraftBlocks.PAPAYA.get().asItem()).apply(SetItemCountFunction.setCount(ConstantValue.exactly(2))
+                                .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(b).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(PapayaBlock.AGE, 1)))))));
             });
 
             dropsSelf(TropicraftBlocks.SMALL_BONGO_DRUM);
@@ -407,21 +416,21 @@ public class TropicraftLootTableProvider extends LootTableProvider {
         }
         
         protected static LootTable.Builder onlyWithSilkTouchOrShears(Block block) {
-            return LootTable.lootTable().withPool(LootPool.lootPool().when(HAS_SHEARS_OR_SILK_TOUCH).setRolls(ConstantIntValue.exactly(1)).add(LootItem.lootTableItem(block)));
+            return LootTable.lootTable().withPool(LootPool.lootPool().when(HAS_SHEARS_OR_SILK_TOUCH).setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(block)));
         }
         
         protected static LootTable.Builder droppingWithSticks(Block block) {
             return onlyWithSilkTouchOrShears(block).withPool(LootPool.lootPool()
-                        .setRolls(ConstantIntValue.exactly(1))
+                        .setRolls(ConstantValue.exactly(1))
                         .when(HAS_NO_SHEARS_OR_SILK_TOUCH)
                         .add(applyExplosionDecay(block, LootItem.lootTableItem(Items.STICK)
-                                .apply(SetItemCountFunction.setCount(RandomValueBounds.between(1.0F, 2.0F))))
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F))))
                                 .when(BonusLevelTableCondition.bonusLevelFlatChance(Enchantments.BLOCK_FORTUNE, 0.02F, 0.022222223F, 0.025F, 0.033333335F, 0.1F))));
         }
         
         protected static LootTable.Builder droppingWithChancesSticksAndFruit(Block block, Block sapling, ItemLike fruit, float[] chances) {
             return createLeavesDrops(block, sapling, chances)
-                    .withPool(LootPool.lootPool().setRolls(ConstantIntValue.exactly(1))
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
                             .when(HAS_NO_SHEARS_OR_SILK_TOUCH)
                             .add(applyExplosionDecay(block, LootItem.lootTableItem(fruit))));
         }
@@ -433,18 +442,18 @@ public class TropicraftLootTableProvider extends LootTableProvider {
         // Same as droppingAndFlowerPot but with variable flower pot item
         protected static LootTable.Builder droppingFlowerPotAndFlower(FlowerPotBlock fullPot) {
             return LootTable.lootTable().withPool(applyExplosionCondition(fullPot.getEmptyPot(), LootPool.lootPool()
-                            .setRolls(ConstantInt.exactly(1))
+                            .setRolls(ConstantValue.exactly(1))
                             .add(LootItem.lootTableItem(fullPot.getEmptyPot()))))
                     .withPool(applyExplosionCondition(fullPot.getContent(), LootPool.lootPool()
-                            .setRolls(ConstantInt.exactly(1))
+                            .setRolls(ConstantValue.exactly(1))
                             .add(LootItem.lootTableItem(fullPot.getContent()))));
         }
 
         private static LootPool.Builder droppingChunksPool(Block block, Supplier<? extends ItemLike> chunk) {
-            return LootPool.builder().addEntry(ItemLootEntry.builder(chunk.get())
-                    .acceptCondition(MatchSwordCondition.builder())
-                    .acceptFunction(SetCount.builder(RandomValueRange.of(1.0F, 4.0F)))
-                    .alternatively(withSurvivesExplosion(block, ItemLootEntry.builder(block))));
+            return LootPool.lootPool().add(LootItem.lootTableItem(chunk.get())
+                    .when(MatchSwordCondition.builder())
+                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 4.0F)))
+                    .otherwise(applyExplosionCondition(block, LootItem.lootTableItem(block))));
         }
         
         protected static LootTable.Builder droppingChunks(Block block, Supplier<? extends ItemLike> chunk) {
@@ -458,7 +467,7 @@ public class TropicraftLootTableProvider extends LootTableProvider {
         private static LootTable.Builder dropNumberOfItems(Block block, Supplier<? extends ItemLike> drop, final int minDrops, final int maxDrops) {
             return LootTable.lootTable().withPool(applyExplosionCondition(block, LootPool.lootPool()
                     .add(LootItem.lootTableItem(drop.get()))
-                        .apply(SetItemCountFunction.setCount(RandomValueBounds.between(minDrops, maxDrops)))));
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(minDrops, maxDrops)))));
         }
         
         @Override

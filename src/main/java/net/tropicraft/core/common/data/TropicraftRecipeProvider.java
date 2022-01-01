@@ -1,17 +1,23 @@
 package net.tropicraft.core.common.data;
 
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.data.*;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
+import net.minecraft.data.recipes.SingleItemRecipeBuilder;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.Tag.Named;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.tags.Tag.Named;
-import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.tropicraft.Constants;
@@ -25,16 +31,149 @@ import javax.annotation.Nullable;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import static net.tropicraft.core.common.block.TropicraftBlocks.*;
-import static net.tropicraft.core.common.block.TropicraftFlower.*;
-import static net.tropicraft.core.common.item.TropicraftItems.*;
-
-import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
-import net.minecraft.data.recipes.ShapelessRecipeBuilder;
-import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
-import net.minecraft.data.recipes.SingleItemRecipeBuilder;
+import static net.tropicraft.core.common.block.TropicraftBlocks.AIR_COMPRESSOR;
+import static net.tropicraft.core.common.block.TropicraftBlocks.AZURITE_BLOCK;
+import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_BOARDWALK;
+import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_BUNDLE;
+import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_CHEST;
+import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_DOOR;
+import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_FENCE;
+import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_FENCE_GATE;
+import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_FLOWER_POT;
+import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_LADDER;
+import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_SLAB;
+import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_STAIRS;
+import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_TRAPDOOR;
+import static net.tropicraft.core.common.block.TropicraftBlocks.BLACK_MANGROVE_LOG;
+import static net.tropicraft.core.common.block.TropicraftBlocks.BLACK_MANGROVE_WOOD;
+import static net.tropicraft.core.common.block.TropicraftBlocks.CHUNK;
+import static net.tropicraft.core.common.block.TropicraftBlocks.CHUNK_FENCE;
+import static net.tropicraft.core.common.block.TropicraftBlocks.CHUNK_FENCE_GATE;
+import static net.tropicraft.core.common.block.TropicraftBlocks.CHUNK_SLAB;
+import static net.tropicraft.core.common.block.TropicraftBlocks.CHUNK_STAIRS;
+import static net.tropicraft.core.common.block.TropicraftBlocks.CHUNK_WALL;
+import static net.tropicraft.core.common.block.TropicraftBlocks.DRINK_MIXER;
+import static net.tropicraft.core.common.block.TropicraftBlocks.EUDIALYTE_BLOCK;
+import static net.tropicraft.core.common.block.TropicraftBlocks.IRIS;
+import static net.tropicraft.core.common.block.TropicraftBlocks.LARGE_BONGO_DRUM;
+import static net.tropicraft.core.common.block.TropicraftBlocks.LIGHT_MANGROVE_LOG;
+import static net.tropicraft.core.common.block.TropicraftBlocks.LIGHT_MANGROVE_WOOD;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_BOARDWALK;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_DOOR;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_FENCE;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_FENCE_GATE;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_LOG;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_PLANKS;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_SLAB;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_STAIRS;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_TRAPDOOR;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_WOOD;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MANGANESE_BLOCK;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MANGROVE_BOARDWALK;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MANGROVE_DOOR;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MANGROVE_FENCE;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MANGROVE_FENCE_GATE;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MANGROVE_PLANKS;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MANGROVE_SLAB;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MANGROVE_STAIRS;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MANGROVE_TRAPDOOR;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MEDIUM_BONGO_DRUM;
+import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_BOARDWALK;
+import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_DOOR;
+import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_FENCE;
+import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_FENCE_GATE;
+import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_LOG;
+import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_PLANKS;
+import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_SLAB;
+import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_STAIRS;
+import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_TRAPDOOR;
+import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_WOOD;
+import static net.tropicraft.core.common.block.TropicraftBlocks.PAPAYA_LOG;
+import static net.tropicraft.core.common.block.TropicraftBlocks.PAPAYA_WOOD;
+import static net.tropicraft.core.common.block.TropicraftBlocks.RED_MANGROVE_LOG;
+import static net.tropicraft.core.common.block.TropicraftBlocks.RED_MANGROVE_WOOD;
+import static net.tropicraft.core.common.block.TropicraftBlocks.SHAKA_BLOCK;
+import static net.tropicraft.core.common.block.TropicraftBlocks.SIFTER;
+import static net.tropicraft.core.common.block.TropicraftBlocks.SMALL_BONGO_DRUM;
+import static net.tropicraft.core.common.block.TropicraftBlocks.STRIPPED_MANGROVE_LOG;
+import static net.tropicraft.core.common.block.TropicraftBlocks.STRIPPED_MANGROVE_WOOD;
+import static net.tropicraft.core.common.block.TropicraftBlocks.THATCH_BUNDLE;
+import static net.tropicraft.core.common.block.TropicraftBlocks.THATCH_DOOR;
+import static net.tropicraft.core.common.block.TropicraftBlocks.THATCH_FENCE;
+import static net.tropicraft.core.common.block.TropicraftBlocks.THATCH_FENCE_GATE;
+import static net.tropicraft.core.common.block.TropicraftBlocks.THATCH_SLAB;
+import static net.tropicraft.core.common.block.TropicraftBlocks.THATCH_STAIRS;
+import static net.tropicraft.core.common.block.TropicraftBlocks.THATCH_STAIRS_FUZZY;
+import static net.tropicraft.core.common.block.TropicraftBlocks.THATCH_TRAPDOOR;
+import static net.tropicraft.core.common.block.TropicraftBlocks.TIKI_TORCH;
+import static net.tropicraft.core.common.block.TropicraftBlocks.ZIRCONIUM_BLOCK;
+import static net.tropicraft.core.common.block.TropicraftBlocks.ZIRCON_BLOCK;
+import static net.tropicraft.core.common.block.TropicraftFlower.CANNA;
+import static net.tropicraft.core.common.block.TropicraftFlower.COMMELINA_DIFFUSA;
+import static net.tropicraft.core.common.block.TropicraftFlower.DRACAENA;
+import static net.tropicraft.core.common.block.TropicraftFlower.ORANGE_ANTHURIUM;
+import static net.tropicraft.core.common.block.TropicraftFlower.RED_ANTHURIUM;
+import static net.tropicraft.core.common.item.TropicraftItems.AZURITE;
+import static net.tropicraft.core.common.item.TropicraftItems.BAMBOO_ITEM_FRAME;
+import static net.tropicraft.core.common.item.TropicraftItems.BAMBOO_MUG;
+import static net.tropicraft.core.common.item.TropicraftItems.BAMBOO_SPEAR;
+import static net.tropicraft.core.common.item.TropicraftItems.BAMBOO_STICK;
+import static net.tropicraft.core.common.item.TropicraftItems.BEACH_FLOATS;
+import static net.tropicraft.core.common.item.TropicraftItems.BLOW_GUN;
+import static net.tropicraft.core.common.item.TropicraftItems.CHAIRS;
+import static net.tropicraft.core.common.item.TropicraftItems.COCKTAILS;
+import static net.tropicraft.core.common.item.TropicraftItems.COCONUT_CHUNK;
+import static net.tropicraft.core.common.item.TropicraftItems.COFFEE_BERRY;
+import static net.tropicraft.core.common.item.TropicraftItems.COOKED_FISH;
+import static net.tropicraft.core.common.item.TropicraftItems.COOKED_FROG_LEG;
+import static net.tropicraft.core.common.item.TropicraftItems.COOKED_RAY;
+import static net.tropicraft.core.common.item.TropicraftItems.DAGGER;
+import static net.tropicraft.core.common.item.TropicraftItems.EUDIALYTE;
+import static net.tropicraft.core.common.item.TropicraftItems.EUDIALYTE_AXE;
+import static net.tropicraft.core.common.item.TropicraftItems.EUDIALYTE_HOE;
+import static net.tropicraft.core.common.item.TropicraftItems.EUDIALYTE_PICKAXE;
+import static net.tropicraft.core.common.item.TropicraftItems.EUDIALYTE_SHOVEL;
+import static net.tropicraft.core.common.item.TropicraftItems.EUDIALYTE_SWORD;
+import static net.tropicraft.core.common.item.TropicraftItems.FRESH_MARLIN;
+import static net.tropicraft.core.common.item.TropicraftItems.FROG_LEG;
+import static net.tropicraft.core.common.item.TropicraftItems.IGUANA_LEATHER;
+import static net.tropicraft.core.common.item.TropicraftItems.MANGANESE;
+import static net.tropicraft.core.common.item.TropicraftItems.PINEAPPLE_CUBES;
+import static net.tropicraft.core.common.item.TropicraftItems.PINK_PONY_BOTTLE;
+import static net.tropicraft.core.common.item.TropicraftItems.PINK_SCUBA_FLIPPERS;
+import static net.tropicraft.core.common.item.TropicraftItems.PINK_SCUBA_GOGGLES;
+import static net.tropicraft.core.common.item.TropicraftItems.PINK_SCUBA_HARNESS;
+import static net.tropicraft.core.common.item.TropicraftItems.RAW_COFFEE_BEAN;
+import static net.tropicraft.core.common.item.TropicraftItems.RAW_FISH;
+import static net.tropicraft.core.common.item.TropicraftItems.RAW_RAY;
+import static net.tropicraft.core.common.item.TropicraftItems.ROASTED_COFFEE_BEAN;
+import static net.tropicraft.core.common.item.TropicraftItems.SCALE;
+import static net.tropicraft.core.common.item.TropicraftItems.SCALE_BOOTS;
+import static net.tropicraft.core.common.item.TropicraftItems.SCALE_CHESTPLATE;
+import static net.tropicraft.core.common.item.TropicraftItems.SCALE_HELMET;
+import static net.tropicraft.core.common.item.TropicraftItems.SCALE_LEGGINGS;
+import static net.tropicraft.core.common.item.TropicraftItems.SEARED_MARLIN;
+import static net.tropicraft.core.common.item.TropicraftItems.SHAKA;
+import static net.tropicraft.core.common.item.TropicraftItems.TOASTED_NORI;
+import static net.tropicraft.core.common.item.TropicraftItems.TROPICAL_FERTILIZER;
+import static net.tropicraft.core.common.item.TropicraftItems.UMBRELLAS;
+import static net.tropicraft.core.common.item.TropicraftItems.WATER_WAND;
+import static net.tropicraft.core.common.item.TropicraftItems.YELLOW_PONY_BOTTLE;
+import static net.tropicraft.core.common.item.TropicraftItems.YELLOW_SCUBA_FLIPPERS;
+import static net.tropicraft.core.common.item.TropicraftItems.YELLOW_SCUBA_GOGGLES;
+import static net.tropicraft.core.common.item.TropicraftItems.YELLOW_SCUBA_HARNESS;
+import static net.tropicraft.core.common.item.TropicraftItems.ZIRCON;
+import static net.tropicraft.core.common.item.TropicraftItems.ZIRCONIUM;
+import static net.tropicraft.core.common.item.TropicraftItems.ZIRCONIUM_AXE;
+import static net.tropicraft.core.common.item.TropicraftItems.ZIRCONIUM_HOE;
+import static net.tropicraft.core.common.item.TropicraftItems.ZIRCONIUM_PICKAXE;
+import static net.tropicraft.core.common.item.TropicraftItems.ZIRCONIUM_SHOVEL;
+import static net.tropicraft.core.common.item.TropicraftItems.ZIRCONIUM_SWORD;
+import static net.tropicraft.core.common.item.TropicraftItems.ZIRCON_AXE;
+import static net.tropicraft.core.common.item.TropicraftItems.ZIRCON_HOE;
+import static net.tropicraft.core.common.item.TropicraftItems.ZIRCON_PICKAXE;
+import static net.tropicraft.core.common.item.TropicraftItems.ZIRCON_SHOVEL;
+import static net.tropicraft.core.common.item.TropicraftItems.ZIRCON_SWORD;
 
 public class TropicraftRecipeProvider extends RecipeProvider {
 
@@ -43,7 +182,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
     }
 
     @Override
-    protected void buildShapelessRecipes(Consumer<FinishedRecipe> consumer) {
+    protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
         ore(TropicraftTags.Items.AZURITE_ORE, AZURITE, 0.3F, consumer);
         ore(TropicraftTags.Items.EUDIALYTE_ORE, EUDIALYTE, 0.5F, consumer);
         ore(TropicraftTags.Items.ZIRCON_ORE, ZIRCON, 0.5F, consumer);
@@ -89,7 +228,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
                 .group(Constants.MODID + ":umbrellas")
                 .define('W', wool)
                 .define('B', BAMBOO_STICK.get())
-                .unlockedBy("has_" + color.getSerializedName() + "_wool", this.has(wool))
+                .unlockedBy("has_" + color.getSerializedName() + "_wool", has(wool))
                 .save(consumer);
             
             ShapedRecipeBuilder.shaped(CHAIRS.get(color).get())
@@ -97,7 +236,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
                 .group(Constants.MODID + ":chairs")
                 .define('W', wool)
                 .define('B', BAMBOO_STICK.get())
-                .unlockedBy("has_" + color.getSerializedName() + "_wool", this.has(wool))
+                .unlockedBy("has_" + color.getSerializedName() + "_wool", has(wool))
                 .save(consumer);
             
             ShapedRecipeBuilder.shaped(BEACH_FLOATS.get(color).get())
@@ -105,7 +244,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
                 .group(Constants.MODID + ":beach_floats")
                 .define('W', wool)
                 .define('B', Blocks.BAMBOO)
-                .unlockedBy("has_" + color.getSerializedName() + "_wool", this.has(wool))
+                .unlockedBy("has_" + color.getSerializedName() + "_wool", has(wool))
                 .save(consumer);
         
             // TODO other colored items
@@ -115,18 +254,18 @@ public class TropicraftRecipeProvider extends RecipeProvider {
         ShapedRecipeBuilder.shaped(BAMBOO_STICK.get())
             .pattern("X").pattern("X")
             .define('X', Items.BAMBOO)
-            .unlockedBy("has_bamboo", this.has(Items.BAMBOO))
+            .unlockedBy("has_bamboo", has(Items.BAMBOO))
             .save(consumer, new ResourceLocation("stick_from_bamboo_item"));
         
         ShapedRecipeBuilder.shaped(BAMBOO_SPEAR.get())
             .pattern("X ").pattern(" X")
             .define('X', BAMBOO_STICK.get())
-            .unlockedBy("has_bamboo_stick", this.has(BAMBOO_STICK.get()))
+            .unlockedBy("has_bamboo_stick", has(BAMBOO_STICK.get()))
             .save(consumer);
         
         ShapelessRecipeBuilder.shapeless(RAW_COFFEE_BEAN.get())
             .requires(COFFEE_BERRY.get())
-            .unlockedBy("has_coffee_bean", this.has(COFFEE_BERRY.get()))
+            .unlockedBy("has_coffee_bean", has(COFFEE_BERRY.get()))
             .save(consumer);
 
         ShapelessRecipeBuilder.shapeless(ZIRCONIUM.get())
@@ -141,7 +280,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
         ShapedRecipeBuilder.shaped(BAMBOO_MUG.get())
             .pattern("X X").pattern("X X").pattern("XXX")
             .define('X', Items.BAMBOO)
-            .unlockedBy("has_bamboo", this.has(Items.BAMBOO))
+            .unlockedBy("has_bamboo", has(Items.BAMBOO))
             .save(consumer);
 
         food(Items.SEAGRASS.delegate, TOASTED_NORI, 0.1F, consumer);
@@ -170,10 +309,10 @@ public class TropicraftRecipeProvider extends RecipeProvider {
         bark(PALM_LOG, PALM_WOOD, consumer);
 
         // Papaya log -> Jungle log
-        ShapelessRecipeBuilder.shapelessRecipe(Blocks.JUNGLE_LOG)
-                .addIngredient(PAPAYA_LOG.get())
-                .addCriterion("has_papaya_log", hasItem(PAPAYA_LOG.get()))
-                .build(consumer);
+        ShapelessRecipeBuilder.shapeless(Blocks.JUNGLE_LOG)
+                .requires(PAPAYA_LOG.get())
+                .unlockedBy("has_papaya_log", has(PAPAYA_LOG.get()))
+                .save(consumer);
 
         bark(PAPAYA_LOG, PAPAYA_WOOD, consumer);
 
@@ -195,7 +334,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .pattern("C  ").pattern("XC ").pattern("XXC")
             .define('X', THATCH_BUNDLE.get())
             .define('C', Items.SUGAR_CANE)
-            .unlockedBy("has_thatch_bundle", this.has(THATCH_BUNDLE.get()))
+            .unlockedBy("has_thatch_bundle", has(THATCH_BUNDLE.get()))
             .save(consumer);
         
         // Slabs
@@ -296,7 +435,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .pattern("S S").pattern("BSB").pattern("S S")
             .define('S', BAMBOO_STICK.get())
             .define('B', Items.BAMBOO)
-            .unlockedBy("has_bamboo", this.has(Items.BAMBOO))
+            .unlockedBy("has_bamboo", has(Items.BAMBOO))
             .save(consumer);
 
         boardwalk(BAMBOO_SLAB, BAMBOO_BOARDWALK, consumer);
@@ -307,7 +446,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
         ShapedRecipeBuilder.shaped(BAMBOO_CHEST.get())
             .pattern("BBB").pattern("B B").pattern("BBB")
             .define('B', Items.BAMBOO)
-            .unlockedBy("has_bamboo", this.has(Items.BAMBOO))
+            .unlockedBy("has_bamboo", has(Items.BAMBOO))
             .save(consumer);
         
         ShapedRecipeBuilder.shaped(SIFTER.get())
@@ -315,7 +454,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .define('X', ItemTags.PLANKS)
             .define('I', Tags.Items.GLASS)
             .group("tropicraft:sifter")
-            .unlockedBy("has_glass", this.has(Tags.Items.GLASS))
+            .unlockedBy("has_glass", has(Tags.Items.GLASS))
             .save(consumer);
         
         ShapedRecipeBuilder.shaped(SIFTER.get())
@@ -323,40 +462,40 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .define('X', ItemTags.PLANKS)
             .define('I', Tags.Items.GLASS_PANES)
             .group("tropicraft:sifter")
-            .unlockedBy("has_glass_pane", this.has(Tags.Items.GLASS_PANES))
+            .unlockedBy("has_glass_pane", has(Tags.Items.GLASS_PANES))
             .save(consumer, new ResourceLocation(Constants.MODID, "sifter_with_glass_pane"));
         
         ShapedRecipeBuilder.shaped(DRINK_MIXER.get())
             .pattern("XXX").pattern("XYX").pattern("XXX")
             .define('X', CHUNK.get())
             .define('Y', BAMBOO_MUG.get())
-            .unlockedBy("has_bamboo_mug", this.has(BAMBOO_MUG.get()))
+            .unlockedBy("has_bamboo_mug", has(BAMBOO_MUG.get()))
             .save(consumer);
         
         ShapedRecipeBuilder.shaped(TIKI_TORCH.get())
             .pattern("Y").pattern("X").pattern("X")
             .define('X', BAMBOO_STICK.get())
             .define('Y', ItemTags.COALS)
-            .unlockedBy("has_bamboo_stick", this.has(BAMBOO_STICK.get()))
+            .unlockedBy("has_bamboo_stick", has(BAMBOO_STICK.get()))
             .save(consumer);
         
         ShapedRecipeBuilder.shaped(BAMBOO_FLOWER_POT.get())
             .pattern("# #").pattern(" # ")
             .define('#', Items.BAMBOO)
-            .unlockedBy("has_bamboo", this.has(Items.BAMBOO))
+            .unlockedBy("has_bamboo", has(Items.BAMBOO))
             .save(consumer);
         
         ShapelessRecipeBuilder.shapeless(COCKTAILS.get(Drink.PINA_COLADA).get())
             .requires(BAMBOO_MUG.get())
             .requires(COCONUT_CHUNK.get())
             .requires(PINEAPPLE_CUBES.get())
-            .unlockedBy("has_bamboo_mug", this.has(BAMBOO_MUG.get()))
+            .unlockedBy("has_bamboo_mug", has(BAMBOO_MUG.get()))
             .save(consumer);
         
         ShapelessRecipeBuilder.shapeless(TROPICAL_FERTILIZER.get())
             .requires(TropicraftFlower.MAGIC_MUSHROOM.get())
             .requires(TropicraftFlower.CROTON.get())
-            .unlockedBy("has_magic_mushroom", this.has(TropicraftFlower.MAGIC_MUSHROOM.get()))
+            .unlockedBy("has_magic_mushroom", has(TropicraftFlower.MAGIC_MUSHROOM.get()))
             .save(consumer);
 
         ShapedRecipeBuilder.shaped(DAGGER.get())
@@ -365,7 +504,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .define('X', CHUNK.get())
             .define('I', BAMBOO_STICK.get())
             .unlockedBy("has_" + safeName(CHUNK.get()), has(CHUNK.get()))
-            .unlockedBy("has_bamboo", this.has(Items.BAMBOO))
+            .unlockedBy("has_bamboo", has(Items.BAMBOO))
             .save(consumer);
 
         ShapedRecipeBuilder.shaped(BLOW_GUN.get())
@@ -397,22 +536,22 @@ public class TropicraftRecipeProvider extends RecipeProvider {
     
     private <T extends ItemLike & IForgeRegistryEntry<?>> void ore(Named<Item> source, Supplier<T> result, float xp, Consumer<FinishedRecipe> consumer) {
         SimpleCookingRecipeBuilder.smelting(Ingredient.of(source), result.get(), xp, 100)
-            .unlockedBy("has_" + safeName(source.getName()), this.has(source))
+            .unlockedBy("has_" + safeName(source.getName()), has(source))
             .save(consumer);
         SimpleCookingRecipeBuilder.blasting(Ingredient.of(source), result.get(), xp, 100)
-            .unlockedBy("has_" + safeName(source.getName()), this.has(source))
+            .unlockedBy("has_" + safeName(source.getName()), has(source))
             .save(consumer, safeId(result.get()) + "_from_blasting");
     }
 
     private <T extends ItemLike & IForgeRegistryEntry<?>> void food(Supplier<? extends T> source, Supplier<? extends T> result, float xp, Consumer<FinishedRecipe> consumer) {
         SimpleCookingRecipeBuilder.smelting(Ingredient.of(source.get()), result.get(), xp, 100)
-            .unlockedBy("has_" + safeName(source.get().getRegistryName()), this.has(source.get()))
+            .unlockedBy("has_" + safeName(source.get().getRegistryName()), has(source.get()))
             .save(consumer);
         SimpleCookingRecipeBuilder.cooking(Ingredient.of(source.get()), result.get(), xp, 100, RecipeSerializer.SMOKING_RECIPE)
-            .unlockedBy("has_" + safeName(source.get().getRegistryName()), this.has(source.get()))
+            .unlockedBy("has_" + safeName(source.get().getRegistryName()), has(source.get()))
             .save(consumer, safeId(result.get()) + "_from_smoking");
         SimpleCookingRecipeBuilder.cooking(Ingredient.of(source.get()), result.get(), xp, 100, RecipeSerializer.CAMPFIRE_COOKING_RECIPE)
-            .unlockedBy("has_" + safeName(source.get().getRegistryName()), this.has(source.get()))
+            .unlockedBy("has_" + safeName(source.get().getRegistryName()), has(source.get()))
             .save(consumer, safeId(result.get()) + "_from_campfire");
     }
     
@@ -421,12 +560,12 @@ public class TropicraftRecipeProvider extends RecipeProvider {
         ShapedRecipeBuilder.shaped(output.get())
             .pattern("XXX").pattern("XXX").pattern("XXX")
             .define('X', input.get())
-            .unlockedBy("has_at_least_9_" + safeName(input.get()), this.has(input.get()))
+            .unlockedBy("has_at_least_9_" + safeName(input.get()), has(input.get()))
             .save(consumer);
         
         ShapelessRecipeBuilder.shapeless(input.get(), 9)
             .requires(output.get())
-            .unlockedBy("has_" + safeName(output.get()), this.has(output.get()))
+            .unlockedBy("has_" + safeName(output.get()), has(output.get()))
             .save(consumer, safeId(input.get()) + "_from_" + safeName(output.get()));
     }
 
@@ -532,7 +671,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
     private <T extends ItemLike & IForgeRegistryEntry<?>> ShapelessRecipeBuilder singleItemUnfinished(Supplier<? extends T> source, Supplier<? extends T> result, int required, int amount) {
         return ShapelessRecipeBuilder.shapeless(result.get(), amount)
             .requires(source.get(), required)
-            .unlockedBy("has_" + safeName(source.get()), this.has(source.get()));
+            .unlockedBy("has_" + safeName(source.get()), has(source.get()));
     }
 
     private <T extends ItemLike & IForgeRegistryEntry<?>> void dye(Supplier<? extends T> source, Supplier<? extends T> result, int required, int amount, Consumer<FinishedRecipe> consumer) {
@@ -554,7 +693,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .pattern("##").pattern("##")
             .define('#', source.get())
             .group("bark")
-            .unlockedBy("has_log", this.has(Blocks.ACACIA_LOG))
+            .unlockedBy("has_log", has(Blocks.ACACIA_LOG))
             .save(consumer);
     }
     
@@ -563,11 +702,11 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .pattern("X  ").pattern("XX ").pattern("XXX")
             .define('X', source.get())
             .group(group)
-            .unlockedBy("has_" + safeName(source.get()), this.has(source.get()))
+            .unlockedBy("has_" + safeName(source.get()), has(source.get()))
             .save(consumer);
         if (stone) {
             SingleItemRecipeBuilder.stonecutting(Ingredient.of(source.get()), result.get())
-                .unlocks("has_" + safeName(source.get()), this.has(source.get()))
+                .unlockedBy("has_" + safeName(source.get()), has(source.get()))
                 .save(consumer, safeId(result.get()) + "_from_" + safeName(source.get()) + "_stonecutting");
         }
     }
@@ -577,11 +716,11 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .pattern("XXX")
             .define('X', source.get())
             .group(group)
-            .unlockedBy("has_" + safeName(source.get()), this.has(source.get()))
+            .unlockedBy("has_" + safeName(source.get()), has(source.get()))
             .save(consumer);
         if (stone) {
             SingleItemRecipeBuilder.stonecutting(Ingredient.of(source.get()), result.get(), 2)
-                .unlocks("has_" + safeName(source.get()), this.has(source.get()))
+                .unlockedBy("has_" + safeName(source.get()), has(source.get()))
                 .save(consumer, safeId(result.get()) + "_from_" + safeName(source.get()) + "_stonecutting");
         }
     }
@@ -603,7 +742,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .define('W', source.get())
             .define('#', Tags.Items.RODS_WOODEN)
             .group(group)
-            .unlockedBy("has_" + safeName(source.get()), this.has(source.get()))
+            .unlockedBy("has_" + safeName(source.get()), has(source.get()))
             .save(consumer);
     }
     
@@ -613,7 +752,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .define('W', source.get())
             .define('#', Tags.Items.RODS_WOODEN)
             .group(group)
-            .unlockedBy("has_" + safeName(source.get()), this.has(source.get()))
+            .unlockedBy("has_" + safeName(source.get()), has(source.get()))
             .save(consumer);
     }
     
@@ -621,10 +760,10 @@ public class TropicraftRecipeProvider extends RecipeProvider {
         ShapedRecipeBuilder.shaped(result.get(), 6)
             .pattern("XXX").pattern("XXX")
             .define('X', source.get())
-            .unlockedBy("has_" + safeName(source.get()), this.has(source.get()))
+            .unlockedBy("has_" + safeName(source.get()), has(source.get()))
             .save(consumer);
         SingleItemRecipeBuilder.stonecutting(Ingredient.of(source.get()), result.get())
-            .unlocks("has_" + safeName(source.get()), this.has(source.get()))
+            .unlockedBy("has_" + safeName(source.get()), has(source.get()))
             .save(consumer, safeId(result.get()) + "_from_" + safeName(source.get()) + "_stonecutting");
     }
     
@@ -633,7 +772,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .pattern("XX").pattern("XX").pattern("XX")
             .define('X', source.get())
             .group(group)
-            .unlockedBy("has_" + safeName(source.get()), this.has(source.get()))
+            .unlockedBy("has_" + safeName(source.get()), has(source.get()))
             .save(consumer);
     }
 
@@ -642,7 +781,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .pattern("XXX").pattern("XXX")
             .define('X', source.get())
             .group(group)
-            .unlockedBy("has_" + safeName(source.get()), this.has(source.get()))
+            .unlockedBy("has_" + safeName(source.get()), has(source.get()))
             .save(consumer);
     }
     
@@ -654,7 +793,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .define('T', top.get())
             .define('B', bottom.get())
             .group("tropicraft:bongos")
-            .unlockedBy("has_" + safeName(top.get()), this.has(top.get()))
+            .unlockedBy("has_" + safeName(top.get()), has(top.get()))
             .save(consumer);
     }
 
