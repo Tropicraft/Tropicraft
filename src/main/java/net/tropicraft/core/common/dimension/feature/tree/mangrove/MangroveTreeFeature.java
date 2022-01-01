@@ -1,22 +1,21 @@
 package net.tropicraft.core.common.dimension.feature.tree.mangrove;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.util.Constants;
 import net.tropicraft.core.common.TropicraftTags;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
 @Deprecated
 public class MangroveTreeFeature extends Feature<TreeConfiguration> {
@@ -28,7 +27,10 @@ public class MangroveTreeFeature extends Feature<TreeConfiguration> {
     }
 
     @Override
-    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random random, BlockPos pos, TreeConfiguration config) {
+    public boolean place(FeaturePlaceContext<TreeConfiguration> pContext) {
+        WorldGenLevel world = pContext.level();
+        BlockPos pos = pContext.origin();
+        TreeConfiguration config = pContext.config();
         BlockPos placePos = this.findPlacePos(world, pos, config);
         if (placePos == null) return false;
 
@@ -42,10 +44,10 @@ public class MangroveTreeFeature extends Feature<TreeConfiguration> {
                 (world.getBlockState(soilPos.below()).getFluidState().is(FluidTags.WATER));
 
         try {
-            if (replaceSoil) world.setBlock(soilPos, Blocks.DIRT.defaultBlockState(), Constants.BlockFlags.DEFAULT);
-            return this.backing.place(world, generator, random, pos, config);
+            if (replaceSoil) world.setBlock(soilPos, Blocks.DIRT.defaultBlockState(), Block.UPDATE_ALL);
+            return this.backing.place(new FeaturePlaceContext<>(world, pContext.chunkGenerator(), pContext.random(), pos, config));
         } finally {
-            if (replaceSoil) world.setBlock(soilPos, soilState, Constants.BlockFlags.DEFAULT);
+            if (replaceSoil) world.setBlock(soilPos, soilState, Block.UPDATE_ALL);
         }
     }
 
