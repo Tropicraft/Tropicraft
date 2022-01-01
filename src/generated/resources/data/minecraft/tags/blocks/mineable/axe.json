@@ -1,0 +1,31 @@
+{
+  "replace": false,
+  "values": [
+    "tropicraft:mahogany_planks",
+    "tropicraft:mahogany_log",
+    "tropicraft:mahogany_stairs",
+    "tropicraft:mahogany_slab",
+    "tropicraft:mahogany_fence",
+    "tropicraft:mahogany_door",
+    "tropicraft:mahogany_trapdoor",
+    "tropicraft:mahogany_boardwalk",
+    "tropicraft:mahogany_fence_gate",
+    "tropicraft:mohogany_wood",
+    "tropicraft:black_mangrove_roots",
+    "tropicraft:red_mangrove_roots",
+    "tropicraft:light_mangrove_roots",
+    "tropicraft:palm_planks",
+    "tropicraft:palm_log",
+    "tropicraft:palm_stairs",
+    "tropicraft:palm_slab",
+    "tropicraft:palm_fence",
+    "tropicraft:palm_door",
+    "tropicraft:palm_trapdoor",
+    "tropicraft:palm_boardwalk",
+    "tropicraft:palm_fence_gate",
+    "tropicraft:palm_wood",
+    "tropicraft:light_mangrove_log",
+    "tropicraft:light_mangrove_wood",
+    "tropicraft:coconut"
+  ]
+}

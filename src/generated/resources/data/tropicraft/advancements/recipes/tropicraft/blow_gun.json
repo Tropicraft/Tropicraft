@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tropicraft:zircon_gem"
+            "items": [
+              "tropicraft:zircon_gem"
+            ]
           }
         ]
       }
@@ -21,7 +23,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tropicraft:bamboo_stick"
+            "items": [
+              "tropicraft:bamboo_stick"
+            ]
           }
         ]
       }

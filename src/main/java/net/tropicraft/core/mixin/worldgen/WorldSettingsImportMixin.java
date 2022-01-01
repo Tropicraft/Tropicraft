@@ -1,25 +1,20 @@
 package net.tropicraft.core.mixin.worldgen;
 
-import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.Lifecycle;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.WritableRegistry;
 import net.minecraft.resources.RegistryReadOps;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.dimension.LevelStem;
-import net.tropicraft.Constants;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.OptionalInt;
@@ -28,7 +23,7 @@ import java.util.OptionalInt;
 public class WorldSettingsImportMixin {
     @Shadow
     @Final
-    private RegistryAccess.RegistryHolder registryAccess;
+    public RegistryAccess registryAccess;
 
     /**
      * Add the tropicraft dimension to both new worlds and existing worlds when they get loaded.

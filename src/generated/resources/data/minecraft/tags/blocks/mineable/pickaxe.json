@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "values": [
+    "tropicraft:azurite_ore",
+    "tropicraft:zircon_ore",
+    "tropicraft:eudialyte_ore",
+    "tropicraft:shaka_ore",
+    "tropicraft:manganese_ore",
+    "tropicraft:azurite_block",
+    "tropicraft:zircon_block",
+    "tropicraft:eudialyte_block",
+    "tropicraft:shaka_block",
+    "tropicraft:manganese_block"
+  ]
+}

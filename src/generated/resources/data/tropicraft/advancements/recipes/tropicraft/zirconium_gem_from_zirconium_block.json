@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tropicraft:zirconium_block"
+            "items": [
+              "tropicraft:zirconium_block"
+            ]
           }
         ]
       }

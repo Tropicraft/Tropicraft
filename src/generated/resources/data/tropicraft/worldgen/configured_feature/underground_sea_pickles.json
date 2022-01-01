@@ -6,8 +6,7 @@
     },
     "decorator": {
       "config": {
-        "step": "liquid",
-        "probability": 0.05
+        "step": "liquid"
       },
       "type": "minecraft:carving_mask"
     }

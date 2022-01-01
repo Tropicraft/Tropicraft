@@ -26,17 +26,24 @@
       "minecraft:ore_redstone",
       "minecraft:ore_diamond",
       "minecraft:ore_lapis",
+      "minecraft:ore_copper",
       "minecraft:ore_dirt",
       "minecraft:ore_gravel",
       "minecraft:ore_granite",
       "minecraft:ore_diorite",
       "minecraft:ore_andesite",
+      "minecraft:ore_tuff",
+      "minecraft:ore_deepslate",
       "tropicraft:azurite",
       "tropicraft:eudialyte",
       "tropicraft:zircon"
     ],
-    [],
     [
+      "minecraft:rare_dripstone_cluster",
+      "minecraft:rare_small_dripstone"
+    ],
+    [
+      "minecraft:glow_lichen",
       "tropicraft:rainforest_up_tree",
       "tropicraft:rainforest_small_tualung",
       "tropicraft:rainforest_large_tualung",
@@ -55,6 +62,8 @@
   "starts": [
     "minecraft:mineshaft",
     "minecraft:stronghold",
+    "tropicraft:home_tree",
+    "tropicraft:koa_village",
     "tropicraft:home_tree"
   ],
   "spawners": {
@@ -159,6 +168,7 @@
       }
     ],
     "ambient": [],
+    "underground_water_creature": [],
     "water_creature": [],
     "water_ambient": [],
     "misc": []

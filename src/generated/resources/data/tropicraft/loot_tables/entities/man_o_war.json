@@ -3,10 +3,11 @@
   "pools": [
     {
       "rolls": {
+        "type": "minecraft:uniform",
         "min": 3.0,
-        "max": 4.0,
-        "type": "minecraft:uniform"
+        "max": 4.0
       },
+      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
@@ -14,6 +15,7 @@
             {
               "function": "minecraft:looting_enchant",
               "count": {
+                "type": "minecraft:uniform",
                 "min": 0.0,
                 "max": 0.33333334
               }

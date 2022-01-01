@@ -3,6 +3,7 @@
   "pools": [
     {
       "rolls": 1.0,
+      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:alternatives",
@@ -18,10 +19,11 @@
                 {
                   "function": "minecraft:set_count",
                   "count": {
+                    "type": "minecraft:uniform",
                     "min": 1.0,
-                    "max": 4.0,
-                    "type": "minecraft:uniform"
-                  }
+                    "max": 4.0
+                  },
+                  "add": false
                 }
               ],
               "name": "tropicraft:coconut_chunk"

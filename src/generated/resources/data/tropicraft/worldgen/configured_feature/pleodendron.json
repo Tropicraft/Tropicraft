@@ -4,9 +4,15 @@
       "config": {
         "feature": {
           "config": {
-            "max_water_depth": 0,
+            "decorators": [],
             "ignore_vines": false,
-            "heightmap": "OCEAN_FLOOR",
+            "force_dirt": false,
+            "dirt_provider": {
+              "state": {
+                "Name": "minecraft:dirt"
+              },
+              "type": "minecraft:simple_state_provider"
+            },
             "minimum_size": {
               "limit": 0,
               "lower_size": 0,
@@ -14,17 +20,7 @@
               "min_clipped_height": 4,
               "type": "minecraft:two_layers_feature_size"
             },
-            "decorators": [],
-            "trunk_provider": {
-              "state": {
-                "Properties": {
-                  "axis": "y"
-                },
-                "Name": "minecraft:jungle_log"
-              },
-              "type": "minecraft:simple_state_provider"
-            },
-            "leaves_provider": {
+            "foliage_provider": {
               "state": {
                 "Properties": {
                   "persistent": "false",
@@ -34,11 +30,29 @@
               },
               "type": "minecraft:simple_state_provider"
             },
+            "sapling_provider": {
+              "state": {
+                "Properties": {
+                  "stage": "0"
+                },
+                "Name": "tropicraft:mahogany_sapling"
+              },
+              "type": "minecraft:simple_state_provider"
+            },
             "foliage_placer": {
               "radius": 2,
               "offset": 0,
               "height": 1,
               "type": "tropicraft:pleodendron"
+            },
+            "trunk_provider": {
+              "state": {
+                "Properties": {
+                  "axis": "y"
+                },
+                "Name": "minecraft:jungle_log"
+              },
+              "type": "minecraft:simple_state_provider"
             },
             "trunk_placer": {
               "base_height": 10,
@@ -56,7 +70,9 @@
               "type": "minecraft:square"
             },
             "inner": {
-              "config": {},
+              "config": {
+                "heightmap": "MOTION_BLOCKING"
+              },
               "type": "minecraft:heightmap"
             }
           },

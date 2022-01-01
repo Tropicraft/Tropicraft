@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tropicraft:zircon_gem"
+            "items": [
+              "tropicraft:zircon_gem"
+            ]
           }
         ]
       }

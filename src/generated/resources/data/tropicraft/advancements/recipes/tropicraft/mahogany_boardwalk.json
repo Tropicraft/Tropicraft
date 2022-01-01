@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tropicraft:mahogany_slab"
+            "items": [
+              "tropicraft:mahogany_slab"
+            ]
           }
         ]
       }

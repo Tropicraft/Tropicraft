@@ -1,66 +1,93 @@
 {
   "config": {
-    "max_water_depth": 1,
-    "ignore_vines": false,
-    "heightmap": "OCEAN_FLOOR",
-    "minimum_size": {
-      "limit": 0,
-      "lower_size": 0,
-      "upper_size": 0,
-      "min_clipped_height": 4,
-      "type": "minecraft:two_layers_feature_size"
-    },
-    "decorators": [
-      {
-        "probability": 0.02,
-        "type": "minecraft:beehive"
-      },
-      {
-        "count": 8,
-        "spread": 4,
-        "type": "tropicraft:pianguas"
-      },
-      {
-        "roots_block": "tropicraft:black_mangrove_roots",
-        "min_count": 8,
-        "max_count": 16,
-        "spread": 6,
-        "type": "tropicraft:pneumatophores"
-      }
-    ],
-    "trunk_provider": {
-      "state": {
-        "Properties": {
-          "axis": "y"
+    "feature": {
+      "config": {
+        "decorators": [
+          {
+            "probability": 0.02,
+            "type": "minecraft:beehive"
+          },
+          {
+            "count": 8,
+            "spread": 4,
+            "type": "tropicraft:pianguas"
+          },
+          {
+            "roots_block": "tropicraft:black_mangrove_roots",
+            "min_count": 8,
+            "max_count": 16,
+            "spread": 6,
+            "type": "tropicraft:pneumatophores"
+          }
+        ],
+        "ignore_vines": false,
+        "force_dirt": false,
+        "dirt_provider": {
+          "state": {
+            "Name": "minecraft:dirt"
+          },
+          "type": "minecraft:simple_state_provider"
         },
-        "Name": "tropicraft:black_mangrove_log"
-      },
-      "type": "minecraft:simple_state_provider"
-    },
-    "leaves_provider": {
-      "state": {
-        "Properties": {
-          "persistent": "false",
-          "distance": "7"
+        "minimum_size": {
+          "limit": 0,
+          "lower_size": 0,
+          "upper_size": 0,
+          "min_clipped_height": 4,
+          "type": "minecraft:two_layers_feature_size"
         },
-        "Name": "tropicraft:black_mangrove_leaves"
+        "foliage_provider": {
+          "state": {
+            "Properties": {
+              "persistent": "false",
+              "distance": "7"
+            },
+            "Name": "tropicraft:black_mangrove_leaves"
+          },
+          "type": "minecraft:simple_state_provider"
+        },
+        "sapling_provider": {
+          "state": {
+            "Properties": {
+              "waterlogged": "false",
+              "stage": "0",
+              "planted": "true"
+            },
+            "Name": "tropicraft:black_mangrove_propagule"
+          },
+          "type": "minecraft:simple_state_provider"
+        },
+        "foliage_placer": {
+          "radius": 0,
+          "offset": 0,
+          "type": "tropicraft:mangrove"
+        },
+        "trunk_provider": {
+          "state": {
+            "Properties": {
+              "axis": "y"
+            },
+            "Name": "tropicraft:black_mangrove_log"
+          },
+          "type": "minecraft:simple_state_provider"
+        },
+        "trunk_placer": {
+          "roots_block": "tropicraft:black_mangrove_roots",
+          "can_generate_raised": true,
+          "tea_mangrove": false,
+          "base_height": 4,
+          "height_rand_a": 3,
+          "height_rand_b": 0,
+          "type": "tropicraft:mangrove"
+        }
       },
-      "type": "minecraft:simple_state_provider"
+      "type": "tropicraft:mangrove_tree"
     },
-    "foliage_placer": {
-      "radius": 0,
-      "offset": 0,
-      "type": "tropicraft:mangrove"
-    },
-    "trunk_placer": {
-      "roots_block": "tropicraft:black_mangrove_roots",
-      "can_generate_raised": true,
-      "tea_mangrove": false,
-      "base_height": 4,
-      "height_rand_a": 3,
-      "height_rand_b": 0,
-      "type": "tropicraft:mangrove"
+    "decorator": {
+      "config": {
+        "max_water_depth": 1
+      },
+      "type": "minecraft:water_depth_threshold"
     }
   },
-  "type": "tropicraft:mangrove_tree"
+  "type": "minecraft:decorated"
 }

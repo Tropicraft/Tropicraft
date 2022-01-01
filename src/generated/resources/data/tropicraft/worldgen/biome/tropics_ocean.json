@@ -26,16 +26,23 @@
       "minecraft:ore_redstone",
       "minecraft:ore_diamond",
       "minecraft:ore_lapis",
+      "minecraft:ore_copper",
       "minecraft:ore_dirt",
       "minecraft:ore_gravel",
       "minecraft:ore_granite",
       "minecraft:ore_diorite",
       "minecraft:ore_andesite",
+      "minecraft:ore_tuff",
+      "minecraft:ore_deepslate",
       "tropicraft:manganese",
       "tropicraft:shaka"
     ],
-    [],
     [
+      "minecraft:rare_dripstone_cluster",
+      "minecraft:rare_small_dripstone"
+    ],
+    [
+      "minecraft:glow_lichen",
       "minecraft:warm_ocean_vegetation",
       "minecraft:seagrass_warm",
       "tropicraft:underground_seagrass_on_stone",
@@ -46,7 +53,9 @@
   ],
   "starts": [
     "minecraft:mineshaft",
-    "minecraft:stronghold"
+    "minecraft:stronghold",
+    "tropicraft:home_tree",
+    "tropicraft:koa_village"
   ],
   "spawners": {
     "monster": [
@@ -102,6 +111,7 @@
         "maxCount": 10
       }
     ],
+    "underground_water_creature": [],
     "water_creature": [
       {
         "type": "tropicraft:marlin",
