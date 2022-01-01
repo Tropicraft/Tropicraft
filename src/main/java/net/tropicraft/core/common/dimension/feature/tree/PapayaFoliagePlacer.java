@@ -5,6 +5,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.util.valueproviders.IntProvider;
+import net.minecraft.world.level.LevelSimulatedRW;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
@@ -19,10 +21,10 @@ import java.util.function.BiConsumer;
 public final class PapayaFoliagePlacer extends FoliagePlacer {
     private static final Direction[] DIRECTIONS = new Direction[] { Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST };
     public static final Codec<PapayaFoliagePlacer> CODEC = RecordCodecBuilder.create((instance) -> {
-        return func_242830_b(instance).apply(instance, PapayaFoliagePlacer::new);
+        return foliagePlacerParts(instance).apply(instance, PapayaFoliagePlacer::new);
     });
 
-    public PapayaFoliagePlacer(ConstantInt radius, ConstantInt offset) {
+    public PapayaFoliagePlacer(IntProvider radius, IntProvider offset) {
         super(radius, offset);
     }
 
@@ -32,16 +34,11 @@ public final class PapayaFoliagePlacer extends FoliagePlacer {
     }
 
     @Override
-    protected void createFoliage(LevelSimulatedReader pLevel, BiConsumer<BlockPos, BlockState> pBlockSetter, Random pRandom, TreeConfiguration pConfig, int pMaxFreeTreeHeight, FoliageAttachment pAttachment, int pFoliageHeight, int pFoliageRadius, int pOffset) {
-
-    }
-
-    @Override
-    protected void func_230372_a_(IWorldGenerationReader world, Random random, BaseTreeFeatureConfig config, int p_230372_4_, Foliage node, int p_230372_6_, int radius, Set<BlockPos> leaves, int p_230372_9_, MutableBoundingBox bounds) {
+    protected void createFoliage(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> acceptor, Random random, TreeConfiguration config, int pMaxFreeTreeHeight, FoliageAttachment node, int pFoliageHeight, int radius, int pOffset) {
         // Top + shape
-        this.func_236753_a_(world, random, config, node.func_236763_a_(), 1, leaves, 1, node.func_236765_c_(), bounds);
+        this.placeLeavesRow(world, acceptor, random, config, node.pos(), 1, 1, node.doubleTrunk());
 
-        BlockPos origin = node.func_236763_a_();
+        BlockPos origin = node.pos();
         // Center leaves
         for (int x = -1; x <= 1; x++) {
             for (int z = -1; z <= 1; z++) {
@@ -50,26 +47,24 @@ public final class PapayaFoliagePlacer extends FoliagePlacer {
                         continue;
                     }
 
-                    BlockPos local = origin.add(x, y, z);
-                    set(world, local, random, config, leaves, bounds);
+                    BlockPos local = origin.offset(x, y, z);
+                    set(world, local, random, config);
                 }
             }
         }
 
         // Arms
         for (Direction direction : DIRECTIONS) {
-            set(world, origin.offset(direction, 2), random, config, leaves, bounds);
-            set(world, origin.offset(direction, 3), random, config, leaves, bounds);
-            set(world, origin.offset(direction, 3).down(), random, config, leaves, bounds);
-            set(world, origin.offset(direction, 4).down(), random, config, leaves, bounds);
+            set(world, origin.relative(direction, 2), random, config);
+            set(world, origin.relative(direction, 3), random, config);
+            set(world, origin.relative(direction, 3).below(), random, config);
+            set(world, origin.relative(direction, 4).below(), random, config);
         }
     }
 
-    private static void set(IWorldGenerationReader world, BlockPos pos, Random random, BaseTreeFeatureConfig config, Set<BlockPos> leaves, MutableBoundingBox bounds) {
-        if (TreeFeature.isReplaceableAt(world, pos)) {
-            world.setBlockState(pos, config.leavesProvider.getBlockState(random, pos), 19);
-            bounds.expandTo(new MutableBoundingBox(pos, pos));
-            leaves.add(pos);
+    private static void set(LevelSimulatedReader world, BlockPos pos, Random random, TreeConfiguration config) {
+        if (TreeFeature.isAirOrLeaves(world, pos)) {
+            ((LevelSimulatedRW)world).setBlock(pos, config.foliageProvider.getState(random, pos), 19);
         }
     }
 

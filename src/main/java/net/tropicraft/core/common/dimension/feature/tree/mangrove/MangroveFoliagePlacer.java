@@ -4,25 +4,26 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.util.valueproviders.IntProvider;
+import net.minecraft.world.level.LevelSimulatedReader;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.LevelSimulatedRW;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
-import net.minecraft.util.UniformInt;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftFoliagePlacers;
 
 import java.util.Random;
 import java.util.Set;
-
-import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer.FoliageAttachment;
+import java.util.function.BiConsumer;
 
 public final class MangroveFoliagePlacer extends FoliagePlacer {
     public static final Codec<MangroveFoliagePlacer> CODEC = RecordCodecBuilder.create((instance) -> {
         return foliagePlacerParts(instance).apply(instance, MangroveFoliagePlacer::new);
     });
 
-    public MangroveFoliagePlacer(ConstantInt radius, ConstantInt offset) {
+    public MangroveFoliagePlacer(IntProvider radius, IntProvider offset) {
         super(radius, offset);
     }
 
@@ -32,10 +33,10 @@ public final class MangroveFoliagePlacer extends FoliagePlacer {
     }
 
     @Override
-    protected void createFoliage(LevelSimulatedRW world, Random random, TreeConfiguration config, int p_230372_4_, FoliageAttachment node, int p_230372_6_, int radius, Set<BlockPos> leaves, int p_230372_9_, BoundingBox bounds) {
-        this.placeLeavesRow(world, random, config, node.pos(), node.radiusOffset(), leaves, 1, node.doubleTrunk(), bounds);
-        this.placeLeavesRow(world, random, config, node.pos(), node.radiusOffset() + 1, leaves, 0, node.doubleTrunk(), bounds);
-        this.placeLeavesRow(world, random, config, node.pos(), node.radiusOffset(), leaves, -1, node.doubleTrunk(), bounds);
+    protected void createFoliage(LevelSimulatedReader level, BiConsumer<BlockPos, BlockState> acceptor, Random random, TreeConfiguration config, int p_230372_4_, FoliageAttachment node, int p_230372_6_, int radius, int offset) {
+        this.placeLeavesRow(level, acceptor, random, config, node.pos(), node.radiusOffset(), 1, node.doubleTrunk());
+        this.placeLeavesRow(level, acceptor, random, config, node.pos(), node.radiusOffset() + 1, 0, node.doubleTrunk());
+        this.placeLeavesRow(level, acceptor, random, config, node.pos(), node.radiusOffset(), -1, node.doubleTrunk());
     }
 
     @Override

@@ -18,6 +18,7 @@ import net.tropicraft.core.common.TropicraftTags;
 import javax.annotation.Nullable;
 import java.util.Random;
 
+@Deprecated
 public class MangroveTreeFeature extends Feature<TreeConfiguration> {
     private final TreeFeature backing;
 

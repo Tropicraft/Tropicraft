@@ -1,13 +1,15 @@
 package net.tropicraft.core.common.dimension.carver;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.valueproviders.ConstantFloat;
+import net.minecraft.util.valueproviders.TrapezoidFloat;
+import net.minecraft.util.valueproviders.UniformFloat;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
-import net.minecraft.world.level.levelgen.carver.CarverConfiguration;
-import net.minecraft.world.level.levelgen.carver.WorldCarver;
-import net.minecraft.world.level.levelgen.feature.configurations.ProbabilityFeatureConfiguration;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraft.world.level.levelgen.VerticalAnchor;
+import net.minecraft.world.level.levelgen.carver.*;
+import net.minecraft.world.level.levelgen.heightproviders.BiasedToBottomHeight;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.data.WorldgenDataConsumer;
@@ -21,10 +23,69 @@ public final class TropicraftConfiguredCarvers {
     public TropicraftConfiguredCarvers(WorldgenDataConsumer<? extends ConfiguredWorldCarver<?>> worldgen) {
         Register carvers = new Register(worldgen);
 
-        this.cave = carvers.register("cave", TropicraftCarvers.CAVE, new ProbabilityFeatureConfiguration(0.25F));
-        this.canyon = carvers.register("canyon", TropicraftCarvers.CANYON, new ProbabilityFeatureConfiguration(0.02F));
-        this.underwaterCave = carvers.register("underwater_cave", TropicraftCarvers.UNDERWATER_CAVE, new ProbabilityFeatureConfiguration(0.15F));
-        this.underwaterCanyon = carvers.register("underwater_canyon", TropicraftCarvers.UNDERWATER_CANYON, new ProbabilityFeatureConfiguration(0.02F));
+        this.cave = carvers.register("cave", TropicraftCarvers.CAVE,
+                new CaveCarverConfiguration(
+                        0.25F,
+                        BiasedToBottomHeight.of(VerticalAnchor.absolute(0),VerticalAnchor.absolute(240), 8),
+                        ConstantFloat.of(0.5F),
+                        VerticalAnchor.aboveBottom(10),
+                        false,
+                        CarverDebugSettings.of(false, Blocks.CRIMSON_BUTTON.defaultBlockState()),
+                        ConstantFloat.of(1.0F),
+                        ConstantFloat.of(1.0F),
+                        ConstantFloat.of(-0.7F)
+                )
+        );
+
+        this.canyon = carvers.register("canyon", TropicraftCarvers.CANYON,
+                new CanyonCarverConfiguration(
+                        0.02F,
+                        BiasedToBottomHeight.of(VerticalAnchor.absolute(20), VerticalAnchor.absolute(67), 8),
+                        ConstantFloat.of(3.0F),
+                        VerticalAnchor.aboveBottom(10),
+                        false,
+                        CarverDebugSettings.of(false, Blocks.WARPED_BUTTON.defaultBlockState()),
+                        UniformFloat.of(-0.125F, 0.125F),
+                        new CanyonCarverConfiguration.CanyonShapeConfiguration(
+                                UniformFloat.of(0.75F, 1.0F),
+                                TrapezoidFloat.of(0.0F, 6.0F, 2.0F),
+                                3,
+                                UniformFloat.of(0.75F, 1.0F), 1.0F, 0.0F
+                        )
+                )
+        );
+
+        this.underwaterCave = carvers.register("underwater_cave", TropicraftCarvers.UNDERWATER_CAVE,
+                new CaveCarverConfiguration(
+                        0.15F,
+                        BiasedToBottomHeight.of(VerticalAnchor.absolute(0),VerticalAnchor.absolute(240), 8),
+                        ConstantFloat.of(0.5F),
+                        VerticalAnchor.aboveBottom(10),
+                        false,
+                        CarverDebugSettings.of(false, Blocks.CRIMSON_BUTTON.defaultBlockState()),
+                        ConstantFloat.of(1.0F),
+                        ConstantFloat.of(1.0F),
+                        ConstantFloat.of(-0.7F)
+                )
+            );
+
+        this.underwaterCanyon = carvers.register("underwater_canyon", TropicraftCarvers.UNDERWATER_CANYON,
+                new CanyonCarverConfiguration(
+                        0.02F,
+                        BiasedToBottomHeight.of(VerticalAnchor.absolute(20), VerticalAnchor.absolute(67), 8),
+                        ConstantFloat.of(3.0F),
+                        VerticalAnchor.aboveBottom(10),
+                        false,
+                        CarverDebugSettings.of(false, Blocks.WARPED_BUTTON.defaultBlockState()),
+                        UniformFloat.of(-0.125F, 0.125F),
+                        new CanyonCarverConfiguration.CanyonShapeConfiguration(
+                                UniformFloat.of(0.75F, 1.0F),
+                                TrapezoidFloat.of(0.0F, 6.0F, 2.0F),
+                                3,
+                                UniformFloat.of(0.75F, 1.0F), 1.0F, 0.0F
+                        )
+                )
+        );
     }
 
     public void addLand(BiomeGenerationSettings.Builder generation) {

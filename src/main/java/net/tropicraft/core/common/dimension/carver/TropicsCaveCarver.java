@@ -13,7 +13,7 @@ import java.util.Random;
 public class TropicsCaveCarver extends CaveWorldCarver {
 
     public TropicsCaveCarver(Codec<CaveCarverConfiguration> codec) {
-        super(codec, 256);
+        super(codec);
         this.replaceableBlocks = ImmutableSet.<Block> builder().addAll(this.replaceableBlocks)
                 .add(TropicraftBlocks.CORAL_SAND.get())
                 .add(TropicraftBlocks.FOAMY_SAND.get())
@@ -25,11 +25,11 @@ public class TropicsCaveCarver extends CaveWorldCarver {
                 .build();
     }
 
-    @Override
-    protected int getCaveY(Random rand) {
-        if (rand.nextInt(5) == 0) {
-            return rand.nextInt(240 + 8); // Add some evenly distributed caves in, in addition to the ones biased towards lower Y
-        }
-        return rand.nextInt(rand.nextInt(240) + 8);
-    }
+//    @Override
+//    protected int getCaveY(Random rand) {
+//        if (rand.nextInt(5) == 0) {
+//            return rand.nextInt(240 + 8); // Add some evenly distributed caves in, in addition to the ones biased towards lower Y
+//        }
+//        return rand.nextInt(rand.nextInt(240) + 8);
+//    }
 }

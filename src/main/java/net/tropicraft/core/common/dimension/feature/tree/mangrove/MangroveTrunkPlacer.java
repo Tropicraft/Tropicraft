@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.BiConsumer;
 
 public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
     public static final Codec<MangroveTrunkPlacer> CODEC = RecordCodecBuilder.create(instance -> {
@@ -61,8 +62,9 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         return TropicraftTrunkPlacers.MANGROVE;
     }
 
+
     @Override
-    public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedRW world, Random random, int height, BlockPos origin, Set<BlockPos> logs, BoundingBox bounds, TreeConfiguration config) {
+    public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> acceptor, Random random, int height, BlockPos origin, TreeConfiguration config) {
         int rootLength = Mth.clamp(height - 5, MIN_LENGTH, MAX_LENGTH);
 
         boolean placeDirtOnOrigin = true;
@@ -84,27 +86,27 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
             this.growRoots(roots, random, rootLength);
         }
 
-        this.placeRoots(world, origin, rootLength, roots);
+        this.placeRoots((LevelSimulatedRW) world, origin, rootLength, roots);
 
         if (placeDirtOnOrigin) {
             // Set ground to dirt
-            setDirtAt(world, origin.below());
+            setDirtAt(world, acceptor, random, origin.below(), config);
         }
 
         for (int i = 0; i < height; ++i) {
-            placeLog(world, random, origin.above(i), logs, bounds, config);
+            placeLog(world, acceptor, random, origin.above(i), config);
         }
 
         List<FoliagePlacer.FoliageAttachment> leafNodes = new ArrayList<>();
         leafNodes.add(new FoliagePlacer.FoliageAttachment(origin.above(height), 1, false));
 
-        this.growBranches(world, random, height, origin, logs, bounds, config, leafNodes);
+        this.growBranches((LevelSimulatedRW) world, acceptor, random, height, origin, config, leafNodes);
 
         return leafNodes;
     }
 
-    private int getWaterDepthAbove(IWorldGenerationReader world, BlockPos origin, int maxDepth) {
-        BlockPos.Mutable pos = origin.toMutable();
+    private int getWaterDepthAbove(LevelSimulatedReader world, BlockPos origin, int maxDepth) {
+        BlockPos.MutableBlockPos pos = origin.mutable();
 
         int depth = 0;
         while (depth <= maxDepth) {
@@ -118,7 +120,7 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         return depth;
     }
 
-    private void growBranches(LevelSimulatedRW world, Random random, int height, BlockPos origin, Set<BlockPos> logs, BoundingBox bounds, TreeConfiguration config, List<FoliagePlacer.Foliage> leafNodes) {
+    private void growBranches(LevelSimulatedRW world, BiConsumer<BlockPos, BlockState> acceptor, Random random, int height, BlockPos origin, TreeConfiguration config, List<FoliagePlacer.FoliageAttachment> leafNodes) {
         int count = 2 + random.nextInt(3);
 
         Direction lastDirection = null;
@@ -139,7 +141,7 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
 
             for (int j = 1; j <= length + 1; j++) {
                 if (j == length) {
-                    placeLog(world, random, base.relative(direction, j).above(), logs, bounds, config);
+                    placeLog(world, acceptor, random, base.relative(direction, j).above(), config);
                     leafNodes.add(new FoliagePlacer.FoliageAttachment(base.relative(direction, j).above(), random.nextInt(2), false));
                     break;
                 }
@@ -149,11 +151,11 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
                     hasBranch = true;
                     Direction branchBranchDir = random.nextBoolean() ? direction.getClockWise() : direction.getCounterClockWise();
 
-                    placeLog(world, random, base.relative(direction, j).relative(branchBranchDir), logs, bounds, config);
+                    placeLog(world, acceptor, random, base.relative(direction, j).relative(branchBranchDir), config);
                     leafNodes.add(new FoliagePlacer.FoliageAttachment(base.relative(direction, j).relative(branchBranchDir), 0, false));
                 }
 
-                placeLog(world, random, base.relative(direction, j), logs, bounds, config);
+                placeLog(world, acceptor, random, base.relative(direction, j), config);
             }
         }
     }
@@ -238,11 +240,11 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         return setRootsAt(world, pos, this.rootsBlock);
     }
 
-    public static boolean setRootsAt(LevelSimulatedReader world, BlockPos pos, Block rootsBlock) {
+    public static boolean setRootsAt(LevelSimulatedRW world, BlockPos pos, Block rootsBlock) {
         if (isReplaceableAt(world, pos)) {
             BlockState state = rootsBlock.defaultBlockState()
                     .setValue(MangroveRootsBlock.WATERLOGGED, isWaterAt(world, pos));
-            TreeFeature.setBlockKnownShape(world, pos, state);
+            world.setBlock(pos, state, 19);
             return true;
         } else {
             return false;

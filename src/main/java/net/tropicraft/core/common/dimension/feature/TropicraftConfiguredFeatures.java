@@ -10,17 +10,16 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.blockplacers.DoublePlantPlacer;
 import net.minecraft.world.level.levelgen.feature.blockplacers.SimpleBlockPlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
-import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
-import net.minecraft.world.gen.placement.*;
-import net.minecraft.world.gen.trunkplacer.StraightTrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraft.world.level.levelgen.heightproviders.HeightProvider;
+import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.TropicraftTags;
@@ -40,7 +39,6 @@ import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 import net.minecraft.data.worldgen.Features;
-import net.minecraft.util.UniformInt;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.DiskConfiguration;
@@ -59,8 +57,6 @@ import net.minecraft.world.level.levelgen.placement.CarvingMaskDecoratorConfigur
 import net.minecraft.world.level.levelgen.placement.FeatureDecorator;
 import net.minecraft.world.level.levelgen.placement.FrequencyWithExtraChanceDecoratorConfiguration;
 import net.minecraft.world.level.levelgen.placement.NoiseCountFactorDecoratorConfiguration;
-
-import static net.minecraft.data.worldgen.Features.weightedBlockStateBuilder;
 
 public final class TropicraftConfiguredFeatures {
     public final ConfiguredFeature<?, ?> grapefruitTree;
@@ -390,7 +386,7 @@ public final class TropicraftConfiguredFeatures {
             return feature.configured(config).decorated(FeatureDecorator.CARVING_MASK.configured(new CarvingMaskDecoratorConfiguration(GenerationStep.Carving.LIQUID)));
         });
         this.undergroundSeaPickles = features.noConfig("underground_sea_pickles", TropicraftFeatures.UNDERGROUND_SEA_PICKLE, feature -> {
-            return feature.decorated(FeatureDecorator.CARVING_MASK.configured(new CarvingMaskDecoratorConfiguration(GenerationStep.Carving.LIQUID, 0.05F)));
+            return feature.decorated(FeatureDecorator.CARVING_MASK.configured(new CarvingMaskDecoratorConfiguration(GenerationStep.Carving.LIQUID)));
         });
 
         this.mangroveReeds = features.noConfig("mangrove_reeds", TropicraftFeatures.REEDS, feature -> {
@@ -399,29 +395,33 @@ public final class TropicraftConfiguredFeatures {
 
         this.azurite = features.register("azurite", Feature.ORE, f -> {
             return f.configured(new OreConfiguration(OreConfiguration.Predicates.NATURAL_STONE, TropicraftBlocks.AZURITE_ORE.get().defaultBlockState(), 8))
-                    .decorated(FeatureDecorator.RANGE.configured(new RangeDecoratorConfiguration(100, 0, 128)))
+                    .decorated(FeatureDecorator.RANGE.configured(new RangeDecoratorConfiguration(range(0, 128))))
                     .squared().count(3);
         });
         this.eudialyte = features.register("eudialyte", Feature.ORE, f -> {
             return f.configured(new OreConfiguration(OreConfiguration.Predicates.NATURAL_STONE, TropicraftBlocks.EUDIALYTE_ORE.get().defaultBlockState(), 12))
-                    .decorated(FeatureDecorator.RANGE.configured(new RangeDecoratorConfiguration(100, 0, 128)))
+                    .decorated(FeatureDecorator.RANGE.configured(new RangeDecoratorConfiguration(range(0, 128))))
                     .squared().count(10);
         });
         this.zircon = features.register("zircon", Feature.ORE, f -> {
             return f.configured(new OreConfiguration(OreConfiguration.Predicates.NATURAL_STONE, TropicraftBlocks.ZIRCON_ORE.get().defaultBlockState(), 14))
-                    .decorated(FeatureDecorator.RANGE.configured(new RangeDecoratorConfiguration(100, 0, 128)))
+                    .decorated(FeatureDecorator.RANGE.configured(new RangeDecoratorConfiguration(range(0, 128))))
                     .squared().count(15);
         });
         this.manganese = features.register("manganese", Feature.ORE, f -> {
             return f.configured(new OreConfiguration(OreConfiguration.Predicates.NATURAL_STONE, TropicraftBlocks.MANGANESE_ORE.get().defaultBlockState(), 10))
-                    .decorated(FeatureDecorator.RANGE.configured(new RangeDecoratorConfiguration(32, 0, 32)))
+                    .decorated(FeatureDecorator.RANGE.configured(new RangeDecoratorConfiguration(range(0, 32))))
                     .squared().count(8);
         });
         this.shaka = features.register("shaka", Feature.ORE, f -> {
             return f.configured(new OreConfiguration(OreConfiguration.Predicates.NATURAL_STONE, TropicraftBlocks.SHAKA_ORE.get().defaultBlockState(), 8))
-                    .decorated(FeatureDecorator.RANGE.configured(new RangeDecoratorConfiguration(0, 0, 32)))
+                    .decorated(FeatureDecorator.RANGE.configured(new RangeDecoratorConfiguration(range(0, 32))))
                     .squared().count(6);
         });
+    }
+
+    private static HeightProvider range(int min, int max) {
+        return UniformHeight.of(VerticalAnchor.absolute(min), VerticalAnchor.absolute(max));
     }
 
     public void addFruitTrees(BiomeGenerationSettings.Builder generation) {

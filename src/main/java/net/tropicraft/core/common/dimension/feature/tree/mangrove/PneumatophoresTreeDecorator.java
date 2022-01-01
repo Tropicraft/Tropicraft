@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
+import net.minecraft.world.level.LevelSimulatedRW;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -87,7 +88,7 @@ public class PneumatophoresTreeDecorator extends TreeDecorator {
             int y = topY;
             while (y >= minY) {
                 mutablePos.setY(y--);
-                MangroveTrunkPlacer.setRootsAt(pLevel, mutablePos, this.rootsBlock);
+                MangroveTrunkPlacer.setRootsAt((LevelSimulatedRW) pLevel, mutablePos, this.rootsBlock);
             }
         }
     }

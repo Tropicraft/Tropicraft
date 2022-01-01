@@ -3,10 +3,12 @@ package net.tropicraft.core.common.dimension.feature.tree.mangrove;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.LevelSimulatedRW;
@@ -20,6 +22,7 @@ import net.tropicraft.core.common.dimension.feature.tree.TropicraftTrunkPlacers;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.BiConsumer;
 
 public class SmallMangroveTrunkPlacer extends TrunkPlacer {
     public static final Codec<SmallMangroveTrunkPlacer> CODEC = RecordCodecBuilder.create(instance -> {
@@ -41,14 +44,14 @@ public class SmallMangroveTrunkPlacer extends TrunkPlacer {
     }
 
     @Override
-    public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedRW world, Random random, int height, BlockPos origin, Set<BlockPos> logs, BoundingBox bounds, TreeConfiguration config) {
-        setDirtAt(world, origin.below());
+    public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> acceptor, Random random, int height, BlockPos origin, TreeConfiguration config) {
+        setDirtAt(world, acceptor, random, origin.below(), config);
 
         for (int i = 0; i < height; ++i) {
-            placeLog(world, random, origin.above(i), logs, bounds, config);
+            placeLog(world, acceptor, random, origin.above(i),config);
         }
 
-        generateRoots(world, random, origin, 0);
+        generateRoots((LevelSimulatedRW) world, random, origin, 0);
 
         return ImmutableList.of(new FoliagePlacer.FoliageAttachment(origin.above(height - 1), 1, false));
     }
@@ -59,7 +62,7 @@ public class SmallMangroveTrunkPlacer extends TrunkPlacer {
 
             if (world.isStateAtPosition(offset, BlockBehaviour.BlockStateBase::isAir)) {
                 if (world.isStateAtPosition(offset.below(), state -> state.getMaterial().isSolidBlocking())) {
-                    TreeFeature.setBlockKnownShape(world, offset, this.rootsBlock.defaultBlockState());
+                    world.setBlock(offset, this.rootsBlock.defaultBlockState(), 19);
 
                     if (depth < 2 && random.nextInt(depth + 2) == 0) {
                         generateRoots(world, random, offset, depth + 1);
