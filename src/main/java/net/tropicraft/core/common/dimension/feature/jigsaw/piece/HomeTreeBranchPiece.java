@@ -3,37 +3,27 @@ package net.tropicraft.core.common.dimension.feature.jigsaw.piece;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.JigsawBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.SharedSeedRandom;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.util.math.vector.Vector3i;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.jigsaw.IJigsawDeserializer;
-import net.minecraft.world.gen.feature.jigsaw.JigsawOrientation;
-import net.minecraft.world.gen.feature.template.Template;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.JigsawBlock;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.JigsawBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.feature.structures.StructurePoolElement;
 import net.minecraft.world.level.levelgen.feature.structures.StructurePoolElementType;
 import net.minecraft.world.level.levelgen.feature.structures.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import net.minecraftforge.common.util.Constants.BlockFlags;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
@@ -82,6 +72,12 @@ public final class HomeTreeBranchPiece extends StructurePoolElement implements P
     }
 
     @Override
+    public Vec3i getSize(StructureManager pStructureManager, Rotation pRotation) {
+        // TODO 1.17 - i have no idea what to do here
+        return Vec3i.ZERO;
+    }
+
+    @Override
     public List<StructureTemplate.StructureBlockInfo> getShuffledJigsawBlocks(StructureManager templates, BlockPos pos, Rotation rotation, Random random) {
         FrontAndTop orientation = FrontAndTop.fromFrontAndTop(Direction.DOWN, Direction.SOUTH);
         BlockState state = Blocks.JIGSAW.defaultBlockState().setValue(JigsawBlock.ORIENTATION, orientation);
@@ -103,8 +99,8 @@ public final class HomeTreeBranchPiece extends StructurePoolElement implements P
     }
 
     @Override
-    public boolean func_230378_a_(StructureManager templates, ISeedReader world, StructureManager structures, ChunkGenerator generator, BlockPos origin, BlockPos p_230378_6_, Rotation rotation, MutableBoundingBox chunkBounds, Random random, boolean p_230378_10_) {
-        SharedSeedRandom rand = new SharedSeedRandom();
+    public boolean place(StructureManager templates, WorldGenLevel world, StructureFeatureManager structures, ChunkGenerator generator, BlockPos origin, BlockPos p_230378_6_, Rotation rotation, BoundingBox chunkBounds, Random random, boolean p_230378_10_) {
+        WorldgenRandom rand = new WorldgenRandom();
         rand.setDecorationSeed(world.getSeed(), origin.getX(), origin.getZ());
 
         final int branchLength = rand.nextInt(10) + 15;
@@ -118,8 +114,8 @@ public final class HomeTreeBranchPiece extends StructurePoolElement implements P
         int branchZ2 = (int) ((branchLength * Math.cos(angle)) + branchZ1);
         int branchY2 = rand.nextInt(4) + 4;
 
-        BlockState wood = TropicraftBlocks.MAHOGANY_LOG.get().getDefaultState();
-        final BlockState leaf = TropicraftBlocks.MAHOGANY_LEAVES.get().getDefaultState();
+        BlockState wood = TropicraftBlocks.MAHOGANY_LOG.get().defaultBlockState();
+        final BlockState leaf = TropicraftBlocks.MAHOGANY_LEAVES.get().defaultBlockState();
         final int leafCircleSizeConstant = 3;
         final int y2 = origin.getY() + branchY2;
 
@@ -138,16 +134,16 @@ public final class HomeTreeBranchPiece extends StructurePoolElement implements P
         return true;
     }
 
-    public void genLeafCircle(final Level world, final int x, final int y, final int z, int outerRadius, int innerRadius, BlockState state, BoundingBox chunkBounds) {
+    public void genLeafCircle(final WorldGenLevel world, final int x, final int y, final int z, int outerRadius, int innerRadius, BlockState state, BoundingBox chunkBounds) {
         int outerRadiusSquared = outerRadius * outerRadius;
         int innerRadiusSquared = innerRadius * innerRadius;
 
         BlockPos origin = new BlockPos(x, y, z);
         BoundingBox bounds = intersection(
                 chunkBounds,
-                new BoundingBox(
-                        origin.add(-outerRadius, 0, -outerRadius),
-                        origin.add(outerRadius, 0, outerRadius)
+                BoundingBox.fromCorners(
+                        origin.offset(-outerRadius, 0, -outerRadius),
+                        origin.offset(outerRadius, 0, outerRadius)
                 )
         );
 
@@ -160,14 +156,14 @@ public final class HomeTreeBranchPiece extends StructurePoolElement implements P
             double distanceSquared = pos.distSqr(origin);
             if (distanceSquared <= outerRadiusSquared && distanceSquared >= innerRadiusSquared) {
                 if (world.isEmptyBlock(pos) || world.getBlockState(pos).getBlock() == state.getBlock()) {
-                    world.setBlockAndUpdate(pos, state);
+                    world.setBlock(pos, state, Block.UPDATE_ALL);
                 }
             }
         }
     }
 
-    private void placeBlockLine(final Level world, BlockPos from, BlockPos to, BlockState state, BoundingBox chunkBounds) {
-        BoundingBox lineBounds = new BoundingBox(from, to);
+    private void placeBlockLine(final WorldGenLevel world, BlockPos from, BlockPos to, BlockState state, BoundingBox chunkBounds) {
+        BoundingBox lineBounds = BoundingBox.fromCorners(from, to);
         if (!chunkBounds.intersects(lineBounds)) {
             return;
         }
@@ -190,8 +186,8 @@ public final class HomeTreeBranchPiece extends StructurePoolElement implements P
                     from.getY() + length * stepY + 0.5,
                     from.getZ() + length * stepZ + 0.5
             );
-            if (chunkBounds.isVecInside(pos)) {
-                world.setBlockAndUpdate(pos, state);
+            if (chunkBounds.isInside(pos)) {
+                world.setBlock(pos, state, Block.UPDATE_ALL);
             }
         }
     }
