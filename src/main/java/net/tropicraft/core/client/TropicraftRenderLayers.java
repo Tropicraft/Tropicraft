@@ -1,17 +1,49 @@
 package net.tropicraft.core.client;
 
 import net.minecraft.client.model.CowModel;
-import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.tropicraft.Constants;
-import net.tropicraft.core.client.entity.model.*;
-import net.tropicraft.core.client.entity.render.HummingbirdRenderer;
+import net.tropicraft.core.client.entity.model.AshenModel;
+import net.tropicraft.core.client.entity.model.BambooMugModel;
+import net.tropicraft.core.client.entity.model.BasiliskLizardModel;
+import net.tropicraft.core.client.entity.model.BeachFloatModel;
+import net.tropicraft.core.client.entity.model.ChairModel;
+import net.tropicraft.core.client.entity.model.CuberaModel;
+import net.tropicraft.core.client.entity.model.EIHMachineModel;
+import net.tropicraft.core.client.entity.model.EIHModel;
+import net.tropicraft.core.client.entity.model.EagleRayModel;
+import net.tropicraft.core.client.entity.model.EggModel;
+import net.tropicraft.core.client.entity.model.FailgullModel;
+import net.tropicraft.core.client.entity.model.FiddlerCrabModel;
+import net.tropicraft.core.client.entity.model.HummingbirdModel;
+import net.tropicraft.core.client.entity.model.IguanaModel;
+import net.tropicraft.core.client.entity.model.JaguarModel;
+import net.tropicraft.core.client.entity.model.KoaModel;
+import net.tropicraft.core.client.entity.model.ManOWarModel;
+import net.tropicraft.core.client.entity.model.MarlinModel;
+import net.tropicraft.core.client.entity.model.PiranhaModel;
+import net.tropicraft.core.client.entity.model.PlayerHeadpieceModel;
+import net.tropicraft.core.client.entity.model.SardineModel;
+import net.tropicraft.core.client.entity.model.SeaTurtleModel;
+import net.tropicraft.core.client.entity.model.SeaUrchinModel;
+import net.tropicraft.core.client.entity.model.SeahorseModel;
+import net.tropicraft.core.client.entity.model.SharkModel;
+import net.tropicraft.core.client.entity.model.SpiderMonkeyModel;
+import net.tropicraft.core.client.entity.model.TapirModel;
+import net.tropicraft.core.client.entity.model.TreeFrogModel;
+import net.tropicraft.core.client.entity.model.TropiBeeModel;
+import net.tropicraft.core.client.entity.model.TropiCreeperModel;
+import net.tropicraft.core.client.entity.model.TropiSkellyModel;
+import net.tropicraft.core.client.entity.model.TropicraftDolphinModel;
+import net.tropicraft.core.client.entity.model.TropicraftTropicalFishModel;
+import net.tropicraft.core.client.entity.model.UmbrellaModel;
+import net.tropicraft.core.client.entity.model.VMonkeyModel;
+import net.tropicraft.core.client.entity.model.WhiteLippedPeccaryModel;
 import net.tropicraft.core.client.scuba.ModelScubaGear;
 import net.tropicraft.core.common.item.AshenMaskItem;
 import net.tropicraft.core.common.item.TropicraftItems;
@@ -147,11 +179,12 @@ public class TropicraftRenderLayers {
         return modelLayer;
     }
 
-    public static void setupScubaGearModels(){
-        ModelScubaGear.HEAD = ModelScubaGear.createModel(HEAD_SCUBA_LAYER, null, EquipmentSlot.HEAD);
-        ModelScubaGear.CHEST = ModelScubaGear.createModel(CHEST_SCUBA_LAYER, null, EquipmentSlot.CHEST);
-        ModelScubaGear.FEET = ModelScubaGear.createModel(FEET_SCUBA_LAYER, null, EquipmentSlot.FEET);
-
-        ModelScubaGear.tankModel = ModelScubaGear.createModel(TANK_SCUBA_LAYER, null, EquipmentSlot.CHEST);
+    public static void setupScubaGearModels() {
+        // TODO 1.17
+//        ModelScubaGear.HEAD = ModelScubaGear.createModel(HEAD_SCUBA_LAYER, null, EquipmentSlot.HEAD);
+//        ModelScubaGear.CHEST = ModelScubaGear.createModel(CHEST_SCUBA_LAYER, null, EquipmentSlot.CHEST);
+//        ModelScubaGear.FEET = ModelScubaGear.createModel(FEET_SCUBA_LAYER, null, EquipmentSlot.FEET);
+//
+//        ModelScubaGear.tankModel = ModelScubaGear.createModel(TANK_SCUBA_LAYER, null, EquipmentSlot.CHEST);
     }
 }

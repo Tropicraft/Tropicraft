@@ -4,8 +4,7 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.gen.feature.jigsaw.JigsawPiece;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.biome.Biome;
@@ -60,28 +59,29 @@ public class HomeTreeStructure extends StructureFeature<JigsawConfiguration> {
     private static final StructurePieceType TYPE = StructurePieceType.setPieceId(Piece::new, Constants.MODID + ":home_tree");
 
     public static class Start extends StructureStart<JigsawConfiguration> {
-        public Start(StructureFeature<JigsawConfiguration> structure, int chunkX, int chunkZ, BoundingBox boundingBox, int references, long seed) {
-            super(structure, chunkX, chunkZ, boundingBox, references, seed);
+        public Start(StructureFeature<JigsawConfiguration> structure, ChunkPos pos, int references, long seed) {
+            super(structure, pos, references, seed);
         }
 
         @Override
         public void generatePieces(RegistryAccess registries, ChunkGenerator generator, StructureManager templates, ChunkPos chunkPos, Biome biome, JigsawConfiguration config, LevelHeightAccessor pLevel) {
             BlockPos pos = chunkPos.getWorldPosition();
             JigsawPlacement.addPieces(registries, config, Piece::new, generator, templates, pos, this.pieces, this.random, true, true);
-            this.calculateBoundingBox();
+            // TODO 1.17 this.calculateBoundingBox();
         }
 
-        @Override
-        protected void calculateBoundingBox() {
-            super.calculateBoundingBox();
-            int margin = 24; // Double vanilla's margin
-            this.boundingBox.x0 -= margin;
-            this.boundingBox.y0 -= margin;
-            this.boundingBox.z0 -= margin;
-            this.boundingBox.x1 += margin;
-            this.boundingBox.y1 += margin;
-            this.boundingBox.z1 += margin;
-        }
+        // TODO 1.17 what happened to this?
+//        @Override
+//        protected void calculateBoundingBox() {
+//            super.calculateBoundingBox();
+//            int margin = 24; // Double vanilla's margin
+//            this.boundingBox.x0 -= margin;
+//            this.boundingBox.y0 -= margin;
+//            this.boundingBox.z0 -= margin;
+//            this.boundingBox.x1 += margin;
+//            this.boundingBox.y1 += margin;
+//            this.boundingBox.z1 += margin;
+//        }
     }
 
     public static class Piece extends PoolElementStructurePiece {
@@ -90,9 +90,10 @@ public class HomeTreeStructure extends StructureFeature<JigsawConfiguration> {
             this.boundingBox = this.fixGenerationBoundingBox(templates);
         }
 
-        public Piece(StructureManager templates, CompoundTag data) {
-            super(templates, data);
-            this.boundingBox = this.fixGenerationBoundingBox(templates);
+        public Piece(ServerLevel level, CompoundTag data) {
+            super(level, data);
+            //TODO how do we get this called again here?
+            // this.boundingBox = this.fixGenerationBoundingBox(templates);
         }
 
         private BoundingBox fixGenerationBoundingBox(StructureManager templates) {
@@ -108,14 +109,7 @@ public class HomeTreeStructure extends StructureFeature<JigsawConfiguration> {
         public BoundingBox getBoundingBox() {
             if (this.element instanceof FeaturePoolElement) {
                 BoundingBox ret = super.getBoundingBox();
-                ret = new BoundingBox(ret);
-                ret.x0 -= 32;
-                ret.y0 -= 32;
-                ret.z0 -= 32;
-                ret.x1 += 32;
-                ret.y1 += 32;
-                ret.z1 += 32;
-                return ret;
+                return ret.inflate(32);
             }
             return super.getBoundingBox();
         }
