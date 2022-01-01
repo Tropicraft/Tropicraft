@@ -4,8 +4,10 @@ import net.minecraft.client.model.CowModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.core.client.entity.model.AshenModel;
@@ -52,7 +54,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.function.Supplier;
 
-
+@Mod.EventBusSubscriber(modid = Constants.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class TropicraftRenderLayers {
     public static ModelLayerLocation KOA_HUNTER_LAYER;
     public static ModelLayerLocation TROPI_CREEPER_LAYER;
@@ -90,8 +92,8 @@ public class TropicraftRenderLayers {
     public static ModelLayerLocation BAMBOO_CHEST;
     public static ModelLayerLocation BAMBOO_DOUBLE_CHEST_LEFT;
     public static ModelLayerLocation BAMBOO_DOUBLE_CHEST_RIGHT;
-    public static ModelLayerLocation EIHMACHINE_LAYER;
-    public static ModelLayerLocation AIRCOMPRESSOR_LAYER;
+    public static ModelLayerLocation EIHMACHINE_LAYER = new ModelLayerLocation(new ResourceLocation(Constants.MODID, "drink_mixer"), "main");;
+    public static ModelLayerLocation AIRCOMPRESSOR_LAYER = new ModelLayerLocation(new ResourceLocation(Constants.MODID, "air_compressor"), "main");;
     public static ModelLayerLocation BASILISK_LIZARD_LAYER;
     public static ModelLayerLocation CUBERA_LAYER;
     public static ModelLayerLocation FIDDLER_CRAB_LAYER;
@@ -136,7 +138,7 @@ public class TropicraftRenderLayers {
         TROPI_BEE_LAYER = registerMain("tropi_bee", TropiBeeModel::createBodyLayer, event);
         COWKTAIL_LAYER = registerMain("cowktail", CowModel::createBodyLayer, event);
         MAN_O_WAR_OUTER_LAYER = registerMain("man_o_war", ManOWarModel::createOuterModel, event);
-        MAN_O_WAR_OUTER_LAYER = registerMain("man_o_war_gel", ManOWarModel::createGelLayerModel, event);
+        MAN_O_WAR_GEL_LAYER = registerMain("man_o_war_gel", ManOWarModel::createGelLayerModel, event);
 
         BAMBOO_MUG = registerMain("bamboo_mug", BambooMugModel::create, event);
 

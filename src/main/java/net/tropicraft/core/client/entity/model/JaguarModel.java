@@ -1,7 +1,7 @@
 package net.tropicraft.core.client.entity.model;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.google.common.collect.ImmutableList;
+import net.minecraft.client.model.AgeableListModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -11,7 +11,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.tropicraft.core.common.entity.neutral.JaguarEntity;
 
-public class JaguarModel<T extends JaguarEntity> extends TropicraftAgeableModel<T> {
+public class JaguarModel<T extends JaguarEntity> extends AgeableListModel<T> {
     private final ModelPart body_base;
     private final ModelPart tail_base;
     private final ModelPart tail_tip;
@@ -29,14 +29,14 @@ public class JaguarModel<T extends JaguarEntity> extends TropicraftAgeableModel<
     private final ModelPart leg_back_right;
 
     public JaguarModel(ModelPart model) {
-        this.body_base = model;
+        this.body_base = model.getChild("body");
         this.tail_base = model.getChild("tail_base");
         this.tail_tip = this.tail_base.getChild("tail_tip");
         this.tail_tip_r1 = this.tail_tip.getChild("tail_tip_r1");
         this.leg_back_left = model.getChild("leg_back_left");
         this.torso_main = model.getChild("torso_main");
         this.leg_front_left = this.torso_main.getChild("leg_front_left");
-        this.head_base = model;
+        this.head_base = model.getChild("head");
         this.ear_left = model.getChild("ear_left");
         this.ear_left_r1 = this.ear_left.getChild("ear_left_r1");
         this.head_snout = model.getChild("head_snout");
@@ -50,7 +50,7 @@ public class JaguarModel<T extends JaguarEntity> extends TropicraftAgeableModel<
         MeshDefinition meshDefinition = new MeshDefinition();
         PartDefinition partDefinition = meshDefinition.getRoot();
 
-        partDefinition.addOrReplaceChild("body_base", CubeListBuilder.create()
+        partDefinition.addOrReplaceChild("body", CubeListBuilder.create()
                         .texOffs(37, 0).addBox(-3.5f, -1.0f, -4.0f, 7.0f, 8.0f, 10.0f),
                 PartPose.offsetAndRotation(0.0f, 9.0f, 4.0f, 0.0f, 0.0f, 0.0f));
 
@@ -77,22 +77,22 @@ public class JaguarModel<T extends JaguarEntity> extends TropicraftAgeableModel<
                         .texOffs(15, 35).addBox(-2.0f, -2.0f, -1.0f, 3.0f, 15.0f, 4.0f),
                 PartPose.offsetAndRotation(4.0f, 2.0f, -8.0f, 0.0f, 0.0f, 0.0f));
 
-        PartDefinition partDefinition6 = partDefinition.addOrReplaceChild("head_base", CubeListBuilder.create()
+        PartDefinition partDefinition6 = partDefinition.addOrReplaceChild("head", CubeListBuilder.create()
                         .texOffs(0, 20).addBox(-3.5f, -2.0f, -7.0f, 7.0f, 7.0f, 7.0f),
                 PartPose.offsetAndRotation(0.0f, 9.0f, -10.0f, 0.0436f, 0.0f, 0.0f));
 
-        PartDefinition partDefinition7 = partDefinition6.addOrReplaceChild("ear_left", CubeListBuilder.create(),
+        PartDefinition partDefinition7 = partDefinition.addOrReplaceChild("ear_left", CubeListBuilder.create(),
                 PartPose.offsetAndRotation(2.0f, 7.0f, -3.0f, 0.0f, -0.5672f, 0.3927f));
 
         partDefinition7.addOrReplaceChild("ear_left_r1", CubeListBuilder.create()
                         .texOffs(34, 55).addBox(0.0f, -2.0f, 0.0f, 3.0f, 3.0f, 1.0f),
                 PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f));
 
-        partDefinition6.addOrReplaceChild("head_snout", CubeListBuilder.create()
+        partDefinition.addOrReplaceChild("head_snout", CubeListBuilder.create()
                         .texOffs(15, 55).addBox(-2.5f, 0.0f, -4.0f, 5.0f, 6.0f, 4.0f),
                 PartPose.offsetAndRotation(0.0f, 8.0f, -7.0f, 0.2618f, 0.0f, 0.0f));
 
-        PartDefinition partDefinition10 = partDefinition6.addOrReplaceChild("ear_right", CubeListBuilder.create(),
+        PartDefinition partDefinition10 = partDefinition.addOrReplaceChild("ear_right", CubeListBuilder.create(),
                 PartPose.offsetAndRotation(-2.0f, 7.0f, -3.0f, 0.0f, 0.5672f, -0.3927f));
 
         partDefinition10.addOrReplaceChild("ear_right_r1", CubeListBuilder.create()
@@ -122,19 +122,30 @@ public class JaguarModel<T extends JaguarEntity> extends TropicraftAgeableModel<
         }
     }
 
+//    @Override
+//    protected ModelPart getHead() {
+//        return this.head_base;
+//    }
+//
+//    @Override
+//    protected ModelPart getBody() {
+//        return this.body_base;
+//    }
+
+//    @Override
+//    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+//        body_base.render(poseStack, buffer, packedLight, packedOverlay);
+//        head_base.render(poseStack, buffer, packedLight, packedOverlay);
+//    }
+
     @Override
-    protected ModelPart getHead() {
-        return this.head_base;
+    protected Iterable<ModelPart> headParts() {
+        return ImmutableList.of(head_base);
     }
 
     @Override
-    protected ModelPart getBody() {
-        return this.body_base;
-    }
-
-    @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        body_base.render(poseStack, buffer, packedLight, packedOverlay);
-        head_base.render(poseStack, buffer, packedLight, packedOverlay);
+    protected Iterable<ModelPart> bodyParts() {
+        return ImmutableList.of(body_base, tail_base, tail_tip, tail_tip_r1, leg_back_left, torso_main, leg_front_left,
+                ear_left, ear_left_r1, head_snout, ear_right, ear_right_r1, leg_front_right, leg_back_right);
     }
 }

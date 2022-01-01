@@ -3,6 +3,7 @@ package net.tropicraft.core.client.tileentity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -21,7 +22,7 @@ public class AirCompressorRenderer extends MachineRenderer<AirCompressorBlockEnt
     //private final ModelScubaGear tankModel = new ModelScubaGear(0, EquipmentSlot.CHEST); // Can't reuse the main one with a different scale
 
     public AirCompressorRenderer(final BlockEntityRendererProvider.Context context) {
-        super(context, TropicraftBlocks.AIR_COMPRESSOR.get(), new EIHMachineModel<>(context.bakeLayer(TropicraftRenderLayers.EIHMACHINE_LAYER), RenderType::entitySolid));
+        super(context, TropicraftBlocks.AIR_COMPRESSOR.get(), new EIHMachineModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(TropicraftRenderLayers.AIRCOMPRESSOR_LAYER)));
     }
 
     @Override
