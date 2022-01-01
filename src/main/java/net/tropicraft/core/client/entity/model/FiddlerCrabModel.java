@@ -4,11 +4,14 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.newbiome.layer.Layer;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.tropicraft.core.common.entity.passive.FiddlerCrabEntity;
 
-public class FiddlerCrabModel<T extends Entity> extends EntityModel<T> {
+public class FiddlerCrabModel<T extends FiddlerCrabEntity> extends EntityModel<T> {
     private final ModelPart body_base;
     private final ModelPart eyestalk_right;
     private final ModelPart eyestalk_left;
@@ -31,118 +34,117 @@ public class FiddlerCrabModel<T extends Entity> extends EntityModel<T> {
     private final ModelPart leg_right_baa;
     private final ModelPart leg_right_bab;
 
-    public FiddlerCrabModel(final ModelPart root) {
-        texWidth = 32;
-        texHeight = 32;
-
-        body_base = new ModelPart(this);
-        body_base.setPos(0.0F, 23.0F, 0.0F);
-        body_base.texOffs(0, 0).addBox(-2.0F, -2.0F, -2.0F, 4.0F, 2.0F, 3.0F, 0.0F, false);
-
-        eyestalk_right = new ModelPart(this);
-        eyestalk_right.setPos(-1.5F, -1.0F, -2.0F);
-        body_base.addChild(eyestalk_right);
-        eyestalk_right.texOffs(0, 21).addBox(0.0F, -2.0F, 0.0F, 1.0F, 2.0F, 0.0F, 0.0F, false);
-
-        eyestalk_left = new ModelPart(this);
-        eyestalk_left.setPos(1.5F, -1.0F, -2.0F);
-        body_base.addChild(eyestalk_left);
-        eyestalk_left.texOffs(3, 21).addBox(-1.0F, -2.0F, 0.0F, 1.0F, 2.0F, 0.0F, 0.0F, false);
-
-        claw_right_a = new ModelPart(this);
-        claw_right_a.setPos(-2.0F, -0.5F, -2.0F);
-        body_base.addChild(claw_right_a);
-
-        claw_right_a_r1 = new ModelPart(this);
-        claw_right_a_r1.setPos(0.0F, 0.0F, 0.0F);
-        claw_right_a.addChild(claw_right_a_r1);
-        claw_right_a_r1.texOffs(7, 6).addBox(-0.75F, -0.5F, -1.0F, 2.0F, 1.0F, 1.0F, 0.0F, false);
-
-        claw_left_a = new ModelPart(this);
-        claw_left_a.setPos(2.0F, -0.5F, -2.0F);
-        body_base.addChild(claw_left_a);
-        claw_left_a.texOffs(0, 6).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 2.0F, 1.0F, 0.0F, false);
-
-        claw_left_c = new ModelPart(this);
-        claw_left_c.setPos(-1.0F, 0.0F, 0.0F);
-        claw_left_a.addChild(claw_left_c);
-
-        claw_left_c_r1 = new ModelPart(this);
-        claw_left_c_r1.setPos(0.0F, 0.0F, 0.0F);
-        claw_left_c.addChild(claw_left_c_r1);
-        claw_left_c_r1.texOffs(14, 6).addBox(-2.0F, 0.0F, -0.99F, 2.0F, 1.0F, 1.0F, 0.0F, false);
-
-        claw_left_b = new ModelPart(this);
-        claw_left_b.setPos(-1.0F, -1.0F, 0.0F);
-        claw_left_a.addChild(claw_left_b);
-        claw_left_b.texOffs(15, 0).addBox(-3.0F, 0.0F, -1.0F, 3.0F, 1.0F, 1.0F, 0.0F, false);
-
-        leg_left_fra = new ModelPart(this);
-        leg_left_fra.setPos(1.5F, 0.0F, -1.5F);
-        body_base.addChild(leg_left_fra);
-        leg_left_fra.texOffs(15, 17).addBox(-0.5F, 0.0F, -0.5F, 1.0F, 2.0F, 1.0F, 0.0F, false);
-
-        leg_left_frb = new ModelPart(this);
-        leg_left_frb.setPos(-0.5F, 2.0F, 0.0F);
-        leg_left_fra.addChild(leg_left_frb);
-        leg_left_frb.texOffs(7, 13).addBox(-2.0F, -1.0F, -0.5F, 2.0F, 1.0F, 1.0F, 0.0F, false);
-
-        leg_left_mia = new ModelPart(this);
-        leg_left_mia.setPos(1.5F, 0.0F, -0.5F);
-        body_base.addChild(leg_left_mia);
-        leg_left_mia.texOffs(10, 17).addBox(-0.5F, 0.0F, -0.5F, 1.0F, 2.0F, 1.0F, 0.0F, false);
-
-        leg_left_mib = new ModelPart(this);
-        leg_left_mib.setPos(-0.5F, 2.0F, 0.0F);
-        leg_left_mia.addChild(leg_left_mib);
-        leg_left_mib.texOffs(0, 13).addBox(-2.0F, -1.0F, -0.5F, 2.0F, 1.0F, 1.0F, 0.0F, false);
-
-        leg_left_baa = new ModelPart(this);
-        leg_left_baa.setPos(1.5F, 0.0F, 0.5F);
-        body_base.addChild(leg_left_baa);
-        leg_left_baa.texOffs(5, 17).addBox(-0.5F, 0.0F, -0.5F, 1.0F, 2.0F, 1.0F, 0.0F, false);
-
-        leg_left_bab = new ModelPart(this);
-        leg_left_bab.setPos(-0.5F, 2.0F, 0.0F);
-        leg_left_baa.addChild(leg_left_bab);
-        leg_left_bab.texOffs(21, 10).addBox(-2.0F, -1.0F, -0.5F, 2.0F, 1.0F, 1.0F, 0.0F, false);
-
-        leg_right_fra = new ModelPart(this);
-        leg_right_fra.setPos(-1.5F, 0.0F, -1.5F);
-        body_base.addChild(leg_right_fra);
-        leg_right_fra.texOffs(0, 17).addBox(-0.5F, 0.0F, -0.5F, 1.0F, 2.0F, 1.0F, 0.0F, false);
-
-        leg_right_frb = new ModelPart(this);
-        leg_right_frb.setPos(0.5F, 2.0F, 0.0F);
-        leg_right_fra.addChild(leg_right_frb);
-        leg_right_frb.texOffs(14, 10).addBox(0.0F, -1.0F, -0.5F, 2.0F, 1.0F, 1.0F, 0.0F, false);
-
-        leg_right_mia = new ModelPart(this);
-        leg_right_mia.setPos(-1.5F, 0.0F, -0.5F);
-        body_base.addChild(leg_right_mia);
-        leg_right_mia.texOffs(19, 13).addBox(-0.5F, 0.0F, -0.5F, 1.0F, 2.0F, 1.0F, 0.0F, false);
-
-        leg_right_mib = new ModelPart(this);
-        leg_right_mib.setPos(0.5F, 2.0F, 0.0F);
-        leg_right_mia.addChild(leg_right_mib);
-        leg_right_mib.texOffs(7, 10).addBox(0.0F, -1.0F, -0.5F, 2.0F, 1.0F, 1.0F, 0.0F, false);
-
-        leg_right_baa = new ModelPart(this);
-        leg_right_baa.setPos(-1.5F, 0.0F, 0.5F);
-        body_base.addChild(leg_right_baa);
-        leg_right_baa.texOffs(14, 13).addBox(-0.5F, 0.0F, -0.5F, 1.0F, 2.0F, 1.0F, 0.0F, false);
-
-        leg_right_bab = new ModelPart(this);
-        leg_right_bab.setPos(0.5F, 2.0F, 0.0F);
-        leg_right_baa.addChild(leg_right_bab);
-        leg_right_bab.texOffs(0, 10).addBox(0.0F, -1.0F, -0.5F, 2.0F, 1.0F, 1.0F, 0.0F, false);
-
-        this.setDefaultRotationAngles();
+    public FiddlerCrabModel(ModelPart model) {
+        this.body_base = model;
+        this.eyestalk_right = model.getChild("eyestalk_right");
+        this.eyestalk_left = model.getChild("eyestalk_left");
+        this.claw_right_a = model.getChild("claw_right_a");
+        this.claw_right_a_r1 = this.claw_right_a.getChild("claw_right_a_r1");
+        this.claw_left_a = model.getChild("claw_left_a");
+        this.claw_left_c = this.claw_left_a.getChild("claw_left_c");
+        this.claw_left_c_r1 = this.claw_left_c.getChild("claw_left_c_r1");
+        this.claw_left_b = this.claw_left_a.getChild("claw_left_b");
+        this.leg_left_fra = model.getChild("leg_left_fra");
+        this.leg_left_frb = this.leg_left_fra.getChild("leg_left_frb");
+        this.leg_left_mia = model.getChild("leg_left_mia");
+        this.leg_left_mib = this.leg_left_mia.getChild("leg_left_mib");
+        this.leg_left_baa = model.getChild("leg_left_baa");
+        this.leg_left_bab = this.leg_left_baa.getChild("leg_left_bab");
+        this.leg_right_fra = model.getChild("leg_right_fra");
+        this.leg_right_frb = this.leg_right_fra.getChild("leg_right_frb");
+        this.leg_right_mia = model.getChild("leg_right_mia");
+        this.leg_right_mib = this.leg_right_mia.getChild("leg_right_mib");
+        this.leg_right_baa = model.getChild("leg_right_baa");
+        this.leg_right_bab = this.leg_right_baa.getChild("leg_right_bab");
     }
 
     public static LayerDefinition create() {
-        // TODO 1.17
-        return null;
+        MeshDefinition meshDefinition = new MeshDefinition();
+        PartDefinition partDefinition = meshDefinition.getRoot();
+
+        partDefinition.addOrReplaceChild("body_base", CubeListBuilder.create()
+                        .texOffs(0, 0).addBox(-2.0f, -2.0f, -2.0f, 4.0f, 2.0f, 3.0f),
+                PartPose.offsetAndRotation(0.0f, 23.0f, 0.0f, 0.0f, 0.0f, 0.0f));
+
+        partDefinition.addOrReplaceChild("eyestalk_right", CubeListBuilder.create()
+                        .texOffs(0, 21).addBox(0.0f, -2.0f, 0.0f, 1.0f, 2.0f, 0.0f),
+                PartPose.offsetAndRotation(-1.5f, 22.0f, -2.0f, 0.0f, 0.0f, 0.0f));
+
+        partDefinition.addOrReplaceChild("eyestalk_left", CubeListBuilder.create()
+                        .texOffs(3, 21).addBox(-1.0f, -2.0f, 0.0f, 1.0f, 2.0f, 0.0f),
+                PartPose.offsetAndRotation(1.5f, 22.0f, -2.0f, 0.0f, 0.0f, 0.0f));
+
+        PartDefinition partDefinition3 = partDefinition.addOrReplaceChild("claw_right_a", CubeListBuilder.create(),
+                PartPose.offsetAndRotation(-2.0f, 22.5f, -2.0f, 0.0f, 0.0f, 0.0f));
+
+        partDefinition3.addOrReplaceChild("claw_right_a_r1", CubeListBuilder.create()
+                        .texOffs(7, 6).addBox(-0.75f, -0.5f, -1.0f, 2.0f, 1.0f, 1.0f),
+                PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f));
+
+        PartDefinition partDefinition5 = partDefinition.addOrReplaceChild("claw_left_a", CubeListBuilder.create()
+                        .texOffs(0, 6).addBox(-1.0f, -1.0f, -1.0f, 2.0f, 2.0f, 1.0f),
+                PartPose.offsetAndRotation(2.0f, 22.5f, -2.0f, 0.0f, 0.0f, 0.0f));
+
+        PartDefinition partDefinition6 = partDefinition5.addOrReplaceChild("claw_left_c", CubeListBuilder.create(),
+                PartPose.offsetAndRotation(-1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f));
+
+        partDefinition6.addOrReplaceChild("claw_left_c_r1", CubeListBuilder.create()
+                        .texOffs(14, 6).addBox(-2.0f, 0.0f, -0.99f, 2.0f, 1.0f, 1.0f),
+                PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f));
+
+        partDefinition5.addOrReplaceChild("claw_left_b", CubeListBuilder.create()
+                        .texOffs(15, 0).addBox(-3.0f, 0.0f, -1.0f, 3.0f, 1.0f, 1.0f),
+                PartPose.offsetAndRotation(-1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f));
+
+        PartDefinition partDefinition9 = partDefinition.addOrReplaceChild("leg_left_fra", CubeListBuilder.create()
+                        .texOffs(15, 17).addBox(-0.5f, 0.0f, -0.5f, 1.0f, 2.0f, 1.0f),
+                PartPose.offsetAndRotation(1.5f, 23.0f, -1.5f, 0.0f, 0.0f, 0.0f));
+
+        partDefinition9.addOrReplaceChild("leg_left_frb", CubeListBuilder.create()
+                        .texOffs(7, 13).addBox(-2.0f, -1.0f, -0.5f, 2.0f, 1.0f, 1.0f),
+                PartPose.offsetAndRotation(-0.5f, 2.0f, 0.0f, 0.0f, 0.0f, 0.0f));
+
+        PartDefinition partDefinition11 = partDefinition.addOrReplaceChild("leg_left_mia", CubeListBuilder.create()
+                        .texOffs(10, 17).addBox(-0.5f, 0.0f, -0.5f, 1.0f, 2.0f, 1.0f),
+                PartPose.offsetAndRotation(1.5f, 23.0f, -0.5f, 0.0f, 0.0f, 0.0f));
+
+        partDefinition11.addOrReplaceChild("leg_left_mib", CubeListBuilder.create()
+                        .texOffs(0, 13).addBox(-2.0f, -1.0f, -0.5f, 2.0f, 1.0f, 1.0f),
+                PartPose.offsetAndRotation(-0.5f, 2.0f, 0.0f, 0.0f, 0.0f, 0.0f));
+
+        PartDefinition partDefinition13 = partDefinition.addOrReplaceChild("leg_left_baa", CubeListBuilder.create()
+                        .texOffs(5, 17).addBox(-0.5f, 0.0f, -0.5f, 1.0f, 2.0f, 1.0f),
+                PartPose.offsetAndRotation(1.5f, 23.0f, 0.5f, 0.0f, 0.0f, 0.0f));
+
+        partDefinition13.addOrReplaceChild("leg_left_bab", CubeListBuilder.create()
+                        .texOffs(21, 10).addBox(-2.0f, -1.0f, -0.5f, 2.0f, 1.0f, 1.0f),
+                PartPose.offsetAndRotation(-0.5f, 2.0f, 0.0f, 0.0f, 0.0f, 0.0f));
+
+        PartDefinition partDefinition15 = partDefinition.addOrReplaceChild("leg_right_fra", CubeListBuilder.create()
+                        .texOffs(0, 17).addBox(-0.5f, 0.0f, -0.5f, 1.0f, 2.0f, 1.0f),
+                PartPose.offsetAndRotation(-1.5f, 23.0f, -1.5f, 0.0f, 0.0f, 0.0f));
+
+        partDefinition15.addOrReplaceChild("leg_right_frb", CubeListBuilder.create()
+                        .texOffs(14, 10).addBox(0.0f, -1.0f, -0.5f, 2.0f, 1.0f, 1.0f),
+                PartPose.offsetAndRotation(0.5f, 2.0f, 0.0f, 0.0f, 0.0f, 0.0f));
+
+        PartDefinition partDefinition17 = partDefinition.addOrReplaceChild("leg_right_mia", CubeListBuilder.create()
+                        .texOffs(19, 13).addBox(-0.5f, 0.0f, -0.5f, 1.0f, 2.0f, 1.0f),
+                PartPose.offsetAndRotation(-1.5f, 23.0f, -0.5f, 0.0f, 0.0f, 0.0f));
+
+        partDefinition17.addOrReplaceChild("leg_right_mib", CubeListBuilder.create()
+                        .texOffs(7, 10).addBox(0.0f, -1.0f, -0.5f, 2.0f, 1.0f, 1.0f),
+                PartPose.offsetAndRotation(0.5f, 2.0f, 0.0f, 0.0f, 0.0f, 0.0f));
+
+        PartDefinition partDefinition19 = partDefinition.addOrReplaceChild("leg_right_baa", CubeListBuilder.create()
+                        .texOffs(14, 13).addBox(-0.5f, 0.0f, -0.5f, 1.0f, 2.0f, 1.0f),
+                PartPose.offsetAndRotation(-1.5f, 23.0f, 0.5f, 0.0f, 0.0f, 0.0f));
+
+        partDefinition19.addOrReplaceChild("leg_right_bab", CubeListBuilder.create()
+                        .texOffs(0, 10).addBox(0.0f, -1.0f, -0.5f, 2.0f, 1.0f, 1.0f),
+                PartPose.offsetAndRotation(0.5f, 2.0f, 0.0f, 0.0f, 0.0f, 0.0f));
+
+        return LayerDefinition.create(meshDefinition, 32, 32);
     }
 
     private void setDefaultRotationAngles() {
@@ -180,13 +182,13 @@ public class FiddlerCrabModel<T extends Entity> extends EntityModel<T> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack matrixStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        body_base.render(matrixStack, buffer, packedLight, packedOverlay);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        body_base.render(poseStack, buffer, packedLight, packedOverlay);
     }
 
     private void setRotationAngle(ModelPart modelRenderer, float x, float y, float z) {
-        modelRenderer.xRot = x * ModelAnimator.DEG_TO_RAD;
-        modelRenderer.yRot = y * ModelAnimator.DEG_TO_RAD;
-        modelRenderer.zRot = z * ModelAnimator.DEG_TO_RAD;
+        modelRenderer.xRot = x;
+        modelRenderer.yRot = y;
+        modelRenderer.zRot = z;
     }
 }

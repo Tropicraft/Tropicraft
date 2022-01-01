@@ -4,11 +4,15 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.PartNames;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.tropicraft.core.common.entity.passive.HummingbirdEntity;
 
-public class HummingbirdModel<T extends Entity> extends EntityModel<T> {
+public class HummingbirdModel<T extends HummingbirdEntity> extends EntityModel<T> {
     private final ModelPart body_base;
     private final ModelPart tail_base;
     private final ModelPart wing_left;
@@ -16,54 +20,44 @@ public class HummingbirdModel<T extends Entity> extends EntityModel<T> {
     private final ModelPart beak_base;
     private final ModelPart wing_right;
 
-    public HummingbirdModel(final ModelPart root) {
-        body_base = root.getChild(PartNames.BODY);
-        tail_base = root.getChild(PartNames.TAIL);
-        wing_left = root.getChild(PartNames.LEFT_WING);
-        wing_right = root.getChild(PartNames.RIGHT_WING);
-        head_base = root.getChild(PartNames.HEAD);
-        beak_base = root.getChild(PartNames.BEAK);
-
-        texWidth = 32;
-        texHeight = 32;
-
-        body_base = new ModelPart(this);
-        body_base.setPos(0.0F, 20.0F, 0.0F);
-        setRotationAngle(body_base, 0.4363F, 0.0F, 0.0F);
-        body_base.texOffs(0, 0).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 3.0F, 2.0F, 0.0F, false);
-
-        tail_base = new ModelPart(this);
-        tail_base.setPos(0.0F, 1.0F, 1.0F);
-        body_base.addChild(tail_base);
-        setRotationAngle(tail_base, 0.2618F, 0.0F, 0.0F);
-        tail_base.texOffs(0, 6).addBox(-1.5F, 0.0F, 0.0F, 3.0F, 4.0F, 0.0F, 0.0F, false);
-
-        wing_left = new ModelPart(this);
-        wing_left.setPos(1.0F, -2.0F, 1.0F);
-        body_base.addChild(wing_left);
-        wing_left.texOffs(9, 11).addBox(0.0F, 0.0F, 0.0F, 4.0F, 2.0F, 0.0F, 0.0F, false);
-
-        head_base = new ModelPart(this);
-        head_base.setPos(0.0F, -2.0F, 0.0F);
-        body_base.addChild(head_base);
-        setRotationAngle(head_base, -0.2618F, 0.0F, 0.0F);
-        head_base.texOffs(9, 0).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 2.0F, 2.0F, 0.001F, false);
-
-        beak_base = new ModelPart(this);
-        beak_base.setPos(0.0F, -2.0F, -1.0F);
-        head_base.addChild(beak_base);
-        setRotationAngle(beak_base, 0.3927F, 0.0F, 0.0F);
-        beak_base.texOffs(7, 6).addBox(0.0F, 0.0F, -3.0F, 0.0F, 1.0F, 3.0F, 0.0F, false);
-
-        wing_right = new ModelPart(this);
-        wing_right.setPos(-1.0F, -2.0F, 1.0F);
-        body_base.addChild(wing_right);
-        wing_right.texOffs(0, 11).addBox(-4.0F, 0.0F, 0.0F, 4.0F, 2.0F, 0.0F, 0.0F, false);
+    public HummingbirdModel(ModelPart model) {
+        this.body_base = model;
+        this.tail_base = model.getChild("tail_base");
+        this.wing_left = model.getChild("wing_left");
+        this.head_base = model.getChild("head_base");
+        this.beak_base = this.head_base.getChild("beak_base");
+        this.wing_right = model.getChild("wing_right");
     }
 
     public static LayerDefinition create() {
-        // TODO 1.17
-        return null;
+        MeshDefinition meshDefinition = new MeshDefinition();
+        PartDefinition partDefinition = meshDefinition.getRoot();
+
+        partDefinition.addOrReplaceChild("body_base", CubeListBuilder.create()
+                        .texOffs(0, 0).addBox(-1.0f, -2.0f, -1.0f, 2.0f, 3.0f, 2.0f),
+                PartPose.offsetAndRotation(0.0f, 20.0f, 0.0f, 0.4363f, 0.0f, 0.0f));
+
+        partDefinition.addOrReplaceChild("tail_base", CubeListBuilder.create()
+                        .texOffs(0, 6).addBox(-1.5f, 0.0f, 0.0f, 3.0f, 4.0f, 0.0f),
+                PartPose.offsetAndRotation(0.0f, 21.0f, 1.0f, 0.2618f, 0.0f, 0.0f));
+
+        partDefinition.addOrReplaceChild("wing_left", CubeListBuilder.create()
+                        .texOffs(9, 11).addBox(0.0f, 0.0f, 0.0f, 4.0f, 2.0f, 0.0f),
+                PartPose.offsetAndRotation(1.0f, 18.0f, 1.0f, 0.0f, 0.0f, 0.0f));
+
+        PartDefinition partDefinition3 = partDefinition.addOrReplaceChild("head_base", CubeListBuilder.create()
+                        .texOffs(9, 0).addBox(-1.0f, -2.0f, -1.0f, 2.0f, 2.0f, 2.0f, new CubeDeformation(0.00f)),
+                PartPose.offsetAndRotation(0.0f, 18.0f, 0.0f, -0.2618f, 0.0f, 0.0f));
+
+        partDefinition3.addOrReplaceChild("beak_base", CubeListBuilder.create()
+                        .texOffs(7, 6).addBox(0.0f, 0.0f, -3.0f, 0.0f, 1.0f, 3.0f),
+                PartPose.offsetAndRotation(0.0f, -2.0f, -1.0f, 0.3927f, 0.0f, 0.0f));
+
+        partDefinition.addOrReplaceChild("wing_right", CubeListBuilder.create()
+                        .texOffs(0, 11).addBox(-4.0f, 0.0f, 0.0f, 4.0f, 2.0f, 0.0f),
+                PartPose.offsetAndRotation(-1.0f, 18.0f, 1.0f, 0.0f, 0.0f, 0.0f));
+
+        return LayerDefinition.create(meshDefinition, 32, 32);
     }
 
     @Override
@@ -83,13 +77,7 @@ public class HummingbirdModel<T extends Entity> extends EntityModel<T> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack matrixStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        body_base.render(matrixStack, buffer, packedLight, packedOverlay);
-    }
-
-    private void setRotationAngle(ModelPart modelRenderer, float x, float y, float z) {
-        modelRenderer.xRot = x;
-        modelRenderer.yRot = y;
-        modelRenderer.zRot = z;
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        body_base.render(poseStack, buffer, packedLight, packedOverlay);
     }
 }

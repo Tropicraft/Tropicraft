@@ -114,6 +114,12 @@ public class BasiliskLizardModel<T extends BasiliskLizardEntity> extends EntityM
         MeshDefinition modelData = new MeshDefinition();
         PartDefinition modelPartData = modelData.getRoot();
 
+        //        body_base = new ModelPart(this);
+//        body_base.setPos(0.0F, 22.5F, 0.0F);
+//        setRotationAngle(body_base, -15.0F * ModelAnimator.DEG_TO_RAD, 0.0F, 0.0F);
+//        body_base.texOffs(0, 0).addBox(-1.0F, -1.0F, -5.0F, 2.0F, 2.0F, 6.0F, 0.0F, false);
+//
+
         PartDefinition modelPartBody = modelPartData.addOrReplaceChild("body_base",
                 CubeListBuilder.create()
                         .texOffs(0, 0)
