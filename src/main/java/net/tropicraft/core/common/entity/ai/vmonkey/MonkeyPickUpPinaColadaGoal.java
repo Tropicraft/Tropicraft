@@ -1,19 +1,18 @@
 package net.tropicraft.core.common.entity.ai.vmonkey;
 
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraft.world.InteractionHand;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
 
 import java.util.EnumSet;
 import java.util.List;
-
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class MonkeyPickUpPinaColadaGoal extends Goal {
 
@@ -116,7 +115,7 @@ public class MonkeyPickUpPinaColadaGoal extends Goal {
                 }
             } else {
                 entity.setItemInHand(InteractionHand.MAIN_HAND, drinkEntity.getItem());
-                drinkEntity.remove();
+                drinkEntity.remove(Entity.RemovalReason.DISCARDED);
             }
         }
     }

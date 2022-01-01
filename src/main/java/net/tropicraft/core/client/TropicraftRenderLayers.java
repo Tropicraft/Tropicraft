@@ -44,7 +44,6 @@ import net.tropicraft.core.client.entity.model.TropicraftTropicalFishModel;
 import net.tropicraft.core.client.entity.model.UmbrellaModel;
 import net.tropicraft.core.client.entity.model.VMonkeyModel;
 import net.tropicraft.core.client.entity.model.WhiteLippedPeccaryModel;
-import net.tropicraft.core.client.scuba.ModelScubaGear;
 import net.tropicraft.core.common.item.AshenMaskItem;
 import net.tropicraft.core.common.item.TropicraftItems;
 
@@ -165,10 +164,10 @@ public class TropicraftRenderLayers {
 
         STACHE_LAYER = registerMain("nigel_stache", PlayerHeadpieceModel::create, event);
 
-        HEAD_SCUBA_LAYER = registerMain("scuba_goggles", ModelScubaGear::create, event);
-        CHEST_SCUBA_LAYER = registerMain("scuba_harness", ModelScubaGear::create, event);
-        FEET_SCUBA_LAYER = registerMain("scuba_flippers", ModelScubaGear::create, event);
-        TANK_SCUBA_LAYER = registerMain("pony_bottle", ModelScubaGear::create, event);
+//        HEAD_SCUBA_LAYER = registerMain("scuba_goggles", ModelScubaGear::create, event);
+//        CHEST_SCUBA_LAYER = registerMain("scuba_harness", ModelScubaGear::create, event);
+//        FEET_SCUBA_LAYER = registerMain("scuba_flippers", ModelScubaGear::create, event);
+//        TANK_SCUBA_LAYER = registerMain("pony_bottle", ModelScubaGear::create, event);
 
         setupScubaGearModels();
     }

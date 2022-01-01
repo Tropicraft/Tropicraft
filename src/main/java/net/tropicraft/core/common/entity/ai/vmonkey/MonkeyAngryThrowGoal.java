@@ -1,23 +1,21 @@
 package net.tropicraft.core.common.entity.ai.vmonkey;
 
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import java.util.EnumSet;
 import java.util.List;
-
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class MonkeyAngryThrowGoal extends Goal {
   private final VMonkeyEntity entity;
@@ -69,7 +67,7 @@ public class MonkeyAngryThrowGoal extends Goal {
 
   @Override
   public void tick() {
-    if (this.trackedMug != null && this.entity.getMainHandItem().getItem() == TropicraftItems.BAMBOO_MUG.get().getItem()) {
+    if (this.trackedMug != null && this.entity.getMainHandItem().getItem() == TropicraftItems.BAMBOO_MUG.get().asItem()) {
       this.trackedPlayer = nearbyPlayer();
 
       if (this.trackedPlayer != null) {
@@ -94,7 +92,7 @@ public class MonkeyAngryThrowGoal extends Goal {
         moveTowardsEntity(this.trackedMug);
       } else {
         entity.setItemInHand(InteractionHand.MAIN_HAND, this.trackedMug.getItem());
-        this.trackedMug.remove();
+        this.trackedMug.remove(Entity.RemovalReason.DISCARDED);
       }
       return;
     }
@@ -147,7 +145,7 @@ public class MonkeyAngryThrowGoal extends Goal {
 
     double d0 = leapTarget.getX() - entity.getX();
     double d1 = leapTarget.getZ() - entity.getZ();
-    float f = Mth.sqrt(d0 * d0 + d1 * d1);
+    float f = Mth.sqrt((float) (d0 * d0 + d1 * d1));
     final Vec3 motion = entity.getDeltaMovement();
 
     if ((double)f >= 1.0E-4D) {

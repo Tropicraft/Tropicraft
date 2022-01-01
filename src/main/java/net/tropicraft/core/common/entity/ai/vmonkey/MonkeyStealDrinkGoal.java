@@ -1,10 +1,10 @@
 package net.tropicraft.core.common.entity.ai.vmonkey;
 
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.MixerRecipes;
@@ -12,8 +12,6 @@ import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
 import net.tropicraft.core.common.item.CocktailItem;
 
 import java.util.EnumSet;
-
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class MonkeyStealDrinkGoal extends Goal {
     private VMonkeyEntity entity;
@@ -40,7 +38,7 @@ public class MonkeyStealDrinkGoal extends Goal {
 
         double d0 = leapTarget.getX() - entity.getX();
         double d1 = leapTarget.getZ() - entity.getZ();
-        float f = Mth.sqrt(d0 * d0 + d1 * d1);
+        float f = Mth.sqrt((float) (d0 * d0 + d1 * d1));
         final Vec3 motion = entity.getDeltaMovement();
 
         if ((double)f >= 1.0E-4D) {
