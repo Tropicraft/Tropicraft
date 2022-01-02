@@ -1,26 +1,32 @@
 package net.tropicraft.core.mixin.worldgen;
 
+import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.Lifecycle;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.WritableRegistry;
 import net.minecraft.resources.RegistryReadOps;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.dimension.LevelStem;
+import net.tropicraft.Constants;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.Optional;
 import java.util.OptionalInt;
 
 @Mixin(RegistryReadOps.class)
-public class WorldSettingsImportMixin {
+public class RegistryReadOpsMixin {
     @Shadow
     @Final
     public RegistryAccess registryAccess;
@@ -61,22 +67,20 @@ public class WorldSettingsImportMixin {
     /**
      * Remove the experimental world settings warning screen for tropicraft content.
      */
-    // TODO: 1.17: reimplement!
-//    @ModifyVariable(
-//            method = "createRegistry",
-//            at = @At(
-//                    value = "INVOKE_ASSIGN",
-//                    target = "Lnet/minecraft/util/registry/WorldSettingsImport$IResourceAccess;decode(Lcom/mojang/serialization/DynamicOps;Lnet/minecraft/util/RegistryKey;Lnet/minecraft/util/RegistryKey;Lcom/mojang/serialization/Decoder;)Lcom/mojang/serialization/DataResult;"
-//            ),
-//            ordinal = 1
-//    )
-//    private <E> DataResult<Pair<E, OptionalInt>> modifyDataResult(
-//            DataResult<Pair<E, OptionalInt>> result,
-//            ResourceKey<? extends Registry<E>> registryKey, WritableRegistry<E> registry, Codec<E> mapCodec, ResourceLocation id
-//    ) {
-//        if (id.getNamespace().equals(Constants.MODID)) {
-//            return result.setLifecycle(Lifecycle.stable());
-//        }
-//        return result;
-//    }
+    @ModifyVariable(
+            method = "readAndRegisterElement",
+            at = @At(
+                    value = "INVOKE_ASSIGN",
+                    target = "Lnet/minecraft/resources/RegistryReadOps$ResourceAccess;parseElement(Lcom/mojang/serialization/DynamicOps;Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/resources/ResourceKey;Lcom/mojang/serialization/Decoder;)Ljava/util/Optional;"
+            )
+    )
+    private <E> Optional<DataResult<Pair<E, OptionalInt>>> modifyDataResult(
+            Optional<DataResult<Pair<E, OptionalInt>>> result,
+            ResourceKey<? extends Registry<E>> registryKey, WritableRegistry<E> registry, Codec<E> elementCodec, ResourceLocation id
+    ) {
+        if (id.getNamespace().equals(Constants.MODID)) {
+            return result.map(r -> r.setLifecycle(Lifecycle.stable()));
+        }
+        return result;
+    }
 }
