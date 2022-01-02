@@ -14,13 +14,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
-import net.tropicraft.core.common.entity.hostile.AshenEntity;
 import net.tropicraft.core.common.item.AshenMasks;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 public class AshenMaskEntity extends Entity {
 
-    private static final EntityDataAccessor<Byte> MASK_TYPE = SynchedEntityData.defineId(AshenEntity.class, EntityDataSerializers.BYTE);
+    private static final EntityDataAccessor<Byte> MASK_TYPE = SynchedEntityData.defineId(AshenMaskEntity.class, EntityDataSerializers.BYTE);
     public static final int MAX_TICKS_ALIVE = 24000;
 
     public AshenMaskEntity(EntityType<?> type, Level world) {
