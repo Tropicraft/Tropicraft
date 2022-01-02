@@ -4,6 +4,7 @@ import net.minecraft.client.model.CowModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -46,6 +47,7 @@ import net.tropicraft.core.client.entity.model.TropicraftTropicalFishModel;
 import net.tropicraft.core.client.entity.model.UmbrellaModel;
 import net.tropicraft.core.client.entity.model.VMonkeyModel;
 import net.tropicraft.core.client.entity.model.WhiteLippedPeccaryModel;
+import net.tropicraft.core.client.scuba.ModelScubaGear;
 import net.tropicraft.core.common.item.AshenMaskItem;
 import net.tropicraft.core.common.item.TropicraftItems;
 
@@ -166,10 +168,10 @@ public class TropicraftRenderLayers {
 
         STACHE_LAYER = registerMain("nigel_stache", PlayerHeadpieceModel::create, event);
 
-//        HEAD_SCUBA_LAYER = registerMain("scuba_goggles", ModelScubaGear::create, event);
-//        CHEST_SCUBA_LAYER = registerMain("scuba_harness", ModelScubaGear::create, event);
-//        FEET_SCUBA_LAYER = registerMain("scuba_flippers", ModelScubaGear::create, event);
-//        TANK_SCUBA_LAYER = registerMain("pony_bottle", ModelScubaGear::create, event);
+        HEAD_SCUBA_LAYER = registerMain("scuba_goggles", ModelScubaGear::create, event);
+        CHEST_SCUBA_LAYER = registerMain("scuba_harness", ModelScubaGear::create, event);
+        FEET_SCUBA_LAYER = registerMain("scuba_flippers", ModelScubaGear::create, event);
+        TANK_SCUBA_LAYER = registerMain("pony_bottle", ModelScubaGear::create, event);
 
         setupScubaGearModels();
     }
@@ -180,12 +182,11 @@ public class TropicraftRenderLayers {
         return modelLayer;
     }
 
-    public static void setupScubaGearModels() {
-        // TODO 1.17
-//        ModelScubaGear.HEAD = ModelScubaGear.createModel(HEAD_SCUBA_LAYER, null, EquipmentSlot.HEAD);
-//        ModelScubaGear.CHEST = ModelScubaGear.createModel(CHEST_SCUBA_LAYER, null, EquipmentSlot.CHEST);
-//        ModelScubaGear.FEET = ModelScubaGear.createModel(FEET_SCUBA_LAYER, null, EquipmentSlot.FEET);
-//
-//        ModelScubaGear.tankModel = ModelScubaGear.createModel(TANK_SCUBA_LAYER, null, EquipmentSlot.CHEST);
+    public static void setupScubaGearModels(){
+        ModelScubaGear.HEAD = ModelScubaGear.createModel(HEAD_SCUBA_LAYER, null, EquipmentSlot.HEAD);
+        ModelScubaGear.CHEST = ModelScubaGear.createModel(CHEST_SCUBA_LAYER, null, EquipmentSlot.CHEST);
+        ModelScubaGear.FEET = ModelScubaGear.createModel(FEET_SCUBA_LAYER, null, EquipmentSlot.FEET);
+
+        ModelScubaGear.tankModel = ModelScubaGear.createModel(TANK_SCUBA_LAYER, null, EquipmentSlot.CHEST);
     }
 }
