@@ -12,8 +12,10 @@
         "blacklist": [],
         "tries": 64,
         "state_provider": {
-          "tag": "tropicraft:rainforest_flowers",
-          "type": "tropicraft:noise_from_tag"
+          "state": {
+            "Name": "tropicraft:magic_mushroom"
+          },
+          "type": "minecraft:simple_state_provider"
         },
         "block_placer": {
           "type": "minecraft:simple_block_placer"

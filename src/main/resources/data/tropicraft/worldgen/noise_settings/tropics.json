@@ -1,6 +1,13 @@
 {
+  "disableMobGeneration": false,
+  "aquifers_enabled": true,
+  "noise_caves_enabled": true,
+  "deepslate_enabled": true,
+  "ore_veins_enabled": false,
+  "noodle_caves_enabled": true,
   "bedrock_roof_position": -10,
   "bedrock_floor_position": 0,
+  "min_surface_level": 10,
   "sea_level": 127,
   "disable_mob_generation": false,
   "structures": {
@@ -28,6 +35,7 @@
     }
   },
   "noise": {
+    "min_y": 0,
     "random_density_offset": true,
     "density_factor": 1.0,
     "density_offset": 0.03125,
