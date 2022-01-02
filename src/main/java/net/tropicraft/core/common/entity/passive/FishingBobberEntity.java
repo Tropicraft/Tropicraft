@@ -3,6 +3,7 @@ package net.tropicraft.core.common.entity.passive;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -15,6 +16,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.AbstractFish;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -27,14 +31,18 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fmllegacy.common.registry.IEntityAdditionalSpawnData;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
+import net.tropicraft.core.common.entity.TropicraftEntities;
+import net.tropicraft.core.common.entity.underdasea.CuberaEntity;
 
 import javax.annotation.Nullable;
 
-public class FishingBobberEntity extends Entity {
+public class FishingBobberEntity extends Entity implements IEntityAdditionalSpawnData {
    private static final EntityDataAccessor<Integer> DATA_HOOKED_ENTITY = SynchedEntityData.defineId(FishingBobberEntity.class, EntityDataSerializers.INT);
    private boolean inGround;
    private int ticksInGround;
-   private final EntityKoaBase angler;
+   private EntityKoaBase angler;
    private int ticksInAir;
    private int ticksCatchable;
    private int ticksCaughtDelay;
@@ -42,11 +50,11 @@ public class FishingBobberEntity extends Entity {
    private float fishApproachAngle;
    public Entity caughtEntity;
    private FishingBobberEntity.State currentState = FishingBobberEntity.State.FLYING;
-   private final int luck;
-   private final int lureSpeed;
+   private int luck;
+   private int lureSpeed;
 
    private FishingBobberEntity(Level p_i50219_1_, EntityKoaBase koaBase, int luck, int lureSpeed) {
-      super(EntityType.FISHING_BOBBER, p_i50219_1_);
+      super(TropicraftEntities.FISHING_BOBBER.get(), p_i50219_1_);
       this.noCulling = true;
       this.angler = koaBase;
       this.angler.setLure(this);
@@ -54,14 +62,14 @@ public class FishingBobberEntity extends Entity {
       this.lureSpeed = Math.max(0, lureSpeed);
    }
 
-   @OnlyIn(Dist.CLIENT)
+   /*@OnlyIn(Dist.CLIENT)
    public FishingBobberEntity(Level worldIn, EntityKoaBase p_i47290_2_, double x, double y, double z) {
       this(worldIn, p_i47290_2_, 0, 0);
       this.setPos(x, y, z);
       this.xo = this.getX();
       this.yo = this.getY();
       this.zo = this.getZ();
-   }
+   }*/
 
    public FishingBobberEntity(EntityKoaBase p_i50220_1_, Level p_i50220_2_, int p_i50220_3_, int p_i50220_4_) {
       this(p_i50220_2_, p_i50220_1_, p_i50220_3_, p_i50220_4_);
@@ -83,6 +91,10 @@ public class FishingBobberEntity extends Entity {
       this.setXRot((float)(Mth.atan2(Vector3d.y, Mth.sqrt((float) distanceToSqr(Vector3d))) * (double)(180F / (float)Math.PI)));
       this.yRotO = this.getYRot();
       this.xRotO = this.getXRot();
+   }
+
+   public FishingBobberEntity(EntityType<FishingBobberEntity> type, Level world) {
+      super(type, world);
    }
 
    @Override
@@ -408,14 +420,35 @@ public class FishingBobberEntity extends Entity {
    }
 
    @Override
-   public Packet<?> getAddEntityPacket() {
+   public void writeSpawnData(FriendlyByteBuf data) {
       Entity entity = this.getAngler();
-      return new ClientboundAddEntityPacket(this, entity == null ? this.getId() : entity.getId());
+      data.writeInt(entity == null ? -1 : entity.getId());
+   }
+
+   @Override
+   public void readSpawnData(FriendlyByteBuf data) {
+      int anglerID = data.readInt();
+      if (anglerID != -1) {
+         Entity entity = level.getEntity(anglerID);
+         if (entity instanceof EntityKoaBase) {
+            angler = (EntityKoaBase) entity;
+         }
+      }
+   }
+
+   @Override
+   public Packet<?> getAddEntityPacket() {
+      return NetworkHooks.getEntitySpawningPacket(this);
    }
 
    enum State {
       FLYING,
       HOOKED_IN_ENTITY,
       BOBBING
+   }
+
+   public static AttributeSupplier.Builder createAttributes() {
+      return AbstractFish.createAttributes()
+              .add(Attributes.MAX_HEALTH, 10.0);
    }
 }
