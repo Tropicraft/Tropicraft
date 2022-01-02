@@ -42,10 +42,11 @@ import net.minecraft.world.level.levelgen.placement.NoiseCountFactorDecoratorCon
 import net.minecraft.world.level.levelgen.placement.WaterDepthThresholdConfiguration;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.tropicraft.Constants;
+import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.block.TropicraftBlocks;
-import net.tropicraft.core.common.block.TropicraftFlower;
 import net.tropicraft.core.common.data.WorldgenDataConsumer;
 import net.tropicraft.core.common.dimension.feature.block_placer.HugePlantBlockPlacer;
+import net.tropicraft.core.common.dimension.feature.block_state_provider.NoiseFromTagBlockStateProvider;
 import net.tropicraft.core.common.dimension.feature.config.RainforestVinesConfig;
 import net.tropicraft.core.common.dimension.feature.tree.CitrusFoliagePlacer;
 import net.tropicraft.core.common.dimension.feature.tree.CitrusTrunkPlacer;
@@ -350,14 +351,14 @@ public final class TropicraftConfiguredFeatures {
             ).decorated(Features.Decorators.ADD_32).decorated(Features.Decorators.HEIGHTMAP_SQUARE);
         });
         this.tropicsFlowers = features.register("tropics_flowers", Feature.FLOWER, feature -> {
-            //TODO 1.17 BlockStateProvider stateProvider = new NoiseFromTagBlockStateProvider(TropicraftTags.Blocks.TROPICS_FLOWERS);
-            SimpleStateProvider stateProvider = new SimpleStateProvider(TropicraftBlocks.FLOWERS.get(TropicraftFlower.MAGIC_MUSHROOM).get().defaultBlockState());
+            BlockStateProvider stateProvider = new NoiseFromTagBlockStateProvider(TropicraftTags.Blocks.TROPICS_FLOWERS);
+            //SimpleStateProvider stateProvider = new SimpleStateProvider(TropicraftBlocks.FLOWERS.get(TropicraftFlower.MAGIC_MUSHROOM).get().defaultBlockState());
             RandomPatchConfiguration config = new RandomPatchConfiguration.GrassConfigurationBuilder(stateProvider, SimpleBlockPlacer.INSTANCE).tries(64).build();
             return feature.configured(config).decorated(Features.Decorators.ADD_32.decorated(Features.Decorators.HEIGHTMAP_SQUARE).count(12));
         });
         this.rainforestFlowers = features.register("rainforest_flowers", Feature.FLOWER, feature -> {
-            //TODO 1.17 BlockStateProvider stateProvider = new NoiseFromTagBlockStateProvider(TropicraftTags.Blocks.RAINFOREST_FLOWERS);
-            SimpleStateProvider stateProvider = new SimpleStateProvider(TropicraftBlocks.FLOWERS.get(TropicraftFlower.MAGIC_MUSHROOM).get().defaultBlockState());
+            BlockStateProvider stateProvider = new NoiseFromTagBlockStateProvider(TropicraftTags.Blocks.RAINFOREST_FLOWERS);
+            //SimpleStateProvider stateProvider = new SimpleStateProvider(TropicraftBlocks.FLOWERS.get(TropicraftFlower.MAGIC_MUSHROOM).get().defaultBlockState());
             RandomPatchConfiguration config = new RandomPatchConfiguration.GrassConfigurationBuilder(stateProvider, SimpleBlockPlacer.INSTANCE).tries(64).noProjection().build();
             return feature.configured(config).decorated(Features.Decorators.ADD_32.decorated(Features.Decorators.HEIGHTMAP_SQUARE).count(4));
         });

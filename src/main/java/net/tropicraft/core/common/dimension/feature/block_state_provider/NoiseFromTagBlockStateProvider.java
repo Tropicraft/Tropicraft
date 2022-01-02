@@ -3,7 +3,8 @@ package net.tropicraft.core.common.dimension.feature.block_state_provider;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.tags.BlockTags;
+import net.minecraft.core.Registry;
+import net.minecraft.tags.SerializationTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
@@ -19,7 +20,7 @@ import java.util.Random;
 public final class NoiseFromTagBlockStateProvider extends BlockStateProvider {
     public static final Codec<NoiseFromTagBlockStateProvider> CODEC = RecordCodecBuilder.create(instance -> {
         return instance.group(
-                Tag.codec(BlockTags::getAllTags).fieldOf("tag").forGetter(c -> c.tag)
+                Tag.codec(() -> SerializationTags.getInstance().getOrEmpty(Registry.BLOCK_REGISTRY)).fieldOf("tag").forGetter(c -> c.tag)
         ).apply(instance, NoiseFromTagBlockStateProvider::new);
     });
 
@@ -36,6 +37,7 @@ public final class NoiseFromTagBlockStateProvider extends BlockStateProvider {
 
     @Override
     public BlockState getState(Random random, BlockPos pos) {
+
         List<Block> blocks = this.tag.getValues();
         if (blocks.isEmpty()) {
             return Blocks.AIR.defaultBlockState();

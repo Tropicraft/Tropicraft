@@ -1,17 +1,11 @@
 package net.tropicraft.core.client.entity.model;
 
-import com.google.common.collect.ImmutableList;
-import net.minecraft.client.model.AgeableListModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.tropicraft.core.common.entity.neutral.JaguarEntity;
+import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.world.entity.Entity;
 
-public class JaguarModel<T extends JaguarEntity> extends AgeableListModel<T> {
+public class JaguarModel<T extends Entity> extends TropicraftAgeableModel<T> {
     private final ModelPart body_base;
     private final ModelPart tail_base;
     private final ModelPart tail_tip;
@@ -28,86 +22,198 @@ public class JaguarModel<T extends JaguarEntity> extends AgeableListModel<T> {
     private final ModelPart leg_front_right;
     private final ModelPart leg_back_right;
 
-    public JaguarModel(ModelPart model) {
-        this.body_base = model.getChild("body");
-        this.tail_base = model.getChild("tail_base");
-        this.tail_tip = this.tail_base.getChild("tail_tip");
-        this.tail_tip_r1 = this.tail_tip.getChild("tail_tip_r1");
-        this.leg_back_left = model.getChild("leg_back_left");
-        this.torso_main = model.getChild("torso_main");
-        this.leg_front_left = this.torso_main.getChild("leg_front_left");
-        this.head_base = model.getChild("head");
-        this.ear_left = model.getChild("ear_left");
-        this.ear_left_r1 = this.ear_left.getChild("ear_left_r1");
-        this.head_snout = model.getChild("head_snout");
-        this.ear_right = model.getChild("ear_right");
-        this.ear_right_r1 = this.ear_right.getChild("ear_right_r1");
-        this.leg_front_right = this.torso_main.getChild("leg_front_right");
-        this.leg_back_right = model.getChild("leg_back_right");
+    public JaguarModel(ModelPart root) {
+        body_base = root.getChild("body_base");
+        tail_base = body_base.getChild("tail_base");
+        tail_tip = tail_base.getChild("tail_tip");
+        tail_tip_r1 = tail_tip.getChild("tail_tip_r1");
+        leg_back_left = body_base.getChild("leg_back_left");
+        torso_main = body_base.getChild("torso_main");
+        leg_front_left = torso_main.getChild("leg_front_left");
+
+        head_base = root.getChild("head_base"); //???
+        ear_left = head_base.getChild("ear_left");
+        ear_left_r1 = ear_left.getChild("ear_left_r1");
+        head_snout = head_base.getChild("head_snout");
+        ear_right = head_base.getChild("ear_right");
+        ear_right_r1 = ear_right.getChild("ear_right_r1");
+
+        leg_front_right = torso_main.getChild("leg_front_right");
+        leg_back_right = body_base.getChild("leg_back_right");
+
+//        texWidth = 128;
+//        texHeight = 128;
+//
+//        body_base = new ModelPart(this);
+//        body_base.setPos(0.0F, 9.0F, 4.0F);
+//        body_base.texOffs(37, 0).addBox(-3.5F, -1.0F, -4.0F, 7.0F, 8.0F, 10.0F, 0.0F, false);
+//
+//        tail_base = new ModelPart(this);
+//        tail_base.setPos(0.0F, -1.0F, 6.0F);
+//        body_base.addChild(tail_base);
+//        setRotationAngle(tail_base, -1.0472F, 0.0F, 0.0F);
+//        tail_base.texOffs(54, 20).addBox(-1.5F, 0.0F, 0.0F, 3.0F, 3.0F, 9.0F, 0.0F, false);
+//
+//        tail_tip = new ModelPart(this);
+//        tail_tip.setPos(0.0F, 3.0F, 9.0F);
+//        tail_base.addChild(tail_tip);
+//        setRotationAngle(tail_tip, 0.4363F, 0.0F, 0.0F);
+//
+//        tail_tip_r1 = new ModelPart(this);
+//        tail_tip_r1.setPos(0.0F, 0.0F, 0.0F);
+//        tail_tip.addChild(tail_tip_r1);
+//        setRotationAngle(tail_tip_r1, 0.1745F, 0.0F, 0.0F);
+//        tail_tip_r1.texOffs(29, 20).addBox(-1.5F, -3.0F, 0.0F, 3.0F, 3.0F, 9.0F, 0.001F, false);
+//
+//        leg_back_left = new ModelPart(this);
+//        leg_back_left.setPos(4.5F, 4.0F, 3.0F);
+//        body_base.addChild(leg_back_left);
+//        leg_back_left.texOffs(0, 55).addBox(-3.0F, -2.0F, -2.0F, 3.0F, 13.0F, 4.0F, 0.0F, false);
+//
+//        torso_main = new ModelPart(this);
+//        torso_main.setPos(0.0F, 0.0F, -4.0F);
+//        body_base.addChild(torso_main);
+//        torso_main.texOffs(0, 0).addBox(-4.0F, -1.0F, -10.0F, 8.0F, 9.0F, 10.0F, 0.0F, false);
+//
+//        leg_front_left = new ModelPart(this);
+//        leg_front_left.setPos(4.0F, 2.0F, -8.0F);
+//        torso_main.addChild(leg_front_left);
+//        leg_front_left.texOffs(15, 35).addBox(-2.0F, -2.0F, -1.0F, 3.0F, 15.0F, 4.0F, 0.0F, false);
+//
+//        head_base = new ModelPart(this);
+//        head_base.setPos(0.0F, 9.0F, -10.0F);
+//        setRotationAngle(head_base, 0.0436F, 0.0F, 0.0F);
+//        head_base.texOffs(0, 20).addBox(-3.5F, -2.0F, -7.0F, 7.0F, 7.0F, 7.0F, 0.0F, false);
+//
+//        ear_left = new ModelPart(this);
+//        ear_left.setPos(2.0F, -2.0F, -3.0F);
+//        head_base.addChild(ear_left);
+//        setRotationAngle(ear_left, 0.0F, -0.5672F, 0.3927F);
+//
+//        ear_left_r1 = new ModelPart(this);
+//        ear_left_r1.setPos(0.0F, 0.0F, 0.0F);
+//        ear_left.addChild(ear_left_r1);
+//        setRotationAngle(ear_left_r1, 0.0F, 0.0F, 0.0F);
+//        ear_left_r1.texOffs(34, 55).addBox(0.0F, -2.0F, 0.0F, 3.0F, 3.0F, 1.0F, 0.0F, false);
+//
+//        head_snout = new ModelPart(this);
+//        head_snout.setPos(0.0F, -1.0F, -7.0F);
+//        head_base.addChild(head_snout);
+//        setRotationAngle(head_snout, 0.2618F, 0.0F, 0.0F);
+//        head_snout.texOffs(15, 55).addBox(-2.5F, 0.0F, -4.0F, 5.0F, 6.0F, 4.0F, 0.0F, false);
+//
+//        ear_right = new ModelPart(this);
+//        ear_right.setPos(-2.0F, -2.0F, -3.0F);
+//        head_base.addChild(ear_right);
+//        setRotationAngle(ear_right, 0.0F, 0.5672F, -0.3927F);
+//
+//        ear_right_r1 = new ModelPart(this);
+//        ear_right_r1.setPos(0.0F, 0.0F, 0.0F);
+//        ear_right.addChild(ear_right_r1);
+//        setRotationAngle(ear_right_r1, 0.0F, 0.0F, 0.0F);
+//        ear_right_r1.texOffs(15, 66).addBox(-3.0F, -2.0F, 0.0F, 3.0F, 3.0F, 1.0F, 0.0F, false);
+//
+//        leg_front_right = new ModelPart(this);
+//        leg_front_right.setPos(-4.0F, 2.0F, -8.0F);
+//        torso_main.addChild(leg_front_right);
+//        leg_front_right.texOffs(0, 35).addBox(-1.0F, -2.0F, -1.0F, 3.0F, 15.0F, 4.0F, 0.0F, false);
+//
+//        leg_back_right = new ModelPart(this);
+//        leg_back_right.setPos(-4.5F, 4.0F, 3.0F);
+//        body_base.addChild(leg_back_right);
+//        leg_back_right.texOffs(30, 35).addBox(0.0F, -2.0F, -2.0F, 3.0F, 13.0F, 4.0F, 0.0F, false);
     }
 
+
     public static LayerDefinition create() {
-        MeshDefinition meshDefinition = new MeshDefinition();
-        PartDefinition partDefinition = meshDefinition.getRoot();
+        MeshDefinition modelData = new MeshDefinition();
+        PartDefinition modelPartData = modelData.getRoot();
 
-        partDefinition.addOrReplaceChild("body", CubeListBuilder.create()
-                        .texOffs(37, 0).addBox(-3.5f, -1.0f, -4.0f, 7.0f, 8.0f, 10.0f),
-                PartPose.offsetAndRotation(0.0f, 9.0f, 4.0f, 0.0f, 0.0f, 0.0f));
+        PartDefinition modelPartBody = modelPartData.addOrReplaceChild("body_base",
+                CubeListBuilder.create()
+                        .texOffs(37, 0)
+                        .addBox(-3.5F, -1.0F, -4.0F, 7.0F, 8.0F, 10.0F, false),
+                PartPose.offset(0.0F, 9.0F, 4.0F));
 
-        PartDefinition partDefinition1 = partDefinition.addOrReplaceChild("tail_base", CubeListBuilder.create()
-                        .texOffs(54, 20).addBox(-1.5f, 0.0f, 0.0f, 3.0f, 3.0f, 9.0f),
-                PartPose.offsetAndRotation(0.0f, 8.0f, 6.0f, -1.0472f, 0.0f, 0.0f));
+        PartDefinition modelPartTail = modelPartBody.addOrReplaceChild("tail_base",
+                CubeListBuilder.create()
+                        .texOffs(54, 20)
+                        .addBox(-1.5F, 0.0F, 0.0F, 3.0F, 3.0F, 9.0F, false),
+                PartPose.offsetAndRotation(0.0F, -1.0F, 6.0F, -1.0472F, 0.0F, 0.0F));
 
-        PartDefinition partDefinition2 = partDefinition1.addOrReplaceChild("tail_tip", CubeListBuilder.create(),
-                PartPose.offsetAndRotation(0.0f, 3.0f, 9.0f, 0.4363f, 0.0f, 0.0f));
+        PartDefinition modelPartTailTip = modelPartTail.addOrReplaceChild("tail_tip",
+                CubeListBuilder.create(),
+                PartPose.offsetAndRotation(0.0F, 3.0F, 9.0F, 0.4363F, 0.0F, 0.0F));
 
-        partDefinition2.addOrReplaceChild("tail_tip_r1", CubeListBuilder.create()
-                        .texOffs(29, 20).addBox(-1.5f, -3.0f, 0.0f, 3.0f, 3.0f, 9.0f, new CubeDeformation(0.00f)),
-                PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, 0.1745f, 0.0f, 0.0f));
+        modelPartTailTip.addOrReplaceChild("tail_tip_r1",
+                CubeListBuilder.create().mirror(false)
+                        .texOffs(29, 20)
+                        .addBox(-1.5F, -3.0F, 0.0F, 3.0F, 3.0F, 9.0F, new CubeDeformation(0.001F)),
+                PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.1745F, 0.0F, 0.0F));
 
-        partDefinition.addOrReplaceChild("leg_back_left", CubeListBuilder.create()
-                        .texOffs(0, 55).addBox(-3.0f, -2.0f, -2.0f, 3.0f, 13.0f, 4.0f),
-                PartPose.offsetAndRotation(4.5f, 13.0f, 3.0f, 0.0f, 0.0f, 0.0f));
+        modelPartBody.addOrReplaceChild("leg_back_left",
+                CubeListBuilder.create()
+                        .texOffs(0, 55)
+                        .addBox(-3.0F, -2.0F, -2.0F, 3.0F, 13.0F, 4.0F, false),
+                PartPose.offset(4.5F, 4.0F, 3.0F));
 
-        PartDefinition partDefinition5 = partDefinition.addOrReplaceChild("torso_main", CubeListBuilder.create()
-                        .texOffs(0, 0).addBox(-4.0f, -1.0f, -10.0f, 8.0f, 9.0f, 10.0f),
-                PartPose.offsetAndRotation(0.0f, 9.0f, -4.0f, 0.0f, 0.0f, 0.0f));
+        PartDefinition modelPartTorso = modelPartBody.addOrReplaceChild("torso_main",
+                CubeListBuilder.create()
+                        .texOffs(0, 0)
+                        .addBox(-4.0F, -1.0F, -10.0F, 8.0F, 9.0F, 10.0F, false),
+                PartPose.offset(0.0F, 0.0F, -4.0F));
 
-        partDefinition5.addOrReplaceChild("leg_front_left", CubeListBuilder.create()
-                        .texOffs(15, 35).addBox(-2.0f, -2.0f, -1.0f, 3.0f, 15.0f, 4.0f),
-                PartPose.offsetAndRotation(4.0f, 2.0f, -8.0f, 0.0f, 0.0f, 0.0f));
+        modelPartTorso.addOrReplaceChild("leg_front_left",
+                CubeListBuilder.create()
+                        .texOffs(15, 35)
+                        .addBox(-2.0F, -2.0F, -1.0F, 3.0F, 15.0F, 4.0F, false),
+                PartPose.offset(4.0F, 2.0F, -8.0F));
 
-        PartDefinition partDefinition6 = partDefinition.addOrReplaceChild("head", CubeListBuilder.create()
-                        .texOffs(0, 20).addBox(-3.5f, -2.0f, -7.0f, 7.0f, 7.0f, 7.0f),
-                PartPose.offsetAndRotation(0.0f, 9.0f, -10.0f, 0.0436f, 0.0f, 0.0f));
+        PartDefinition modelPartHead = modelPartData.addOrReplaceChild("head_base",
+                CubeListBuilder.create()
+                        .texOffs(0, 20)
+                        .addBox(-3.5F, -2.0F, -7.0F, 7.0F, 7.0F, 7.0F, false),
+                PartPose.offsetAndRotation(0.0F, 9.0F, -10.0F, 0.0436F, 0.0F, 0.0F));
 
-        PartDefinition partDefinition7 = partDefinition.addOrReplaceChild("ear_left", CubeListBuilder.create(),
-                PartPose.offsetAndRotation(2.0f, 7.0f, -3.0f, 0.0f, -0.5672f, 0.3927f));
+        modelPartHead.addOrReplaceChild("head_snout",
+                CubeListBuilder.create()
+                        .texOffs(15, 55)
+                        .addBox(-2.5F, 0.0F, -4.0F, 5.0F, 6.0F, 4.0F, false),
+                PartPose.offsetAndRotation(0.0F, -1.0F, -7.0F, 0.2618F, 0.0F, 0.0F));
 
-        partDefinition7.addOrReplaceChild("ear_left_r1", CubeListBuilder.create()
-                        .texOffs(34, 55).addBox(0.0f, -2.0f, 0.0f, 3.0f, 3.0f, 1.0f),
-                PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f));
+        PartDefinition modelPartEarLeft = modelPartHead.addOrReplaceChild("ear_left",
+                CubeListBuilder.create(),
+                PartPose.offsetAndRotation(2.0F, -2.0F, -3.0F, 0.0F, -0.5672F, 0.3927F));
 
-        partDefinition.addOrReplaceChild("head_snout", CubeListBuilder.create()
-                        .texOffs(15, 55).addBox(-2.5f, 0.0f, -4.0f, 5.0f, 6.0f, 4.0f),
-                PartPose.offsetAndRotation(0.0f, 8.0f, -7.0f, 0.2618f, 0.0f, 0.0f));
+        modelPartEarLeft.addOrReplaceChild("ear_left_r1",
+                CubeListBuilder.create()
+                        .texOffs(34, 55)
+                        .addBox(0.0F, -2.0F, 0.0F, 3.0F, 3.0F, 1.0F, false),
+                PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F));
 
-        PartDefinition partDefinition10 = partDefinition.addOrReplaceChild("ear_right", CubeListBuilder.create(),
-                PartPose.offsetAndRotation(-2.0f, 7.0f, -3.0f, 0.0f, 0.5672f, -0.3927f));
+        PartDefinition modelPartEarRight = modelPartHead.addOrReplaceChild("ear_right",
+                CubeListBuilder.create(),
+                PartPose.offsetAndRotation(-2.0F, -2.0F, -3.0F, 0.0F, 0.5672F, -0.3927F));
 
-        partDefinition10.addOrReplaceChild("ear_right_r1", CubeListBuilder.create()
-                        .texOffs(15, 66).addBox(-3.0f, -2.0f, 0.0f, 3.0f, 3.0f, 1.0f),
-                PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f));
+        modelPartEarRight.addOrReplaceChild("ear_right_r1",
+                CubeListBuilder.create()
+                        .texOffs(15, 66)
+                        .addBox(-3.0F, -2.0F, 0.0F, 3.0F, 3.0F, 1.0F, false),
+                PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F));
 
-        partDefinition5.addOrReplaceChild("leg_front_right", CubeListBuilder.create()
-                        .texOffs(0, 35).addBox(-1.0f, -2.0f, -1.0f, 3.0f, 15.0f, 4.0f),
-                PartPose.offsetAndRotation(-4.0f, 2.0f, -8.0f, 0.0f, 0.0f, 0.0f));
+        modelPartTorso.addOrReplaceChild("leg_front_right",
+                CubeListBuilder.create()
+                        .texOffs(0, 35)
+                        .addBox(-1.0F, -2.0F, -1.0F, 3.0F, 15.0F, 4.0F, false),
+                PartPose.offset(-4.0F, 2.0F, -8.0F));
 
-        partDefinition.addOrReplaceChild("leg_back_right", CubeListBuilder.create()
-                        .texOffs(30, 35).addBox(0.0f, -2.0f, -2.0f, 3.0f, 13.0f, 4.0f),
-                PartPose.offsetAndRotation(-4.5f, 13.0f, 3.0f, 0.0f, 0.0f, 0.0f));
+        modelPartBody.addOrReplaceChild("leg_back_right",
+                CubeListBuilder.create()
+                        .texOffs(30, 35)
+                        .addBox(0.0F, -2.0F, -2.0F, 3.0F, 13.0F, 4.0F, false),
+                PartPose.offset(-4.5F, 4.0F, 3.0F));
 
-        return LayerDefinition.create(meshDefinition, 128, 128);
+        return LayerDefinition.create(modelData, 128, 128);
     }
 
     @Override
@@ -122,30 +228,19 @@ public class JaguarModel<T extends JaguarEntity> extends AgeableListModel<T> {
         }
     }
 
-//    @Override
-//    protected ModelPart getHead() {
-//        return this.head_base;
-//    }
-//
-//    @Override
-//    protected ModelPart getBody() {
-//        return this.body_base;
-//    }
-
-//    @Override
-//    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-//        body_base.render(poseStack, buffer, packedLight, packedOverlay);
-//        head_base.render(poseStack, buffer, packedLight, packedOverlay);
-//    }
-
     @Override
-    protected Iterable<ModelPart> headParts() {
-        return ImmutableList.of(head_base);
+    protected ModelPart getHead() {
+        return this.head_base;
     }
 
     @Override
-    protected Iterable<ModelPart> bodyParts() {
-        return ImmutableList.of(body_base, tail_base, tail_tip, tail_tip_r1, leg_back_left, torso_main, leg_front_left,
-                ear_left, ear_left_r1, head_snout, ear_right, ear_right_r1, leg_front_right, leg_back_right);
+    protected ModelPart getBody() {
+        return this.body_base;
+    }
+
+    private void setRotationAngle(ModelPart modelRenderer, float x, float y, float z) {
+        modelRenderer.xRot = x;
+        modelRenderer.yRot = y;
+        modelRenderer.zRot = z;
     }
 }
