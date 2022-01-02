@@ -223,8 +223,9 @@ public class CocktailItem extends Item implements IColoredItem {
             Drink drink = getDrink(stack);
 
             if (worldIn.isRainingAt(player.blockPosition()) && drink == Drink.PINA_COLADA) {
-                // TODO advancements player.addStat(AchievementRegistry.drinkPinaColada);
+                // TODO 1.17 advancements player.addStat(AchievementRegistry.drinkPinaColada);
             }
+            return player.getAbilities().instabuild ? stack : new ItemStack(TropicraftItems.BAMBOO_MUG.get());
         }
 
         return new ItemStack(TropicraftItems.BAMBOO_MUG.get());
