@@ -2,15 +2,20 @@ package net.tropicraft.core.common.dimension.chunk;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.LevelHeightAccessor;
-import net.minecraft.world.level.levelgen.WorldgenRandom;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.LevelHeightAccessor;
+import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
+import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
+import net.minecraft.world.level.levelgen.WorldgenRandom;
+import net.minecraft.world.level.levelgen.synth.PerlinNoise;
+import net.minecraft.world.level.levelgen.synth.PerlinSimplexNoise;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.Constants;
@@ -19,12 +24,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
-
-import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
-import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
-import net.minecraft.world.level.levelgen.synth.PerlinNoise;
-import net.minecraft.world.level.levelgen.synth.PerlinSimplexNoise;
 
 public class TropicraftChunkGenerator extends NoiseBasedChunkGenerator {
     public static final Codec<TropicraftChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> {
@@ -71,16 +70,13 @@ public class TropicraftChunkGenerator extends NoiseBasedChunkGenerator {
 
     @Override
     public CompletableFuture<ChunkAccess> fillFromNoise(Executor executor, StructureFeatureManager structures, ChunkAccess chunk) {
-        CompletableFuture<ChunkAccess> future = super.fillFromNoise(executor, structures, chunk);
-
-        // TODO 1.17: is thenAccept the right method here?
-        future.thenAccept(chunkAccess -> {
-            ChunkPos chunkPos = chunk.getPos();
-            WorldgenRandom random = new WorldgenRandom(this.seed);
-            volcano.generate(chunkPos.x, chunkPos.z, chunk, random);
-        });
-
-        return future;
+        return super.fillFromNoise(executor, structures, chunk)
+                .thenApply(volcanoChunk -> {
+                    ChunkPos chunkPos = volcanoChunk.getPos();
+                    WorldgenRandom random = new WorldgenRandom(this.seed);
+                    volcano.generate(chunkPos.x, chunkPos.z, volcanoChunk, random);
+                    return volcanoChunk;
+                });
     }
 
     @Override
