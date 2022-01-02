@@ -16,9 +16,7 @@ import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.levelgen.feature.configurations.JigsawConfiguration;
-import net.minecraft.world.level.levelgen.feature.structures.FeaturePoolElement;
 import net.minecraft.world.level.levelgen.feature.structures.JigsawPlacement;
-import net.minecraft.world.level.levelgen.feature.structures.SinglePoolElement;
 import net.minecraft.world.level.levelgen.feature.structures.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.PoolElementStructurePiece;
@@ -67,21 +65,7 @@ public class HomeTreeStructure extends StructureFeature<JigsawConfiguration> {
         public void generatePieces(RegistryAccess registries, ChunkGenerator generator, StructureManager templates, ChunkPos chunkPos, Biome biome, JigsawConfiguration config, LevelHeightAccessor pLevel) {
             BlockPos pos = chunkPos.getWorldPosition();
             JigsawPlacement.addPieces(registries, config, Piece::new, generator, templates, pos, this, this.random, true, true, pLevel);
-            // TODO 1.17 this.calculateBoundingBox();
         }
-
-        // TODO 1.17 what happened to this?
-//        @Override
-//        protected void calculateBoundingBox() {
-//            super.calculateBoundingBox();
-//            int margin = 24; // Double vanilla's margin
-//            this.boundingBox.x0 -= margin;
-//            this.boundingBox.y0 -= margin;
-//            this.boundingBox.z0 -= margin;
-//            this.boundingBox.x1 += margin;
-//            this.boundingBox.y1 += margin;
-//            this.boundingBox.z1 += margin;
-//        }
     }
 
     public static class Piece extends PoolElementStructurePiece {
@@ -92,26 +76,15 @@ public class HomeTreeStructure extends StructureFeature<JigsawConfiguration> {
 
         public Piece(ServerLevel level, CompoundTag data) {
             super(level, data);
-            //TODO how do we get this called again here?
-            // this.boundingBox = this.fixGenerationBoundingBox(templates);
+            this.boundingBox = this.fixGenerationBoundingBox(level.getStructureManager());
         }
 
         private BoundingBox fixGenerationBoundingBox(StructureManager templates) {
-            StructurePoolElement piece = this.element;
-            if (piece instanceof PieceWithGenerationBounds) {
-                return ((PieceWithGenerationBounds) piece).getGenerationBounds(templates, this.position, Rotation.NONE);
+            if (this.element instanceof PieceWithGenerationBounds piece) {
+                return piece.getGenerationBounds(templates, this.position, Rotation.NONE);
             } else {
                 return boundingBox;
             }
-        }
-
-        @Override
-        public BoundingBox getBoundingBox() {
-            if (this.element instanceof FeaturePoolElement) {
-                BoundingBox ret = super.getBoundingBox();
-                return ret.inflate(32);
-            }
-            return super.getBoundingBox();
         }
 
         @Override
