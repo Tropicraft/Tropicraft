@@ -2,8 +2,8 @@ package net.tropicraft.core.common.item;
 
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -24,8 +24,15 @@ public class NigelStacheItem extends ArmorItem implements IItemRenderProperties 
     @OnlyIn(Dist.CLIENT)
     @Nullable
     @Override
-    public HumanoidModel getArmorModel(final LivingEntity entityLiving, final ItemStack itemStack, final EquipmentSlot armorSlot, final HumanoidModel model) {
-        return slot == EquipmentSlot.HEAD ? PlayerHeadpieceModel.createModel(TropicraftRenderLayers.STACHE_LAYER, null, 0, 0, 0) : null;
+    public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.IItemRenderProperties> consumer) {
+        consumer.accept(new IItemRenderProperties() {
+            @OnlyIn(Dist.CLIENT)
+            @Nullable
+            @Override
+            public HumanoidModel getArmorModel(final LivingEntity entityLiving, final ItemStack itemStack, final EquipmentSlot armorSlot, final HumanoidModel model) {
+                return slot == EquipmentSlot.HEAD ? PlayerHeadpieceModel.createModel(TropicraftRenderLayers.STACHE_LAYER, null, 0, 0, 0) : null;
+            }
+        });
     }
     
     @Override
