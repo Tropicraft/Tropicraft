@@ -987,7 +987,7 @@ public class EntityKoaBase extends Villager {
 
         //validate home position
         boolean tryFind = false;
-        if (getRestrictCenter() == null) {
+        if (getRestrictCenter().equals(BlockPos.ZERO)) {
             tryFind = true;
         } else {
             BlockEntity tile = level.getBlockEntity(getRestrictCenter());

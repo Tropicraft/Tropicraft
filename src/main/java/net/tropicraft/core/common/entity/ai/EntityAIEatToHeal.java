@@ -76,7 +76,7 @@ public class EntityAIEatToHeal extends Goal
             boolean isClose = false;
             BlockPos blockposGoal = this.entityObj.getRestrictCenter();
 
-            if (blockposGoal == null) {
+            if (blockposGoal.equals(BlockPos.ZERO)) {
                 stop();
                 return;
             }
@@ -170,7 +170,7 @@ public class EntityAIEatToHeal extends Goal
             blockposGoal = this.entityObj.getRestrictCenter();
         }
 
-        if (blockposGoal == null) {
+        if (blockposGoal.equals(BlockPos.ZERO)) {
             return false;
         }
 
@@ -191,7 +191,7 @@ public class EntityAIEatToHeal extends Goal
 
     public boolean hasFoodAtHome() {
         BlockPos blockposGoal = this.entityObj.getRestrictCenter();
-        if (blockposGoal != null) {
+        if (!blockposGoal.equals(BlockPos.ZERO)) {
             BlockEntity tile = entityObj.level.getBlockEntity(blockposGoal);
             if (tile instanceof ChestBlockEntity) {
                 ChestBlockEntity chest = (ChestBlockEntity) tile;
@@ -214,7 +214,7 @@ public class EntityAIEatToHeal extends Goal
 
     public ItemStack consumeOneStackSizeOfFoodAtHome() {
         BlockPos blockposGoal = this.entityObj.getRestrictCenter();
-        if (blockposGoal != null) {
+        if (!blockposGoal.equals(BlockPos.ZERO)) {
             BlockEntity tile = entityObj.level.getBlockEntity(blockposGoal);
             if (tile instanceof ChestBlockEntity) {
                 ChestBlockEntity chest = (ChestBlockEntity) tile;

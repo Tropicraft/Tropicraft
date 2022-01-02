@@ -98,7 +98,7 @@ public class EntityAIChillAtFire extends Goal
             blockposGoal = this.entityObj.getRestrictCenter();
         }
 
-        if (blockposGoal == null) {
+        if (blockposGoal.equals(BlockPos.ZERO)) {
             stop();
             return;
         }
@@ -217,7 +217,7 @@ public class EntityAIChillAtFire extends Goal
             blockposGoal = this.entityObj.getRestrictCenter();
         }
 
-        if (blockposGoal == null) {
+        if (blockposGoal.equals(BlockPos.ZERO)) {
             return false;
         }
 

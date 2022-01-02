@@ -26,6 +26,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -117,6 +118,15 @@ public class FishingBobberEntity extends Entity implements IEntityAdditionalSpaw
    public boolean shouldRenderAtSqrDistance(double distance) {
       double d0 = 64.0D;
       return distance < 4096.0D;
+   }
+
+   /**
+    * Inflated so it will still render when looking at koa but not fishing lure
+    * @return
+    */
+   @Override
+   public AABB getBoundingBoxForCulling() {
+      return this.getBoundingBox().inflate(8, 5.0D, 8);
    }
 
    @Override
