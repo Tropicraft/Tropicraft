@@ -232,14 +232,13 @@ public class Tropicraft {
     private void gatherWorldgenData(DataGenerator gen) {
         gen.addProvider(new TropicraftWorldgenProvider(gen, generator -> {
             TropicraftConfiguredFeatures features = generator.addConfiguredFeatures(TropicraftConfiguredFeatures::new);
-            TropicraftConfiguredSurfaceBuilders surfaceBuilders = generator.addConfiguredSurfaceBuilders(TropicraftConfiguredSurfaceBuilders::new);
             TropicraftConfiguredCarvers carvers = generator.addConfiguredCarvers(TropicraftConfiguredCarvers::new);
             TropicraftProcessorLists processors = generator.addProcessorLists(TropicraftProcessorLists::new);
             TropicraftTemplatePools templates = generator.addTemplatePools(consumer -> new TropicraftTemplatePools(consumer, features, processors));
             TropicraftConfiguredStructures structures = generator.addConfiguredStructures(consumer -> new TropicraftConfiguredStructures(consumer, templates));
 
             generator.addBiomes(consumer -> {
-                return new TropicraftBiomes(consumer, features, structures, carvers, surfaceBuilders);
+                return new TropicraftBiomes(consumer, features, structures, carvers);
             });
         }));
     }
