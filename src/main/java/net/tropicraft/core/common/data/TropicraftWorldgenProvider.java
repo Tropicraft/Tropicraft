@@ -13,7 +13,6 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
 import net.minecraft.resources.RegistryWriteOps;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
@@ -21,7 +20,6 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.level.levelgen.feature.structures.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
-import net.minecraft.world.level.levelgen.surfacebuilders.ConfiguredSurfaceBuilder;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
 import net.tropicraft.core.common.dimension.carver.TropicraftConfiguredCarvers;
 import net.tropicraft.core.common.dimension.feature.TropicraftConfiguredFeatures;
@@ -34,8 +32,6 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Map;
-import java.util.Optional;
 import java.util.function.Supplier;
 
 public final class TropicraftWorldgenProvider implements DataProvider {
@@ -50,10 +46,7 @@ public final class TropicraftWorldgenProvider implements DataProvider {
 
     @Override
     public void run(HashCache cache) {
-        var dynamicRegistries = buildDynamicRegistries();
-        var ops = RegistryWriteOps.create(JsonOps.INSTANCE, dynamicRegistries);
-
-        var consumers = new Consumers(root, cache, dynamicRegistries, ops);
+        var consumers = buildConsumers(cache);
 
         var features = new TropicraftConfiguredFeatures(consumers.configuredFeatures());
         var carvers = new TropicraftConfiguredCarvers(consumers.configuredCarvers());
@@ -64,9 +57,16 @@ public final class TropicraftWorldgenProvider implements DataProvider {
         new TropicraftBiomes(consumers.biomes(), features, structures, carvers);
     }
 
+    private Consumers buildConsumers(HashCache cache) {
+        var dynamicRegistries = buildDynamicRegistries();
+        var ops = RegistryWriteOps.create(JsonOps.INSTANCE, dynamicRegistries);
+
+        return new Consumers(root, cache, dynamicRegistries, ops);
+    }
+
     private RegistryAccess.RegistryHolder buildDynamicRegistries() {
-        RegistryAccess.RegistryHolder dynamicRegistries = new RegistryAccess.RegistryHolder();
-        for (Registry<?> registry : BuiltinRegistries.REGISTRY) {
+        var dynamicRegistries = new RegistryAccess.RegistryHolder();
+        for (var registry : BuiltinRegistries.REGISTRY) {
             copyAllToDynamicRegistry(registry, dynamicRegistries);
         }
         return dynamicRegistries;
@@ -79,7 +79,7 @@ public final class TropicraftWorldgenProvider implements DataProvider {
     }
 
     private static <T> void copyAllToRegistry(Registry<T> from, Registry<T> to) {
-        for (Map.Entry<ResourceKey<T>, T> entry : from.entrySet()) {
+        for (var entry : from.entrySet()) {
             Registry.register(to, entry.getKey().location(), entry.getValue());
         }
     }
@@ -97,10 +97,6 @@ public final class TropicraftWorldgenProvider implements DataProvider {
 
         public WorldgenDataConsumer<ConfiguredFeature<?, ?>> configuredFeatures() {
             return consumer("worldgen/configured_feature", BuiltinRegistries.CONFIGURED_FEATURE, ConfiguredFeature.CODEC);
-        }
-
-        public WorldgenDataConsumer<ConfiguredSurfaceBuilder<?>> configuredSurfaceBuilders() {
-            return consumer("worldgen/configured_surface_builder", BuiltinRegistries.CONFIGURED_SURFACE_BUILDER, ConfiguredSurfaceBuilder.CODEC);
         }
 
         public WorldgenDataConsumer<ConfiguredWorldCarver<?>> configuredCarvers() {
@@ -125,10 +121,10 @@ public final class TropicraftWorldgenProvider implements DataProvider {
 
         public <T> WorldgenDataConsumer<T> consumer(String path, @Nullable Registry<? super T> registry, Codec<Supplier<T>> codec) {
             return (id, entry) -> {
-                Path entryPath = root.resolve(id.getNamespace()).resolve(path).resolve(id.getPath() + ".json");
+                var entryPath = root.resolve(id.getNamespace()).resolve(path).resolve(id.getPath() + ".json");
 
                 try {
-                    Optional<JsonElement> serialized = codec.encodeStart(ops, () -> entry).result();
+                    var serialized = codec.encodeStart(ops, () -> entry).result();
                     if (serialized.isPresent()) {
                         DataProvider.save(GSON, cache, serialized.get(), entryPath);
                     } else {
