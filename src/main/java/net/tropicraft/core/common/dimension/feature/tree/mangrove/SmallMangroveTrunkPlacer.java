@@ -27,7 +27,7 @@ import java.util.function.BiConsumer;
 public class SmallMangroveTrunkPlacer extends TrunkPlacer {
     public static final Codec<SmallMangroveTrunkPlacer> CODEC = RecordCodecBuilder.create(instance -> {
         return trunkPlacerParts(instance)
-                .and(Registry.BLOCK.fieldOf("roots_block").forGetter(c -> c.rootsBlock))
+                .and(Registry.BLOCK.byNameCodec().fieldOf("roots_block").forGetter(c -> c.rootsBlock))
                 .apply(instance, SmallMangroveTrunkPlacer::new);
     });
 

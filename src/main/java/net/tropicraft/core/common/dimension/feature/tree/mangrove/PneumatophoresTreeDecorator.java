@@ -22,7 +22,7 @@ import static net.minecraft.world.level.levelgen.feature.TreeFeature.validTreePo
 
 public class PneumatophoresTreeDecorator extends TreeDecorator {
     public static final Codec<PneumatophoresTreeDecorator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Registry.BLOCK.fieldOf("roots_block").forGetter(c -> c.rootsBlock),
+            Registry.BLOCK.byNameCodec().fieldOf("roots_block").forGetter(c -> c.rootsBlock),
             Codec.INT.fieldOf("min_count").forGetter(c -> c.minCount),
             Codec.INT.fieldOf("max_count").forGetter(c -> c.maxCount),
             Codec.INT.fieldOf("spread").forGetter(c -> c.spread)

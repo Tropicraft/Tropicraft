@@ -1,19 +1,5 @@
 package net.tropicraft.core.common.dimension.layer;
 
-import net.minecraft.core.Registry;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.newbiome.context.BigContext;
-import net.minecraft.world.level.newbiome.context.LazyAreaContext;
-import net.minecraft.world.level.newbiome.area.Area;
-import net.minecraft.world.level.newbiome.area.AreaFactory;
-import net.minecraft.world.level.newbiome.area.LazyArea;
-import net.minecraft.world.level.newbiome.layer.Layer;
-import net.minecraft.world.level.newbiome.layer.SmoothLayer;
-import net.minecraft.world.level.newbiome.layer.ZoomLayer;
-import net.minecraft.world.level.newbiome.layer.traits.AreaTransformer1;
-
-import java.util.function.LongFunction;
-
 public class TropicraftLayerUtil {
 //    public static Layer buildTropicsProcedure(long seed, Registry<Biome> biomes) {
 //        TropicraftBiomeIds biomeIds = new TropicraftBiomeIds(biomes);
@@ -67,4 +53,4 @@ public class TropicraftLayerUtil {
 //        }
 //        return result;
 //    }
-//}
+}

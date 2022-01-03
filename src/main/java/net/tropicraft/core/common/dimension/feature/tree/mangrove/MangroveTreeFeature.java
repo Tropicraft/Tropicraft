@@ -45,7 +45,7 @@ public class MangroveTreeFeature extends Feature<TreeConfiguration> {
 
         try {
             if (replaceSoil) world.setBlock(soilPos, Blocks.DIRT.defaultBlockState(), Block.UPDATE_ALL);
-            return this.backing.place(new FeaturePlaceContext<>(world, pContext.chunkGenerator(), pContext.random(), pos, config));
+            return this.backing.place(new FeaturePlaceContext<>(pContext.topFeature(), world, pContext.chunkGenerator(), pContext.random(), pos, config));
         } finally {
             if (replaceSoil) world.setBlock(soilPos, soilState, Block.UPDATE_ALL);
         }

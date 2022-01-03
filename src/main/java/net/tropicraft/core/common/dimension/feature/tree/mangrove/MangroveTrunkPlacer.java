@@ -34,7 +34,7 @@ import java.util.function.BiConsumer;
 public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
     public static final Codec<MangroveTrunkPlacer> CODEC = RecordCodecBuilder.create(instance -> {
         return trunkPlacerParts(instance)
-                .and(Registry.BLOCK.fieldOf("roots_block").forGetter(c -> c.rootsBlock))
+                .and(Registry.BLOCK.byNameCodec().fieldOf("roots_block").forGetter(c -> c.rootsBlock))
                 .and(Codec.BOOL.fieldOf("can_generate_raised").forGetter(c -> c.canGenerateRaised))
                 .and(Codec.BOOL.fieldOf("tea_mangrove").forGetter(c -> c.teaMangrove))
                 .apply(instance, MangroveTrunkPlacer::new);
