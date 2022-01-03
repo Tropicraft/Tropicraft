@@ -201,7 +201,6 @@ public class AirCompressorBlockEntity extends BlockEntity implements IMachineBlo
     @Nullable
     public Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
-        // do we still need to send the update tag manually? return ClientboundBlockEntityDataPacket.create(this.worldPosition, 1, this.getUpdateTag());
     }
 
     @Override
