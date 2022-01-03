@@ -2,49 +2,40 @@ package net.tropicraft.core.common.dimension.feature;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelHeightAccessor;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.levelgen.feature.configurations.JigsawConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.structures.JigsawPlacement;
 import net.minecraft.world.level.levelgen.feature.structures.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.PoolElementStructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructureStart;
-import net.minecraft.world.level.levelgen.structure.pieces.PieceGenerator;
 import net.minecraft.world.level.levelgen.structure.pieces.PieceGeneratorSupplier;
-import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.dimension.feature.jigsaw.piece.NoRotateSingleJigsawPiece;
 import net.tropicraft.core.common.dimension.feature.jigsaw.piece.PieceWithGenerationBounds;
 
-public class HomeTreeStructure extends StructureFeature<JigsawConfiguration> {
-    public HomeTreeStructure(Codec<JigsawConfiguration> codec) {
-        super(codec, PieceGeneratorSupplier.simple((context) -> HomeTreeStructure.isFeatureChunk(
-                context.chunkGenerator(),
-                context.chunkPos(),
-                context.heightAccessor()), HomeTreeStructure::generatePieces));
-    }
+import java.util.Locale;
+import java.util.Optional;
+import java.util.function.Predicate;
 
-    private static boolean isFeatureChunk(ChunkGenerator generator, ChunkPos chunkPos, LevelHeightAccessor level) {
-        BlockPos pos = new BlockPos((chunkPos.x << 4) + 8, 0, (chunkPos.z << 4) + 8);
-        int centerY = generator.getBaseHeight(pos.getX(), pos.getZ(), Heightmap.Types.WORLD_SURFACE_WG, level);
-        return isValid(generator, pos.offset(-4, 0, -4), centerY, level) &&
-                isValid(generator, pos.offset(-4, 0, 4), centerY, level) &&
-                isValid(generator, pos.offset(4, 0, 4), centerY, level) &&
-                isValid(generator, pos.offset(4, 0, -4), centerY, level);
+public class HomeTreeStructure extends StructureFeature<JigsawConfiguration> {
+    public HomeTreeStructure(Codec<JigsawConfiguration> codec, Predicate<PieceGeneratorSupplier.Context<JigsawConfiguration>> context) {
+        super(codec, (p_197102_) -> {
+            if (!context.test(p_197102_)) {
+                return Optional.empty();
+            } else {
+                BlockPos blockpos = new BlockPos(p_197102_.chunkPos().getMinBlockX(), 0, p_197102_.chunkPos().getMinBlockZ());
+                return JigsawPlacement.addPieces(p_197102_, Piece::new, blockpos, true, true);
+            }
+        });
     }
 
     private static boolean isValid(ChunkGenerator generator, BlockPos pos, int startY, final LevelHeightAccessor level) {
@@ -55,24 +46,21 @@ public class HomeTreeStructure extends StructureFeature<JigsawConfiguration> {
                 && y > generator.getSeaLevel() + 2;
     }
 
-    private static void generatePieces(StructurePiecesBuilder p_197106_, PieceGenerator.Context<JigsawConfiguration> p_197107_) {
-        BlockPos pos = chunkPos.getWorldPosition();
-        JigsawPlacement.addPieces(registries, config, Piece::new, generator, templates, pos, this, this.random, true, true, pLevel);
+    public static boolean checkLocation(PieceGeneratorSupplier.Context<JigsawConfiguration> context) {
+        final ChunkGenerator generator = context.chunkGenerator();
+        final BlockPos pos = context.chunkPos().getWorldPosition();
+        final LevelHeightAccessor level = context.heightAccessor();
+        int y = generator.getBaseHeight(pos.getX(), pos.getZ(), Heightmap.Types.WORLD_SURFACE_WG, level);
+        return isValid(generator, pos.offset(-4, 0, -4), y, level) &&
+                isValid(generator, pos.offset(-4, 0, 4), y, level) &&
+                isValid(generator, pos.offset(4, 0, 4), y, level) &&
+                isValid(generator, pos.offset(4, 0, -4), y, level);
     }
 
-    @Override
-    public StructureStartFactory<JigsawConfiguration> getStartFactory() {
-        return Start::new;
-    }
+    private static final StructurePieceType TYPE = setFullContextPieceId(Piece::new, Constants.MODID + ":home_tree");
 
-    private static final StructurePieceType TYPE = StructurePieceType.setPieceId(Piece::new, Constants.MODID + ":home_tree");
-
-    public static class Start extends StructureStart<JigsawConfiguration> {
-        public Start(StructureFeature<JigsawConfiguration> structure, ChunkPos pos, int references, long seed) {
-            super(structure, pos, references, seed);
-        }
-
-
+    private static StructurePieceType setFullContextPieceId(StructurePieceType p_191152_, String p_191153_) {
+        return Registry.register(Registry.STRUCTURE_PIECE, p_191153_.toLowerCase(Locale.ROOT), p_191152_);
     }
 
     public static class Piece extends PoolElementStructurePiece {
@@ -81,9 +69,9 @@ public class HomeTreeStructure extends StructureFeature<JigsawConfiguration> {
             this.boundingBox = this.fixGenerationBoundingBox(templates);
         }
 
-        public Piece(ServerLevel level, CompoundTag data) {
-            super(level, data);
-            this.boundingBox = this.fixGenerationBoundingBox(level.getStructureManager());
+        public Piece(StructurePieceSerializationContext pContext, CompoundTag data) {
+            super(pContext, data);
+            this.boundingBox = this.fixGenerationBoundingBox(pContext.structureManager());
         }
 
         private BoundingBox fixGenerationBoundingBox(StructureManager templates) {

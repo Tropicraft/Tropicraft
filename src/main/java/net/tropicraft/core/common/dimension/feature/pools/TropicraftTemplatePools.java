@@ -2,9 +2,9 @@ package net.tropicraft.core.common.dimension.feature.pools;
 
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.structures.StructurePoolElement;
 import net.minecraft.world.level.levelgen.feature.structures.StructureTemplatePool;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.data.WorldgenDataConsumer;
@@ -221,7 +221,7 @@ public final class TropicraftTemplatePools {
         );
     }
 
-    private static Pair<Function<StructureTemplatePool.Projection, ? extends StructurePoolElement>, Integer> feature(ConfiguredFeature<?, ?> feature, int weight) {
+    private static Pair<Function<StructureTemplatePool.Projection, ? extends StructurePoolElement>, Integer> feature(PlacedFeature feature, int weight) {
         return new Pair<>(
                 StructurePoolElement.feature(feature),
                 weight
