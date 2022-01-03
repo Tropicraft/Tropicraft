@@ -72,14 +72,12 @@ public class TropicraftChunkGenerator extends NoiseBasedChunkGenerator {
     public CompletableFuture<ChunkAccess> fillFromNoise(Executor executor, StructureFeatureManager structures, ChunkAccess chunk) {
         CompletableFuture<ChunkAccess> future = super.fillFromNoise(executor, structures, chunk);
 
-        future.join();
-
-        ChunkPos chunkPos = chunk.getPos();
-        WorldgenRandom random = new WorldgenRandom(this.seed);
-        random.setFeatureSeed(chunkPos.toLong(), 0, 3);
-        volcano.generate(chunkPos.x, chunkPos.z, chunk, random);
-
-        return future;
+		return future.thenApply(chunkAccess -> {
+            ChunkPos chunkPos = chunk.getPos();
+            WorldgenRandom random = new WorldgenRandom(this.seed);
+            volcano.generate(chunkPos.x, chunkPos.z, chunk, random);
+            return chunkAccess;
+        });
     }
 
     @Override
