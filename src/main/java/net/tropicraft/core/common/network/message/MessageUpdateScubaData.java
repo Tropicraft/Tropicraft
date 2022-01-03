@@ -3,7 +3,7 @@ package net.tropicraft.core.common.network.message;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fmllegacy.network.NetworkEvent;
+import net.minecraftforge.network.NetworkEvent;
 import net.tropicraft.core.common.item.scuba.ScubaData;
 import net.tropicraft.core.common.network.TropicraftMessage;
 

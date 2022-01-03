@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.Codec;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.carver.CanyonCarverConfiguration;
-import net.minecraft.world.level.levelgen.carver.UnderwaterCanyonWorldCarver;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 public class TropicsUnderwaterCanyonCarver extends UnderwaterCanyonWorldCarver {

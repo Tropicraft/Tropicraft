@@ -16,11 +16,15 @@ import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.levelgen.feature.configurations.JigsawConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.structures.JigsawPlacement;
 import net.minecraft.world.level.levelgen.feature.structures.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.PoolElementStructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
+import net.minecraft.world.level.levelgen.structure.pieces.PieceGenerator;
+import net.minecraft.world.level.levelgen.structure.pieces.PieceGeneratorSupplier;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.dimension.feature.jigsaw.piece.NoRotateSingleJigsawPiece;
@@ -28,11 +32,13 @@ import net.tropicraft.core.common.dimension.feature.jigsaw.piece.PieceWithGenera
 
 public class HomeTreeStructure extends StructureFeature<JigsawConfiguration> {
     public HomeTreeStructure(Codec<JigsawConfiguration> codec) {
-        super(codec);
+        super(codec, PieceGeneratorSupplier.simple((context) -> HomeTreeStructure.isFeatureChunk(
+                context.chunkGenerator(),
+                context.chunkPos(),
+                context.heightAccessor()), HomeTreeStructure::generatePieces));
     }
 
-    @Override
-    protected boolean isFeatureChunk(ChunkGenerator generator, BiomeSource biomes, long seed, WorldgenRandom random, ChunkPos chunkPos, Biome biome, ChunkPos potentialPos, JigsawConfiguration config, LevelHeightAccessor level) {
+    private static boolean isFeatureChunk(ChunkGenerator generator, ChunkPos chunkPos, LevelHeightAccessor level) {
         BlockPos pos = new BlockPos((chunkPos.x << 4) + 8, 0, (chunkPos.z << 4) + 8);
         int centerY = generator.getBaseHeight(pos.getX(), pos.getZ(), Heightmap.Types.WORLD_SURFACE_WG, level);
         return isValid(generator, pos.offset(-4, 0, -4), centerY, level) &&
@@ -41,12 +47,17 @@ public class HomeTreeStructure extends StructureFeature<JigsawConfiguration> {
                 isValid(generator, pos.offset(4, 0, -4), centerY, level);
     }
 
-    private boolean isValid(ChunkGenerator generator, BlockPos pos, int startY, final LevelHeightAccessor level) {
+    private static boolean isValid(ChunkGenerator generator, BlockPos pos, int startY, final LevelHeightAccessor level) {
         int y = generator.getBaseHeight(pos.getX(), pos.getZ(), Heightmap.Types.WORLD_SURFACE_WG, level);
         return y >= generator.getSeaLevel()
                 && Math.abs(y - startY) < 10
                 && y < 150
                 && y > generator.getSeaLevel() + 2;
+    }
+
+    private static void generatePieces(StructurePiecesBuilder p_197106_, PieceGenerator.Context<JigsawConfiguration> p_197107_) {
+        BlockPos pos = chunkPos.getWorldPosition();
+        JigsawPlacement.addPieces(registries, config, Piece::new, generator, templates, pos, this, this.random, true, true, pLevel);
     }
 
     @Override
@@ -61,11 +72,7 @@ public class HomeTreeStructure extends StructureFeature<JigsawConfiguration> {
             super(structure, pos, references, seed);
         }
 
-        @Override
-        public void generatePieces(RegistryAccess registries, ChunkGenerator generator, StructureManager templates, ChunkPos chunkPos, Biome biome, JigsawConfiguration config, LevelHeightAccessor pLevel) {
-            BlockPos pos = chunkPos.getWorldPosition();
-            JigsawPlacement.addPieces(registries, config, Piece::new, generator, templates, pos, this, this.random, true, true, pLevel);
-        }
+
     }
 
     public static class Piece extends PoolElementStructurePiece {

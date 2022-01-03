@@ -23,8 +23,7 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 import net.tropicraft.core.client.ParticleEffects;
 
 import javax.annotation.Nullable;
@@ -71,7 +70,7 @@ public final class HugePlantBlock extends BushBlock {
         for (BlockPos plantPos : shape) {
             if (!plantPos.equals(pos)) {
                 BlockState plantState = shape.blockAt(plantPos);
-                world.setBlock(plantPos, plantState, Constants.BlockFlags.DEFAULT);
+                world.setBlock(plantPos, plantState, Block.UPDATE_ALL);
             }
         }
     }
@@ -139,7 +138,7 @@ public final class HugePlantBlock extends BushBlock {
                 dropResources(state, world, shape.seed(), null, player, player.getMainHandItem());
             }
 
-            int flags = Constants.BlockFlags.BLOCK_UPDATE | Constants.BlockFlags.UPDATE_NEIGHBORS | Constants.BlockFlags.NO_NEIGHBOR_DROPS;
+            int flags = Block.UPDATE_CLIENTS | Block.UPDATE_NEIGHBORS | Block.UPDATE_SUPPRESS_DROPS;
 
             // Play break sound
             SoundType soundtype = state.getSoundType(world, pos, null);
@@ -167,11 +166,11 @@ public final class HugePlantBlock extends BushBlock {
     }
 
     @Override
-    public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
         if (this.pickItem != null) {
             return new ItemStack(this.pickItem.get().get());
         }
-        return super.getPickBlock(state, target, world, pos, player);
+        return super.getCloneItemStack(state, target, world, pos, player);
     }
 
     @Override

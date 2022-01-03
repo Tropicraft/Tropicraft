@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.dimension.feature.tree;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.core.Direction;
@@ -9,7 +10,6 @@ import net.minecraft.world.level.LevelSimulatedRW;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
-import net.minecraftforge.common.util.Constants;
 import net.tropicraft.core.common.block.CoconutBlock;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import org.apache.commons.lang3.ArrayUtils;
@@ -61,7 +61,7 @@ public abstract class PalmTreeFeature extends Feature<NoneFeatureConfiguration> 
         for (Direction d : DIRECTIONS) {
             BlockPos pos2 = pos.relative(d);
             if (random.nextInt(chance) == 0 && TreeFeature.isAirOrLeaves(world, pos2)) {
-                world.setBlock(pos2, coconut.setValue(CoconutBlock.FACING, d.getOpposite()), Constants.BlockFlags.DEFAULT);
+                world.setBlock(pos2, coconut.setValue(CoconutBlock.FACING, d.getOpposite()), Block.UPDATE_ALL);
             }
         }
     }

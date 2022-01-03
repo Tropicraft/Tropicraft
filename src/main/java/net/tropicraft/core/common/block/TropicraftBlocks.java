@@ -40,9 +40,9 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.IItemRenderProperties;
-import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.tileentity.SimpleItemStackRenderer;
@@ -65,6 +65,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+;
 
 public class TropicraftBlocks {
     
@@ -334,7 +336,7 @@ public class TropicraftBlocks {
                     type -> registerNoItem("jigarbov_" + type.getName() + "_wall_torch", () -> {
                         return new RedstoneWallTorchBlock(Block.Properties.copy(Blocks.REDSTONE_WALL_TORCH).lootFrom(() -> Blocks.REDSTONE_TORCH)) {
                             @Override
-                            public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
+                            public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
                                 return new ItemStack(Items.REDSTONE_TORCH);
                             }
                         };

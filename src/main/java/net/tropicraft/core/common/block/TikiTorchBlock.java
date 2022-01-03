@@ -25,7 +25,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nullable;
 import java.util.Locale;
@@ -115,8 +114,8 @@ public class TikiTorchBlock extends Block {
 
         if (section == TorchSection.UPPER) return;
 
-        worldIn.setBlock(pos.above(), this.defaultBlockState().setValue(SECTION, TorchSection.MIDDLE), Constants.BlockFlags.DEFAULT);
-        worldIn.setBlock(pos.above(2), this.defaultBlockState().setValue(SECTION, TorchSection.UPPER), Constants.BlockFlags.DEFAULT);  
+        worldIn.setBlock(pos.above(), this.defaultBlockState().setValue(SECTION, TorchSection.MIDDLE), Block.UPDATE_ALL);
+        worldIn.setBlock(pos.above(2), this.defaultBlockState().setValue(SECTION, TorchSection.UPPER), Block.UPDATE_ALL);
     }
     
     private boolean placeShortTorchOn(BlockState state) {
@@ -139,7 +138,7 @@ public class TikiTorchBlock extends Block {
     }
 
     @Override
-    public boolean removedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+    public boolean onDestroyedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
         boolean ret = false;
         TorchSection section = state.getValue(SECTION);
         BlockPos base = pos.below(section.height);
@@ -148,7 +147,7 @@ public class TikiTorchBlock extends Block {
             BlockState state2 = world.getBlockState(pos2);
             if (state2.getBlock() == this && state2.getValue(SECTION) == otherSection) {
                 if (player.isCreative()) {
-                    ret |= super.removedByPlayer(state2, world, pos2, player, willHarvest, fluid);
+                    ret |= super.onDestroyedByPlayer(state2, world, pos2, player, willHarvest, fluid);
                 } else {
                     this.playerWillDestroy(world, pos2, state2, player);
                     ret = true;
