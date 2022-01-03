@@ -44,7 +44,7 @@ public class TropicraftBiomeProvider extends BiomeSource {
     private final long seed;
     private final Registry<Biome> biomes;
 
-    private final Layer noiseLayer;
+//    private final Layer noiseLayer;
 
     public TropicraftBiomeProvider(long seed, Registry<Biome> biomes) {
         super(POSSIBLE_BIOMES.stream().map(biomes::get).filter(Objects::nonNull).map(biome -> () -> biome));
@@ -52,7 +52,7 @@ public class TropicraftBiomeProvider extends BiomeSource {
         this.seed = seed;
         this.biomes = biomes;
 
-        this.noiseLayer = TropicraftLayerUtil.buildTropicsProcedure(seed, biomes);
+//        this.noiseLayer = TropicraftLayerUtil.buildTropicsProcedure(seed, biomes);
     }
 
     public static void register() {
@@ -72,6 +72,6 @@ public class TropicraftBiomeProvider extends BiomeSource {
 
     @Override
     public Biome getNoiseBiome(int x, int y, int z) {
-        return noiseLayer.get(biomes, x, z);
+//        return noiseLayer.get(biomes, x, z);
     }
 }

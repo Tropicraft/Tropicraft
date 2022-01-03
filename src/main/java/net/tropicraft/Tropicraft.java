@@ -21,6 +21,7 @@ import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.IExtensionPoint;
@@ -129,7 +130,6 @@ public class Tropicraft {
         TropicraftFoliagePlacers.FOLIAGE_PLACERS.register(modBus);
         TropicraftTreeDecorators.TREE_DECORATORS.register(modBus);
         TropicraftFeatures.STRUCTURES.register(modBus);
-        TropicraftSurfaceBuilders.SURFACE_BUILDERS.register(modBus);
         TropicraftBlockStateProviders.BLOCK_STATE_PROVIDERS.register(modBus);
         TropicraftBlockPlacerTypes.BLOCK_PLACER_TYPES.register(modBus);
 
@@ -197,7 +197,7 @@ public class Tropicraft {
         event.register(ScubaData.class);
     }
 
-    private void onServerStarting(final FMLServerStartingEvent event) {
+    private void onServerStarting(final ServerStartingEvent event) {
         CommandDispatcher<CommandSourceStack> dispatcher = event.getServer().getCommands().getDispatcher();
         CommandTropicsTeleport.register(dispatcher);
 
