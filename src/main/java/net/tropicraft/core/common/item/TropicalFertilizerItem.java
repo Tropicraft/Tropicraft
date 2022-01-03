@@ -11,8 +11,7 @@ import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.AbstractFlowerFeature;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.feature.configurations.DecoratedFeatureConfiguration;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
 import java.util.List;
 import java.util.Random;
@@ -58,7 +57,9 @@ public class TropicalFertilizerItem extends BoneMealItem {
                                 }
 
                                 // TODO this is so ugly and hacky, pls
-                                blockstate1 = ((AbstractFlowerFeature) ((DecoratedFeatureConfiguration) (list.get(0)).config).feature.get().config).getRandomFlower(rand, blockpos1, null);
+                                ConfiguredFeature<?, ?> pFlowerFeature = list.get(0);
+                                AbstractFlowerFeature<FeatureConfiguration> abstractflowerfeature = (AbstractFlowerFeature) pFlowerFeature.feature;
+                                blockstate1 = abstractflowerfeature.getRandomFlower(rand, blockpos1, pFlowerFeature.config());
                             } else {
                                 blockstate1 = blockstate;
                             }
@@ -82,4 +83,5 @@ public class TropicalFertilizerItem extends BoneMealItem {
         }
         return super.useOn(context);
     }
+
 }

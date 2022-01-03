@@ -19,6 +19,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.tropicraft.Constants;
+import net.tropicraft.core.client.scuba.ModelScubaGear;
 import net.tropicraft.core.common.item.ArmorMaterials;
 import net.tropicraft.core.common.item.TropicraftArmorItem;
 
@@ -80,22 +81,19 @@ public class ScubaArmorItem extends TropicraftArmorItem implements IItemRenderPr
                 }
 
                 HumanoidModel<?> armorModel;
-                // TODO 1.17
-                if (true)
-                return null;
-//                switch (armorSlot) {
-//                    case HEAD:
-//                        armorModel = ModelScubaGear.HEAD;
-//                        break;
-//                    case CHEST:
-//                        armorModel = ModelScubaGear.CHEST;
-//                        break;
-//                    case FEET:
-//                        armorModel = ModelScubaGear.FEET;
-//                        break;
-//                    default:
-//                        return null;
-//                }
+                switch (armorSlot) {
+                    case HEAD:
+                        armorModel = ModelScubaGear.HEAD;
+                        break;
+                    case CHEST:
+                        armorModel = ModelScubaGear.CHEST;
+                        break;
+                    case FEET:
+                        armorModel = ModelScubaGear.FEET;
+                        break;
+                    default:
+                        return null;
+                }
 
                 ((HumanoidModel) armorModel).prepareMobModel(entityLiving, 0.0F, 0.0F, 1.0F);
 
@@ -104,7 +102,6 @@ public class ScubaArmorItem extends TropicraftArmorItem implements IItemRenderPr
                 armorModel.rightArmPose = entityLiving.getMainHandItem() != null ? HumanoidModel.ArmPose.BLOCK : HumanoidModel.ArmPose.EMPTY;
                 return (A) armorModel;
             }
-
             @Override
             @OnlyIn(Dist.CLIENT)
             public void renderHelmetOverlay(ItemStack stack, Player player, int width, int height, float partialTicks) {

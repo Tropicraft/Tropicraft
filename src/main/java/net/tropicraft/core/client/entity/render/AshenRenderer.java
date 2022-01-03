@@ -2,7 +2,6 @@ package net.tropicraft.core.client.entity.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -32,7 +31,6 @@ public class AshenRenderer extends MobRenderer<AshenEntity, AshenModel> {
 
     @Override
     public void render(AshenEntity entityAshen, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
-        model.actionState = entityAshen.getActionState();
         if (entityAshen.getTarget() != null && entityAshen.distanceTo(entityAshen.getTarget()) < 5.0F && !entityAshen.swinging) {
             model.swinging = true;
         } else {

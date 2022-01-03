@@ -33,10 +33,4 @@ public class TropicsUnderwaterCaveCarver extends UnderwaterCaveWorldCarver {
 
         return f;
     }
-
-    // TODO 1.17 do we still need this?
-//    @Override
-//    protected int getCaveY(Random random) {
-//        return random.nextInt(random.nextInt(240) + 8);
-//    }
 }

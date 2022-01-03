@@ -26,7 +26,6 @@ public class AshenModel extends ListModel<AshenEntity> implements ArmedModel {
     public ModelPart leftArmSub;
     public float headAngle;
     public boolean swinging;
-    public AshenEntity.AshenState actionState;
     public static int textureWidth;
     public static int textureHeight;
 
@@ -45,7 +44,6 @@ public class AshenModel extends ListModel<AshenEntity> implements ArmedModel {
         textureHeight = 32;
 
         boolean swinging = false;
-        AshenEntity.AshenState actionState = AshenEntity.AshenState.PEACEFUL;
         float headAngle = 0;
 
         /*
@@ -147,7 +145,7 @@ public class AshenModel extends ListModel<AshenEntity> implements ArmedModel {
         final float armRotater = 1.247196F;
         final float subStraight = 1.570795F;
 
-        switch (actionState) {
+        switch (entityIn.getActionState()) {
             case LOST_MASK -> {                                             //Mask off
                 headAngle = -0.4F;
                 rightArm.zRot = -armRotater;

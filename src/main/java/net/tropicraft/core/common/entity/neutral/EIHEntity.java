@@ -12,19 +12,18 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.LeapAtTargetGoal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.Tiers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.TierSortingRegistry;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.entity.hostile.TropicraftCreatureEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
@@ -251,13 +250,12 @@ public class EIHEntity extends TropicraftCreatureEntity {
             return super.hurt(source, amount);
         }
 
-        if (source.getDirectEntity() instanceof Player) {
-            Player player = (Player) source.getDirectEntity();
+        if (source.getDirectEntity() instanceof Player player) {
             if (player.getAbilities().instabuild || player.isSpectator()) {
                 return super.hurt(source, amount);
             }
             ItemStack heldItem = player.getMainHandItem();
-            if (!heldItem.isEmpty() && heldItem.getItem() instanceof PickaxeItem) {/* TODO 1.17 how to do this? && heldItem.getItem().getHarvestLevel(heldItem, ToolType.PICKAXE, player, null) >= 1*/
+            if (!heldItem.isEmpty() && heldItem.getItem() instanceof PickaxeItem pickaxe && isValidPickaxeTier(pickaxe.getTier())) {
                 return super.hurt(source, amount);
             } else {
                 playSound(Sounds.HEAD_LAUGHING, getSoundVolume(), getVoicePitch());
@@ -269,6 +267,11 @@ public class EIHEntity extends TropicraftCreatureEntity {
         }
 
         return true;
+    }
+
+    private static boolean isValidPickaxeTier(Tier tier) {
+        var sorted = TierSortingRegistry.getSortedTiers();
+        return sorted.indexOf(tier) >= sorted.indexOf(Tiers.STONE);
     }
 
     private static class TargetAggressorGoal extends NearestAttackableTargetGoal<Player> {

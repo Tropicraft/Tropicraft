@@ -4,6 +4,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.Vec3;
 import net.tropicraft.Constants;
 import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.entity.model.KoaModel;
@@ -39,6 +40,18 @@ public class KoaRenderer extends HumanoidMobRenderer<EntityKoaBase, KoaModel> {
             }
             return FEMALE_FISHER;
         }
+    }
+
+    @Override
+    public Vec3 getRenderOffset(EntityKoaBase pEntity, float pPartialTicks) {
+        if (pEntity.isSitting()) {
+            if (pEntity.isBaby()) {
+                return new Vec3(0, -0.3, 0);
+            } else {
+                return new Vec3(0, -0.7, 0);
+            }
+        }
+        return super.getRenderOffset(pEntity, pPartialTicks);
     }
 
     @Nullable

@@ -5,10 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.model.geom.builders.*;
 import net.tropicraft.core.common.entity.passive.monkey.SpiderMonkeyEntity;
 
 public class SpiderMonkeyModel<T extends SpiderMonkeyEntity> extends EntityModel<T> {
@@ -24,67 +21,157 @@ public class SpiderMonkeyModel<T extends SpiderMonkeyEntity> extends EntityModel
     private final ModelPart leg_right_a_r1;
     private final ModelPart arm_right_a;
 
-    public SpiderMonkeyModel(ModelPart model) {
-        this.body_base = model;
-        this.head_base = model.getChild("head_base");
-        this.monke = this.head_base.getChild("monke");
-        this.tail_a = model.getChild("tail_a");
-        this.tail_b = this.tail_a.getChild("tail_b");
-        this.arm_left_a = model.getChild("arm_left_a");
-        this.leg_left_a = model.getChild("leg_left_a");
-        this.leg_left_a_r1 = this.leg_left_a.getChild("leg_left_a_r1");
-        this.leg_right_a = model.getChild("leg_right_a");
-        this.leg_right_a_r1 = this.leg_right_a.getChild("leg_right_a_r1");
-        this.arm_right_a = model.getChild("arm_right_a");
+    public SpiderMonkeyModel(ModelPart root) {
+        body_base = root.getChild("body_base");
+        head_base = body_base.getChild("head_base");
+        monke = head_base.getChild("monke");
+
+        tail_a = body_base.getChild("tail_a");
+        tail_b = tail_a.getChild("tail_b");
+
+        arm_left_a = body_base.getChild("arm_left_a");
+
+        leg_left_a = body_base.getChild("leg_left_a");
+        leg_left_a_r1 = leg_left_a.getChild("leg_left_a_r1");
+
+        arm_right_a = body_base.getChild("arm_right_a");
+
+        leg_right_a = body_base.getChild("leg_right_a");
+        leg_right_a_r1 = leg_right_a.getChild("leg_right_a_r1");
+
+//        texWidth = 64;
+//        texHeight = 64;
+//
+//        body_base = new ModelPart(this);
+//        body_base.setPos(0.0F, 15.0F, 4.0F);
+//        setRotationAngle(body_base, 80.0F, 0.0F, 0.0F);
+//        body_base.texOffs(0, 0).addBox(-2.5F, -9.0F, -2.0F, 5.0F, 10.0F, 3.0F, 0.0F, false);
+//
+//        head_base = new ModelPart(this);
+//        head_base.setPos(0.0F, -9.0F, 0.0F);
+//        setRotationAngle(head_base, -75.0F, 0.0F, 0.0F);
+//        body_base.addChild(head_base);
+//        head_base.texOffs(17, 0).addBox(-2.0F, -4.0F, -3.0F, 4.0F, 4.0F, 4.0F, 0.0F, false);
+//
+//        monke = new ModelPart(this);
+//        monke.setPos(0.0F, -1.5F, -2.5F);
+//        head_base.addChild(monke);
+//        monke.texOffs(9, 39).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 2.0F, 2.0F, 0.0F, false);
+//
+//        tail_a = new ModelPart(this);
+//        tail_a.setPos(0.0F, 1.0F, 0.0F);
+//        setRotationAngle(tail_a, 65.0F, 0.0F, 0.0F);
+//        body_base.addChild(tail_a);
+//        tail_a.texOffs(0, 28).addBox(-1.0F, -0.5F, -1.0F, 2.0F, 8.0F, 2.0F, 0.0F, false);
+//
+//        tail_b = new ModelPart(this);
+//        tail_b.setPos(0.0F, 7.5F, 1.0F);
+//        setRotationAngle(tail_b, -35.0F, 0.0F, 0.0F);
+//        tail_a.addChild(tail_b);
+//        tail_b.texOffs(0, 39).addBox(-0.99F, 0.0F, -2.0F, 2.0F, 6.0F, 2.0F, 0.0F, false);
+//
+//        arm_left_a = new ModelPart(this);
+//        arm_left_a.setPos(-2.5F, -7.5F, -0.5F);
+//        setRotationAngle(arm_left_a, -82.5F, 2.5F, 2.5F);
+//        body_base.addChild(arm_left_a);
+//        arm_left_a.texOffs(9, 14).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 11.0F, 2.0F, 0.0F, false);
+//
+//        leg_left_a = new ModelPart(this);
+//        leg_left_a.setPos(-2.0F, 1.0F, -1.5F);
+//        body_base.addChild(leg_left_a);
+//
+//        leg_left_a_r1 = new ModelPart(this);
+//        leg_left_a_r1.setPos(0.0F, 0.0F, 0.0F);
+//        setRotationAngle(leg_left_a_r1, -75.0F, 5.0F, -2.5F);
+//        leg_left_a.addChild(leg_left_a_r1);
+//        leg_left_a_r1.texOffs(18, 28).addBox(-0.5F, -0.5F, -1.0F, 2.0F, 8.0F, 2.0F, 0.0F, false);
+//
+//        leg_right_a = new ModelPart(this);
+//        leg_right_a.setPos(2.0F, 1.0F, -1.5F);
+//        body_base.addChild(leg_right_a);
+//
+//        leg_right_a_r1 = new ModelPart(this);
+//        leg_right_a_r1.setPos(0.0F, 0.0F, 0.0F);
+//        setRotationAngle(leg_right_a_r1, -75.0F, -5.0F, 2.5F);
+//        leg_right_a.addChild(leg_right_a_r1);
+//        leg_right_a_r1.texOffs(9, 28).addBox(-1.5F, -0.5F, -1.0F, 2.0F, 8.0F, 2.0F, 0.0F, false);
+//
+//        arm_right_a = new ModelPart(this);
+//        arm_right_a.setPos(2.5F, -7.5F, -0.5F);
+//        setRotationAngle(arm_right_a, -82.5F, -2.5F, -2.5F);
+//        body_base.addChild(arm_right_a);
+//        arm_right_a.texOffs(0, 14).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 11.0F, 2.0F, 0.0F, false);
+//
+//        this.setDefaultRotationAngles();
     }
 
     public static LayerDefinition create() {
-        MeshDefinition meshDefinition = new MeshDefinition();
-        PartDefinition partDefinition = meshDefinition.getRoot();
+        MeshDefinition modelData = new MeshDefinition();
+        PartDefinition modelPartData = modelData.getRoot();
 
-        partDefinition.addOrReplaceChild("body_base", CubeListBuilder.create()
-                        .texOffs(0, 0).addBox(-2.5f, -9.0f, -2.0f, 5.0f, 10.0f, 3.0f),
-                PartPose.offsetAndRotation(0.0f, 15.0f, 4.0f, 0.0f, 0.0f, 0.0f));
+        PartDefinition modelPartBody = modelPartData.addOrReplaceChild("body_base",
+                CubeListBuilder.create()
+                        .texOffs(0, 0)
+                        .addBox(-2.5F, -9.0F, -2.0F, 5.0F, 10.0F, 3.0F, false),
+                PartPose.offsetAndRotation(0.0F, 15.0F, 4.0F, 80.0F, 0.0F, 0.0F));
 
-        PartDefinition partDefinition1 = partDefinition.addOrReplaceChild("head_base", CubeListBuilder.create()
-                        .texOffs(17, 0).addBox(-2.0f, -4.0f, -3.0f, 4.0f, 4.0f, 4.0f),
-                PartPose.offsetAndRotation(0.0f, 6.0f, 0.0f, 0.0f, 0.0f, 0.0f));
+        PartDefinition modelPartHead = modelPartBody.addOrReplaceChild("head_base",
+                CubeListBuilder.create()
+                        .texOffs(17, 0)
+                        .addBox(-2.0F, -4.0F, -3.0F, 4.0F, 4.0F, 4.0F, false),
+                PartPose.offsetAndRotation(0.0F, -9.0F, 0.0F, -75.0F, 0.0F, 0.0F));
 
-        partDefinition1.addOrReplaceChild("monke", CubeListBuilder.create()
-                        .texOffs(9, 39).addBox(-1.0f, 0.0f, -1.0f, 2.0f, 2.0f, 2.0f),
-                PartPose.offsetAndRotation(0.0f, -1.5f, -2.5f, 0.0f, 0.0f, 0.0f));
+        modelPartHead.addOrReplaceChild("monke",
+                CubeListBuilder.create()
+                        .texOffs(9, 39)
+                        .addBox(-1.0F, 0.0F, -1.0F, 2.0F, 2.0F, 2.0F, false),
+                PartPose.offset(0.0F, -1.5F, -2.5F));
 
-        PartDefinition partDefinition3 = partDefinition.addOrReplaceChild("tail_a", CubeListBuilder.create()
-                        .texOffs(0, 28).addBox(-1.0f, -0.5f, -1.0f, 2.0f, 8.0f, 2.0f),
-                PartPose.offsetAndRotation(0.0f, 16.0f, 0.0f, 0.0f, 0.0f, 0.0f));
+        PartDefinition modelPartTail = modelPartBody.addOrReplaceChild("tail_a",
+                CubeListBuilder.create()
+                        .texOffs(0, 28)
+                        .addBox(-1.0F, -0.5F, -1.0F, 2.0F, 8.0F, 2.0F, false),
+                PartPose.offsetAndRotation(0.0F, 1.0F, 0.0F, 65.0F, 0.0F, 0.0F));
 
-        partDefinition3.addOrReplaceChild("tail_b", CubeListBuilder.create()
-                        .texOffs(0, 39).addBox(-0.99f, 0.0f, -2.0f, 2.0f, 6.0f, 2.0f),
-                PartPose.offsetAndRotation(0.0f, 7.5f, 1.0f, 0.0f, 0.0f, 0.0f));
+        modelPartTail.addOrReplaceChild("tail_b",
+                CubeListBuilder.create()
+                        .texOffs(0, 39)
+                        .addBox(-0.99F, 0.0F, -2.0F, 2.0F, 6.0F, 2.0F, false),
+                PartPose.offsetAndRotation(0.0F, 7.5F, 1.0F, -35.0F, 0.0F, 0.0F));
 
-        partDefinition.addOrReplaceChild("arm_left_a", CubeListBuilder.create()
-                        .texOffs(9, 14).addBox(-1.0f, -1.0f, -1.0f, 2.0f, 11.0f, 2.0f),
-                PartPose.offsetAndRotation(-2.5f, 7.5f, -0.5f, 0.0f, 0.0f, 0.0f));
+        modelPartBody.addOrReplaceChild("arm_left_a",
+                CubeListBuilder.create()
+                        .texOffs(9, 14)
+                        .addBox(-1.0F, -1.0F, -1.0F, 2.0F, 11.0F, 2.0F, false),
+                PartPose.offsetAndRotation(-2.5F, -7.5F, -0.5F, -82.5F, 2.5F, 2.5F));
 
-        PartDefinition partDefinition6 = partDefinition.addOrReplaceChild("leg_left_a", CubeListBuilder.create(),
-                PartPose.offsetAndRotation(-2.0f, 16.0f, -1.5f, 0.0f, 0.0f, 0.0f));
+        modelPartBody.addOrReplaceChild("arm_right_a",
+                CubeListBuilder.create()
+                        .texOffs(0, 14)
+                        .addBox(-1.0F, -1.0F, -1.0F, 2.0F, 11.0F, 2.0F, false),
+                PartPose.offsetAndRotation(2.5F, -7.5F, -0.5F, -82.5F, -2.5F, -2.5F));
 
-        partDefinition6.addOrReplaceChild("leg_left_a_r1", CubeListBuilder.create()
-                        .texOffs(18, 28).addBox(-0.5f, -0.5f, -1.0f, 2.0f, 8.0f, 2.0f),
-                PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f));
+        PartDefinition modelPartLegLeft = modelPartBody.addOrReplaceChild("leg_left_a",
+                CubeListBuilder.create(),
+                PartPose.offset(-2.0F, 1.0F, -1.5F));
 
-        PartDefinition partDefinition8 = partDefinition.addOrReplaceChild("leg_right_a", CubeListBuilder.create(),
-                PartPose.offsetAndRotation(2.0f, 16.0f, -1.5f, 0.0f, 0.0f, 0.0f));
+        modelPartLegLeft.addOrReplaceChild("leg_left_a_r1",
+                CubeListBuilder.create()
+                        .texOffs(18, 28)
+                        .addBox(-0.5F, -0.5F, -1.0F, 2.0F, 8.0F, 2.0F, false),
+                PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -75.0F, 5.0F, -2.5F));
 
-        partDefinition8.addOrReplaceChild("leg_right_a_r1", CubeListBuilder.create()
-                        .texOffs(9, 28).addBox(-1.5f, -0.5f, -1.0f, 2.0f, 8.0f, 2.0f),
-                PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f));
+        PartDefinition modelPartLegRight = modelPartBody.addOrReplaceChild("leg_right_a",
+                CubeListBuilder.create(),
+                PartPose.offset(2.0F, 1.0F, -1.5F));
 
-        partDefinition.addOrReplaceChild("arm_right_a", CubeListBuilder.create()
-                        .texOffs(0, 14).addBox(-1.0f, -1.0f, -1.0f, 2.0f, 11.0f, 2.0f),
-                PartPose.offsetAndRotation(2.5f, 7.5f, -0.5f, 0.0f, 0.0f, 0.0f));
+        modelPartLegRight.addOrReplaceChild("leg_right_a_r1",
+                CubeListBuilder.create()
+                        .texOffs(9, 28)
+                        .addBox(-1.5F, -0.5F, -1.0F, 2.0F, 8.0F, 2.0F, false),
+                PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -75.0F, -5.0F, 2.5F));
 
-        return LayerDefinition.create(meshDefinition, 64, 64);
+        return LayerDefinition.create(modelData, 64, 64);
     }
 
     private void setDefaultRotationAngles() {
@@ -132,13 +219,13 @@ public class SpiderMonkeyModel<T extends SpiderMonkeyEntity> extends EntityModel
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        body_base.render(poseStack, buffer, packedLight, packedOverlay);
+    public void renderToBuffer(PoseStack matrixStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        body_base.render(matrixStack, buffer, packedLight, packedOverlay);
     }
 
-    private void setRotationAngle(ModelPart modelRenderer, float x, float y, float z) {
-        modelRenderer.xRot = x;
-        modelRenderer.yRot = y;
-        modelRenderer.zRot = z;
+    private void setRotationAngle(ModelPart part, float x, float y, float z) {
+        part.xRot = x * ModelAnimator.DEG_TO_RAD;
+        part.yRot = y * ModelAnimator.DEG_TO_RAD;
+        part.zRot = z * ModelAnimator.DEG_TO_RAD;
     }
 }

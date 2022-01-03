@@ -91,6 +91,7 @@ public class TropicraftEntities {
     public static final RegistryObject<EntityType<SpiderMonkeyEntity>> SPIDER_MONKEY = register("spider_monkey", TropicraftEntities::spiderMonkey);
     public static final RegistryObject<EntityType<WhiteLippedPeccaryEntity>> WHITE_LIPPED_PECCARY = register("white_lipped_peccary", TropicraftEntities::whiteLippedPeccary);
     public static final RegistryObject<EntityType<CuberaEntity>> CUBERA = register("cubera", TropicraftEntities::cubera);
+    public static final RegistryObject<EntityType<FishingBobberEntity>> FISHING_BOBBER = register("fishing_bobber", TropicraftEntities::fishingBobber);
 
     private static <E extends Entity, T extends EntityType<E>> RegistryObject<EntityType<E>> register(final String name, final Supplier<EntityType.Builder<E>> sup) {
         return ENTITIES.register(name, () -> sup.get().build(name));
@@ -456,6 +457,15 @@ public class TropicraftEntities {
         return EntityType.Builder.of(CuberaEntity::new, MobCategory.WATER_CREATURE)
                 .sized(1.2F, 0.8F)
                 .setTrackingRange(8)
+                .setUpdateInterval(3)
+                .setShouldReceiveVelocityUpdates(true);
+    }
+
+    private static EntityType.Builder<FishingBobberEntity> fishingBobber() {
+        return EntityType.Builder.<FishingBobberEntity>of(FishingBobberEntity::new, MobCategory.MISC)
+                .sized(1.2F, 0.8F)
+                /*.setTrackingRange(8)*/
+                .setTrackingRange(128)
                 .setUpdateInterval(3)
                 .setShouldReceiveVelocityUpdates(true);
     }

@@ -2,12 +2,20 @@ package net.tropicraft.core.client.entity.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.geom.*;
-import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.model.geom.EntityModelSet;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartNames;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.entity.LivingEntity;
-import com.mojang.math.Vector3f;
 import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
 
 public class PlayerHeadpieceModel extends HumanoidModel<LivingEntity> {
@@ -88,12 +96,10 @@ public class PlayerHeadpieceModel extends HumanoidModel<LivingEntity> {
 		// put it in the middle in front of the face
 		stack.translate(0.0F - xOffset, 0.112f + 0.0625f - yOffset, 0.2501F);
 
-   		// renderMask handles the rendering of the mask model, but it doesn't set the texture.
+		// renderMask handles the rendering of the mask model, but it doesn't set the texture.
 		// Setting the texture is handled in the item class.
 		renderer.renderMask(stack, bufferIn, this.textureIndex, packedLightIn, packedOverlayIn);
-		
+
 		stack.popPose();
 	}
-	
-	
 }

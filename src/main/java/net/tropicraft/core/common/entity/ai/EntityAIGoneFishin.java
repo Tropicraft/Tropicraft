@@ -292,6 +292,10 @@ public class EntityAIGoneFishin extends Goal {
             } else if (state == FISHING_STATE.RETURN_TO_BASE) {
                 //entity.getRestrictCenter()
 
+                if (homePosition.equals(BlockPos.ZERO)) {
+                    stop();
+                }
+
                 //debug(entity.getRestrictCenter());
                 if (Util.getDistance(entity, homePosition.getX(), homePosition.getY(), homePosition.getZ()) < 3D) {
                     debug("dropping off fish, reset");

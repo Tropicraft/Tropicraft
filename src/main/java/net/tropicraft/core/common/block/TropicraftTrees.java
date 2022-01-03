@@ -39,10 +39,10 @@ import java.util.Random;
 import java.util.function.Supplier;
 
 public class TropicraftTrees {
-    public static final AbstractTreeGrower GRAPEFRUIT = createFruit(TropicraftBlocks.GRAPEFRUIT_LEAVES, TropicraftBlocks.GRAPEFRUIT_SAPLING);
-    public static final AbstractTreeGrower LEMON = createFruit(TropicraftBlocks.LEMON_LEAVES, TropicraftBlocks.LEMON_SAPLING);
-    public static final AbstractTreeGrower LIME = createFruit(TropicraftBlocks.LIME_LEAVES, TropicraftBlocks.LIME_SAPLING);
-    public static final AbstractTreeGrower ORANGE = createFruit(TropicraftBlocks.ORANGE_LEAVES, TropicraftBlocks.ORANGE_SAPLING);
+    public static final AbstractTreeGrower GRAPEFRUIT = createFruit(TropicraftBlocks.GRAPEFRUIT_LEAVES, () -> TropicraftBlocks.GRAPEFRUIT_SAPLING);
+    public static final AbstractTreeGrower LEMON = createFruit(TropicraftBlocks.LEMON_LEAVES, () -> TropicraftBlocks.LEMON_SAPLING);
+    public static final AbstractTreeGrower LIME = createFruit(TropicraftBlocks.LIME_LEAVES, () -> TropicraftBlocks.LIME_SAPLING);
+    public static final AbstractTreeGrower ORANGE = createFruit(TropicraftBlocks.ORANGE_LEAVES, () -> TropicraftBlocks.ORANGE_SAPLING);
     public static final AbstractTreeGrower PAPAYA = create((server, random, beehive) -> {
         TreeConfiguration config = new TreeConfiguration.TreeConfigurationBuilder(
                 new SimpleStateProvider(TropicraftBlocks.PAPAYA_LOG.get().defaultBlockState()),
@@ -85,7 +85,7 @@ public class TropicraftTrees {
     public static final AbstractTreeGrower TEA_MANGROVE = create("tea_mangrove");
     public static final AbstractTreeGrower BLACK_MANGROVE = create("black_mangrove");
 
-    private static AbstractTreeGrower createFruit(Supplier<? extends Block> fruitLeaves, Supplier<? extends Block> fruitSapling) {
+    private static AbstractTreeGrower createFruit(Supplier<? extends Block> fruitLeaves, Supplier<Supplier<? extends Block>> fruitSapling) {
         return create((server, random, beehive) -> {
             WeightedStateProvider leaves = new WeightedStateProvider(
                     SimpleWeightedRandomList.<BlockState>builder()
@@ -97,7 +97,7 @@ public class TropicraftTrees {
                     new SimpleStateProvider(Blocks.OAK_LOG.defaultBlockState()),
                     new CitrusTrunkPlacer(6, 3, 0),
                     leaves,
-                    new SimpleStateProvider(fruitSapling.get().defaultBlockState()),
+                    new SimpleStateProvider(fruitSapling.get().get().defaultBlockState()),
                     new CitrusFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0)),
                     new TwoLayersFeatureSize(1, 0, 2)
             ).build();

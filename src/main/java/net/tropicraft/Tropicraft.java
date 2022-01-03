@@ -40,7 +40,6 @@ import net.tropicraft.core.client.data.TropicraftBlockstateProvider;
 import net.tropicraft.core.client.data.TropicraftItemModelProvider;
 import net.tropicraft.core.client.data.TropicraftLangProvider;
 import net.tropicraft.core.common.block.TropicraftBlocks;
-import net.tropicraft.core.common.block.TropicraftFlower;
 import net.tropicraft.core.common.block.tileentity.TropicraftBlockEntityTypes;
 import net.tropicraft.core.common.command.CommandTropicsTeleport;
 import net.tropicraft.core.common.command.debug.MapBiomesCommand;
@@ -94,7 +93,7 @@ public class Tropicraft {
     public static final CreativeModeTab TROPICRAFT_ITEM_GROUP = (new CreativeModeTab("tropicraft") {
         @OnlyIn(Dist.CLIENT)
         public ItemStack makeIcon() {
-            return new ItemStack(TropicraftFlower.RED_ANTHURIUM.get());
+            return new ItemStack(TropicraftBlocks.PALM_SAPLING.get());
         }
     });
 

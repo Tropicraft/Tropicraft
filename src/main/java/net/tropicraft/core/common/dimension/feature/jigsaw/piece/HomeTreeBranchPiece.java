@@ -40,7 +40,7 @@ public final class HomeTreeBranchPiece extends StructurePoolElement implements P
         ).apply(instance, HomeTreeBranchPiece::new);
     });
 
-    private static final int MAX_SIZE = 32;
+    private static final int MAX_RADIUS = 48;
     private static final Direction.Axis[] ALL_AXIS = Direction.Axis.values();
 
     private static final StructurePoolElementType<HomeTreeBranchPiece> TYPE = StructurePoolElementType.register(Constants.MODID + ":home_tree_branch", CODEC);
@@ -72,12 +72,6 @@ public final class HomeTreeBranchPiece extends StructurePoolElement implements P
     }
 
     @Override
-    public Vec3i getSize(StructureManager pStructureManager, Rotation pRotation) {
-        // TODO 1.17 - i have no idea what to do here
-        return Vec3i.ZERO;
-    }
-
-    @Override
     public List<StructureTemplate.StructureBlockInfo> getShuffledJigsawBlocks(StructureManager templates, BlockPos pos, Rotation rotation, Random random) {
         FrontAndTop orientation = FrontAndTop.fromFrontAndTop(Direction.DOWN, Direction.SOUTH);
         BlockState state = Blocks.JIGSAW.defaultBlockState().setValue(JigsawBlock.ORIENTATION, orientation);
@@ -87,9 +81,14 @@ public final class HomeTreeBranchPiece extends StructurePoolElement implements P
     @Override
     public BoundingBox getGenerationBounds(StructureManager templates, BlockPos pos, Rotation rotation) {
         return new BoundingBox(
-                pos.getX() - MAX_SIZE, pos.getY() - MAX_SIZE, pos.getZ() - MAX_SIZE,
-                pos.getX() + MAX_SIZE, pos.getY() + MAX_SIZE, pos.getZ() + MAX_SIZE
+                pos.getX() - MAX_RADIUS, pos.getY() - MAX_RADIUS, pos.getZ() - MAX_RADIUS,
+                pos.getX() + MAX_RADIUS, pos.getY() + MAX_RADIUS, pos.getZ() + MAX_RADIUS
         );
+    }
+
+    @Override
+    public Vec3i getSize(StructureManager templates, Rotation rotation) {
+        return Vec3i.ZERO;
     }
 
     @Override
@@ -139,16 +138,14 @@ public final class HomeTreeBranchPiece extends StructurePoolElement implements P
         int innerRadiusSquared = innerRadius * innerRadius;
 
         BlockPos origin = new BlockPos(x, y, z);
-        BoundingBox bounds = intersection(
-                chunkBounds,
-                BoundingBox.fromCorners(
-                        origin.offset(-outerRadius, 0, -outerRadius),
-                        origin.offset(outerRadius, 0, outerRadius)
-                )
+        BoundingBox outerBounds = BoundingBox.fromCorners(
+                origin.offset(-outerRadius, 0, -outerRadius),
+                origin.offset(outerRadius, 0, outerRadius)
         );
 
-        // this leaf circle does not intersect with our given chunk bounds
+        BoundingBox bounds = intersection(chunkBounds, outerBounds);
         if (bounds == null) {
+            // this leaf circle does not intersect with our given chunk bounds
             return;
         }
 
