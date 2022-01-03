@@ -24,7 +24,6 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
-import net.minecraftforge.fmllegacy.hooks.BasicEventHooks;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomeProvider;
 import net.tropicraft.core.common.dimension.chunk.TropicraftChunkGenerator;
@@ -35,6 +34,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.nio.file.Path;
 import java.util.LinkedHashSet;
 import java.util.function.Supplier;
 
@@ -66,10 +66,10 @@ public class TropicraftDimension {
         LevelStorageSource.LevelStorageAccess save = server.storageSource;
 
         File oldDimension = save.getLevelPath(new LevelResource("tropicraft/tropics")).toFile();
-        File newDimension = save.getDimensionPath(WORLD);
-        if (oldDimension.exists() && !newDimension.exists()) {
+        Path newDimension = save.getDimensionPath(WORLD);
+        if (oldDimension.exists() && !newDimension.toFile().exists()) {
             try {
-                FileUtils.moveDirectory(oldDimension, newDimension);
+                FileUtils.moveDirectory(oldDimension, newDimension.toFile());
             } catch (IOException e) {
                 LOGGER.error("Failed to move old tropicraft dimension to new location!", e);
             }
@@ -141,7 +141,8 @@ public class TropicraftDimension {
         int topY = chunk.getHeight(Heightmap.Types.WORLD_SURFACE, x & 15, z & 15);
         player.teleportTo(world, x + 0.5, topY + 1.0, z + 0.5, player.getYRot(), player.getXRot());
 
-        BasicEventHooks.firePlayerChangedDimensionEvent(player, destination, destination);
+        // TODO 1.18
+//        BasicEventHooks.firePlayerChangedDimensionEvent(player, destination, destination);
     }
 
     // hack to get the correct sea level given a world: the vanilla IWorldReader.getSeaLevel() is deprecated and always returns 63 despite the chunk generator
