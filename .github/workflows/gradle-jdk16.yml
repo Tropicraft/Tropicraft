@@ -2,6 +2,7 @@ name: Java CI with Gradle (OpenJDK 16)
 
 on: [push]
 
+jobs:
   build:
     runs-on: ubuntu-latest
 
