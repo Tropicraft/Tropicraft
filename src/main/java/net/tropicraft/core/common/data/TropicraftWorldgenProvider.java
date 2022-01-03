@@ -4,26 +4,30 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
 import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.JsonOps;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.HashCache;
-import net.minecraft.data.DataProvider;
-import net.minecraft.util.LazyLoadedValue;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.data.BuiltinRegistries;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.DataProvider;
+import net.minecraft.data.HashCache;
 import net.minecraft.resources.RegistryWriteOps;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.level.levelgen.feature.structures.StructureTemplatePool;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
-
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
+import net.minecraft.world.level.levelgen.surfacebuilders.ConfiguredSurfaceBuilder;
+import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
+import net.tropicraft.core.common.dimension.carver.TropicraftConfiguredCarvers;
+import net.tropicraft.core.common.dimension.feature.TropicraftConfiguredFeatures;
+import net.tropicraft.core.common.dimension.feature.TropicraftConfiguredStructures;
+import net.tropicraft.core.common.dimension.feature.jigsaw.TropicraftProcessorLists;
+import net.tropicraft.core.common.dimension.feature.pools.TropicraftTemplatePools;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,21 +36,41 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 public final class TropicraftWorldgenProvider implements DataProvider {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final Logger LOGGER = LogManager.getLogger(TropicraftWorldgenProvider.class);
 
-    private static final LazyLoadedValue<RegistryAccess.RegistryHolder> DYNAMIC_REGISTRIES = new LazyLoadedValue<>(() -> {
+    private final Path root;
+
+    public TropicraftWorldgenProvider(DataGenerator dataGenerator) {
+        this.root = dataGenerator.getOutputFolder().resolve("data");
+    }
+
+    @Override
+    public void run(HashCache cache) {
+        var dynamicRegistries = buildDynamicRegistries();
+        var ops = RegistryWriteOps.create(JsonOps.INSTANCE, dynamicRegistries);
+
+        var consumers = new Consumers(root, cache, dynamicRegistries, ops);
+
+        var features = new TropicraftConfiguredFeatures(consumers.configuredFeatures());
+        var carvers = new TropicraftConfiguredCarvers(consumers.configuredCarvers());
+        var processors = new TropicraftProcessorLists(consumers.processorLists());
+        var templates = new TropicraftTemplatePools(consumers.templatePools(), features, processors);
+        var structures = new TropicraftConfiguredStructures(consumers.configuredStructures(), templates);
+
+        new TropicraftBiomes(consumers.biomes(), features, structures, carvers);
+    }
+
+    private RegistryAccess.RegistryHolder buildDynamicRegistries() {
         RegistryAccess.RegistryHolder dynamicRegistries = new RegistryAccess.RegistryHolder();
         for (Registry<?> registry : BuiltinRegistries.REGISTRY) {
             copyAllToDynamicRegistry(registry, dynamicRegistries);
         }
         return dynamicRegistries;
-    });
+    }
 
     private static <T> void copyAllToDynamicRegistry(Registry<T> from, RegistryAccess dynamicRegistries) {
         dynamicRegistries.registry(from.key()).ifPresent(dynamicRegistry -> {
@@ -60,101 +84,51 @@ public final class TropicraftWorldgenProvider implements DataProvider {
         }
     }
 
-    private final Path root;
-    private final Consumer<Generator> generatorFunction;
-
-    public TropicraftWorldgenProvider(DataGenerator dataGenerator, Consumer<Generator> generatorFunction) {
-        this.root = dataGenerator.getOutputFolder().resolve("data");
-        this.generatorFunction = generatorFunction;
-    }
-
-    @Override
-    public void run(HashCache cache) {
-        RegistryAccess.RegistryHolder dynamicRegistries = DYNAMIC_REGISTRIES.get();
-        DynamicOps<JsonElement> ops = RegistryWriteOps.create(JsonOps.INSTANCE, dynamicRegistries);
-
-        Generator generator = new Generator(root, cache, dynamicRegistries, ops);
-        this.generatorFunction.accept(generator);
-    }
-
     @Override
     public String getName() {
         return "Tropicraft Worldgen";
     }
 
-    public static final class Generator {
-        private final Path root;
-        private final HashCache cache;
-        private final RegistryAccess.RegistryHolder dynamicRegistries;
-        private final DynamicOps<JsonElement> ops;
+    private record Consumers(
+            Path root, HashCache cache,
+            RegistryAccess.RegistryHolder dynamicRegistries,
+            DynamicOps<JsonElement> ops
+    ) {
 
-        Generator(Path root, HashCache cache, RegistryAccess.RegistryHolder dynamicRegistries, DynamicOps<JsonElement> ops) {
-            this.root = root;
-            this.cache = cache;
-            this.dynamicRegistries = dynamicRegistries;
-            this.ops = ops;
+        public WorldgenDataConsumer<ConfiguredFeature<?, ?>> configuredFeatures() {
+            return consumer("worldgen/configured_feature", BuiltinRegistries.CONFIGURED_FEATURE, ConfiguredFeature.CODEC);
         }
 
-        public <R> R addConfiguredFeatures(EntryGenerator<ConfiguredFeature<?, ?>, R> entryGenerator) {
-            return add(
-                    "worldgen/configured_feature", BuiltinRegistries.CONFIGURED_FEATURE, ConfiguredFeature.CODEC,
-                    entryGenerator
-            );
+        public WorldgenDataConsumer<ConfiguredSurfaceBuilder<?>> configuredSurfaceBuilders() {
+            return consumer("worldgen/configured_surface_builder", BuiltinRegistries.CONFIGURED_SURFACE_BUILDER, ConfiguredSurfaceBuilder.CODEC);
         }
 
-        public <R> R addConfiguredSurfaceBuilders(EntryGenerator<ConfiguredSurfaceBuilder<?>, R> entryGenerator) {
-            return add(
-                    "worldgen/configured_surface_builder", BuiltinRegistries.CONFIGURED_SURFACE_BUILDER, ConfiguredSurfaceBuilder.CODEC,
-                    entryGenerator
-            );
+        public WorldgenDataConsumer<ConfiguredWorldCarver<?>> configuredCarvers() {
+            return consumer("worldgen/configured_carver", BuiltinRegistries.CONFIGURED_CARVER, ConfiguredWorldCarver.CODEC);
         }
 
-        public <R> R addConfiguredCarvers(EntryGenerator<ConfiguredWorldCarver<?>, R> entryGenerator) {
-            return add(
-                    "worldgen/configured_carver", BuiltinRegistries.CONFIGURED_CARVER, ConfiguredWorldCarver.CODEC,
-                    entryGenerator
-            );
+        public WorldgenDataConsumer<StructureProcessorList> processorLists() {
+            return consumer("worldgen/processor_list", BuiltinRegistries.PROCESSOR_LIST, StructureProcessorType.LIST_CODEC);
         }
 
-        public <R> R addProcessorLists(EntryGenerator<StructureProcessorList, R> entryGenerator) {
-            return add(
-                    "worldgen/processor_list", BuiltinRegistries.PROCESSOR_LIST, StructureProcessorType.LIST_CODEC,
-                    entryGenerator
-            );
+        public WorldgenDataConsumer<StructureTemplatePool> templatePools() {
+            return consumer("worldgen/template_pool", BuiltinRegistries.TEMPLATE_POOL, StructureTemplatePool.CODEC);
         }
 
-        public <R> R addTemplatePools(EntryGenerator<StructureTemplatePool, R> entryGenerator) {
-            return add(
-                    "worldgen/template_pool", BuiltinRegistries.TEMPLATE_POOL, StructureTemplatePool.CODEC,
-                    entryGenerator
-            );
+        public WorldgenDataConsumer<ConfiguredStructureFeature<?, ?>> configuredStructures() {
+            return consumer("worldgen/configured_structure_feature", BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE, ConfiguredStructureFeature.CODEC);
         }
 
-        public <R> R addConfiguredStructures(EntryGenerator<ConfiguredStructureFeature<?, ?>, R> entryGenerator) {
-            return add(
-                    "worldgen/configured_structure_feature", BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE, ConfiguredStructureFeature.CODEC,
-                    entryGenerator
-            );
+        public WorldgenDataConsumer<Biome> biomes() {
+            return consumer("worldgen/biome", null, Biome.CODEC);
         }
 
-        public <R> R addBiomes(EntryGenerator<Biome, R> entryGenerator) {
-            return add(
-                    "worldgen/biome", null, Biome.CODEC,
-                    entryGenerator
-            );
-        }
-
-        public <T, R> R add(
-                String path, @Nullable Registry<? super T> registry, Codec<Supplier<T>> codec,
-                EntryGenerator<? extends T, R> entryGenerator
-        ) {
-            return entryGenerator.generate((id, entry) -> {
+        public <T> WorldgenDataConsumer<T> consumer(String path, @Nullable Registry<? super T> registry, Codec<Supplier<T>> codec) {
+            return (id, entry) -> {
                 Path entryPath = root.resolve(id.getNamespace()).resolve(path).resolve(id.getPath() + ".json");
 
-                Function<Supplier<T>, DataResult<JsonElement>> function = ops.withEncoder(codec);
-
                 try {
-                    Optional<JsonElement> serialized = function.apply(() -> entry).result();
+                    Optional<JsonElement> serialized = codec.encodeStart(ops, () -> entry).result();
                     if (serialized.isPresent()) {
                         DataProvider.save(GSON, cache, serialized.get(), entryPath);
                     } else {
@@ -172,11 +146,7 @@ public final class TropicraftWorldgenProvider implements DataProvider {
                 }
 
                 return entry;
-            });
+            };
         }
-    }
-
-    public interface EntryGenerator<T, R> {
-        R generate(WorldgenDataConsumer<T> consumer);
     }
 }
