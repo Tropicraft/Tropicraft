@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -33,10 +34,7 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStatePr
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
 import net.minecraft.world.level.levelgen.heightproviders.HeightProvider;
 import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
-import net.minecraft.world.level.levelgen.placement.BiomeFilter;
-import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
-import net.minecraft.world.level.levelgen.placement.NoiseBasedCountPlacement;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.minecraft.world.level.levelgen.placement.*;
 import net.minecraftforge.registries.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.TropicraftTags;
@@ -80,7 +78,7 @@ public final class TropicraftConfiguredFeatures {
     public final ConfiguredFeature<?, ?> rainforestSmallTualung;
     public final ConfiguredFeature<?, ?> rainforestLargeTualung;
     public final ConfiguredFeature<?, ?> rainforestTallTree;
-    public final ConfiguredFeature<?, ?> rainforestVines;
+    public final PlacedFeature rainforestVines;
     public final ConfiguredFeature<?, ?> eih;
     public final ConfiguredFeature<?, ?> tropicsGrass;
     public final ConfiguredFeature<?, ?> bamboo;
@@ -133,8 +131,8 @@ public final class TropicraftConfiguredFeatures {
     public final ConfiguredFeature<?, ?> manganese;
     public final ConfiguredFeature<?, ?> shaka;
 
-    public TropicraftConfiguredFeatures(WorldgenDataConsumer<? extends ConfiguredFeature<?, ?>> worldgen) {
-        Register features = new Register(worldgen);
+    public TropicraftConfiguredFeatures(WorldgenDataConsumer<? extends ConfiguredFeature<?, ?>> worldgen, WorldgenDataConsumer<PlacedFeature> placed) {
+        Register features = new Register(worldgen, placed);
 
         this.grapefruitTree = features.fruitTree("grapefruit_tree", TropicraftBlocks.GRAPEFRUIT_SAPLING, TropicraftBlocks.GRAPEFRUIT_LEAVES);
         this.orangeTree = features.fruitTree("orange_tree", TropicraftBlocks.ORANGE_SAPLING, TropicraftBlocks.ORANGE_LEAVES);
@@ -150,7 +148,7 @@ public final class TropicraftConfiguredFeatures {
         this.rainforestLargeTualung = features.sparseTree("rainforest_large_tualung", TropicraftFeatures.LARGE_TUALUNG, FeatureConfiguration.NONE, 0.4F);
         this.rainforestTallTree = features.sparseTree("rainforest_tall_tree", TropicraftFeatures.TALL_TREE, FeatureConfiguration.NONE, 0.5F);
         this.rainforestVines = features.register("rainforest_vines", TropicraftFeatures.VINES,
-                f -> f.configured(new RainforestVinesConfig()).squared().count(50)
+                f -> f.configured(new RainforestVinesConfig()), f -> f.placed(CountPlacement.of(50), InSquarePlacement.spread())
         );
 
         this.smallGoldenLeatherFern = features.register("small_golden_leather_fern", Feature.RANDOM_PATCH, feature -> {
@@ -370,21 +368,22 @@ public final class TropicraftConfiguredFeatures {
             return feature.decorated(Features.Decorators.HEIGHTMAP_SQUARE.count(2));
         });
 
-        this.seagrass = features.register("seagrass", Feature.SEAGRASS, feature -> {
-            return feature.configured(new ProbabilityFeatureConfiguration(0.3f)).count(48).decorated(Features.Decorators.TOP_SOLID_HEIGHTMAP_SQUARE).count(3);
-        });
+        this.seagrass = features.register("seagrass", Feature.SEAGRASS,
+                feature -> feature.configured(new ProbabilityFeatureConfiguration(0.3f)),
+                feature -> feature.placed(CountPlacement.of(48), InSquarePlacement.spread(), HeightmapPlacement.onHeightmap(Heightmap.Types.OCEAN_FLOOR_WG))
+                );
 
         final BlockStateProvider seaGrass = BlockStateProvider.simple(Blocks.SEAGRASS.defaultBlockState());
 
-        this.undergroundSeagrassOnStone = features.register("underground_seagrass_on_stone", Feature.SIMPLE_BLOCK, feature -> {
-            SimpleBlockConfiguration config = new SimpleBlockConfiguration(
-                    seaGrass,
-                    ImmutableList.of(Blocks.STONE.defaultBlockState()),
-                    ImmutableList.of(Blocks.WATER.defaultBlockState()),
-                    ImmutableList.of(Blocks.WATER.defaultBlockState())
-            );
-            return feature.configured(config).decorated(FeatureDecorator.CARVING_MASK.configured(new CarvingMaskDecoratorConfiguration(GenerationStep.Carving.LIQUID)));
-        });
+//        this.undergroundSeagrassOnStone = features.register("underground_seagrass_on_stone", Feature.SIMPLE_BLOCK, feature -> {
+//            SimpleBlockConfiguration config = new SimpleBlockConfiguration(
+//                    seaGrass,
+//                    ImmutableList.of(Blocks.STONE.defaultBlockState()),
+//                    ImmutableList.of(Blocks.WATER.defaultBlockState()),
+//                    ImmutableList.of(Blocks.WATER.defaultBlockState())
+//            );
+//            return feature.configured(config).decorated(FeatureDecorator.CARVING_MASK.configured(new CarvingMaskDecoratorConfiguration(GenerationStep.Carving.LIQUID)));
+//        });
         this.undergroundSeagrassOnDirt = features.register("underground_seagrass_on_dirt", Feature.SIMPLE_BLOCK, feature -> {
             SimpleBlockConfiguration config = new SimpleBlockConfiguration(
                     seaGrass,
@@ -537,22 +536,34 @@ public final class TropicraftConfiguredFeatures {
 
     static final class Register {
         private final WorldgenDataConsumer<ConfiguredFeature<?, ?>> worldgen;
+        private final WorldgenDataConsumer<PlacedFeature> placed;
 
         @SuppressWarnings("unchecked")
-		Register(WorldgenDataConsumer<? extends ConfiguredFeature<?, ?>> worldgen) {
+		Register(WorldgenDataConsumer<? extends ConfiguredFeature<?, ?>> worldgen, WorldgenDataConsumer<PlacedFeature> placed) {
             this.worldgen = (WorldgenDataConsumer<ConfiguredFeature<?, ?>>) worldgen;
+            this.placed = placed;
         }
 
+        // Register configured feature
         public <F extends Feature<?>> ConfiguredFeature<?, ?> register(String id, ConfiguredFeature<?, ?> feature) {
             return this.worldgen.register(new ResourceLocation(Constants.MODID, id), feature);
         }
 
-        public <F extends Feature<?>> ConfiguredFeature<?, ?> register(String id, F feature, Function<F, ConfiguredFeature<?, ?>> configure) {
-            return this.register(id, configure.apply(feature));
+        // Register placed feature
+        public PlacedFeature register(String id, PlacedFeature feature) {
+            return this.placed.register(new ResourceLocation(Constants.MODID, id), feature);
         }
 
-        public <F extends Feature<?>> ConfiguredFeature<?, ?> register(String id, RegistryObject<F> feature, Function<F, ConfiguredFeature<?, ?>> configure) {
-            return this.register(id, feature.get(), configure);
+        // Configure a feature with the configure function, and place it with the place function
+        public <F extends Feature<?>, CF extends ConfiguredFeature<?, ?>> PlacedFeature register(String id, F feature, Function<F, CF> configure, Function<CF, PlacedFeature> place) {
+            CF configured = configure.apply(feature);
+            this.register(id, configured);
+            return this.register(id, place.apply(configured));
+        }
+
+        // Call above method but RegistryObject<Feature> -> Feature
+        public <F extends Feature<?>, CF extends ConfiguredFeature<?, ?>> PlacedFeature register(String id, RegistryObject<F> feature, Function<F, CF> configure, Function<CF, PlacedFeature> place) {
+            return this.register(id, feature.get(), configure, place);
         }
 
         public <F extends Feature<NoneFeatureConfiguration>> ConfiguredFeature<?, ?> noConfig(String id, RegistryObject<F> feature, UnaryOperator<ConfiguredFeature<?, ?>> configure) {
@@ -568,7 +579,6 @@ public final class TropicraftConfiguredFeatures {
                             .add(fruitLeaves.get().defaultBlockState(), 1)
                             .build()
                     ),
-                    BlockStateProvider.simple(sapling.get().defaultBlockState()),
                     new CitrusFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0)),
                     new TwoLayersFeatureSize(1, 0, 2)
             ).build();
@@ -584,11 +594,9 @@ public final class TropicraftConfiguredFeatures {
         }
 
         public <F extends Feature<?>> ConfiguredFeature<?, ?> tree(String id, TreeConfiguration config, int count, float extraChance, int extraCount) {
-            return this.register(id, Feature.TREE, feature -> {
-                return feature.configured(config)
-                        .decorated(Features.Decorators.HEIGHTMAP_SQUARE)
-                        .decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(count, extraChance, extraCount)));
-            });
+            return this.register(id, Feature.TREE, feature -> feature.configured(config), feature ->
+                    feature.placed(PlacementUtils.countExtra(count, extraChance, extraCount), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP)
+            );
         }
 
         public ConfiguredFeature<?, ?> mangrove(String id, TreeConfiguration config, int maxWaterDepth) {

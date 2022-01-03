@@ -18,6 +18,7 @@ import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.level.levelgen.feature.structures.StructureTemplatePool;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
@@ -48,7 +49,7 @@ public final class TropicraftWorldgenProvider implements DataProvider {
     public void run(HashCache cache) {
         var consumers = buildConsumers(cache);
 
-        var features = new TropicraftConfiguredFeatures(consumers.configuredFeatures());
+        var features = new TropicraftConfiguredFeatures(consumers.configuredFeatures(), consumers.placedFeatures());
         var carvers = new TropicraftConfiguredCarvers(consumers.configuredCarvers());
         var processors = new TropicraftProcessorLists(consumers.processorLists());
         var templates = new TropicraftTemplatePools(consumers.templatePools(), features, processors);
@@ -97,6 +98,10 @@ public final class TropicraftWorldgenProvider implements DataProvider {
 
         public WorldgenDataConsumer<ConfiguredFeature<?, ?>> configuredFeatures() {
             return consumer("worldgen/configured_feature", BuiltinRegistries.CONFIGURED_FEATURE, ConfiguredFeature.CODEC);
+        }
+
+        public WorldgenDataConsumer<PlacedFeature> placedFeatures() {
+            return consumer("worldgen/placed_feature", BuiltinRegistries.PLACED_FEATURE, PlacedFeature.CODEC);
         }
 
         public WorldgenDataConsumer<ConfiguredWorldCarver<?>> configuredCarvers() {
