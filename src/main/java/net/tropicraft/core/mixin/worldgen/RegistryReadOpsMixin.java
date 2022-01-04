@@ -1,9 +1,8 @@
 package net.tropicraft.core.mixin.worldgen;
 
+import com.google.gson.JsonElement;
 import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.Lifecycle;
+import com.mojang.serialization.*;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
@@ -77,9 +76,9 @@ public class RegistryReadOpsMixin {
     )
     private <E> Optional<DataResult<Pair<E, OptionalInt>>> modifyDataResult(
             Optional<DataResult<Pair<E, OptionalInt>>> result,
-            ResourceKey<? extends Registry<E>> registryKey, WritableRegistry<E> registry, Codec<E> elementCodec, ResourceLocation id
+            ResourceKey<? extends Registry<E>> registryKey, WritableRegistry<E> registry, Codec<E> elementCodec, ResourceKey<E> id
     ) {
-        if (id.getNamespace().equals(Constants.MODID)) {
+        if (id.location().getNamespace().equals(Constants.MODID)) {
             return result.map(r -> r.setLifecycle(Lifecycle.stable()));
         }
         return result;
