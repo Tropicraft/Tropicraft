@@ -1,8 +1,11 @@
 package net.tropicraft.core.common.dimension.biome;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
+import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.placement.AquaticPlacements;
+import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -17,11 +20,19 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
+import net.minecraft.world.level.levelgen.placement.BiomeFilter;
+import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.minecraft.world.level.levelgen.placement.PlacementModifier;
+import net.minecraft.world.level.levelgen.placement.RarityFilter;
 import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.data.WorldgenDataConsumer;
@@ -29,8 +40,13 @@ import net.tropicraft.core.common.dimension.carver.TropicraftConfiguredCarvers;
 import net.tropicraft.core.common.dimension.feature.TropicraftConfiguredFeatures;
 import net.tropicraft.core.common.dimension.feature.TropicraftConfiguredStructures;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
+import net.tropicraft.core.common.dimension.feature.tree.PalmTreeFeature;
 import net.tropicraft.core.common.dimension.surfacebuilders.TropicraftConfiguredSurfaceBuilders;
 import net.tropicraft.core.common.entity.TropicraftEntities;
+
+import java.util.List;
+
+import static net.minecraft.data.worldgen.placement.VegetationPlacements.TREE_THRESHOLD;
 
 @Mod.EventBusSubscriber(modid = Constants.MODID)
 public final class TropicraftBiomes {
@@ -119,31 +135,22 @@ public final class TropicraftBiomes {
         BiomeGenerationSettingsBuilder generation = event.getGeneration();
 
         if (category == Biome.BiomeCategory.BEACH) {
-            generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-                    TropicraftFeatures.NORMAL_PALM_TREE.get().configured(NoneFeatureConfiguration.INSTANCE)
-                            .decorated(Features.Decorators.HEIGHTMAP_SQUARE)
-                            .decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(0, 0.08F, 1)))
-            );
-            generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-                    TropicraftFeatures.CURVED_PALM_TREE.get().configured(NoneFeatureConfiguration.INSTANCE)
-                            .decorated(Features.Decorators.HEIGHTMAP_SQUARE)
-                            .decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(0, 0.08F, 1)))
-            );
-            generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-                    TropicraftFeatures.LARGE_PALM_TREE.get().configured(NoneFeatureConfiguration.INSTANCE)
-                            .decorated(Features.Decorators.HEIGHTMAP_SQUARE)
-                            .decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(0, 0.08F, 1)))
-            );
+            generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, palmTree(TropicraftFeatures.NORMAL_PALM_TREE));
+            generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, palmTree(TropicraftFeatures.CURVED_PALM_TREE));
+            generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, palmTree(TropicraftFeatures.LARGE_PALM_TREE));
         } else if (category == Biome.BiomeCategory.JUNGLE) {
-            SimpleStateProvider state = new SimpleStateProvider(TropicraftBlocks.PINEAPPLE.get().defaultBlockState());
             generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-                    Feature.RANDOM_PATCH.configured(new RandomPatchConfiguration.GrassConfigurationBuilder(state, new DoublePlantPlacer())
-                            .tries(6)
-                            .canReplace()
-                            .build()
-                    ).decorated(Features.Decorators.HEIGHTMAP_DOUBLE_SQUARE)
+                Feature.RANDOM_PATCH
+                    .configured(FeatureUtils.simplePatchConfiguration(Feature.SIMPLE_BLOCK.configured(new SimpleBlockConfiguration(BlockStateProvider.simple(TropicraftBlocks.PINEAPPLE.get())))))
+                    .placed(RarityFilter.onAverageOnceEvery(6), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome())
             );
         }
+    }
+
+    private static PlacedFeature palmTree(final RegistryObject<PalmTreeFeature> palmTreeFeature) {
+        return palmTreeFeature.get()
+                .configured(NoneFeatureConfiguration.INSTANCE)
+                .placed(treePlacement(PlacementUtils.countExtra(0, 0.08F, 1)));
     }
 
     private Biome createTropics() {
@@ -515,5 +522,13 @@ public final class TropicraftBiomes {
     private static int getSkyColor(float temperature) {
         float shift = Mth.clamp(temperature / 3.0F, -1.0F, 1.0F);
         return Mth.hsvToRgb((224.0F / 360.0F) - shift * 0.05F, 0.5F + shift * 0.1F, 1.0F);
+    }
+
+    private static ImmutableList.Builder<PlacementModifier> treePlacementBase(PlacementModifier p_195485_) {
+        return ImmutableList.<PlacementModifier>builder().add(p_195485_).add(InSquarePlacement.spread()).add(TREE_THRESHOLD).add(PlacementUtils.HEIGHTMAP_OCEAN_FLOOR).add(BiomeFilter.biome());
+    }
+
+    public static List<PlacementModifier> treePlacement(PlacementModifier p_195480_) {
+        return treePlacementBase(p_195480_).build();
     }
 }

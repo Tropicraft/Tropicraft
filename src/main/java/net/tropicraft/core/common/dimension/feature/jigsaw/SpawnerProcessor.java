@@ -29,7 +29,7 @@ public class SpawnerProcessor extends StructureProcessor {
 
     public static final Codec<SpawnerProcessor> CODEC = RecordCodecBuilder.create(instance -> {
         return instance.group(
-                Registry.ENTITY_TYPE.listOf().fieldOf("entity_types").forGetter(p -> p.entityTypes)
+                Registry.ENTITY_TYPE.byNameCodec().listOf().fieldOf("entity_types").forGetter(p -> p.entityTypes)
         ).apply(instance, SpawnerProcessor::new);
     });
 

@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.AbstractFish;
+import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
@@ -471,9 +472,9 @@ public class TropicraftEntities {
     }
 
     public static void registerSpawns() {
-        registerWaterSpawn(TROPICAL_FISH.get(), AbstractFish::checkFishSpawnRules);
-        registerWaterSpawn(RIVER_SARDINE.get(), AbstractFish::checkFishSpawnRules);
-        registerWaterSpawn(PIRANHA.get(), AbstractFish::checkFishSpawnRules);
+        registerWaterSpawn(TROPICAL_FISH.get(), WaterAnimal::checkSurfaceWaterAnimalSpawnRules);
+        registerWaterSpawn(RIVER_SARDINE.get(), WaterAnimal::checkSurfaceWaterAnimalSpawnRules);
+        registerWaterSpawn(PIRANHA.get(), WaterAnimal::checkSurfaceWaterAnimalSpawnRules);
         registerWaterSpawn(DOLPHIN.get(), TropicraftEntities::canSpawnOceanWaterMob);
         registerWaterSpawn(EAGLE_RAY.get(), TropicraftEntities::canSpawnOceanWaterMob);
         registerWaterSpawn(MARLIN.get(), TropicraftEntities::canSpawnOceanWaterMob);

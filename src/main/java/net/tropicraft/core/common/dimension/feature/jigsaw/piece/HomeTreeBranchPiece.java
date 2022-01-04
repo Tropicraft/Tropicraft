@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.JigsawBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.feature.structures.StructurePoolElement;
 import net.minecraft.world.level.levelgen.feature.structures.StructurePoolElementType;
@@ -99,7 +100,7 @@ public final class HomeTreeBranchPiece extends StructurePoolElement implements P
 
     @Override
     public boolean place(StructureManager templates, WorldGenLevel world, StructureFeatureManager structures, ChunkGenerator generator, BlockPos origin, BlockPos p_230378_6_, Rotation rotation, BoundingBox chunkBounds, Random random, boolean p_230378_10_) {
-        WorldgenRandom rand = new WorldgenRandom();
+        WorldgenRandom rand = new WorldgenRandom(new LegacyRandomSource(world.getSeed()));
         rand.setDecorationSeed(world.getSeed(), origin.getX(), origin.getZ());
 
         final int branchLength = rand.nextInt(10) + 15;

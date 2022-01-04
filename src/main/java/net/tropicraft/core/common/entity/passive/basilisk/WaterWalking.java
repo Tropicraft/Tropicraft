@@ -45,7 +45,7 @@ public final class WaterWalking {
 
         Stream<VoxelShape> collisions = WaterWalking.collisions(world, box.expandTowards(offset));
 
-        double dy = Shapes.collide(Direction.Axis.Y, box, collisions, offset.y);
+        double dy = Shapes.collide(Direction.Axis.Y, box, collisions.toList(), offset.y);
         return new Vec3(offset.x, dy, offset.z);
     }
 
