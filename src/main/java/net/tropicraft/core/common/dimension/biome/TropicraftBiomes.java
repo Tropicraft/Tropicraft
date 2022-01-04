@@ -490,8 +490,8 @@ public final class TropicraftBiomes {
         BiomeDefaultFeatures.addDefaultCrystalFormations(generation);
         BiomeDefaultFeatures.addDefaultUndergroundVariety(generation);
 
-        generation.addStructureStart(structures.homeTree);
-        generation.addStructureStart(structures.koaVillage);
+//        generation.addStructureStart(structures.homeTree);
+//        generation.addStructureStart(structures.koaVillage);
 
         return generation;
     }

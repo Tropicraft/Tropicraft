@@ -7,6 +7,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.chunk.CarvingMask;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Aquifer;
 import net.minecraft.world.level.levelgen.carver.CanyonCarverConfiguration;
@@ -35,7 +36,8 @@ public class TropicsCanyonCarver extends CanyonWorldCarver {
                 .build();
     }
 
-    public boolean carve(CarvingContext pContext, CanyonCarverConfiguration pConfig, ChunkAccess pChunk, Function<BlockPos, Biome> pBiomeAccessor, Random pRandom, Aquifer pAquifer, ChunkPos pChunkPos, BitSet pCarvingMask) {
+    @Override
+    public boolean carve(CarvingContext pContext, CanyonCarverConfiguration pConfig, ChunkAccess pChunk, Function<BlockPos, Biome> pBiomeAccessor, Random pRandom, Aquifer pAquifer, ChunkPos pChunkPos, CarvingMask pCarvingMask) {
         int i = (this.getRange() * 2 - 1) * 16;
         double d0 = (double)pChunkPos.getBlockX(pRandom.nextInt(16));
         int j = pRandom.nextInt(pRandom.nextInt(80) + 8) + 20;
@@ -51,7 +53,7 @@ public class TropicsCanyonCarver extends CanyonWorldCarver {
     }
 
     // Copied from super
-    private void genCanyon(CarvingContext pContext, CanyonCarverConfiguration pConfig, ChunkAccess pChunk, Function<BlockPos, Biome> pBiomeAccessor, long pSeed, Aquifer pAquifer, double pX, double pY, double pZ, float pThickness, float pYaw, float pPitch, int pBranchIndex, int pBranchCount, double pHorizontalVerticalRatio, BitSet pCarvingMask) {
+    private void genCanyon(CarvingContext pContext, CanyonCarverConfiguration pConfig, ChunkAccess pChunk, Function<BlockPos, Biome> pBiomeAccessor, long pSeed, Aquifer pAquifer, double pX, double pY, double pZ, float pThickness, float pYaw, float pPitch, int pBranchIndex, int pBranchCount, double pHorizontalVerticalRatio, CarvingMask pCarvingMask) {
         Random random = new Random(pSeed);
         float[] afloat = this.initWidthFactors(pContext, pConfig, random);
         float f = 0.0F;
@@ -79,7 +81,7 @@ public class TropicsCanyonCarver extends CanyonWorldCarver {
                     return;
                 }
 
-                this.carveEllipsoid(pContext, pConfig, pChunk, pBiomeAccessor, pSeed, pAquifer, pX, pY, pZ, d0, d1, pCarvingMask, (p_159082_, p_159083_, p_159084_, p_159085_, p_159086_) -> {
+                this.carveEllipsoid(pContext, pConfig, pChunk, pBiomeAccessor, pAquifer, pX, pY, pZ, d0, d1, pCarvingMask, (p_159082_, p_159083_, p_159084_, p_159085_, p_159086_) -> {
                     return this.shouldSkip(p_159082_, afloat, p_159083_, p_159084_, p_159085_, p_159086_);
                 });
             }
