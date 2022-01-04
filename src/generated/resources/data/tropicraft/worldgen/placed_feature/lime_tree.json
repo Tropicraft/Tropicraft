@@ -1,0 +1,40 @@
+{
+  "feature": "tropicraft:lime_tree",
+  "placement": [
+    {
+      "count": {
+        "distribution": [
+          {
+            "data": 0,
+            "weight": 9
+          },
+          {
+            "data": 1,
+            "weight": 1
+          }
+        ],
+        "type": "minecraft:weighted_list"
+      },
+      "type": "minecraft:count"
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "heightmap": "MOTION_BLOCKING",
+      "type": "minecraft:heightmap"
+    },
+    {
+      "predicate": {
+        "state": {
+          "Properties": {
+            "stage": "0"
+          },
+          "Name": "tropicraft:lime_sapling"
+        },
+        "type": "minecraft:would_survive"
+      },
+      "type": "minecraft:block_predicate_filter"
+    }
+  ]
+}

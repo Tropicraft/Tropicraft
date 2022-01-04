@@ -1,37 +1,4 @@
 {
-  "config": {
-    "feature": {
-      "config": {
-        "feature": {
-          "config": {},
-          "type": "tropicraft:large_tualung"
-        },
-        "decorator": {
-          "config": {
-            "outer": {
-              "config": {},
-              "type": "minecraft:square"
-            },
-            "inner": {
-              "config": {
-                "heightmap": "MOTION_BLOCKING"
-              },
-              "type": "minecraft:heightmap"
-            }
-          },
-          "type": "minecraft:decorated"
-        }
-      },
-      "type": "minecraft:decorated"
-    },
-    "decorator": {
-      "config": {
-        "count": 0,
-        "extra_chance": 0.4,
-        "extra_count": 1
-      },
-      "type": "minecraft:count_extra"
-    }
-  },
-  "type": "minecraft:decorated"
+  "config": {},
+  "type": "tropicraft:large_tualung"
 }

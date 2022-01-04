@@ -151,8 +151,8 @@ public final class TropicraftConfiguredFeatures {
         this.largePalmTree = features.sparseTree("large_palm_tree", TropicraftFeatures.LARGE_PALM_TREE, FeatureConfiguration.NONE, TropicraftBlocks.PALM_SAPLING, 0.2F);
 
         this.rainforestUpTree = features.sparseTree("rainforest_up_tree", TropicraftFeatures.UP_TREE, FeatureConfiguration.NONE, TropicraftBlocks.MAHOGANY_SAPLING, 0.2F);
-        this.rainforestSmallTualung = features.sparseTree("rainforest_small_tualung", TropicraftFeatures.SMALL_TUALUNG, FeatureConfiguration.NONE, TropicraftBlocks.MAHOGANY_SAPLING, 0.3F);
-        this.rainforestLargeTualung = features.sparseTree("rainforest_large_tualung", TropicraftFeatures.LARGE_TUALUNG, FeatureConfiguration.NONE, TropicraftBlocks.MAHOGANY_SAPLING, 0.4F);
+        this.rainforestSmallTualung = features.sparseTree("rainforest_small_tualung", TropicraftFeatures.SMALL_TUALUNG, FeatureConfiguration.NONE, TropicraftBlocks.MAHOGANY_SAPLING, 0.25F);
+        this.rainforestLargeTualung = features.sparseTree("rainforest_large_tualung", TropicraftFeatures.LARGE_TUALUNG, FeatureConfiguration.NONE, TropicraftBlocks.MAHOGANY_SAPLING, 0.5F);
         this.rainforestTallTree = features.sparseTree("rainforest_tall_tree", TropicraftFeatures.TALL_TREE, FeatureConfiguration.NONE, TropicraftBlocks.MAHOGANY_SAPLING, 0.5F);
 
         this.rainforestVines = features.registerPlaced("rainforest_vines", TropicraftFeatures.VINES,
@@ -211,7 +211,7 @@ public final class TropicraftConfiguredFeatures {
                         new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
                 ).build(),
                 () -> Blocks.JUNGLE_SAPLING,
-                0, 0.08f, 1);
+                0, 0.1f, 1);
 
         this.papaya = features.tree("papaya",
                 new TreeConfiguration.TreeConfigurationBuilder(

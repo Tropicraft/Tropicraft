@@ -1,43 +1,11 @@
 {
   "config": {
-    "feature": {
-      "config": {
-        "to_place": {
-          "state": {
-            "Name": "minecraft:seagrass"
-          },
-          "type": "minecraft:simple_state_provider"
-        },
-        "place_on": [
-          {
-            "Name": "minecraft:dirt"
-          }
-        ],
-        "place_in": [
-          {
-            "Properties": {
-              "level": "0"
-            },
-            "Name": "minecraft:water"
-          }
-        ],
-        "place_under": [
-          {
-            "Properties": {
-              "level": "0"
-            },
-            "Name": "minecraft:water"
-          }
-        ]
+    "to_place": {
+      "state": {
+        "Name": "minecraft:seagrass"
       },
-      "type": "minecraft:simple_block"
-    },
-    "decorator": {
-      "config": {
-        "step": "liquid"
-      },
-      "type": "minecraft:carving_mask"
+      "type": "minecraft:simple_state_provider"
     }
   },
-  "type": "minecraft:decorated"
+  "type": "minecraft:simple_block"
 }

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.core.Registry;
@@ -136,10 +137,12 @@ public final class TropicraftWorldgenProvider implements DataProvider {
                 var entryPath = root.resolve(id.getNamespace()).resolve(path).resolve(id.getPath() + ".json");
 
                 try {
-                    var serialized = codec.encodeStart(ops, () -> entry).result();
+                    DataResult<JsonElement> result = codec.encodeStart(ops, () -> entry);
+                    var serialized = result.result();
                     if (serialized.isPresent()) {
                         DataProvider.save(GSON, cache, serialized.get(), entryPath);
                     } else {
+                        System.out.println(result.error().get());
                         LOGGER.error("Couldn't serialize worldgen entry at {}", entryPath);
                     }
                 } catch (IOException e) {

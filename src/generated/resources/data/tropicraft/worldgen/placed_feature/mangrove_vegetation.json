@@ -1,0 +1,18 @@
+{
+  "feature": "tropicraft:mangroves",
+  "placement": [
+    {
+      "noise_to_count_ratio": 7,
+      "noise_factor": 200.0,
+      "noise_offset": 1.5,
+      "type": "minecraft:noise_based_count"
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "heightmap": "OCEAN_FLOOR",
+      "type": "minecraft:heightmap"
+    }
+  ]
+}

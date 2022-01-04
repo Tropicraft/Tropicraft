@@ -1,44 +1,4 @@
 {
-  "config": {
-    "feature": {
-      "config": {},
-      "type": "tropicraft:coffee_bush"
-    },
-    "decorator": {
-      "config": {
-        "outer": {
-          "config": {
-            "count": 5
-          },
-          "type": "minecraft:count"
-        },
-        "inner": {
-          "config": {
-            "outer": {
-              "config": {
-                "outer": {
-                  "config": {},
-                  "type": "minecraft:square"
-                },
-                "inner": {
-                  "config": {
-                    "heightmap": "MOTION_BLOCKING"
-                  },
-                  "type": "minecraft:heightmap"
-                }
-              },
-              "type": "minecraft:decorated"
-            },
-            "inner": {
-              "config": {},
-              "type": "minecraft:spread_32_above"
-            }
-          },
-          "type": "minecraft:decorated"
-        }
-      },
-      "type": "minecraft:decorated"
-    }
-  },
-  "type": "minecraft:decorated"
+  "config": {},
+  "type": "tropicraft:coffee_bush"
 }

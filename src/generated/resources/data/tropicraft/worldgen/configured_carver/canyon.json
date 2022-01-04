@@ -1,9 +1,9 @@
 {
   "config": {
+    "yScale": 3.0,
     "lava_level": {
       "above_bottom": 10
     },
-    "aquifers_enabled": false,
     "debug_settings": {
       "water_state": {
         "Properties": {
@@ -39,7 +39,6 @@
       "inner": 8,
       "type": "minecraft:biased_to_bottom"
     },
-    "yScale": 3.0,
     "vertical_rotation": {
       "type": "minecraft:uniform",
       "value": {

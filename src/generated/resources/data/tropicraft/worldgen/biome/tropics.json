@@ -1,44 +1,38 @@
 {
-  "effects": {
-    "sky_color": 7907327,
-    "fog_color": 12248771,
-    "water_color": 5172447,
-    "water_fog_color": 270131
-  },
-  "surface_builder": "tropicraft:tropics",
   "carvers": {
     "air": [
+      "minecraft:cave",
+      "minecraft:cave_extra_underground",
+      "minecraft:canyon",
       "tropicraft:cave",
       "tropicraft:canyon"
     ]
   },
   "features": [
     [],
-    [],
-    [],
+    [
+      "minecraft:lake_lava_underground",
+      "minecraft:lake_lava_surface"
+    ],
+    [
+      "minecraft:amethyst_geode"
+    ],
     [],
     [],
     [],
     [
-      "minecraft:ore_coal",
-      "minecraft:ore_iron",
-      "minecraft:ore_gold",
-      "minecraft:ore_redstone",
-      "minecraft:ore_diamond",
-      "minecraft:ore_lapis",
-      "minecraft:ore_copper",
       "minecraft:ore_dirt",
       "minecraft:ore_gravel",
-      "minecraft:ore_granite",
-      "minecraft:ore_diorite",
-      "minecraft:ore_andesite",
-      "minecraft:ore_tuff",
-      "minecraft:ore_deepslate"
+      "minecraft:ore_granite_upper",
+      "minecraft:ore_granite_lower",
+      "minecraft:ore_diorite_upper",
+      "minecraft:ore_diorite_lower",
+      "minecraft:ore_andesite_upper",
+      "minecraft:ore_andesite_lower",
+      "minecraft:ore_tuff"
     ],
-    [
-      "minecraft:rare_dripstone_cluster",
-      "minecraft:rare_small_dripstone"
-    ],
+    [],
+    [],
     [
       "minecraft:glow_lichen",
       "tropicraft:grapefruit_tree",
@@ -58,12 +52,6 @@
       "minecraft:patch_large_fern",
       "minecraft:patch_tall_grass"
     ]
-  ],
-  "starts": [
-    "minecraft:mineshaft",
-    "minecraft:stronghold",
-    "tropicraft:home_tree",
-    "tropicraft:koa_village"
   ],
   "spawners": {
     "monster": [
@@ -137,17 +125,21 @@
         "maxCount": 15
       }
     ],
+    "axolotls": [],
     "underground_water_creature": [],
     "water_creature": [],
     "water_ambient": [],
     "misc": []
   },
   "spawn_costs": {},
-  "player_spawn_friendly": false,
   "precipitation": "rain",
   "temperature": 2.0,
   "downfall": 1.5,
   "category": "plains",
-  "depth": 0.1,
-  "scale": 0.1
+  "effects": {
+    "sky_color": 7907327,
+    "fog_color": 12248771,
+    "water_color": 5172447,
+    "water_fog_color": 270131
+  }
 }

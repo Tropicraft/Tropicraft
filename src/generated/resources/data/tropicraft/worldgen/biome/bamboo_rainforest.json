@@ -1,47 +1,41 @@
 {
-  "effects": {
-    "sky_color": 7907327,
-    "fog_color": 12248771,
-    "water_color": 5172447,
-    "water_fog_color": 270131
-  },
-  "surface_builder": "minecraft:grass",
   "carvers": {
     "air": [
+      "minecraft:cave",
+      "minecraft:cave_extra_underground",
+      "minecraft:canyon",
       "tropicraft:cave",
       "tropicraft:canyon"
     ]
   },
   "features": [
     [],
-    [],
-    [],
+    [
+      "minecraft:lake_lava_underground",
+      "minecraft:lake_lava_surface"
+    ],
+    [
+      "minecraft:amethyst_geode"
+    ],
     [],
     [],
     [],
     [
-      "minecraft:ore_coal",
-      "minecraft:ore_iron",
-      "minecraft:ore_gold",
-      "minecraft:ore_redstone",
-      "minecraft:ore_diamond",
-      "minecraft:ore_lapis",
-      "minecraft:ore_copper",
       "minecraft:ore_dirt",
       "minecraft:ore_gravel",
-      "minecraft:ore_granite",
-      "minecraft:ore_diorite",
-      "minecraft:ore_andesite",
+      "minecraft:ore_granite_upper",
+      "minecraft:ore_granite_lower",
+      "minecraft:ore_diorite_upper",
+      "minecraft:ore_diorite_lower",
+      "minecraft:ore_andesite_upper",
+      "minecraft:ore_andesite_lower",
       "minecraft:ore_tuff",
-      "minecraft:ore_deepslate",
       "tropicraft:azurite",
       "tropicraft:eudialyte",
       "tropicraft:zircon"
     ],
-    [
-      "minecraft:rare_dripstone_cluster",
-      "minecraft:rare_small_dripstone"
-    ],
+    [],
+    [],
     [
       "minecraft:glow_lichen",
       "tropicraft:rainforest_up_tree",
@@ -59,13 +53,6 @@
       "tropicraft:rainforest_vines",
       "tropicraft:bamboo"
     ]
-  ],
-  "starts": [
-    "minecraft:mineshaft",
-    "minecraft:stronghold",
-    "tropicraft:home_tree",
-    "tropicraft:koa_village",
-    "tropicraft:home_tree"
   ],
   "spawners": {
     "monster": [
@@ -169,17 +156,21 @@
       }
     ],
     "ambient": [],
+    "axolotls": [],
     "underground_water_creature": [],
     "water_creature": [],
     "water_ambient": [],
     "misc": []
   },
   "spawn_costs": {},
-  "player_spawn_friendly": false,
   "precipitation": "rain",
   "temperature": 1.5,
   "downfall": 2.0,
   "category": "jungle",
-  "depth": 0.25,
-  "scale": 0.25
+  "effects": {
+    "sky_color": 7907327,
+    "fog_color": 12248771,
+    "water_color": 5172447,
+    "water_fog_color": 270131
+  }
 }

@@ -1,35 +1,4 @@
 {
-  "config": {
-    "feature": {
-      "config": {
-        "feature": {
-          "config": {},
-          "type": "tropicraft:reeds"
-        },
-        "decorator": {
-          "config": {
-            "outer": {
-              "config": {},
-              "type": "minecraft:square"
-            },
-            "inner": {
-              "config": {
-                "heightmap": "OCEAN_FLOOR_WG"
-              },
-              "type": "minecraft:heightmap"
-            }
-          },
-          "type": "minecraft:decorated"
-        }
-      },
-      "type": "minecraft:decorated"
-    },
-    "decorator": {
-      "config": {
-        "count": 2
-      },
-      "type": "minecraft:count"
-    }
-  },
-  "type": "minecraft:decorated"
+  "config": {},
+  "type": "tropicraft:reeds"
 }

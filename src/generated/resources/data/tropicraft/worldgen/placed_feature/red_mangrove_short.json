@@ -1,0 +1,23 @@
+{
+  "feature": "tropicraft:red_mangrove_short",
+  "placement": [
+    {
+      "max_water_depth": 1,
+      "type": "minecraft:surface_water_depth_filter"
+    },
+    {
+      "predicate": {
+        "state": {
+          "Properties": {
+            "waterlogged": "false",
+            "stage": "0",
+            "planted": "true"
+          },
+          "Name": "tropicraft:red_mangrove_propagule"
+        },
+        "type": "minecraft:would_survive"
+      },
+      "type": "minecraft:block_predicate_filter"
+    }
+  ]
+}

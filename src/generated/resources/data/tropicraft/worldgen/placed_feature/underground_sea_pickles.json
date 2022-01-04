@@ -1,0 +1,16 @@
+{
+  "feature": "tropicraft:underground_sea_pickles",
+  "placement": [
+    {
+      "step": "liquid",
+      "type": "minecraft:carving_mask"
+    },
+    {
+      "chance": 10,
+      "type": "minecraft:rarity_filter"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

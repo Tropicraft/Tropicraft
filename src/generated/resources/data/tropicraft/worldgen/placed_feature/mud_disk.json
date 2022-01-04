@@ -1,0 +1,45 @@
+{
+  "feature": {
+    "config": {
+      "state": {
+        "Name": "tropicraft:mud"
+      },
+      "radius": {
+        "type": "minecraft:uniform",
+        "value": {
+          "min_inclusive": 2,
+          "max_inclusive": 4
+        }
+      },
+      "half_height": 2,
+      "targets": [
+        {
+          "Name": "minecraft:dirt"
+        },
+        {
+          "Properties": {
+            "snowy": "false"
+          },
+          "Name": "minecraft:grass_block"
+        }
+      ]
+    },
+    "type": "minecraft:disk"
+  },
+  "placement": [
+    {
+      "count": 3,
+      "type": "minecraft:count"
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "heightmap": "OCEAN_FLOOR_WG",
+      "type": "minecraft:heightmap"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

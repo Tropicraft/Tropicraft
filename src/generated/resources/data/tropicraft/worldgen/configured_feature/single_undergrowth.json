@@ -1,35 +1,4 @@
 {
-  "config": {
-    "feature": {
-      "config": {},
-      "type": "tropicraft:single_undergrowth"
-    },
-    "decorator": {
-      "config": {
-        "outer": {
-          "config": {
-            "count": 2
-          },
-          "type": "minecraft:count"
-        },
-        "inner": {
-          "config": {
-            "outer": {
-              "config": {},
-              "type": "minecraft:square"
-            },
-            "inner": {
-              "config": {
-                "heightmap": "MOTION_BLOCKING"
-              },
-              "type": "minecraft:heightmap"
-            }
-          },
-          "type": "minecraft:decorated"
-        }
-      },
-      "type": "minecraft:decorated"
-    }
-  },
-  "type": "minecraft:decorated"
+  "config": {},
+  "type": "tropicraft:single_undergrowth"
 }

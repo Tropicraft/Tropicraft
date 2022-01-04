@@ -1,0 +1,16 @@
+{
+  "feature": "tropicraft:seagrass",
+  "placement": [
+    {
+      "count": 48,
+      "type": "minecraft:count"
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "heightmap": "OCEAN_FLOOR_WG",
+      "type": "minecraft:heightmap"
+    }
+  ]
+}

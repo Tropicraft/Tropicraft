@@ -150,7 +150,7 @@ public final class TropicraftBiomes {
     private static PlacedFeature palmTree(final RegistryObject<PalmTreeFeature> palmTreeFeature) {
         return palmTreeFeature.get()
                 .configured(NoneFeatureConfiguration.INSTANCE)
-                .placed(treePlacement(PlacementUtils.countExtra(0, 0.08F, 1)));
+                .placed(treePlacement(PlacementUtils.countExtra(0, 0.1F, 1)));
     }
 
     private Biome createTropics() {
