@@ -1,5 +1,4 @@
 {
-  "logical_height": 256,
   "infiniburn": "minecraft:infiniburn_overworld",
   "effects": "tropicraft:tropics",
   "ambient_light": 0.0,
@@ -12,6 +11,7 @@
   "piglin_safe": false,
   "has_skylight": true,
   "has_ceiling": false,
-  "min_y": 0,
-  "height": 256
+  "min_y": -64,
+  "height": 384,
+  "logical_height": 384
 }
