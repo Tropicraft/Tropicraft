@@ -46,7 +46,6 @@ import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.block.TropicraftTrees;
 import net.tropicraft.core.common.data.WorldgenDataConsumer;
-import net.tropicraft.core.common.dimension.feature.block_placer.HugePlantBlockPlacer;
 import net.tropicraft.core.common.dimension.feature.block_state_provider.NoiseFromTagBlockStateProvider;
 import net.tropicraft.core.common.dimension.feature.config.RainforestVinesConfig;
 import net.tropicraft.core.common.dimension.feature.tree.CitrusFoliagePlacer;

@@ -1,23 +1,39 @@
 package net.tropicraft.core.common.dimension.noise;
 
+import com.google.common.collect.ImmutableMap;
+import net.minecraft.Util;
 import net.minecraft.data.worldgen.SurfaceRuleData;
 import net.minecraft.data.worldgen.TerrainProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.*;
+import net.minecraft.world.level.levelgen.feature.StructureFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.StructureFeatureConfiguration;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.data.WorldgenDataConsumer;
+import net.tropicraft.core.common.dimension.feature.TropicraftConfiguredStructures;
+import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
+
+import java.util.Map;
+import java.util.Optional;
 
 public final class TropicraftNoiseGenSettings {
-    public TropicraftNoiseGenSettings(WorldgenDataConsumer<NoiseGeneratorSettings> noise) {
-        noise.register(new ResourceLocation(Constants.MODID, "tropics"), createNoise());
+    private final Map<StructureFeature<?>, StructureFeatureConfiguration> structureBiomeMap;
+
+    public TropicraftNoiseGenSettings(WorldgenDataConsumer<NoiseGeneratorSettings> noise, TropicraftConfiguredStructures structures) {
+        structureBiomeMap = ImmutableMap.of(
+            TropicraftFeatures.HOME_TREE.get(), new StructureFeatureConfiguration(24, 8, 1010101010),
+            TropicraftFeatures.KOA_VILLAGE.get(), new StructureFeatureConfiguration(24, 8, 1010101011)
+        );
+
+        noise.register(new ResourceLocation(Constants.MODID, "tropics"), createNoise(structureBiomeMap));
     }
     
-    private static NoiseGeneratorSettings createNoise() {
+    private static NoiseGeneratorSettings createNoise(final Map<StructureFeature<?>, StructureFeatureConfiguration> structureBiomeMap) {
         // Constant ternaries are amplified, keeping temporarily until we figure out good noise values
         // TODO: hook up custom terrain shaper and surface rule data
         return new NoiseGeneratorSettings(
-                new StructureSettings(false),
+                new StructureSettings(Optional.empty(), structureBiomeMap),
                 NoiseSettings.create(-64, 384,
                         new NoiseSamplingSettings(1.0D, 1.0D, 80.0D, 160.0D),
                         new NoiseSlider(-0.078125D, 2, false ? 0 : 8),

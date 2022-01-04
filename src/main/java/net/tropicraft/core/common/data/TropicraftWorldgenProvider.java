@@ -56,7 +56,7 @@ public final class TropicraftWorldgenProvider implements DataProvider {
         var processors = new TropicraftProcessorLists(consumers.processorLists());
         var templates = new TropicraftTemplatePools(consumers.templatePools(), features, processors);
         var structures = new TropicraftConfiguredStructures(consumers.configuredStructures(), templates);
-        var noiseSettings = new TropicraftNoiseGenSettings(consumers.noiseGenSettings());
+        var noiseSettings = new TropicraftNoiseGenSettings(consumers.noiseGenSettings(), structures);
 
         new TropicraftBiomes(consumers.biomes(), features, structures, carvers);
     }
