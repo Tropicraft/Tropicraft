@@ -3,7 +3,10 @@
   "package": "net.tropicraft.core.mixin",
   "compatibilityLevel": "JAVA_16",
   "refmap": "tropicraft.refmap.json",
-  "mixins": ["worldgen.RegistryReadOpsMixin"],
+  "mixins": [
+    "PlacedFeatureAccessor",
+    "worldgen.RegistryReadOpsMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   },

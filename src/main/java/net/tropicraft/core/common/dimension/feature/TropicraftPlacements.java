@@ -18,8 +18,8 @@ import java.util.function.Function;
 
 public class TropicraftPlacements {
     // VEGETATION
-    public final PlacedFeature BAMBOO;
-    public final PlacedFeature TROPICS_FLOWERS;
+//    public final PlacedFeature BAMBOO;
+//    public final PlacedFeature TROPICS_FLOWERS;
 
     // STRUCTURES
 
@@ -27,18 +27,18 @@ public class TropicraftPlacements {
     public TropicraftPlacements(WorldgenDataConsumer<? extends PlacedFeature> worldgen) {
         Register features = new Register(worldgen);
 
-        BAMBOO = features.register("bamboo",
-                Feature.BAMBOO.configured(new ProbabilityFeatureConfiguration(0.15F)).placed(
-                        NoiseBasedCountPlacement.of(70, 140.0D, 0.3D),
-                        InSquarePlacement.spread(),
-                        PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
-                        BiomeFilter.biome()
-                )
-        );
-
-        TROPICS_FLOWERS = features.register("tropics_flowers",
-            TropicraftConfiguredFeatures.tropicsFlowers.placed(RarityFilter.onAverageOnceEvery(16), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome())
-        );
+//        BAMBOO = features.register("bamboo",
+//                Feature.BAMBOO.configured(new ProbabilityFeatureConfiguration(0.15F)).placed(
+//                        NoiseBasedCountPlacement.of(70, 140.0D, 0.3D),
+//                        InSquarePlacement.spread(),
+//                        PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
+//                        BiomeFilter.biome()
+//                )
+//        );
+//
+//        TROPICS_FLOWERS = features.register("tropics_flowers",
+//            TropicraftConfiguredFeatures.tropicsFlowers.placed(RarityFilter.onAverageOnceEvery(16), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome())
+//        );
 
     }
 

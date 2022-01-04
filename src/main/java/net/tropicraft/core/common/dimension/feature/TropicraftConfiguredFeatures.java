@@ -39,17 +39,7 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStatePr
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
 import net.minecraft.world.level.levelgen.heightproviders.HeightProvider;
 import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
-import net.minecraft.world.level.levelgen.placement.BiomeFilter;
-import net.minecraft.world.level.levelgen.placement.BlockPredicateFilter;
-import net.minecraft.world.level.levelgen.placement.CarvingMaskPlacement;
-import net.minecraft.world.level.levelgen.placement.CountPlacement;
-import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
-import net.minecraft.world.level.levelgen.placement.HeightmapPlacement;
-import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
-import net.minecraft.world.level.levelgen.placement.NoiseBasedCountPlacement;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import net.minecraft.world.level.levelgen.placement.PlacementModifier;
-import net.minecraft.world.level.levelgen.placement.RarityFilter;
+import net.minecraft.world.level.levelgen.placement.*;
 import net.minecraftforge.registries.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.TropicraftTags;
@@ -71,8 +61,8 @@ import net.tropicraft.core.common.dimension.feature.tree.mangrove.PianguasTreeDe
 import net.tropicraft.core.common.dimension.feature.tree.mangrove.PneumatophoresTreeDecorator;
 import net.tropicraft.core.common.dimension.feature.tree.mangrove.SmallMangroveFoliagePlacer;
 import net.tropicraft.core.common.dimension.feature.tree.mangrove.SmallMangroveTrunkPlacer;
-import org.checkerframework.checker.units.qual.C;
 import org.jetbrains.annotations.NotNull;
+import net.tropicraft.core.mixin.PlacedFeatureAccessor;
 
 import java.util.Arrays;
 import java.util.List;
@@ -157,14 +147,14 @@ public final class TropicraftConfiguredFeatures {
         this.lemonTree = features.fruitTree("lemon_tree", TropicraftBlocks.LEMON_SAPLING, TropicraftBlocks.LEMON_LEAVES);
         this.limeTree = features.fruitTree("lime_tree", TropicraftBlocks.LIME_SAPLING, TropicraftBlocks.LIME_LEAVES);
 
-        this.normalPalmTree = features.sparseTree("normal_palm_tree", TropicraftFeatures.NORMAL_PALM_TREE, FeatureConfiguration.NONE, 0.2F);
-        this.curvedPalmTree = features.sparseTree("curved_palm_tree", TropicraftFeatures.CURVED_PALM_TREE, FeatureConfiguration.NONE, 0.2F);
-        this.largePalmTree = features.sparseTree("large_palm_tree", TropicraftFeatures.LARGE_PALM_TREE, FeatureConfiguration.NONE, 0.2F);
+        this.normalPalmTree = features.sparseTree("normal_palm_tree", TropicraftFeatures.NORMAL_PALM_TREE, FeatureConfiguration.NONE, TropicraftBlocks.PALM_SAPLING, 0.2F);
+        this.curvedPalmTree = features.sparseTree("curved_palm_tree", TropicraftFeatures.CURVED_PALM_TREE, FeatureConfiguration.NONE, TropicraftBlocks.PALM_SAPLING, 0.2F);
+        this.largePalmTree = features.sparseTree("large_palm_tree", TropicraftFeatures.LARGE_PALM_TREE, FeatureConfiguration.NONE, TropicraftBlocks.PALM_SAPLING, 0.2F);
 
-        this.rainforestUpTree = features.sparseTree("rainforest_up_tree", TropicraftFeatures.UP_TREE, FeatureConfiguration.NONE, 0.2F);
-        this.rainforestSmallTualung = features.sparseTree("rainforest_small_tualung", TropicraftFeatures.SMALL_TUALUNG, FeatureConfiguration.NONE, 0.3F);
-        this.rainforestLargeTualung = features.sparseTree("rainforest_large_tualung", TropicraftFeatures.LARGE_TUALUNG, FeatureConfiguration.NONE, 0.4F);
-        this.rainforestTallTree = features.sparseTree("rainforest_tall_tree", TropicraftFeatures.TALL_TREE, FeatureConfiguration.NONE, 0.5F);
+        this.rainforestUpTree = features.sparseTree("rainforest_up_tree", TropicraftFeatures.UP_TREE, FeatureConfiguration.NONE, TropicraftBlocks.MAHOGANY_SAPLING, 0.2F);
+        this.rainforestSmallTualung = features.sparseTree("rainforest_small_tualung", TropicraftFeatures.SMALL_TUALUNG, FeatureConfiguration.NONE, TropicraftBlocks.MAHOGANY_SAPLING, 0.3F);
+        this.rainforestLargeTualung = features.sparseTree("rainforest_large_tualung", TropicraftFeatures.LARGE_TUALUNG, FeatureConfiguration.NONE, TropicraftBlocks.MAHOGANY_SAPLING, 0.4F);
+        this.rainforestTallTree = features.sparseTree("rainforest_tall_tree", TropicraftFeatures.TALL_TREE, FeatureConfiguration.NONE, TropicraftBlocks.MAHOGANY_SAPLING, 0.5F);
 
         this.rainforestVines = features.registerPlaced("rainforest_vines", TropicraftFeatures.VINES,
                 f -> f.configured(new RainforestVinesConfig()), f -> f.placed(CountPlacement.of(50), InSquarePlacement.spread())
@@ -221,6 +211,7 @@ public final class TropicraftConfiguredFeatures {
                         new PleodendronFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 1),
                         new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
                 ).build(),
+                () -> Blocks.JUNGLE_SAPLING,
                 0, 0.08f, 1);
 
         this.papaya = features.tree("papaya",
@@ -233,6 +224,7 @@ public final class TropicraftConfiguredFeatures {
                 )
                 .decorators(ImmutableList.of(TropicraftTrees.BEEHIVE_005, new PapayaTreeDecorator()))
                 .build(),
+                TropicraftBlocks.PAPAYA_SAPLING,
                 0, 0.2f, 1
         );
 
@@ -256,6 +248,7 @@ public final class TropicraftConfiguredFeatures {
                 new TreeConfiguration.TreeConfigurationBuilder(redMangroveLog, redMangroveTrunk, redMangroveLeaves, mangroveFoliage, mangroveMinimumSize)
                         .decorators(ImmutableList.of(BEEHIVE_002, PianguasTreeDecorator.REGULAR))
                         .build(),
+                TropicraftBlocks.RED_MANGROVE_PROPAGULE,
                 1
         );
         this.redMangroveSmall = features.mangrove("red_mangrove_small",
@@ -266,6 +259,7 @@ public final class TropicraftConfiguredFeatures {
                         new SmallMangroveFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0)),
                         mangroveMinimumSize
                 ).decorators(ImmutableList.of(BEEHIVE_002, PianguasTreeDecorator.SMALL)).build(),
+                TropicraftBlocks.RED_MANGROVE_PROPAGULE,
                 0
         );
         this.redMangrove = features.random("red_mangrove", this.redMangroveShort, this.redMangroveSmall);
@@ -278,6 +272,7 @@ public final class TropicraftConfiguredFeatures {
                         mangroveFoliage,
                         mangroveMinimumSize
                 ).decorators(ImmutableList.of(BEEHIVE_002, PianguasTreeDecorator.REGULAR)).build(),
+                TropicraftBlocks.TALL_MANGROVE_PROPAGULE,
                 2
         );
 
@@ -290,6 +285,7 @@ public final class TropicraftConfiguredFeatures {
                         mangroveFoliage,
                         mangroveMinimumSize
                 ).decorators(ImmutableList.of(BEEHIVE_002, PianguasTreeDecorator.REGULAR, teaMangrovePneumatophores)).build(),
+                TropicraftBlocks.TEA_MANGROVE_PROPAGULE,
                 1
         );
 
@@ -302,20 +298,27 @@ public final class TropicraftConfiguredFeatures {
                         mangroveFoliage,
                         mangroveMinimumSize
                 ).decorators(ImmutableList.of(BEEHIVE_002, PianguasTreeDecorator.REGULAR, blackMangrovePneumatophores)).build(),
+                TropicraftBlocks.BLACK_MANGROVE_PROPAGULE,
                 1
         );
         this.lightMangroves = features.random("light_mangroves", this.tallMangrove, this.teaMangrove, this.blackMangrove);
 
         this.mangroves = features.random("mangroves", this.redMangrove, this.lightMangroves);
 
-        this.mangroveVegetation = features.registerPlaced("mangrove_vegetation", this.mangroves
-                    .decorated(Features.Decorators.HEIGHTMAP_SQUARE)
-                    .decorated(FeatureDecorator.COUNT_NOISE_BIASED.configured(new NoiseCountFactorDecoratorConfiguration(7, 200.0, 1.5)))
+        this.mangroveVegetation = features.registerPlaced("mangrove_vegetation", this.mangroves,
+                    f -> f.placed(
+                            NoiseBasedCountPlacement.of(7, 200.0, 1.5),
+                            InSquarePlacement.spread(),
+                            HeightmapPlacement.onHeightmap(Heightmap.Types.OCEAN_FLOOR)
+                    )
         );
 
-        this.sparseMangroveVegetation = features.registerPlaced("sparse_mangrove_vegetation", this.mangroves
-                .decorated(Features.Decorators.HEIGHTMAP_SQUARE)
-                .decorated(FeatureDecorator.COUNT_NOISE_BIASED.configured(new NoiseCountFactorDecoratorConfiguration(3, 200.0, 1.5)))
+        this.sparseMangroveVegetation = features.registerPlaced("sparse_mangrove_vegetation", this.mangroves,
+                f -> f.placed(
+                        NoiseBasedCountPlacement.of(3, 200.0, 1.5),
+                        InSquarePlacement.spread(),
+                        HeightmapPlacement.onHeightmap(Heightmap.Types.OCEAN_FLOOR)
+                )
         );
 
         this.mudDisk = features.registerPlaced(
@@ -621,6 +624,11 @@ public final class TropicraftConfiguredFeatures {
             return this.placed.register(new ResourceLocation(Constants.MODID, id), feature);
         }
 
+        // Add placements on top of an existing placed feature, removing any that already exist (intended for use with configured selector features which have no placements anyway)
+        public PlacedFeature registerPlaced(String id, PlacedFeature feature, Function<ConfiguredFeature<?, ?>, PlacedFeature> extra) {
+            return this.placed.register(new ResourceLocation(Constants.MODID, id), extra.apply(unwrap(feature)));
+        }
+
         // Configure a feature with the configure function, and place it with the place function
         public <F extends Feature<?>, CF extends ConfiguredFeature<?, ?>> PlacedFeature registerPlaced(String id, F feature, Function<F, CF> configure, Function<CF, PlacedFeature> place) {
             CF configured = configure.apply(feature);
@@ -659,7 +667,7 @@ public final class TropicraftConfiguredFeatures {
             return Feature.ORE.configured(new OreConfiguration(OreFeatures.STONE_ORE_REPLACEABLES, block.get().defaultBlockState(), blobSize));
         }
 
-        public ConfiguredFeature<?, ?> fruitTree(String id, Supplier<? extends Block> sapling, Supplier<? extends Block> fruitLeaves) {
+        public PlacedFeature fruitTree(String id, Supplier<? extends Block> sapling, Supplier<? extends Block> fruitLeaves) {
             TreeConfiguration config = new TreeConfiguration.TreeConfigurationBuilder(
                     BlockStateProvider.simple(Blocks.OAK_LOG.defaultBlockState()),
                     new CitrusTrunkPlacer(6, 3, 0),
@@ -672,50 +680,65 @@ public final class TropicraftConfiguredFeatures {
                     new TwoLayersFeatureSize(1, 0, 2)
             ).build();
 
-            return this.tree(id, config, 0, 0.1F, 1);
+            return this.tree(id, config, sapling, 0, 0.1F, 1);
         }
 
-        public <F extends Feature<?>, CF extends ConfiguredFeature<?, ?>> PlacedFeature sparseTree(String id, RegistryObject<F> feature, C config, float chance) {
-            return this.registerPlaced(id, feature, f -> {
-                return f.configured(config).decorated(Features.Decorators.HEIGHTMAP_SQUARE)
-                        .decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(0, chance, 1)));
-            });
-        }
-
-        public <F extends Feature<?>, CF extends ConfiguredFeature<?, ?>> PlacedFeature tree(String id, TreeConfiguration config, int count, float extraChance, int extraCount) {
-            return this.registerPlaced(id, Feature.TREE, feature -> feature.configured(config), feature ->
-                    feature.placed(PlacementUtils.countExtra(count, extraChance, extraCount), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP)
+        public <F extends Feature<FC>, FC extends FeatureConfiguration> PlacedFeature sparseTree(String id, RegistryObject<F> feature, FC config, Supplier<? extends Block> sapling, float chance) {
+            return this.registerPlaced(id, feature,  (F f) -> f.configured(config),
+                    f -> f.placed(PlacementUtils.countExtra(0, chance, 1), InSquarePlacement.spread(),
+                    PlacementUtils.HEIGHTMAP,
+                    BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(sapling.get().defaultBlockState(), BlockPos.ZERO)))
             );
         }
 
-        public PlacedFeature mangrove(String id, TreeConfiguration config, int maxWaterDepth) {
+        public PlacedFeature tree(String id, TreeConfiguration config, Supplier<? extends Block> sapling, int count, float extraChance, int extraCount) {
+            return this.registerPlaced(id, Feature.TREE, feature -> feature.configured(config), feature ->
+                    feature.placed(
+                            PlacementUtils.countExtra(count, extraChance, extraCount),
+                            InSquarePlacement.spread(),
+                            PlacementUtils.HEIGHTMAP,
+                            BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(sapling.get().defaultBlockState(), BlockPos.ZERO)))
+            );
+        }
+
+        public PlacedFeature mangrove(String id, TreeConfiguration config, Supplier<? extends Block> sapling, int maxWaterDepth) {
             return this.registerPlaced(id, TropicraftFeatures.MANGROVE_TREE.get(), feature -> {
                 ConfiguredFeature<TreeConfiguration, ?> configured = feature.configured(config);
 
-                if (maxWaterDepth > 0) {
-                    return configured.decorated(FeatureDecorator.WATER_DEPTH_THRESHOLD.configured(new WaterDepthThresholdConfiguration(maxWaterDepth)));
-                }
+                // TODO: do we need the if?
+//                if (maxWaterDepth > 0) {
+//                    return configured.decorated(FeatureDecorator.WATER_DEPTH_THRESHOLD.configured(new WaterDepthThresholdConfiguration(maxWaterDepth)));
+//                }
 
                 return configured;
-            });
+            }, f -> f.placed(SurfaceWaterDepthFilter.forMaxDepth(maxWaterDepth),
+                    BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(sapling.get().defaultBlockState(), BlockPos.ZERO))
+                    ));
         }
 
-        public ConfiguredFeature<?, ?> random(String id, ConfiguredFeature<?, ?>... choices) {
+        public PlacedFeature random(String id, PlacedFeature... choices) {
             if (choices.length == 2) {
-                ConfiguredFeature<?, ?> left = choices[0];
-                ConfiguredFeature<?, ?> right = choices[1];
-                return this.register(id, Feature.RANDOM_BOOLEAN_SELECTOR, feature -> {
+                PlacedFeature left = choices[0];
+                PlacedFeature right = choices[1];
+                return this.registerPlaced(id, Feature.RANDOM_BOOLEAN_SELECTOR, feature -> {
                     return feature.configured(new RandomBooleanFeatureConfiguration(() -> left, () -> right));
-                });
+                }, ConfiguredFeature::placed);
             }
 
-            return this.register(id, Feature.SIMPLE_RANDOM_SELECTOR, feature -> {
+            return this.registerPlaced(id, Feature.SIMPLE_RANDOM_SELECTOR, feature -> {
                 SimpleRandomFeatureConfiguration config = new SimpleRandomFeatureConfiguration(Arrays.stream(choices)
-                        .map(c -> (Supplier<ConfiguredFeature<?, ?>>) () -> c)
+                        .map(c -> (Supplier<PlacedFeature>) (() -> c))
                         .collect(Collectors.toList()));
+
                 return feature.configured(config);
-            });
+            }, ConfiguredFeature::placed);
         }
+    }
+
+    // Placed feature -> configured feature, with some spicy hacks
+    // Not safe under normal circumstances but as we're only using it for our own features it should be fine
+    private static ConfiguredFeature<?, ?> unwrap(PlacedFeature feature) {
+        return ((PlacedFeatureAccessor)feature).getFeature().get();
     }
 
     private static List<PlacementModifier> orePlacement(PlacementModifier p_195347_, PlacementModifier p_195348_) {
