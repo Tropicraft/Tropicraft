@@ -72,6 +72,7 @@ import net.tropicraft.core.common.dimension.feature.tree.mangrove.Pneumatophores
 import net.tropicraft.core.common.dimension.feature.tree.mangrove.SmallMangroveFoliagePlacer;
 import net.tropicraft.core.common.dimension.feature.tree.mangrove.SmallMangroveTrunkPlacer;
 import org.checkerframework.checker.units.qual.C;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -403,36 +404,32 @@ public final class TropicraftConfiguredFeatures {
         this.seagrass = features.registerPlaced("seagrass", Feature.SEAGRASS,
                 feature -> feature.configured(new ProbabilityFeatureConfiguration(0.3f)),
                 feature -> feature.placed(CountPlacement.of(48), InSquarePlacement.spread(), HeightmapPlacement.onHeightmap(Heightmap.Types.OCEAN_FLOOR_WG))
-                );
+        );
 
-        final BlockStateProvider seaGrass = BlockStateProvider.simple(Blocks.SEAGRASS.defaultBlockState());
+        this.undergroundSeagrassOnStone = features.registerPlaced(
+                "underground_seagrass_on_stone",
+                Feature.SIMPLE_BLOCK,
+                f -> f.configured(new SimpleBlockConfiguration(BlockStateProvider.simple(Blocks.SEAGRASS))),
+                f -> f.placed(getSeagrassPlacementModifiers(() -> Blocks.STONE))
+        );
 
-//        this.undergroundSeagrassOnStone = features.registerPlaced("underground_seagrass_on_stone", Feature.SIMPLE_BLOCK, feature -> {
-//            SimpleBlockConfiguration config = new SimpleBlockConfiguration(
-//                    seaGrass,
-//                    ImmutableList.of(Blocks.STONE.defaultBlockState()),
-//                    ImmutableList.of(Blocks.WATER.defaultBlockState()),
-//                    ImmutableList.of(Blocks.WATER.defaultBlockState())
-//            );
-//            return feature.configured(config).decorated(FeatureDecorator.CARVING_MASK.configured(new CarvingMaskDecoratorConfiguration(GenerationStep.Carving.LIQUID)));
-//        });
-        CarvingMaskPlacement.forStep(GenerationStep.Carving.LIQUID), RarityFilter.onAverageOnceEvery(10), BlockPredicateFilter.forPredicate(BlockPredicate.allOf(BlockPredicate.matchesBlock(Blocks.STONE, new BlockPos(0, -1, 0)), BlockPredicate.matchesBlock(Blocks.WATER, BlockPos.ZERO), BlockPredicate.matchesBlock(Blocks.WATER, new BlockPos(0, 1, 0)))), BiomeFilter.biome())
-        this.undergroundSeagrassOnDirt = features.registerPlaced("underground_seagrass_on_dirt", Feature.SIMPLE_BLOCK, feature -> {
-            SimpleBlockConfiguration config = new SimpleBlockConfiguration(
-                    seaGrass,
-                    ImmutableList.of(Blocks.DIRT.defaultBlockState()),
-                    ImmutableList.of(Blocks.WATER.defaultBlockState()),
-                    ImmutableList.of(Blocks.WATER.defaultBlockState())
-            );
 
-            return feature.configured(config).decorated(FeatureDecorator.CARVING_MASK.configured(new CarvingMaskDecoratorConfiguration(GenerationStep.Carving.LIQUID)));
-        });
+        this.undergroundSeagrassOnDirt = features.registerPlaced(
+                "underground_seagrass_on_dirt",
+                Feature.SIMPLE_BLOCK,
+                f -> f.configured(new SimpleBlockConfiguration(BlockStateProvider.simple(Blocks.SEAGRASS))),
+                f -> f.placed(getSeagrassPlacementModifiers(() -> Blocks.DIRT))
+        );
+
         this.undergroundSeaPickles = features.noConfig(
                 "underground_sea_pickles",
                 TropicraftFeatures.UNDERGROUND_SEA_PICKLE,
-                feature -> {
-            return feature.decorated(FeatureDecorator.CARVING_MASK.configured(new CarvingMaskDecoratorConfiguration(GenerationStep.Carving.LIQUID)));
-        });
+                f -> f.placed(
+                        ImmutableList.of(CarvingMaskPlacement.forStep(GenerationStep.Carving.LIQUID),
+                                RarityFilter.onAverageOnceEvery(10),
+                                BiomeFilter.biome())
+                )
+        );
 
         this.mangroveReeds = features.noConfig(
                 "mangrove_reeds",
@@ -483,6 +480,19 @@ public final class TropicraftConfiguredFeatures {
                 6,
                 HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(-16), VerticalAnchor.aboveBottom(32))
         );
+    }
+
+    @NotNull
+    private ImmutableList<PlacementModifier> getSeagrassPlacementModifiers(final Supplier<Block> belowBlock) {
+        final BlockPredicateFilter seagrassPredicate = BlockPredicateFilter.forPredicate(BlockPredicate.allOf(
+                BlockPredicate.matchesBlock(belowBlock.get(), new BlockPos(0, -1, 0)),
+                BlockPredicate.matchesBlock(Blocks.WATER, BlockPos.ZERO),
+                BlockPredicate.matchesBlock(Blocks.WATER, new BlockPos(0, 1, 0))));
+
+        return ImmutableList.of(CarvingMaskPlacement.forStep(GenerationStep.Carving.LIQUID),
+                RarityFilter.onAverageOnceEvery(10),
+                seagrassPredicate,
+                BiomeFilter.biome());
     }
 
     private static HeightProvider range(int min, int max) {
