@@ -47,7 +47,7 @@ public class TropicraftChunkGenerator extends NoiseBasedChunkGenerator {
         super(parameters, biomeProvider, seed, settings);
         this.parameters = parameters;
         this.seed = seed;
-        this.volcano = new VolcanoGenerator(seed, biomeProvider);
+        this.volcano = new VolcanoGenerator(seed, biomeProvider, this);
     }
 
     public static void register() {
@@ -85,5 +85,9 @@ public class TropicraftChunkGenerator extends NoiseBasedChunkGenerator {
             return Math.max(height, this.volcano.getVolcanoHeight(height, x, z));
         }
         return height;
+    }
+
+    public VolcanoGenerator getVolcano() {
+        return volcano;
     }
 }

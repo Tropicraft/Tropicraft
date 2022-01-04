@@ -72,7 +72,7 @@ public class RegistryReadOpsMixin {
             method = "readAndRegisterElement",
             at = @At(
                     value = "INVOKE_ASSIGN",
-                    target = "Lnet/minecraft/resources/RegistryReadOps$ResourceAccess;parseElement(Lcom/mojang/serialization/DynamicOps;Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/resources/ResourceKey;Lcom/mojang/serialization/Decoder;)Ljava/util/Optional;"
+                    target = "Lnet/minecraft/resources/RegistryResourceAccess;parseElement(Lcom/mojang/serialization/DynamicOps;Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/resources/ResourceKey;Lcom/mojang/serialization/Decoder;)Ljava/util/Optional;"
             )
     )
     private <E> Optional<DataResult<Pair<E, OptionalInt>>> modifyDataResult(

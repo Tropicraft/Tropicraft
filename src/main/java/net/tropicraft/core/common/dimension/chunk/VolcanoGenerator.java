@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -69,10 +70,12 @@ public class VolcanoGenerator {
     private final static Supplier<BlockState> SAND_BLOCK = TropicraftBlocks.VOLCANIC_SAND.lazyMap(b -> b.defaultBlockState().setValue(VolcanicSandBlock.HOT, true));
 
     private final BiomeSource biomeSource;
+    private final ChunkGenerator chunkGenerator;
 
-    public VolcanoGenerator(long worldSeed, BiomeSource biomeSource) {
+    public VolcanoGenerator(long worldSeed, BiomeSource biomeSource, ChunkGenerator chunkGenerator) {
         this.worldSeed = worldSeed;
         this.biomeSource = biomeSource;
+        this.chunkGenerator = chunkGenerator;
     }
 
     @SubscribeEvent
@@ -86,7 +89,15 @@ public class VolcanoGenerator {
                         .executes(ctx -> {
                             CommandSourceStack source = ctx.getSource();
                             BlockPos pos = new BlockPos(source.getPosition());
-                            BlockPos volcanoPos = getVolcanoNear(source.getLevel(), pos.getX() >> 4, pos.getZ() >> 4, 100);
+
+                            ChunkGenerator generator = source.getLevel().getChunkSource().getGenerator();
+                            if (!(generator instanceof TropicraftChunkGenerator tropicsGenerator)) {
+                                throw new SimpleCommandExceptionType(new TranslatableComponent("commands.locate.failed")).create();
+                            }
+
+                            VolcanoGenerator volcanoGen = tropicsGenerator.getVolcano();
+
+                            BlockPos volcanoPos = volcanoGen.getVolcanoNear(source.getLevel(), pos.getX() >> 4, pos.getZ() >> 4, 100);
                             if (volcanoPos == null) {
                                 throw new SimpleCommandExceptionType(new TranslatableComponent("commands.locate.failed")).create();
                             } else {
@@ -97,7 +108,7 @@ public class VolcanoGenerator {
     }
 
     public ChunkAccess generate(int chunkX, int chunkZ, ChunkAccess chunk, WorldgenRandom random) {
-        BlockPos volcanoCoords = VolcanoGenerator.getVolcanoNear(this.biomeSource, this.worldSeed, chunkX, chunkZ, 0);
+        BlockPos volcanoCoords = getVolcanoNear(this.biomeSource, this.worldSeed, chunkX, chunkZ, 0);
 
         if (volcanoCoords == null) {
             return chunk;
@@ -270,7 +281,7 @@ public class VolcanoGenerator {
      * Rarity is determined by the numChunks/offsetChunks vars (smaller numbers
      * mean more spawning)
      */
-    public static int canGenVolcanoAtCoords(BiomeSource biomeSource, long worldSeed, int chunkX, int chunkZ) {
+    public int canGenVolcanoAtCoords(BiomeSource biomeSource, long worldSeed, int chunkX, int chunkZ) {
         byte numChunks = 64; // was 32
         byte offsetChunks = 16; // was 8
         int oldi = chunkX;
@@ -312,7 +323,7 @@ public class VolcanoGenerator {
      * this chunk, otherwise returns null.
      * The posY of the returned object should be used as the volcano radius
      */
-    public static BlockPos getVolcanoNear(ServerLevel world, int chunkX, int chunkZ, int maxRadius) {
+    public BlockPos getVolcanoNear(ServerLevel world, int chunkX, int chunkZ, int maxRadius) {
         return getVolcanoNear(world.getChunkSource().getGenerator().getBiomeSource(), world.getSeed(), chunkX, chunkZ, maxRadius);
     }
 
@@ -321,7 +332,7 @@ public class VolcanoGenerator {
      * this chunk, otherwise returns null.
      * The posY of the returned object should be used as the volcano radius
      */
-    public static BlockPos getVolcanoNear(BiomeSource biomeSource, long worldSeed, int chunkX, int chunkZ, int maxRadius) {
+    public BlockPos getVolcanoNear(BiomeSource biomeSource, long worldSeed, int chunkX, int chunkZ, int maxRadius) {
         maxRadius = maxRadius + CHUNK_RANGE;
 
         for (int radius = 0; radius <= maxRadius; radius++) {
@@ -349,8 +360,8 @@ public class VolcanoGenerator {
         return biome == SURFACE_BIOME ? 0 : OCEAN_HEIGHT_OFFSET;
     }
 
-    private static boolean hasAllBiomes(BiomeSource biomeSource, int centerX, int centerY, int centerZ, Set<ResourceLocation> allowedBiomes) {
-        Biome biome = biomeSource.getNoiseBiome(centerX >> 2, centerY >> 2, centerZ >> 2);
+    private boolean hasAllBiomes(BiomeSource biomeSource, int centerX, int centerY, int centerZ, Set<ResourceLocation> allowedBiomes) {
+        Biome biome = biomeSource.getNoiseBiome(centerX >> 2, centerY >> 2, centerZ >> 2, this.chunkGenerator.climateSampler());
         return allowedBiomes.contains(biome.getRegistryName());
     }
 }

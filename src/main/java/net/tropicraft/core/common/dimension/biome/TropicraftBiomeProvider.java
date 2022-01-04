@@ -9,6 +9,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.RegistryLookupCodec;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.biome.Climate;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.Constants;
@@ -71,7 +72,9 @@ public class TropicraftBiomeProvider extends BiomeSource {
     }
 
     @Override
-    public Biome getNoiseBiome(int x, int y, int z) {
+    public Biome getNoiseBiome(int x, int y, int z, Climate.Sampler sampler) {
 //        return noiseLayer.get(biomes, x, z);
+        // TODO 1.18: temporary, needs proper gen!
+        return this.biomes.get(TropicraftBiomes.TROPICS);
     }
 }
