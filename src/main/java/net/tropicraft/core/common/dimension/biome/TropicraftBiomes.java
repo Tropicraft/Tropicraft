@@ -192,11 +192,12 @@ public final class TropicraftBiomes {
         BiomeGenerationSettings.Builder generation = defaultGeneration();
 //                .surfaceBuilder(surfaces.sandy);
 
-        features.addRegularSeagrass(generation);
+
         carvers.addUnderwater(generation);
 
         features.addPalmTrees(generation);
         features.addTropicsFlowers(generation);
+        features.addRegularSeagrass(generation);
 
 //        generation.addStructureStart(structures.koaVillage);
 
@@ -225,12 +226,12 @@ public final class TropicraftBiomes {
         features.addTropicsGems(generation);
         features.addPleodendron(generation);
         features.addRainforestTrees(generation);
-        features.addRegularSeagrass(generation);
         features.addPapaya(generation);
 
         features.addTropicsFlowers(generation);
         features.addPineapples(generation);
 
+        features.addRegularSeagrass(generation);
         features.addTropicsGrass(generation);
         BiomeDefaultFeatures.addFerns(generation);
         BiomeDefaultFeatures.addSavannaGrass(generation);
@@ -275,8 +276,8 @@ public final class TropicraftBiomes {
 
         features.addTropicsGems(generation);
         features.addRainforestTrees(generation);
-        features.addRegularSeagrass(generation);
         features.addPapaya(generation);
+        features.addRegularSeagrass(generation);
 
         generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.rainforestFlowers);
         generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.coffeeBush);

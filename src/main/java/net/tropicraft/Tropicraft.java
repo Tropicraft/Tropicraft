@@ -186,6 +186,8 @@ public class Tropicraft {
                 SmoothingGravityProcessor.class, SteepPathProcessor.class, StructureSupportsProcessor.class,
                 StructureVoidProcessor.class,
                 TropicraftTrunkPlacers.class,
+                TropicraftFoliagePlacers.class,
+                TropicraftTreeDecorators.class,
                 TropicraftLootConditions.class
         );
     }

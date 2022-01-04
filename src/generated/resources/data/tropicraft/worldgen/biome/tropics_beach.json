@@ -33,12 +33,12 @@
     [],
     [
       "minecraft:glow_lichen",
-      "tropicraft:seagrass",
       "tropicraft:normal_palm_tree",
       "tropicraft:curved_palm_tree",
       "tropicraft:large_palm_tree",
       "tropicraft:tropics_flowers",
-      "tropicraft:iris_flowers"
+      "tropicraft:iris_flowers",
+      "tropicraft:seagrass"
     ]
   ],
   "spawners": {
