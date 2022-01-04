@@ -1,10 +1,12 @@
 package net.tropicraft.core.common.dimension.feature;
 
 import com.google.common.collect.ImmutableList;
+import net.minecraft.core.BlockPos;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.features.OreFeatures;
 import net.minecraft.data.worldgen.features.VegetationFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
+import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.valueproviders.ConstantInt;
@@ -16,6 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
+import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.DiskConfiguration;
@@ -37,6 +40,8 @@ import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlac
 import net.minecraft.world.level.levelgen.heightproviders.HeightProvider;
 import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
 import net.minecraft.world.level.levelgen.placement.BiomeFilter;
+import net.minecraft.world.level.levelgen.placement.BlockPredicateFilter;
+import net.minecraft.world.level.levelgen.placement.CarvingMaskPlacement;
 import net.minecraft.world.level.levelgen.placement.CountPlacement;
 import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
 import net.minecraft.world.level.levelgen.placement.HeightmapPlacement;
@@ -66,6 +71,7 @@ import net.tropicraft.core.common.dimension.feature.tree.mangrove.PianguasTreeDe
 import net.tropicraft.core.common.dimension.feature.tree.mangrove.PneumatophoresTreeDecorator;
 import net.tropicraft.core.common.dimension.feature.tree.mangrove.SmallMangroveFoliagePlacer;
 import net.tropicraft.core.common.dimension.feature.tree.mangrove.SmallMangroveTrunkPlacer;
+import org.checkerframework.checker.units.qual.C;
 
 import java.util.Arrays;
 import java.util.List;
@@ -158,57 +164,53 @@ public final class TropicraftConfiguredFeatures {
         this.rainforestSmallTualung = features.sparseTree("rainforest_small_tualung", TropicraftFeatures.SMALL_TUALUNG, FeatureConfiguration.NONE, 0.3F);
         this.rainforestLargeTualung = features.sparseTree("rainforest_large_tualung", TropicraftFeatures.LARGE_TUALUNG, FeatureConfiguration.NONE, 0.4F);
         this.rainforestTallTree = features.sparseTree("rainforest_tall_tree", TropicraftFeatures.TALL_TREE, FeatureConfiguration.NONE, 0.5F);
+
         this.rainforestVines = features.registerPlaced("rainforest_vines", TropicraftFeatures.VINES,
                 f -> f.configured(new RainforestVinesConfig()), f -> f.placed(CountPlacement.of(50), InSquarePlacement.spread())
         );
 
-        this.smallGoldenLeatherFern = features.registerPlaced("small_golden_leather_fern", Feature.RANDOM_PATCH, feature -> {
-            SimpleStateProvider state = BlockStateProvider.simple(TropicraftBlocks.GOLDEN_LEATHER_FERN.get().defaultBlockState());
-            return feature.configured(new RandomPatchConfiguration.GrassConfigurationBuilder(state, SimpleBlockPlacer.INSTANCE)
-                    .tries(12)
-                    .build()
-            ).decorated(Features.Decorators.HEIGHTMAP_DOUBLE_SQUARE);
-        });
+        // TODO 1.18 adjust rarity
+        this.smallGoldenLeatherFern = features.registerPlaced(
+                "small_golden_leather_fern",
+                Feature.RANDOM_PATCH,
+                f -> features.randomPatch(TropicraftBlocks.GOLDEN_LEATHER_FERN),
+                f -> f.placed(RarityFilter.onAverageOnceEvery(45), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome())
+        );
 
-        this.tallGoldenLeatherFern = features.registerPlaced("tall_golden_leather_fern", Feature.RANDOM_PATCH, feature -> {
-            SimpleStateProvider state = BlockStateProvider.simple(TropicraftBlocks.TALL_GOLDEN_LEATHER_FERN.get().defaultBlockState());
-            return feature.configured(new RandomPatchConfiguration.GrassConfigurationBuilder(state, DoublePlantPlacer.INSTANCE)
-                    .tries(6)
-                    .build()
-            ).decorated(Features.Decorators.ADD_32).decorated(Features.Decorators.HEIGHTMAP_SQUARE);
-        });
+        this.tallGoldenLeatherFern = features.registerPlaced(
+                "tall_golden_leather_fern",
+                Feature.RANDOM_PATCH,
+                f -> features.randomPatch(TropicraftBlocks.TALL_GOLDEN_LEATHER_FERN),
+                f -> f.placed(RarityFilter.onAverageOnceEvery(90), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome())
+        );
 
-        this.hugeGoldenLeatherFern = features.registerPlaced("huge_golden_leather_fern", Feature.RANDOM_PATCH, feature -> {
-            SimpleStateProvider state = BlockStateProvider.simple(TropicraftBlocks.LARGE_GOLDEN_LEATHER_FERN.get().defaultBlockState());
-            return feature.configured(new RandomPatchConfiguration.GrassConfigurationBuilder(state, HugePlantBlockPlacer.INSTANCE)
-                    .tries(3)
-                    .build()
-            ).decorated(Features.Decorators.ADD_32).decorated(Features.Decorators.HEIGHTMAP_SQUARE);
-        });
+        this.hugeGoldenLeatherFern = features.registerPlaced(
+                "huge_golden_leather_fern",
+                Feature.RANDOM_PATCH,
+                f -> features.randomPatch(TropicraftBlocks.LARGE_GOLDEN_LEATHER_FERN),
+                f -> f.placed(RarityFilter.onAverageOnceEvery(150), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome())
+        );
 
-        this.overgrownSmallGoldenLeatherFern = features.registerPlaced("overgrown_small_golden_leather_fern", Feature.RANDOM_PATCH, feature -> {
-            SimpleStateProvider state = BlockStateProvider.simple(TropicraftBlocks.GOLDEN_LEATHER_FERN.get().defaultBlockState());
-            return feature.configured(new RandomPatchConfiguration.GrassConfigurationBuilder(state, SimpleBlockPlacer.INSTANCE)
-                    .tries(28)
-                    .build()
-            ).decorated(Features.Decorators.HEIGHTMAP_DOUBLE_SQUARE).count(10);
-        });
+        this.overgrownSmallGoldenLeatherFern = features.registerPlaced(
+                "overgrown_small_golden_leather_fern",
+                Feature.RANDOM_PATCH,
+                f -> features.randomPatch(TropicraftBlocks.GOLDEN_LEATHER_FERN),
+                f -> f.placed(RarityFilter.onAverageOnceEvery(35), CountPlacement.of(10), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome())
+        );
 
-        this.overgrownTallGoldenLeatherFern = features.registerPlaced("overgrown_tall_golden_leather_fern", Feature.RANDOM_PATCH, feature -> {
-            SimpleStateProvider state = BlockStateProvider.simple(TropicraftBlocks.TALL_GOLDEN_LEATHER_FERN.get().defaultBlockState());
-            return feature.configured(new RandomPatchConfiguration.GrassConfigurationBuilder(state, DoublePlantPlacer.INSTANCE)
-                    .tries(16)
-                    .build()
-            ).decorated(Features.Decorators.ADD_32).decorated(Features.Decorators.HEIGHTMAP_SQUARE).count(8);
-        });
+        this.overgrownTallGoldenLeatherFern = features.registerPlaced(
+                "overgrown_tall_golden_leather_fern",
+                Feature.RANDOM_PATCH,
+                f -> features.randomPatch(TropicraftBlocks.TALL_GOLDEN_LEATHER_FERN),
+                f -> f.placed(RarityFilter.onAverageOnceEvery(60), CountPlacement.of(8), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome())
+        );
 
-        this.overgrownHugeGoldenLeatherFern = features.registerPlaced("overgrown_huge_golden_leather_fern", Feature.RANDOM_PATCH, feature -> {
-            SimpleStateProvider state = BlockStateProvider.simple(TropicraftBlocks.LARGE_GOLDEN_LEATHER_FERN.get().defaultBlockState());
-            return feature.configured(new RandomPatchConfiguration.GrassConfigurationBuilder(state, HugePlantBlockPlacer.INSTANCE)
-                    .tries(8)
-                    .build()
-            ).decorated(Features.Decorators.ADD_32).decorated(Features.Decorators.HEIGHTMAP_SQUARE).count(6);
-        });
+        this.overgrownHugeGoldenLeatherFern = features.registerPlaced(
+                "overgrown_huge_golden_leather_fern",
+                Feature.RANDOM_PATCH,
+                f -> features.randomPatch(TropicraftBlocks.LARGE_GOLDEN_LEATHER_FERN),
+                f -> f.placed(RarityFilter.onAverageOnceEvery(90), CountPlacement.of(6), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome())
+        );
 
         this.pleodendron = features.tree("pleodendron",
                 new TreeConfiguration.TreeConfigurationBuilder(
@@ -315,14 +317,14 @@ public final class TropicraftConfiguredFeatures {
                 .decorated(FeatureDecorator.COUNT_NOISE_BIASED.configured(new NoiseCountFactorDecoratorConfiguration(3, 200.0, 1.5)))
         );
 
-        this.mudDisk = features.registerPlaced("mud_disk", Feature.DISK, feature -> feature
-                .configured(new DiskConfiguration(
+        this.mudDisk = features.registerPlaced(
+                "mud_disk",
+                Feature.DISK.configured(new DiskConfiguration(
                         TropicraftBlocks.MUD.get().defaultBlockState(),
                         UniformInt.of(2, 4),
                         2,
                         ImmutableList.of(Blocks.DIRT.defaultBlockState(), Blocks.GRASS_BLOCK.defaultBlockState())
-                ))
-                .decorated(Features.Decorators.TOP_SOLID_HEIGHTMAP_SQUARE).count(3)
+                )).placed(CountPlacement.of(3), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_TOP_SOLID, BiomeFilter.biome())
         );
 
         this.eih = features.noConfig(
@@ -414,6 +416,7 @@ public final class TropicraftConfiguredFeatures {
 //            );
 //            return feature.configured(config).decorated(FeatureDecorator.CARVING_MASK.configured(new CarvingMaskDecoratorConfiguration(GenerationStep.Carving.LIQUID)));
 //        });
+        CarvingMaskPlacement.forStep(GenerationStep.Carving.LIQUID), RarityFilter.onAverageOnceEvery(10), BlockPredicateFilter.forPredicate(BlockPredicate.allOf(BlockPredicate.matchesBlock(Blocks.STONE, new BlockPos(0, -1, 0)), BlockPredicate.matchesBlock(Blocks.WATER, BlockPos.ZERO), BlockPredicate.matchesBlock(Blocks.WATER, new BlockPos(0, 1, 0)))), BiomeFilter.biome())
         this.undergroundSeagrassOnDirt = features.registerPlaced("underground_seagrass_on_dirt", Feature.SIMPLE_BLOCK, feature -> {
             SimpleBlockConfiguration config = new SimpleBlockConfiguration(
                     seaGrass,
@@ -421,6 +424,7 @@ public final class TropicraftConfiguredFeatures {
                     ImmutableList.of(Blocks.WATER.defaultBlockState()),
                     ImmutableList.of(Blocks.WATER.defaultBlockState())
             );
+
             return feature.configured(config).decorated(FeatureDecorator.CARVING_MASK.configured(new CarvingMaskDecoratorConfiguration(GenerationStep.Carving.LIQUID)));
         });
         this.undergroundSeaPickles = features.noConfig(
@@ -433,10 +437,11 @@ public final class TropicraftConfiguredFeatures {
         this.mangroveReeds = features.noConfig(
                 "mangrove_reeds",
                 TropicraftFeatures.REEDS,
-                f -> f.placed()
-                feature -> {
-            return feature.decorated(Features.Decorators.TOP_SOLID_HEIGHTMAP_SQUARE).count(2);
-        });
+                feature -> feature.placed(CountPlacement.of(48),
+                        InSquarePlacement.spread(),
+                        HeightmapPlacement.onHeightmap(Heightmap.Types.OCEAN_FLOOR_WG)
+                )
+        );
 
         // TODO 1.18 decide ore placements in 1.18
         this.azurite = features.placedOre(features,
@@ -505,7 +510,7 @@ public final class TropicraftConfiguredFeatures {
     }
 
     public void addRainforestPlants(BiomeGenerationSettings.Builder generation) {
-        generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.PATCH_MELON);
+        generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.PATCH_MELON);
         generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, this.rainforestVines);
     }
 
@@ -660,21 +665,21 @@ public final class TropicraftConfiguredFeatures {
             return this.tree(id, config, 0, 0.1F, 1);
         }
 
-        public <C extends FeatureConfiguration, F extends Feature<C>> ConfiguredFeature<?, ?> sparseTree(String id, RegistryObject<F> feature, C config, float chance) {
-            return this.register(id, feature, f -> {
+        public <F extends Feature<?>, CF extends ConfiguredFeature<?, ?>> PlacedFeature sparseTree(String id, RegistryObject<F> feature, C config, float chance) {
+            return this.registerPlaced(id, feature, f -> {
                 return f.configured(config).decorated(Features.Decorators.HEIGHTMAP_SQUARE)
                         .decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(0, chance, 1)));
             });
         }
 
-        public <F extends Feature<?>> ConfiguredFeature<?, ?> tree(String id, TreeConfiguration config, int count, float extraChance, int extraCount) {
-            return this.register(id, Feature.TREE, feature -> feature.configured(config), feature ->
+        public <F extends Feature<?>, CF extends ConfiguredFeature<?, ?>> PlacedFeature tree(String id, TreeConfiguration config, int count, float extraChance, int extraCount) {
+            return this.registerPlaced(id, Feature.TREE, feature -> feature.configured(config), feature ->
                     feature.placed(PlacementUtils.countExtra(count, extraChance, extraCount), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP)
             );
         }
 
-        public ConfiguredFeature<?, ?> mangrove(String id, TreeConfiguration config, int maxWaterDepth) {
-            return this.register(id, TropicraftFeatures.MANGROVE_TREE.get(), feature -> {
+        public PlacedFeature mangrove(String id, TreeConfiguration config, int maxWaterDepth) {
+            return this.registerPlaced(id, TropicraftFeatures.MANGROVE_TREE.get(), feature -> {
                 ConfiguredFeature<TreeConfiguration, ?> configured = feature.configured(config);
 
                 if (maxWaterDepth > 0) {
