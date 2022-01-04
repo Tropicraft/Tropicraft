@@ -68,7 +68,7 @@ public final class ReedsBlock extends Block implements SimpleWaterloggedBlock, I
         }
 
         if (state.getValue(WATERLOGGED)) {
-            world.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
+            world.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
         }
 
         return state.setValue(TYPE, this.getAppropriateTypeAt(world, currentPos));

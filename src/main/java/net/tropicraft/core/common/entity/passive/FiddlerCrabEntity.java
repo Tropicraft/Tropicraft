@@ -129,7 +129,7 @@ public final class FiddlerCrabEntity extends Animal {
             return false;
         }
 
-        if (!groundBlock.canCreatureSpawn(world, groundPos, SpawnPlacements.Type.NO_RESTRICTIONS, type)) {
+        if (!groundBlock.isValidSpawn(world, groundPos, SpawnPlacements.Type.NO_RESTRICTIONS, type)) {
             return false;
         }
 

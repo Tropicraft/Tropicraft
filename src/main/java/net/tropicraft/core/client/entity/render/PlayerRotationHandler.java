@@ -29,20 +29,19 @@ public class PlayerRotationHandler {
 
     @SubscribeEvent
     public static void onRenderPlayer(RenderPlayerEvent.Pre event) {
-        PoseStack stack = event.getMatrixStack();
-        MultiBufferSource buffers = event.getBuffers();
+        PoseStack stack = event.getPoseStack();
         Player p = event.getPlayer();
         Entity riding = p.getVehicle();
-        if (riding instanceof BeachFloatEntity) {
-            FurnitureEntity floaty = (FurnitureEntity) riding;
+        final float partialTick = event.getPartialTick();
 
+        if (riding instanceof BeachFloatEntity floaty) {
             stack.pushPose();
-            stack.mulPose(Vector3f.YP.rotationDegrees(-(floaty.yRotO + (event.getPartialRenderTick() * (floaty.getYRot() - floaty.yRotO)))));
+            stack.mulPose(Vector3f.YP.rotationDegrees(-(floaty.yRotO + (partialTick * (floaty.getYRot() - floaty.yRotO)))));
             stack.translate(0, 1.55, 1.55);
             stack.mulPose(Vector3f.XN.rotationDegrees(90));
 
             // Cancel out player camera rotation
-            float f = interpolateAndWrap(p.yBodyRot, p.yBodyRotO, event.getPartialRenderTick());
+            float f = interpolateAndWrap(p.yBodyRot, p.yBodyRotO, partialTick);
             stack.mulPose(Vector3f.YP.rotationDegrees(f));
 
             // Lock in head
@@ -60,13 +59,12 @@ public class PlayerRotationHandler {
             p.animationSpeed = 0;
             p.animationSpeedOld = 0;
         }
-        if (riding instanceof SeaTurtleEntity) {
-            SeaTurtleEntity turtle = (SeaTurtleEntity) riding;
+        if (riding instanceof SeaTurtleEntity turtle) {
             stack.pushPose();
 
             // Cancel out player camera rotation
-            float pitch = interpolateAndWrap(turtle.getXRot(), turtle.xRotO, event.getPartialRenderTick());
-            float yaw = interpolateAndWrap(turtle.yHeadRot, turtle.yHeadRotO, event.getPartialRenderTick());
+            float pitch = interpolateAndWrap(turtle.getXRot(), turtle.xRotO, partialTick);
+            float yaw = interpolateAndWrap(turtle.yHeadRot, turtle.yHeadRotO, partialTick);
 
             stack.translate(0, turtle.getPassengersRidingOffset() - p.getMyRidingOffset(), 0);
             stack.mulPose(Vector3f.YN.rotationDegrees(yaw));
@@ -91,7 +89,7 @@ public class PlayerRotationHandler {
     public static void onRenderPlayerPost(RenderPlayerEvent.Post event) {
         Player p = event.getPlayer();
         if (p.getVehicle() instanceof BeachFloatEntity || p.getVehicle() instanceof SeaTurtleEntity) {
-            event.getMatrixStack().popPose();
+            event.getPoseStack().popPose();
             p.setXRot(rotationPitch);
             p.xRotO = prevRotationPitch;
         }

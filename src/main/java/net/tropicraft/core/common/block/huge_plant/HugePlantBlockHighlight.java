@@ -35,11 +35,11 @@ public final class HugePlantBlockHighlight {
         HugePlantBlock.Shape shape = HugePlantBlock.Shape.matchIncomplete(state.getBlock(), world, pos);
         if (shape == null) return;
 
-        VertexConsumer builder = event.getBuffers().getBuffer(RenderType.lines());
+        VertexConsumer builder = event.getMultiBufferSource().getBuffer(RenderType.lines());
 
-        Vec3 view = event.getInfo().getPosition();
+        Vec3 view = event.getCamera().getPosition();
         AABB aabb = shape.asAabb().move(-view.x, -view.y, -view.z);
-        LevelRenderer.renderLineBox(event.getMatrix(), builder, aabb, 0.0F, 0.0F, 0.0F, 0.4F);
+        LevelRenderer.renderLineBox(event.getPoseStack(), builder, aabb, 0.0F, 0.0F, 0.0F, 0.4F);
 
         event.setCanceled(true);
     }

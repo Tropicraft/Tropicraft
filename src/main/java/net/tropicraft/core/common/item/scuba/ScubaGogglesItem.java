@@ -74,7 +74,7 @@ public class ScubaGogglesItem extends ScubaArmorItem {
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public static void renderWaterFog(FogDensity event) {
-        Camera info = event.getInfo();
+        Camera info = event.getCamera();
         //FluidState fluid = info.getFluidInCamera();
         FogType fogType = info.getFluidInCamera();
         if (/*fluid.is(FluidTags.WATER) &&*/fogType == FogType.WATER && info.getEntity() instanceof LocalPlayer player) {

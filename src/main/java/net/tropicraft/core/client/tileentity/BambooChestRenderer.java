@@ -26,7 +26,7 @@ public class BambooChestRenderer extends ChestRenderer<BambooChestBlockEntity> {
 
     @SubscribeEvent
     public static void onTextureStitchPre(TextureStitchEvent.Pre event) {
-        if (event.getMap().location().equals(Sheets.CHEST_SHEET)) {
+        if (event.getAtlas().location().equals(Sheets.CHEST_SHEET)) {
             event.addSprite(BAMBOO_CHEST_MATERIAL.texture());
             event.addSprite(BAMBOO_CHEST_LEFT_MATERIAL.texture());
             event.addSprite(BAMBOO_CHEST_RIGHT_MATERIAL.texture());

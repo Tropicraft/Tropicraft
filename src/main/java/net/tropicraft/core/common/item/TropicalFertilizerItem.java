@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.item;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BoneMealItem;
@@ -9,9 +10,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.AbstractFlowerFeature;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 import java.util.List;
 import java.util.Random;
@@ -30,18 +32,18 @@ public class TropicalFertilizerItem extends BoneMealItem {
                 // Logic from GrassBlock#grow, with probability for grass significantly reduced
                 BlockPos blockpos = context.getClickedPos().above();
                 BlockState blockstate = Blocks.GRASS.defaultBlockState();
-                Level world = context.getLevel();
-                Random rand = world.getRandom();
+                Level level = context.getLevel();
+                Random rand = level.getRandom();
                 for (int i = 0; i < 128; ++i) {
                     BlockPos blockpos1 = blockpos;
                     int j = 0;
 
                     while (true) {
                         if (j >= i / 16) {
-                            BlockState blockstate2 = world.getBlockState(blockpos1);
+                            BlockState blockstate2 = level.getBlockState(blockpos1);
                             if (blockstate2.getBlock() == blockstate.getBlock() && rand.nextInt(10) == 0) {
-                                if (world instanceof ServerLevel) {
-                                    ((BonemealableBlock) blockstate.getBlock()).performBonemeal((ServerLevel) world, rand, blockpos1, blockstate2);
+                                if (level instanceof ServerLevel) {
+                                    ((BonemealableBlock) blockstate.getBlock()).performBonemeal((ServerLevel) level, rand, blockpos1, blockstate2);
                                 }
                             }
 
@@ -49,29 +51,29 @@ public class TropicalFertilizerItem extends BoneMealItem {
                                 break;
                             }
 
+                            PlacedFeature placedFeature;
                             BlockState blockstate1;
                             if (rand.nextInt(8) > 0) { // Modification here, == changed to > to invert chances
-                                List<ConfiguredFeature<?, ?>> list = world.getBiome(blockpos1).getGenerationSettings().getFlowerFeatures();
+                                List<ConfiguredFeature<?, ?>> list = level.getBiome(blockpos1).getGenerationSettings().getFlowerFeatures();
                                 if (list.isEmpty()) {
                                     break;
                                 }
 
                                 // TODO this is so ugly and hacky, pls
                                 ConfiguredFeature<?, ?> pFlowerFeature = list.get(0);
-                                AbstractFlowerFeature<FeatureConfiguration> abstractflowerfeature = (AbstractFlowerFeature) pFlowerFeature.feature;
-                                blockstate1 = abstractflowerfeature.getRandomFlower(rand, blockpos1, pFlowerFeature.config());
+                                placedFeature = ((RandomPatchConfiguration) list.get(0).config()).feature().get();
                             } else {
-                                blockstate1 = blockstate;
+                                placedFeature = VegetationPlacements.GRASS_BONEMEAL;
                             }
 
-                            if (blockstate1.canSurvive(world, blockpos1)) {
-                                world.setBlockAndUpdate(blockpos1, blockstate1);
+                            if (level instanceof ServerLevel serverLevel) {
+                                placedFeature.place(serverLevel, serverLevel.getChunkSource().getGenerator(), rand, blockpos1);
                             }
                             break;
                         }
 
                         blockpos1 = blockpos1.offset(rand.nextInt(3) - 1, (rand.nextInt(3) - 1) * rand.nextInt(3) / 2, rand.nextInt(3) - 1);
-                        if (world.getBlockState(blockpos1.below()).getBlock() != Blocks.GRASS_BLOCK || world.getBlockState(blockpos1).isCollisionShapeFullBlock(world, blockpos1)) {
+                        if (level.getBlockState(blockpos1.below()).getBlock() != Blocks.GRASS_BLOCK || level.getBlockState(blockpos1).isCollisionShapeFullBlock(level, blockpos1)) {
                             break;
                         }
 
