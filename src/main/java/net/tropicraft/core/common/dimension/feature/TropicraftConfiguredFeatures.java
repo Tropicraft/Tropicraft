@@ -8,6 +8,7 @@ import net.minecraft.data.worldgen.features.VegetationFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -45,6 +46,7 @@ import net.tropicraft.Constants;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.block.TropicraftTrees;
+import net.tropicraft.core.common.data.TropicraftBlockTagsProvider;
 import net.tropicraft.core.common.data.WorldgenDataConsumer;
 import net.tropicraft.core.common.dimension.feature.block_state_provider.NoiseFromTagBlockStateProvider;
 import net.tropicraft.core.common.dimension.feature.config.RainforestVinesConfig;
@@ -146,9 +148,9 @@ public final class TropicraftConfiguredFeatures {
         this.lemonTree = features.fruitTree("lemon_tree", TropicraftBlocks.LEMON_SAPLING, TropicraftBlocks.LEMON_LEAVES);
         this.limeTree = features.fruitTree("lime_tree", TropicraftBlocks.LIME_SAPLING, TropicraftBlocks.LIME_LEAVES);
 
-        this.normalPalmTree = features.sparseTree("normal_palm_tree", TropicraftFeatures.NORMAL_PALM_TREE, FeatureConfiguration.NONE, TropicraftBlocks.PALM_SAPLING, 0.2F);
-        this.curvedPalmTree = features.sparseTree("curved_palm_tree", TropicraftFeatures.CURVED_PALM_TREE, FeatureConfiguration.NONE, TropicraftBlocks.PALM_SAPLING, 0.2F);
-        this.largePalmTree = features.sparseTree("large_palm_tree", TropicraftFeatures.LARGE_PALM_TREE, FeatureConfiguration.NONE, TropicraftBlocks.PALM_SAPLING, 0.2F);
+        this.normalPalmTree = features.palmTree("normal_palm_tree", TropicraftFeatures.NORMAL_PALM_TREE, FeatureConfiguration.NONE, TropicraftBlocks.PALM_SAPLING, 0.2F);
+        this.curvedPalmTree = features.palmTree("curved_palm_tree", TropicraftFeatures.CURVED_PALM_TREE, FeatureConfiguration.NONE, TropicraftBlocks.PALM_SAPLING, 0.2F);
+        this.largePalmTree = features.palmTree("large_palm_tree", TropicraftFeatures.LARGE_PALM_TREE, FeatureConfiguration.NONE, TropicraftBlocks.PALM_SAPLING, 0.2F);
 
         this.rainforestUpTree = features.sparseTree("rainforest_up_tree", TropicraftFeatures.UP_TREE, FeatureConfiguration.NONE, TropicraftBlocks.MAHOGANY_SAPLING, 0.2F);
         this.rainforestSmallTualung = features.sparseTree("rainforest_small_tualung", TropicraftFeatures.SMALL_TUALUNG, FeatureConfiguration.NONE, TropicraftBlocks.MAHOGANY_SAPLING, 0.25F);
@@ -680,6 +682,15 @@ public final class TropicraftConfiguredFeatures {
             ).build();
 
             return this.tree(id, config, sapling, 0, 0.1F, 1);
+        }
+
+        public <F extends Feature<FC>, FC extends FeatureConfiguration> PlacedFeature palmTree(String id, RegistryObject<F> feature, FC config, Supplier<? extends Block> sapling, float chance) {
+            return this.registerPlaced(id, feature,  (F f) -> f.configured(config),
+                    f -> f.placed(PlacementUtils.countExtra(0, chance, 1), InSquarePlacement.spread(),
+                            PlacementUtils.HEIGHTMAP,
+                            BlockPredicateFilter.forPredicate(BlockPredicate.matchesTag(BlockTags.SAND, new BlockPos(0, -1, 0)))
+                            )
+            );
         }
 
         public <F extends Feature<FC>, FC extends FeatureConfiguration> PlacedFeature sparseTree(String id, RegistryObject<F> feature, FC config, Supplier<? extends Block> sapling, float chance) {

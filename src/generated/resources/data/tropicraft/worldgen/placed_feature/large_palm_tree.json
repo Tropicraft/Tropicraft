@@ -26,13 +26,13 @@
     },
     {
       "predicate": {
-        "state": {
-          "Properties": {
-            "stage": "0"
-          },
-          "Name": "tropicraft:palm_sapling"
-        },
-        "type": "minecraft:would_survive"
+        "offset": [
+          0,
+          -1,
+          0
+        ],
+        "tag": "minecraft:sand",
+        "type": "minecraft:matching_block_tag"
       },
       "type": "minecraft:block_predicate_filter"
     }
