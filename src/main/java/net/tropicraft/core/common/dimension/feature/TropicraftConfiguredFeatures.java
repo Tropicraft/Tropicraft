@@ -367,7 +367,7 @@ public final class TropicraftConfiguredFeatures {
                 "tropics_flowers",
                 Feature.FLOWER,
                 f -> features.randomPatch(tropicsFlowersProvider),
-                f -> f.placed(worldSurfaceSquaredWithCount(12))
+                f -> f.placed(RarityFilter.onAverageOnceEvery(2), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome())
         );
 
         BlockStateProvider rainforestFlowersProvider = new NoiseFromTagBlockStateProvider(TropicraftTags.Blocks.RAINFOREST_FLOWERS);
@@ -375,14 +375,14 @@ public final class TropicraftConfiguredFeatures {
                 "rainforest_flowers",
                 Feature.FLOWER,
                 f -> features.randomPatch(rainforestFlowersProvider),
-                f -> f.placed(worldSurfaceSquaredWithCount(4))
+                f -> f.placed(RarityFilter.onAverageOnceEvery(6), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome())
         );
 
         this.irisFlowers = features.registerPlaced(
                 "iris_flowers",
                 Feature.RANDOM_PATCH,
                 f -> features.randomPatch(TropicraftBlocks.IRIS),
-                f -> f.placed(worldSurfaceSquaredWithCount(10))
+                f -> f.placed(RarityFilter.onAverageOnceEvery(3), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome())
         );
 
         this.coffeeBush = features.noConfig(

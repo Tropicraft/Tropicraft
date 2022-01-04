@@ -2,14 +2,14 @@
   "feature": "tropicraft:tropics_flowers",
   "placement": [
     {
-      "count": 12,
-      "type": "minecraft:count"
+      "chance": 2,
+      "type": "minecraft:rarity_filter"
     },
     {
       "type": "minecraft:in_square"
     },
     {
-      "heightmap": "WORLD_SURFACE_WG",
+      "heightmap": "MOTION_BLOCKING",
       "type": "minecraft:heightmap"
     },
     {
