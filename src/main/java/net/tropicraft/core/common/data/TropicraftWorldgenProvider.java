@@ -14,6 +14,7 @@ import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
 import net.minecraft.resources.RegistryWriteOps;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
@@ -27,6 +28,7 @@ import net.tropicraft.core.common.dimension.feature.TropicraftConfiguredFeatures
 import net.tropicraft.core.common.dimension.feature.TropicraftConfiguredStructures;
 import net.tropicraft.core.common.dimension.feature.jigsaw.TropicraftProcessorLists;
 import net.tropicraft.core.common.dimension.feature.pools.TropicraftTemplatePools;
+import net.tropicraft.core.common.dimension.noise.TropicraftNoiseGenSettings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -54,6 +56,7 @@ public final class TropicraftWorldgenProvider implements DataProvider {
         var processors = new TropicraftProcessorLists(consumers.processorLists());
         var templates = new TropicraftTemplatePools(consumers.templatePools(), features, processors);
         var structures = new TropicraftConfiguredStructures(consumers.configuredStructures(), templates);
+        var noiseSettings = new TropicraftNoiseGenSettings(consumers.noiseGenSettings());
 
         new TropicraftBiomes(consumers.biomes(), features, structures, carvers);
     }
@@ -114,6 +117,10 @@ public final class TropicraftWorldgenProvider implements DataProvider {
 
         public WorldgenDataConsumer<StructureTemplatePool> templatePools() {
             return consumer("worldgen/template_pool", BuiltinRegistries.TEMPLATE_POOL, StructureTemplatePool.CODEC);
+        }
+
+        public WorldgenDataConsumer<NoiseGeneratorSettings> noiseGenSettings() {
+            return consumer("worldgen/noise_settings", BuiltinRegistries.NOISE_GENERATOR_SETTINGS, NoiseGeneratorSettings.CODEC);
         }
 
         public WorldgenDataConsumer<ConfiguredStructureFeature<?, ?>> configuredStructures() {

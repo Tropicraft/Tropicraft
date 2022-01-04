@@ -17,6 +17,7 @@ import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
+import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.minecraft.world.level.storage.LevelResource;
 import net.minecraft.world.level.storage.LevelStorageSource;
 import net.minecraftforge.common.ForgeHooks;
@@ -91,22 +92,23 @@ public class TropicraftDimension {
             Registry<DimensionType> dimensionTypeRegistry,
             Registry<Biome> biomeRegistry,
             Registry<NoiseGeneratorSettings> dimensionSettingsRegistry,
+            Registry<NormalNoise.NoiseParameters> paramRegistry,
             long seed
     ) {
         Supplier<DimensionType> dimensionType = () -> dimensionTypeRegistry.getOrThrow(TropicraftDimension.DIMENSION_TYPE);
-        ChunkGenerator generator = TropicraftDimension.createGenerator(biomeRegistry, dimensionSettingsRegistry, seed);
+        ChunkGenerator generator = TropicraftDimension.createGenerator(paramRegistry, biomeRegistry, dimensionSettingsRegistry, seed);
 
         return new LevelStem(dimensionType, generator);
     }
 
-    public static ChunkGenerator createGenerator(Registry<Biome> biomeRegistry, Registry<NoiseGeneratorSettings> dimensionSettingsRegistry, long seed) {
+    public static ChunkGenerator createGenerator(Registry<NormalNoise.NoiseParameters> params, Registry<Biome> biomeRegistry, Registry<NoiseGeneratorSettings> dimensionSettingsRegistry, long seed) {
         Supplier<NoiseGeneratorSettings> dimensionSettings = () -> {
             // fallback to overworld so that we don't crash before our datapack is loaded (horrible workaround)
             NoiseGeneratorSettings settings = dimensionSettingsRegistry.get(DIMENSION_SETTINGS);
             return settings != null ? settings : dimensionSettingsRegistry.getOrThrow(NoiseGeneratorSettings.OVERWORLD);
         };
         TropicraftBiomeProvider biomeSource = new TropicraftBiomeProvider(seed, biomeRegistry);
-        return new TropicraftChunkGenerator(biomeSource, seed, dimensionSettings);
+        return new TropicraftChunkGenerator(params, biomeSource, seed, dimensionSettings);
     }
 
     public static void teleportPlayer(ServerPlayer player, ResourceKey<Level> dimensionType) {

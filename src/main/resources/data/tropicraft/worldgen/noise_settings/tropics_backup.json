@@ -1,4 +1,5 @@
 {
+  "comment": "Unused! Exists as a backup for the original settings!",
   "disableMobGeneration": false,
   "aquifers_enabled": true,
   "noise_caves_enabled": true,

@@ -3,6 +3,7 @@ package net.tropicraft.core.common.dimension.chunk;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.RegistryLookupCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelHeightAccessor;
@@ -11,9 +12,12 @@ import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
+import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
+import net.minecraft.world.level.levelgen.blending.Blender;
+import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.minecraft.world.level.levelgen.synth.PerlinNoise;
 import net.minecraft.world.level.levelgen.synth.PerlinSimplexNoise;
 import net.minecraftforge.api.distmarker.Dist;
@@ -28,6 +32,7 @@ import java.util.stream.IntStream;
 public class TropicraftChunkGenerator extends NoiseBasedChunkGenerator {
     public static final Codec<TropicraftChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> {
         return instance.group(
+                RegistryLookupCodec.create(Registry.NOISE_REGISTRY).forGetter(g -> g.parameters),
                 BiomeSource.CODEC.fieldOf("biome_source").forGetter(g -> g.biomeSource),
                 Codec.LONG.fieldOf("seed").stable().forGetter(g -> g.seed),
                 NoiseGeneratorSettings.CODEC.fieldOf("settings").forGetter(g -> g.settings)
@@ -35,22 +40,14 @@ public class TropicraftChunkGenerator extends NoiseBasedChunkGenerator {
     });
 
     private final VolcanoGenerator volcano;
+    private final Registry<NormalNoise.NoiseParameters> parameters;
     private final long seed;
 
-    public TropicraftChunkGenerator(BiomeSource biomeProvider, long seed, Supplier<NoiseGeneratorSettings> settings) {
-        super(biomeProvider, seed, settings);
+    public TropicraftChunkGenerator(Registry<NormalNoise.NoiseParameters> parameters, BiomeSource biomeProvider, long seed, Supplier<NoiseGeneratorSettings> settings) {
+        super(parameters, biomeProvider, seed, settings);
+        this.parameters = parameters;
         this.seed = seed;
         this.volcano = new VolcanoGenerator(seed, biomeProvider);
-
-        // maintain parity with old noise. cursed? very. i'm sorry :(
-        WorldgenRandom random = new WorldgenRandom(seed);
-        new PerlinNoise(random, IntStream.rangeClosed(-15, 0));
-        new PerlinNoise(random, IntStream.rangeClosed(-15, 0));
-        new PerlinNoise(random, IntStream.rangeClosed(-7, 0));
-        new PerlinSimplexNoise(random, IntStream.rangeClosed(-3, 0));
-
-        random.consumeCount(2620);
-        new PerlinNoise(random, IntStream.rangeClosed(-15, 0));
     }
 
     public static void register() {
@@ -65,15 +62,17 @@ public class TropicraftChunkGenerator extends NoiseBasedChunkGenerator {
     @Override
     @OnlyIn(Dist.CLIENT)
     public ChunkGenerator withSeed(long seed) {
-        return new TropicraftChunkGenerator(this.biomeSource.withSeed(seed), seed, this.settings);
+        return new TropicraftChunkGenerator(parameters, this.biomeSource.withSeed(seed), seed, this.settings);
     }
 
     @Override
-    public CompletableFuture<ChunkAccess> fillFromNoise(Executor executor, StructureFeatureManager structures, ChunkAccess chunk) {
-        return super.fillFromNoise(executor, structures, chunk)
+    public CompletableFuture<ChunkAccess> fillFromNoise(Executor executor, Blender blender, StructureFeatureManager structures, ChunkAccess chunk) {
+        return super.fillFromNoise(executor, blender, structures, chunk)
                 .thenApply(volcanoChunk -> {
                     ChunkPos chunkPos = volcanoChunk.getPos();
-                    WorldgenRandom random = new WorldgenRandom(this.seed);
+                    WorldgenRandom random = new WorldgenRandom(new LegacyRandomSource(this.seed));
+                    // keysmashes ftw
+                    random.setFeatureSeed(chunkPos.toLong(), 59317, 31931);
                     volcano.generate(chunkPos.x, chunkPos.z, volcanoChunk, random);
                     return volcanoChunk;
                 });

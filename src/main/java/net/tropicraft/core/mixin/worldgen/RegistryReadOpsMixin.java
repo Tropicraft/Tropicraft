@@ -59,6 +59,7 @@ public class RegistryReadOpsMixin {
                 this.registryAccess.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY),
                 this.registryAccess.registryOrThrow(Registry.BIOME_REGISTRY),
                 this.registryAccess.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY),
+                this.registryAccess.registryOrThrow(Registry.NOISE_REGISTRY),
                 seed
         );
         registry.registerOrOverride(OptionalInt.empty(), TropicraftDimension.DIMENSION, dimension, Lifecycle.stable());
