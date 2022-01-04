@@ -737,7 +737,7 @@ public final class TropicraftConfiguredFeatures {
     // Placed feature -> configured feature, with some spicy hacks
     // Not safe under normal circumstances but as we're only using it for our own features it should be fine
     private static ConfiguredFeature<?, ?> unwrap(PlacedFeature feature) {
-        return ((PlacedFeatureAccessor)feature).getFeature().get();
+        return ((PlacedFeatureAccessor) feature).getFeature().get();
     }
 
     private static List<PlacementModifier> orePlacement(PlacementModifier p_195347_, PlacementModifier p_195348_) {

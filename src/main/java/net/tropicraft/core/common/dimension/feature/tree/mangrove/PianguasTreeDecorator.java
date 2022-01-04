@@ -37,7 +37,7 @@ public class PianguasTreeDecorator extends TreeDecorator {
 
     @Override
     protected TreeDecoratorType<?> type() {
-        return TropicraftTreeDecorators.PIANGUAS.get();
+        return TropicraftTreeDecorators.PIANGUAS;
     }
 
     @Override

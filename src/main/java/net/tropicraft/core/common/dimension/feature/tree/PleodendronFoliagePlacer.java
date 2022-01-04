@@ -28,7 +28,7 @@ public class PleodendronFoliagePlacer extends FoliagePlacer {
    }
 
    protected FoliagePlacerType<?> type() {
-      return TropicraftFoliagePlacers.PLEODENDRON.get();
+      return TropicraftFoliagePlacers.PLEODENDRON;
    }
 
    protected void createFoliage(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> acceptor, Random random, TreeConfiguration config, int offset, FoliageAttachment foliage, int y, int radius, int start) {

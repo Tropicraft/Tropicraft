@@ -21,7 +21,7 @@ public final class PapayaTreeDecorator extends TreeDecorator {
 
     @Override
     protected TreeDecoratorType<?> type() {
-        return TropicraftTreeDecorators.PAPAYA.get();
+        return TropicraftTreeDecorators.PAPAYA;
     }
 
     @Override

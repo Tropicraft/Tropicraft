@@ -26,7 +26,7 @@ public final class SmallMangroveFoliagePlacer extends FoliagePlacer {
 
     @Override
     protected FoliagePlacerType<?> type() {
-        return TropicraftFoliagePlacers.SMALL_MANGROVE.get();
+        return TropicraftFoliagePlacers.SMALL_MANGROVE;
     }
 
     @Override

@@ -27,7 +27,7 @@ public final class CitrusFoliagePlacer extends FoliagePlacer {
 
     @Override
     protected FoliagePlacerType<?> type() {
-        return TropicraftFoliagePlacers.CITRUS.get();
+        return TropicraftFoliagePlacers.CITRUS;
     }
 
     @Override

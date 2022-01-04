@@ -1,0 +1,65 @@
+{
+  "config": {
+    "decorators": [],
+    "ignore_vines": false,
+    "force_dirt": false,
+    "dirt_provider": {
+      "state": {
+        "Name": "minecraft:dirt"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
+    "minimum_size": {
+      "limit": 1,
+      "lower_size": 0,
+      "upper_size": 2,
+      "type": "minecraft:two_layers_feature_size"
+    },
+    "trunk_provider": {
+      "state": {
+        "Properties": {
+          "axis": "y"
+        },
+        "Name": "minecraft:oak_log"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
+    "trunk_placer": {
+      "base_height": 6,
+      "height_rand_a": 3,
+      "height_rand_b": 0,
+      "type": "tropicraft:citrus"
+    },
+    "foliage_provider": {
+      "entries": [
+        {
+          "data": {
+            "Properties": {
+              "persistent": "false",
+              "distance": "7"
+            },
+            "Name": "tropicraft:fruit_leaves"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Properties": {
+              "persistent": "false",
+              "distance": "7"
+            },
+            "Name": "tropicraft:lemon_leaves"
+          },
+          "weight": 1
+        }
+      ],
+      "type": "minecraft:weighted_state_provider"
+    },
+    "foliage_placer": {
+      "radius": 0,
+      "offset": 0,
+      "type": "tropicraft:citrus"
+    }
+  },
+  "type": "minecraft:tree"
+}

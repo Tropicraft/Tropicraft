@@ -30,7 +30,7 @@ public final class PapayaFoliagePlacer extends FoliagePlacer {
 
     @Override
     protected FoliagePlacerType<?> type() {
-        return TropicraftFoliagePlacers.PAPAYA.get();
+        return TropicraftFoliagePlacers.PAPAYA;
     }
 
     @Override
