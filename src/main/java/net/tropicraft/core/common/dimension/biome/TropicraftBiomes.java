@@ -54,9 +54,10 @@ public final class TropicraftBiomes {
     public static final RegistryKey<Biome> RAINFOREST_ISLAND_MOUNTAINS = key("rainforest_island_mountains");
     public static final RegistryKey<Biome> TROPICS_RIVER = key("tropics_river");
     public static final RegistryKey<Biome> TROPICS_BEACH = key("tropics_beach");
-    public static final RegistryKey<Biome> MANGROVES = key("mangroves");
-    public static final RegistryKey<Biome> OVERGROWN_MANGROVES = key("overgrown_mangroves");
-    public static final RegistryKey<Biome> OSA_RAINFOREST = key("osa_rainforest");
+    // this is a REALLY stupid solution to avoid triggering MC-202036
+    public static final RegistryKey<Biome> MANGROVES = key("z_mangroves");
+    public static final RegistryKey<Biome> OVERGROWN_MANGROVES = key("z_overgrown_mangroves");
+    public static final RegistryKey<Biome> OSA_RAINFOREST = key("z_osa_rainforest");
 
     private static RegistryKey<Biome> key(String id) {
         return RegistryKey.getOrCreateKey(Registry.BIOME_KEY, new ResourceLocation(Constants.MODID, id));
