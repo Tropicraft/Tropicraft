@@ -460,9 +460,9 @@ public class TropicraftLangProvider extends LanguageProvider {
         addBiome(TropicraftBiomes.RAINFOREST_ISLAND_MOUNTAINS);
         addBiome(TropicraftBiomes.TROPICS_RIVER);
         addBiome(TropicraftBiomes.TROPICS_BEACH);
-        addBiome(TropicraftBiomes.MANGROVES);
-        addBiome(TropicraftBiomes.OVERGROWN_MANGROVES);
-        addBiome(TropicraftBiomes.OSA_RAINFOREST);
+        addBiome(TropicraftBiomes.MANGROVES, "Mangroves");
+        addBiome(TropicraftBiomes.OVERGROWN_MANGROVES, "Overgrown Mangroves");
+        addBiome(TropicraftBiomes.OSA_RAINFOREST, "Osa Rainforest");
 
         // MISC
         
@@ -521,10 +521,15 @@ public class TropicraftLangProvider extends LanguageProvider {
     }
     
     private void addBiome(RegistryKey<Biome> biome) {
-        ResourceLocation id = biome.getLocation();
-        add("biome." + id.getNamespace() + "." + id.getPath(), Util.toEnglishName(id.getPath()));
+        String name = Util.toEnglishName(biome.getLocation().getPath());
+        addBiome(biome, name);
     }
-    
+
+    private void addBiome(RegistryKey<Biome> biome, String name) {
+        ResourceLocation id = biome.getLocation();
+        add("biome." + id.getNamespace() + "." + id.getPath(), name);
+    }
+
     // Automatic en_ud generation
 
     private static final String NORMAL_CHARS = 
