@@ -50,11 +50,11 @@ public final class TropicraftBiomes {
     public static final RegistryKey<Biome> RAINFOREST_PLAINS = key("rainforest_plains");
     public static final RegistryKey<Biome> RAINFOREST_HILLS = key("rainforest_hills");
     public static final RegistryKey<Biome> RAINFOREST_MOUNTAINS = key("rainforest_mountains");
-    public static final RegistryKey<Biome> BAMBOO_RAINFOREST = key("bamboo_rainforest");
     public static final RegistryKey<Biome> RAINFOREST_ISLAND_MOUNTAINS = key("rainforest_island_mountains");
     public static final RegistryKey<Biome> TROPICS_RIVER = key("tropics_river");
     public static final RegistryKey<Biome> TROPICS_BEACH = key("tropics_beach");
     // this is a REALLY stupid solution to avoid triggering MC-202036
+    public static final RegistryKey<Biome> BAMBOO_RAINFOREST = key("z_bamboo_rainforest");
     public static final RegistryKey<Biome> MANGROVES = key("z_mangroves");
     public static final RegistryKey<Biome> OVERGROWN_MANGROVES = key("z_overgrown_mangroves");
     public static final RegistryKey<Biome> OSA_RAINFOREST = key("z_osa_rainforest");
