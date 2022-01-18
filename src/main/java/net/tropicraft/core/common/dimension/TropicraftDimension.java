@@ -145,8 +145,6 @@ public class TropicraftDimension {
             return;
         }
 
-        if (!ForgeHooks.onTravelToDimension(player, destination)) return;
-
         if(usingPortal){
             if(!player.isOnPortalCooldown()){
                 player.unRide();
@@ -157,15 +155,17 @@ public class TropicraftDimension {
             }
         }
         else{
+            if (!ForgeHooks.onTravelToDimension(player, destination)) return;
+
             int x = Mth.floor(player.getX());
             int z = Mth.floor(player.getZ());
 
             LevelChunk chunk = destLevel.getChunk(x >> 4, z >> 4);
             int topY = chunk.getHeight(Heightmap.Types.WORLD_SURFACE, x & 15, z & 15);
             player.teleportTo(destLevel, x + 0.5, topY + 1.0, z + 0.5, player.getYRot(), player.getXRot());
-        }
 
-        ForgeEventFactory.firePlayerChangedDimensionEvent(player, destination, destination);
+            ForgeEventFactory.firePlayerChangedDimensionEvent(player, destination, destination);
+        }
     }
 
     // hack to get the correct sea level given a world: the vanilla IWorldReader.getSeaLevel() is deprecated and always returns 63 despite the chunk generator
