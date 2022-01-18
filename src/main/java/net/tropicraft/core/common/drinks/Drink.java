@@ -23,11 +23,11 @@ public class Drink {
     public static final Drink CAIPIRINHA = new Drink(4, 0x94ff36, "caipirinha", ChatFormatting.GREEN).addAction(new DrinkActionPotion(MobEffects.MOVEMENT_SPEED, 5, 1)).setHasUmbrella(true);
     public static final Drink BLACK_COFFEE = new Drink(5, 0x68442c, "black_coffee", ChatFormatting.WHITE).addAction(new DrinkActionPotion(MobEffects.REGENERATION, 5, 1)).addAction(new DrinkActionPotion(MobEffects.MOVEMENT_SPEED, 5, 2));
     public static final Drink PINA_COLADA = new Drink(6, 0xefefef, "pina_colada", ChatFormatting.GOLD).addAction(new DrinkActionPotion(MobEffects.CONFUSION, 10, 0)).addAction(new DrinkAction() {
-        
+
         @Override
         public void onDrink(Player player) {
             if (!player.level.isClientSide && isSunset(player.level) && player.getVehicle() instanceof ChairEntity) {
-                TropicraftDimension.teleportPlayer((ServerPlayer) player, TropicraftDimension.WORLD);
+                TropicraftDimension.teleportPlayer((ServerPlayer) player, TropicraftDimension.WORLD, true);
             }
         }
 

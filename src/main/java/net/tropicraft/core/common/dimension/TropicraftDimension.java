@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.biome.Biome;
@@ -21,6 +22,7 @@ import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.minecraft.world.level.storage.LevelResource;
 import net.minecraft.world.level.storage.LevelStorageSource;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -111,40 +113,59 @@ public class TropicraftDimension {
         return new TropicraftChunkGenerator(params, biomeSource, seed, dimensionSettings);
     }
 
-    public static void teleportPlayer(ServerPlayer player, ResourceKey<Level> dimensionType) {
-        if (player.level.dimension() == dimensionType) {
-            teleportPlayerNoPortal(player, Level.OVERWORLD);
-        } else {
-            teleportPlayerNoPortal(player, dimensionType);
-        }
-    }
-
     /**
-     * Finds the top Y position relative to the dimension the player is teleporting to and places
-     * the entity at that position. Avoids portal generation by using player.teleport() instead of
-     * player.changeDimension()
+     *
+     * Method that handles teleporting the player to and from the tropics depending on certain parameters.
+     * Finds the top Y position relative to the dimension the player is teleporting to and places the entity at that position.
+     *
+     * Depending on the boolean passed through, a portal will be generated on the players teleport with such position
+     * based on the portal's info position.
+     *
+     * If false,the position will be based on finding the top Y position relative
+     * to the dimension the player is teleporting to and places the entity at that position. Avoids portal generation
+     * by using player.teleport() instead of player.changeDimension()
      *
      * @param player The player that will be teleported
-     * @param destination The target dimension to teleport to
+     * @param dimensionType The Tropicraft Dimension Type for reference
+     * @param usingPortal If the method is to generate a portal on teleport
      */
-    public static void teleportPlayerNoPortal(ServerPlayer player, ResourceKey<Level> destination) {
-        ServerLevel world = player.server.getLevel(destination);
-        if (world == null) {
+
+    public static void teleportPlayer(ServerPlayer player, ResourceKey<Level> dimensionType, boolean usingPortal) {
+        ResourceKey<Level> destination;
+
+        if (player.level.dimension() == dimensionType) {
+            destination = Level.OVERWORLD;
+        } else {
+            destination = dimensionType;
+        }
+
+        ServerLevel destLevel = player.server.getLevel(destination);
+        if (destLevel == null) {
             LOGGER.error("Cannot teleport player to dimension {} as it does not exist!", destination.location());
             return;
         }
 
         if (!ForgeHooks.onTravelToDimension(player, destination)) return;
 
-        int x = Mth.floor(player.getX());
-        int z = Mth.floor(player.getZ());
+        if(usingPortal){
+            if(!player.isOnPortalCooldown()){
+                player.unRide();
+                player.changeDimension(destLevel, new TeleporterTropics(destLevel));
 
-        LevelChunk chunk = world.getChunk(x >> 4, z >> 4);
-        int topY = chunk.getHeight(Heightmap.Types.WORLD_SURFACE, x & 15, z & 15);
-        player.teleportTo(world, x + 0.5, topY + 1.0, z + 0.5, player.getYRot(), player.getXRot());
+                //Note: Stops the player from teleporting right after going through the portal
+                ObfuscationReflectionHelper.setPrivateValue(Entity.class, player, 160, "portalCooldown");
+            }
+        }
+        else{
+            int x = Mth.floor(player.getX());
+            int z = Mth.floor(player.getZ());
 
-        // TODO 1.18
-//        BasicEventHooks.firePlayerChangedDimensionEvent(player, destination, destination);
+            LevelChunk chunk = destLevel.getChunk(x >> 4, z >> 4);
+            int topY = chunk.getHeight(Heightmap.Types.WORLD_SURFACE, x & 15, z & 15);
+            player.teleportTo(destLevel, x + 0.5, topY + 1.0, z + 0.5, player.getYRot(), player.getXRot());
+        }
+
+        ForgeEventFactory.firePlayerChangedDimensionEvent(player, destination, destination);
     }
 
     // hack to get the correct sea level given a world: the vanilla IWorldReader.getSeaLevel() is deprecated and always returns 63 despite the chunk generator
