@@ -64,8 +64,8 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
     }
 
     @Override
-    public @Nonnull CompoundTag save(@Nonnull CompoundTag nbt) {
-        super.save(nbt);
+    public void saveAdditional(@Nonnull CompoundTag nbt) {
+        super.saveAdditional(nbt);
         nbt.putInt("MixTicks", ticks);
         nbt.putBoolean("Mixing", mixing);
 
@@ -78,8 +78,6 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         CompoundTag resultNbt = new CompoundTag();
         result.save(resultNbt);
         nbt.put("Result", resultNbt);
-
-        return nbt;
     }
 
     public static void mixTick(Level level, BlockPos pos, BlockState state, DrinkMixerBlockEntity mixer) {
@@ -295,7 +293,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
     }
 
     private CompoundTag writeItems(final CompoundTag nbt) {
-        super.save(nbt);
+        super.saveAdditional(nbt);
         ContainerHelper.saveAllItems(nbt, ingredients, true);
         ContainerHelper.saveAllItems(nbt, NonNullList.of(result), true);
         return nbt;

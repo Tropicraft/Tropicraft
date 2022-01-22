@@ -34,11 +34,9 @@ public class BambooChestBlockEntity extends ChestBlockEntity {
     }
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
-        super.save(compound);
+    protected void saveAdditional(CompoundTag compound) {
+        super.saveAdditional(compound);
         compound.putBoolean("unbreakable", unbreakable);
-
-        return compound;
     }
 
     /**

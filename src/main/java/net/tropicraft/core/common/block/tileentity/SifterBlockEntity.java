@@ -200,14 +200,13 @@ public class SifterBlockEntity extends BlockEntity {
     }
 
     @Override
-    public CompoundTag save(CompoundTag nbt) {
-        super.save(nbt);
+    protected void saveAdditional(CompoundTag nbt) {
+        super.saveAdditional(nbt);
         nbt.putBoolean("isSifting", isSifting);
         nbt.putInt("currentSiftTime", currentSiftTime);
         if (!siftItem.isEmpty()) {
             nbt.put("Item", siftItem.save(new CompoundTag()));
         }
-        return nbt;
     }
 
     public CompoundTag getTagCompound(ItemStack stack) {
@@ -238,7 +237,7 @@ public class SifterBlockEntity extends BlockEntity {
     }
 
     private CompoundTag writeItems(final CompoundTag nbt) {
-        super.save(nbt);
+        super.saveAdditional(nbt);
         ContainerHelper.saveAllItems(nbt, NonNullList.of(siftItem), true);
         return nbt;
     }

@@ -72,10 +72,10 @@ public class ScubaArmorItem extends TropicraftArmorItem implements IItemRenderPr
     public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.IItemRenderProperties> consumer) {
         consumer.accept(new IItemRenderProperties()
         {
-            @Override
+
             @Nullable
             @OnlyIn(Dist.CLIENT)
-            public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemstack, EquipmentSlot armorSlot, A _default) {
+            public HumanoidModel<?> getArmorModel(LivingEntity entityLiving, ItemStack itemstack, EquipmentSlot armorSlot, HumanoidModel<?> _default) {
                 if (itemstack.isEmpty()) {
                     return null;
                 }
@@ -100,7 +100,7 @@ public class ScubaArmorItem extends TropicraftArmorItem implements IItemRenderPr
                 armorModel.crouching = entityLiving.isShiftKeyDown();
                 armorModel.young = entityLiving.isBaby();
                 armorModel.rightArmPose = entityLiving.getMainHandItem() != null ? HumanoidModel.ArmPose.BLOCK : HumanoidModel.ArmPose.EMPTY;
-                return (A) armorModel;
+                return armorModel;
             }
             @Override
             @OnlyIn(Dist.CLIENT)
