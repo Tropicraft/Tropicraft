@@ -329,8 +329,8 @@ public class VolcanoBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag nbt) {
-		super.save(nbt);
+	public void saveAdditional(CompoundTag nbt) {
+		super.saveAdditional(nbt);
 		nbt.putString("state", state.name());
 		nbt.putInt("ticksUntilDormant", ticksUntilDormant);
 		nbt.putInt("ticksUntilSmoking", ticksUntilSmoking);
@@ -339,8 +339,6 @@ public class VolcanoBlockEntity extends BlockEntity {
 		nbt.putInt("ticksUntilRetreating", ticksUntilRetreating);
 		nbt.putInt("lavaLevel", lavaLevel);
 		nbt.putInt("radius", radius);
-
-		return nbt;
 	}
 
 	@Override
@@ -356,6 +354,8 @@ public class VolcanoBlockEntity extends BlockEntity {
 
 	@Override
 	public CompoundTag getUpdateTag() {
-		return save(new CompoundTag());
+		CompoundTag tag = new CompoundTag();
+		saveAdditional(tag);
+		return tag;
 	}
 }
