@@ -416,6 +416,7 @@
   "item.tropicraft.piranha_bucket": "Piranha Bucket",
   "item.tropicraft.piranha_spawn_egg": "Piranha Spawn Egg",
   "item.tropicraft.poison_frog_skin": "Poison Frog Skin",
+  "item.tropicraft.portal_enchanter": "Portal Enchanter",
   "item.tropicraft.purple_beach_float": "Purple Beach Float",
   "item.tropicraft.purple_chair": "Purple Chair",
   "item.tropicraft.purple_umbrella": "Purple Umbrella",
@@ -489,5 +490,6 @@
   "scuba.tropicraft.max_depth": "Max Depth: %s",
   "scuba.tropicraft.scuba.visibility": "Underwater Fog Reduction",
   "tropicraft.container.bambooChest": "Bamboo Chest",
-  "tropicraft.container.bambooChestDouble": "Large Bamboo Chest"
+  "tropicraft.container.bambooChestDouble": "Large Bamboo Chest",
+  "tropicraft.portalEnchanterWarning": "You don't have permission to use this! Edit the portal enchanter whitelist in the Tropicraft server config"
 }
