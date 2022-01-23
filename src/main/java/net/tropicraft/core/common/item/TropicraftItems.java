@@ -203,6 +203,9 @@ public class TropicraftItems {
     public static final RegistryObject<Item> WATER_WAND = register(
             "water_wand", () -> new WaterWandItem(new Item.Properties().tab(Tropicraft.TROPICRAFT_ITEM_GROUP).stacksTo(1).durability(2000)));
 
+    public static final RegistryObject<Item> PORTAL_ENCHANTER = register(
+            "portal_enchanter", () -> new PortalEnchanterItem(new Item.Properties().tab(Tropicraft.TROPICRAFT_ITEM_GROUP).stacksTo(1).durability(2000)));
+
     public static final RegistryObject<Item> EXPLODING_COCONUT = register(
             "exploding_coconut", () -> new ExplodingCoconutItem(new Item.Properties().tab(Tropicraft.TROPICRAFT_ITEM_GROUP)));
 

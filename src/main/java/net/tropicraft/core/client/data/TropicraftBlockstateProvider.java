@@ -4,23 +4,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.BushBlock;
-import net.minecraft.world.level.block.DoorBlock;
-import net.minecraft.world.level.block.DoublePlantBlock;
-import net.minecraft.world.level.block.FenceBlock;
-import net.minecraft.world.level.block.FenceGateBlock;
-import net.minecraft.world.level.block.FlowerPotBlock;
-import net.minecraft.world.level.block.LadderBlock;
-import net.minecraft.world.level.block.RedstoneTorchBlock;
-import net.minecraft.world.level.block.RedstoneWallTorchBlock;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.block.StairBlock;
-import net.minecraft.world.level.block.TallFlowerBlock;
-import net.minecraft.world.level.block.TrapDoorBlock;
-import net.minecraft.world.level.block.WallBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
@@ -312,6 +296,7 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         models.withExistingParent("papaya_stage0", "cocoa_stage2")
                 .texture("particle", modBlockLoc("papaya_stage0"))
                 .texture("cocoa", modBlockLoc("papaya_stage0"));
+
     }
 
     private static Function<ModelFile, ConfiguredModel[]> applyRotations() {
@@ -639,5 +624,16 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
                             .rotationY(angle)
                             .build();
                 });
+    }
+
+    private void waterBlock(Supplier<? extends LiquidBlock> block){
+        getVariantBuilder(block.get())
+                .forAllStates(state -> ConfiguredModel.builder()
+                        .modelFile(waterBlock(state.getValue(LiquidBlock.LEVEL), block)).build());
+    }
+
+    private ModelFile waterBlock(int level, Supplier<? extends LiquidBlock> block) {
+        return models().withExistingParent(name(block) + "_level_" + level, modLoc(name(block)))
+                .texture("level", modBlockLoc(name(block) + "_level" + level));
     }
 }

@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
 
-public class TeleporterTropics implements ITeleporter {
+public class TeleporterTropicsOLD implements ITeleporter {
 
     private static final Logger LOGGER = LogManager.getLogger("tropicraft");
     private static final Block PORTAL_WALL_BLOCK = Blocks.SANDSTONE; // todo tropics portal
@@ -42,7 +42,7 @@ public class TeleporterTropics implements ITeleporter {
     private final ServerLevel world;
     private final Random random;
 
-    public TeleporterTropics(ServerLevel world) {
+    public TeleporterTropicsOLD(ServerLevel world) {
         this.world = world;
         this.random = new Random(world.getSeed());
     }

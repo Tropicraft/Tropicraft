@@ -320,6 +320,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         addItem(TropicraftItems.BLOW_GUN);
         addItem(TropicraftItems.NIGEL_STACHE, "Nigel's Moustache");
         addItem(TropicraftItems.WATER_WAND);
+        addItem(TropicraftItems.PORTAL_ENCHANTER);
         addItem(TropicraftItems.EXPLODING_COCONUT);
         addItem(TropicraftItems.FISHING_NET);
 
@@ -468,6 +469,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         
         add(Tropicraft.TROPICRAFT_ITEM_GROUP, "Tropicraft");
         add("attribute.name." + ForgeMod.SWIM_SPEED.get().getRegistryName().getPath(), "Swim Speed");
+        add("tropicraft.portalEnchanterWarning", "You don't have permission to use this! Edit the portal enchanter whitelist in the Tropicraft server config");
 
         // Koa
         add("entity.tropicraft.koa.female.hunter.name", "Koa Hunter");
