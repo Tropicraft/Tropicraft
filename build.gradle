@@ -105,10 +105,15 @@ sourceSets.main.resources {
 
 repositories {
 	mavenLocal()
+    maven {
+        url "https://nexus.resourcefulbees.com/repository/maven-public/"
+    }
 }
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+    runtimeOnly fg.deobf("com.telepathicgrunt:CommandStructures:1.4.1+1.18.1")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.3:processor'
 }
