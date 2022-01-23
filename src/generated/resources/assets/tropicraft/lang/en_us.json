@@ -491,5 +491,9 @@
   "scuba.tropicraft.scuba.visibility": "Underwater Fog Reduction",
   "tropicraft.container.bambooChest": "Bamboo Chest",
   "tropicraft.container.bambooChestDouble": "Large Bamboo Chest",
-  "tropicraft.portalEnchanterWarning": "You don't have permission to use this! Edit the portal enchanter whitelist in the Tropicraft server config"
+  "tropicraft.enchanterMode.creation": "Creation Mode",
+  "tropicraft.enchanterMode.destroy": "Destruction Mode",
+  "tropicraft.enchanterMode.search": "Search Mode",
+  "tropicraft.portalEnchanterProximityWarning": "Your too close to a portal already! \nEither remove the portal or go farther from it.",
+  "tropicraft.portalEnchanterWarning": "You don't have permission to use this! \nEdit the portal enchanter whitelist in the Tropicraft server config"
 }

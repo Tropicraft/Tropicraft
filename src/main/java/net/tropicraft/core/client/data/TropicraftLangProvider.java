@@ -469,7 +469,13 @@ public class TropicraftLangProvider extends LanguageProvider {
         
         add(Tropicraft.TROPICRAFT_ITEM_GROUP, "Tropicraft");
         add("attribute.name." + ForgeMod.SWIM_SPEED.get().getRegistryName().getPath(), "Swim Speed");
-        add("tropicraft.portalEnchanterWarning", "You don't have permission to use this! Edit the portal enchanter whitelist in the Tropicraft server config");
+
+        add("tropicraft.portalEnchanterWarning", "You don't have permission to use this! \nEdit the portal enchanter whitelist in the Tropicraft server config");
+        add("tropicraft.portalEnchanterProximityWarning", "Your too close to a portal already! \nEither remove the portal or go farther from it.");
+
+        add("tropicraft.enchanterMode.creation", "Creation Mode");
+        add("tropicraft.enchanterMode.search", "Search Mode");
+        add("tropicraft.enchanterMode.destroy", "Destruction Mode");
 
         // Koa
         add("entity.tropicraft.koa.female.hunter.name", "Koa Hunter");

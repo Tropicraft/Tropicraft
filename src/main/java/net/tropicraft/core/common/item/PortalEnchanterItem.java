@@ -1,6 +1,6 @@
 package net.tropicraft.core.common.item;
 
-import net.minecraft.Util;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
@@ -17,7 +17,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.IExtensibleEnum;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.tropicraft.core.common.config.TropicraftConfig;
 import net.tropicraft.core.common.dimension.PortalTropics;
@@ -32,20 +31,20 @@ public class PortalEnchanterItem extends Item {
     private PortalEnchanterMode enchanterMode = PORTAL_CREATION;
 
     public enum PortalEnchanterMode {
-        PORTAL_CREATION(0, "Creation Mode"),
-        PORTAL_SEARCH(1, "Search Mode"),
-        PORTAL_DESTRUCTION(2, "Destruction Mode");
+        PORTAL_CREATION(0, "tropicraft.enchanterMode.creation"),
+        PORTAL_SEARCH(1, "tropicraft.enchanterMode.search"),
+        PORTAL_DESTRUCTION(2, "tropicraft.enchanterMode.destroy");
 
-        private String textComponent;
+        private String translationKey;
         private int id;
 
         PortalEnchanterMode(int id, String string){
-            this.textComponent = string;
+            this.translationKey = string;
             this.id = id;
         }
 
-        public String getTextComponent(){
-            return this.textComponent;
+        public TranslatableComponent getTranslatableComponent(){
+            return new TranslatableComponent(this.translationKey);
         }
 
         public static PortalEnchanterMode getEnchanterMode(int i){
@@ -63,16 +62,16 @@ public class PortalEnchanterItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        boolean hasDirectMode = pStack.getTag() != null && pStack.getTag().contains("DirectMode");
+        if(pStack.getItem() instanceof PortalEnchanterItem portalEnchanterItem){
+            ChatFormatting chatFormatting = ChatFormatting.AQUA;
 
-        int mode;
-        if (hasDirectMode) {
-            mode = pStack.getTag().getBoolean("DirectMode") ? 1 : 0;
-        } else {
-            mode = 0;
+            if(portalEnchanterItem.getEnchanterMode() == PortalEnchanterMode.PORTAL_SEARCH)
+                chatFormatting = ChatFormatting.GREEN;
+            else if(portalEnchanterItem.getEnchanterMode() == PortalEnchanterMode.PORTAL_DESTRUCTION)
+                chatFormatting = ChatFormatting.RED;
+
+            pTooltipComponents.add(portalEnchanterItem.getEnchanterMode().getTranslatableComponent().withStyle(chatFormatting));
         }
-
-        pTooltipComponents.add(new TranslatableComponent("portalenchanter.type_" + mode));
 
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
     }
@@ -80,29 +79,35 @@ public class PortalEnchanterItem extends Item {
     @Override
     public InteractionResult useOn(UseOnContext pContext) {
         if(!pContext.getLevel().isClientSide && pContext.getPlayer() instanceof ServerPlayer serverPlayer) {
-            if(((PortalEnchanterItem)pContext.getItemInHand().getItem()).getEnchanterMode() == PORTAL_CREATION) {
-                final boolean hasPermission = serverPlayer.canUseGameMasterBlocks() ||
-                        serverPlayer.getServer().isSingleplayerOwner(serverPlayer.getGameProfile()) ||
-                        TropicraftConfig.portalEnchanterWhitelist.get().contains(serverPlayer.getUUID().toString());
+            final boolean hasPermission = serverPlayer.canUseGameMasterBlocks() ||
+                    serverPlayer.getServer().isSingleplayerOwner(serverPlayer.getGameProfile()) ||
+                    TropicraftConfig.portalEnchanterWhitelist.get().contains(serverPlayer.getUUID().toString());
 
-                if (hasPermission && !isPortalTooClose((ServerLevel) pContext.getLevel(), pContext.getClickedPos())) {
-                    boolean flag = PortalTropics.placePortalStructure((ServerLevel) pContext.getLevel(), serverPlayer, pContext.getClickedPos());
+            if (hasPermission){
+                if (((PortalEnchanterItem) pContext.getItemInHand().getItem()).getEnchanterMode() == PORTAL_CREATION) {
+                    if (!isPortalTooClose((ServerLevel) pContext.getLevel(), pContext.getClickedPos())) {
+                        boolean flag = PortalTropics.placePortalStructure((ServerLevel) pContext.getLevel(), serverPlayer, pContext.getClickedPos());
 
-                    if (!FMLEnvironment.production) {
-                        if (flag) {
-                            serverPlayer.displayClientMessage(new TextComponent("Debug: Portal was created!"), false);
+                        if (!FMLEnvironment.production) {
+                            if (flag) {
+                                serverPlayer.displayClientMessage(new TextComponent("Debug: Portal was created!"), false);
 
-                            return InteractionResult.SUCCESS;
-                        } else {
-                            serverPlayer.displayClientMessage(new TextComponent("Debug: Portal was not created"), false);
+                                return InteractionResult.SUCCESS;
+                            } else {
+                                serverPlayer.displayClientMessage(new TextComponent("Debug: Portal was not created"), false);
 
-                            return InteractionResult.FAIL;
+                                return InteractionResult.FAIL;
+                            }
                         }
+                    } else {
+                        serverPlayer.sendMessage(new TranslatableComponent("tropicraft.portalEnchanterProximityWarning"), ChatType.GAME_INFO, serverPlayer.getUUID());
+                        return InteractionResult.FAIL;
                     }
-                }else{
-                    serverPlayer.sendMessage(new TextComponent("A portal to the Tropics already exist too close to your position, either remove the portal or go farther from it."), ChatType.GAME_INFO, serverPlayer.getUUID());
-                    return InteractionResult.FAIL;
                 }
+            }
+            else{
+                serverPlayer.sendMessage(new TranslatableComponent("tropicraft.portalEnchanterWarning"), ChatType.GAME_INFO, serverPlayer.getUUID());
+                return InteractionResult.FAIL;
             }
         }
 
@@ -124,7 +129,15 @@ public class PortalEnchanterItem extends Item {
             }
 
             this.setEnchanterMode(mode);
-            serverPlayer.sendMessage(new TextComponent(PortalEnchanterMode.getEnchanterMode(mode).getTextComponent()), ChatType.GAME_INFO, serverPlayer.getUUID());
+
+            ChatFormatting chatFormatting = ChatFormatting.AQUA;
+
+            if(PortalEnchanterMode.getEnchanterMode(mode) == PortalEnchanterMode.PORTAL_SEARCH)
+                chatFormatting = ChatFormatting.GREEN;
+            else if(PortalEnchanterMode.getEnchanterMode(mode) == PortalEnchanterMode.PORTAL_DESTRUCTION)
+                chatFormatting = ChatFormatting.RED;
+
+            serverPlayer.sendMessage(PortalEnchanterMode.getEnchanterMode(mode).getTranslatableComponent().withStyle(chatFormatting), ChatType.GAME_INFO, serverPlayer.getUUID());
 
             return InteractionResultHolder.success(pPlayer.getItemInHand(pUsedHand));
         }
