@@ -41,7 +41,7 @@ import net.tropicraft.core.client.data.TropicraftItemModelProvider;
 import net.tropicraft.core.client.data.TropicraftLangProvider;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.block.tileentity.TropicraftBlockEntityTypes;
-import net.tropicraft.core.common.command.CommandTropicsTeleport;
+import net.tropicraft.core.common.command.CommandTropics;
 import net.tropicraft.core.common.command.debug.MapBiomesCommand;
 import net.tropicraft.core.common.data.TropicraftBlockTagsProvider;
 import net.tropicraft.core.common.data.TropicraftEntityTypeTagsProvider;
@@ -52,12 +52,8 @@ import net.tropicraft.core.common.data.TropicraftWorldgenProvider;
 import net.tropicraft.core.common.data.loot.TropicraftLootConditions;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomeProvider;
-import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
 import net.tropicraft.core.common.dimension.carver.TropicraftCarvers;
-import net.tropicraft.core.common.dimension.carver.TropicraftConfiguredCarvers;
 import net.tropicraft.core.common.dimension.chunk.TropicraftChunkGenerator;
-import net.tropicraft.core.common.dimension.feature.TropicraftConfiguredFeatures;
-import net.tropicraft.core.common.dimension.feature.TropicraftConfiguredStructures;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
 import net.tropicraft.core.common.dimension.feature.block_state_provider.TropicraftBlockStateProviders;
 import net.tropicraft.core.common.dimension.feature.jigsaw.AdjustBuildingHeightProcessor;
@@ -67,16 +63,12 @@ import net.tropicraft.core.common.dimension.feature.jigsaw.SmoothingGravityProce
 import net.tropicraft.core.common.dimension.feature.jigsaw.SteepPathProcessor;
 import net.tropicraft.core.common.dimension.feature.jigsaw.StructureSupportsProcessor;
 import net.tropicraft.core.common.dimension.feature.jigsaw.StructureVoidProcessor;
-import net.tropicraft.core.common.dimension.feature.jigsaw.TropicraftProcessorLists;
 import net.tropicraft.core.common.dimension.feature.jigsaw.piece.HomeTreeBranchPiece;
 import net.tropicraft.core.common.dimension.feature.jigsaw.piece.NoRotateSingleJigsawPiece;
 import net.tropicraft.core.common.dimension.feature.jigsaw.piece.SingleNoAirJigsawPiece;
-import net.tropicraft.core.common.dimension.feature.pools.TropicraftTemplatePools;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftFoliagePlacers;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftTreeDecorators;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftTrunkPlacers;
-import net.tropicraft.core.common.dimension.surfacebuilders.TropicraftConfiguredSurfaceBuilders;
-import net.tropicraft.core.common.dimension.surfacebuilders.TropicraftSurfaceBuilders;
 import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.item.IColoredItem;
@@ -198,12 +190,7 @@ public class Tropicraft {
 
     private void onServerStarting(final ServerStartingEvent event) {
         CommandDispatcher<CommandSourceStack> dispatcher = event.getServer().getCommands().getDispatcher();
-        CommandTropicsTeleport.register(dispatcher);
-
-        // Dev only debug!
-        if (!FMLEnvironment.production) {
-            MapBiomesCommand.register(dispatcher);
-        }
+        CommandTropics.register(dispatcher);
     }
 
     private void gatherData(GatherDataEvent event) {
