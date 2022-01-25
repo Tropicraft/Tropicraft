@@ -15,14 +15,13 @@ import net.tropicraft.core.client.entity.model.PlayerHeadpieceModel;
 
 import javax.annotation.Nullable;
 
-public class NigelStacheItem extends ArmorItem implements IItemRenderProperties {
+public class NigelStacheItem extends ArmorItem {
 
     public NigelStacheItem(final Properties properties) {
         super(ArmorMaterials.NIGEL_STACHE, EquipmentSlot.HEAD, properties);
     }
 
     @OnlyIn(Dist.CLIENT)
-    @Nullable
     @Override
     public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.IItemRenderProperties> consumer) {
         consumer.accept(new IItemRenderProperties() {
@@ -36,6 +35,7 @@ public class NigelStacheItem extends ArmorItem implements IItemRenderProperties 
     }
     
     @Override
+    @OnlyIn(Dist.CLIENT)
     public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
         return TropicraftRenderUtils.getTextureArmor("nigel_layer_1").toString();
     }

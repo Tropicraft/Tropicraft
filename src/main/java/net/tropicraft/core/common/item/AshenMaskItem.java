@@ -23,7 +23,7 @@ import net.tropicraft.core.common.entity.placeable.WallItemEntity;
 
 import javax.annotation.Nullable;
 
-public class AshenMaskItem extends ArmorItem implements IItemRenderProperties {
+public class AshenMaskItem extends ArmorItem {
     private final AshenMasks maskType;
 
     public AshenMaskItem(ArmorMaterial armorMaterial, AshenMasks maskType, Properties properties) {
@@ -70,7 +70,6 @@ public class AshenMaskItem extends ArmorItem implements IItemRenderProperties {
     }
 
     @OnlyIn(Dist.CLIENT)
-    @Nullable
     @Override
     public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.IItemRenderProperties> consumer) {
         consumer.accept(new IItemRenderProperties() {
@@ -84,6 +83,7 @@ public class AshenMaskItem extends ArmorItem implements IItemRenderProperties {
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
         return TropicraftRenderUtils.getTextureEntity("ashen/mask").toString();
     }
