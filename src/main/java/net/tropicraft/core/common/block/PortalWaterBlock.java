@@ -23,8 +23,10 @@ public class PortalWaterBlock extends LiquidBlock {
     @Override
     public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
         super.entityInside(state, worldIn, pos, entityIn);
-        if (!worldIn.isClientSide && entityIn instanceof ServerPlayer && entityIn.getPortalWaitTime() <= 0 && !entityIn.isPassenger() && !entityIn.isPassenger() && entityIn.canChangeDimensions()) {
-            TropicraftDimension.teleportPlayer((ServerPlayer) entityIn, TropicraftDimension.WORLD, true);
+        if (!entityIn.isPassenger() && !entityIn.isVehicle() && entityIn.canChangeDimensions()) {
+            if (!worldIn.isClientSide && entityIn instanceof ServerPlayer && entityIn.getPortalWaitTime() <= 1) {
+                TropicraftDimension.teleportPlayer((ServerPlayer) entityIn, TropicraftDimension.WORLD, true);
+            }
         }
     }
 
