@@ -2,6 +2,7 @@ package net.tropicraft.core.common.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -96,6 +97,6 @@ public class CoffeeBushBlock extends CropBlock {
 
     @Override
     protected boolean mayPlaceOn(BlockState state, BlockGetter worldIn, BlockPos pos) {
-        return state.getBlock() == Blocks.GRASS_BLOCK || net.minecraftforge.common.Tags.Blocks.DIRT.contains(this) || state.getBlock() == Blocks.FARMLAND || state.getBlock() == this;
+        return state.getBlock() == Blocks.GRASS_BLOCK || BlockTags.DIRT.contains(this) || state.getBlock() == Blocks.FARMLAND || state.getBlock() == this;
     }
 }

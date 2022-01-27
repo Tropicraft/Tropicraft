@@ -1,9 +1,8 @@
 buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
-        maven { url = 'https://repo.spongepowered.org/maven' }
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
         maven { url = 'https://maven.parchmentmc.org' }
-        jcenter()
         mavenCentral()
     }
     dependencies {
@@ -39,7 +38,7 @@ if (System.getenv('GITHUB_RUN_NUMBER')) {
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '17' // Need this here so eclipse task generates correctly.
 
 minecraft {
-    mappings channel: 'parchment', version: '2021.12.19-1.18.1'
+    mappings channel: 'parchment', version: '2022.01.23-1.18.1'
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
