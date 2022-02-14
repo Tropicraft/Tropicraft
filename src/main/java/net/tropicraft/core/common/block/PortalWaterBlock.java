@@ -1,18 +1,16 @@
 package net.tropicraft.core.common.block;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.LiquidBlock;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.material.Fluids;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluids;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 
 import java.util.Random;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class PortalWaterBlock extends LiquidBlock {
 
@@ -23,7 +21,7 @@ public class PortalWaterBlock extends LiquidBlock {
     @Override
     public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
         super.entityInside(state, worldIn, pos, entityIn);
-        if (!worldIn.isClientSide && entityIn instanceof ServerPlayer && entityIn.getPortalWaitTime() <= 0 && !entityIn.isPassenger() && !entityIn.isPassenger() && entityIn.canChangeDimensions()) {
+        if (!worldIn.isClientSide && entityIn instanceof ServerPlayer && !entityIn.isPassenger() && entityIn.canChangeDimensions()) {
             TropicraftDimension.teleportPlayer((ServerPlayer) entityIn, TropicraftDimension.WORLD);
         }
     }

@@ -10,6 +10,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.phys.HitResult;
@@ -33,15 +34,16 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-;
-
 public class TropicraftBlocks {
     
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Constants.MODID);
     public static final DeferredRegister<Item> BLOCKITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Constants.MODID);
-    
-    public static final RegistryObject<PortalWaterBlock> PORTAL_WATER = registerNoItem(
-            "portal_water", () -> new PortalWaterBlock(Block.Properties.of(Material.WATER).noDrops()));
+
+    public static final RegistryObject<PortalWaterBlock> TELEPORT_WATER = registerNoItem(
+            "teleport_water", () -> new PortalWaterBlock(Block.Properties.of(Material.WATER).noDrops()));
+
+    public static final RegistryObject<LiquidBlock> PORTAL_WATER = registerNoItem(
+            "portal_water", () -> new LiquidBlock(() -> Fluids.WATER, Block.Properties.of(Material.WATER).noDrops()));
 
     public static final RegistryObject<Block> CHUNK = register(
             "chunk", Builder.block(Block.Properties.of(Material.STONE, MaterialColor.COLOR_BLACK).strength(6.0F, 30F)));
