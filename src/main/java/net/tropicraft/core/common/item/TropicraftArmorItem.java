@@ -5,12 +5,9 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.IItemRenderProperties;
 import net.tropicraft.Constants;
 
-import net.minecraft.world.item.Item.Properties;
-
-public class TropicraftArmorItem extends ArmorItem implements IItemRenderProperties {
+public class TropicraftArmorItem extends ArmorItem {
     public TropicraftArmorItem(ArmorMaterial armorMaterial, EquipmentSlot slotType, Properties properties) {
         super(armorMaterial, slotType, properties);
     }

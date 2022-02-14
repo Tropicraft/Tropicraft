@@ -56,15 +56,13 @@ public class AirCompressorBlockEntity extends BlockEntity implements IMachineBlo
     }
 
     @Override
-    public @Nonnull CompoundTag save(@Nonnull CompoundTag nbt) {
-        super.save(nbt);
+    public void saveAdditional(@Nonnull CompoundTag nbt) {
+        super.saveAdditional(nbt);
         nbt.putBoolean("Compressing", compressing);
 
         CompoundTag var4 = new CompoundTag();
         this.stack.save(var4);
         nbt.put("Tank", var4);
-
-        return nbt;
     }
 
     public void setTank(@Nonnull ItemStack tankItemStack) {
@@ -205,7 +203,8 @@ public class AirCompressorBlockEntity extends BlockEntity implements IMachineBlo
 
     @Override
     public @Nonnull CompoundTag getUpdateTag() {
-        CompoundTag nbttagcompound = this.save(new CompoundTag());
-        return nbttagcompound;
+        CompoundTag nbt = new CompoundTag();
+        this.saveAdditional(nbt);
+        return nbt;
     }
 }

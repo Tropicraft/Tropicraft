@@ -6,7 +6,6 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -64,8 +63,9 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
     }
 
     @Override
-    public @Nonnull CompoundTag save(@Nonnull CompoundTag nbt) {
-        super.save(nbt);
+    public void saveAdditional(@Nonnull CompoundTag nbt) {
+        super.saveAdditional(nbt);
+
         nbt.putInt("MixTicks", ticks);
         nbt.putBoolean("Mixing", mixing);
 
@@ -78,8 +78,6 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         CompoundTag resultNbt = new CompoundTag();
         result.save(resultNbt);
         nbt.put("Result", resultNbt);
-
-        return nbt;
     }
 
     public static void mixTick(Level level, BlockPos pos, BlockState state, DrinkMixerBlockEntity mixer) {
@@ -295,9 +293,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
     }
 
     private CompoundTag writeItems(final CompoundTag nbt) {
-        super.save(nbt);
-        ContainerHelper.saveAllItems(nbt, ingredients, true);
-        ContainerHelper.saveAllItems(nbt, NonNullList.of(result), true);
+        this.saveAdditional(nbt);
         return nbt;
     }
 

@@ -1,11 +1,9 @@
 package net.tropicraft.core.common.block.tileentity;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -200,14 +198,13 @@ public class SifterBlockEntity extends BlockEntity {
     }
 
     @Override
-    public CompoundTag save(CompoundTag nbt) {
-        super.save(nbt);
+    public void saveAdditional(CompoundTag nbt) {
+        super.saveAdditional(nbt);
         nbt.putBoolean("isSifting", isSifting);
         nbt.putInt("currentSiftTime", currentSiftTime);
         if (!siftItem.isEmpty()) {
             nbt.put("Item", siftItem.save(new CompoundTag()));
         }
-        return nbt;
     }
 
     public CompoundTag getTagCompound(ItemStack stack) {
@@ -238,8 +235,7 @@ public class SifterBlockEntity extends BlockEntity {
     }
 
     private CompoundTag writeItems(final CompoundTag nbt) {
-        super.save(nbt);
-        ContainerHelper.saveAllItems(nbt, NonNullList.of(siftItem), true);
+        this.saveAdditional(nbt);
         return nbt;
     }
 

@@ -23,7 +23,7 @@ import net.tropicraft.core.common.entity.placeable.WallItemEntity;
 
 import javax.annotation.Nullable;
 
-public class AshenMaskItem extends ArmorItem implements IItemRenderProperties {
+public class AshenMaskItem extends ArmorItem {
     private final AshenMasks maskType;
 
     public AshenMaskItem(ArmorMaterial armorMaterial, AshenMasks maskType, Properties properties) {
