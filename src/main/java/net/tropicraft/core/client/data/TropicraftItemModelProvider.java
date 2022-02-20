@@ -341,6 +341,8 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         generated(TropicraftItems.NIGEL_STACHE);
         generated(TropicraftItems.WATER_WAND);
         generated(TropicraftItems.EXPLODING_COCONUT);
+
+        generated(TropicraftItems.PORTAL_DEBUG_TOOL, new ResourceLocation(Constants.MODID, "item/portal_enchanter"));
         
         // Discs
         TropicraftItems.MUSIC_DISCS.values().forEach(this::generated);
