@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -28,6 +29,7 @@ import net.minecraftforge.fml.IExtensionPoint;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -43,6 +45,7 @@ import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.block.tileentity.TropicraftBlockEntityTypes;
 import net.tropicraft.core.common.command.TropicraftCommands;
 import net.tropicraft.core.common.command.debug.MapBiomesCommand;
+import net.tropicraft.core.common.config.TropicraftConfig;
 import net.tropicraft.core.common.data.TropicraftBlockTagsProvider;
 import net.tropicraft.core.common.data.TropicraftEntityTypeTagsProvider;
 import net.tropicraft.core.common.data.TropicraftItemTagsProvider;
@@ -51,6 +54,7 @@ import net.tropicraft.core.common.data.TropicraftRecipeProvider;
 import net.tropicraft.core.common.data.TropicraftWorldgenProvider;
 import net.tropicraft.core.common.data.loot.TropicraftLootConditions;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
+import net.tropicraft.core.common.dimension.TropicraftPoiTypes;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomeProvider;
 import net.tropicraft.core.common.dimension.carver.TropicraftCarvers;
 import net.tropicraft.core.common.dimension.chunk.TropicraftChunkGenerator;
@@ -88,6 +92,14 @@ public class Tropicraft {
         }
     });
 
+    private static final ForgeConfigSpec SERVER_CONFIG;
+
+    static {
+        ForgeConfigSpec.Builder configBuilder = new ForgeConfigSpec.Builder();
+        TropicraftConfig.setupConfig(configBuilder);
+        SERVER_CONFIG = configBuilder.build();
+    }
+
     public Tropicraft() {
         // Compatible with all versions that match the semver (excluding the qualifier e.g. "-beta+42")
         ModLoadingContext.get().registerExtensionPoint(IExtensionPoint.DisplayTest.class, () -> new IExtensionPoint.DisplayTest(Tropicraft::getCompatVersion, (s, v) -> Tropicraft.isCompatibleVersion(s)));
@@ -96,6 +108,8 @@ public class Tropicraft {
         // General mod setup
         modBus.addListener(this::setup);
         modBus.addListener(this::gatherData);
+
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, SERVER_CONFIG);
 
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
             // Client setup
@@ -110,6 +124,7 @@ public class Tropicraft {
         // Registry objects
         TropicraftBlocks.BLOCKS.register(modBus);
         TropicraftBlocks.BLOCKITEMS.register(modBus);
+        TropicraftPoiTypes.POI_TYPE.register(modBus);
         TropicraftItems.ITEMS.register(modBus);
         ScubaGogglesItem.ATTRIBUTES.register(modBus);
         MixerRecipes.addMixerRecipes();
@@ -191,11 +206,6 @@ public class Tropicraft {
     private void onServerStarting(final ServerStartingEvent event) {
         CommandDispatcher<CommandSourceStack> dispatcher = event.getServer().getCommands().getDispatcher();
         TropicraftCommands.register(dispatcher);
-
-        // Dev only debug!
-        if (!FMLEnvironment.production) {
-            MapBiomesCommand.register(dispatcher);
-        }
     }
 
     private void gatherData(GatherDataEvent event) {
