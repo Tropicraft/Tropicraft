@@ -55,7 +55,7 @@ import net.tropicraft.core.common.data.TropicraftWorldgenProvider;
 import net.tropicraft.core.common.data.loot.TropicraftLootConditions;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 import net.tropicraft.core.common.dimension.TropicraftPoiTypes;
-import net.tropicraft.core.common.dimension.biome.TropicraftBiomeProvider;
+import net.tropicraft.core.common.dimension.biome.TropicraftBiomeSource;
 import net.tropicraft.core.common.dimension.carver.TropicraftCarvers;
 import net.tropicraft.core.common.dimension.chunk.TropicraftChunkGenerator;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
@@ -185,7 +185,7 @@ public class Tropicraft {
         TropicraftEntities.registerSpawns();
 
         TropicraftChunkGenerator.register();
-        TropicraftBiomeProvider.register();
+        TropicraftBiomeSource.register();
 
         Reflection.initialize(
                 SingleNoAirJigsawPiece.class, NoRotateSingleJigsawPiece.class, HomeTreeBranchPiece.class,

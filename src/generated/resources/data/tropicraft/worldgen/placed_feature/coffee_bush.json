@@ -2,8 +2,8 @@
   "feature": "tropicraft:coffee_bush",
   "placement": [
     {
-      "count": 5,
-      "type": "minecraft:count"
+      "chance": 25,
+      "type": "minecraft:rarity_filter"
     },
     {
       "type": "minecraft:in_square"
