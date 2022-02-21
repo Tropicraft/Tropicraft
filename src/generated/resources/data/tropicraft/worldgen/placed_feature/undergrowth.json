@@ -2,8 +2,8 @@
   "feature": "tropicraft:undergrowth",
   "placement": [
     {
-      "count": 100,
-      "type": "minecraft:count"
+      "chance": 5,
+      "type": "minecraft:rarity_filter"
     },
     {
       "type": "minecraft:in_square"

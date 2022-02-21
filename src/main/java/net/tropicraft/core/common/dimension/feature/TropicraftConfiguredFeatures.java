@@ -390,13 +390,13 @@ public final class TropicraftConfiguredFeatures {
         this.coffeeBush = features.noConfig(
                 "coffee_bush",
                 TropicraftFeatures.COFFEE_BUSH,
-                f -> f.placed(worldSurfaceSquaredWithCount(5))
+                f -> f.placed(worldSurfaceSquaredWithChance(25))
         );
 
         this.undergrowth = features.noConfig(
                 "undergrowth",
                 TropicraftFeatures.UNDERGROWTH,
-                f -> f.placed(worldSurfaceSquaredWithCount(100))
+                f -> f.placed(worldSurfaceSquaredWithChance(5))
         );
 
         this.singleUndergrowth = features.noConfig(
@@ -484,6 +484,14 @@ public final class TropicraftConfiguredFeatures {
                 6,
                 HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(-16), VerticalAnchor.aboveBottom(32))
         );
+    }
+
+    public static List<PlacementModifier> worldSurfaceSquaredWithChance(int p_195475_) {
+        return List.of(RarityFilter.onAverageOnceEvery(p_195475_), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome());
+    }
+
+    public static List<PlacementModifier> worldSurfaceUpdatedSquaredWithCount(int p_195475_) {
+        return List.of(CountPlacement.of(p_195475_), InSquarePlacement.spread(), HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE), BiomeFilter.biome());
     }
 
     @NotNull

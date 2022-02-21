@@ -28,7 +28,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.tropicraft.Constants;
-import net.tropicraft.core.common.dimension.biome.TropicraftBiomeProvider;
+import net.tropicraft.core.common.dimension.biome.TropicraftBiomeSource;
 import net.tropicraft.core.common.dimension.chunk.TropicraftChunkGenerator;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
@@ -110,7 +110,7 @@ public class TropicraftDimension {
             NoiseGeneratorSettings settings = dimensionSettingsRegistry.get(DIMENSION_SETTINGS);
             return settings != null ? settings : dimensionSettingsRegistry.getOrThrow(NoiseGeneratorSettings.OVERWORLD);
         };
-        TropicraftBiomeProvider biomeSource = new TropicraftBiomeProvider(seed, biomeRegistry);
+        TropicraftBiomeSource biomeSource = new TropicraftBiomeSource(seed, biomeRegistry);
         return new TropicraftChunkGenerator(params, biomeSource, seed, dimensionSettings);
     }
 
