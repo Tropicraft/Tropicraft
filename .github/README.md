@@ -3,14 +3,13 @@
 </p>
 <p align="center">
   <a href="https://github.com/Tropicraft/Tropicraft/actions/workflows/gradle.yml">
-      <img src="https://github.com/Tropicraft/Tropicraft/actions/workflows/gradle.yml/badge.svg" alt="Build Status">
+      <img src="https://img.shields.io/github/workflow/status/tropicraft/tropicraft/Java%20CI%20with%20Gradle?style=flat-square" alt="Build Status">
   </a>
   <a href="https://discord.gg/Q24TRnx">
-      <img src="https://img.shields.io/discord/285234569375121409.svg?colorB=7289DA&label=Discord&style=flat-square" alt="Discord">
+      <img src="https://img.shields.io/discord/285234569375121409?color=7289DA&label=Discord%20&logo=Discord&logoColor=ffffff&style=flat-square" alt="Discord">
   </a>
   <a href="https://minecraft.curseforge.com/projects/tropicraft">
-      <img src="http://cf.way2muchnoise.eu/versions/For%20MC_tropicraft_latest.svg" alt="Minecraft Version">
-      <img src="http://cf.way2muchnoise.eu/short_tropicraft.svg" alt="Minecraft Version">
+      <img src="https://img.shields.io/badge/dynamic/json?color=e04e14&label=For%20MC&query=%24.gameVersionLatestFiles[%3A1].gameVersion&url=https%3A%2F%2Faddons-ecs.forgesvc.net%2Fapi%2Fv2%2Faddon%2F254794&logo=curseforge&style=flat-square" alt="Minecraft Version">
   </a>
   <br>
   <strong><a href="https://tropicraft.net/">Website</a> | <a href="https://www.minecraftforum.net/topic/533512">Minecraft Forum Thread</a> </strong>
