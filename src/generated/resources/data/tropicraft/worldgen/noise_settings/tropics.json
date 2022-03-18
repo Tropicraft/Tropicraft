@@ -776,6 +776,54 @@
                             {
                               "if_true": {
                                 "biome_is": [
+                                  "tropicraft:mangroves"
+                                ],
+                                "type": "minecraft:biome"
+                              },
+                              "then_run": {
+                                "if_true": {
+                                  "noise": "minecraft:calcite",
+                                  "min_threshold": -0.0125,
+                                  "max_threshold": 0.0125,
+                                  "type": "minecraft:noise_threshold"
+                                },
+                                "then_run": {
+                                  "result_state": {
+                                    "Name": "tropicraft:mud"
+                                  },
+                                  "type": "minecraft:block"
+                                },
+                                "type": "minecraft:condition"
+                              },
+                              "type": "minecraft:condition"
+                            },
+                            {
+                              "if_true": {
+                                "biome_is": [
+                                  "tropicraft:mangroves"
+                                ],
+                                "type": "minecraft:biome"
+                              },
+                              "then_run": {
+                                "if_true": {
+                                  "noise": "minecraft:surface",
+                                  "min_threshold": 0.2727272727272727,
+                                  "max_threshold": 1.7976931348623157E308,
+                                  "type": "minecraft:noise_threshold"
+                                },
+                                "then_run": {
+                                  "result_state": {
+                                    "Name": "tropicraft:mud"
+                                  },
+                                  "type": "minecraft:block"
+                                },
+                                "type": "minecraft:condition"
+                              },
+                              "type": "minecraft:condition"
+                            },
+                            {
+                              "if_true": {
+                                "biome_is": [
                                   "minecraft:stony_shore"
                                 ],
                                 "type": "minecraft:biome"
@@ -856,9 +904,10 @@
                             {
                               "if_true": {
                                 "biome_is": [
-                                  "minecraft:warm_ocean",
+                                  "tropicraft:tropics_ocean",
+                                  "tropicraft:tropics_river",
                                   "minecraft:desert",
-                                  "minecraft:beach",
+                                  "tropicraft:tropics_beach",
                                   "minecraft:snowy_beach"
                                 ],
                                 "type": "minecraft:biome"
@@ -1457,6 +1506,54 @@
                             {
                               "if_true": {
                                 "biome_is": [
+                                  "tropicraft:mangroves"
+                                ],
+                                "type": "minecraft:biome"
+                              },
+                              "then_run": {
+                                "if_true": {
+                                  "noise": "minecraft:calcite",
+                                  "min_threshold": -0.0125,
+                                  "max_threshold": 0.0125,
+                                  "type": "minecraft:noise_threshold"
+                                },
+                                "then_run": {
+                                  "result_state": {
+                                    "Name": "tropicraft:mud"
+                                  },
+                                  "type": "minecraft:block"
+                                },
+                                "type": "minecraft:condition"
+                              },
+                              "type": "minecraft:condition"
+                            },
+                            {
+                              "if_true": {
+                                "biome_is": [
+                                  "tropicraft:mangroves"
+                                ],
+                                "type": "minecraft:biome"
+                              },
+                              "then_run": {
+                                "if_true": {
+                                  "noise": "minecraft:surface",
+                                  "min_threshold": 0.2727272727272727,
+                                  "max_threshold": 1.7976931348623157E308,
+                                  "type": "minecraft:noise_threshold"
+                                },
+                                "then_run": {
+                                  "result_state": {
+                                    "Name": "tropicraft:mud"
+                                  },
+                                  "type": "minecraft:block"
+                                },
+                                "type": "minecraft:condition"
+                              },
+                              "type": "minecraft:condition"
+                            },
+                            {
+                              "if_true": {
+                                "biome_is": [
                                   "minecraft:stony_shore"
                                 ],
                                 "type": "minecraft:biome"
@@ -1537,9 +1634,10 @@
                             {
                               "if_true": {
                                 "biome_is": [
-                                  "minecraft:warm_ocean",
+                                  "tropicraft:tropics_ocean",
+                                  "tropicraft:tropics_river",
                                   "minecraft:desert",
-                                  "minecraft:beach",
+                                  "tropicraft:tropics_beach",
                                   "minecraft:snowy_beach"
                                 ],
                                 "type": "minecraft:biome"
@@ -1736,9 +1834,10 @@
                   {
                     "if_true": {
                       "biome_is": [
-                        "minecraft:warm_ocean",
+                        "tropicraft:tropics_ocean",
+                        "tropicraft:tropics_river",
                         "minecraft:desert",
-                        "minecraft:beach",
+                        "tropicraft:tropics_beach",
                         "minecraft:snowy_beach"
                       ],
                       "type": "minecraft:biome"
@@ -1914,27 +2013,46 @@
         "points": [
           {
             "location": -1.1,
-            "value": 0.044,
+            "value": 0.14,
             "derivative": 0.0
           },
           {
-            "location": -1.02,
+            "location": -0.92,
             "value": -0.2222,
             "derivative": 0.0
           },
           {
-            "location": -0.51,
+            "location": -0.61,
             "value": -0.2222,
             "derivative": 0.0
           },
           {
-            "location": -0.44,
+            "location": -0.54,
             "value": -0.12,
             "derivative": 0.0
           },
           {
             "location": -0.18,
-            "value": -0.12,
+            "value": {
+              "coordinate": "erosion",
+              "points": [
+                {
+                  "location": -1.0,
+                  "value": -0.12,
+                  "derivative": 0.0
+                },
+                {
+                  "location": 0.4,
+                  "value": -0.06,
+                  "derivative": 0.0
+                },
+                {
+                  "location": 1.0,
+                  "value": -0.01,
+                  "derivative": 0.0
+                }
+              ]
+            },
             "derivative": 0.0
           },
           {
@@ -3391,6 +3509,16 @@
         "coordinate": "continents",
         "points": [
           {
+            "location": -1.1,
+            "value": 0.54,
+            "derivative": 0.0
+          },
+          {
+            "location": -0.92,
+            "value": 3.95,
+            "derivative": 0.0
+          },
+          {
             "location": -0.19,
             "value": 3.95,
             "derivative": 0.0
@@ -3407,7 +3535,7 @@
                     "points": [
                       {
                         "location": -0.2,
-                        "value": 6.3,
+                        "value": 3.1,
                         "derivative": 0.0
                       },
                       {
@@ -3426,12 +3554,12 @@
                     "points": [
                       {
                         "location": -0.05,
-                        "value": 6.3,
+                        "value": 3.1,
                         "derivative": 0.0
                       },
                       {
                         "location": 0.05,
-                        "value": 2.67,
+                        "value": 2.23,
                         "derivative": 0.0
                       }
                     ]
@@ -3445,7 +3573,7 @@
                     "points": [
                       {
                         "location": -0.2,
-                        "value": 6.3,
+                        "value": 3.1,
                         "derivative": 0.0
                       },
                       {
@@ -3464,7 +3592,7 @@
                     "points": [
                       {
                         "location": -0.2,
-                        "value": 6.3,
+                        "value": 3.1,
                         "derivative": 0.0
                       },
                       {
@@ -3483,12 +3611,12 @@
                     "points": [
                       {
                         "location": -0.05,
-                        "value": 2.67,
+                        "value": 2.23,
                         "derivative": 0.0
                       },
                       {
                         "location": 0.05,
-                        "value": 6.3,
+                        "value": 3.1,
                         "derivative": 0.0
                       }
                     ]
@@ -3502,7 +3630,7 @@
                     "points": [
                       {
                         "location": -0.2,
-                        "value": 6.3,
+                        "value": 3.1,
                         "derivative": 0.0
                       },
                       {
@@ -3606,12 +3734,12 @@
                     "points": [
                       {
                         "location": -0.2,
-                        "value": 6.3,
+                        "value": 3.1,
                         "derivative": 0.0
                       },
                       {
                         "location": 0.2,
-                        "value": 5.47,
+                        "value": 4.22,
                         "derivative": 0.0
                       }
                     ]
@@ -3625,12 +3753,12 @@
                     "points": [
                       {
                         "location": -0.05,
-                        "value": 6.3,
+                        "value": 3.1,
                         "derivative": 0.0
                       },
                       {
                         "location": 0.05,
-                        "value": 2.67,
+                        "value": 2.23,
                         "derivative": 0.0
                       }
                     ]
@@ -3644,12 +3772,12 @@
                     "points": [
                       {
                         "location": -0.2,
-                        "value": 6.3,
+                        "value": 3.1,
                         "derivative": 0.0
                       },
                       {
                         "location": 0.2,
-                        "value": 5.47,
+                        "value": 4.22,
                         "derivative": 0.0
                       }
                     ]
@@ -3663,12 +3791,12 @@
                     "points": [
                       {
                         "location": -0.2,
-                        "value": 6.3,
+                        "value": 3.1,
                         "derivative": 0.0
                       },
                       {
                         "location": 0.2,
-                        "value": 5.47,
+                        "value": 4.22,
                         "derivative": 0.0
                       }
                     ]
@@ -3682,12 +3810,12 @@
                     "points": [
                       {
                         "location": -0.05,
-                        "value": 2.67,
+                        "value": 2.23,
                         "derivative": 0.0
                       },
                       {
                         "location": 0.05,
-                        "value": 6.3,
+                        "value": 3.1,
                         "derivative": 0.0
                       }
                     ]
@@ -3701,12 +3829,12 @@
                     "points": [
                       {
                         "location": -0.2,
-                        "value": 6.3,
+                        "value": 3.1,
                         "derivative": 0.0
                       },
                       {
                         "location": 0.2,
-                        "value": 5.47,
+                        "value": 4.22,
                         "derivative": 0.0
                       }
                     ]
@@ -3715,7 +3843,7 @@
                 },
                 {
                   "location": 0.35,
-                  "value": 5.47,
+                  "value": 4.22,
                   "derivative": 0.0
                 },
                 {
@@ -3725,7 +3853,7 @@
                     "points": [
                       {
                         "location": -0.9,
-                        "value": 5.47,
+                        "value": 4.22,
                         "derivative": 0.0
                       },
                       {
@@ -3735,7 +3863,7 @@
                           "points": [
                             {
                               "location": 0.0,
-                              "value": 5.47,
+                              "value": 4.22,
                               "derivative": 0.0
                             },
                             {
@@ -3758,7 +3886,7 @@
                     "points": [
                       {
                         "location": -0.9,
-                        "value": 5.47,
+                        "value": 4.22,
                         "derivative": 0.0
                       },
                       {
@@ -3768,7 +3896,7 @@
                           "points": [
                             {
                               "location": 0.0,
-                              "value": 5.47,
+                              "value": 4.22,
                               "derivative": 0.0
                             },
                             {
@@ -3786,7 +3914,7 @@
                 },
                 {
                   "location": 0.62,
-                  "value": 5.47,
+                  "value": 4.22,
                   "derivative": 0.0
                 }
               ]
@@ -3805,12 +3933,12 @@
                     "points": [
                       {
                         "location": -0.2,
-                        "value": 6.3,
+                        "value": 3.1,
                         "derivative": 0.0
                       },
                       {
                         "location": 0.2,
-                        "value": 5.08,
+                        "value": 3.8,
                         "derivative": 0.0
                       }
                     ]
@@ -3824,12 +3952,12 @@
                     "points": [
                       {
                         "location": -0.05,
-                        "value": 6.3,
+                        "value": 3.1,
                         "derivative": 0.0
                       },
                       {
                         "location": 0.05,
-                        "value": 2.67,
+                        "value": 2.23,
                         "derivative": 0.0
                       }
                     ]
@@ -3843,12 +3971,12 @@
                     "points": [
                       {
                         "location": -0.2,
-                        "value": 6.3,
+                        "value": 3.1,
                         "derivative": 0.0
                       },
                       {
                         "location": 0.2,
-                        "value": 5.08,
+                        "value": 3.8,
                         "derivative": 0.0
                       }
                     ]
@@ -3862,12 +3990,12 @@
                     "points": [
                       {
                         "location": -0.2,
-                        "value": 6.3,
+                        "value": 3.1,
                         "derivative": 0.0
                       },
                       {
                         "location": 0.2,
-                        "value": 5.08,
+                        "value": 3.8,
                         "derivative": 0.0
                       }
                     ]
@@ -3881,12 +4009,12 @@
                     "points": [
                       {
                         "location": -0.05,
-                        "value": 2.67,
+                        "value": 2.23,
                         "derivative": 0.0
                       },
                       {
                         "location": 0.05,
-                        "value": 6.3,
+                        "value": 3.1,
                         "derivative": 0.0
                       }
                     ]
@@ -3900,12 +4028,12 @@
                     "points": [
                       {
                         "location": -0.2,
-                        "value": 6.3,
+                        "value": 3.1,
                         "derivative": 0.0
                       },
                       {
                         "location": 0.2,
-                        "value": 5.08,
+                        "value": 3.8,
                         "derivative": 0.0
                       }
                     ]
@@ -3914,7 +4042,7 @@
                 },
                 {
                   "location": 0.35,
-                  "value": 5.08,
+                  "value": 3.8,
                   "derivative": 0.0
                 },
                 {
@@ -3924,7 +4052,7 @@
                     "points": [
                       {
                         "location": -0.9,
-                        "value": 5.08,
+                        "value": 3.8,
                         "derivative": 0.0
                       },
                       {
@@ -3934,7 +4062,7 @@
                           "points": [
                             {
                               "location": 0.0,
-                              "value": 5.08,
+                              "value": 3.8,
                               "derivative": 0.0
                             },
                             {
@@ -3957,7 +4085,7 @@
                     "points": [
                       {
                         "location": -0.9,
-                        "value": 5.08,
+                        "value": 3.8,
                         "derivative": 0.0
                       },
                       {
@@ -3967,7 +4095,7 @@
                           "points": [
                             {
                               "location": 0.0,
-                              "value": 5.08,
+                              "value": 3.8,
                               "derivative": 0.0
                             },
                             {
@@ -3985,7 +4113,7 @@
                 },
                 {
                   "location": 0.62,
-                  "value": 5.08,
+                  "value": 3.8,
                   "derivative": 0.0
                 }
               ]
@@ -4004,12 +4132,12 @@
                     "points": [
                       {
                         "location": -0.2,
-                        "value": 6.3,
+                        "value": 3.1,
                         "derivative": 0.0
                       },
                       {
                         "location": 0.2,
-                        "value": 4.69,
+                        "value": 2.44,
                         "derivative": 0.0
                       }
                     ]
@@ -4023,12 +4151,12 @@
                     "points": [
                       {
                         "location": -0.05,
-                        "value": 6.3,
+                        "value": 3.1,
                         "derivative": 0.0
                       },
                       {
                         "location": 0.05,
-                        "value": 2.67,
+                        "value": 2.23,
                         "derivative": 0.0
                       }
                     ]
@@ -4042,12 +4170,12 @@
                     "points": [
                       {
                         "location": -0.2,
-                        "value": 6.3,
+                        "value": 3.1,
                         "derivative": 0.0
                       },
                       {
                         "location": 0.2,
-                        "value": 4.69,
+                        "value": 2.44,
                         "derivative": 0.0
                       }
                     ]
@@ -4061,12 +4189,12 @@
                     "points": [
                       {
                         "location": -0.2,
-                        "value": 6.3,
+                        "value": 3.1,
                         "derivative": 0.0
                       },
                       {
                         "location": 0.2,
-                        "value": 4.69,
+                        "value": 2.44,
                         "derivative": 0.0
                       }
                     ]
@@ -4080,12 +4208,12 @@
                     "points": [
                       {
                         "location": -0.05,
-                        "value": 2.67,
+                        "value": 2.23,
                         "derivative": 0.0
                       },
                       {
                         "location": 0.05,
-                        "value": 6.3,
+                        "value": 3.1,
                         "derivative": 0.0
                       }
                     ]
@@ -4099,12 +4227,12 @@
                     "points": [
                       {
                         "location": -0.2,
-                        "value": 6.3,
+                        "value": 3.1,
                         "derivative": 0.0
                       },
                       {
                         "location": 0.2,
-                        "value": 4.69,
+                        "value": 2.44,
                         "derivative": 0.0
                       }
                     ]
@@ -4117,18 +4245,18 @@
                     "coordinate": "ridges",
                     "points": [
                       {
-                        "location": 0.45,
+                        "location": 0.35,
                         "value": {
                           "coordinate": "weirdness",
                           "points": [
                             {
                               "location": -0.2,
-                              "value": 6.3,
+                              "value": 3.1,
                               "derivative": 0.0
                             },
                             {
                               "location": 0.2,
-                              "value": 4.69,
+                              "value": 2.44,
                               "derivative": 0.0
                             }
                           ]
@@ -4150,18 +4278,18 @@
                     "coordinate": "ridges",
                     "points": [
                       {
-                        "location": 0.45,
+                        "location": 0.35,
                         "value": {
                           "coordinate": "weirdness",
                           "points": [
                             {
                               "location": -0.2,
-                              "value": 6.3,
+                              "value": 3.1,
                               "derivative": 0.0
                             },
                             {
                               "location": 0.2,
-                              "value": 4.69,
+                              "value": 2.44,
                               "derivative": 0.0
                             }
                           ]
@@ -4189,12 +4317,12 @@
                           "points": [
                             {
                               "location": -0.2,
-                              "value": 6.3,
+                              "value": 3.1,
                               "derivative": 0.0
                             },
                             {
                               "location": 0.2,
-                              "value": 4.69,
+                              "value": 2.44,
                               "derivative": 0.0
                             }
                           ]
@@ -4222,12 +4350,12 @@
                           "points": [
                             {
                               "location": -0.2,
-                              "value": 6.3,
+                              "value": 3.1,
                               "derivative": 0.0
                             },
                             {
                               "location": 0.2,
-                              "value": 4.69,
+                              "value": 2.44,
                               "derivative": 0.0
                             }
                           ]
@@ -4245,7 +4373,7 @@
                 },
                 {
                   "location": 0.58,
-                  "value": 4.69,
+                  "value": 2.44,
                   "derivative": 0.0
                 }
               ]

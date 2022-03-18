@@ -9,7 +9,8 @@ import net.minecraft.world.level.biome.Climate;
 import java.util.function.Consumer;
 
 public class TropicraftBiomeBuilder {
-    private final Climate.Parameter oceanContinentalness = Climate.Parameter.span(-1.05F, -0.19F);
+    private final Climate.Parameter islandContinentalness = Climate.Parameter.span(-1.1F, -0.92F);
+    private final Climate.Parameter oceanContinentalness = Climate.Parameter.span(-0.92F, -0.19F);
     private final Climate.Parameter landContinentalness = Climate.Parameter.span(-0.05F, 1.0F);
 
     private final Climate.Parameter coastContinentalness = Climate.Parameter.span(-0.19F, -0.05F);
@@ -28,6 +29,8 @@ public class TropicraftBiomeBuilder {
         addInlandBiomes(consumer);
 
         this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.oceanContinentalness, this.FULL_RANGE, this.FULL_RANGE, 0.0F, TropicraftBiomes.TROPICS_OCEAN);
+
+        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.islandContinentalness, this.FULL_RANGE, this.FULL_RANGE, 0.0F, TropicraftBiomes.RAINFOREST_ISLAND_MOUNTAINS);
     }
 
     private void addInlandBiomes(Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> consumer) {

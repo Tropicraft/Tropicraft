@@ -36,6 +36,7 @@ public class BiomeSimulator {
         COLORS.put(TropicraftBiomes.RAINFOREST_PLAINS, 0x056621);
         COLORS.put(TropicraftBiomes.TROPICS, 0x8DB360);
         COLORS.put(TropicraftBiomes.MANGROVES, 0x528a50);
+        COLORS.put(TropicraftBiomes.RAINFOREST_ISLAND_MOUNTAINS, 0x328f4c);
     }
 
     public static void main(String[] args) {
@@ -62,6 +63,7 @@ public class BiomeSimulator {
             for (int z = 0; z < 2048; z++) {
                 NoiseSampler.FlatNoiseData data = sampler.noiseData(x, z, Blender.empty());
                 int ay = 0;
+                // Find topmost Y coord
                 for (int y = -8; y < 40; y++) {
                     double offset = sampler.offset(y * 8, data.terrainInfo());
 

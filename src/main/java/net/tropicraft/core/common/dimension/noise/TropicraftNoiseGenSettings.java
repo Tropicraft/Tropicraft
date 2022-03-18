@@ -1,16 +1,16 @@
 package net.tropicraft.core.common.dimension.noise;
 
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.Util;
 import net.minecraft.data.worldgen.SurfaceRuleData;
-import net.minecraft.data.worldgen.TerrainProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.StructureFeatureConfiguration;
 import net.tropicraft.Constants;
+import net.tropicraft.core.common.TropicraftSurfaces;
 import net.tropicraft.core.common.data.WorldgenDataConsumer;
+import net.tropicraft.core.common.dimension.TropicraftTerrainShaper;
 import net.tropicraft.core.common.dimension.feature.TropicraftConfiguredStructures;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
 
@@ -39,9 +39,9 @@ public final class TropicraftNoiseGenSettings {
                         new NoiseSlider(-0.078125D, 2, false ? 0 : 8),
                         new NoiseSlider(false ? 0.4D : 0.1171875D, 3, 0),
                         1, 2,
-                        false, false, false, TerrainProvider.overworld(false)),
+                        false, false, false, TropicraftTerrainShaper.tropics()),
                 Blocks.STONE.defaultBlockState(), Blocks.WATER.defaultBlockState(),
-                SurfaceRuleData.overworld(), 63, false, true, true, true, true, false
+                TropicraftSurfaces.tropics(true, false, true), 63, false, true, true, true, true, false
         );
     }
 }

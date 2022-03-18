@@ -5,19 +5,23 @@ import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.QuartPos;
 import net.minecraft.data.worldgen.biome.Biomes;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.RegistryLookupCodec;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.BiomeSource;
-import net.minecraft.world.level.biome.Climate;
-import net.minecraft.world.level.biome.OverworldBiomeBuilder;
+import net.minecraft.world.level.biome.*;
+import net.minecraft.world.level.levelgen.NoiseSampler;
+import net.minecraft.world.level.levelgen.TerrainInfo;
+import net.minecraft.world.level.levelgen.blending.Blender;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.Constants;
 
+import java.text.DecimalFormat;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Supplier;
@@ -79,6 +83,28 @@ public class TropicraftBiomeSource extends BiomeSource {
     @OnlyIn(Dist.CLIENT)
     public BiomeSource withSeed(long seed) {
         return new TropicraftBiomeSource(seed, biomes);
+    }
+
+    public void addMultinoiseDebugInfo(List<String> p_187072_, BlockPos p_187073_, Climate.Sampler p_187074_) {
+        int i = QuartPos.fromBlock(p_187073_.getX());
+        int j = QuartPos.fromBlock(p_187073_.getY());
+        int k = QuartPos.fromBlock(p_187073_.getZ());
+        Climate.TargetPoint climate$targetpoint = p_187074_.sample(i, j, k);
+        float f = Climate.unquantizeCoord(climate$targetpoint.continentalness());
+        float f1 = Climate.unquantizeCoord(climate$targetpoint.erosion());
+        float f2 = Climate.unquantizeCoord(climate$targetpoint.temperature());
+        float f3 = Climate.unquantizeCoord(climate$targetpoint.humidity());
+        float f4 = Climate.unquantizeCoord(climate$targetpoint.weirdness());
+        double d0 = (double) TerrainShaper.peaksAndValleys(f4);
+        DecimalFormat decimalformat = new DecimalFormat("0.000");
+        p_187072_.add("Multinoise C: " + decimalformat.format((double)f) + " E: " + decimalformat.format((double)f1) + " T: " + decimalformat.format((double)f2) + " H: " + decimalformat.format((double)f3) + " W: " + decimalformat.format((double)f4));
+        OverworldBiomeBuilder overworldbiomebuilder = new OverworldBiomeBuilder();
+        p_187072_.add("Biome builder PV: " + OverworldBiomeBuilder.getDebugStringForPeaksAndValleys(d0) + " C: " + overworldbiomebuilder.getDebugStringForContinentalness((double)f) + " E: " + overworldbiomebuilder.getDebugStringForErosion((double)f1) + " T: " + overworldbiomebuilder.getDebugStringForTemperature((double)f2) + " H: " + overworldbiomebuilder.getDebugStringForHumidity((double)f3));
+        if (p_187074_ instanceof NoiseSampler) {
+            NoiseSampler noisesampler = (NoiseSampler)p_187074_;
+            TerrainInfo terraininfo = noisesampler.terrainInfo(p_187073_.getX(), p_187073_.getZ(), f, f4, f1, Blender.empty());
+            p_187072_.add("Terrain PV: " + decimalformat.format(d0) + " O: " + decimalformat.format(terraininfo.offset()) + " F: " + decimalformat.format(terraininfo.factor()) + " JA: " + decimalformat.format(terraininfo.jaggedness()));
+        }
     }
 
     @Override
