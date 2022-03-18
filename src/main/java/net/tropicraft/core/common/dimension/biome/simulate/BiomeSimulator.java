@@ -35,11 +35,12 @@ public class BiomeSimulator {
         COLORS.put(TropicraftBiomes.TROPICS_BEACH, 0xFADE55);
         COLORS.put(TropicraftBiomes.RAINFOREST_PLAINS, 0x056621);
         COLORS.put(TropicraftBiomes.TROPICS, 0x8DB360);
+        COLORS.put(TropicraftBiomes.MANGROVES, 0x528a50);
     }
 
     public static void main(String[] args) {
 
-        init(new NoiseSimulationHelper(new Random().nextLong()));
+        init(new NoiseSimulationHelper(new Random(100).nextLong()));
     }
 
     public static void init(NoiseSimulationHelper sampler) {

@@ -35,6 +35,9 @@
         "type": "minecraft:would_survive"
       },
       "type": "minecraft:block_predicate_filter"
+    },
+    {
+      "type": "minecraft:biome"
     }
   ]
 }

@@ -35,6 +35,9 @@
         "type": "minecraft:matching_block_tag"
       },
       "type": "minecraft:block_predicate_filter"
+    },
+    {
+      "type": "minecraft:biome"
     }
   ]
 }

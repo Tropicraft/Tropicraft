@@ -310,7 +310,8 @@ public final class TropicraftConfiguredFeatures {
                     f -> f.placed(
                             NoiseBasedCountPlacement.of(7, 200.0, 1.5),
                             InSquarePlacement.spread(),
-                            HeightmapPlacement.onHeightmap(Heightmap.Types.OCEAN_FLOOR)
+                            HeightmapPlacement.onHeightmap(Heightmap.Types.OCEAN_FLOOR),
+                            BiomeFilter.biome()
                     )
         );
 
@@ -318,7 +319,8 @@ public final class TropicraftConfiguredFeatures {
                 f -> f.placed(
                         NoiseBasedCountPlacement.of(3, 200.0, 1.5),
                         InSquarePlacement.spread(),
-                        HeightmapPlacement.onHeightmap(Heightmap.Types.OCEAN_FLOOR)
+                        HeightmapPlacement.onHeightmap(Heightmap.Types.OCEAN_FLOOR),
+                        BiomeFilter.biome()
                 )
         );
 
@@ -440,7 +442,8 @@ public final class TropicraftConfiguredFeatures {
                 TropicraftFeatures.REEDS,
                 feature -> feature.placed(CountPlacement.of(48),
                         InSquarePlacement.spread(),
-                        HeightmapPlacement.onHeightmap(Heightmap.Types.OCEAN_FLOOR_WG)
+                        HeightmapPlacement.onHeightmap(Heightmap.Types.OCEAN_FLOOR_WG),
+                        BiomeFilter.biome()
                 )
         );
 
@@ -696,7 +699,8 @@ public final class TropicraftConfiguredFeatures {
             return this.registerPlaced(id, feature,  (F f) -> f.configured(config),
                     f -> f.placed(PlacementUtils.countExtra(0, chance, 1), InSquarePlacement.spread(),
                             PlacementUtils.HEIGHTMAP,
-                            BlockPredicateFilter.forPredicate(BlockPredicate.matchesTag(BlockTags.SAND, new BlockPos(0, -1, 0)))
+                            BlockPredicateFilter.forPredicate(BlockPredicate.matchesTag(BlockTags.SAND, new BlockPos(0, -1, 0))),
+                            BiomeFilter.biome()
                             )
             );
         }
@@ -705,7 +709,9 @@ public final class TropicraftConfiguredFeatures {
             return this.registerPlaced(id, feature,  (F f) -> f.configured(config),
                     f -> f.placed(PlacementUtils.countExtra(0, chance, 1), InSquarePlacement.spread(),
                     PlacementUtils.HEIGHTMAP,
-                    BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(sapling.get().defaultBlockState(), BlockPos.ZERO)))
+                    BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(sapling.get().defaultBlockState(), BlockPos.ZERO)),
+                    BiomeFilter.biome()
+                    )
             );
         }
 
@@ -715,7 +721,8 @@ public final class TropicraftConfiguredFeatures {
                             PlacementUtils.countExtra(count, extraChance, extraCount),
                             InSquarePlacement.spread(),
                             PlacementUtils.HEIGHTMAP,
-                            BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(sapling.get().defaultBlockState(), BlockPos.ZERO)))
+                            BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(sapling.get().defaultBlockState(), BlockPos.ZERO)),
+                            BiomeFilter.biome())
             );
         }
 
