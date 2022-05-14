@@ -485,7 +485,6 @@ public final class TropicraftBiomes {
     private BiomeGenerationSettings.Builder defaultGeneration() {
         BiomeGenerationSettings.Builder generation = new BiomeGenerationSettings.Builder();
 
-        BiomeDefaultFeatures.addDefaultCarversAndLakes(generation);
         BiomeDefaultFeatures.addDefaultCrystalFormations(generation);
         BiomeDefaultFeatures.addDefaultUndergroundVariety(generation);
 
