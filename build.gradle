@@ -51,6 +51,7 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
             arg "-mixin.config=tropicraft.mixins.json"
+            arg "-XX:HotswapAgent=fatjar"
 
             mods {
                 tropicraft {

@@ -60,7 +60,10 @@ public class PortalTropics implements ITeleporter {
         PortalInfo portalInfo = findPortalInfoPoi(entity, destWorld);
 
         if (portalInfo == null) {
-            placeNewPortal(world, entity);
+            BlockPos worldPos = findSafePortalPos(this.world, entity);
+
+            placePortalStructure(this.world, (ServerPlayer) entity, worldPos);
+
 
             portalInfo = findPortalInfoPoi(entity, destWorld);
         }
@@ -83,11 +86,6 @@ public class PortalTropics implements ITeleporter {
             if (world.getBlockState(portalPostion.east()).getBlock() == PORTAL_BLOCK) newLocX += 0.5D;
             if (world.getBlockState(portalPostion.north()).getBlock() == PORTAL_BLOCK) newLocZ -= 0.5D;
             if (world.getBlockState(portalPostion.south()).getBlock() == PORTAL_BLOCK) newLocZ += 0.5D;
-
-            //entity.setLocationAndAngles();
-            int worldSpawnX = Mth.floor(newLocX);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
-            int worldSpawnZ = Mth.floor(newLocZ);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
-            int worldSpawnY = portalPostion.getY() + 5; // Move to top of portal
 
             entity.setDeltaMovement(0, 0, 0);
 
@@ -158,19 +156,7 @@ public class PortalTropics implements ITeleporter {
 
 
             if (world.getBlockState(portalPoi).getBlock() == PORTAL_BLOCK && fl1) {
-//                int y = portalPoi.getY();
-//                portalPoi = portalPoi.below();
 //
-//                while (world.getBlockState(portalPoi).getBlock() == PORTAL_BLOCK)
-//                {
-//                    --y;
-//                    portalPoi = portalPoi.below();
-//                }
-
-                LOGGER.info("[Tropicraft] Portal: Found a portal close to the player!");
-
-//                portalPoi.above();
-
                 LOGGER.info("[Tropicraft] Portal: Current block Pos Values that was found using poi finder [" + poiRecord.getPos() + "]");
 
                 return poiRecord.getPos();
@@ -196,7 +182,9 @@ public class PortalTropics implements ITeleporter {
         int foundX = entityX;
         int foundY = entityY;
         int foundZ = entityZ;
-        int seaLevel = getSeaLevel(world);
+        int seaLevel = world.getSeaLevel();
+
+        LOGGER.info("[Tropicraft] Portal: Sea leve of" + world + " is at a y of [" + seaLevel + "]");
 
         for (int x = entityX - searchArea; x <= entityX + searchArea; x++) {
             double distX = (x + 0.5D) - entity.getX();
@@ -208,16 +196,14 @@ public class PortalTropics implements ITeleporter {
                 LevelChunk chunk = world.getChunk(entityX >> 4, entityZ >> 4);
                 int y = chunk.getHeight(Heightmap.Types.WORLD_SURFACE, entityX & 15, entityZ & 15);
 
-                BlockPos pos = new BlockPos(x, y, z);
-                while(y >= seaLevel - 1 && (world.getBlockState(pos).getBlock() == Blocks.AIR || !isValidBuildBlocks(world.getBlockState(pos))) ){
-                    y = pos.getY();
-                    pos = pos.below();
-                }
+                //int y = chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, entityX & 15, entityZ & 15);
 
-                for (; y >= seaLevel - 1 && (world.getBlockState(pos).getBlock() == Blocks.AIR ||
-                        !isValidBuildBlocks(world.getBlockState(pos))); pos = pos.below()) {
-                    y = pos.getY();
-                }
+//                BlockPos pos = new BlockPos(x, y, z);
+//                while(y >= seaLevel - 1 && (world.getBlockState(pos).getBlock() == Blocks.AIR || !isValidBuildBlocks(world.getBlockState(pos))) ){
+//                    y = pos.getY();
+//                    pos = pos.below();
+//                }
+
                 // Only generate portal between sea level and sea level + 20
                 if (y > seaLevel + 20 || y < seaLevel) {
                     continue;
@@ -268,6 +254,92 @@ public class PortalTropics implements ITeleporter {
         // just put the portal at sea level
 
         return placePortalStructure(world, (ServerPlayer) entity, worldPos);
+    }
+
+
+    public static BlockPos findSafePortalPos(ServerLevel world, Entity entity){
+        LOGGER.info("[Tropicraft] Portal Search: Start make portal");
+        int searchArea = 16;
+        double closestSpot = -1D;
+
+        BlockPos entityPostion = entity.getOnPos();
+        LOGGER.info("[Tropicraft] Portal Search: Start position of search is at: [" + entityPostion + "]");
+
+        int entityX = Mth.floor(entity.getOnPos().getX());
+        int entityZ = Mth.floor(entity.getOnPos().getZ());
+
+        int y = getTerrainHeightAt(world, entityX, entityZ);
+
+        int foundX = entityX;
+        int foundY = y;
+        int foundZ = entityZ;
+
+        LOGGER.info("[Tropicraft] Portal Search: Sea level of " + world + " is at a y of [" + world.getSeaLevel() + "]");
+
+        //Check if the entity's new adjusted position based off the world's terrain height is already a valid place
+        if(!isPostionSafe(world, entityX, y, entityZ)){
+            for (int x = entityX - searchArea; x <= entityX + searchArea; x++) {
+                double distX = (x + 0.5D) - entity.getX();
+                for (int z = entityZ - searchArea; z <= entityZ + searchArea; z++) {
+                    double distZ = (z + 0.5D) - entity.getZ();
+
+                    // Find topmost solid block at this x,z location
+                    y = getTerrainHeightAt(world, x, z);
+
+                    if(isPostionSafe(world, x, y, z)){
+                        double distY = (y + 0.5D) - entity.getY();
+                        double distance = distX * distX + distY * distY + distZ * distZ;
+                        if (closestSpot < 0.0D || distance < closestSpot) {
+                            closestSpot = distance;
+                            foundX = x;
+                            foundY = y;
+                            foundZ = z;
+
+                            LOGGER.info("[Tropicraft] Portal Search: Current closest spot is: " + closestSpot);
+                            LOGGER.info(String.format("[Tropicraft] Portal Search: Valid x, y, z postion are [ X:%d, Y:%d, Z:%d ]", foundX, y, foundZ));
+                        }
+                    }
+
+                    if(closestSpot >= 0.0D && closestSpot < 1.0D){
+                        break;
+                    }
+                }
+                if(closestSpot >= 0.0D && closestSpot < 1.0D){
+                    break;
+                }
+            }
+        }
+
+        LOGGER.info("[Tropicraft] Portal Search: Portal will be generating from this blockPos: [" + new BlockPos(foundX, foundY, foundZ) + "]");
+        return new BlockPos(foundX, foundY, foundZ);
+    }
+
+    private static boolean isPostionSafe(ServerLevel world, int x, int y, int z){
+        int seaLevel = world.getSeaLevel();
+        int baseHeight = world.getChunkSource().getGenerator().getBaseHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, world);
+
+        LOGGER.info("[Tropicraft] Portal Search: Surface Height is at: [Y:" + y + "]");
+        LOGGER.info("[Tropicraft] Portal Search: Base Height is at: [Y:" + baseHeight + "]");
+
+        BlockPos pos = new BlockPos(x, y, z);
+        while (y >= seaLevel - 1 && (world.getBlockState(pos).getBlock() == Blocks.AIR || !isValidBuildBlocks(world.getBlockState(pos)))) {
+            y = pos.getY();
+            pos = pos.below();
+        }
+
+        // Only generate portal between sea level and sea level + 20
+        if (y > seaLevel + 20 || y < seaLevel) {
+            LOGGER.info("[Tropicraft] Portal Search: The Height wasn't in the given range [63 - 83]");
+            return false;
+        }
+
+        // Remove positions that have a major difference between what i'm guessing is the top most position of the chunk before carvers and other such generation features
+        if(baseHeight - y >= 3){
+            LOGGER.info("[Tropicraft] Portal Search: It seems that there might be a cave or deep crevasse");
+            return false;
+        }
+
+        return true;
     }
 
     public static boolean placePortalStructure(ServerLevel world, ServerPlayer player, BlockPos pos) {
@@ -326,12 +398,11 @@ public class PortalTropics implements ITeleporter {
 //                LOGGER.info("[Tropicraft Portal]: The portal structure had issues generating");
 //            }
 //
-//            //TODO: UN COMMET WHEN TIME IS CORRECT
+//
 //            //world.getPoiManager().add(new BlockPos(pos.getX() + 4, pos.getY(), pos.getZ() + 4), TropicraftPoiTypes.TROPICRAFT_PORTAL.get());
 //            LOGGER.info("[Tropicraft Portal]: Setting Poi postion at: [" + new BlockPos(pos.getX() + 4, pos.getY(), pos.getZ() + 4) + "]");
 //        });
 
-        //TODO: UN COMMET WHEN TIME IS CORRECT
         world.getPoiManager().add(pos, TropicraftPoiTypes.TROPICRAFT_PORTAL.get());
         LOGGER.info("[Tropicraft] Portal: Setting Poi postion at: [" + pos + "]");
 
@@ -354,7 +425,7 @@ public class PortalTropics implements ITeleporter {
             BlockState state = world.getBlockState(new BlockPos(x, y, z));
 
             //TODO [1.17]: Confirm that these tags are going to work with modded blocks
-            if(state.is(BlockTags.DIRT) || state.is(BlockTags.SAND) || state.is(Blocks.WATER) || state.is(BlockTags.BASE_STONE_OVERWORLD)) {
+            if(isValidBuildBlocks(state)) {
                 return y;
             }
         }
@@ -371,12 +442,7 @@ public class PortalTropics implements ITeleporter {
      */
 
     public static Boolean isValidBuildBlocks(BlockState state) {
-        if(state.is(BlockTags.DIRT) || state.is(BlockTags.SAND) || state.is(Blocks.WATER) || state.is(BlockTags.BASE_STONE_OVERWORLD)) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return state.is(BlockTags.DIRT) || state.is(BlockTags.SAND) || state.is(Blocks.WATER) || state.is(BlockTags.BASE_STONE_OVERWORLD);
     }
 
     /* Taken from https://github.com/TelepathicGrunt/CommandStructures-Forge/blob/526b54ecba5a1f3c0460e15767328ae7156a6313/src/main/java/com/telepathicgrunt/commandstructures/commands/SpawnPiecesCommand.java#L257
@@ -404,9 +470,5 @@ public class PortalTropics implements ITeleporter {
                 }
             }
         });
-    }
-
-    private static int getSeaLevel(ServerLevel world){
-        return world.getSeaLevel(); //OG Value: 63
     }
 }
