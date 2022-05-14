@@ -13,7 +13,7 @@ import net.tropicraft.core.common.dimension.TropicraftTerrainShaper;
 
 public final class TropicraftNoiseGenSettings {
     public TropicraftNoiseGenSettings(WorldgenDataConsumer<NoiseGeneratorSettings> noise) {
-        noise.register(new ResourceLocation(Constants.MODID, "tropicraft"), createNoise());
+        noise.register(new ResourceLocation(Constants.MODID, "tropics"), createNoise());
     }
     
     private static NoiseGeneratorSettings createNoise() {
