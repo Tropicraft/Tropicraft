@@ -60,7 +60,6 @@ public class TropicraftFeatures {
     }
 
     private static <T extends StructureFeature<?>> RegistryObject<T> registerStructure(final String name, T structure, GenerationStep.Decoration step) {
-        StructureFeature.STRUCTURES_REGISTRY.put("tropicraft:" + name, structure);
         StructureFeature.STEP.put(structure, step);
         return STRUCTURES.register(name, () -> structure);
     }

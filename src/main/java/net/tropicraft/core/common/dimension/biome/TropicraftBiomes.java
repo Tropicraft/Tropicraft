@@ -33,7 +33,6 @@ import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.data.WorldgenDataConsumer;
 import net.tropicraft.core.common.dimension.carver.TropicraftConfiguredCarvers;
 import net.tropicraft.core.common.dimension.feature.TropicraftConfiguredFeatures;
-import net.tropicraft.core.common.dimension.feature.TropicraftConfiguredStructures;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
 import net.tropicraft.core.common.dimension.feature.tree.PalmTreeFeature;
 import net.tropicraft.core.common.entity.TropicraftEntities;
@@ -86,12 +85,10 @@ public final class TropicraftBiomes {
     public final Holder<Biome> osaRainforest;
 
     private final TropicraftConfiguredFeatures features;
-    private final TropicraftConfiguredStructures structures;
     private final TropicraftConfiguredCarvers carvers;
 
-    public TropicraftBiomes(WorldgenDataConsumer<Biome> worldgen, TropicraftConfiguredFeatures features, TropicraftConfiguredStructures structures, TropicraftConfiguredCarvers carvers) {
+    public TropicraftBiomes(WorldgenDataConsumer<Biome> worldgen, TropicraftConfiguredFeatures features, TropicraftConfiguredCarvers carvers) {
         this.features = features;
-        this.structures = structures;
         this.carvers = carvers;
 
         this.tropics = worldgen.register(TROPICS, createTropics());
@@ -491,9 +488,6 @@ public final class TropicraftBiomes {
         BiomeDefaultFeatures.addDefaultCarversAndLakes(generation);
         BiomeDefaultFeatures.addDefaultCrystalFormations(generation);
         BiomeDefaultFeatures.addDefaultUndergroundVariety(generation);
-
-//        generation.addStructureStart(structures.homeTree);
-//        generation.addStructureStart(structures.koaVillage);
 
         return generation;
     }

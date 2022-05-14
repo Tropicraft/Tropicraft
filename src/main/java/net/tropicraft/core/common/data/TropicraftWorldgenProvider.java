@@ -21,6 +21,7 @@ import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
@@ -28,6 +29,7 @@ import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
 import net.tropicraft.core.common.dimension.carver.TropicraftConfiguredCarvers;
 import net.tropicraft.core.common.dimension.feature.TropicraftConfiguredFeatures;
 import net.tropicraft.core.common.dimension.feature.TropicraftConfiguredStructures;
+import net.tropicraft.core.common.dimension.feature.TropicraftStructureSets;
 import net.tropicraft.core.common.dimension.feature.jigsaw.TropicraftProcessorLists;
 import net.tropicraft.core.common.dimension.feature.pools.TropicraftTemplatePools;
 import net.tropicraft.core.common.dimension.noise.TropicraftNoiseGenSettings;
@@ -55,10 +57,11 @@ public final class TropicraftWorldgenProvider implements DataProvider {
         var carvers = new TropicraftConfiguredCarvers(consumers.configuredCarvers());
         var processors = new TropicraftProcessorLists(consumers.processorLists());
         var templates = new TropicraftTemplatePools(consumers.templatePools(), features, processors);
-        var structures = new TropicraftConfiguredStructures(consumers.configuredStructures(), templates);
-        var noiseSettings = new TropicraftNoiseGenSettings(consumers.noiseGenSettings(), structures);
+        var biomes = new TropicraftBiomes(consumers.biomes(), features, carvers);
+        var structures = new TropicraftConfiguredStructures(consumers.configuredStructures(), biomes, templates);
 
-        new TropicraftBiomes(consumers.biomes(), features, structures, carvers);
+        new TropicraftStructureSets(consumers.structureSets(), structures);
+        new TropicraftNoiseGenSettings(consumers.noiseGenSettings());
     }
 
     private Consumers buildConsumers(HashCache cache) {
@@ -108,6 +111,10 @@ public final class TropicraftWorldgenProvider implements DataProvider {
 
         public WorldgenDataConsumer<Biome> biomes() {
             return consumer("worldgen/biome", BuiltinRegistries.BIOME, Biome.CODEC);
+        }
+
+        public WorldgenDataConsumer<StructureSet> structureSets() {
+            return consumer("worldgen/structure_sets", BuiltinRegistries.STRUCTURE_SETS, StructureSet.CODEC);
         }
 
         public <T> WorldgenDataConsumer<T> consumer(String path, Registry<T> registry, Codec<Holder<T>> codec) {

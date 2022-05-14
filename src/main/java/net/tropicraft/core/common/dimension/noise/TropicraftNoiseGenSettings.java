@@ -1,30 +1,18 @@
 package net.tropicraft.core.common.dimension.noise;
 
-import com.google.common.collect.ImmutableMap;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.levelgen.*;
-import net.minecraft.world.level.levelgen.feature.StructureFeature;
+import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
+import net.minecraft.world.level.levelgen.NoiseSamplingSettings;
+import net.minecraft.world.level.levelgen.NoiseSettings;
+import net.minecraft.world.level.levelgen.NoiseSlider;
 import net.tropicraft.Constants;
-import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.TropicraftSurfaces;
 import net.tropicraft.core.common.data.WorldgenDataConsumer;
 import net.tropicraft.core.common.dimension.TropicraftTerrainShaper;
-import net.tropicraft.core.common.dimension.feature.TropicraftConfiguredStructures;
-import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
-
-import java.util.Map;
-import java.util.Optional;
 
 public final class TropicraftNoiseGenSettings {
-//    private final Map<StructureFeature<?>, StructureFeatureConfiguration> structureBiomeMap;
-
-    public TropicraftNoiseGenSettings(WorldgenDataConsumer<NoiseGeneratorSettings> noise, TropicraftConfiguredStructures structures) {
-//        structureBiomeMap = ImmutableMap.of(
-//            TropicraftFeatures.HOME_TREE.get(), new StructureFeatureConfiguration(24, 8, 1010101010),
-//            TropicraftFeatures.KOA_VILLAGE.get(), new StructureFeatureConfiguration(24, 8, 1010101011)
-//        );
-
+    public TropicraftNoiseGenSettings(WorldgenDataConsumer<NoiseGeneratorSettings> noise) {
         noise.register(new ResourceLocation(Constants.MODID, "tropicraft"), createNoise());
     }
     
@@ -40,7 +28,6 @@ public final class TropicraftNoiseGenSettings {
                 TropicraftTerrainShaper.tropics());
 
         return new NoiseGeneratorSettings(
-//                new StructureSettings(Optional.empty(), structureBiomeMap),
                 settings,
                 Blocks.STONE.defaultBlockState(), Blocks.WATER.defaultBlockState(),
                 TropicraftNoiseGen.overworldWithNewCaves(settings, false), TropicraftSurfaces.tropics(true, false, true), 63, false, true, true, true

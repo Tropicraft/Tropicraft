@@ -56,30 +56,30 @@ public class TropicraftTrees {
                 new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
         ).decorators(ImmutableList.of(BEEHIVE_005, new PapayaTreeDecorator())).build();
 
-        return Feature.TREE.configured(config);
+        return new ConfiguredFeature<>(Feature.TREE, config);
     });
 
     public static final AbstractTreeGrower RAINFOREST = create((server, random, beehive) -> {
         final int treeType = random.nextInt(4);
         if (treeType == 0) {
-            return TropicraftFeatures.TALL_TREE.get().configured(NoneFeatureConfiguration.INSTANCE);
+            return new ConfiguredFeature<>(TropicraftFeatures.TALL_TREE.get(), NoneFeatureConfiguration.INSTANCE);
         } else if (treeType == 1) {
-            return TropicraftFeatures.SMALL_TUALUNG.get().configured(NoneFeatureConfiguration.INSTANCE);
+            return new ConfiguredFeature<>(TropicraftFeatures.SMALL_TUALUNG.get(), NoneFeatureConfiguration.INSTANCE);
         } else if (treeType == 2) {
-            return TropicraftFeatures.UP_TREE.get().configured(NoneFeatureConfiguration.INSTANCE);
+            return new ConfiguredFeature<>(TropicraftFeatures.UP_TREE.get(), NoneFeatureConfiguration.INSTANCE);
         } else {
-            return TropicraftFeatures.LARGE_TUALUNG.get().configured(NoneFeatureConfiguration.INSTANCE);
+            return new ConfiguredFeature<>(TropicraftFeatures.LARGE_TUALUNG.get(), NoneFeatureConfiguration.INSTANCE);
         }
     });
 
     public static final AbstractTreeGrower PALM = create((server, random, beehive) -> {
         final int palmType = random.nextInt(3);
         if (palmType == 0) {
-            return TropicraftFeatures.NORMAL_PALM_TREE.get().configured(NoneFeatureConfiguration.INSTANCE);
+            return new ConfiguredFeature<>(TropicraftFeatures.NORMAL_PALM_TREE.get(), NoneFeatureConfiguration.INSTANCE);
         } else if (palmType == 1) {
-            return TropicraftFeatures.CURVED_PALM_TREE.get().configured(NoneFeatureConfiguration.INSTANCE);
+            return new ConfiguredFeature<>(TropicraftFeatures.CURVED_PALM_TREE.get(), NoneFeatureConfiguration.INSTANCE);
         } else {
-            return TropicraftFeatures.LARGE_PALM_TREE.get().configured(NoneFeatureConfiguration.INSTANCE);
+            return new ConfiguredFeature<>(TropicraftFeatures.LARGE_PALM_TREE.get(), NoneFeatureConfiguration.INSTANCE);
         }
     });
 
@@ -104,7 +104,7 @@ public class TropicraftTrees {
                     new TwoLayersFeatureSize(1, 0, 2)
             ).build();
 
-            return Feature.TREE.configured(config);
+            return new ConfiguredFeature<>(Feature.TREE, config);
         });
     }
 
