@@ -1,7 +1,6 @@
 package net.tropicraft.core.common.dimension.noise;
 
-import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.*;
+import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
@@ -85,7 +84,7 @@ public final class TropicraftNoiseGen {
     }
 
     private static DensityFunction getFunction(ResourceKey<DensityFunction> p_209553_) {
-        return BuiltinRegistries.DENSITY_FUNCTION.getHolderOrThrow(p_209553_).value();
+        return new HolderSquared(BuiltinRegistries.DENSITY_FUNCTION.getHolderOrThrow(p_209553_));
     }
 
     private static DensityFunction yLimitedInterpolatable(DensityFunction p_209472_, DensityFunction p_209473_, int p_209474_, int p_209475_, int p_209476_) {
@@ -109,5 +108,32 @@ public final class TropicraftNoiseGen {
         DensityFunction densityfunction8 = getFunction(PILLARS);
         DensityFunction densityfunction9 = DensityFunctions.rangeChoice(densityfunction8, -1000000.0D, 0.03D, DensityFunctions.constant(-1000000.0D), densityfunction8);
         return DensityFunctions.max(densityfunction7, densityfunction9);
+    }
+
+    // HolderHolder -> HolderSquared :)
+    protected record HolderSquared(Holder<DensityFunction> function) implements DensityFunction {
+        public double compute(DensityFunction.FunctionContext p_208641_) {
+            return this.function.value().compute(p_208641_);
+        }
+
+        public void fillArray(double[] p_208645_, DensityFunction.ContextProvider p_208646_) {
+            this.function.value().fillArray(p_208645_, p_208646_);
+        }
+
+        public DensityFunction mapAll(DensityFunction.Visitor p_208643_) {
+            return p_208643_.apply(new HolderSquared(new Holder.Direct<>(this.function.value().mapAll(p_208643_))));
+        }
+
+        public double minValue() {
+            return this.function.value().minValue();
+        }
+
+        public double maxValue() {
+            return this.function.value().maxValue();
+        }
+
+        public Codec<? extends DensityFunction> codec() {
+            throw new UnsupportedOperationException("Calling .codec() on HolderSquared");
+        }
     }
 }
