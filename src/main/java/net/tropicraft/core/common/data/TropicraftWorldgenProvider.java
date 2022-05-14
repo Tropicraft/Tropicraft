@@ -7,7 +7,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.JsonOps;
-import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.data.BuiltinRegistries;
@@ -67,7 +66,6 @@ public final class TropicraftWorldgenProvider implements DataProvider {
     private Consumers buildConsumers(HashCache cache) {
         var dynamicRegistries = RegistryAccess.builtinCopy();
         var ops = RegistryOps.create(JsonOps.INSTANCE, dynamicRegistries);
-
         return new Consumers(root, cache, dynamicRegistries, ops);
     }
 
@@ -82,52 +80,47 @@ public final class TropicraftWorldgenProvider implements DataProvider {
             DynamicOps<JsonElement> ops
     ) {
         public WorldgenDataConsumer<ConfiguredFeature<?, ?>> configuredFeatures() {
-            return consumer("worldgen/configured_feature", BuiltinRegistries.CONFIGURED_FEATURE, ConfiguredFeature.CODEC);
+            return consumer("worldgen/configured_feature", BuiltinRegistries.CONFIGURED_FEATURE, ConfiguredFeature.DIRECT_CODEC);
         }
 
         public WorldgenDataConsumer<PlacedFeature> placedFeatures() {
-            return consumer("worldgen/placed_feature", BuiltinRegistries.PLACED_FEATURE, PlacedFeature.CODEC);
+            return consumer("worldgen/placed_feature", BuiltinRegistries.PLACED_FEATURE, PlacedFeature.DIRECT_CODEC);
         }
 
         public WorldgenDataConsumer<ConfiguredWorldCarver<?>> configuredCarvers() {
-            return consumer("worldgen/configured_carver", BuiltinRegistries.CONFIGURED_CARVER, ConfiguredWorldCarver.CODEC);
+            return consumer("worldgen/configured_carver", BuiltinRegistries.CONFIGURED_CARVER, ConfiguredWorldCarver.DIRECT_CODEC);
         }
 
         public WorldgenDataConsumer<StructureProcessorList> processorLists() {
-            return consumer("worldgen/processor_list", BuiltinRegistries.PROCESSOR_LIST, StructureProcessorType.LIST_CODEC);
+            return consumer("worldgen/processor_list", BuiltinRegistries.PROCESSOR_LIST, StructureProcessorType.DIRECT_CODEC);
         }
 
         public WorldgenDataConsumer<StructureTemplatePool> templatePools() {
-            return consumer("worldgen/template_pool", BuiltinRegistries.TEMPLATE_POOL, StructureTemplatePool.CODEC);
+            return consumer("worldgen/template_pool", BuiltinRegistries.TEMPLATE_POOL, StructureTemplatePool.DIRECT_CODEC);
         }
 
         public WorldgenDataConsumer<NoiseGeneratorSettings> noiseGenSettings() {
-            return consumer("worldgen/noise_settings", BuiltinRegistries.NOISE_GENERATOR_SETTINGS, NoiseGeneratorSettings.CODEC);
+            return consumer("worldgen/noise_settings", BuiltinRegistries.NOISE_GENERATOR_SETTINGS, NoiseGeneratorSettings.DIRECT_CODEC);
         }
 
         public WorldgenDataConsumer<ConfiguredStructureFeature<?, ?>> configuredStructures() {
-            return consumer("worldgen/configured_structure_feature", BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE, ConfiguredStructureFeature.CODEC);
+            return consumer("worldgen/configured_structure_feature", BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE, ConfiguredStructureFeature.DIRECT_CODEC);
         }
 
         public WorldgenDataConsumer<Biome> biomes() {
-            return consumer("worldgen/biome", BuiltinRegistries.BIOME, Biome.CODEC);
+            return consumer("worldgen/biome", BuiltinRegistries.BIOME, Biome.DIRECT_CODEC);
         }
 
         public WorldgenDataConsumer<StructureSet> structureSets() {
-            return consumer("worldgen/structure_sets", BuiltinRegistries.STRUCTURE_SETS, StructureSet.CODEC);
+            return consumer("worldgen/structure_sets", BuiltinRegistries.STRUCTURE_SETS, StructureSet.DIRECT_CODEC);
         }
 
-        public <T> WorldgenDataConsumer<T> consumer(String path, Registry<T> registry, Codec<Holder<T>> codec) {
+        public <T> WorldgenDataConsumer<T> consumer(String path, Registry<T> builtinRegistry, Codec<T> codec) {
             return (id, value) -> {
                 var entryPath = root.resolve(id.getNamespace()).resolve(path).resolve(id.getPath() + ".json");
 
-                final Holder<T> holder = BuiltinRegistries.register(registry, id, value);
-                dynamicRegistries.registry(registry.key()).ifPresent(dynamicRegistry -> {
-                    BuiltinRegistries.register(dynamicRegistry, id, value);
-                });
-
                 try {
-                    DataResult<JsonElement> result = codec.encodeStart(ops, holder);
+                    DataResult<JsonElement> result = codec.encodeStart(ops, value);
                     var serialized = result.result();
                     if (serialized.isPresent()) {
                         DataProvider.save(GSON, cache, serialized.get(), entryPath);
@@ -138,7 +131,9 @@ public final class TropicraftWorldgenProvider implements DataProvider {
                     LOGGER.error("Couldn't save worldgen entry at {}", entryPath, e);
                 }
 
-                return holder;
+                final Registry<T> registry = dynamicRegistries.registry(builtinRegistry.key())
+                        .orElseThrow(() -> new IllegalStateException("Missing dynamic registry for " + builtinRegistry.key()));
+                return BuiltinRegistries.register(registry, id, value);
             };
         }
     }
