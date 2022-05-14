@@ -4,7 +4,6 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.Lifecycle;
-import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.WritableRegistry;
 import net.minecraft.resources.RegistryOps;
@@ -22,7 +21,7 @@ import java.util.OptionalInt;
 @Mixin(targets = "net/minecraft/core/RegistryCodecs$1")
 public class RegistryCodecsMixin<E> {
     /**
-     * Add the tropicraft dimension to existing worlds when they get loaded.
+     * Add the tropicraft dimension to new and existing worlds when they get loaded.
      */
     @SuppressWarnings("unchecked")
     @Inject(method = "decode", at = @At(value = "INVOKE", target = "Lnet/minecraft/resources/RegistryOps;registryLoader()Ljava/util/Optional;"), locals = LocalCapture.CAPTURE_FAILHARD)

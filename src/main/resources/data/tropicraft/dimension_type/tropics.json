@@ -1,5 +1,5 @@
 {
-  "infiniburn": "minecraft:infiniburn_overworld",
+  "infiniburn": "#minecraft:infiniburn_overworld",
   "effects": "tropicraft:tropics",
   "ambient_light": 0.0,
   "bed_works": true,
