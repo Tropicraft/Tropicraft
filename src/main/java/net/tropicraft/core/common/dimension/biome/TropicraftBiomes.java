@@ -1,9 +1,9 @@
 package net.tropicraft.core.common.dimension.biome;
 
 import com.google.common.collect.ImmutableList;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
-import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.placement.AquaticPlacements;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
@@ -17,17 +17,12 @@ import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
-import net.minecraft.world.level.levelgen.placement.BiomeFilter;
-import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import net.minecraft.world.level.levelgen.placement.PlacementModifier;
-import net.minecraft.world.level.levelgen.placement.RarityFilter;
+import net.minecraft.world.level.levelgen.placement.*;
 import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -41,7 +36,6 @@ import net.tropicraft.core.common.dimension.feature.TropicraftConfiguredFeatures
 import net.tropicraft.core.common.dimension.feature.TropicraftConfiguredStructures;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
 import net.tropicraft.core.common.dimension.feature.tree.PalmTreeFeature;
-import net.tropicraft.core.common.dimension.surfacebuilders.TropicraftConfiguredSurfaceBuilders;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 
 import java.util.List;
@@ -74,22 +68,22 @@ public final class TropicraftBiomes {
         return ResourceKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(Constants.MODID, id));
     }
 
-    public final Biome tropics;
-    public final Biome tropicsBeach;
-    public final Biome rainforestPlains;
-    public final Biome rainforestHills;
-    public final Biome rainforestMountains;
-    public final Biome bambooRainforest;
-    public final Biome rainforestIslandMountains;
+    public final Holder<Biome> tropics;
+    public final Holder<Biome> tropicsBeach;
+    public final Holder<Biome> rainforestPlains;
+    public final Holder<Biome> rainforestHills;
+    public final Holder<Biome> rainforestMountains;
+    public final Holder<Biome> bambooRainforest;
+    public final Holder<Biome> rainforestIslandMountains;
 
-    public final Biome tropicsOcean;
-    public final Biome kelpForest;
+    public final Holder<Biome> tropicsOcean;
+    public final Holder<Biome> kelpForest;
 
-    public final Biome tropicsRiver;
+    public final Holder<Biome> tropicsRiver;
 
-    public final Biome mangroves;
-    public final Biome overgrownMangroves;
-    public final Biome osaRainforest;
+    public final Holder<Biome> mangroves;
+    public final Holder<Biome> overgrownMangroves;
+    public final Holder<Biome> osaRainforest;
 
     private final TropicraftConfiguredFeatures features;
     private final TropicraftConfiguredStructures structures;
@@ -139,18 +133,25 @@ public final class TropicraftBiomes {
             generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, palmTree(TropicraftFeatures.CURVED_PALM_TREE));
             generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, palmTree(TropicraftFeatures.LARGE_PALM_TREE));
         } else if (category == Biome.BiomeCategory.JUNGLE) {
-            generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-                Feature.RANDOM_PATCH
-                    .configured(FeatureUtils.simplePatchConfiguration(Feature.SIMPLE_BLOCK.configured(new SimpleBlockConfiguration(BlockStateProvider.simple(TropicraftBlocks.PINEAPPLE.get())))))
-                    .placed(RarityFilter.onAverageOnceEvery(6), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome())
-            );
+            generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, pineapple());
         }
     }
 
-    private static PlacedFeature palmTree(final RegistryObject<PalmTreeFeature> palmTreeFeature) {
-        return palmTreeFeature.get()
-                .configured(NoneFeatureConfiguration.INSTANCE)
-                .placed(treePlacement(PlacementUtils.countExtra(0, 0.1F, 1)));
+    private static Holder<PlacedFeature> palmTree(final RegistryObject<PalmTreeFeature> palmTreeFeature) {
+        final ConfiguredFeature<?, ?> configuredFeature = new ConfiguredFeature<>(palmTreeFeature.get(), NoneFeatureConfiguration.INSTANCE);
+        return Holder.direct(new PlacedFeature(
+                Holder.direct(configuredFeature),
+                treePlacement(PlacementUtils.countExtra(0, 0.1F, 1))
+        ));
+    }
+
+    private static Holder<PlacedFeature> pineapple() {
+        final SimpleBlockConfiguration config = new SimpleBlockConfiguration(BlockStateProvider.simple(TropicraftBlocks.PINEAPPLE.get()));
+        final ConfiguredFeature<?, ?> configuredFeature = new ConfiguredFeature<>(Feature.SIMPLE_BLOCK, config);
+        return Holder.direct(new PlacedFeature(
+                Holder.direct(configuredFeature),
+                List.of(RarityFilter.onAverageOnceEvery(6), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome())
+        ));
     }
 
     private Biome createTropics() {

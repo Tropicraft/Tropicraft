@@ -1,6 +1,5 @@
 package net.tropicraft.core.common.dimension.carver;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.valueproviders.ConstantFloat;
 import net.minecraft.util.valueproviders.TrapezoidFloat;
 import net.minecraft.util.valueproviders.UniformFloat;
@@ -10,9 +9,7 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.carver.*;
 import net.minecraft.world.level.levelgen.heightproviders.BiasedToBottomHeight;
-import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
 import net.minecraftforge.registries.RegistryObject;
-import net.tropicraft.Constants;
 import net.tropicraft.core.common.data.WorldgenDataConsumer;
 
 public final class TropicraftConfiguredCarvers {
@@ -86,7 +83,7 @@ public final class TropicraftConfiguredCarvers {
         }
 
         public <C extends CarverConfiguration, WC extends WorldCarver<C>> ConfiguredWorldCarver<?> register(String id, RegistryObject<WC> carver, C config) {
-            return this.worldgen.register(new ResourceLocation(Constants.MODID, id), carver.get().configured(config));
+            return this.worldgen.register(carver.get().configured(config));
         }
     }
 }

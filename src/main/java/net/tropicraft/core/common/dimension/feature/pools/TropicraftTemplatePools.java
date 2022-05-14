@@ -1,10 +1,11 @@
 package net.tropicraft.core.common.dimension.feature.pools;
 
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.levelgen.feature.structures.StructurePoolElement;
-import net.minecraft.world.level.levelgen.feature.structures.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
+import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.data.WorldgenDataConsumer;
@@ -19,25 +20,25 @@ import java.util.Arrays;
 import java.util.function.Function;
 
 public final class TropicraftTemplatePools {
-    public final StructureTemplatePool koaTownCenters;
-    public final StructureTemplatePool koaHuts;
-    public final StructureTemplatePool koaStreets;
-    public final StructureTemplatePool koaTerminators;
-    public final StructureTemplatePool koaVillagers;
-    public final StructureTemplatePool koaFish;
-    public final StructureTemplatePool homeTreeStarts;
-    public final StructureTemplatePool homeTreeRoofs;
-    public final StructureTemplatePool homeTreeDummy;
-    public final StructureTemplatePool homeTreeTrunkMiddle;
-    public final StructureTemplatePool homeTreeTrunkTop;
-    public final StructureTemplatePool homeTreeBranchesSouth;
-    public final StructureTemplatePool homeTreeBranchesSouthEast;
-    public final StructureTemplatePool homeTreeBranchesEast;
-    public final StructureTemplatePool homeTreeBranchesNorthEast;
-    public final StructureTemplatePool homeTreeBranchesNorth;
-    public final StructureTemplatePool homeTreeBranchesNorthWest;
-    public final StructureTemplatePool homeTreeBranchesWest;
-    public final StructureTemplatePool homeTreeBranchesSouthWest;
+    public final Holder<StructureTemplatePool> koaTownCenters;
+    public final Holder<StructureTemplatePool> koaHuts;
+    public final Holder<StructureTemplatePool> koaStreets;
+    public final Holder<StructureTemplatePool> koaTerminators;
+    public final Holder<StructureTemplatePool> koaVillagers;
+    public final Holder<StructureTemplatePool> koaFish;
+    public final Holder<StructureTemplatePool> homeTreeStarts;
+    public final Holder<StructureTemplatePool> homeTreeRoofs;
+    public final Holder<StructureTemplatePool> homeTreeDummy;
+    public final Holder<StructureTemplatePool> homeTreeTrunkMiddle;
+    public final Holder<StructureTemplatePool> homeTreeTrunkTop;
+    public final Holder<StructureTemplatePool> homeTreeBranchesSouth;
+    public final Holder<StructureTemplatePool> homeTreeBranchesSouthEast;
+    public final Holder<StructureTemplatePool> homeTreeBranchesEast;
+    public final Holder<StructureTemplatePool> homeTreeBranchesNorthEast;
+    public final Holder<StructureTemplatePool> homeTreeBranchesNorth;
+    public final Holder<StructureTemplatePool> homeTreeBranchesNorthWest;
+    public final Holder<StructureTemplatePool> homeTreeBranchesWest;
+    public final Holder<StructureTemplatePool> homeTreeBranchesSouthWest;
 
     public TropicraftTemplatePools(WorldgenDataConsumer<StructureTemplatePool> worldgen, TropicraftConfiguredFeatures features, TropicraftProcessorLists processors) {
         Register pools = new Register(worldgen);
@@ -186,7 +187,7 @@ public final class TropicraftTemplatePools {
         );
     }
 
-    private static Pair<Function<StructureTemplatePool.Projection, ? extends StructurePoolElement>, Integer> singlePiece(String path, StructureProcessorList processors, int weight) {
+    private static Pair<Function<StructureTemplatePool.Projection, ? extends StructurePoolElement>, Integer> singlePiece(String path, Holder<StructureProcessorList> processors, int weight) {
         return new Pair<>(
                 StructurePoolElement.single(Constants.MODID + ":" + path, processors),
                 weight
@@ -200,7 +201,7 @@ public final class TropicraftTemplatePools {
         );
     }
 
-    private static Pair<Function<StructureTemplatePool.Projection, ? extends StructurePoolElement>, Integer> noAirSingle(String path, StructureProcessorList processors, int weight) {
+    private static Pair<Function<StructureTemplatePool.Projection, ? extends StructurePoolElement>, Integer> noAirSingle(String path, Holder<StructureProcessorList> processors, int weight) {
         return new Pair<>(
                 SingleNoAirJigsawPiece.create(Constants.MODID + ":" + path, processors),
                 weight
@@ -214,14 +215,14 @@ public final class TropicraftTemplatePools {
         );
     }
 
-    private static Pair<Function<StructureTemplatePool.Projection, ? extends StructurePoolElement>, Integer> noRotateSingle(String path, StructureProcessorList processors, int weight) {
+    private static Pair<Function<StructureTemplatePool.Projection, ? extends StructurePoolElement>, Integer> noRotateSingle(String path, Holder<StructureProcessorList> processors, int weight) {
         return new Pair<>(
                 NoRotateSingleJigsawPiece.createNoRotate(Constants.MODID + ":" + path, processors),
                 weight
         );
     }
 
-    private static Pair<Function<StructureTemplatePool.Projection, ? extends StructurePoolElement>, Integer> feature(PlacedFeature feature, int weight) {
+    private static Pair<Function<StructureTemplatePool.Projection, ? extends StructurePoolElement>, Integer> feature(Holder<PlacedFeature> feature, int weight) {
         return new Pair<>(
                 StructurePoolElement.feature(feature),
                 weight
@@ -243,16 +244,16 @@ public final class TropicraftTemplatePools {
         }
 
         @SafeVarargs
-        public final StructureTemplatePool register(String id, StructureTemplatePool.Projection placementBehaviour, Pair<Function<StructureTemplatePool.Projection, ? extends StructurePoolElement>, Integer>... pieces) {
+        public final Holder<StructureTemplatePool> register(String id, StructureTemplatePool.Projection placementBehaviour, Pair<Function<StructureTemplatePool.Projection, ? extends StructurePoolElement>, Integer>... pieces) {
             return this.register(id, new ResourceLocation("empty"), placementBehaviour, pieces);
         }
 
         @SafeVarargs
-        public final StructureTemplatePool register(String id, ResourceLocation fallback, StructureTemplatePool.Projection placementBehaviour, Pair<Function<StructureTemplatePool.Projection, ? extends StructurePoolElement>, Integer>... pieces) {
+        public final Holder<StructureTemplatePool> register(String id, ResourceLocation fallback, StructureTemplatePool.Projection placementBehaviour, Pair<Function<StructureTemplatePool.Projection, ? extends StructurePoolElement>, Integer>... pieces) {
             return this.register(new StructureTemplatePool(new ResourceLocation(Constants.MODID, id), fallback, Arrays.asList(pieces), placementBehaviour));
         }
 
-        public StructureTemplatePool register(StructureTemplatePool templatePool) {
+        public Holder<StructureTemplatePool> register(StructureTemplatePool templatePool) {
             return this.worldgen.register(templatePool.getName(), templatePool);
         }
     }

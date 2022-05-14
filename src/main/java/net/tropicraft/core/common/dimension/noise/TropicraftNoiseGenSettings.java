@@ -1,13 +1,10 @@
 package net.tropicraft.core.common.dimension.noise;
 
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.data.worldgen.SurfaceRuleData;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.StructureFeatureConfiguration;
-import net.tropicraft.Constants;
 import net.tropicraft.core.common.TropicraftSurfaces;
 import net.tropicraft.core.common.data.WorldgenDataConsumer;
 import net.tropicraft.core.common.dimension.TropicraftTerrainShaper;
@@ -26,7 +23,7 @@ public final class TropicraftNoiseGenSettings {
             TropicraftFeatures.KOA_VILLAGE.get(), new StructureFeatureConfiguration(24, 8, 1010101011)
         );
 
-        noise.register(new ResourceLocation(Constants.MODID, "tropics"), createNoise(structureBiomeMap));
+        noise.register(createNoise(structureBiomeMap));
     }
     
     private static NoiseGeneratorSettings createNoise(final Map<StructureFeature<?>, StructureFeatureConfiguration> structureBiomeMap) {

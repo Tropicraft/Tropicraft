@@ -8,9 +8,7 @@ import net.minecraft.SharedConstants;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.Bootstrap;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.Climate;
-import net.minecraft.world.level.levelgen.blending.Blender;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomeBuilder;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
 

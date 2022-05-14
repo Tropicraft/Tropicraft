@@ -3,13 +3,14 @@ package net.tropicraft.core.common.dimension.feature.jigsaw.piece;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.ProcessorLists;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.levelgen.feature.structures.SinglePoolElement;
-import net.minecraft.world.level.levelgen.feature.structures.StructurePoolElementType;
-import net.minecraft.world.level.levelgen.feature.structures.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.pools.SinglePoolElement;
+import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElementType;
+import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
@@ -17,7 +18,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.tropicraft.Constants;
 
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class SingleNoAirJigsawPiece extends SinglePoolElement {
     public static final Codec<SingleNoAirJigsawPiece> CODEC = RecordCodecBuilder.create(instance -> instance.group(templateCodec(), processorsCodec(), projectionCodec())
@@ -25,7 +25,7 @@ public class SingleNoAirJigsawPiece extends SinglePoolElement {
 
     private static final StructurePoolElementType<SingleNoAirJigsawPiece> TYPE = StructurePoolElementType.register(Constants.MODID + ":single_no_air", CODEC);
 
-    public SingleNoAirJigsawPiece(Either<ResourceLocation, StructureTemplate> template, Supplier<StructureProcessorList> processors, StructureTemplatePool.Projection placementBehaviour) {
+    public SingleNoAirJigsawPiece(Either<ResourceLocation, StructureTemplate> template, Holder<StructureProcessorList> processors, StructureTemplatePool.Projection placementBehaviour) {
         super(template, processors, placementBehaviour);
     }
 
@@ -33,8 +33,8 @@ public class SingleNoAirJigsawPiece extends SinglePoolElement {
         super(template);
     }
 
-    public static Function<StructureTemplatePool.Projection, SingleNoAirJigsawPiece> create(String id, StructureProcessorList processors) {
-        return placementBehaviour -> new SingleNoAirJigsawPiece(Either.left(new ResourceLocation(id)), () -> processors, placementBehaviour);
+    public static Function<StructureTemplatePool.Projection, SingleNoAirJigsawPiece> create(String id, Holder<StructureProcessorList> processors) {
+        return placementBehaviour -> new SingleNoAirJigsawPiece(Either.left(new ResourceLocation(id)), processors, placementBehaviour);
     }
 
     public static Function<StructureTemplatePool.Projection, SingleNoAirJigsawPiece> create(String id) {

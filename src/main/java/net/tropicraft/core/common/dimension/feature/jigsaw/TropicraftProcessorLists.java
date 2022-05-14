@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.dimension.feature.jigsaw;
 
 import com.google.common.collect.ImmutableList;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
@@ -11,11 +12,11 @@ import net.tropicraft.core.common.data.WorldgenDataConsumer;
 import java.util.Arrays;
 
 public final class TropicraftProcessorLists {
-    public final StructureProcessorList koaTownCenters;
-    public final StructureProcessorList koaBuildings;
+    public final Holder<StructureProcessorList> koaTownCenters;
+    public final Holder<StructureProcessorList> koaBuildings;
 
-    public final StructureProcessorList homeTreeBase;
-    public final StructureProcessorList homeTreeStart;
+    public final Holder<StructureProcessorList> homeTreeBase;
+    public final Holder<StructureProcessorList> homeTreeStart;
 
     public TropicraftProcessorLists(WorldgenDataConsumer<StructureProcessorList> worldgen) {
         Register processors = new Register(worldgen);
@@ -51,7 +52,7 @@ public final class TropicraftProcessorLists {
             this.worldgen = worldgen;
         }
 
-        public StructureProcessorList register(String id, StructureProcessor... processors) {
+        public Holder<StructureProcessorList> register(String id, StructureProcessor... processors) {
             return this.worldgen.register(new ResourceLocation(Constants.MODID, id), new StructureProcessorList(Arrays.asList(processors)));
         }
     }

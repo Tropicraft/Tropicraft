@@ -7,20 +7,21 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.JsonOps;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
-import net.minecraft.resources.RegistryWriteOps;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
-import net.minecraft.world.level.levelgen.feature.structures.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
@@ -33,10 +34,8 @@ import net.tropicraft.core.common.dimension.noise.TropicraftNoiseGenSettings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.function.Supplier;
 
 public final class TropicraftWorldgenProvider implements DataProvider {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -63,30 +62,10 @@ public final class TropicraftWorldgenProvider implements DataProvider {
     }
 
     private Consumers buildConsumers(HashCache cache) {
-        var dynamicRegistries = buildDynamicRegistries();
-        var ops = RegistryWriteOps.create(JsonOps.INSTANCE, dynamicRegistries);
+        var dynamicRegistries = RegistryAccess.builtinCopy();
+        var ops = RegistryOps.create(JsonOps.INSTANCE, dynamicRegistries);
 
         return new Consumers(root, cache, dynamicRegistries, ops);
-    }
-
-    private RegistryAccess.RegistryHolder buildDynamicRegistries() {
-        var dynamicRegistries = new RegistryAccess.RegistryHolder();
-        for (var registry : BuiltinRegistries.REGISTRY) {
-            copyAllToDynamicRegistry(registry, dynamicRegistries);
-        }
-        return dynamicRegistries;
-    }
-
-    private static <T> void copyAllToDynamicRegistry(Registry<T> from, RegistryAccess dynamicRegistries) {
-        dynamicRegistries.registry(from.key()).ifPresent(dynamicRegistry -> {
-            copyAllToRegistry(from, dynamicRegistry);
-        });
-    }
-
-    private static <T> void copyAllToRegistry(Registry<T> from, Registry<T> to) {
-        for (var entry : from.entrySet()) {
-            Registry.register(to, entry.getKey().location(), entry.getValue());
-        }
     }
 
     @Override
@@ -96,10 +75,9 @@ public final class TropicraftWorldgenProvider implements DataProvider {
 
     private record Consumers(
             Path root, HashCache cache,
-            RegistryAccess.RegistryHolder dynamicRegistries,
+            RegistryAccess dynamicRegistries,
             DynamicOps<JsonElement> ops
     ) {
-
         public WorldgenDataConsumer<ConfiguredFeature<?, ?>> configuredFeatures() {
             return consumer("worldgen/configured_feature", BuiltinRegistries.CONFIGURED_FEATURE, ConfiguredFeature.CODEC);
         }
@@ -129,34 +107,31 @@ public final class TropicraftWorldgenProvider implements DataProvider {
         }
 
         public WorldgenDataConsumer<Biome> biomes() {
-            return consumer("worldgen/biome", null, Biome.CODEC);
+            return consumer("worldgen/biome", BuiltinRegistries.BIOME, Biome.CODEC);
         }
 
-        public <T> WorldgenDataConsumer<T> consumer(String path, @Nullable Registry<? super T> registry, Codec<Supplier<T>> codec) {
-            return (id, entry) -> {
+        public <T> WorldgenDataConsumer<T> consumer(String path, Registry<T> registry, Codec<Holder<T>> codec) {
+            return (id, value) -> {
                 var entryPath = root.resolve(id.getNamespace()).resolve(path).resolve(id.getPath() + ".json");
 
+                final Holder<T> holder = BuiltinRegistries.register(registry, id, value);
+                dynamicRegistries.registry(registry.key()).ifPresent(dynamicRegistry -> {
+                    BuiltinRegistries.register(dynamicRegistry, id, value);
+                });
+
                 try {
-                    DataResult<JsonElement> result = codec.encodeStart(ops, () -> entry);
+                    DataResult<JsonElement> result = codec.encodeStart(ops, holder);
                     var serialized = result.result();
                     if (serialized.isPresent()) {
                         DataProvider.save(GSON, cache, serialized.get(), entryPath);
-                    } else {
-                        System.out.println(result.error().get());
-                        LOGGER.error("Couldn't serialize worldgen entry at {}", entryPath);
+                    } else if (result.error().isPresent()) {
+                        LOGGER.error("Couldn't serialize worldgen entry at {}: '{}'", entryPath, result.error().get());
                     }
                 } catch (IOException e) {
                     LOGGER.error("Couldn't save worldgen entry at {}", entryPath, e);
                 }
 
-                if (registry != null) {
-                    Registry.register(registry, id, entry);
-                    dynamicRegistries.registry(registry.key()).ifPresent(dynamicRegistry -> {
-                        Registry.register(dynamicRegistry, id, entry);
-                    });
-                }
-
-                return entry;
+                return holder;
             };
         }
     }

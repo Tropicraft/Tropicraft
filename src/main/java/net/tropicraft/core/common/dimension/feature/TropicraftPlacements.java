@@ -1,17 +1,8 @@
 package net.tropicraft.core.common.dimension.feature;
 
-import net.minecraft.data.worldgen.features.VegetationFeatures;
-import net.minecraft.data.worldgen.placement.PlacementUtils;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.ProbabilityFeatureConfiguration;
-import net.minecraft.world.level.levelgen.placement.BiomeFilter;
-import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
-import net.minecraft.world.level.levelgen.placement.NoiseBasedCountPlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import net.minecraft.world.level.levelgen.placement.RarityFilter;
 import net.minecraftforge.registries.RegistryObject;
-import net.tropicraft.Constants;
 import net.tropicraft.core.common.data.WorldgenDataConsumer;
 
 import java.util.function.Function;
@@ -51,7 +42,7 @@ public class TropicraftPlacements {
         }
 
         public <F extends Feature<?>> PlacedFeature register(String id, PlacedFeature feature) {
-            return this.worldgen.register(new ResourceLocation(Constants.MODID, id), feature);
+            return this.worldgen.register(feature);
         }
 
         public <F extends Feature<?>> PlacedFeature register(String id, F feature, Function<F, PlacedFeature> configure) {
