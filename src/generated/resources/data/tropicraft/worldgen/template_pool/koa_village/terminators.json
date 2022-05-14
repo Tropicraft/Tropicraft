@@ -6,8 +6,9 @@
       "weight": 1,
       "element": {
         "location": "tropicraft:koa_village/terminators/terminator_01",
-        "processors": "minecraft:empty",
-        "projection": "tropicraft:koa_path",
+        "processors": "tropicraft:koa_village/koa_path",
+        "projection": "terrain_matching",
+        "unprojected": true,
         "element_type": "tropicraft:single_no_air"
       }
     }

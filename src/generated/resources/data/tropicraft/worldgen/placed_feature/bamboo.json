@@ -1,10 +1,5 @@
 {
-  "feature": {
-    "config": {
-      "probability": 0.15
-    },
-    "type": "minecraft:bamboo"
-  },
+  "feature": "tropicraft:bamboo",
   "placement": [
     {
       "noise_to_count_ratio": 70,

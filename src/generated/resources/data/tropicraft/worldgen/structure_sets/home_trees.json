@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "tropicraft:home_tree",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 1010101010,
+    "spacing": 24,
+    "separation": 8,
+    "type": "minecraft:random_spread"
+  }
+}
