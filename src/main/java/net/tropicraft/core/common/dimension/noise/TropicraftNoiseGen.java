@@ -133,7 +133,7 @@ public final class TropicraftNoiseGen {
         }
 
         public Codec<? extends DensityFunction> codec() {
-            throw new UnsupportedOperationException("Calling .codec() on HolderSquared");
+            return this.function.value().codec();
         }
     }
 }
