@@ -32,6 +32,7 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomeSource;
 import net.tropicraft.core.common.dimension.chunk.TropicraftChunkGenerator;
+import net.tropicraft.core.mixin.worldgen.LevelStemAccessor;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,7 +40,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.nio.file.Path;
 import java.util.Set;
 import java.util.function.Supplier;
@@ -82,15 +82,12 @@ public class TropicraftDimension {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public static void addDefaultDimensionKey() {
-        try {
-            Field dimensionKeysField = ObfuscationReflectionHelper.findField(LevelStem.class, "BUILTIN_ORDER");
-            Set<ResourceKey<LevelStem>> keys = (Set<ResourceKey<LevelStem>>) dimensionKeysField.get(null);
-            dimensionKeysField.set(null, ImmutableSet.builder().addAll(keys).add(DIMENSION).build());
-        } catch (ReflectiveOperationException e) {
-            LOGGER.error("Failed to add tropics as a default dimension key", e);
-        }
+        Set<ResourceKey<LevelStem>> order = ImmutableSet.<ResourceKey<LevelStem>>builder()
+                .addAll(LevelStemAccessor.getBuiltinOrder())
+                .add(DIMENSION)
+                .build();
+        LevelStemAccessor.setBuiltinOrder(order);
     }
 
     public static LevelStem createDimension(
