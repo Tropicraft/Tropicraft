@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.dimension;
 
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -40,7 +41,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.file.Path;
-import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(modid = Constants.MODID)
@@ -85,8 +86,8 @@ public class TropicraftDimension {
     public static void addDefaultDimensionKey() {
         try {
             Field dimensionKeysField = ObfuscationReflectionHelper.findField(LevelStem.class, "BUILTIN_ORDER");
-            LinkedHashSet<ResourceKey<LevelStem>> keys = (LinkedHashSet<ResourceKey<LevelStem>>) dimensionKeysField.get(null);
-            keys.add(DIMENSION);
+            Set<ResourceKey<LevelStem>> keys = (Set<ResourceKey<LevelStem>>) dimensionKeysField.get(null);
+            dimensionKeysField.set(null, ImmutableSet.builder().addAll(keys).add(DIMENSION).build());
         } catch (ReflectiveOperationException e) {
             LOGGER.error("Failed to add tropics as a default dimension key", e);
         }
