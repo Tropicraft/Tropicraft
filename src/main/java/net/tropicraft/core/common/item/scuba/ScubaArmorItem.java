@@ -20,7 +20,6 @@ import net.tropicraft.Constants;
 import net.tropicraft.core.client.scuba.ModelScubaGear;
 import net.tropicraft.core.common.item.ArmorMaterials;
 import net.tropicraft.core.common.item.TropicraftArmorItem;
-import org.checkerframework.checker.units.qual.A;
 
 import javax.annotation.Nullable;
 import java.util.function.Consumer;

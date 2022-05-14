@@ -4,7 +4,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
-import net.minecraft.resources.RegistryLookupCodec;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
@@ -33,9 +32,10 @@ import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 public class TropicraftChunkGenerator extends NoiseBasedChunkGenerator {
-    public static final Codec<NoiseBasedChunkGenerator> CODEC = RecordCodecBuilder.create((p_188643_) -> {
-        return commonCodec(p_188643_).and(p_188643_.group(RegistryOps.retrieveRegistry(Registry.NOISE_REGISTRY).forGetter((p_188716_) -> {
-            return p_188716_.noises;
+    public static final Codec<TropicraftChunkGenerator> CODEC = RecordCodecBuilder.create((p_188643_) -> {
+        return commonCodec(p_188643_).and(p_188643_.group(RegistryOps.retrieveRegistry(Registry.NOISE_REGISTRY)
+                .forGetter((p_188716_) -> {
+            return p_188716_.parameters;
         }), BiomeSource.CODEC.fieldOf("biome_source").forGetter((p_188711_) -> {
             return p_188711_.biomeSource;
         }), Codec.LONG.fieldOf("seed").stable().forGetter((p_188690_) -> {
@@ -68,7 +68,7 @@ public class TropicraftChunkGenerator extends NoiseBasedChunkGenerator {
     @Override
     @OnlyIn(Dist.CLIENT)
     public ChunkGenerator withSeed(long seed) {
-        return new TropicraftChunkGenerator(parameters, this.biomeSource.withSeed(seed), seed, this.settings);
+        return new TropicraftChunkGenerator(this.structureSets, parameters, this.biomeSource.withSeed(seed), seed, this.settings);
     }
 
     @Override
