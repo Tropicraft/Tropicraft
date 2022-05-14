@@ -11,34 +11,38 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pools.SinglePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElementType;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
-import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraft.world.level.levelgen.structure.templatesystem.*;
 import net.tropicraft.Constants;
 
 import java.util.function.Function;
 
 public class SingleNoAirJigsawPiece extends SinglePoolElement {
-    public static final Codec<SingleNoAirJigsawPiece> CODEC = RecordCodecBuilder.create(instance -> instance.group(templateCodec(), processorsCodec(), projectionCodec())
-            .apply(instance, SingleNoAirJigsawPiece::new));
+    public static final Codec<SingleNoAirJigsawPiece> CODEC = RecordCodecBuilder.create(i -> i.group(
+            templateCodec(),
+            processorsCodec(),
+            projectionCodec(),
+            Codec.BOOL.optionalFieldOf("unprojected", false).forGetter(p -> p.unprojected)
+    ).apply(i, SingleNoAirJigsawPiece::new));
 
     private static final StructurePoolElementType<SingleNoAirJigsawPiece> TYPE = StructurePoolElementType.register(Constants.MODID + ":single_no_air", CODEC);
 
-    public SingleNoAirJigsawPiece(Either<ResourceLocation, StructureTemplate> template, Holder<StructureProcessorList> processors, StructureTemplatePool.Projection placementBehaviour) {
+    private boolean unprojected;
+
+    public SingleNoAirJigsawPiece(Either<ResourceLocation, StructureTemplate> template, Holder<StructureProcessorList> processors, StructureTemplatePool.Projection placementBehaviour, boolean unproject) {
         super(template, processors, placementBehaviour);
+        this.unprojected = unproject;
     }
 
     public SingleNoAirJigsawPiece(StructureTemplate template) {
         super(template);
     }
 
-    public static Function<StructureTemplatePool.Projection, SingleNoAirJigsawPiece> create(String id, Holder<StructureProcessorList> processors) {
-        return placementBehaviour -> new SingleNoAirJigsawPiece(Either.left(new ResourceLocation(id)), processors, placementBehaviour);
+    public static Function<StructureTemplatePool.Projection, SingleNoAirJigsawPiece> create(String id, Holder<StructureProcessorList> processors, boolean unprojected) {
+        return placementBehaviour -> new SingleNoAirJigsawPiece(Either.left(new ResourceLocation(id)), processors, placementBehaviour, unprojected);
     }
 
     public static Function<StructureTemplatePool.Projection, SingleNoAirJigsawPiece> create(String id) {
-        return create(id, ProcessorLists.EMPTY);
+        return create(id, ProcessorLists.EMPTY, false);
     }
 
     @Override
@@ -51,6 +55,11 @@ public class SingleNoAirJigsawPiece extends SinglePoolElement {
         StructurePlaceSettings settings = super.getSettings(rotation, box, b);
         settings.popProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
         settings.addProcessor(BlockIgnoreProcessor.STRUCTURE_AND_AIR);
+        if (unprojected) {
+            for (StructureProcessor processor : getProjection().getProcessors()) {
+                settings.popProcessor(processor);
+            }
+        }
         return settings;
     }
 }

@@ -1,26 +1,18 @@
 package net.tropicraft.core.common.dimension.feature;
 
-import com.google.common.collect.ImmutableList;
 import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.JigsawConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
-import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.tropicraft.Constants;
-import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.dimension.feature.config.FruitTreeConfig;
 import net.tropicraft.core.common.dimension.feature.config.RainforestVinesConfig;
-import net.tropicraft.core.common.dimension.feature.jigsaw.SinkInGroundProcessor;
-import net.tropicraft.core.common.dimension.feature.jigsaw.SmoothingGravityProcessor;
-import net.tropicraft.core.common.dimension.feature.jigsaw.SteepPathProcessor;
-import net.tropicraft.core.common.dimension.feature.jigsaw.StructureSupportsProcessor;
 import net.tropicraft.core.common.dimension.feature.tree.*;
 import net.tropicraft.core.common.dimension.feature.tree.mangrove.MangroveTreeFeature;
 
@@ -51,9 +43,6 @@ public class TropicraftFeatures {
 
     public static final RegistryObject<ReedsFeature> REEDS = register("reeds", () -> new ReedsFeature(NoneFeatureConfiguration.CODEC));
     public static final RegistryObject<MangroveTreeFeature> MANGROVE_TREE = register("mangrove_tree", () -> new MangroveTreeFeature((TreeFeature) Feature.TREE, TreeConfiguration.CODEC));
-
-    public static final StructureTemplatePool.Projection KOA_PATH = StructureTemplatePool.Projection.create("KOA_PATH", Constants.MODID + ":koa_path",
-            ImmutableList.of(new SmoothingGravityProcessor(Heightmap.Types.WORLD_SURFACE_WG, -1), new SinkInGroundProcessor(), new SteepPathProcessor(), new StructureSupportsProcessor(false, ImmutableList.of(TropicraftBlocks.BAMBOO_FENCE.getId()))));
 
     private static <T extends Feature<?>> RegistryObject<T> register(final String name, final Supplier<T> sup) {
         return FEATURES.register(name, sup);

@@ -10,7 +10,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.data.WorldgenDataConsumer;
 import net.tropicraft.core.common.dimension.feature.TropicraftConfiguredFeatures;
-import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
 import net.tropicraft.core.common.dimension.feature.jigsaw.TropicraftProcessorLists;
 import net.tropicraft.core.common.dimension.feature.jigsaw.piece.HomeTreeBranchPiece;
 import net.tropicraft.core.common.dimension.feature.jigsaw.piece.NoRotateSingleJigsawPiece;
@@ -64,27 +63,27 @@ public final class TropicraftTemplatePools {
         this.koaStreets = pools.register(
                 "koa_village/streets",
                 new ResourceLocation(Constants.MODID, "koa_village/terminators"),
-                TropicraftFeatures.KOA_PATH,
-                noAirSingle("koa_village/streets/straight_01", 3),
-                noAirSingle("koa_village/streets/straight_02", 4),
-                noAirSingle("koa_village/streets/straight_03", 10),
-                noAirSingle("koa_village/streets/straight_04", 2),
-                noAirSingle("koa_village/streets/straight_05", 3),
-                noAirSingle("koa_village/streets/straight_06", 2),
-                noAirSingle("koa_village/streets/corner_01", 2),
-                noAirSingle("koa_village/streets/corner_02", 4),
-                noAirSingle("koa_village/streets/corner_03", 6),
-                noAirSingle("koa_village/streets/corner_04", 2),
-                noAirSingle("koa_village/streets/crossroad_01", 5),
-                noAirSingle("koa_village/streets/crossroad_02", 2),
-                noAirSingle("koa_village/streets/crossroad_03", 1),
-                noAirSingle("koa_village/streets/crossroad_04", 2)
+                StructureTemplatePool.Projection.TERRAIN_MATCHING,
+                koaPath(processors, "koa_village/streets/straight_01", 3),
+                koaPath(processors, "koa_village/streets/straight_02", 4),
+                koaPath(processors, "koa_village/streets/straight_03", 10),
+                koaPath(processors, "koa_village/streets/straight_04", 2),
+                koaPath(processors, "koa_village/streets/straight_05", 3),
+                koaPath(processors, "koa_village/streets/straight_06", 2),
+                koaPath(processors, "koa_village/streets/corner_01", 2),
+                koaPath(processors, "koa_village/streets/corner_02", 4),
+                koaPath(processors, "koa_village/streets/corner_03", 6),
+                koaPath(processors, "koa_village/streets/corner_04", 2),
+                koaPath(processors, "koa_village/streets/crossroad_01", 5),
+                koaPath(processors, "koa_village/streets/crossroad_02", 2),
+                koaPath(processors, "koa_village/streets/crossroad_03", 1),
+                koaPath(processors, "koa_village/streets/crossroad_04", 2)
         );
 
         this.koaTerminators = pools.register(
                 "koa_village/terminators",
-                TropicraftFeatures.KOA_PATH,
-                noAirSingle("koa_village/terminators/terminator_01", 1)
+                StructureTemplatePool.Projection.TERRAIN_MATCHING,
+                koaPath(processors, "koa_village/terminators/terminator_01", 1)
         );
 
         this.koaVillagers = pools.register(
@@ -203,7 +202,7 @@ public final class TropicraftTemplatePools {
 
     private static Pair<Function<StructureTemplatePool.Projection, ? extends StructurePoolElement>, Integer> noAirSingle(String path, Holder<StructureProcessorList> processors, int weight) {
         return new Pair<>(
-                SingleNoAirJigsawPiece.create(Constants.MODID + ":" + path, processors),
+                SingleNoAirJigsawPiece.create(Constants.MODID + ":" + path, processors, false),
                 weight
         );
     }
@@ -232,6 +231,13 @@ public final class TropicraftTemplatePools {
     private static Pair<Function<StructureTemplatePool.Projection, ? extends StructurePoolElement>, Integer> homeTreeBranch(float minAngle, float maxAngle, int weight) {
         return new Pair<>(
                 HomeTreeBranchPiece.create(minAngle, maxAngle),
+                weight
+        );
+    }
+
+    private static Pair<Function<StructureTemplatePool.Projection, ? extends StructurePoolElement>, Integer> koaPath(TropicraftProcessorLists processors, String path, int weight) {
+        return new Pair<>(
+                SingleNoAirJigsawPiece.create(Constants.MODID + ":" + path, processors.koaPath, true),
                 weight
         );
     }
