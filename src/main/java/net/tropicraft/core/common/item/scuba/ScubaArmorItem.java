@@ -20,6 +20,7 @@ import net.tropicraft.Constants;
 import net.tropicraft.core.client.scuba.ModelScubaGear;
 import net.tropicraft.core.common.item.ArmorMaterials;
 import net.tropicraft.core.common.item.TropicraftArmorItem;
+import org.checkerframework.checker.units.qual.A;
 
 import javax.annotation.Nullable;
 import java.util.function.Consumer;
@@ -70,10 +71,10 @@ public class ScubaArmorItem extends TropicraftArmorItem {
     @Override
     public void initializeClient(Consumer<IItemRenderProperties> consumer) {
         consumer.accept(new IItemRenderProperties() {
-            @Override
+
             @Nullable
-            @SuppressWarnings("unchecked")
-            public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entity, ItemStack item, EquipmentSlot armorSlot, A _default) {
+            @Override
+            public HumanoidModel<?> getArmorModel(LivingEntity entity, ItemStack item, EquipmentSlot armorSlot, HumanoidModel<?> _default) {
                 if (item.isEmpty()) {
                     return null;
                 }
@@ -81,7 +82,7 @@ public class ScubaArmorItem extends TropicraftArmorItem {
                 HumanoidModel<?> armorModel = getArmorModel(armorSlot);
                 if (armorModel != null) {
                     prepareModel(armorModel, entity);
-                    return (A) armorModel;
+                    return armorModel;
                 } else {
                     return null;
                 }

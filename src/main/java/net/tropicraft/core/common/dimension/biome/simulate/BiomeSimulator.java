@@ -10,7 +10,6 @@ import net.minecraft.server.Bootstrap;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.Climate;
-import net.minecraft.world.level.levelgen.NoiseSampler;
 import net.minecraft.world.level.levelgen.blending.Blender;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomeBuilder;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
@@ -61,19 +60,19 @@ public class BiomeSimulator {
             }
 
             for (int z = 0; z < 2048; z++) {
-                NoiseSampler.FlatNoiseData data = sampler.noiseData(x, z, Blender.empty());
-                int ay = 0;
-                // Find topmost Y coord
-                for (int y = -8; y < 40; y++) {
-                    double offset = sampler.offset(y * 8, data.terrainInfo());
+//                NoiseSampler.FlatNoiseData data = sampler.noiseData(x, z, Blender.empty());
+//                int ay = 0;
+//                // Find topmost Y coord
+//                for (int y = -8; y < 40; y++) {
+//                    double offset = sampler.offset(y * 8, data.terrainInfo());
+//
+//                    if (offset < -4) {
+//                        ay = y + 3;
+//                        break;
+//                    }
+//                }
 
-                    if (offset < -4) {
-                        ay = y + 3;
-                        break;
-                    }
-                }
-
-                ResourceKey<Biome> value = params.findValue(sampler.sample(x, ay, z), Biomes.THE_VOID);
+                ResourceKey<Biome> value = params.findValue(sampler.sample(x, 0, z));
 
                 if (!COLORS.containsKey(value)) throw new RuntimeException("Resource key not found: " + value);
 

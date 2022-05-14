@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.entity;
 
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
@@ -451,7 +452,7 @@ public class SeaTurtleEntity extends Turtle {
          */
         @Override
         public boolean canUse() {
-            return turtle.hasEgg() && turtle.getHomePos().closerThan(turtle.position(), 9.0D) && super.canUse();
+            return turtle.hasEgg() && turtle.getHomePos().closerToCenterThan(turtle.position(), 9.0D) && super.canUse();
         }
 
         /**
@@ -459,7 +460,7 @@ public class SeaTurtleEntity extends Turtle {
          */
         @Override
         public boolean canContinueToUse() {
-            return super.canContinueToUse() && turtle.hasEgg() && turtle.getHomePos().closerThan(turtle.position(), 9.0D);
+            return super.canContinueToUse() && turtle.hasEgg() && turtle.getHomePos().closerToCenterThan(turtle.position(), 9.0D);
         }
 
         /**

@@ -68,7 +68,7 @@ public class MapBiomesCommand {
                 }
 
                 for (int z = -SIZE2; z < SIZE2; z++) {
-                    Biome biome = source.getLevel().getUncachedNoiseBiome(x, 0, z);
+                    Biome biome = source.getLevel().getUncachedNoiseBiome(x, 0, z).value();
                     ResourceLocation name = biomes.get().getKey(biome);
 
                     img.setRGB(x + SIZE2, z + SIZE2, COLORS.getOrDefault(name, 0xFFFFFF));

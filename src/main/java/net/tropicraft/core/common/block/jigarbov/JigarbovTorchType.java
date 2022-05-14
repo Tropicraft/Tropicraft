@@ -32,7 +32,7 @@ public enum JigarbovTorchType implements StringRepresentable {
 
     @Nullable
     public static JigarbovTorchType byBlock(Block block) {
-        if (BlockTags.LOGS.contains(block)) {
+        if (block.defaultBlockState().is(BlockTags.LOGS)) {
             for (JigarbovTorchType type : VALUES) {
                 if (type.matchesLog(block)) {
                     return type;

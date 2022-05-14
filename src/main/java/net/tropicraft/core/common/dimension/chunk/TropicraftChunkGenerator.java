@@ -2,8 +2,10 @@ package net.tropicraft.core.common.dimension.chunk;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.RegistryLookupCodec;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelHeightAccessor;
@@ -17,6 +19,7 @@ import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.blending.Blender;
+import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.minecraft.world.level.levelgen.synth.PerlinNoise;
 import net.minecraft.world.level.levelgen.synth.PerlinSimplexNoise;
@@ -30,24 +33,27 @@ import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 public class TropicraftChunkGenerator extends NoiseBasedChunkGenerator {
-    public static final Codec<TropicraftChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> {
-        return instance.group(
-                RegistryLookupCodec.create(Registry.NOISE_REGISTRY).forGetter(g -> g.parameters),
-                BiomeSource.CODEC.fieldOf("biome_source").forGetter(g -> g.biomeSource),
-                Codec.LONG.fieldOf("seed").stable().forGetter(g -> g.seed),
-                NoiseGeneratorSettings.CODEC.fieldOf("settings").forGetter(g -> g.settings)
-        ).apply(instance, instance.stable(TropicraftChunkGenerator::new));
+    public static final Codec<NoiseBasedChunkGenerator> CODEC = RecordCodecBuilder.create((p_188643_) -> {
+        return commonCodec(p_188643_).and(p_188643_.group(RegistryOps.retrieveRegistry(Registry.NOISE_REGISTRY).forGetter((p_188716_) -> {
+            return p_188716_.noises;
+        }), BiomeSource.CODEC.fieldOf("biome_source").forGetter((p_188711_) -> {
+            return p_188711_.biomeSource;
+        }), Codec.LONG.fieldOf("seed").stable().forGetter((p_188690_) -> {
+            return p_188690_.seed;
+        }), NoiseGeneratorSettings.CODEC.fieldOf("settings").forGetter((p_204585_) -> {
+            return p_204585_.settings;
+        }))).apply(p_188643_, p_188643_.stable(TropicraftChunkGenerator::new));
     });
 
     private final VolcanoGenerator volcano;
     private final Registry<NormalNoise.NoiseParameters> parameters;
     private final long seed;
 
-    public TropicraftChunkGenerator(Registry<NormalNoise.NoiseParameters> parameters, BiomeSource biomeProvider, long seed, Supplier<NoiseGeneratorSettings> settings) {
-        super(parameters, biomeProvider, seed, settings);
-        this.parameters = parameters;
+    public TropicraftChunkGenerator(Registry<StructureSet> structureset, Registry<NormalNoise.NoiseParameters> registry, BiomeSource biomes, long seed, Holder<NoiseGeneratorSettings> settings) {
+        super(structureset, registry, biomes, seed, settings);
+        this.parameters = registry;
         this.seed = seed;
-        this.volcano = new VolcanoGenerator(seed, biomeProvider, this);
+        this.volcano = new VolcanoGenerator(seed, biomes, this);
     }
 
     public static void register() {

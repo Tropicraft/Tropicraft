@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.item;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
@@ -51,23 +52,20 @@ public class TropicalFertilizerItem extends BoneMealItem {
                                 break;
                             }
 
-                            PlacedFeature placedFeature;
-                            BlockState blockstate1;
+                            Holder<PlacedFeature> holder;
                             if (rand.nextInt(8) > 0) { // Modification here, == changed to > to invert chances
-                                List<ConfiguredFeature<?, ?>> list = level.getBiome(blockpos1).getGenerationSettings().getFlowerFeatures();
+                                List<ConfiguredFeature<?, ?>> list = level.getBiome(blockpos1).value().getGenerationSettings().getFlowerFeatures();
                                 if (list.isEmpty()) {
                                     break;
                                 }
 
-                                // TODO this is so ugly and hacky, pls
-                                ConfiguredFeature<?, ?> pFlowerFeature = list.get(0);
-                                placedFeature = ((RandomPatchConfiguration) list.get(0).config()).feature().get();
+                                holder = ((RandomPatchConfiguration)list.get(0).config()).feature();
                             } else {
-                                placedFeature = VegetationPlacements.GRASS_BONEMEAL;
+                                holder = VegetationPlacements.GRASS_BONEMEAL;
                             }
 
                             if (level instanceof ServerLevel serverLevel) {
-                                placedFeature.place(serverLevel, serverLevel.getChunkSource().getGenerator(), rand, blockpos1);
+                                holder.value().place(serverLevel, serverLevel.getChunkSource().getGenerator(), rand, blockpos1);
                             }
                             break;
                         }

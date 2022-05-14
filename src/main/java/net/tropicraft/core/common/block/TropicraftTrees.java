@@ -3,6 +3,7 @@ package net.tropicraft.core.common.block;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceKey;
@@ -124,7 +125,7 @@ public class TropicraftTrees {
         return new AbstractTreeGrower() {
             @Nullable
             @Override
-            protected ConfiguredFeature<TreeConfiguration, ?> getConfiguredFeature(Random random, boolean beehive) {
+            protected Holder<? extends ConfiguredFeature<?, ?>> getConfiguredFeature(Random random, boolean beehive) {
                 return null;
             }
 

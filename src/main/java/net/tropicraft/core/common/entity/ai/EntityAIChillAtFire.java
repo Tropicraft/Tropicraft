@@ -49,7 +49,7 @@ public class EntityAIChillAtFire extends Goal
 
         BlockPos blockpos = this.entityObj.blockPosition();
 
-        if (!this.entityObj.level.isDay() || this.entityObj.level.isRaining() && this.entityObj.level.getBiome(blockpos).getPrecipitation() != Biome.Precipitation.RAIN) {
+        if (!this.entityObj.level.isDay() || this.entityObj.level.isRaining() && this.entityObj.level.getBiome(blockpos).value().getPrecipitation() != Biome.Precipitation.RAIN) {
             if (!isTooClose()) {
                 return entityObj.level.random.nextInt(20) == 0;
             } else {
@@ -75,7 +75,7 @@ public class EntityAIChillAtFire extends Goal
 
         BlockPos blockpos = this.entityObj.blockPosition();
         //return !this.entityObj.getNavigation().noPath();
-        if (!this.entityObj.level.isDay() || this.entityObj.level.isRaining() && this.entityObj.level.getBiome(blockpos).getPrecipitation() != Biome.Precipitation.RAIN)
+        if (!this.entityObj.level.isDay() || this.entityObj.level.isRaining() && this.entityObj.level.getBiome(blockpos).value().getPrecipitation() != Biome.Precipitation.RAIN)
         {
             return !isTooClose();
 

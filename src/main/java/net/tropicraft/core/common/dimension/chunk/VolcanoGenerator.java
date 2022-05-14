@@ -4,10 +4,12 @@ import com.google.common.collect.ImmutableSet;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
+import it.unimi.dsi.fastutil.Pair;
+import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.commands.LocateCommand;
 import net.minecraft.server.level.ServerLevel;
@@ -101,10 +103,22 @@ public class VolcanoGenerator {
                             if (volcanoPos == null) {
                                 throw new SimpleCommandExceptionType(new TranslatableComponent("commands.locate.failed")).create();
                             } else {
-                                return LocateCommand.showLocateResult(source, "Volcano", pos, volcanoPos, "commands.locate.success");
+                                int i = Mth.floor(dist(volcanoPos.getX(), volcanoPos.getZ(), pos.getX(), pos.getZ()));
+                                Component component = ComponentUtils.wrapInSquareBrackets(new TranslatableComponent("chat.coordinates", volcanoPos.getX(), "~", volcanoPos.getZ())).withStyle((p_207527_) -> {
+                                    return p_207527_.withColor(ChatFormatting.GREEN).withClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tp @s " + volcanoPos.getX() + " ~ " + volcanoPos.getZ())).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslatableComponent("chat.coordinates.tooltip")));
+                                });
+                                source.sendSuccess(new TranslatableComponent("commands.locate.success", "Volcano", component, i), false);
+
+                                return i;
                             }
                         }))
         );
+    }
+
+    private static float dist(int pX1, int pZ1, int pX2, int pZ2) {
+        int i = pX2 - pX1;
+        int j = pZ2 - pZ1;
+        return Mth.sqrt((float)(i * i + j * j));
     }
 
     public ChunkAccess generate(int chunkX, int chunkZ, ChunkAccess chunk, WorldgenRandom random) {
@@ -361,7 +375,7 @@ public class VolcanoGenerator {
     }
 
     private boolean hasAllBiomes(BiomeSource biomeSource, int centerX, int centerY, int centerZ, Set<ResourceLocation> allowedBiomes) {
-        Biome biome = biomeSource.getNoiseBiome(centerX >> 2, centerY >> 2, centerZ >> 2, this.chunkGenerator.climateSampler());
+        Biome biome = biomeSource.getNoiseBiome(centerX >> 2, centerY >> 2, centerZ >> 2, this.chunkGenerator.climateSampler()).value();
         return allowedBiomes.contains(biome.getRegistryName());
     }
 }

@@ -95,7 +95,7 @@ public class EntityAIGoneFishin extends Goal {
 
         BlockPos blockpos = this.entity.blockPosition();
 
-        if ((!this.entity.level.isDay() || this.entity.level.isRaining() && this.entity.level.getBiome(blockpos).getPrecipitation() == Biome.Precipitation.RAIN)) {
+        if ((!this.entity.level.isDay() || this.entity.level.isRaining() && this.entity.level.getBiome(blockpos).value().getPrecipitation() == Biome.Precipitation.RAIN)) {
             return false;
         }
 

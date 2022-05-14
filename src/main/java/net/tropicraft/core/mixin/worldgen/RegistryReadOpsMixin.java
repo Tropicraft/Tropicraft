@@ -56,6 +56,7 @@ public class RegistryReadOpsMixin {
 
         LevelStem dimension = TropicraftDimension.createDimension(
                 this.registryAccess.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY),
+                this.registryAccess.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY),
                 this.registryAccess.registryOrThrow(Registry.BIOME_REGISTRY),
                 this.registryAccess.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY),
                 this.registryAccess.registryOrThrow(Registry.NOISE_REGISTRY),

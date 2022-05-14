@@ -2,6 +2,7 @@ package net.tropicraft.core.common.dimension.carver;
 
 import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.Codec;
+import net.minecraft.core.Holder;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.core.BlockPos;
@@ -37,7 +38,7 @@ public class TropicsCanyonCarver extends CanyonWorldCarver {
     }
 
     @Override
-    public boolean carve(CarvingContext pContext, CanyonCarverConfiguration pConfig, ChunkAccess pChunk, Function<BlockPos, Biome> pBiomeAccessor, Random pRandom, Aquifer pAquifer, ChunkPos pChunkPos, CarvingMask pCarvingMask) {
+    public boolean carve(CarvingContext pContext, CanyonCarverConfiguration pConfig, ChunkAccess pChunk, Function<BlockPos, Holder<Biome>> pBiomeAccessor, Random pRandom, Aquifer pAquifer, ChunkPos pChunkPos, CarvingMask pCarvingMask) {
         int i = (this.getRange() * 2 - 1) * 16;
         double d0 = (double)pChunkPos.getBlockX(pRandom.nextInt(16));
         int j = pRandom.nextInt(pRandom.nextInt(80) + 8) + 20;
@@ -53,7 +54,7 @@ public class TropicsCanyonCarver extends CanyonWorldCarver {
     }
 
     // Copied from super
-    private void genCanyon(CarvingContext pContext, CanyonCarverConfiguration pConfig, ChunkAccess pChunk, Function<BlockPos, Biome> pBiomeAccessor, long pSeed, Aquifer pAquifer, double pX, double pY, double pZ, float pThickness, float pYaw, float pPitch, int pBranchIndex, int pBranchCount, double pHorizontalVerticalRatio, CarvingMask pCarvingMask) {
+    private void genCanyon(CarvingContext pContext, CanyonCarverConfiguration pConfig, ChunkAccess pChunk, Function<BlockPos, Holder<Biome>> pBiomeAccessor, long pSeed, Aquifer pAquifer, double pX, double pY, double pZ, float pThickness, float pYaw, float pPitch, int pBranchIndex, int pBranchCount, double pHorizontalVerticalRatio, CarvingMask pCarvingMask) {
         Random random = new Random(pSeed);
         float[] afloat = this.initWidthFactors(pContext, pConfig, random);
         float f = 0.0F;

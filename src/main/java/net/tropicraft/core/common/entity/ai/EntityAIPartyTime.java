@@ -62,7 +62,7 @@ public class EntityAIPartyTime extends Goal
 
         BlockPos blockpos = this.entityObj.blockPosition();
 
-        if ((this.entityObj.druggedTime > 0 || !this.entityObj.level.isDay() || this.entityObj.level.isRaining() && this.entityObj.level.getBiome(blockpos).getPrecipitation() != Biome.Precipitation.RAIN)) {
+        if ((this.entityObj.druggedTime > 0 || !this.entityObj.level.isDay() || this.entityObj.level.isRaining() && this.entityObj.level.getBiome(blockpos).value().getPrecipitation() != Biome.Precipitation.RAIN)) {
             if (!isTooClose()) {
                 if (entityObj.level.random.nextInt(20) == 0) {
                     return true;
@@ -87,7 +87,7 @@ public class EntityAIPartyTime extends Goal
     {
         BlockPos blockpos = this.entityObj.blockPosition();
         //return !this.entityObj.getNavigation().noPath();
-        if ((this.entityObj.druggedTime > 0 || !this.entityObj.level.isDay() || this.entityObj.level.isRaining() && this.entityObj.level.getBiome(blockpos).getPrecipitation() != Biome.Precipitation.RAIN))
+        if ((this.entityObj.druggedTime > 0 || !this.entityObj.level.isDay() || this.entityObj.level.isRaining() && this.entityObj.level.getBiome(blockpos).value().getPrecipitation() != Biome.Precipitation.RAIN))
         {
             return !isTooClose();
 
