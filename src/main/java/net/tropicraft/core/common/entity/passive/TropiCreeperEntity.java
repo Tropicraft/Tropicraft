@@ -1,6 +1,9 @@
 package net.tropicraft.core.common.entity.passive;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -18,12 +21,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.Cat;
@@ -32,6 +30,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.tropicraft.core.common.TropicraftTags;
@@ -207,6 +207,7 @@ public class TropiCreeperEntity extends PathfinderMob {
             int radius = 5;
             int radiusSq = radius * radius;
             BlockPos center = blockPosition();
+            final HolderSet<Block> smallFlowers = Registry.BLOCK.getOrCreateTag(TropicraftTags.Blocks.SMALL_FLOWERS);
             for (int i = 0; i < 3 * radiusSq; i++) {
                 BlockPos attempt = center.offset(random.nextInt((radius * 2) + 1) - radius, 0, random.nextInt((radius * 2) + 1) - radius);
                 if (attempt.distSqr(center) < radiusSq) {
@@ -215,7 +216,7 @@ public class TropiCreeperEntity extends PathfinderMob {
                         attempt = attempt.below();
                     }
                     attempt = attempt.above();
-                    BlockState state = TropicraftTags.Blocks.SMALL_FLOWERS.getRandomElement(random).defaultBlockState();
+                    final BlockState state = smallFlowers.getRandomElement(random).map(Holder::value).orElse(Blocks.AIR).defaultBlockState();
                     if (state.canSurvive(level, attempt)) {
                         level.setBlockAndUpdate(attempt, state);
                     }
