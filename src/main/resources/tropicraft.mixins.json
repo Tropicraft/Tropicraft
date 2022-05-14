@@ -4,7 +4,9 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "tropicraft.refmap.json",
   "mixins": [
-    "worldgen.RegistryReadOpsMixin"
+    "worldgen.DimensionTypeMixin",
+    "worldgen.RegistryCodecsMixin",
+    "worldgen.RegistryLoaderMixin"
   ],
   "injectors": {
     "defaultRequire": 1
