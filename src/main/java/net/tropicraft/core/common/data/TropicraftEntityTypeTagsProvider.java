@@ -1,17 +1,17 @@
 package net.tropicraft.core.common.data;
 
-import java.util.Arrays;
-import java.util.function.IntFunction;
-import java.util.function.Supplier;
-
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.tags.Tag.Named;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.entity.TropicraftEntities;
+
+import java.util.Arrays;
+import java.util.function.IntFunction;
+import java.util.function.Supplier;
 
 public class TropicraftEntityTypeTagsProvider extends EntityTypeTagsProvider {
 
@@ -30,7 +30,7 @@ public class TropicraftEntityTypeTagsProvider extends EntityTypeTagsProvider {
     }
 
     @SafeVarargs
-    private final void appendToTag(Named<EntityType<?>> tag, Supplier<? extends EntityType<?>>... types) {
+    private final void appendToTag(TagKey<EntityType<?>> tag, Supplier<? extends EntityType<?>>... types) {
         tag(tag).add(resolveAll(EntityType<?>[]::new, types));
     }
 
