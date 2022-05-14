@@ -5,8 +5,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
 import net.tropicraft.core.common.Util;
@@ -15,7 +13,6 @@ import net.tropicraft.core.common.dimension.feature.tree.TropicraftTreeDecorator
 
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 import java.util.function.BiConsumer;
 
 public class PianguasTreeDecorator extends TreeDecorator {
@@ -37,7 +34,7 @@ public class PianguasTreeDecorator extends TreeDecorator {
 
     @Override
     protected TreeDecoratorType<?> type() {
-        return TropicraftTreeDecorators.PIANGUAS;
+        return TropicraftTreeDecorators.PIANGUAS.get();
     }
 
     @Override

@@ -3,7 +3,6 @@ package net.tropicraft.core.common.dimension.feature.tree.mangrove;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,7 +25,7 @@ public final class SmallMangroveFoliagePlacer extends FoliagePlacer {
 
     @Override
     protected FoliagePlacerType<?> type() {
-        return TropicraftFoliagePlacers.SMALL_MANGROVE;
+        return TropicraftFoliagePlacers.SMALL_MANGROVE.get();
     }
 
     @Override

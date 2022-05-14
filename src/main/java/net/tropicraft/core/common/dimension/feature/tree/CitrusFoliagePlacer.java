@@ -3,9 +3,7 @@ package net.tropicraft.core.common.dimension.feature.tree;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
-import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
@@ -13,7 +11,6 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 
 import java.util.Random;
-import java.util.Set;
 import java.util.function.BiConsumer;
 
 public final class CitrusFoliagePlacer extends FoliagePlacer {
@@ -27,7 +24,7 @@ public final class CitrusFoliagePlacer extends FoliagePlacer {
 
     @Override
     protected FoliagePlacerType<?> type() {
-        return TropicraftFoliagePlacers.CITRUS;
+        return TropicraftFoliagePlacers.CITRUS.get();
     }
 
     @Override

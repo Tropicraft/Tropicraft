@@ -1,21 +1,24 @@
 package net.tropicraft.core.common.dimension.feature.tree;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.dimension.feature.tree.mangrove.MangroveTrunkPlacer;
 import net.tropicraft.core.common.dimension.feature.tree.mangrove.SmallMangroveTrunkPlacer;
 
 public final class TropicraftTrunkPlacers {
-    public static final TrunkPlacerType<MangroveTrunkPlacer> MANGROVE = register("mangrove", MangroveTrunkPlacer.CODEC);
-    public static final TrunkPlacerType<SmallMangroveTrunkPlacer> SMALL_MANGROVE = register("small_mangrove", SmallMangroveTrunkPlacer.CODEC);
-    public static final TrunkPlacerType<CitrusTrunkPlacer> CITRUS = register("citrus", CitrusTrunkPlacer.CODEC);
-    public static final TrunkPlacerType<PleodendronTrunkPlacer> PLEODENDRON = register("pleodendron", PleodendronTrunkPlacer.CODEC);
+    public static final DeferredRegister<TrunkPlacerType<?>> REGISTER = DeferredRegister.create(Registry.TRUNK_PLACER_TYPE_REGISTRY, Constants.MODID);
 
-    private static <T extends TrunkPlacer> TrunkPlacerType<T> register(String name, Codec<T> codec) {
-        return Registry.register(Registry.TRUNK_PLACER_TYPES, new ResourceLocation(Constants.MODID, name), new TrunkPlacerType<>(codec));
+    public static final RegistryObject<TrunkPlacerType<?>> MANGROVE = register("mangrove", MangroveTrunkPlacer.CODEC);
+    public static final RegistryObject<TrunkPlacerType<?>> SMALL_MANGROVE = register("small_mangrove", SmallMangroveTrunkPlacer.CODEC);
+    public static final RegistryObject<TrunkPlacerType<?>> CITRUS = register("citrus", CitrusTrunkPlacer.CODEC);
+    public static final RegistryObject<TrunkPlacerType<?>> PLEODENDRON = register("pleodendron", PleodendronTrunkPlacer.CODEC);
+
+    private static <T extends TrunkPlacer> RegistryObject<TrunkPlacerType<?>> register(String name, Codec<T> codec) {
+        return REGISTER.register(name, () -> new TrunkPlacerType<>(codec));
     }
 }

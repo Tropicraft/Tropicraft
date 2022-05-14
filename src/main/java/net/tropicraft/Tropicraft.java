@@ -103,8 +103,9 @@ public class Tropicraft {
         TropicraftBlockEntityTypes.BLOCK_ENTITIES.register(modBus);
         TropicraftEntities.ENTITIES.register(modBus);
         TropicraftCarvers.CARVERS.register(modBus);
-//        TropicraftFoliagePlacers.FOLIAGE_PLACERS.register(modBus);
-//        TropicraftTreeDecorators.TREE_DECORATORS.register(modBus);
+        TropicraftFoliagePlacers.REGISTER.register(modBus);
+        TropicraftTrunkPlacers.REGISTER.register(modBus);
+        TropicraftTreeDecorators.REGISTER.register(modBus);
         TropicraftFeatures.FEATURES.register(modBus);
         TropicraftFeatures.STRUCTURES.register(modBus);
         TropicraftBlockStateProviders.BLOCK_STATE_PROVIDERS.register(modBus);

@@ -6,21 +6,19 @@ import it.unimi.dsi.fastutil.ints.IntArrayFIFOQueue;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.LevelSimulatedRW;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.levelgen.feature.TreeFeature;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.FancyTrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.material.Material;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.block.MangroveRootsBlock;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftTrunkPlacers;
@@ -28,7 +26,6 @@ import net.tropicraft.core.common.dimension.feature.tree.TropicraftTrunkPlacers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 import java.util.function.BiConsumer;
 
 public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
@@ -59,7 +56,7 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
 
     @Override
     protected TrunkPlacerType<?> type() {
-        return TropicraftTrunkPlacers.MANGROVE;
+        return TropicraftTrunkPlacers.MANGROVE.get();
     }
 
 
