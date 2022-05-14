@@ -4,10 +4,9 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -21,20 +20,20 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class SpawnerProcessor extends StructureProcessor {
-    public static final SpawnerProcessor IGUANA = new SpawnerProcessor(ImmutableList.of(TropicraftEntities.IGUANA.get()));
-    public static final SpawnerProcessor ASHEN = new SpawnerProcessor(ImmutableList.of(TropicraftEntities.ASHEN.get()));
-    public static final SpawnerProcessor EIH = new SpawnerProcessor(ImmutableList.of(TropicraftEntities.EIH.get()));
-    public static final SpawnerProcessor IGUANA_AND_ASHEN = new SpawnerProcessor(ImmutableList.of(TropicraftEntities.ASHEN.get(), TropicraftEntities.IGUANA.get()));
+    public static final SpawnerProcessor IGUANA = new SpawnerProcessor(ImmutableList.of(TropicraftEntities.IGUANA.getId()));
+    public static final SpawnerProcessor ASHEN = new SpawnerProcessor(ImmutableList.of(TropicraftEntities.ASHEN.getId()));
+    public static final SpawnerProcessor EIH = new SpawnerProcessor(ImmutableList.of(TropicraftEntities.EIH.getId()));
+    public static final SpawnerProcessor IGUANA_AND_ASHEN = new SpawnerProcessor(ImmutableList.of(TropicraftEntities.ASHEN.getId(), TropicraftEntities.IGUANA.getId()));
 
     public static final Codec<SpawnerProcessor> CODEC = RecordCodecBuilder.create(instance -> {
         return instance.group(
-                Registry.ENTITY_TYPE.byNameCodec().listOf().fieldOf("entity_types").forGetter(p -> p.entityTypes)
+                ResourceLocation.CODEC.listOf().fieldOf("entity_types").forGetter(p -> p.entityTypes)
         ).apply(instance, SpawnerProcessor::new);
     });
 
-    private final List<EntityType<?>> entityTypes;
+    private final List<ResourceLocation> entityTypes;
 
-    public SpawnerProcessor(final List<EntityType<?>> entityTypes) {
+    public SpawnerProcessor(final List<ResourceLocation> entityTypes) {
         this.entityTypes = entityTypes;
     }
 
@@ -52,9 +51,9 @@ public class SpawnerProcessor extends StructureProcessor {
             return blockInfo;
         } else {
             final CompoundTag tag = new CompoundTag();
-            String typeName = Registry.ENTITY_TYPE.getKey(entityTypes.get(0)).toString();
 
-            tag.putString("id", entityTypes.get(0).getRegistryName().getPath());
+            String typeName = entityTypes.get(0).toString();
+            tag.putString("id", typeName);
 
             blockInfo.nbt.getCompound("SpawnData").putString("id", typeName);
             // TODO not working
