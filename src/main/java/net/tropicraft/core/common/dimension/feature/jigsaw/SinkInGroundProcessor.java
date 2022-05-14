@@ -3,7 +3,6 @@ package net.tropicraft.core.common.dimension.feature.jigsaw;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -11,15 +10,12 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
-import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 import javax.annotation.Nullable;
 
 public class SinkInGroundProcessor extends CheatyStructureProcessor {
     public static final Codec<SinkInGroundProcessor> CODEC = Codec.unit(new SinkInGroundProcessor());
-
-    static final StructureProcessorType<SinkInGroundProcessor> TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Constants.MODID + ":sink_in_ground", () -> CODEC);
 
     @SuppressWarnings("deprecation")
 	@Override
@@ -65,6 +61,6 @@ public class SinkInGroundProcessor extends CheatyStructureProcessor {
 
     @Override
     protected StructureProcessorType<?> getType() {
-        return TYPE;
+        return TropicraftProcessorTypes.SINK_IN_GROUND.get();
     }
 }

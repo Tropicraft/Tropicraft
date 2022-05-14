@@ -3,19 +3,18 @@ package net.tropicraft.core.common.dimension.feature.jigsaw;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import net.tropicraft.Constants;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 
 import javax.annotation.Nullable;
@@ -33,8 +32,6 @@ public class SpawnerProcessor extends StructureProcessor {
         ).apply(instance, SpawnerProcessor::new);
     });
 
-    public static final StructureProcessorType<SpawnerProcessor> TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Constants.MODID + ":spawner_processor", () -> CODEC);
-
     private final List<EntityType<?>> entityTypes;
 
     public SpawnerProcessor(final List<EntityType<?>> entityTypes) {
@@ -43,7 +40,7 @@ public class SpawnerProcessor extends StructureProcessor {
 
     @Override
     protected StructureProcessorType<?> getType() {
-        return TYPE;
+        return TropicraftProcessorTypes.SPAWNER.get();
     }
 
     @Override

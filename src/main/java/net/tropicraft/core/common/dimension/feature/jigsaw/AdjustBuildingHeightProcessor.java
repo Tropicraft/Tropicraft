@@ -3,14 +3,12 @@ package net.tropicraft.core.common.dimension.feature.jigsaw;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureEntityInfo;
-import net.tropicraft.Constants;
 
 public class AdjustBuildingHeightProcessor extends CheatyStructureProcessor {
     public static final Codec<AdjustBuildingHeightProcessor> CODEC = RecordCodecBuilder.create(instance -> {
@@ -19,8 +17,6 @@ public class AdjustBuildingHeightProcessor extends CheatyStructureProcessor {
         ).apply(instance, AdjustBuildingHeightProcessor::new);
     });
 
-    static final StructureProcessorType<AdjustBuildingHeightProcessor> TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Constants.MODID + ":adjust_building_height", () -> CODEC);
-    
     private final int base;
 
     public AdjustBuildingHeightProcessor(int base) {
@@ -45,6 +41,6 @@ public class AdjustBuildingHeightProcessor extends CheatyStructureProcessor {
 
     @Override
     protected StructureProcessorType<?> getType() {
-        return TYPE;
+        return TropicraftProcessorTypes.ADJUST_BUILDING_HEIGHT.get();
     }
 }

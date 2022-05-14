@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.Direction.AxisDirection;
-import net.minecraft.core.Registry;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
@@ -15,7 +14,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
-import net.tropicraft.Constants;
 
 public class SmoothingGravityProcessor extends PathStructureProcessor {
 
@@ -25,8 +23,6 @@ public class SmoothingGravityProcessor extends PathStructureProcessor {
                 Codec.INT.fieldOf("offset").forGetter(p -> p.offset)
         ).apply(instance, SmoothingGravityProcessor::new);
     });
-
-    static final StructureProcessorType<SmoothingGravityProcessor> TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Constants.MODID + ":smooth_gravity", () -> CODEC);
 
     private final Heightmap.Types heightmap;
     private final int offset;
@@ -59,6 +55,6 @@ public class SmoothingGravityProcessor extends PathStructureProcessor {
 
     @Override
     protected StructureProcessorType<?> getType() {
-        return TYPE;
+        return TropicraftProcessorTypes.SMOOTHING_GRAVITY.get();
     }
 }

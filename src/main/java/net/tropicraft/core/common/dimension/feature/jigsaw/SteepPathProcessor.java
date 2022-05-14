@@ -3,7 +3,6 @@ package net.tropicraft.core.common.dimension.feature.jigsaw;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.LadderBlock;
 import net.minecraft.world.level.block.StairBlock;
@@ -12,13 +11,10 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 public class SteepPathProcessor extends PathStructureProcessor {
     public static final Codec<SteepPathProcessor> CODEC = Codec.unit(new SteepPathProcessor());
-
-    static final StructureProcessorType<SteepPathProcessor> TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Constants.MODID + ":steep_path", () -> CODEC);
 
     @Override
     public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos seedPos, BlockPos pos2, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo blockInfo, StructurePlaceSettings placementSettingsIn, StructureTemplate template) {
@@ -102,7 +98,7 @@ public class SteepPathProcessor extends PathStructureProcessor {
     
     @Override
     protected StructureProcessorType<?> getType() {
-        return TYPE;
+        return TropicraftProcessorTypes.STEEP_PATH.get();
     }
 
 }

@@ -20,7 +20,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
-import net.tropicraft.Constants;
 
 import java.util.List;
 import java.util.Random;
@@ -32,8 +31,6 @@ public class NoRotateSingleJigsawPiece extends SinglePoolElement {
         return instance.group(templateCodec(), processorsCodec(), projectionCodec())
                 .apply(instance, NoRotateSingleJigsawPiece::new);
     });
-
-    private static final StructurePoolElementType<NoRotateSingleJigsawPiece> TYPE = StructurePoolElementType.register(Constants.MODID + ":single_no_rotate", CODEC);
 
     public NoRotateSingleJigsawPiece(Either<ResourceLocation, StructureTemplate> template, Holder<StructureProcessorList> processors, StructureTemplatePool.Projection placementBehaviour) {
         super(template, processors, placementBehaviour);
@@ -49,7 +46,7 @@ public class NoRotateSingleJigsawPiece extends SinglePoolElement {
 
     @Override
     public StructurePoolElementType<?> getType() {
-        return TYPE;
+        return TropicraftStructurePoolElementTypes.SINGLE_NO_ROTATE.get();
     }
 
     @Override

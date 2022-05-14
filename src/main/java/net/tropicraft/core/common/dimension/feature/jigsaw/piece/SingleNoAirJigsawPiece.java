@@ -12,7 +12,6 @@ import net.minecraft.world.level.levelgen.structure.pools.SinglePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElementType;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.*;
-import net.tropicraft.Constants;
 
 import java.util.function.Function;
 
@@ -23,8 +22,6 @@ public class SingleNoAirJigsawPiece extends SinglePoolElement {
             projectionCodec(),
             Codec.BOOL.optionalFieldOf("unprojected", false).forGetter(p -> p.unprojected)
     ).apply(i, SingleNoAirJigsawPiece::new));
-
-    private static final StructurePoolElementType<SingleNoAirJigsawPiece> TYPE = StructurePoolElementType.register(Constants.MODID + ":single_no_air", CODEC);
 
     private boolean unprojected;
 
@@ -47,7 +44,7 @@ public class SingleNoAirJigsawPiece extends SinglePoolElement {
 
     @Override
     public StructurePoolElementType<?> getType() {
-        return TYPE;
+        return TropicraftStructurePoolElementTypes.SINGLE_NO_AIR.get();
     }
 
     @Override

@@ -2,7 +2,6 @@ package net.tropicraft.core.common.dimension.feature;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.block.Rotation;
@@ -18,11 +17,10 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pools.JigsawPlacement;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
-import net.tropicraft.Constants;
 import net.tropicraft.core.common.dimension.feature.jigsaw.piece.NoRotateSingleJigsawPiece;
 import net.tropicraft.core.common.dimension.feature.jigsaw.piece.PieceWithGenerationBounds;
+import net.tropicraft.core.common.dimension.feature.jigsaw.piece.TropicraftStructurePieceTypes;
 
-import java.util.Locale;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -57,12 +55,6 @@ public class HomeTreeStructure extends StructureFeature<JigsawConfiguration> {
                 isValid(generator, pos.offset(4, 0, -4), y, level);
     }
 
-    private static final StructurePieceType TYPE = setFullContextPieceId(Piece::new, Constants.MODID + ":home_tree");
-
-    private static StructurePieceType setFullContextPieceId(StructurePieceType p_191152_, String p_191153_) {
-        return Registry.register(Registry.STRUCTURE_PIECE, p_191153_.toLowerCase(Locale.ROOT), p_191152_);
-    }
-
     public static class Piece extends PoolElementStructurePiece {
         public Piece(StructureManager templates, StructurePoolElement piece, BlockPos pos, int groundLevelDelta, Rotation rotation, BoundingBox bounds) {
             super(templates, piece, pos, groundLevelDelta, rotation, bounds);
@@ -92,7 +84,7 @@ public class HomeTreeStructure extends StructureFeature<JigsawConfiguration> {
 
         @Override
         public StructurePieceType getType() {
-            return TYPE;
+            return TropicraftStructurePieceTypes.HOME_TREE.get();
         }
     }
 }
