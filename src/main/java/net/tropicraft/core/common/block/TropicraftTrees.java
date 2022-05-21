@@ -43,10 +43,10 @@ public class TropicraftTrees {
     public static final BeehiveDecorator BEEHIVE_002 = new BeehiveDecorator(0.02F);
     public static final BeehiveDecorator BEEHIVE_005 = new BeehiveDecorator(0.05F);
 
-    public static final AbstractTreeGrower GRAPEFRUIT = createFruit(TropicraftBlocks.GRAPEFRUIT_LEAVES, () -> TropicraftBlocks.GRAPEFRUIT_SAPLING);
-    public static final AbstractTreeGrower LEMON = createFruit(TropicraftBlocks.LEMON_LEAVES, () -> TropicraftBlocks.LEMON_SAPLING);
-    public static final AbstractTreeGrower LIME = createFruit(TropicraftBlocks.LIME_LEAVES, () -> TropicraftBlocks.LIME_SAPLING);
-    public static final AbstractTreeGrower ORANGE = createFruit(TropicraftBlocks.ORANGE_LEAVES, () -> TropicraftBlocks.ORANGE_SAPLING);
+    public static final AbstractTreeGrower GRAPEFRUIT = createFruit(TropicraftBlocks.GRAPEFRUIT_LEAVES);
+    public static final AbstractTreeGrower LEMON = createFruit(TropicraftBlocks.LEMON_LEAVES);
+    public static final AbstractTreeGrower LIME = createFruit(TropicraftBlocks.LIME_LEAVES);
+    public static final AbstractTreeGrower ORANGE = createFruit(TropicraftBlocks.ORANGE_LEAVES);
     public static final AbstractTreeGrower PAPAYA = create((server, random, beehive) -> {
         TreeConfiguration config = new TreeConfiguration.TreeConfigurationBuilder(
                 BlockStateProvider.simple(TropicraftBlocks.PAPAYA_LOG.get()),
@@ -88,7 +88,7 @@ public class TropicraftTrees {
     public static final AbstractTreeGrower TEA_MANGROVE = create("tea_mangrove");
     public static final AbstractTreeGrower BLACK_MANGROVE = create("black_mangrove");
 
-    private static AbstractTreeGrower createFruit(Supplier<? extends Block> fruitLeaves, Supplier<Supplier<? extends Block>> fruitSapling) {
+    private static AbstractTreeGrower createFruit(Supplier<? extends Block> fruitLeaves) {
         return create((server, random, beehive) -> {
             WeightedStateProvider leaves = new WeightedStateProvider(
                     SimpleWeightedRandomList.<BlockState>builder()

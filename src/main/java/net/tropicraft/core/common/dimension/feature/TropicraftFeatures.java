@@ -9,7 +9,10 @@ import net.minecraft.data.worldgen.features.OreFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.feature.*;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.StructureFeature;
+import net.minecraft.world.level.levelgen.feature.WeightedPlacedFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.*;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.placement.*;
@@ -18,10 +21,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.tropicraft.Constants;
-import net.tropicraft.core.common.dimension.feature.config.FruitTreeConfig;
 import net.tropicraft.core.common.dimension.feature.config.RainforestVinesConfig;
 import net.tropicraft.core.common.dimension.feature.tree.*;
-import net.tropicraft.core.common.dimension.feature.tree.mangrove.MangroveTreeFeature;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,7 +33,6 @@ public class TropicraftFeatures {
     public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, Constants.MODID);
     public static final DeferredRegister<StructureFeature<?>> STRUCTURES = DeferredRegister.create(ForgeRegistries.STRUCTURE_FEATURES, Constants.MODID);
 
-    public static final RegistryObject<FruitTreeFeature> FRUIT_TREE = register("fruit_tree", () -> new FruitTreeFeature(FruitTreeConfig.CODEC));
     public static final RegistryObject<PalmTreeFeature> NORMAL_PALM_TREE = register("normal_palm_tree", () -> new NormalPalmTreeFeature(NoneFeatureConfiguration.CODEC));
     public static final RegistryObject<PalmTreeFeature> CURVED_PALM_TREE = register("curved_palm_tree", () -> new CurvedPalmTreeFeature(NoneFeatureConfiguration.CODEC));
     public static final RegistryObject<PalmTreeFeature> LARGE_PALM_TREE = register("large_palm_tree", () -> new LargePalmTreeFeature(NoneFeatureConfiguration.CODEC));
@@ -51,7 +51,6 @@ public class TropicraftFeatures {
     public static final RegistryObject<CoffeePlantFeature> COFFEE_BUSH = register("coffee_bush", () -> new CoffeePlantFeature(NoneFeatureConfiguration.CODEC));
 
     public static final RegistryObject<ReedsFeature> REEDS = register("reeds", () -> new ReedsFeature(NoneFeatureConfiguration.CODEC));
-    public static final RegistryObject<MangroveTreeFeature> MANGROVE_TREE = register("mangrove_tree", () -> new MangroveTreeFeature((TreeFeature) Feature.TREE, TreeConfiguration.CODEC));
 
     private static <T extends Feature<?>> RegistryObject<T> register(final String name, final Supplier<T> sup) {
         return FEATURES.register(name, sup);
