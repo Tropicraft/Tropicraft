@@ -17,13 +17,17 @@ public final class TropicraftTerrainShaper {
         CubicSpline<TerrainShaper.Point> midInlandDepth = buildErosionOffsetSpline(-0.1F, 0.03F, 0.1F, 0.1F, 0.01F, -0.03F, false, false, offsetTransform);
         CubicSpline<TerrainShaper.Point> farInlandDepth = buildErosionOffsetSpline(-0.1F, 0.03F, 0.1F, 0.7F, 0.01F, -0.03F, true, true, offsetTransform);
         CubicSpline<TerrainShaper.Point> peaksDepth = buildErosionOffsetSpline(-0.05F, 0.03F, 0.1F, 1.0F, 0.01F, 0.01F, true, true, offsetTransform);
+
+        CubicSpline<TerrainShaper.Point> lagoonSpline = buildLagoonOffset(offsetTransform);
+
         // Depth sampler
         CubicSpline<TerrainShaper.Point> offsetSampler = CubicSpline.builder(TerrainShaper.Coordinate.CONTINENTS, offsetTransform)
                 .addPoint(-1.1F, 0.140F, 0.0F)
                 .addPoint(-0.92F, -0.2222F, 0.0F)
                 .addPoint(-0.61F, -0.2222F, 0.0F)
                 .addPoint(-0.54F, -0.12F, 0.0F)
-                .addPoint(-0.18F, buildLagoonOffset(), 0.0F)
+                .addPoint(-0.28F, lagoonSpline, 0.0F)
+                .addPoint(-0.18F, lagoonSpline, 0.0F)
                 .addPoint(-0.16F, nearInlandDepth, 0.0F)
                 .addPoint(-0.15F, nearInlandDepth, 0.0F)
                 .addPoint(-0.1F, midInlandDepth, 0.0F)
@@ -163,8 +167,8 @@ public final class TropicraftTerrainShaper {
         return erosionSplineBuilder.build();
     }
 
-    private static CubicSpline<TerrainShaper.Point> buildLagoonOffset() {
-        return CubicSpline.builder(TerrainShaper.Coordinate.EROSION)
+    private static CubicSpline<TerrainShaper.Point> buildLagoonOffset(ToFloatFunction<Float> offsetTransform) {
+        return CubicSpline.builder(TerrainShaper.Coordinate.EROSION, offsetTransform)
                 .addPoint(-1.0f, -0.12F, 0)
                 .addPoint(0.4f, -0.06F, 0)
                 .addPoint(1.0f, -0.01F, 0)
