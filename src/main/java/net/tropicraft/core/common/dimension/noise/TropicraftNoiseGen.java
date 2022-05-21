@@ -7,7 +7,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
-import net.tropicraft.core.mixin.worldgen.NoiseRouterDataAccessor;
 
 public final class TropicraftNoiseGen {
     private static final float ORE_THICKNESS = 0.08F;

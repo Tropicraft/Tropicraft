@@ -4,9 +4,7 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "tropicraft.refmap.json",
   "mixins": [
-    "worldgen.HolderReferenceMixin",
     "worldgen.LevelStemAccessor",
-    "worldgen.NoiseRouterDataAccessor",
     "worldgen.RegistryCodecsMixin",
     "worldgen.RegistryLoaderMixin"
   ],
