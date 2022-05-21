@@ -117,7 +117,7 @@ public final class TropicraftTreeFeatures {
     public static final RegistryObject<ConfiguredFeature<?, ?>> BLACK_MANGROVE = REGISTER.feature("black_mangrove", Feature.TREE, () ->
             new TreeConfiguration.TreeConfigurationBuilder(
                     REGISTER.stateProvider(TropicraftBlocks.BLACK_MANGROVE_LOG),
-                    new MangroveTrunkPlacer(4, 3, 0, TropicraftBlocks.LIGHT_MANGROVE_ROOTS.get(), true, false),
+                    new MangroveTrunkPlacer(4, 3, 0, TropicraftBlocks.BLACK_MANGROVE_ROOTS.get(), true, false),
                     REGISTER.stateProvider(TropicraftBlocks.BLACK_MANGROVE_LEAVES),
                     MANGROVE_FOLIAGE.get(),
                     MANGROVE_MINIMUM_SIZE
