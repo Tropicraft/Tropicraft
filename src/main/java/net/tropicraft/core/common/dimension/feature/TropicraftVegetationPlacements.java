@@ -137,7 +137,7 @@ public final class TropicraftVegetationPlacements {
     ));
 
     public static final RegistryObject<PlacedFeature> MANGROVE_REEDS = REGISTER.placed("mangrove_reeds", TropicraftVegetationFeatures.MANGROVE_REEDS, () -> List.of(
-            CountPlacement.of(48),
+            CountPlacement.of(2),
             InSquarePlacement.spread(),
             HeightmapPlacement.onHeightmap(Heightmap.Types.OCEAN_FLOOR_WG),
             BiomeFilter.biome()
