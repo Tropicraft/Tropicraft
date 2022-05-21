@@ -6,12 +6,10 @@ import net.minecraft.util.ToFloatFunction;
 import net.minecraft.world.level.biome.TerrainShaper;
 
 public final class TropicraftTerrainShaper {
-    private static final ToFloatFunction<Float> NO_TRANSFORM = (p_187318_) -> {
-        return p_187318_;
-    };
+    private static final ToFloatFunction<Float> NO_TRANSFORM = value -> value;
 
     public static TerrainShaper tropics() {
-        ToFloatFunction<Float> offsetTransform = NO_TRANSFORM;
+        ToFloatFunction<Float> offsetTransform = offset -> offset + 0.5f;
         ToFloatFunction<Float> erosionTransform = NO_TRANSFORM;
         ToFloatFunction<Float> jaggednessTransform = NO_TRANSFORM;
 
@@ -19,10 +17,6 @@ public final class TropicraftTerrainShaper {
         CubicSpline<TerrainShaper.Point> midInlandDepth = buildErosionOffsetSpline(-0.1F, 0.03F, 0.1F, 0.1F, 0.01F, -0.03F, false, false, offsetTransform);
         CubicSpline<TerrainShaper.Point> farInlandDepth = buildErosionOffsetSpline(-0.1F, 0.03F, 0.1F, 0.7F, 0.01F, -0.03F, true, true, offsetTransform);
         CubicSpline<TerrainShaper.Point> peaksDepth = buildErosionOffsetSpline(-0.05F, 0.03F, 0.1F, 1.0F, 0.01F, 0.01F, true, true, offsetTransform);
-        float f = -0.51F;
-        float f1 = -0.4F;
-        float f2 = 0.1F;
-        float f3 = -0.15F;
         // Depth sampler
         CubicSpline<TerrainShaper.Point> offsetSampler = CubicSpline.builder(TerrainShaper.Coordinate.CONTINENTS, offsetTransform)
                 .addPoint(-1.1F, 0.140F, 0.0F)
