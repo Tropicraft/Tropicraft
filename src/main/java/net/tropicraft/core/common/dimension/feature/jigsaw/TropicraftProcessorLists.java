@@ -1,70 +1,53 @@
 package net.tropicraft.core.common.dimension.feature.jigsaw;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.core.Holder;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.Registry;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
-import net.tropicraft.core.common.data.WorldgenDataConsumer;
 
 import java.util.Arrays;
 import java.util.List;
 
 public final class TropicraftProcessorLists {
-    public final Holder<StructureProcessorList> koaTownCenters;
-    public final Holder<StructureProcessorList> koaBuildings;
-    public final Holder<StructureProcessorList> koaPath;
+    public static final DeferredRegister<StructureProcessorList> REGISTER = DeferredRegister.create(Registry.PROCESSOR_LIST_REGISTRY, Constants.MODID);
 
-    public final Holder<StructureProcessorList> homeTreeBase;
-    public final Holder<StructureProcessorList> homeTreeStart;
+    private static final StructureSupportsProcessor FENCE_EXTENDER = new StructureSupportsProcessor(false, List.of(TropicraftBlocks.BAMBOO_FENCE.getId()));
 
-    public TropicraftProcessorLists(WorldgenDataConsumer<StructureProcessorList> worldgen) {
-        Register processors = new Register(worldgen);
+    public static final RegistryObject<StructureProcessorList> KOA_TOWN_CENTERS = register(
+            "koa_village/town_centers",
+            FENCE_EXTENDER,
+            new StructureVoidProcessor()
+    );
 
-        StructureSupportsProcessor fenceExtender = new StructureSupportsProcessor(false, ImmutableList.of(TropicraftBlocks.BAMBOO_FENCE.getId()));
+    public static final RegistryObject<StructureProcessorList> KOA_BUILDINGS = register(
+            "koa_village/buildings",
+            new AdjustBuildingHeightProcessor(126),
+            FENCE_EXTENDER,
+            new StructureVoidProcessor()
+    );
 
-        this.koaTownCenters = processors.register(
-                "koa_village/town_centers",
-                fenceExtender,
-                new StructureVoidProcessor()
-        );
+    public static final RegistryObject<StructureProcessorList> KOA_PATH = register(
+            "koa_village/koa_path",
+            new SmoothingGravityProcessor(Heightmap.Types.WORLD_SURFACE_WG, -1),
+            new SinkInGroundProcessor(),
+            new SteepPathProcessor(),
+            new StructureSupportsProcessor(false, List.of(TropicraftBlocks.BAMBOO_FENCE.getId()))
+    );
 
-        this.koaBuildings = processors.register(
-                "koa_village/buildings",
-                new AdjustBuildingHeightProcessor(126),
-                fenceExtender,
-                new StructureVoidProcessor()
-        );
+    // TODO add SpawnerProcessor
+    public static final RegistryObject<StructureProcessorList> HOME_TREE_BASE = register("home_tree/base", new AirToCaveAirProcessor());
+    public static final RegistryObject<StructureProcessorList> HOME_TREE_START = register(
+            "home_tree/start",
+            new AirToCaveAirProcessor(),
+            new StructureSupportsProcessor(true, ImmutableList.of(TropicraftBlocks.MAHOGANY_LOG.getId()))
+    );
 
-        this.koaPath = processors.register(
-                "koa_village/koa_path",
-                new SmoothingGravityProcessor(Heightmap.Types.WORLD_SURFACE_WG, -1),
-                new SinkInGroundProcessor(),
-                new SteepPathProcessor(),
-                new StructureSupportsProcessor(false, List.of(TropicraftBlocks.BAMBOO_FENCE.getId()))
-        );
-
-        // TODO add SpawnerProcessor
-        this.homeTreeBase = processors.register("home_tree/base", new AirToCaveAirProcessor());
-        this.homeTreeStart = processors.register(
-                "home_tree/start",
-                new AirToCaveAirProcessor(),
-                new StructureSupportsProcessor(true, ImmutableList.of(TropicraftBlocks.MAHOGANY_LOG.getId()))
-        );
-    }
-
-    static final class Register {
-        private final WorldgenDataConsumer<StructureProcessorList> worldgen;
-
-        Register(WorldgenDataConsumer<StructureProcessorList> worldgen) {
-            this.worldgen = worldgen;
-        }
-
-        public Holder<StructureProcessorList> register(String id, StructureProcessor... processors) {
-            return this.worldgen.register(new ResourceLocation(Constants.MODID, id), new StructureProcessorList(Arrays.asList(processors)));
-        }
+    private static RegistryObject<StructureProcessorList> register(String id, StructureProcessor... processors) {
+        return REGISTER.register(id, () -> new StructureProcessorList(Arrays.asList(processors)));
     }
 }

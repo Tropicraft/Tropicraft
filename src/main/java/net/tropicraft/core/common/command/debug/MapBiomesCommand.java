@@ -26,23 +26,20 @@ public class MapBiomesCommand {
     private static final Object2IntOpenHashMap<ResourceLocation> COLORS = new Object2IntOpenHashMap<>();
 
     static {
-        COLORS.put(TropicraftBiomes.TROPICS.location(), 0x7cde73);
+        COLORS.put(TropicraftBiomes.TROPICS.getId(), 0x7cde73);
 
-        COLORS.put(TropicraftBiomes.RAINFOREST_PLAINS.location(), 0x3fb535);
-        COLORS.put(TropicraftBiomes.RAINFOREST_HILLS.location(), 0x3fb535);
-        COLORS.put(TropicraftBiomes.RAINFOREST_MOUNTAINS.location(), 0x3fb535);
-        COLORS.put(TropicraftBiomes.RAINFOREST_ISLAND_MOUNTAINS.location(), 0x3cc230);
-        COLORS.put(TropicraftBiomes.OSA_RAINFOREST.location(), 0x58d14d);
-        COLORS.put(TropicraftBiomes.BAMBOO_RAINFOREST.location(), 0x57c23c);
+        COLORS.put(TropicraftBiomes.RAINFOREST.getId(), 0x3fb535);
+        COLORS.put(TropicraftBiomes.OSA_RAINFOREST.getId(), 0x58d14d);
+        COLORS.put(TropicraftBiomes.BAMBOO_RAINFOREST.getId(), 0x57c23c);
 
-        COLORS.put(TropicraftBiomes.MANGROVES.location(), 0x448733);
-        COLORS.put(TropicraftBiomes.OVERGROWN_MANGROVES.location(), 0x5d8733);
+        COLORS.put(TropicraftBiomes.MANGROVES.getId(), 0x448733);
+        COLORS.put(TropicraftBiomes.OVERGROWN_MANGROVES.getId(), 0x5d8733);
 
-        COLORS.put(TropicraftBiomes.TROPICS_OCEAN.location(), 0x4fc1c9);
-        COLORS.put(TropicraftBiomes.TROPICS_RIVER.location(), 0x4fc1c9);
-        COLORS.put(TropicraftBiomes.KELP_FOREST.location(), 0x4fc9af);
+        COLORS.put(TropicraftBiomes.OCEAN.getId(), 0x4fc1c9);
+        COLORS.put(TropicraftBiomes.RIVER.getId(), 0x4fc1c9);
+        COLORS.put(TropicraftBiomes.KELP_FOREST.getId(), 0x4fc9af);
 
-        COLORS.put(TropicraftBiomes.TROPICS_BEACH.location(), 0xe8e397);
+        COLORS.put(TropicraftBiomes.BEACH.getId(), 0xe8e397);
     }
 
     public static void register(final CommandDispatcher<CommandSourceStack> dispatcher) {

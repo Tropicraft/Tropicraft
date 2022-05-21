@@ -47,15 +47,19 @@ import net.tropicraft.core.common.data.*;
 import net.tropicraft.core.common.data.loot.TropicraftLootConditions;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomeSource;
+import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
 import net.tropicraft.core.common.dimension.carver.TropicraftCarvers;
+import net.tropicraft.core.common.dimension.carver.TropicraftConfiguredCarvers;
 import net.tropicraft.core.common.dimension.chunk.TropicraftChunkGenerator;
-import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
+import net.tropicraft.core.common.dimension.feature.*;
 import net.tropicraft.core.common.dimension.feature.block_state_provider.TropicraftBlockStateProviders;
 import net.tropicraft.core.common.dimension.feature.jigsaw.*;
 import net.tropicraft.core.common.dimension.feature.jigsaw.piece.*;
+import net.tropicraft.core.common.dimension.feature.pools.TropicraftTemplatePools;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftFoliagePlacers;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftTreeDecorators;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftTrunkPlacers;
+import net.tropicraft.core.common.dimension.noise.TropicraftNoiseGenSettings;
 import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.item.IColoredItem;
@@ -112,6 +116,20 @@ public class Tropicraft {
         TropicraftStructurePieceTypes.REGISTER.register(modBus);
         TropicraftStructurePoolElementTypes.REGISTER.register(modBus);
         TropicraftProcessorTypes.REGISTER.register(modBus);
+
+        TropicraftMiscFeatures.REGISTER.registerTo(modBus);
+        TropicraftMiscPlacements.REGISTER.registerTo(modBus);
+        TropicraftTreeFeatures.REGISTER.registerTo(modBus);
+        TropicraftTreePlacements.REGISTER.registerTo(modBus);
+        TropicraftVegetationFeatures.REGISTER.registerTo(modBus);
+        TropicraftVegetationPlacements.REGISTER.registerTo(modBus);
+        TropicraftProcessorLists.REGISTER.register(modBus);
+        TropicraftConfiguredCarvers.REGISTER.register(modBus);
+        TropicraftTemplatePools.REGISTER.register(modBus);
+        TropicraftConfiguredStructures.REGISTER.register(modBus);
+        TropicraftBiomes.REGISTER.register(modBus);
+        TropicraftStructureSets.REGISTER.register(modBus);
+        TropicraftNoiseGenSettings.REGISTER.register(modBus);
 
         // Hack in our item frame models the way vanilla does
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
@@ -206,7 +224,6 @@ public class Tropicraft {
             gen.addProvider(new TropicraftRecipeProvider(gen));
             gen.addProvider(new TropicraftLootTableProvider(gen));
             gen.addProvider(new TropicraftEntityTypeTagsProvider(gen, existingFileHelper));
-            gen.addProvider(new TropicraftWorldgenProvider(gen));
         }
     }
 }

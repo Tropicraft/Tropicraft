@@ -1,29 +1,25 @@
 package net.tropicraft.core.common.dimension.biome;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.QuartPos;
-import net.minecraft.data.worldgen.biome.Biomes;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.Registry;
-import net.minecraft.world.level.biome.*;
-import net.minecraft.world.level.levelgen.blending.Blender;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.biome.Climate;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.registries.RegistryObject;
 import net.tropicraft.Constants;
 
-import java.text.DecimalFormat;
-import java.util.List;
-import java.util.Objects;
 import java.util.Set;
-import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class TropicraftBiomeSource extends BiomeSource {
     public static final Codec<TropicraftBiomeSource> CODEC = RecordCodecBuilder.create(instance -> {
@@ -33,21 +29,18 @@ public class TropicraftBiomeSource extends BiomeSource {
         ).apply(instance, instance.stable(TropicraftBiomeSource::new));
     });
 
-    private static final Set<ResourceKey<Biome>> POSSIBLE_BIOMES = ImmutableSet.of(
+    private static final Set<ResourceKey<Biome>> POSSIBLE_BIOMES = Stream.of(
             TropicraftBiomes.TROPICS,
-            TropicraftBiomes.TROPICS_OCEAN,
-            TropicraftBiomes.TROPICS_RIVER,
-            TropicraftBiomes.TROPICS_BEACH,
-            TropicraftBiomes.RAINFOREST_HILLS,
-            TropicraftBiomes.RAINFOREST_PLAINS,
-            TropicraftBiomes.RAINFOREST_MOUNTAINS,
+            TropicraftBiomes.OCEAN,
+            TropicraftBiomes.RIVER,
+            TropicraftBiomes.BEACH,
+            TropicraftBiomes.RAINFOREST,
             TropicraftBiomes.BAMBOO_RAINFOREST,
-            TropicraftBiomes.RAINFOREST_ISLAND_MOUNTAINS,
             TropicraftBiomes.KELP_FOREST,
             TropicraftBiomes.MANGROVES,
             TropicraftBiomes.OVERGROWN_MANGROVES,
             TropicraftBiomes.OSA_RAINFOREST
-    );
+    ).map(RegistryObject::getKey).collect(Collectors.toSet());
 
     private final long seed;
     private final Registry<Biome> biomes;
@@ -64,7 +57,7 @@ public class TropicraftBiomeSource extends BiomeSource {
 //        this.noiseLayer = TropicraftLayerUtil.buildTropicsProcedure(seed, biomes);
 
         ImmutableList.Builder<Pair<Climate.ParameterPoint, Holder<Biome>>> builder = ImmutableList.builder();
-        new TropicraftBiomeBuilder().addBiomes(consumer -> builder.add(consumer.mapSecond(biomes::getHolderOrThrow)));
+        new TropicraftBiomeBuilder().addBiomes((point, biome) -> builder.add(Pair.of(point, biomes.getHolderOrThrow(biome.getKey()))));
 
         parameters = new Climate.ParameterList<>(builder.build());
     }

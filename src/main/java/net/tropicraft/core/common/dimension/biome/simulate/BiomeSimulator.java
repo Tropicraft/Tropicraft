@@ -5,14 +5,10 @@ import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.Reference2IntMap;
 import it.unimi.dsi.fastutil.objects.Reference2IntOpenHashMap;
 import net.minecraft.SharedConstants;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.Bootstrap;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
-import net.tropicraft.Constants;
-import net.tropicraft.core.common.block.Builder;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomeBuilder;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
 
@@ -31,13 +27,12 @@ public class BiomeSimulator {
         SharedConstants.tryDetectVersion();
         Bootstrap.bootStrap();
 
-        COLORS.put(TropicraftBiomes.TROPICS_OCEAN, 0x4eecdf);
-        COLORS.put(TropicraftBiomes.TROPICS_RIVER, 0x4eecdf);
-        COLORS.put(TropicraftBiomes.TROPICS_BEACH, 0xFADE55);
-        COLORS.put(TropicraftBiomes.RAINFOREST_PLAINS, 0x056621);
-        COLORS.put(TropicraftBiomes.TROPICS, 0x8DB360);
-        COLORS.put(TropicraftBiomes.MANGROVES, 0x528a50);
-        COLORS.put(TropicraftBiomes.RAINFOREST_ISLAND_MOUNTAINS, 0x328f4c);
+        COLORS.put(TropicraftBiomes.OCEAN.getKey(), 0x4eecdf);
+        COLORS.put(TropicraftBiomes.RIVER.getKey(), 0x4eecdf);
+        COLORS.put(TropicraftBiomes.BEACH.getKey(), 0xFADE55);
+        COLORS.put(TropicraftBiomes.RAINFOREST.getKey(), 0x056621);
+        COLORS.put(TropicraftBiomes.TROPICS.getKey(), 0x8DB360);
+        COLORS.put(TropicraftBiomes.MANGROVES.getKey(), 0x528a50);
     }
 
     public static void main(String[] args) {
@@ -47,7 +42,7 @@ public class BiomeSimulator {
 
     public static void init(NoiseSimulationHelper sampler) {
         ImmutableList.Builder<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> builder = ImmutableList.builder();
-        new TropicraftBiomeBuilder().addBiomes(builder::add);
+        new TropicraftBiomeBuilder().addBiomes((point, biome) -> builder.add(Pair.of(point, biome.getKey())));
 
         Climate.ParameterList<ResourceKey<Biome>> params = new Climate.ParameterList<>(builder.build());
 

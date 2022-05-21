@@ -7,7 +7,6 @@ import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.data.worldgen.placement.AquaticPlacements;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
@@ -27,13 +26,14 @@ import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
-import net.tropicraft.core.common.data.WorldgenDataConsumer;
 import net.tropicraft.core.common.dimension.carver.TropicraftConfiguredCarvers;
-import net.tropicraft.core.common.dimension.feature.TropicraftConfiguredFeatures;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
+import net.tropicraft.core.common.dimension.feature.TropicraftMiscPlacements;
+import net.tropicraft.core.common.dimension.feature.TropicraftVegetationPlacements;
 import net.tropicraft.core.common.dimension.feature.tree.PalmTreeFeature;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 
@@ -43,71 +43,27 @@ import static net.minecraft.data.worldgen.placement.VegetationPlacements.TREE_TH
 
 @Mod.EventBusSubscriber(modid = Constants.MODID)
 public final class TropicraftBiomes {
+    public static final DeferredRegister<Biome> REGISTER = DeferredRegister.create(Registry.BIOME_REGISTRY, Constants.MODID);
+
     public static final int TROPICS_WATER_COLOR = 0x4eecdf;
     public static final int TROPICS_WATER_FOG_COLOR = 0x041f33;
     public static final int TROPICS_FOG_COLOR = 0xC0D8FF;
     public static final int RAINFOREST_FOG_COLOR = 0xbae6c3;
     public static final int TROPICS_SKY_COLOR = getSkyColor(0.8F);
 
-    public static final ResourceKey<Biome> TROPICS_OCEAN = key("tropics_ocean");
-    public static final ResourceKey<Biome> TROPICS = key("tropics");
-    public static final ResourceKey<Biome> KELP_FOREST = key("kelp_forest");
-    public static final ResourceKey<Biome> RAINFOREST_PLAINS = key("rainforest_plains");
-    public static final ResourceKey<Biome> RAINFOREST_HILLS = key("rainforest_hills");
-    public static final ResourceKey<Biome> RAINFOREST_MOUNTAINS = key("rainforest_mountains");
-    public static final ResourceKey<Biome> BAMBOO_RAINFOREST = key("bamboo_rainforest");
-    public static final ResourceKey<Biome> RAINFOREST_ISLAND_MOUNTAINS = key("rainforest_island_mountains");
-    public static final ResourceKey<Biome> TROPICS_RIVER = key("tropics_river");
-    public static final ResourceKey<Biome> TROPICS_BEACH = key("tropics_beach");
-    public static final ResourceKey<Biome> MANGROVES = key("mangroves");
-    public static final ResourceKey<Biome> OVERGROWN_MANGROVES = key("overgrown_mangroves");
-    public static final ResourceKey<Biome> OSA_RAINFOREST = key("osa_rainforest");
+    public static final RegistryObject<Biome> TROPICS = REGISTER.register("tropics", TropicraftBiomes::createTropics);
+    public static final RegistryObject<Biome> BEACH = REGISTER.register("beach", TropicraftBiomes::createBeach);
+    public static final RegistryObject<Biome> RAINFOREST = REGISTER.register("rainforest", () -> createRainforest(false));
+    public static final RegistryObject<Biome> BAMBOO_RAINFOREST = REGISTER.register("bamboo_rainforest", () -> createRainforest(true));
+    public static final RegistryObject<Biome> OSA_RAINFOREST = REGISTER.register("osa_rainforest", TropicraftBiomes::createOsaRainforest);
 
-    private static ResourceKey<Biome> key(String id) {
-        return ResourceKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(Constants.MODID, id));
-    }
+    public static final RegistryObject<Biome> OCEAN = REGISTER.register("ocean", TropicraftBiomes::createOcean);
+    public static final RegistryObject<Biome> KELP_FOREST = REGISTER.register("kelp_forest", TropicraftBiomes::createKelpForest);
 
-    public final Holder<Biome> tropics;
-    public final Holder<Biome> tropicsBeach;
-    public final Holder<Biome> rainforestPlains;
-    public final Holder<Biome> rainforestHills;
-    public final Holder<Biome> rainforestMountains;
-    public final Holder<Biome> bambooRainforest;
-    public final Holder<Biome> rainforestIslandMountains;
+    public static final RegistryObject<Biome> RIVER = REGISTER.register("river", TropicraftBiomes::createRiver);
 
-    public final Holder<Biome> tropicsOcean;
-    public final Holder<Biome> kelpForest;
-
-    public final Holder<Biome> tropicsRiver;
-
-    public final Holder<Biome> mangroves;
-    public final Holder<Biome> overgrownMangroves;
-    public final Holder<Biome> osaRainforest;
-
-    private final TropicraftConfiguredFeatures features;
-    private final TropicraftConfiguredCarvers carvers;
-
-    public TropicraftBiomes(WorldgenDataConsumer<Biome> worldgen, TropicraftConfiguredFeatures features, TropicraftConfiguredCarvers carvers) {
-        this.features = features;
-        this.carvers = carvers;
-
-        this.tropics = worldgen.register(TROPICS, createTropics());
-        this.tropicsBeach = worldgen.register(TROPICS_BEACH, createTropicsBeach());
-        this.rainforestPlains = worldgen.register(RAINFOREST_PLAINS, createRainforest(0.25F, 0.1F));
-        this.rainforestHills = worldgen.register(RAINFOREST_HILLS, createRainforest(0.45F, 0.425F));
-        this.rainforestMountains = worldgen.register(RAINFOREST_MOUNTAINS, createRainforest(0.8F, 0.8F));
-        this.bambooRainforest = worldgen.register(BAMBOO_RAINFOREST, createRainforest(0.25F, 0.25F, true));
-        this.rainforestIslandMountains = worldgen.register(RAINFOREST_ISLAND_MOUNTAINS, createRainforest(0.1F, 1.2F));
-
-        this.tropicsOcean = worldgen.register(TROPICS_OCEAN, createTropicsOcean());
-        this.kelpForest = worldgen.register(KELP_FOREST, createKelpForest());
-
-        this.tropicsRiver = worldgen.register(TROPICS_RIVER, createTropicsRiver());
-
-        this.mangroves = worldgen.register(MANGROVES, createMangroves(false));
-        this.overgrownMangroves = worldgen.register(OVERGROWN_MANGROVES, createMangroves(true));
-        this.osaRainforest = worldgen.register(OSA_RAINFOREST, createOsaRainforest(0.25F, 0.1F));
-    }
+    public static final RegistryObject<Biome> MANGROVES = REGISTER.register("mangroves", () -> createMangroves(false));
+    public static final RegistryObject<Biome> OVERGROWN_MANGROVES = REGISTER.register("overgrown_mangroves", () -> createMangroves(true));
 
     @SubscribeEvent
     public static void onBiomeLoad(BiomeLoadingEvent event) {
@@ -151,21 +107,21 @@ public final class TropicraftBiomes {
         ));
     }
 
-    private Biome createTropics() {
+    private static Biome createTropics() {
         BiomeGenerationSettings.Builder generation = defaultGeneration();
 //                .surfaceBuilder(surfaces.tropics);
 
-        carvers.addLand(generation);
+        TropicraftConfiguredCarvers.addLand(generation);
 
-        features.addFruitTrees(generation);
-        features.addPalmTrees(generation);
-        features.addEih(generation);
-        features.addPapaya(generation);
-        features.addTropicsFlowers(generation);
-        features.addPineapples(generation);
-        features.addRegularSeagrass(generation);
+        TropicraftVegetationPlacements.addFruitTrees(generation);
+        TropicraftVegetationPlacements.addPalmTrees(generation);
+        TropicraftMiscPlacements.addEih(generation);
+        TropicraftVegetationPlacements.addPapaya(generation);
+        TropicraftVegetationPlacements.addTropicsFlowers(generation);
+        TropicraftVegetationPlacements.addPineapples(generation);
+        TropicraftVegetationPlacements.addRegularSeagrass(generation);
 
-        features.addTropicsGrass(generation);
+        TropicraftVegetationPlacements.addTropicsGrass(generation);
         BiomeDefaultFeatures.addFerns(generation);
         BiomeDefaultFeatures.addSavannaGrass(generation);
 
@@ -186,16 +142,15 @@ public final class TropicraftBiomes {
                 .build();
     }
 
-    private Biome createTropicsBeach() {
+    private static Biome createBeach() {
         BiomeGenerationSettings.Builder generation = defaultGeneration();
 //                .surfaceBuilder(surfaces.sandy);
 
+        TropicraftConfiguredCarvers.addUnderwater(generation);
 
-        carvers.addUnderwater(generation);
-
-        features.addPalmTrees(generation);
-        features.addTropicsFlowers(generation);
-        features.addRegularSeagrass(generation);
+        TropicraftVegetationPlacements.addPalmTrees(generation);
+        TropicraftVegetationPlacements.addTropicsFlowers(generation);
+        TropicraftVegetationPlacements.addRegularSeagrass(generation);
 
 //        generation.addStructureStart(structures.koaVillage);
 
@@ -213,31 +168,28 @@ public final class TropicraftBiomes {
                 .build();
     }
 
-    private Biome createOsaRainforest(float depth, float scale) {
+    private static Biome createOsaRainforest() {
         BiomeGenerationSettings.Builder generation = defaultGeneration();
 //                .surfaceBuilder(surfaces.osaRainforest);
 
-        carvers.addLand(generation);
+        TropicraftConfiguredCarvers.addLand(generation);
 
-        features.addGoldenLeatherFern(generation);
+        TropicraftVegetationPlacements.addGoldenLeatherFern(generation);
 
-        features.addTropicsGems(generation);
-        features.addPleodendron(generation);
-        features.addRainforestTrees(generation);
-        features.addPapaya(generation);
+        TropicraftMiscPlacements.addTropicsGems(generation);
+        TropicraftVegetationPlacements.addPleodendron(generation);
+        TropicraftVegetationPlacements.addRainforestTrees(generation);
+        TropicraftVegetationPlacements.addPapaya(generation);
 
-        features.addTropicsFlowers(generation);
-        features.addPineapples(generation);
+        TropicraftVegetationPlacements.addTropicsFlowers(generation);
+        TropicraftVegetationPlacements.addPineapples(generation);
 
-        features.addRegularSeagrass(generation);
-        features.addTropicsGrass(generation);
+        TropicraftVegetationPlacements.addRegularSeagrass(generation);
+        TropicraftVegetationPlacements.addTropicsGrass(generation);
         BiomeDefaultFeatures.addFerns(generation);
         BiomeDefaultFeatures.addSavannaGrass(generation);
 
-        generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.coffeeBush);
-        generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.singleUndergrowth);
-
-        features.addRainforestPlants(generation);
+        TropicraftVegetationPlacements.addRainforestPlants(generation);
 
         MobSpawnSettings.Builder spawns = defaultSpawns();
         spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.OCELOT, 10, 1, 1));
@@ -253,7 +205,6 @@ public final class TropicraftBiomes {
 
         return new Biome.BiomeBuilder()
                 .precipitation(Biome.Precipitation.RAIN)
-//                .depth(depth).scale(scale)
                 .temperature(1.5F).downfall(2.0F)
                 .biomeCategory(Biome.BiomeCategory.JUNGLE)
                 .generationSettings(generation.build())
@@ -262,34 +213,27 @@ public final class TropicraftBiomes {
                 .build();
     }
 
-    private Biome createRainforest(float depth, float scale) {
-        return createRainforest(depth, scale, false);
-    }
-
-    private Biome createRainforest(float depth, float scale, boolean bamboo) {
+    private static Biome createRainforest(boolean bamboo) {
         BiomeGenerationSettings.Builder generation = defaultGeneration();
 //                .surfaceBuilder(SurfaceBuilders.GRASS);
 
-        carvers.addLand(generation);
+        TropicraftConfiguredCarvers.addLand(generation);
 
-        features.addTropicsGems(generation);
-        features.addRainforestTrees(generation);
-        features.addPapaya(generation);
-        features.addRegularSeagrass(generation);
-
-        generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.rainforestFlowers);
-        generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.coffeeBush);
-        generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.undergrowth);
+        TropicraftMiscPlacements.addTropicsGems(generation);
+        TropicraftVegetationPlacements.addRainforestTrees(generation);
+        TropicraftVegetationPlacements.addPapaya(generation);
+        TropicraftVegetationPlacements.addRegularSeagrass(generation);
 
 //        generation.addStructureStart(structures.homeTree);
 
         BiomeDefaultFeatures.addJungleGrass(generation);
         BiomeDefaultFeatures.addLightBambooVegetation(generation);
 
-        features.addRainforestPlants(generation);
+        TropicraftVegetationPlacements.addRainforestPlants(generation);
+        TropicraftVegetationPlacements.addUndergrowth(generation);
 
         if (bamboo) {
-            features.addBamboo(generation);
+            TropicraftVegetationPlacements.addBamboo(generation);
         }
 
         MobSpawnSettings.Builder spawns = defaultSpawns();
@@ -306,7 +250,6 @@ public final class TropicraftBiomes {
 
         return new Biome.BiomeBuilder()
                 .precipitation(Biome.Precipitation.RAIN)
-//                .depth(depth).scale(scale)
                 .temperature(1.5F).downfall(2.0F)
                 .biomeCategory(Biome.BiomeCategory.JUNGLE)
                 .generationSettings(generation.build())
@@ -315,24 +258,24 @@ public final class TropicraftBiomes {
                 .build();
     }
 
-    private Biome createTropicsOcean() {
+    private static Biome createOcean() {
         BiomeGenerationSettings.Builder generation = defaultGeneration();
 //                .surfaceBuilder(surfaces.sandy);
 
-        carvers.addUnderwater(generation);
+        TropicraftConfiguredCarvers.addUnderwater(generation);
 
-        features.addTropicsMetals(generation);
+        TropicraftMiscPlacements.addTropicsMetals(generation);
 
         generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AquaticPlacements.WARM_OCEAN_VEGETATION);
 
         generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AquaticPlacements.SEAGRASS_WARM);
-        features.addUndergroundSeagrass(generation);
+        TropicraftVegetationPlacements.addUndergroundSeagrass(generation);
 
         generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AquaticPlacements.SEA_PICKLE);
-        features.addUndergroundPickles(generation);
+        TropicraftVegetationPlacements.addUndergroundPickles(generation);
 
         MobSpawnSettings.Builder spawns = defaultSpawns();
-        this.addOceanWaterCreatures(spawns);
+        addOceanWaterCreatures(spawns);
         spawns.addSpawn(MobCategory.AMBIENT, new MobSpawnSettings.SpawnerData(TropicraftEntities.FAILGULL.get(), 15, 5, 10));
 
         return new Biome.BiomeBuilder()
@@ -346,20 +289,20 @@ public final class TropicraftBiomes {
                 .build();
     }
 
-    private Biome createKelpForest() {
+    private static Biome createKelpForest() {
         BiomeGenerationSettings.Builder generation = defaultGeneration();
 //                .surfaceBuilder(surfaces.sandy);
 
-        carvers.addUnderwater(generation);
+        TropicraftConfiguredCarvers.addUnderwater(generation);
 
         // KELP!
         generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AquaticPlacements.KELP_COLD);
 
-        features.addUndergroundSeagrass(generation);
-        features.addUndergroundPickles(generation);
+        TropicraftVegetationPlacements.addUndergroundSeagrass(generation);
+        TropicraftVegetationPlacements.addUndergroundPickles(generation);
 
         MobSpawnSettings.Builder spawns = defaultSpawns();
-        this.addOceanWaterCreatures(spawns);
+        addOceanWaterCreatures(spawns);
 
         return new Biome.BiomeBuilder()
                 .precipitation(Biome.Precipitation.RAIN)
@@ -372,13 +315,13 @@ public final class TropicraftBiomes {
                 .build();
     }
 
-    private Biome createTropicsRiver() {
+    private static Biome createRiver() {
         BiomeGenerationSettings.Builder generation = defaultGeneration();
 //                .surfaceBuilder(surfaces.sandy);
 
-        carvers.addLand(generation);
+        TropicraftConfiguredCarvers.addLand(generation);
 
-        features.addTropicsFlowers(generation);
+        TropicraftVegetationPlacements.addTropicsFlowers(generation);
 
         MobSpawnSettings.Builder spawns = defaultSpawns();
         addRiverWaterCreatures(spawns);
@@ -395,22 +338,22 @@ public final class TropicraftBiomes {
     }
 
     // TODO: rebalance all spawns
-    private Biome createMangroves(boolean overgrown) {
+    private static Biome createMangroves(boolean overgrown) {
         BiomeGenerationSettings.Builder generation = defaultGeneration();
 //                .surfaceBuilder(surfaces.mangrove);
 
-        carvers.addLand(generation);
+        TropicraftConfiguredCarvers.addLand(generation);
 
-        features.addMudDisks(generation);
+        TropicraftMiscPlacements.addMudDisks(generation);
         if (overgrown) {
-            features.addOvergrownGoldenLeatherFern(generation);
+            TropicraftVegetationPlacements.addOvergrownGoldenLeatherFern(generation);
         }
-        features.addGoldenLeatherFern(generation);
-        features.addMangroveVegetation(generation, overgrown);
-        features.addTropicsFlowers(generation);
+        TropicraftVegetationPlacements.addGoldenLeatherFern(generation);
+        TropicraftVegetationPlacements.addMangroveVegetation(generation, overgrown);
+        TropicraftVegetationPlacements.addTropicsFlowers(generation);
 
         generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AquaticPlacements.SEAGRASS_DEEP_WARM);
-        features.addMangroveReeds(generation);
+        TropicraftVegetationPlacements.addMangroveReeds(generation);
 
         generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.PATCH_GRASS_PLAIN);
         generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.PATCH_WATERLILY);
@@ -445,7 +388,7 @@ public final class TropicraftBiomes {
                 .build();
     }
 
-    private void addOceanWaterCreatures(MobSpawnSettings.Builder spawns) {
+    private static void addOceanWaterCreatures(MobSpawnSettings.Builder spawns) {
         spawns.addSpawn(MobCategory.WATER_AMBIENT, new MobSpawnSettings.SpawnerData(TropicraftEntities.TROPICAL_FISH.get(), 20, 4, 8));
         spawns.addSpawn(MobCategory.WATER_AMBIENT, new MobSpawnSettings.SpawnerData(TropicraftEntities.STARFISH.get(), 4, 1, 4));
         spawns.addSpawn(MobCategory.WATER_AMBIENT, new MobSpawnSettings.SpawnerData(TropicraftEntities.SEAHORSE.get(), 6, 6, 12));
@@ -459,7 +402,7 @@ public final class TropicraftBiomes {
         spawns.addSpawn(MobCategory.WATER_CREATURE, new MobSpawnSettings.SpawnerData(TropicraftEntities.HAMMERHEAD.get(), 2, 1, 1));
     }
 
-    private void addRiverWaterCreatures(MobSpawnSettings.Builder spawns) {
+    private static void addRiverWaterCreatures(MobSpawnSettings.Builder spawns) {
         spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TropicraftEntities.FIDDLER_CRAB.get(), 20, 2, 6));
         spawns.addSpawn(MobCategory.WATER_CREATURE, new MobSpawnSettings.SpawnerData(TropicraftEntities.PIRANHA.get(), 15, 1, 12));
         spawns.addSpawn(MobCategory.WATER_AMBIENT, new MobSpawnSettings.SpawnerData(TropicraftEntities.RIVER_SARDINE.get(), 20, 1, 8));
@@ -468,7 +411,7 @@ public final class TropicraftBiomes {
         spawns.addSpawn(MobCategory.WATER_AMBIENT, new MobSpawnSettings.SpawnerData(EntityType.SALMON, 4, 1, 5));
     }
 
-    private void addMangroveWaterCreatures(MobSpawnSettings.Builder spawns) {
+    private static void addMangroveWaterCreatures(MobSpawnSettings.Builder spawns) {
         spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TropicraftEntities.FIDDLER_CRAB.get(), 20, 2, 6));
         spawns.addSpawn(MobCategory.WATER_CREATURE, new MobSpawnSettings.SpawnerData(TropicraftEntities.PIRANHA.get(), 15, 1, 12));
         spawns.addSpawn(MobCategory.WATER_AMBIENT, new MobSpawnSettings.SpawnerData(TropicraftEntities.RIVER_SARDINE.get(), 20, 1, 8));
@@ -482,7 +425,7 @@ public final class TropicraftBiomes {
         spawns.addSpawn(MobCategory.WATER_CREATURE, new MobSpawnSettings.SpawnerData(EntityType.SQUID, 8, 1, 4));
     }
 
-    private BiomeGenerationSettings.Builder defaultGeneration() {
+    private static BiomeGenerationSettings.Builder defaultGeneration() {
         BiomeGenerationSettings.Builder generation = new BiomeGenerationSettings.Builder();
 
         BiomeDefaultFeatures.addDefaultCrystalFormations(generation);
@@ -491,7 +434,7 @@ public final class TropicraftBiomes {
         return generation;
     }
 
-    private MobSpawnSettings.Builder defaultSpawns() {
+    private static MobSpawnSettings.Builder defaultSpawns() {
         MobSpawnSettings.Builder spawns = new MobSpawnSettings.Builder();
 
         spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.PARROT, 15, 1, 2));
@@ -506,7 +449,7 @@ public final class TropicraftBiomes {
         return spawns;
     }
 
-    private BiomeSpecialEffects.Builder defaultAmbience(boolean greenFog) {
+    private static BiomeSpecialEffects.Builder defaultAmbience(boolean greenFog) {
         return new BiomeSpecialEffects.Builder()
                 .fogColor(greenFog ? RAINFOREST_FOG_COLOR : TROPICS_FOG_COLOR)
                 .skyColor(TROPICS_SKY_COLOR)

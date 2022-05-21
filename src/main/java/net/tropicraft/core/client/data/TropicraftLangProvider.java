@@ -1,18 +1,18 @@
 package net.tropicraft.core.client.data;
 
-import net.minecraft.world.level.block.Block;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.HashCache;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.level.ItemLike;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.minecraftforge.registries.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.Util;
@@ -450,16 +450,13 @@ public class TropicraftLangProvider extends LanguageProvider {
 
         // BIOMES
         
-        addBiome(TropicraftBiomes.TROPICS_OCEAN);
+        addBiome(TropicraftBiomes.OCEAN);
         addBiome(TropicraftBiomes.TROPICS);
         addBiome(TropicraftBiomes.KELP_FOREST);
-        addBiome(TropicraftBiomes.RAINFOREST_PLAINS);
-        addBiome(TropicraftBiomes.RAINFOREST_HILLS);
-        addBiome(TropicraftBiomes.RAINFOREST_MOUNTAINS);
+        addBiome(TropicraftBiomes.RAINFOREST);
         addBiome(TropicraftBiomes.BAMBOO_RAINFOREST);
-        addBiome(TropicraftBiomes.RAINFOREST_ISLAND_MOUNTAINS);
-        addBiome(TropicraftBiomes.TROPICS_RIVER);
-        addBiome(TropicraftBiomes.TROPICS_BEACH);
+        addBiome(TropicraftBiomes.RIVER);
+        addBiome(TropicraftBiomes.BEACH);
         addBiome(TropicraftBiomes.MANGROVES);
         addBiome(TropicraftBiomes.OVERGROWN_MANGROVES);
         addBiome(TropicraftBiomes.OSA_RAINFOREST);
@@ -519,8 +516,8 @@ public class TropicraftLangProvider extends LanguageProvider {
         addEntityType(entity, getAutomaticName(entity));
     }
     
-    private void addBiome(ResourceKey<Biome> biome) {
-        ResourceLocation id = biome.location();
+    private void addBiome(RegistryObject<Biome> biome) {
+        ResourceLocation id = biome.getId();
         add("biome." + id.getNamespace() + "." + id.getPath(), Util.toEnglishName(id.getPath()));
     }
     

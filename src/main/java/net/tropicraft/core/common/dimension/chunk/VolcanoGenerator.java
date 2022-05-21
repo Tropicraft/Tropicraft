@@ -4,14 +4,12 @@ import com.google.common.collect.ImmutableSet;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
-import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.*;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.commands.LocateCommand;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
@@ -41,10 +39,10 @@ import java.util.function.Supplier;
 public class VolcanoGenerator {
 
     public static Set<ResourceLocation> volcanoSpawnBiomesLand = ImmutableSet.of(
-            TropicraftBiomes.TROPICS.location(), TropicraftBiomes.RAINFOREST_PLAINS.location()
+            TropicraftBiomes.TROPICS.getId(), TropicraftBiomes.RAINFOREST.getId()
     );
     public static Set<ResourceLocation> volcanoSpawnBiomesOcean = ImmutableSet.of(
-            TropicraftBiomes.TROPICS_OCEAN.location()
+            TropicraftBiomes.OCEAN.getId()
     );
 
     private final long worldSeed;

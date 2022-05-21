@@ -3,6 +3,7 @@ package net.tropicraft.core.common.dimension.feature.block_state_provider;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.*;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
@@ -21,6 +22,10 @@ public final class NoiseFromTagBlockStateProvider extends BlockStateProvider {
 
     public NoiseFromTagBlockStateProvider(HolderSet<Block> blocks) {
         this.blocks = blocks;
+    }
+
+    public NoiseFromTagBlockStateProvider(TagKey<Block> blocks) {
+        this(Registry.BLOCK.getOrCreateTag(blocks));
     }
 
     @Override

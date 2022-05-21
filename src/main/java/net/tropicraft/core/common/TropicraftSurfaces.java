@@ -70,13 +70,13 @@ public final class TropicraftSurfaces {
         SurfaceRules.RuleSource surfacerules$rulesource1 = SurfaceRules.sequence(SurfaceRules.ifTrue(SurfaceRules.ON_CEILING, SANDSTONE), SAND);
         SurfaceRules.RuleSource surfacerules$rulesource2 = SurfaceRules.sequence(SurfaceRules.ifTrue(SurfaceRules.ON_CEILING, STONE), GRAVEL);
 
-        SurfaceRules.ConditionSource isBeachLike = SurfaceRules.isBiome(TropicraftBiomes.TROPICS_OCEAN, TropicraftBiomes.TROPICS_RIVER, Biomes.DESERT, TropicraftBiomes.TROPICS_BEACH, Biomes.SNOWY_BEACH);
+        SurfaceRules.ConditionSource isBeachLike = SurfaceRules.isBiome(TropicraftBiomes.OCEAN.getKey(), TropicraftBiomes.RIVER.getKey(), Biomes.DESERT, TropicraftBiomes.BEACH.getKey(), Biomes.SNOWY_BEACH);
 
         SurfaceRules.RuleSource surfacerules$rulesource3 = SurfaceRules.sequence(
                 SurfaceRules.ifTrue(SurfaceRules.isBiome(Biomes.STONY_PEAKS), SurfaceRules.sequence(SurfaceRules.ifTrue(SurfaceRules.noiseCondition(Noises.CALCITE, -0.0125D, 0.0125D), CALCITE), STONE)),
-                SurfaceRules.ifTrue(SurfaceRules.isBiome(TropicraftBiomes.MANGROVES), SurfaceRules.ifTrue(SurfaceRules.noiseCondition(Noises.CALCITE, -0.0125D, 0.0125D), MUD)),
-                SurfaceRules.ifTrue(SurfaceRules.isBiome(TropicraftBiomes.MANGROVES), SurfaceRules.ifTrue(surfaceNoiseAbove(2.25D), MUD)),
-                SurfaceRules.ifTrue(SurfaceRules.isBiome(TropicraftBiomes.TROPICS), SurfaceRules.ifTrue(surfaceNoiseAbove(1.35D), SAND)),
+                SurfaceRules.ifTrue(SurfaceRules.isBiome(TropicraftBiomes.MANGROVES.getKey()), SurfaceRules.ifTrue(SurfaceRules.noiseCondition(Noises.CALCITE, -0.0125D, 0.0125D), MUD)),
+                SurfaceRules.ifTrue(SurfaceRules.isBiome(TropicraftBiomes.MANGROVES.getKey()), SurfaceRules.ifTrue(surfaceNoiseAbove(2.25D), MUD)),
+                SurfaceRules.ifTrue(SurfaceRules.isBiome(TropicraftBiomes.TROPICS.getKey()), SurfaceRules.ifTrue(surfaceNoiseAbove(1.35D), SAND)),
                 SurfaceRules.ifTrue(SurfaceRules.isBiome(Biomes.STONY_SHORE), SurfaceRules.sequence(SurfaceRules.ifTrue(SurfaceRules.noiseCondition(Noises.GRAVEL, -0.05D, 0.05D), surfacerules$rulesource2), STONE)),
                 SurfaceRules.ifTrue(SurfaceRules.isBiome(Biomes.WINDSWEPT_HILLS), SurfaceRules.ifTrue(surfaceNoiseAbove(1.0D), STONE)),
                 SurfaceRules.ifTrue(isBeachLike, surfacerules$rulesource1),
