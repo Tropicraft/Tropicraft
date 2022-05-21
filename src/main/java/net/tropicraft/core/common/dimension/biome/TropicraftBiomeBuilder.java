@@ -23,6 +23,9 @@ public class TropicraftBiomeBuilder {
     private final Climate.Parameter FROZEN_RANGE = this.temperatures[0];
     private final Climate.Parameter UNFROZEN_RANGE = Climate.Parameter.span(this.temperatures[1], this.temperatures[4]);
 
+    private final Climate.Parameter WET = Climate.Parameter.span(this.humidities[2], this.humidities[4]);
+    private final Climate.Parameter LESS_WET = Climate.Parameter.span(this.humidities[0], this.humidities[1]);
+
     public void addBiomes(BiConsumer<Climate.ParameterPoint, RegistryObject<Biome>> consumer) {
         addInlandBiomes(consumer);
 
@@ -48,11 +51,11 @@ public class TropicraftBiomeBuilder {
     }
 
     private void addValleys(BiConsumer<Climate.ParameterPoint, RegistryObject<Biome>> consumer, Climate.Parameter weirdness) {
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.nearInlandContinentalness, Climate.Parameter.span(this.erosions[0], this.erosions[1]), weirdness, 0.0F, TropicraftBiomes.RIVER);
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, Climate.Parameter.span(humidities[2], humidities[4]), landContinentalness, this.erosions[6], weirdness, 0.0F, TropicraftBiomes.MANGROVES);
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, Climate.Parameter.span(humidities[2], humidities[4]), landContinentalness, this.erosions[4], weirdness, 0.0F, TropicraftBiomes.MANGROVES);
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, Climate.Parameter.span(this.coastContinentalness, this.farInlandContinentalness), Climate.Parameter.span(this.erosions[2], this.erosions[3]), weirdness, 0.0F, TropicraftBiomes.RIVER);
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, Climate.Parameter.span(this.coastContinentalness, this.farInlandContinentalness), Climate.Parameter.span(this.erosions[5], this.erosions[5]), weirdness, 0.0F, TropicraftBiomes.RIVER);
+        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.nearInlandContinentalness, Climate.Parameter.span(this.erosions[0], this.erosions[1]), weirdness, 0.0F, TropicraftBiomes.TROPICS_RIVER);
+        this.addSurfaceBiome(consumer, this.FULL_RANGE, Climate.Parameter.span(humidities[3], humidities[4]), landContinentalness, this.erosions[6], weirdness, 0.0F, TropicraftBiomes.MANGROVES);
+        this.addSurfaceBiome(consumer, this.FULL_RANGE, Climate.Parameter.span(humidities[3], humidities[4]), landContinentalness, this.erosions[4], weirdness, 0.0F, TropicraftBiomes.MANGROVES);
+        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, Climate.Parameter.span(this.coastContinentalness, this.farInlandContinentalness), Climate.Parameter.span(this.erosions[2], this.erosions[3]), weirdness, 0.0F, TropicraftBiomes.TROPICS_RIVER);
+        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, Climate.Parameter.span(this.coastContinentalness, this.farInlandContinentalness), Climate.Parameter.span(this.erosions[5], this.erosions[5]), weirdness, 0.0F, TropicraftBiomes.TROPICS_RIVER);
 
         this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.coastContinentalness, this.erosions[6], weirdness, 0.0F, TropicraftBiomes.RIVER);
     }
@@ -62,10 +65,13 @@ public class TropicraftBiomeBuilder {
         this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.coastContinentalness, this.erosions[5], weirdness, 0.0F, TropicraftBiomes.BEACH);
         this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.coastContinentalness, this.erosions[4], weirdness, 0.0F, TropicraftBiomes.BEACH);
 
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, Climate.Parameter.span(humidities[2], humidities[4]), this.landContinentalness, this.erosions[6], weirdness, 0.0F, TropicraftBiomes.MANGROVES);
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, Climate.Parameter.span(humidities[2], humidities[4]), this.landContinentalness, this.erosions[4], weirdness, 0.0F, TropicraftBiomes.MANGROVES);
+        this.addSurfaceBiome(consumer, this.FULL_RANGE, Climate.Parameter.span(humidities[3], humidities[4]), this.landContinentalness, this.erosions[6], weirdness, 0.0F, TropicraftBiomes.MANGROVES);
+        this.addSurfaceBiome(consumer, this.FULL_RANGE, Climate.Parameter.span(humidities[3], humidities[4]), this.landContinentalness, this.erosions[4], weirdness, 0.0F, TropicraftBiomes.MANGROVES);
         this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.landContinentalness, this.erosions[3], weirdness, 0.0F, TropicraftBiomes.TROPICS);
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.landContinentalness, this.erosions[2], weirdness, 0.0F, TropicraftBiomes.TROPICS);
+
+        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.WET, this.landContinentalness, this.erosions[3], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.LESS_WET, this.landContinentalness, this.erosions[2], weirdness, 0.0F, TropicraftBiomes.TROPICS);
+
         this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.landContinentalness, this.erosions[1], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
         this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.landContinentalness, this.erosions[0], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
     }
@@ -75,8 +81,11 @@ public class TropicraftBiomeBuilder {
         this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.coastContinentalness, this.erosions[5], weirdness, 0.0F, TropicraftBiomes.BEACH);
         this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.coastContinentalness, this.erosions[6], weirdness, 0.0F, TropicraftBiomes.BEACH);
 
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.landContinentalness, this.erosions[5], weirdness, 0.0F, TropicraftBiomes.TROPICS);
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.landContinentalness, this.erosions[3], weirdness, 0.0F, TropicraftBiomes.TROPICS);
+        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.landContinentalness, this.erosions[5], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+
+        this.addSurfaceBiome(consumer, this.FULL_RANGE, WET, this.landContinentalness, this.erosions[3], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+        this.addSurfaceBiome(consumer, this.FULL_RANGE, LESS_WET, this.landContinentalness, this.erosions[3], weirdness, 0.0F, TropicraftBiomes.TROPICS);
+
         this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.landContinentalness, this.erosions[2], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
         this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.landContinentalness, this.erosions[1], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
         this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.landContinentalness, this.erosions[0], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
@@ -86,8 +95,11 @@ public class TropicraftBiomeBuilder {
         Climate.Parameter coastInwards = Climate.Parameter.span(this.coastContinentalness, this.farInlandContinentalness);
         Climate.Parameter midInwards = Climate.Parameter.span(this.coastContinentalness, this.farInlandContinentalness);
 
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, coastInwards, this.erosions[6], weirdness, 0.0F, TropicraftBiomes.TROPICS);
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, coastInwards, this.erosions[5], weirdness, 0.0F, TropicraftBiomes.TROPICS);
+        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, coastInwards, this.erosions[6], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+
+        this.addSurfaceBiome(consumer, this.FULL_RANGE, WET, coastInwards, this.erosions[5], weirdness, 0.0F, TropicraftBiomes.RAINFOREST_PLAINS);
+        this.addSurfaceBiome(consumer, this.FULL_RANGE, LESS_WET, coastInwards, this.erosions[5], weirdness, 0.0F, TropicraftBiomes.TROPICS);
+
         this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, coastInwards, this.erosions[4], weirdness, 0.0F, TropicraftBiomes.TROPICS);
         this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[3], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
         this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[2], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
@@ -100,8 +112,11 @@ public class TropicraftBiomeBuilder {
         Climate.Parameter midInwards = Climate.Parameter.span(this.coastContinentalness, this.farInlandContinentalness);
 
 
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, coastInwards, this.erosions[6], weirdness, 0.0F, TropicraftBiomes.TROPICS);
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, coastInwards, this.erosions[5], weirdness, 0.0F, TropicraftBiomes.TROPICS);
+        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, coastInwards, this.erosions[6], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+
+        this.addSurfaceBiome(consumer, this.FULL_RANGE, WET, coastInwards, this.erosions[5], weirdness, 0.0F, TropicraftBiomes.RAINFOREST_PLAINS);
+        this.addSurfaceBiome(consumer, this.FULL_RANGE, LESS_WET, coastInwards, this.erosions[5], weirdness, 0.0F, TropicraftBiomes.TROPICS);
+
         this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, coastInwards, this.erosions[4], weirdness, 0.0F, TropicraftBiomes.TROPICS);
         this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[3], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
         this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[2], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
