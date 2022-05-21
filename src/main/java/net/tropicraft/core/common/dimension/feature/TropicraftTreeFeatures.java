@@ -85,7 +85,7 @@ public final class TropicraftTreeFeatures {
                     REGISTER.stateProvider(TropicraftBlocks.RED_MANGROVE_LOG),
                     new SmallMangroveTrunkPlacer(2, 1, 0, TropicraftBlocks.RED_MANGROVE_ROOTS.get()),
                     REGISTER.stateProvider(TropicraftBlocks.RED_MANGROVE_LEAVES),
-                    new SmallMangroveFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0)),
+                    new SmallMangroveFoliagePlacer(ConstantInt.of(1), ConstantInt.of(0)),
                     MANGROVE_MINIMUM_SIZE
             )
                     .decorators(ImmutableList.of(BEEHIVE_002, PianguasTreeDecorator.SMALL))
