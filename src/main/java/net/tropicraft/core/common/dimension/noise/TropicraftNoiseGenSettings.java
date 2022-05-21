@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.dimension.noise;
 
+import net.minecraft.data.worldgen.SurfaceRuleData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
@@ -13,10 +14,10 @@ import net.tropicraft.core.common.dimension.TropicraftTerrainShaper;
 
 public final class TropicraftNoiseGenSettings {
     public TropicraftNoiseGenSettings(WorldgenDataConsumer<NoiseGeneratorSettings> noise) {
-        noise.register(new ResourceLocation(Constants.MODID, "tropics"), createNoise());
+        noise.register(new ResourceLocation(Constants.MODID, "tropics"), createNoise(true));
     }
     
-    private static NoiseGeneratorSettings createNoise() {
+    public static NoiseGeneratorSettings createNoise(boolean tropisurface) {
         // Constant ternaries are amplified, keeping temporarily until we figure out good noise values
         // TODO: hook up custom terrain shaper and surface rule data
 
@@ -30,7 +31,7 @@ public final class TropicraftNoiseGenSettings {
         return new NoiseGeneratorSettings(
                 settings,
                 Blocks.STONE.defaultBlockState(), Blocks.WATER.defaultBlockState(),
-                TropicraftNoiseGen.overworldWithNewCaves(settings, false), TropicraftSurfaces.tropics(true, false, true), 63, false, true, true, true
+                TropicraftNoiseGen.overworldWithNewCaves(settings, false), tropisurface ? TropicraftSurfaces.tropics(true, false, true) : SurfaceRuleData.overworld(), 63, false, true, true, true
         );
     }
 }

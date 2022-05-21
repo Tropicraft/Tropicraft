@@ -84,7 +84,7 @@ public final class TropicraftNoiseGen {
     }
 
     private static DensityFunction getFunction(ResourceKey<DensityFunction> key) {
-        return NoiseRouterDataAccessor.callGetFunction(key);
+        return new DensityFunctions.HolderHolder(BuiltinRegistries.DENSITY_FUNCTION.getHolderOrThrow(key));
     }
 
     private static DensityFunction yLimitedInterpolatable(DensityFunction p_209472_, DensityFunction p_209473_, int p_209474_, int p_209475_, int p_209476_) {

@@ -5,10 +5,14 @@ import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.Reference2IntMap;
 import it.unimi.dsi.fastutil.objects.Reference2IntOpenHashMap;
 import net.minecraft.SharedConstants;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.Bootstrap;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
+import net.tropicraft.Constants;
+import net.tropicraft.core.common.block.Builder;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomeBuilder;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
 
@@ -70,7 +74,7 @@ public class BiomeSimulator {
 //                    }
 //                }
 
-                ResourceKey<Biome> value = params.findValue(sampler.sample(x, 0, z));
+                ResourceKey<Biome> value = params.findValue(sampler.sample(x, 40, z));
 
                 if (!COLORS.containsKey(value)) throw new RuntimeException("Resource key not found: " + value);
 
