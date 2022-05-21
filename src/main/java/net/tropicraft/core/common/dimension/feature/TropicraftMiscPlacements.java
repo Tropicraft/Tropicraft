@@ -20,7 +20,7 @@ public final class TropicraftMiscPlacements {
     ));
 
     public static final RegistryObject<PlacedFeature> EIH = REGISTER.placed("eih", TropicraftMiscFeatures.EIH, () -> List.of(
-            PlacementUtils.countExtra(0, 0.1f, 1),
+            PlacementUtils.countExtra(0, 0.01f, 1),
             InSquarePlacement.spread(),
             PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
             BiomeFilter.biome()
