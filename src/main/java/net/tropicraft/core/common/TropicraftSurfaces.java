@@ -16,10 +16,10 @@ public final class TropicraftSurfaces {
     private static final RuleSource DEEPSLATE = makeStateRule(Blocks.DEEPSLATE);
     private static final RuleSource DIRT = makeStateRule(Blocks.DIRT);
     private static final RuleSource GRASS_BLOCK = makeStateRule(Blocks.GRASS_BLOCK);
-    private static final RuleSource SAND = makeStateRule(Blocks.SAND);
     private static final RuleSource SANDSTONE = makeStateRule(Blocks.SANDSTONE);
     private static final RuleSource WATER = makeStateRule(Blocks.WATER);
 
+    private static final RuleSource SAND = makeStateRule(TropicraftBlocks.PURIFIED_SAND.get());
     private static final RuleSource MUD = makeStateRule(TropicraftBlocks.MUD.get());
 
     private static RuleSource makeStateRule(Block block) {
@@ -40,7 +40,7 @@ public final class TropicraftSurfaces {
         RuleSource surfaceRule = sequence(
                 ifTrue(isBiome(TropicraftBiomes.MANGROVES.getKey()), ifTrue(noiseCondition(Noises.CALCITE, -0.0125, 0.0125), MUD)),
                 ifTrue(isBiome(TropicraftBiomes.MANGROVES.getKey()), ifTrue(surfaceNoiseAbove(2.25), MUD)),
-                ifTrue(isBiome(TropicraftBiomes.TROPICS.getKey()), ifTrue(surfaceNoiseAbove(1.35), SAND)),
+                ifTrue(isBiome(TropicraftBiomes.TROPICS.getKey()), ifTrue(surfaceNoiseAbove(1.35), sandRule)),
                 ifTrue(isSandy, sandRule)
         );
 
