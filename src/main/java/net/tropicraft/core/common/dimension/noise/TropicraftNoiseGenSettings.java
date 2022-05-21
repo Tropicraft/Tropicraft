@@ -27,7 +27,7 @@ public final class TropicraftNoiseGenSettings {
                 TropicraftTerrainShaper.tropics()
         );
 
-        final SurfaceRules.RuleSource surface = tropisurface ? TropicraftSurfaces.tropics(true, false, true) : SurfaceRuleData.overworld();
+        final SurfaceRules.RuleSource surface = tropisurface ? TropicraftSurfaces.tropics() : SurfaceRuleData.overworld();
         return new NoiseGeneratorSettings(
                 settings,
                 Blocks.STONE.defaultBlockState(), Blocks.WATER.defaultBlockState(),
