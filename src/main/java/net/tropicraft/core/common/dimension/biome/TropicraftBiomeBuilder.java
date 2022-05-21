@@ -97,14 +97,27 @@ public class TropicraftBiomeBuilder {
 
         this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, coastInwards, this.erosions[6], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
 
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, WET, coastInwards, this.erosions[5], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+        if (weirdness.max() < 0L) {
+            this.addSurfaceBiome(consumer, this.FULL_RANGE, WET, coastInwards, this.erosions[5], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+        } else {
+            this.addSurfaceBiome(consumer, this.FULL_RANGE, WET, coastInwards, this.erosions[5], weirdness, 0.0F, TropicraftBiomes.BAMBOO_RAINFOREST);
+        }
+
         this.addSurfaceBiome(consumer, this.FULL_RANGE, LESS_WET, coastInwards, this.erosions[5], weirdness, 0.0F, TropicraftBiomes.TROPICS);
 
         this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, coastInwards, this.erosions[4], weirdness, 0.0F, TropicraftBiomes.TROPICS);
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[3], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[2], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[1], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[0], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+
+        if (weirdness.max() < 0L) {
+            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[3], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[2], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[1], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[0], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+        } else {
+            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[3], weirdness, 0.0F, TropicraftBiomes.BAMBOO_RAINFOREST);
+            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[2], weirdness, 0.0F, TropicraftBiomes.BAMBOO_RAINFOREST);
+            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[1], weirdness, 0.0F, TropicraftBiomes.BAMBOO_RAINFOREST);
+            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[0], weirdness, 0.0F, TropicraftBiomes.BAMBOO_RAINFOREST);
+        }
     }
 
     private void addPeaks(BiConsumer<Climate.ParameterPoint, RegistryObject<Biome>> consumer, Climate.Parameter weirdness) {
@@ -114,14 +127,27 @@ public class TropicraftBiomeBuilder {
 
         this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, coastInwards, this.erosions[6], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
 
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, WET, coastInwards, this.erosions[5], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+        if (weirdness.max() < 0L) {
+            this.addSurfaceBiome(consumer, this.FULL_RANGE, WET, coastInwards, this.erosions[5], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+        } else {
+            this.addSurfaceBiome(consumer, this.FULL_RANGE, WET, coastInwards, this.erosions[5], weirdness, 0.0F, TropicraftBiomes.BAMBOO_RAINFOREST);
+        }
+
         this.addSurfaceBiome(consumer, this.FULL_RANGE, LESS_WET, coastInwards, this.erosions[5], weirdness, 0.0F, TropicraftBiomes.TROPICS);
 
         this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, coastInwards, this.erosions[4], weirdness, 0.0F, TropicraftBiomes.TROPICS);
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[3], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[2], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[1], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[0], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+
+        if (weirdness.max() < 0L) {
+            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[3], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[2], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[1], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[0], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+        } else {
+            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[3], weirdness, 0.0F, TropicraftBiomes.BAMBOO_RAINFOREST);
+            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[2], weirdness, 0.0F, TropicraftBiomes.BAMBOO_RAINFOREST);
+            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[1], weirdness, 0.0F, TropicraftBiomes.BAMBOO_RAINFOREST);
+            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[0], weirdness, 0.0F, TropicraftBiomes.BAMBOO_RAINFOREST);
+        }
     }
 
     private void addSurfaceBiome(BiConsumer<Climate.ParameterPoint, RegistryObject<Biome>> consumer, Climate.Parameter p_187182_, Climate.Parameter p_187183_, Climate.Parameter p_187184_, Climate.Parameter p_187185_, Climate.Parameter p_187186_, float p_187187_, RegistryObject<Biome> p_187188_) {

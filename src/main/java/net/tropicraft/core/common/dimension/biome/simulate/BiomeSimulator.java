@@ -31,6 +31,7 @@ public class BiomeSimulator {
         COLORS.put(TropicraftBiomes.RIVER.getKey(), 0x4eecdf);
         COLORS.put(TropicraftBiomes.BEACH.getKey(), 0xFADE55);
         COLORS.put(TropicraftBiomes.RAINFOREST.getKey(), 0x056621);
+        COLORS.put(TropicraftBiomes.BAMBOO_RAINFOREST.getKey(), 0x57c23c);
         COLORS.put(TropicraftBiomes.TROPICS.getKey(), 0x8DB360);
         COLORS.put(TropicraftBiomes.MANGROVES.getKey(), 0x528a50);
     }

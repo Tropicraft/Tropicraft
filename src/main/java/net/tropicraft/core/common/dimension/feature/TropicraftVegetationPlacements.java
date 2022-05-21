@@ -84,7 +84,7 @@ public final class TropicraftVegetationPlacements {
     public static final RegistryObject<PlacedFeature> PATCH_GRASS_TROPICS = REGISTER.placed("tropics_grass", TropicraftVegetationFeatures.PATCH_GRASS_TROPICS, () -> worldSurfaceSquaredWithCount(10));
 
     public static final RegistryObject<PlacedFeature> BAMBOO = REGISTER.placed("bamboo", TropicraftVegetationFeatures.BAMBOO, () -> List.of(
-            NoiseBasedCountPlacement.of(70, 140.0D, 0.3D),
+            NoiseBasedCountPlacement.of(50, 140.0D, 0.5D),
             InSquarePlacement.spread(),
             PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
             BiomeFilter.biome()
