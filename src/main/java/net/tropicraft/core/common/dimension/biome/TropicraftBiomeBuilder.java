@@ -65,15 +65,30 @@ public class TropicraftBiomeBuilder {
         this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.coastContinentalness, this.erosions[5], weirdness, 0.0F, TropicraftBiomes.BEACH);
         this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.coastContinentalness, this.erosions[4], weirdness, 0.0F, TropicraftBiomes.BEACH);
 
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, Climate.Parameter.span(humidities[3], humidities[4]), this.landContinentalness, this.erosions[6], weirdness, 0.0F, TropicraftBiomes.MANGROVES);
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, Climate.Parameter.span(humidities[3], humidities[4]), this.landContinentalness, this.erosions[4], weirdness, 0.0F, TropicraftBiomes.MANGROVES);
+        if (weirdness.max() < 0) {
+            this.addSurfaceBiome(consumer, this.FULL_RANGE, Climate.Parameter.span(humidities[3], humidities[4]), this.landContinentalness, this.erosions[6], weirdness, 0.0F, TropicraftBiomes.OVERGROWN_MANGROVES);
+            this.addSurfaceBiome(consumer, this.FULL_RANGE, Climate.Parameter.span(humidities[3], humidities[4]), this.landContinentalness, this.erosions[4], weirdness, 0.0F, TropicraftBiomes.OVERGROWN_MANGROVES);
+        } else {
+            this.addSurfaceBiome(consumer, this.FULL_RANGE, Climate.Parameter.span(humidities[3], humidities[4]), this.landContinentalness, this.erosions[6], weirdness, 0.0F, TropicraftBiomes.MANGROVES);
+            this.addSurfaceBiome(consumer, this.FULL_RANGE, Climate.Parameter.span(humidities[3], humidities[4]), this.landContinentalness, this.erosions[4], weirdness, 0.0F, TropicraftBiomes.MANGROVES);
+        }
+
         this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.landContinentalness, this.erosions[3], weirdness, 0.0F, TropicraftBiomes.TROPICS);
 
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.WET, this.landContinentalness, this.erosions[3], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+        if (weirdness.max() < 0) {
+            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.WET, this.landContinentalness, this.erosions[3], weirdness, 0.0F, TropicraftBiomes.OSA_RAINFOREST);
+        } else {
+            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.WET, this.landContinentalness, this.erosions[3], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+        }
         this.addSurfaceBiome(consumer, this.FULL_RANGE, this.LESS_WET, this.landContinentalness, this.erosions[2], weirdness, 0.0F, TropicraftBiomes.TROPICS);
 
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.landContinentalness, this.erosions[1], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.landContinentalness, this.erosions[0], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+        if (weirdness.max() < 0) {
+            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.landContinentalness, this.erosions[1], weirdness, 0.0F, TropicraftBiomes.OSA_RAINFOREST);
+            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.landContinentalness, this.erosions[0], weirdness, 0.0F, TropicraftBiomes.OSA_RAINFOREST);
+        } else {
+            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.landContinentalness, this.erosions[1], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.landContinentalness, this.erosions[0], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+        }
     }
 
     private void addMidSlice(BiConsumer<Climate.ParameterPoint, RegistryObject<Biome>> consumer, Climate.Parameter weirdness) {

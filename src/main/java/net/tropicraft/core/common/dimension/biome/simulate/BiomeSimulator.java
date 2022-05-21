@@ -32,8 +32,11 @@ public class BiomeSimulator {
         COLORS.put(TropicraftBiomes.BEACH.getKey(), 0xFADE55);
         COLORS.put(TropicraftBiomes.RAINFOREST.getKey(), 0x056621);
         COLORS.put(TropicraftBiomes.BAMBOO_RAINFOREST.getKey(), 0x57c23c);
+        // TODO: colors too close to each other
+        COLORS.put(TropicraftBiomes.OSA_RAINFOREST.getKey(), 0x58d14d);
         COLORS.put(TropicraftBiomes.TROPICS.getKey(), 0x8DB360);
         COLORS.put(TropicraftBiomes.MANGROVES.getKey(), 0x528a50);
+        COLORS.put(TropicraftBiomes.OVERGROWN_MANGROVES.getKey(), 0x5d8733);
     }
 
     public static void main(String[] args) {
