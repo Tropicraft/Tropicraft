@@ -35,6 +35,6 @@ public final class TropicraftConfiguredStructures {
     }
 
     private static <S extends StructureFeature<JigsawConfiguration>> RegistryObject<ConfiguredStructureFeature<?, ?>> register(String id, RegistryObject<S> structure, RegistryObject<StructureTemplatePool> templatePool, int maxDepth, List<RegistryObject<Biome>> biomes) {
-        return register(id, structure, new JigsawConfiguration(templatePool.getHolder().orElseThrow(), maxDepth), biomes, true);
+        return register(id, structure, new JigsawConfiguration(templatePool.getHolder().orElseThrow(), maxDepth), biomes, false);
     }
 }
