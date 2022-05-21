@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.dimension.feature;
 
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.features.VegetationFeatures;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
@@ -23,7 +24,10 @@ public final class TropicraftVegetationFeatures {
 
     public static final RegistryObject<ConfiguredFeature<?, ?>> SMALL_GOLDEN_LEATHER_FERN = REGISTER.feature("small_golden_leather_fern", Feature.RANDOM_PATCH, () -> REGISTER.randomPatch(TropicraftBlocks.GOLDEN_LEATHER_FERN));
     public static final RegistryObject<ConfiguredFeature<?, ?>> TALL_GOLDEN_LEATHER_FERN = REGISTER.feature("tall_golden_leather_fern", Feature.RANDOM_PATCH, () -> REGISTER.randomPatch(TropicraftBlocks.TALL_GOLDEN_LEATHER_FERN));
-    public static final RegistryObject<ConfiguredFeature<?, ?>> HUGE_GOLDEN_LEATHER_FERN = REGISTER.feature("huge_golden_leather_fern", Feature.RANDOM_PATCH, () -> REGISTER.randomPatch(TropicraftBlocks.LARGE_GOLDEN_LEATHER_FERN));
+    public static final RegistryObject<ConfiguredFeature<?, ?>> HUGE_GOLDEN_LEATHER_FERN = REGISTER.feature("huge_golden_leather_fern", Feature.RANDOM_PATCH, () -> {
+        final SimpleBlockConfiguration config = new SimpleBlockConfiguration(BlockStateProvider.simple(TropicraftBlocks.LARGE_GOLDEN_LEATHER_FERN.get()));
+        return FeatureUtils.simplePatchConfiguration(TropicraftFeatures.HUGE_PLANT.get(), config);
+    });
 
     public static final RegistryObject<ConfiguredFeature<?, ?>> TREES_FRUIT = REGISTER.randomPlacedFeature("trees_fruit", TropicraftTreePlacements.GRAPEFRUIT_TREE_CHECKED, TropicraftTreePlacements.ORANGE_TREE_CHECKED, TropicraftTreePlacements.LEMON_TREE_CHECKED, TropicraftTreePlacements.LIME_TREE_CHECKED);
     public static final RegistryObject<ConfiguredFeature<?, ?>> TREES_PALM = REGISTER.randomPlacedFeature("trees_palm", TropicraftTreePlacements.PALM_TREE_CHECKED);

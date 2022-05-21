@@ -26,30 +26,29 @@ public final class TropicraftVegetationPlacements {
             InSquarePlacement.spread()
     ));
 
-    // TODO 1.18 adjust rarity
     public static final RegistryObject<PlacedFeature> SMALL_GOLDEN_LEATHER_FERN = REGISTER.placed("small_golden_leather_fern", TropicraftVegetationFeatures.SMALL_GOLDEN_LEATHER_FERN, () -> List.of(
-            RarityFilter.onAverageOnceEvery(45),
+            RarityFilter.onAverageOnceEvery(5),
             InSquarePlacement.spread(),
             PlacementUtils.HEIGHTMAP,
             BiomeFilter.biome()
     ));
 
     public static final RegistryObject<PlacedFeature> TALL_GOLDEN_LEATHER_FERN = REGISTER.placed("tall_golden_leather_fern", TropicraftVegetationFeatures.TALL_GOLDEN_LEATHER_FERN, () -> List.of(
-            RarityFilter.onAverageOnceEvery(90),
+            RarityFilter.onAverageOnceEvery(10),
             InSquarePlacement.spread(),
             PlacementUtils.HEIGHTMAP,
             BiomeFilter.biome()
     ));
 
     public static final RegistryObject<PlacedFeature> HUGE_GOLDEN_LEATHER_FERN = REGISTER.placed("huge_golden_leather_fern", TropicraftVegetationFeatures.HUGE_GOLDEN_LEATHER_FERN, () -> List.of(
-            RarityFilter.onAverageOnceEvery(150),
+            RarityFilter.onAverageOnceEvery(20),
             InSquarePlacement.spread(),
             PlacementUtils.HEIGHTMAP,
             BiomeFilter.biome()
     ));
 
     public static final RegistryObject<PlacedFeature> OVERGROWN_SMALL_GOLDEN_LEATHER_FERN = REGISTER.placed("overgrown_small_golden_leather_fern", TropicraftVegetationFeatures.SMALL_GOLDEN_LEATHER_FERN, () -> List.of(
-            RarityFilter.onAverageOnceEvery(35),
+            RarityFilter.onAverageOnceEvery(2),
             CountPlacement.of(10),
             InSquarePlacement.spread(),
             PlacementUtils.HEIGHTMAP,
@@ -57,7 +56,7 @@ public final class TropicraftVegetationPlacements {
     ));
 
     public static final RegistryObject<PlacedFeature> OVERGROWN_TALL_GOLDEN_LEATHER_FERN = REGISTER.placed("overgrown_tall_golden_leather_fern", TropicraftVegetationFeatures.TALL_GOLDEN_LEATHER_FERN, () -> List.of(
-            RarityFilter.onAverageOnceEvery(60),
+            RarityFilter.onAverageOnceEvery(2),
             CountPlacement.of(8),
             InSquarePlacement.spread(),
             PlacementUtils.HEIGHTMAP,

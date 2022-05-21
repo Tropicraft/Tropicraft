@@ -51,6 +51,7 @@ public class TropicraftFeatures {
     public static final RegistryObject<CoffeePlantFeature> COFFEE_BUSH = register("coffee_bush", () -> new CoffeePlantFeature(NoneFeatureConfiguration.CODEC));
 
     public static final RegistryObject<ReedsFeature> REEDS = register("reeds", () -> new ReedsFeature(NoneFeatureConfiguration.CODEC));
+    public static final RegistryObject<HugePlantFeature> HUGE_PLANT = register("huge_plant", () -> new HugePlantFeature(SimpleBlockConfiguration.CODEC));
 
     private static <T extends Feature<?>> RegistryObject<T> register(final String name, final Supplier<T> sup) {
         return FEATURES.register(name, sup);
@@ -146,7 +147,6 @@ public class TropicraftFeatures {
             return placed.register(id, () -> new PlacedFeature(holderOf(configured), List.of()));
         }
 
-        // TODO: move specific ones out
         public RandomPatchConfiguration randomPatch(final Supplier<? extends Block> block) {
             return randomPatch(BlockStateProvider.simple(block.get()));
         }
