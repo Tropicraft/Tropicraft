@@ -8,6 +8,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FallingBlock;
+import net.minecraft.world.level.block.GlazedTerracottaBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -16,6 +17,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.common.PlantType;
 
 public class BlockTropicraftSand extends FallingBlock {
     public static final BooleanProperty UNDERWATER = BooleanProperty.create("underwater");
@@ -35,7 +37,9 @@ public class BlockTropicraftSand extends FallingBlock {
     
     @Override
     public boolean canSustainPlant(BlockState state, BlockGetter world, BlockPos pos, Direction facing, IPlantable plantable) {
-        return Blocks.SAND.canSustainPlant(state, world, pos, facing, plantable);
+        PlantType type = plantable.getPlantType(world, pos.relative(facing));
+
+        return PlantType.DESERT.equals(type);
     }
 
     @Override
