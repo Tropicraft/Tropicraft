@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[36,)"
+loaderVersion="[40,)"
 issueTrackerURL="https://github.com/Tropicraft/Tropicraft/issues"
 license="Mozilla Public License Version 2.0"
 
@@ -14,3 +14,6 @@ authors="Cojomax99, Corosus, tterrag"
 description='''
 This is Tropicraft, the utopian idyllic getaway that you have been waiting for! Craft a pina colada, plop yourself down into a beach chair, take a sip at sunset, and drift away
 '''
+[projects]
+  modrinth="20zpzIT1"
+  curseforge=254794
