@@ -16,12 +16,17 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    - uses: gradle/gradle-build-action@v2
+    - name: Build with Gradle
+      uses: gradle/gradle-build-action@v2
       with:
         arguments: build
+
+    - name: Locate built JARfile
+      id: jar
+      run: echo "##[set-output name=jarfile;]$(ls -1 build/libs/)"
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2.2.3
       with:
-          name: jdk17
-          path: build/libs/**/*.jar
+          name: ${{ steps.jar.outputs.jarfile }}
+          path: build/libs/${{ steps.jar.outputs.jarfile }}
