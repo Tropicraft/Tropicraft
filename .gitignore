@@ -29,3 +29,5 @@ logs
 forge*changelog.txt
 
 Thumbs.db
+
+.vscode/
