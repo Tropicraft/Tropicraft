@@ -9,11 +9,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
+    - name: Checkout repository
       uses: actions/checkout@v2
-
-    - name: Set up Environment Variables
-      run: echo "##[set-output name=mcversion;]$(grep 'minecraft_version' gradle.properties | cut -f2- -d=)"
 
     - name: Set up JDK 17
       uses: actions/setup-java@v2
@@ -21,11 +18,14 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-
     - name: Build with Gradle
-      run: ./gradlew build
+      uses: gradle/gradle-build-action@v2
+      with:
+        arguments: build
+
+    - name: Set up Environment Variables
+      id: env-vars
+      run: echo "##[set-output name=mcversion;]$(grep 'minecraft_version' gradle.properties | cut -f2- -d=)"
 
     - name: Publish to Services (Release)
       uses: Kir-Antipov/mc-publish@v3.1
@@ -36,7 +36,7 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         version-type: release
         game-versions: |
-          ${{ steps.init.outputs.mcversion }}
+          ${{ steps.env-vars.outputs.mcversion }}
 
     - name: Publish to Services (Beta)
       uses: Kir-Antipov/mc-publish@v3.1
@@ -47,4 +47,4 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         version-type: beta
         game-versions: |
-          ${{ steps.init.outputs.mcversion }}
+          ${{ steps.env-vars.outputs.mcversion }}
