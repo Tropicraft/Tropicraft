@@ -40,7 +40,7 @@ jobs:
 
     - name: Publish to Services (Beta)
       uses: Kir-Antipov/mc-publish@v3.1
-      if: "!github.event.release.prerelease"
+      if: "github.event.release.prerelease"
       with:
         modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
         curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
