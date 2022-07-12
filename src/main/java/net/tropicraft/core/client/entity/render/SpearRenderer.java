@@ -16,10 +16,10 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.tropicraft.core.common.entity.projectile.SpearEntity;
 
-public class SpearEntityRenderer<T extends SpearEntity> extends EntityRenderer<T> {
+public class SpearRenderer<T extends SpearEntity> extends EntityRenderer<T> {
 	private ItemRenderer itemRenderer;
 
-	public SpearEntityRenderer(EntityRendererProvider.Context p_174008_) {
+	public SpearRenderer(EntityRendererProvider.Context p_174008_) {
 		super(p_174008_);
 		this.itemRenderer = Minecraft.getInstance().getItemRenderer();
 	}
@@ -28,11 +28,11 @@ public class SpearEntityRenderer<T extends SpearEntity> extends EntityRenderer<T
 	public void render(T entityIn, float entityYaw, float partialTicks, PoseStack stackIn, MultiBufferSource bufferIn, int packedLightIn) {
 		stackIn.pushPose();
 
-		stackIn.mulPose(Vector3f.YP.rotationDegrees(-Mth.lerp(partialTicks, entityIn.yRotO, entityIn.getYRot())));
+		stackIn.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(partialTicks, entityIn.yRotO, entityIn.getYRot())));
+		stackIn.mulPose(Vector3f.XP.rotationDegrees(-Mth.lerp(partialTicks, entityIn.xRotO, entityIn.getXRot())));
+		stackIn.mulPose(Vector3f.YP.rotationDegrees(-45.0F));
 		stackIn.mulPose(Vector3f.XP.rotationDegrees(90.0F));
-		stackIn.mulPose(Vector3f.XP.rotationDegrees(Mth.lerp(partialTicks, entityIn.xRotO, entityIn.getXRot())));
-		stackIn.mulPose(Vector3f.ZP.rotationDegrees(45.0F));
-		stackIn.translate(0.0F, 0.0F, -entityIn.getBbHeight() / 2);
+		
 		stackIn.scale(2.5F, 2.5F, 2.5F);
 
 		BakedModel bakedmodel = this.itemRenderer.getModel(entityIn.getPickupItem(), entityIn.level, (LivingEntity) null, entityIn.getId());

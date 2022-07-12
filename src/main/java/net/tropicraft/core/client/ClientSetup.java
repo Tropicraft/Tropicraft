@@ -128,7 +128,7 @@ public class ClientSetup {
         event.registerEntityRenderer(TropicraftEntities.WHITE_LIPPED_PECCARY.get(), WhiteLippedPeccaryRenderer::new);
         event.registerEntityRenderer(TropicraftEntities.CUBERA.get(), CuberaRenderer::new);
         event.registerEntityRenderer(TropicraftEntities.FISHING_BOBBER.get(), FishingBobberEntityRenderer::new);
-        event.registerEntityRenderer(TropicraftEntities.SPEAR.get(), SpearEntityRenderer::new);
+		event.registerEntityRenderer(TropicraftEntities.SPEAR.get(), SpearRenderer::new);
 
         setupTileEntityRenderers(event);
 
