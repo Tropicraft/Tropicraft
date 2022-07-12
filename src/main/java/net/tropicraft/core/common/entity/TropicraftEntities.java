@@ -3,7 +3,6 @@ package net.tropicraft.core.common.entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.animal.AbstractFish;
 import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.LevelAccessor;
@@ -14,9 +13,9 @@ import net.minecraft.world.level.material.Material;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
@@ -32,6 +31,7 @@ import net.tropicraft.core.common.entity.placeable.*;
 import net.tropicraft.core.common.entity.projectile.ExplodingCoconutEntity;
 import net.tropicraft.core.common.entity.projectile.LavaBallEntity;
 import net.tropicraft.core.common.entity.projectile.PoisonBlotEntity;
+import net.tropicraft.core.common.entity.projectile.SpearEntity;
 import net.tropicraft.core.common.entity.underdasea.*;
 
 import java.util.Random;
@@ -93,6 +93,9 @@ public class TropicraftEntities {
     public static final RegistryObject<EntityType<WhiteLippedPeccaryEntity>> WHITE_LIPPED_PECCARY = register("white_lipped_peccary", TropicraftEntities::whiteLippedPeccary);
     public static final RegistryObject<EntityType<CuberaEntity>> CUBERA = register("cubera", TropicraftEntities::cubera);
     public static final RegistryObject<EntityType<FishingBobberEntity>> FISHING_BOBBER = register("fishing_bobber", TropicraftEntities::fishingBobber);
+
+    public static final RegistryObject<EntityType<SpearEntity>> SPEAR = register("spear", TropicraftEntities::spear);
+
 
     private static <E extends Entity, T extends EntityType<E>> RegistryObject<EntityType<E>> register(final String name, final Supplier<EntityType.Builder<E>> sup) {
         return ENTITIES.register(name, () -> sup.get().build(name));
@@ -468,6 +471,13 @@ public class TropicraftEntities {
                 /*.setTrackingRange(8)*/
                 .setTrackingRange(128)
                 .setUpdateInterval(3)
+                .setShouldReceiveVelocityUpdates(true);
+    }
+
+    private static EntityType.Builder<SpearEntity> spear() {
+        return EntityType.Builder.<SpearEntity>of(SpearEntity::new, MobCategory.MISC)
+                .sized(0.8F, 0.8F)
+                .setTrackingRange(4).updateInterval(20)
                 .setShouldReceiveVelocityUpdates(true);
     }
 
