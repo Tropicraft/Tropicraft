@@ -196,7 +196,7 @@ public class TropicraftBlocks {
     public static final RegistryObject<WallBlock> CHUNK_WALL = register("chunk_wall", Builder.wall(CHUNK));
     
     public static final RegistryObject<DoorBlock> BAMBOO_DOOR = register(
-            "bamboo_door", () -> new DoorBlock(Block.Properties.copy(BAMBOO_BUNDLE.get()).strength(1.0F)) {});
+            "bamboo_door", () -> new DoorBlock(Block.Properties.copy(BAMBOO_BUNDLE.get()).strength(1.0F).noOcclusion()) {});
     public static final RegistryObject<DoorBlock> PALM_DOOR = register(
             "palm_door", () -> new DoorBlock(Block.Properties.copy(Blocks.OAK_DOOR)) {});
     public static final RegistryObject<DoorBlock> MAHOGANY_DOOR = register(
@@ -205,7 +205,7 @@ public class TropicraftBlocks {
             "thatch_door", () -> new DoorBlock(Block.Properties.copy(THATCH_BUNDLE.get())) {});
     
     public static final RegistryObject<TrapDoorBlock> BAMBOO_TRAPDOOR = register(
-            "bamboo_trapdoor", () -> new TrapDoorBlock(Block.Properties.copy(BAMBOO_DOOR.get()).noOcclusion()) {});
+            "bamboo_trapdoor", () -> new TrapDoorBlock(Block.Properties.copy(BAMBOO_DOOR.get())) {});
     public static final RegistryObject<TrapDoorBlock> PALM_TRAPDOOR = register(
             "palm_trapdoor", () -> new TrapDoorBlock(Block.Properties.copy(PALM_DOOR.get())) {});
     public static final RegistryObject<TrapDoorBlock> MAHOGANY_TRAPDOOR = register(
