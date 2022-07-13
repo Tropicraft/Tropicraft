@@ -250,13 +250,15 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
         if (!entityToUpdate.level.isClientSide || isClientFirstPerson(entityToUpdate)) {
             entityToUpdate.setYBodyRot(this.getYRot());
             float yaw = Mth.wrapDegrees(entityToUpdate.getYRot() - this.getYRot());
-            float pitch = Mth.wrapDegrees(entityToUpdate.getYRot() - this.getYRot());
+            float pitch = Mth.wrapDegrees(entityToUpdate.getXRot() - this.getXRot());
             float clampedYaw = Mth.clamp(yaw, -105.0F, 105.0F);
-            float clampedPitch = Mth.clamp(pitch, -100F, -10F);
-            entityToUpdate.yRotO += clampedYaw - yaw;
-            entityToUpdate.setYRot(entityToUpdate.getYRot() + clampedYaw - yaw);
-            entityToUpdate.xRotO += clampedPitch - pitch;
-            entityToUpdate.setXRot(entityToUpdate.getXRot() + clampedPitch - pitch);
+            float clampedPitch = Mth.clamp(pitch, -100F, 0F);
+            float yawClampDelta = clampedYaw - yaw;
+            float pitchClampDelta = clampedPitch - pitch;
+            entityToUpdate.yRotO += yawClampDelta;
+            entityToUpdate.setYRot(entityToUpdate.getYRot() + yawClampDelta);
+            entityToUpdate.xRotO += pitchClampDelta;
+            entityToUpdate.setXRot(entityToUpdate.getXRot() + pitchClampDelta);
             entityToUpdate.setYHeadRot(entityToUpdate.getYRot());
         }
     }
