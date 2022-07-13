@@ -87,7 +87,7 @@ public class TropicraftItemTagsProvider extends ItemTagsProvider {
         appendToTag(ItemTags.MUSIC_DISCS, MUSIC_DISCS);
 
         // Copy block tags
-        copy(TropicraftTags.Blocks.SAND, SAND);
+        copyBlockAndAppendToTag(TropicraftTags.Blocks.SAND, SAND, ItemTags.SAND);
         copy(TropicraftTags.Blocks.MUD, MUD);
 
         copyBlockAndAppendToTag(TropicraftTags.Blocks.SAPLINGS, SAPLINGS, ItemTags.SAPLINGS);

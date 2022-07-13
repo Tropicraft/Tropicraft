@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "key": {
+    "X": {
+      "item": "tropicraft:purified_sand"
+    }
+  },
+  "result": {
+    "item": "tropicraft:packed_purified_sand"
+  }
+}
