@@ -95,6 +95,7 @@ public class TropicraftBlocks {
     public static final RegistryObject<Block> PALM_PLANKS = register("palm_planks", Builder.plank(MaterialColor.WOOD));
     public static final RegistryObject<RotatedPillarBlock> MAHOGANY_LOG = register("mahogany_log", Builder.log(MaterialColor.WOOD, MaterialColor.COLOR_BROWN));
     public static final RegistryObject<RotatedPillarBlock> PALM_LOG = register("palm_log", Builder.log(MaterialColor.COLOR_GRAY, MaterialColor.COLOR_BROWN));
+    // TODO: fix this typo
     public static final RegistryObject<RotatedPillarBlock> MAHOGANY_WOOD = register("mohogany_wood", Builder.wood(MaterialColor.WOOD));
     public static final RegistryObject<RotatedPillarBlock> PALM_WOOD = register("palm_wood", Builder.wood(MaterialColor.COLOR_GRAY));
 
