@@ -2,8 +2,8 @@
   <img src="https://files.tropicraft.net/logo.png">
 </p>
 <p align="center">
-  <a href="https://travis-ci.org/Tropicraft/Tropicraft">
-      <img src="https://img.shields.io/travis/Tropicraft/Tropicraft/master.svg?style=flat-square" alt="Build Status">
+  <a href="https://github.com/Tropicraft/Tropicraft/actions/workflows/gradle.yml">
+      <img src="https://img.shields.io/github/workflow/status/Tropicraft/Tropicraft/Java%20CI%20with%20Gradle?style=flat-square" alt="Build Status">
   </a>
   <a href="https://discord.gg/Q24TRnx">
       <img src="https://img.shields.io/discord/285234569375121409.svg?colorB=7289DA&label=Discord&style=flat-square" alt="Discord">
