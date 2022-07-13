@@ -108,21 +108,20 @@ public class SeaTurtleEntity extends Turtle {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        // goalSelector
-        GoalSelector goalSelector = ObfuscationReflectionHelper.getPrivateValue(Mob.class, this, "goalSelector");
+
         // goals
-        Set<WrappedGoal> goalSet = ObfuscationReflectionHelper.getPrivateValue(GoalSelector.class, goalSelector, "availableGoals");
+        Set<WrappedGoal> goalSet = this.goalSelector.getAvailableGoals();
 
         final Optional<WrappedGoal> eggGoal = goalSet.stream().filter(p -> p.getGoal().toString().contains("Egg")).findFirst();
         if (eggGoal.isPresent()) {
-            goalSelector.removeGoal(eggGoal.get().getGoal());
-            goalSelector.addGoal(1, new BetterLayEggGoal(this, 1.0));
+            this.goalSelector.removeGoal(eggGoal.get().getGoal());
+            this.goalSelector.addGoal(1, new BetterLayEggGoal(this, 1.0));
         }
 
         final Optional<WrappedGoal> mateGoal = goalSet.stream().filter(p -> p.getGoal().toString().contains("Mate")).findFirst();
         if (mateGoal.isPresent()) {
-            goalSelector.removeGoal(mateGoal.get().getGoal());
-            goalSelector.addGoal(1, new BetterMateGoal(this, 1.0));
+            this.goalSelector.removeGoal(mateGoal.get().getGoal());
+            this.goalSelector.addGoal(1, new BetterMateGoal(this, 1.0));
         }
     }
 
