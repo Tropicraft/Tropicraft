@@ -119,8 +119,7 @@ public class ManOWarEntity extends WaterAnimal {
                 for (LivingEntity ent : list) {
                     if (ent.getType() != TropicraftEntities.MAN_O_WAR.get()) {
                         if (ent.isInWater()) {
-                            // TODO change so death msg isn't "struck by lightning"
-                            ent.hurt(DamageSource.LIGHTNING_BOLT, (float) getAttribute(Attributes.ATTACK_DAMAGE).getValue());
+                            ent.hurt(DamageSource.mobAttack(this), (float) getAttribute(Attributes.ATTACK_DAMAGE).getValue());
                             attackTimer = 20;
                         }
                     }
