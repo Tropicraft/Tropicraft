@@ -12,47 +12,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegistryObject;
 import net.tropicraft.Constants;
-import net.tropicraft.core.client.entity.render.AshenMaskRenderer;
-import net.tropicraft.core.client.entity.render.AshenRenderer;
-import net.tropicraft.core.client.entity.render.BambooItemFrameRenderer;
-import net.tropicraft.core.client.entity.render.BasiliskLizardRenderer;
-import net.tropicraft.core.client.entity.render.BeachFloatRenderer;
-import net.tropicraft.core.client.entity.render.ChairRenderer;
-import net.tropicraft.core.client.entity.render.CowktailRenderer;
-import net.tropicraft.core.client.entity.render.CuberaRenderer;
-import net.tropicraft.core.client.entity.render.EIHRenderer;
-import net.tropicraft.core.client.entity.render.EagleRayRenderer;
-import net.tropicraft.core.client.entity.render.EggRenderer;
-import net.tropicraft.core.client.entity.render.FailgullRenderer;
-import net.tropicraft.core.client.entity.render.FiddlerCrabRenderer;
-import net.tropicraft.core.client.entity.render.FishingBobberEntityRenderer;
-import net.tropicraft.core.client.entity.render.HummingbirdRenderer;
-import net.tropicraft.core.client.entity.render.IguanaRenderer;
-import net.tropicraft.core.client.entity.render.JaguarRenderer;
-import net.tropicraft.core.client.entity.render.KoaRenderer;
-import net.tropicraft.core.client.entity.render.ManOWarRenderer;
-import net.tropicraft.core.client.entity.render.MarlinRenderer;
-import net.tropicraft.core.client.entity.render.PiranhaRenderer;
-import net.tropicraft.core.client.entity.render.PoisonBlotRenderer;
-import net.tropicraft.core.client.entity.render.SardineRenderer;
-import net.tropicraft.core.client.entity.render.SeaTurtleRenderer;
-import net.tropicraft.core.client.entity.render.SeaUrchinRenderer;
-import net.tropicraft.core.client.entity.render.SeahorseRenderer;
-import net.tropicraft.core.client.entity.render.SharkRenderer;
-import net.tropicraft.core.client.entity.render.SpiderMonkeyRenderer;
-import net.tropicraft.core.client.entity.render.StarfishRenderer;
-import net.tropicraft.core.client.entity.render.TapirRenderer;
-import net.tropicraft.core.client.entity.render.TreeFrogRenderer;
-import net.tropicraft.core.client.entity.render.TropiBeeRenderer;
-import net.tropicraft.core.client.entity.render.TropiCreeperRenderer;
-import net.tropicraft.core.client.entity.render.TropiSkellyRenderer;
-import net.tropicraft.core.client.entity.render.TropiSpiderRenderer;
-import net.tropicraft.core.client.entity.render.TropicraftDolphinRenderer;
-import net.tropicraft.core.client.entity.render.TropicraftTropicalFishRenderer;
-import net.tropicraft.core.client.entity.render.UmbrellaRenderer;
-import net.tropicraft.core.client.entity.render.VMonkeyRenderer;
-import net.tropicraft.core.client.entity.render.WallItemRenderer;
-import net.tropicraft.core.client.entity.render.WhiteLippedPeccaryRenderer;
+import net.tropicraft.core.client.entity.render.*;
 import net.tropicraft.core.client.tileentity.AirCompressorRenderer;
 import net.tropicraft.core.client.tileentity.BambooChestRenderer;
 import net.tropicraft.core.client.tileentity.DrinkMixerRenderer;
@@ -62,10 +22,7 @@ import net.tropicraft.core.common.block.tileentity.TropicraftBlockEntityTypes;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 
-import static net.tropicraft.core.client.TropicraftRenderLayers.SEA_TURTLE_EGG_LAYER;
-import static net.tropicraft.core.client.TropicraftRenderLayers.SEA_URCHIN_EGG_ENTITY_LAYER;
-import static net.tropicraft.core.client.TropicraftRenderLayers.STARFISH_EGG_LAYER;
-import static net.tropicraft.core.client.TropicraftRenderLayers.TROPI_SPIDER_EGG_LAYER;
+import static net.tropicraft.core.client.TropicraftRenderLayers.*;
 
 @Mod.EventBusSubscriber(modid = Constants.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientSetup {
@@ -171,6 +128,7 @@ public class ClientSetup {
         event.registerEntityRenderer(TropicraftEntities.WHITE_LIPPED_PECCARY.get(), WhiteLippedPeccaryRenderer::new);
         event.registerEntityRenderer(TropicraftEntities.CUBERA.get(), CuberaRenderer::new);
         event.registerEntityRenderer(TropicraftEntities.FISHING_BOBBER.get(), FishingBobberEntityRenderer::new);
+		event.registerEntityRenderer(TropicraftEntities.SPEAR.get(), SpearRenderer::new);
 
         setupTileEntityRenderers(event);
 
