@@ -32,12 +32,7 @@ public class BambooItemFrame extends ItemFrame implements IEntityAdditionalSpawn
     }
     
     @Override
-    protected void dropItem(Entity entityIn, boolean dropSelf) {
-        super.dropItem(entityIn, false);
-        if (dropSelf) {
-            this.spawnAtLocation(TropicraftItems.BAMBOO_ITEM_FRAME.get());
-        }
-    }
+    public ItemStack getFrameItemStack() { return new ItemStack(TropicraftItems.BAMBOO_ITEM_FRAME.get()); }
 
     @Override
     public Packet<?> getAddEntityPacket() {
