@@ -112,6 +112,12 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .unlockedBy("has_bamboo", has(Items.BAMBOO))
             .save(consumer, new ResourceLocation("stick_from_bamboo_item"));
         
+        ShapedRecipeBuilder.shaped(PACKED_PURIFIED_SAND.get())
+            .pattern("XX").pattern("XX")
+            .define('X', PURIFIED_SAND.get())
+            .unlockedBy("has_purified_sand", has(PURIFIED_SAND.get()))
+            .save(consumer);
+
         ShapedRecipeBuilder.shaped(BAMBOO_SPEAR.get())
             .pattern("X ").pattern(" X")
             .define('X', BAMBOO_STICK.get())

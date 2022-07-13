@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tropicraft:packed_purified_sand"
+    ]
+  },
+  "criteria": {
+    "has_purified_sand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tropicraft:purified_sand"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tropicraft:packed_purified_sand"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_purified_sand",
+      "has_the_recipe"
+    ]
+  ]
+}
