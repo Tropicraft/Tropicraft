@@ -161,7 +161,7 @@ public class TropicraftDimension {
             player.changeDimension(destLevel, new TropicsTeleporter(destLevel));
 
             //Note: Stops the player from teleporting right after going through the portal
-            ObfuscationReflectionHelper.setPrivateValue(Entity.class, player, 160, "portalCooldown");
+            player.portalCooldown = 160;
         }
     }
 
