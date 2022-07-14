@@ -1,0 +1,60 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tropicraft:mangrove_planks"
+    ]
+  },
+  "criteria": {
+    "has_light_mangrove_log": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tropicraft:light_mangrove_log"
+            ]
+          }
+        ]
+      }
+    },
+    "has_red_mangrove_log": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tropicraft:red_mangrove_log"
+            ]
+          }
+        ]
+      }
+    },
+    "has_black_mangrove_log": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tropicraft:black_mangrove_log"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tropicraft:mangrove_planks"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_light_mangrove_log",
+      "has_red_mangrove_log",
+      "has_black_mangrove_log",
+      "has_the_recipe"
+    ]
+  ]
+}

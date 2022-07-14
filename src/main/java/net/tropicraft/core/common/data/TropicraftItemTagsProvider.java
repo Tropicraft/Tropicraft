@@ -51,6 +51,8 @@ public class TropicraftItemTagsProvider extends ItemTagsProvider {
         appendToTag(Tags.Items.GEMS, AZURITE_GEM, EUDIALYTE_GEM, ZIRCON_GEM, ZIRCONIUM_GEM);
         appendToTag(Tags.Items.INGOTS, MANGANESE_INGOT, SHAKA_INGOT);
 
+        addItemsToTag(MANGROVE_LOGS, TropicraftBlocks.LIGHT_MANGROVE_LOG, TropicraftBlocks.RED_MANGROVE_LOG, TropicraftBlocks.BLACK_MANGROVE_LOG);
+
         addItemsToTag(LEATHER, TropicraftItems.IGUANA_LEATHER);
         appendToTag(Tags.Items.LEATHER, LEATHER);
 

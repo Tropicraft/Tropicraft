@@ -165,6 +165,12 @@ public class TropicraftRecipeProvider extends RecipeProvider {
         // Planks
         planks(MAHOGANY_LOG, MAHOGANY_PLANKS, consumer);
         planks(PALM_LOG, PALM_PLANKS, consumer);
+        ShapelessRecipeBuilder.shapeless(MANGROVE_PLANKS.get(), 4)
+            .requires(TropicraftTags.Items.MANGROVE_LOGS)
+            .unlockedBy("has_light_mangrove_log", has(LIGHT_MANGROVE_LOG.get()))
+            .unlockedBy("has_red_mangrove_log", has(RED_MANGROVE_LOG.get()))
+            .unlockedBy("has_black_mangrove_log", has(BLACK_MANGROVE_LOG.get()))
+            .save(consumer);
         
         bark(MAHOGANY_LOG, MAHOGANY_WOOD, consumer);
         bark(PALM_LOG, PALM_WOOD, consumer);

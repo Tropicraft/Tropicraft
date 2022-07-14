@@ -91,6 +91,8 @@ public class TropicraftTags {
         public static final TagKey<Item> WOODEN_DOORS = modTag("wooden_doors");
         public static final TagKey<Item> WOODEN_TRAPDOORS = modTag("wooden_trapdoors");
         public static final TagKey<Item> WOODEN_FENCES = modTag("wooden_fences");
+
+        public static final TagKey<Item> MANGROVE_LOGS = modTag("mangrove_logs");
         
         public static final TagKey<Item> SLABS = modTag("slabs");
         public static final TagKey<Item> STAIRS = modTag("stairs");
