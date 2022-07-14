@@ -1,4 +1,5 @@
 package net.tropicraft.core.common.dimension.feature.tree;
+import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_LEAVES;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
@@ -42,7 +43,7 @@ public class RainforestVinesFeature extends Feature<RainforestVinesConfig> {
                     for (Direction direction : DIRECTIONS) {
                         mutablePos.move(direction);
                         BlockState attaching = world.getBlockState(mutablePos);
-                        if ((attaching.getBlock() == Blocks.GRASS_BLOCK && rand.nextInt(4) == 0) || attaching.is(BlockTags.LEAVES)) {
+                        if ((attaching.getBlock() == Blocks.GRASS_BLOCK && rand.nextInt(4) == 0) || (attaching.is(BlockTags.LEAVES) && !attaching.is(PALM_LEAVES.get()))) {
                             if (direction != Direction.DOWN && VineBlock.isAcceptableNeighbour(world, mutablePos, direction)) {
                                 mutablePos.move(direction.getOpposite());
                                 int len = rand.nextInt(3) + 2;
