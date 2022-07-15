@@ -35,19 +35,19 @@ public class HummingbirdModel<T extends HummingbirdEntity> extends EntityModel<T
 
         partDefinition.addOrReplaceChild("body_base", CubeListBuilder.create()
                         .texOffs(0, 0).addBox(-1.0f, -2.0f, -1.0f, 2.0f, 3.0f, 2.0f),
-                PartPose.offsetAndRotation(0.0f, 20.0f, 0.0f, 0.4363f, 0.0f, 0.0f));
+                PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, 0.4363f, 0.0f, 0.0f));
 
         partDefinition.addOrReplaceChild("tail_base", CubeListBuilder.create()
                         .texOffs(0, 6).addBox(-1.5f, 0.0f, 0.0f, 3.0f, 4.0f, 0.0f),
-                PartPose.offsetAndRotation(0.0f, 21.0f, 1.0f, 0.2618f, 0.0f, 0.0f));
+                PartPose.offsetAndRotation(0.0f, 1.0f, 1.0f, 0.2618f, 0.0f, 0.0f));
 
         partDefinition.addOrReplaceChild("wing_left", CubeListBuilder.create()
                         .texOffs(9, 11).addBox(0.0f, 0.0f, 0.0f, 4.0f, 2.0f, 0.0f),
-                PartPose.offsetAndRotation(1.0f, 18.0f, 1.0f, 0.0f, 0.0f, 0.0f));
+                PartPose.offsetAndRotation(1.0f, -2.0f, 1.0f, 0.0f, 0.0f, 0.0f));
 
         PartDefinition partDefinition3 = partDefinition.addOrReplaceChild("head_base", CubeListBuilder.create()
                         .texOffs(9, 0).addBox(-1.0f, -2.0f, -1.0f, 2.0f, 2.0f, 2.0f, new CubeDeformation(0.00f)),
-                PartPose.offsetAndRotation(0.0f, 18.0f, 0.0f, -0.2618f, 0.0f, 0.0f));
+                PartPose.offsetAndRotation(0.0f, -2.0f, 0.0f, -0.2618f, 0.0f, 0.0f));
 
         partDefinition3.addOrReplaceChild("beak_base", CubeListBuilder.create()
                         .texOffs(7, 6).addBox(0.0f, 0.0f, -3.0f, 0.0f, 1.0f, 3.0f),
@@ -55,7 +55,7 @@ public class HummingbirdModel<T extends HummingbirdEntity> extends EntityModel<T
 
         partDefinition.addOrReplaceChild("wing_right", CubeListBuilder.create()
                         .texOffs(0, 11).addBox(-4.0f, 0.0f, 0.0f, 4.0f, 2.0f, 0.0f),
-                PartPose.offsetAndRotation(-1.0f, 18.0f, 1.0f, 0.0f, 0.0f, 0.0f));
+                PartPose.offsetAndRotation(-1.0f, -2.0f, 1.0f, 0.0f, 0.0f, 0.0f));
 
         return LayerDefinition.create(meshDefinition, 32, 32);
     }
