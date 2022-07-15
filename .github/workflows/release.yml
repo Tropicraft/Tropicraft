@@ -20,6 +20,8 @@ jobs:
 
     - name: Build with Gradle
       uses: gradle/gradle-build-action@v2
+      env:
+        GHA_RELEASE_WORKFLOW: True
       with:
         arguments: build
 
