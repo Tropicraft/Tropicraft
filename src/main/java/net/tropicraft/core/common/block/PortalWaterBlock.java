@@ -22,7 +22,12 @@ public class PortalWaterBlock extends LiquidBlock {
     public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
         super.entityInside(state, worldIn, pos, entityIn);
         if (!worldIn.isClientSide && entityIn instanceof ServerPlayer && !entityIn.isPassenger() && entityIn.canChangeDimensions()) {
-            TropicraftDimension.teleportPlayer((ServerPlayer) entityIn, TropicraftDimension.WORLD);
+            if (!entityIn.isOnPortalCooldown()) {
+                TropicraftDimension.teleportPlayer((ServerPlayer) entityIn, TropicraftDimension.WORLD);
+            } else {
+                // Give players a chance to surface
+                entityIn.portalCooldown = 80;
+            }
         }
     }
 
