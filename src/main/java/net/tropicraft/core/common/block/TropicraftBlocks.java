@@ -77,7 +77,7 @@ public class TropicraftBlocks {
                     (f1, f2) -> { throw new IllegalStateException(); }, () -> new EnumMap<>(TropicraftFlower.class)));
 
     public static final RegistryObject<Block> PURIFIED_SAND = register("purified_sand", Builder.sand(MaterialColor.SAND));
-    public static final RegistryObject<Block> PACKED_PURIFIED_SAND = register("packed_purified_sand", Builder.sand(MaterialColor.SAND, 2, 30));
+    public static final RegistryObject<Block> PACKED_PURIFIED_SAND = register("packed_purified_sand", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.SAND).requiresCorrectToolForDrops().strength(0.8F)));
     public static final RegistryObject<Block> CORAL_SAND = register("coral_sand", Builder.sand(MaterialColor.COLOR_PINK));
     public static final RegistryObject<Block> FOAMY_SAND = register("foamy_sand", Builder.sand(MaterialColor.COLOR_GREEN));
     public static final RegistryObject<Block> VOLCANIC_SAND = register("volcanic_sand", Builder.volcanicSand(MaterialColor.COLOR_LIGHT_GRAY));
