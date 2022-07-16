@@ -994,7 +994,13 @@ public class ModelScubaGear extends HumanoidModel<LivingEntity> {
         leftLeg.visible = showLegs;
 
         if (renderHead) {
+            stack.pushPose();
+            if (isSneaking) {
+                stack.translate(0, -(0.112f + 0.0625f), 0);
+            }
+
             head.render(stack, bufferIn, packedLightIn, packedOverlayIn);
+            stack.popPose();
         }
 
         body.render(stack, bufferIn, packedLightIn, packedOverlayIn);
