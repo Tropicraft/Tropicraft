@@ -11,11 +11,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.FenceBlock;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -192,13 +188,14 @@ public final class MangroveRootsBlock extends Block implements SimpleWaterlogged
         return this.canConnectTo(world.getBlockState(pos), world, pos, direction);
     }
 
+    // TODO: make method for exceptions
     private boolean canConnectTo(BlockState state, BlockGetter world, BlockPos pos, Direction direction) {
-        return (state.is(this) || state.isFaceSturdy(world, pos, direction)) && !FenceBlock.isExceptionForConnection(state);
+        return (state.is(this) || state.isFaceSturdy(world, pos, direction)) && !FenceBlock.isExceptionForConnection(state) && (!(state.getBlock() instanceof TrapDoorBlock));
     }
 
     private boolean canConnectUp(LevelReader world, BlockPos pos) {
         BlockState state = world.getBlockState(pos);
-        return state.is(this) || Block.canSupportCenter(world, pos, Direction.DOWN);
+        return (state.is(this) || Block.canSupportCenter(world, pos, Direction.DOWN)) && !(state.getBlock() instanceof TrapDoorBlock);
     }
 
     private boolean isGrounded(BlockGetter world, BlockPos pos) {
