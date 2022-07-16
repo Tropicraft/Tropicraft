@@ -59,21 +59,21 @@ public class CuberaModel<T extends CuberaEntity> extends EntityModel<T> {
 
         partDefinition.addOrReplaceChild("body_base", CubeListBuilder.create()
                         .texOffs(0, 0).addBox(-2.0f, -5.0f, -3.0f, 4.0f, 6.0f, 8.0f),
-                PartPose.offsetAndRotation(0.0f, 20.0f, 0.0f, 0.0436f, 0.0f, 0.0f));
+                PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, 0.0436f, 0.0f, 0.0f));
 
         partDefinition.addOrReplaceChild("fin_anal", CubeListBuilder.create()
                         .texOffs(11, 37).addBox(0.0f, -1.0f, -1.0f, 0.0f, 2.0f, 4.0f),
-                PartPose.offsetAndRotation(0.0f, 21.0f, 4.0f, -0.3054f, 0.0f, 0.0f));
+                PartPose.offsetAndRotation(0.0f, 1.0f, 4.0f, -0.3054f, 0.0f, 0.0f));
 
         PartDefinition partDefinition2 = partDefinition.addOrReplaceChild("fin_pelvic_right", CubeListBuilder.create(),
-                PartPose.offsetAndRotation(-1.5f, 21.0f, -2.0f, 0.0f, 0.0f, 0.0f));
+                PartPose.offsetAndRotation(-1.5f, 1.0f, -2.0f, 0.0f, 0.0f, 0.0f));
 
         partDefinition2.addOrReplaceChild("fin_pelvic_right_r1", CubeListBuilder.create()
                         .texOffs(20, 37).addBox(0.0f, -1.5f, -0.5f, 0.0f, 2.0f, 3.0f),
                 PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, -1.3526f, -0.2182f, 0.0f));
 
         PartDefinition partDefinition4 = partDefinition.addOrReplaceChild("fin_pelvic_left", CubeListBuilder.create(),
-                PartPose.offsetAndRotation(1.5f, 21.0f, -2.0f, 0.0f, 0.0f, 0.0f));
+                PartPose.offsetAndRotation(1.5f, 1.0f, -2.0f, 0.0f, 0.0f, 0.0f));
 
         partDefinition4.addOrReplaceChild("fin_pelvic_left_r1", CubeListBuilder.create()
                         .texOffs(27, 37).addBox(0.0f, -1.5f, -0.5f, 0.0f, 2.0f, 3.0f),
@@ -81,19 +81,19 @@ public class CuberaModel<T extends CuberaEntity> extends EntityModel<T> {
 
         partDefinition.addOrReplaceChild("fin_pectoral_left", CubeListBuilder.create()
                         .texOffs(7, 45).addBox(0.0f, 0.0f, 0.0f, 0.0f, 2.0f, 3.0f),
-                PartPose.offsetAndRotation(2.0f, 19.0f, -2.0f, 0.4363f, 0.5672f, 0.0f));
+                PartPose.offsetAndRotation(2.0f, -1.0f, -2.0f, 0.4363f, 0.5672f, 0.0f));
 
         partDefinition.addOrReplaceChild("fin_pectoral_right", CubeListBuilder.create()
                         .texOffs(0, 45).addBox(0.0f, 0.0f, 0.0f, 0.0f, 2.0f, 3.0f),
-                PartPose.offsetAndRotation(-2.0f, 19.0f, -2.0f, 0.4363f, -0.5672f, 0.0f));
+                PartPose.offsetAndRotation(-2.0f, -1.0f, -2.0f, 0.4363f, -0.5672f, 0.0f));
 
         partDefinition.addOrReplaceChild("fin_dorsal", CubeListBuilder.create()
                         .texOffs(25, 0).addBox(0.0f, -3.0f, 0.0f, 0.0f, 3.0f, 7.0f),
-                PartPose.offsetAndRotation(0.0f, 15.0f, -1.0f, -0.3054f, 0.0f, 0.0f));
+                PartPose.offsetAndRotation(0.0f, -5.0f, -1.0f, -0.3054f, 0.0f, 0.0f));
 
         PartDefinition partDefinition9 = partDefinition.addOrReplaceChild("body_connection", CubeListBuilder.create()
                         .texOffs(28, 15).addBox(-2.0f, -2.0f, -4.0f, 4.0f, 2.0f, 4.0f),
-                PartPose.offsetAndRotation(0.0f, 21.0f, -3.0f, 0.0f, 0.0f, 0.0f));
+                PartPose.offsetAndRotation(0.0f, 1.0f, -3.0f, 0.0f, 0.0f, 0.0f));
 
         partDefinition9.addOrReplaceChild("jaw_lower", CubeListBuilder.create()
                         .texOffs(15, 29).addBox(-2.0f, -1.0f, -3.0f, 4.0f, 1.0f, 3.0f),
@@ -101,7 +101,7 @@ public class CuberaModel<T extends CuberaEntity> extends EntityModel<T> {
 
         PartDefinition partDefinition11 = partDefinition.addOrReplaceChild("head_base", CubeListBuilder.create()
                         .texOffs(0, 15).addBox(-2.0f, 0.0f, -4.0f, 4.0f, 4.0f, 4.0f, new CubeDeformation(0.01f)),
-                PartPose.offsetAndRotation(0.0f, 15.0f, -3.0f, 0.4363f, 0.0f, 0.0f));
+                PartPose.offsetAndRotation(0.0f, -5.0f, -3.0f, 0.4363f, 0.0f, 0.0f));
 
         PartDefinition partDefinition12 = partDefinition11.addOrReplaceChild("head_snout", CubeListBuilder.create(),
                 PartPose.offsetAndRotation(0.0f, 0.0f, -4.0f, 0.3054f, 0.0f, 0.0f));
@@ -112,7 +112,7 @@ public class CuberaModel<T extends CuberaEntity> extends EntityModel<T> {
 
         PartDefinition partDefinition14 = partDefinition.addOrReplaceChild("tail_base", CubeListBuilder.create()
                         .texOffs(0, 37).addBox(-1.5f, 0.0f, 0.0f, 3.0f, 5.0f, 2.0f),
-                PartPose.offsetAndRotation(0.0f, 15.5f, 5.0f, -0.0436f, 0.0f, 0.0f));
+                PartPose.offsetAndRotation(0.0f, -5.5f, 5.0f, -0.0436f, 0.0f, 0.0f));
 
         PartDefinition partDefinition15 = partDefinition14.addOrReplaceChild("tail_main", CubeListBuilder.create()
                         .texOffs(30, 29).addBox(-1.0f, 0.0f, 0.0f, 2.0f, 4.0f, 3.0f),
