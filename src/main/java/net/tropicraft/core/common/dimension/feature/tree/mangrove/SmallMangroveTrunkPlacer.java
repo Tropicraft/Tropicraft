@@ -9,6 +9,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.world.level.LevelSimulatedRW;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
@@ -42,7 +43,9 @@ public class SmallMangroveTrunkPlacer extends TrunkPlacer {
 
     @Override
     public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> acceptor, Random random, int height, BlockPos origin, TreeConfiguration config) {
-        setDirtAt(world, acceptor, random, origin.below(), config);
+        if (world.isStateAtPosition(origin.below(), b -> b.is(Blocks.GRASS_BLOCK))) {
+            setDirtAt(world, acceptor, random, origin.below(), config);
+        }
 
         for (int i = 0; i < height; ++i) {
             placeLog(world, acceptor, random, origin.above(i),config);

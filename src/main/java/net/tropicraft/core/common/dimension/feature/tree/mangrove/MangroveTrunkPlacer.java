@@ -64,7 +64,7 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
     public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> acceptor, Random random, int height, BlockPos origin, TreeConfiguration config) {
         int rootLength = Mth.clamp(height - 5, MIN_LENGTH, MAX_LENGTH);
 
-        boolean placeDirtOnOrigin = true;
+        boolean placeDirtOnOrigin = world.isStateAtPosition(origin.below(), b -> b.is(Blocks.GRASS_BLOCK));
         if (this.canGenerateRaised) {
             int waterDepth = getWaterDepthAbove(world, origin, 3);
 
