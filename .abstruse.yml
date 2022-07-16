@@ -1,8 +1,0 @@
-image: openjdk:8-jdk
-
-install:
-  - chmod +x gradlew
-
-script:
-  - ./gradlew clean
-  - ./gradlew build
