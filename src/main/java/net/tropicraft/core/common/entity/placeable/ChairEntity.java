@@ -38,6 +38,11 @@ public class ChairEntity extends FurnitureEntity {
     /** Acceleration */
     private double speedMultiplier = 0.1;
 
+    private float rotationDelta = 0;
+
+    private static final float ROTATION_SPEED = 2.5F;
+    private static final float FRICTION = 0.05F;
+
     public ChairEntity(EntityType<ChairEntity> type, Level world) {
         super(type, world, TropicraftItems.CHAIRS);
     }
@@ -213,6 +218,14 @@ public class ChairEntity extends FurnitureEntity {
         } else {
             this.move(MoverType.SELF, getDeltaMovement());
         }
+
+        this.rotationDelta *= FRICTION;
+        Entity rider = getControllingPassenger();
+        if (level.isClientSide && rider instanceof Player) {
+            Player controller = (Player) rider;
+            this.rotationDelta += -controller.xxa * ROTATION_SPEED;
+            setYRot(getYRot() + rotationDelta);
+        }
     }
     
     @Override
@@ -273,6 +286,8 @@ public class ChairEntity extends FurnitureEntity {
         if (this.hasPassenger(passenger)) {
             Vec3 xzOffset = new Vec3(0, 0, -0.125).yRot((float) Math.toRadians(-getYRot()));
             passenger.setPos(getX() + xzOffset.x, getY() + getPassengersRidingOffset() + passenger.getMyRidingOffset(), getZ() + xzOffset.z);
+            passenger.setYRot(passenger.getYRot() + rotationDelta);
+            passenger.setYBodyRot(passenger.getYRot() + rotationDelta);
         }
     }
 
