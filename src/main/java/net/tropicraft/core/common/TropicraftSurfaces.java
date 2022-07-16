@@ -16,7 +16,6 @@ public final class TropicraftSurfaces {
     private static final RuleSource DEEPSLATE = makeStateRule(Blocks.DEEPSLATE);
     private static final RuleSource DIRT = makeStateRule(Blocks.DIRT);
     private static final RuleSource GRASS_BLOCK = makeStateRule(Blocks.GRASS_BLOCK);
-    private static final RuleSource SANDSTONE = makeStateRule(Blocks.SANDSTONE);
     private static final RuleSource WATER = makeStateRule(Blocks.WATER);
 
     private static final RuleSource SAND = makeStateRule(TropicraftBlocks.PURIFIED_SAND.get());
@@ -33,7 +32,7 @@ public final class TropicraftSurfaces {
         ConditionSource notUnderDeepWater = waterStartCheck(-6, -1);
 
         RuleSource grassRule = sequence(ifTrue(notUnderWater, GRASS_BLOCK), DIRT);
-        RuleSource sandRule = sequence(ifTrue(ON_CEILING, SANDSTONE), SAND);
+        RuleSource sandRule = sequence(SAND);
 
         ConditionSource isSandy = isBiome(TropicraftBiomes.OCEAN.getKey(), TropicraftBiomes.RIVER.getKey(), TropicraftBiomes.BEACH.getKey());
 
@@ -60,8 +59,7 @@ public final class TropicraftSurfaces {
                         ifTrue(notUnderWater, floorRule)
                 )),
                 ifTrue(notUnderDeepWater, sequence(
-                        ifTrue(UNDER_FLOOR, underFloorRule),
-                        ifTrue(isSandy, ifTrue(stoneDepthCheck(0, true, 6, CaveSurface.FLOOR), SANDSTONE))
+                        ifTrue(UNDER_FLOOR, underFloorRule)
                 )),
                 ifTrue(ON_FLOOR, sandRule)
         );
