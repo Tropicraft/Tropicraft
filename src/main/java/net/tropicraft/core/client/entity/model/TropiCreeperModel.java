@@ -102,22 +102,22 @@ public class TropiCreeperModel extends ListModel<TropiCreeperEntity> {
 
         modelPartData.addOrReplaceChild("leg3",
                 CubeListBuilder.create().texOffs(0, 16)
-                        .addBox(-2F, 0.0F, -2F, 4, 6, 4),
+                        .addBox(-2F, 2F, -2F, 4, 6, 4),
                 PartPose.offset(-2F, 12 + i, -4F));
 
         modelPartData.addOrReplaceChild("leg4",
                 CubeListBuilder.create().texOffs(0, 16)
-                        .addBox(-2F, 0.0F, -2F, 4, 6, 4),
+                        .addBox(-2F, 2F, -2F, 4, 6, 4),
                 PartPose.offset(2.0F, 12 + i, -4F));
 
         modelPartData.addOrReplaceChild("leg1",
                 CubeListBuilder.create().texOffs(0, 16)
-                        .addBox(-2F, 0.0F, -2F, 4, 6, 4),
+                        .addBox(-2F, 2F, -2F, 4, 6, 4),
                 PartPose.offset(-2F, 12 + i, 4F));
 
         modelPartData.addOrReplaceChild("leg2",
                 CubeListBuilder.create().texOffs(0, 16)
-                        .addBox(-2F, 0.0F, -2F, 4, 6, 4),
+                        .addBox(-2F, 2F, -2F, 4, 6, 4),
                 PartPose.offset(2.0F, 12 + i, 4F));
 
         modelPartHead.addOrReplaceChild("hat1",
