@@ -96,6 +96,8 @@ public class TropicraftBlockTagsProvider extends BlockTagsProvider {
                 Stream.concat(BAMBOO_POTTED_TROPICS_PLANTS.stream(), Stream.concat(BAMBOO_POTTED_VANILLA_PLANTS.stream(), VANILLA_POTTED_TROPICS_PLANTS.stream()))
                         .toArray(RegistryObject[]::new));
 
+        appendToTag(BlockTags.MINEABLE_WITH_HOE, TropicraftTags.Blocks.LEAVES);
+        
         createTag(BlockTags.MINEABLE_WITH_AXE,
                 MAHOGANY_PLANKS, MAHOGANY_LOG, MAHOGANY_STAIRS, MAHOGANY_SLAB, MAHOGANY_FENCE, MAHOGANY_DOOR, MAHOGANY_TRAPDOOR, MAHOGANY_BOARDWALK, MAHOGANY_FENCE_GATE, MAHOGANY_WOOD,
                 BLACK_MANGROVE_ROOTS, RED_MANGROVE_ROOTS, LIGHT_MANGROVE_ROOTS,
