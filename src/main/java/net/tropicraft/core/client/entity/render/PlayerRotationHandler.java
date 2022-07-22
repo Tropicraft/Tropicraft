@@ -1,12 +1,11 @@
 package net.tropicraft.core.client.entity.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.renderer.MultiBufferSource;
+import com.mojang.math.Vector3f;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
-import com.mojang.math.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderNameplateEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -16,7 +15,6 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.entity.SeaTurtleEntity;
 import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
-import net.tropicraft.core.common.entity.placeable.FurnitureEntity;
 
 @EventBusSubscriber(value = Dist.CLIENT, modid = Constants.MODID)
 public class PlayerRotationHandler {

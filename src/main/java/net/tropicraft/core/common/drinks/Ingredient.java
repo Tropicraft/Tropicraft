@@ -1,23 +1,22 @@
 package net.tropicraft.core.common.drinks;
 
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
+import net.tropicraft.core.common.block.TropicraftBlocks;
+import net.tropicraft.core.common.item.CocktailItem;
+import net.tropicraft.core.common.item.TropicraftItems;
+
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Supplier;
-
-import javax.annotation.Nonnull;
-
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.level.ItemLike;
-import net.minecraft.network.chat.Component;
-import net.tropicraft.core.common.block.TropicraftBlocks;
-import net.tropicraft.core.common.item.CocktailItem;
-import net.tropicraft.core.common.item.TropicraftItems;
 
 public class Ingredient implements Comparable<Ingredient> {
 

@@ -1,9 +1,9 @@
 package net.tropicraft.core.common.dimension.feature.block_state_provider;
 
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProviderType;
-import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import net.tropicraft.Constants;
 
 public final class TropicraftBlockStateProviders {

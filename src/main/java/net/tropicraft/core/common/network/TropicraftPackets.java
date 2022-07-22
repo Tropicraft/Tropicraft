@@ -8,12 +8,7 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
-import net.tropicraft.core.common.network.message.MessageAirCompressorInventory;
-import net.tropicraft.core.common.network.message.MessageMixerInventory;
-import net.tropicraft.core.common.network.message.MessageMixerStart;
-import net.tropicraft.core.common.network.message.MessageSifterInventory;
-import net.tropicraft.core.common.network.message.MessageSifterStart;
-import net.tropicraft.core.common.network.message.MessageUpdateScubaData;
+import net.tropicraft.core.common.network.message.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

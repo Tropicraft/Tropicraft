@@ -1,6 +1,5 @@
 package net.tropicraft.core.client.entity.render;
 
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -10,7 +9,6 @@ import net.tropicraft.Constants;
 import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.entity.model.FailgullModel;
 import net.tropicraft.core.common.entity.passive.FailgullEntity;
-import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
 
 @OnlyIn(Dist.CLIENT)
 public class FailgullRenderer extends MobRenderer<FailgullEntity, FailgullModel> {

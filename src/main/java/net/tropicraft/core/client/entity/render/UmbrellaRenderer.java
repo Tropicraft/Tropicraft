@@ -1,6 +1,5 @@
 package net.tropicraft.core.client.entity.render;
 
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.tropicraft.core.client.TropicraftRenderLayers;

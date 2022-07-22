@@ -2,8 +2,8 @@ package net.tropicraft.core.common.entity.ai.vmonkey;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;

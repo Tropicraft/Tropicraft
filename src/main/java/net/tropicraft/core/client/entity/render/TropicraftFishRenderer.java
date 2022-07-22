@@ -1,23 +1,18 @@
 package net.tropicraft.core.client.entity.render;
 
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.tropicraft.core.client.entity.model.AbstractFishModel;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-
+import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import com.mojang.math.Vector3f;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.world.entity.animal.AbstractFish;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.animal.AbstractFish;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
+import net.tropicraft.core.client.entity.model.AbstractFishModel;
 import net.tropicraft.core.common.entity.underdasea.IAtlasFish;
 
 public class TropicraftFishRenderer<T extends AbstractFish, M extends AbstractFishModel<T>> extends MobRenderer<T, M> {

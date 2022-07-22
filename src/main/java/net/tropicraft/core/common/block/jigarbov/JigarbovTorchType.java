@@ -1,9 +1,9 @@
 package net.tropicraft.core.common.block.jigarbov;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 import javax.annotation.Nullable;

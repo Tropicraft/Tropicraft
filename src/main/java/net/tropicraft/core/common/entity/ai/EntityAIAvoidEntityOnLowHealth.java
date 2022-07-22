@@ -1,20 +1,17 @@
 package net.tropicraft.core.common.entity.ai;
 
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.ai.util.DefaultRandomPos;
-import net.minecraft.world.entity.ai.util.RandomPos;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.level.pathfinder.Path;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
 import java.util.List;
 import java.util.function.Predicate;
-
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal {
     private final Predicate<Entity> canBeSeenSelector;

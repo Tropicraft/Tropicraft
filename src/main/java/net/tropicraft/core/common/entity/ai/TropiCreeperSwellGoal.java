@@ -6,8 +6,6 @@ import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
 
 import java.util.EnumSet;
 
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
-
 public class TropiCreeperSwellGoal extends Goal {
     private final TropiCreeperEntity creeper;
     private LivingEntity target;

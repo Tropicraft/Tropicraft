@@ -1,8 +1,8 @@
 package net.tropicraft.core.common.drinks;
 
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.player.Player;
 
 public class DrinkActionPotion extends DrinkAction {
     private final MobEffect potion;

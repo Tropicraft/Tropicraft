@@ -1,7 +1,6 @@
 package net.tropicraft.core.client.entity.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-
 import net.minecraft.client.model.AbstractZombieModel;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.geom.ModelPart;

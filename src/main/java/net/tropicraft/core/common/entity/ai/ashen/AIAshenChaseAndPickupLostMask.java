@@ -1,15 +1,12 @@
 package net.tropicraft.core.common.entity.ai.ashen;
 
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.util.DefaultRandomPos;
-import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.entity.hostile.AshenEntity;
 
 import java.util.EnumSet;
-
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class AIAshenChaseAndPickupLostMask extends Goal {
     public AshenEntity ashen;

@@ -3,8 +3,8 @@ package net.tropicraft.core.common.entity.placeable;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.HitResult;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 public class UmbrellaEntity extends FurnitureEntity {

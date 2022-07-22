@@ -1,8 +1,8 @@
 package net.tropicraft.core.common.drinks;
 
+import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.core.NonNullList;
 import net.tropicraft.core.common.item.CocktailItem;
 
 import javax.annotation.Nonnull;

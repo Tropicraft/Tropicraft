@@ -1,15 +1,11 @@
 package net.tropicraft.core.common.drinks;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
+import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.core.NonNullList;
 import net.tropicraft.core.common.item.CocktailItem;
+
+import java.util.*;
 
 public final class MixerRecipes {
 

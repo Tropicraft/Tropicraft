@@ -2,16 +2,15 @@ package net.tropicraft.core.client.entity.render.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import com.mojang.math.Vector3f;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
 import net.tropicraft.core.client.entity.model.TropiBeeModel;
-import net.tropicraft.core.client.entity.render.TropiBeeRenderer;
 import net.tropicraft.core.common.entity.TropiBeeEntity;
 
 public class SunglassesLayer extends RenderLayer<TropiBeeEntity, TropiBeeModel> {

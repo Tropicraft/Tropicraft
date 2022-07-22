@@ -1,12 +1,12 @@
 package net.tropicraft.core.common.item;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Supplier;
-
 import net.minecraft.sounds.SoundEvent;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.sound.Sounds;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Supplier;
 
 public enum RecordMusic {
     

@@ -1,18 +1,16 @@
 package net.tropicraft.core.common.item;
 
 import com.google.common.collect.Maps;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.ItemStack;
 import net.tropicraft.Constants;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.awt.*;
 import java.util.Map;
 import java.util.Random;
-
-import net.minecraft.world.item.Item.Properties;
 
 public class LoveTropicsShellItem extends ShellItem implements IColoredItem {
 

@@ -1,13 +1,13 @@
 package net.tropicraft.core.common.entity.underdasea;
 
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.phys.AABB;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.tropicraft.core.common.entity.egg.EggEntity;
 
 public abstract class EchinodermEntity extends WaterAnimal {

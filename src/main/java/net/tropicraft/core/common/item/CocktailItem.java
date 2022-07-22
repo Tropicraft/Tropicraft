@@ -19,11 +19,7 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.tropicraft.core.common.drinks.ColorMixer;
-import net.tropicraft.core.common.drinks.Drink;
-import net.tropicraft.core.common.drinks.Ingredient;
-import net.tropicraft.core.common.drinks.MixerRecipe;
-import net.tropicraft.core.common.drinks.MixerRecipes;
+import net.tropicraft.core.common.drinks.*;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

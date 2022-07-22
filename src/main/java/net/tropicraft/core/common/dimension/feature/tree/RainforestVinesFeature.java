@@ -1,5 +1,4 @@
 package net.tropicraft.core.common.dimension.feature.tree;
-import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_LEAVES;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
@@ -15,6 +14,8 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.tropicraft.core.common.dimension.feature.config.RainforestVinesConfig;
 
 import java.util.Random;
+
+import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_LEAVES;
 
 public class RainforestVinesFeature extends Feature<RainforestVinesConfig> {
 

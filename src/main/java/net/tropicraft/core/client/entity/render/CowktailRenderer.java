@@ -1,20 +1,19 @@
 package net.tropicraft.core.client.entity.render;
 
 import com.google.common.collect.Maps;
-import java.util.Map;
-
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.Util;
+import net.minecraft.client.model.CowModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.model.CowModel;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.Util;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.Constants;
 import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.entity.render.layer.CowktailLayer;
 import net.tropicraft.core.common.entity.passive.CowktailEntity;
+
+import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
 public class CowktailRenderer extends MobRenderer<CowktailEntity, CowModel<CowktailEntity>>

@@ -1,7 +1,7 @@
 package net.tropicraft.core.client.data;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.Util;
 

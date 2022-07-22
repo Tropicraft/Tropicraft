@@ -1,17 +1,15 @@
 package net.tropicraft.core.common.entity.ai.vmonkey;
 
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.item.ItemStack;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import java.util.EnumSet;
-
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class MonkeySitAndDrinkGoal extends Goal {
     private static final int DEFAULT_WAIT = 40;
