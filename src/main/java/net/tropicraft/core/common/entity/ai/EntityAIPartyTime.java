@@ -222,7 +222,7 @@ public class EntityAIPartyTime extends Goal
                                 //note.triggerNote(entityObj.world, blockposGoal);
                                 state.getBlock().attack(state, entityObj.level, blockposGoal,
                                         FakePlayerFactory.get((ServerLevel) entityObj.level,
-                                                new GameProfile(UUID.fromString(" e517cf6a-ce31-4ac8-b48d-44b4f0f918a7"), "tropicraftKoa")));
+                                                new GameProfile(UUID.fromString("e517cf6a-ce31-4ac8-b48d-44b4f0f918a7"), "tropicraftKoa")));
                             }
                             entityObj.swing(InteractionHand.MAIN_HAND);
 
