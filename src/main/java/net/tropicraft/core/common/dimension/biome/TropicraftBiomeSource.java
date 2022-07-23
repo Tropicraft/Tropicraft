@@ -4,19 +4,21 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.QuartPos;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.BiomeSource;
-import net.minecraft.world.level.biome.Climate;
+import net.minecraft.world.level.biome.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.RegistryObject;
 import net.tropicraft.Constants;
+import net.tropicraft.core.common.dimension.TropicraftTerrainShaper;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -28,6 +30,8 @@ public class TropicraftBiomeSource extends BiomeSource {
                 RegistryOps.retrieveRegistry(Registry.BIOME_REGISTRY).forGetter(b -> b.biomes)
         ).apply(instance, instance.stable(TropicraftBiomeSource::new));
     });
+
+    private static final TropicraftBiomeBuilder DEBUG_DATA_HOLDER = new TropicraftBiomeBuilder();
 
     private static final Set<ResourceKey<Biome>> POSSIBLE_BIOMES = Stream.of(
             TropicraftBiomes.TROPICS,
@@ -82,5 +86,24 @@ public class TropicraftBiomeSource extends BiomeSource {
 //        return noiseLayer.get(biomes, x, z);
         // TODO 1.18: temporary, needs proper gen!
         return this.parameters.findValue(sampler.sample(x, y, z));
+    }
+
+    public void addDebugInfo(List<String> p_207895_, BlockPos p_207896_, Climate.Sampler p_207897_) {
+        int i = QuartPos.fromBlock(p_207896_.getX());
+        int j = QuartPos.fromBlock(p_207896_.getY());
+        int k = QuartPos.fromBlock(p_207896_.getZ());
+        Climate.TargetPoint climate$targetpoint = p_207897_.sample(i, j, k);
+        float f = Climate.unquantizeCoord(climate$targetpoint.continentalness());
+        float f1 = Climate.unquantizeCoord(climate$targetpoint.erosion());
+        float f2 = Climate.unquantizeCoord(climate$targetpoint.temperature());
+        float f3 = Climate.unquantizeCoord(climate$targetpoint.humidity());
+        float f4 = Climate.unquantizeCoord(climate$targetpoint.weirdness());
+        double d0 = TropicraftTerrainShaper.peaksAndValleys(f4);
+        p_207895_.add(
+                "Biome builder PV: " + OverworldBiomeBuilder.getDebugStringForPeaksAndValleys(d0) +
+                " C: " + DEBUG_DATA_HOLDER.getDebugStringForContinentalness((double)f) +
+                " E: " + DEBUG_DATA_HOLDER.getDebugStringForErosion((double)f1) +
+                " T: " + DEBUG_DATA_HOLDER.getDebugStringForTemperature((double)f2) +
+                " H: " + DEBUG_DATA_HOLDER.getDebugStringForHumidity((double)f3));
     }
 }

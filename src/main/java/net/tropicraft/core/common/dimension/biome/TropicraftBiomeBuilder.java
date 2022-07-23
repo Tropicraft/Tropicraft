@@ -203,4 +203,43 @@ public class TropicraftBiomeBuilder {
                 p_187208_
         );
     }
+
+    public String getDebugStringForContinentalness(double p_187190_) {
+        double d0 = (double)Climate.quantizeCoord((float)p_187190_);
+        if (d0 < (double)this.islandContinentalness.max()) {
+            return "Islands";
+        } else if (d0 < (double)this.oceanContinentalness.max()) {
+            return "Ocean";
+        } else if (d0 < (double)this.coastContinentalness.max()) {
+            return "Coast";
+        } else if (d0 < (double)this.nearInlandContinentalness.max()) {
+            return "Near inland";
+        } else {
+            return d0 < (double)this.midInlandContinentalness.max() ? "Mid inland" : "Far inland";
+        }
+    }
+
+    public String getDebugStringForErosion(double p_187210_) {
+        return getDebugStringForNoiseValue(p_187210_, this.erosions);
+    }
+
+    public String getDebugStringForTemperature(double p_187221_) {
+        return getDebugStringForNoiseValue(p_187221_, this.temperatures);
+    }
+
+    public String getDebugStringForHumidity(double p_187232_) {
+        return getDebugStringForNoiseValue(p_187232_, this.humidities);
+    }
+
+    private static String getDebugStringForNoiseValue(double p_187158_, Climate.Parameter[] p_187159_) {
+        double d0 = (double)Climate.quantizeCoord((float)p_187158_);
+
+        for(int i = 0; i < p_187159_.length; ++i) {
+            if (d0 < (double)p_187159_[i].max()) {
+                return "" + i;
+            }
+        }
+
+        return "?";
+    }
 }
