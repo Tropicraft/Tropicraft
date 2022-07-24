@@ -229,6 +229,19 @@ public class IguanaModel extends ListModel<IguanaEntity> {
         headTop1.yRot = head.yRot;
         dewLap.xRot = head.xRot;
         dewLap.yRot = head.yRot;
+
+        // Animate iguana tail ambiently
+        // The call in prepareMobModel animates it when swinging limbs
+        try (ModelAnimator.Cycle idle = ModelAnimator.cycle(ageInTicks * 0.025F, 0.1F)) {
+            tailBase.yRot += idle.eval(1.0F, 1.0F, 0.0F, 0.0F);
+
+            // The positions need to be set to ensure the tail parts move in tandem
+            tailMid.setPos(0F - (Mth.cos(tailBase.yRot + 1.570796F) * 6), 21.5F, 12F + Mth.sin(tailBase.xRot + 3.14159F) * 6);
+            tailMid.yRot += idle.eval(1.0F, 1.0F, 0.05F, 0.0F);
+
+            miscPart.setPos(0F - (Mth.cos(tailMid.yRot + 1.570796F) * 6), 21.5F, 18F + Mth.sin(tailMid.xRot + 3.14159F) * 6);
+            miscPart.yRot += idle.eval(1.0F, 1.0F, 0.075F, 0.0F);
+        }
     }
 
     @Override
@@ -238,15 +251,15 @@ public class IguanaModel extends ListModel<IguanaEntity> {
     }
 
     @Override
-    public void prepareMobModel(final IguanaEntity iggy, float f, float f1, float f2) {
-        frontRightLeg.xRot = Mth.cos(f * 0.6662F) * 1.75F * f1;
-        frontLeftLeg.xRot = Mth.cos(f * 0.6662F + 3.141593F) * 1.75F * f1;
-        rearRightLeg.xRot = Mth.cos(f * 0.6662F + 3.141593F) * 1.75F * f1;
-        rearLeftLeg.xRot = Mth.cos(f * 0.6662F) * 1.75F * f1;
-        tailBase.yRot = Mth.cos(f * 0.6662F) * .25F * f1;
+    public void prepareMobModel(final IguanaEntity iggy, float limbSwing, float limbSwingAmount, float partialTicks) {
+        frontRightLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.75F * limbSwingAmount;
+        frontLeftLeg.xRot = Mth.cos(limbSwing * 0.6662F + 3.141593F) * 1.75F * limbSwingAmount;
+        rearRightLeg.xRot = Mth.cos(limbSwing * 0.6662F + 3.141593F) * 1.75F * limbSwingAmount;
+        rearLeftLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.75F * limbSwingAmount;
+        tailBase.yRot = Mth.cos(limbSwing * 0.6662F) * .25F * limbSwingAmount;
         tailMid.setPos(0F - (Mth.cos(tailBase.yRot + 1.570796F) * 6), 21.5F, 12F + Mth.sin(tailBase.xRot + 3.14159F) * 6);
-        tailMid.yRot = tailBase.yRot + Mth.cos(f * 0.6662F) * .50F * f1;
+        tailMid.yRot = tailBase.yRot + Mth.cos(limbSwing * 0.6662F) * .50F * limbSwingAmount;
         miscPart.setPos(0F - (Mth.cos(tailMid.yRot + 1.570796F) * 6), 21.5F, 18F + Mth.sin(tailMid.xRot + 3.14159F) * 6);
-        miscPart.yRot = tailMid.yRot + Mth.cos(f * 0.6662F) * .75F * f1;;
+        miscPart.yRot = tailMid.yRot + Mth.cos(limbSwing * 0.6662F) * .75F * limbSwingAmount;
     }
 }

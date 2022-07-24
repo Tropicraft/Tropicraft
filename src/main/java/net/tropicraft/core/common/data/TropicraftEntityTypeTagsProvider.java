@@ -22,7 +22,7 @@ public class TropicraftEntityTypeTagsProvider extends EntityTypeTagsProvider {
     @Override
     protected void addTags() {
         appendToTag(EntityTypeTags.BEEHIVE_INHABITORS, TropicraftEntities.TROPI_BEE);
-        appendToTag(EntityTypeTags.AXOLOTL_HUNT_TARGETS, TropicraftEntities.MARLIN, TropicraftEntities.PIRANHA, TropicraftEntities.TROPICAL_FISH, TropicraftEntities.STARFISH);
+        appendToTag(EntityTypeTags.AXOLOTL_HUNT_TARGETS, TropicraftEntities.MARLIN, TropicraftEntities.PIRANHA, TropicraftEntities.TROPICAL_FISH, TropicraftEntities.STARFISH, TropicraftEntities.SEAHORSE);
     }
 
     @SafeVarargs
