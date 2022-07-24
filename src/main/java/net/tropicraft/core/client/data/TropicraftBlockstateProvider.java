@@ -156,6 +156,10 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         simpleBlock(TropicraftBlocks.LIME_LEAVES);
         simpleBlock(TropicraftBlocks.ORANGE_LEAVES);
         simpleBlock(TropicraftBlocks.PAPAYA_LEAVES);
+        simpleBlock(TropicraftBlocks.WHITE_FLOWERING_LEAVES);
+        simpleBlock(TropicraftBlocks.RED_FLOWERING_LEAVES);
+        simpleBlock(TropicraftBlocks.BLUE_FLOWERING_LEAVES);
+        simpleBlock(TropicraftBlocks.PURPLE_FLOWERING_LEAVES);
 
         simpleBlock(TropicraftBlocks.RED_MANGROVE_LEAVES);
         simpleBlock(TropicraftBlocks.TALL_MANGROVE_LEAVES);
