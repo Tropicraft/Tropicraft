@@ -43,6 +43,20 @@ public class BlockTropicraftSand extends FallingBlock {
             return true;
         }
 
+        // Support beach plant types, taken from forge Block logic
+        if (PlantType.BEACH.equals(type)) {
+            boolean hasWater = false;
+            for (Direction face : Direction.Plane.HORIZONTAL) {
+                BlockState blockState = world.getBlockState(pos.relative(face));
+                net.minecraft.world.level.material.FluidState fluidState = world.getFluidState(pos.relative(face));
+                hasWater |= blockState.is(Blocks.FROSTED_ICE);
+                hasWater |= fluidState.is(net.minecraft.tags.FluidTags.WATER);
+                if (hasWater)
+                    break; //No point continuing.
+            }
+            return hasWater;
+        }
+
         return PlantType.DESERT.equals(type);
     }
 
