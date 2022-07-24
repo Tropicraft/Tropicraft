@@ -3,8 +3,10 @@ package net.tropicraft.core.common;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Noises;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
+import net.tropicraft.core.common.block.BlockTropicraftSand;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
 
@@ -17,11 +19,16 @@ public final class TropicraftSurfaces {
     private static final RuleSource GRASS_BLOCK = makeStateRule(Blocks.GRASS_BLOCK);
     private static final RuleSource WATER = makeStateRule(Blocks.WATER);
 
-    private static final RuleSource SAND = makeStateRule(TropicraftBlocks.PURIFIED_SAND.get());
+    private static final RuleSource PURIFIED_SAND = makeStateRule(TropicraftBlocks.PURIFIED_SAND.get());
+    private static final RuleSource UNDERWATER_PURIFIED_SAND = makeStateRule(TropicraftBlocks.PURIFIED_SAND.get().defaultBlockState().setValue(BlockTropicraftSand.UNDERWATER, true));
     private static final RuleSource MUD = makeStateRule(TropicraftBlocks.MUD.get());
 
     private static RuleSource makeStateRule(Block block) {
         return state(block.defaultBlockState());
+    }
+
+    private static RuleSource makeStateRule(BlockState state) {
+        return state(state);
     }
 
     public static RuleSource tropics() {
@@ -31,7 +38,7 @@ public final class TropicraftSurfaces {
         ConditionSource notUnderDeepWater = waterStartCheck(-6, -1);
 
         RuleSource grassRule = sequence(ifTrue(notUnderWater, GRASS_BLOCK), DIRT);
-        RuleSource sandRule = sequence(SAND);
+        RuleSource sandRule = sequence(ifTrue(not(notUnderWater), UNDERWATER_PURIFIED_SAND), PURIFIED_SAND);
 
         ConditionSource isSandy = isBiome(TropicraftBiomes.OCEAN.getKey(), TropicraftBiomes.RIVER.getKey(), TropicraftBiomes.BEACH.getKey());
 
@@ -54,7 +61,8 @@ public final class TropicraftSurfaces {
 
         RuleSource aboveSurface = sequence(
                 ifTrue(ON_FLOOR, sequence(
-                        ifTrue(isBiome(TropicraftBiomes.MANGROVES.getKey()), ifTrue(atOrAboveSeaLevel, ifTrue(not(aboveSeaLevel), ifTrue(noiseCondition(Noises.SWAMP, 0.0), WATER)))),
+                        ifTrue(isBiome(TropicraftBiomes.MANGROVES.getKey()), ifTrue(atOrAboveSeaLevel,
+                                ifTrue(not(aboveSeaLevel), ifTrue(noiseCondition(Noises.SWAMP, 0.0), WATER)))),
                         ifTrue(notUnderWater, floorRule)
                 )),
                 ifTrue(notUnderDeepWater, sequence(
