@@ -10,8 +10,6 @@ public final class TropicraftTerrainShaper {
 
     public static TerrainShaper tropics() {
         ToFloatFunction<Float> offsetTransform = offset -> offset + 0.5f;
-        ToFloatFunction<Float> erosionTransform = NO_TRANSFORM;
-        ToFloatFunction<Float> jaggednessTransform = NO_TRANSFORM;
 
         CubicSpline<TerrainShaper.Point> nearInlandDepth = buildErosionOffsetSpline(-0.15F, 0.0F, 0.0F, 0.1F, 0.0F, -0.03F, false, false, offsetTransform);
         CubicSpline<TerrainShaper.Point> midInlandDepth = buildErosionOffsetSpline(-0.1F, 0.03F, 0.1F, 0.1F, 0.01F, -0.03F, false, false, offsetTransform);
@@ -45,16 +43,16 @@ public final class TropicraftTerrainShaper {
                 .addPoint(-0.92F, 3.95F, 0.0F)
                 .addPoint(-0.19F, 3.95F, 0.0F)
                 .addPoint(-0.15F, getErosionFactor(beachFactorStrength, true, NO_TRANSFORM), 0.0F)
-                .addPoint(-0.1F, getErosionFactor(nearinlandFactorStrength, true, erosionTransform), 0.0F)
-                .addPoint(0.03F, getErosionFactor(midInlandFactorStrength, true, erosionTransform), 0.0F)
-                .addPoint(0.06F, getErosionFactor(furtherInlandFactorStrength, false, erosionTransform), 0.0F)
+                .addPoint(-0.1F, getErosionFactor(nearinlandFactorStrength, true, NO_TRANSFORM), 0.0F)
+                .addPoint(0.03F, getErosionFactor(midInlandFactorStrength, true, NO_TRANSFORM), 0.0F)
+                .addPoint(0.06F, getErosionFactor(furtherInlandFactorStrength, false, NO_TRANSFORM), 0.0F)
                 .build();
 
         float f4 = 0.65F;
-        CubicSpline<TerrainShaper.Point> jaggednessSampler = CubicSpline.builder(TerrainShaper.Coordinate.CONTINENTS, jaggednessTransform)
+        CubicSpline<TerrainShaper.Point> jaggednessSampler = CubicSpline.builder(TerrainShaper.Coordinate.CONTINENTS, NO_TRANSFORM)
                 .addPoint(-0.11F, 0.0F, 0.0F)
-                .addPoint(0.03F, buildErosionJaggednessSpline(1.0F, 0.5F, 0.0F, 0.0F, jaggednessTransform), 0.0F)
-                .addPoint(0.65F, buildErosionJaggednessSpline(1.0F, 1.0F, 1.0F, 0.0F, jaggednessTransform), 0.0F).
+                .addPoint(0.03F, buildErosionJaggednessSpline(1.0F, 0.5F, 0.0F, 0.0F, NO_TRANSFORM), 0.0F)
+                .addPoint(0.65F, buildErosionJaggednessSpline(1.0F, 1.0F, 1.0F, 0.0F, NO_TRANSFORM), 0.0F).
                 build();
         return new TerrainShaper(offsetSampler, factorSampler, jaggednessSampler);
     }
