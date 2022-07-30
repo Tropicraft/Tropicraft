@@ -55,8 +55,10 @@ public class TropicraftBlockTagsProvider extends BlockTagsProvider {
                 ORCHID, PATHOS, RED_ANTHURIUM, COMMELINA_DIFFUSA, ANEMONE, ORANGE_ANTHURIUM);
         
         // Logs & Planks
-        createAndAppend(TropicraftTags.Blocks.LOGS, BlockTags.LOGS,
-                PALM_LOG, MAHOGANY_LOG, LIGHT_MANGROVE_LOG, RED_MANGROVE_LOG, BLACK_MANGROVE_LOG, STRIPPED_MANGROVE_LOG, PAPAYA_LOG);
+        createAndAppend(TropicraftTags.Blocks.LOGS, BlockTags.LOGS_THAT_BURN,
+                PALM_LOG, MAHOGANY_LOG, LIGHT_MANGROVE_LOG, RED_MANGROVE_LOG, BLACK_MANGROVE_LOG, STRIPPED_MANGROVE_LOG, PAPAYA_LOG,
+                PALM_WOOD, MAHOGANY_WOOD, LIGHT_MANGROVE_WOOD, RED_MANGROVE_WOOD, BLACK_MANGROVE_WOOD, STRIPPED_MANGROVE_WOOD, PAPAYA_WOOD
+        );
         createAndAppend(TropicraftTags.Blocks.PLANKS, BlockTags.PLANKS,
                 PALM_PLANKS, MAHOGANY_PLANKS, MANGROVE_PLANKS);
 
