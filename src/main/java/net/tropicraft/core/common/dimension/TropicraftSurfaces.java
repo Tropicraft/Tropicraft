@@ -1,4 +1,4 @@
-package net.tropicraft.core.common;
+package net.tropicraft.core.common.dimension;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.world.level.block.Block;
