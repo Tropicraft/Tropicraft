@@ -296,7 +296,7 @@ public final class TropicraftBiomes {
         TropicraftConfiguredCarvers.addUnderwater(generation);
 
         // KELP!
-        generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AquaticPlacements.KELP_COLD);
+        TropicraftVegetationPlacements.addKelp(generation);
 
         TropicraftVegetationPlacements.addUndergroundSeagrass(generation);
         TropicraftVegetationPlacements.addUndergroundPickles(generation);

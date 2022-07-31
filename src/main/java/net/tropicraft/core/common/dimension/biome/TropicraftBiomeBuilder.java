@@ -52,11 +52,14 @@ public class TropicraftBiomeBuilder {
 
     private final Climate.Parameter WET = Climate.Parameter.span(this.humidities[2], this.humidities[4]);
     private final Climate.Parameter LESS_WET = Climate.Parameter.span(this.humidities[0], this.humidities[1]);
+    private final Climate.Parameter MED_WET = Climate.Parameter.span(this.humidities[2], this.humidities[3]);
+    private final Climate.Parameter MOST_WET = Climate.Parameter.span(this.humidities[3], this.humidities[4]);
 
     public void addBiomes(BiConsumer<Climate.ParameterPoint, RegistryObject<Biome>> consumer) {
         addInlandBiomes(consumer);
 
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.oceanContinentalness, this.FULL_RANGE, this.FULL_RANGE, 0.0F, TropicraftBiomes.OCEAN);
+        this.addSurfaceBiome(consumer, this.FULL_RANGE, Climate.Parameter.span(LESS_WET, this.humidities[2]), this.oceanContinentalness, this.FULL_RANGE, this.FULL_RANGE, 0.0F, TropicraftBiomes.OCEAN);
+        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.MOST_WET, this.oceanContinentalness, this.FULL_RANGE, this.FULL_RANGE, 0.0F, TropicraftBiomes.KELP_FOREST);
 
         this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.islandContinentalness, this.FULL_RANGE, this.FULL_RANGE, 0.0F, TropicraftBiomes.RAINFOREST);
     }

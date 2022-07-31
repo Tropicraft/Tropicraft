@@ -172,6 +172,10 @@ public class TropicraftFeatures {
             return placed.register(id, () -> new PlacedFeature(holderOf(feature), placement.get()));
         }
 
+        public RegistryObject<PlacedFeature> placed(String id, Holder<? extends ConfiguredFeature<?, ?>> feature, Supplier<List<PlacementModifier>> placement) {
+            return placed.register(id, () -> new PlacedFeature((Holder<ConfiguredFeature<?, ?>>) feature, placement.get()));
+        }
+
         public List<PlacementModifier> sparseTreePlacement(float chance) {
             return treePlacement(0, chance, 1);
         }

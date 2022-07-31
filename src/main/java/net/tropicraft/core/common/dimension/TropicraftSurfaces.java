@@ -35,16 +35,19 @@ public final class TropicraftSurfaces {
         ConditionSource atOrAboveSeaLevel = yBlockCheck(VerticalAnchor.absolute(126), 0);
         ConditionSource aboveSeaLevel = yBlockCheck(VerticalAnchor.absolute(127), 0);
         ConditionSource notUnderWater = waterBlockCheck(-1, 0);
+
+        ConditionSource isMangrovey = isBiome(TropicraftBiomes.MANGROVES.getKey(), TropicraftBiomes.OVERGROWN_MANGROVES.getKey());
         ConditionSource notUnderDeepWater = waterStartCheck(-6, -1);
 
         RuleSource grassRule = sequence(ifTrue(notUnderWater, GRASS_BLOCK), DIRT);
         RuleSource sandRule = sequence(ifTrue(not(notUnderWater), UNDERWATER_PURIFIED_SAND), PURIFIED_SAND);
 
-        ConditionSource isSandy = isBiome(TropicraftBiomes.OCEAN.getKey(), TropicraftBiomes.RIVER.getKey(), TropicraftBiomes.BEACH.getKey());
+        ConditionSource isSandy = isBiome(TropicraftBiomes.OCEAN.getKey(), TropicraftBiomes.KELP_FOREST.getKey(), TropicraftBiomes.RIVER.getKey(), TropicraftBiomes.BEACH.getKey());
 
+        // Applies to both top surface and under
         RuleSource surfaceRule = sequence(
-                ifTrue(isBiome(TropicraftBiomes.MANGROVES.getKey()), ifTrue(noiseCondition(Noises.CALCITE, -0.0125, 0.0125), MUD)),
-                ifTrue(isBiome(TropicraftBiomes.MANGROVES.getKey()), ifTrue(surfaceNoiseAbove(2.25), MUD)),
+                ifTrue(isMangrovey, ifTrue(noiseCondition(Noises.CALCITE, -0.0125, 0.0125), MUD)),
+                ifTrue(isMangrovey, ifTrue(surfaceNoiseAbove(2.25), MUD)),
                 ifTrue(isBiome(TropicraftBiomes.TROPICS.getKey()), ifTrue(surfaceNoiseAbove(1.35), sandRule)),
                 ifTrue(isSandy, sandRule)
         );
@@ -61,7 +64,7 @@ public final class TropicraftSurfaces {
 
         RuleSource aboveSurface = sequence(
                 ifTrue(ON_FLOOR, sequence(
-                        ifTrue(isBiome(TropicraftBiomes.MANGROVES.getKey()), ifTrue(atOrAboveSeaLevel,
+                        ifTrue(isMangrovey, ifTrue(atOrAboveSeaLevel,
                                 ifTrue(not(aboveSeaLevel), ifTrue(noiseCondition(Noises.SWAMP, 0.0), WATER)))),
                         ifTrue(notUnderWater, floorRule)
                 )),

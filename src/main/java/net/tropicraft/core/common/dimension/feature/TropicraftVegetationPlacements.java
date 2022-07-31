@@ -2,6 +2,7 @@ package net.tropicraft.core.common.dimension.feature;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.data.worldgen.features.AquaticFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
@@ -10,6 +11,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.placement.*;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -142,6 +145,13 @@ public final class TropicraftVegetationPlacements {
             BiomeFilter.biome()
     ));
 
+    public static final RegistryObject<PlacedFeature> KELP = REGISTER.placed("kelp", AquaticFeatures.KELP, () -> List.of(
+            NoiseBasedCountPlacement.of(75, 80.0D, 0.55D),
+            InSquarePlacement.spread(),
+            PlacementUtils.HEIGHTMAP_TOP_SOLID,
+            BiomeFilter.biome()
+    ));
+
     public static List<PlacementModifier> worldSurfaceSquaredWithChance(int onceEvery) {
         return List.of(RarityFilter.onAverageOnceEvery(onceEvery), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome());
     }
@@ -238,6 +248,10 @@ public final class TropicraftVegetationPlacements {
 
     public static void addUndergroundPickles(BiomeGenerationSettings.Builder generation) {
         addVegetalDecoration(generation, UNDERGROUND_SEA_PICKLES);
+    }
+
+    public static void addKelp(BiomeGenerationSettings.Builder generation) {
+        addVegetalDecoration(generation, KELP);
     }
 
     private static void addVegetalDecoration(BiomeGenerationSettings.Builder generation, RegistryObject<PlacedFeature> feature) {
