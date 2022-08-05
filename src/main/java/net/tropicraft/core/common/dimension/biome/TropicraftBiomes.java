@@ -64,6 +64,7 @@ public final class TropicraftBiomes {
 
     public static final RegistryObject<Biome> MANGROVES = REGISTER.register("mangroves", () -> createMangroves(false));
     public static final RegistryObject<Biome> OVERGROWN_MANGROVES = REGISTER.register("overgrown_mangroves", () -> createMangroves(true));
+    public static final RegistryObject<Biome> TROPICAL_PEAKS = REGISTER.register("tropical_peaks", TropicraftBiomes::createTropicalPeaks);
 
     @SubscribeEvent
     public static void onBiomeLoad(BiomeLoadingEvent event) {
@@ -224,8 +225,6 @@ public final class TropicraftBiomes {
         TropicraftVegetationPlacements.addPapaya(generation);
         TropicraftVegetationPlacements.addRegularSeagrass(generation);
 
-//        generation.addStructureStart(structures.homeTree);
-
         BiomeDefaultFeatures.addJungleGrass(generation);
         BiomeDefaultFeatures.addLightBambooVegetation(generation);
 
@@ -264,6 +263,8 @@ public final class TropicraftBiomes {
 
         TropicraftConfiguredCarvers.addUnderwater(generation);
 
+        // Needed as oceans can sometimes produce land above sea level
+        TropicraftVegetationPlacements.addPalmTrees(generation);
         TropicraftMiscPlacements.addTropicsMetals(generation);
 
         generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AquaticPlacements.WARM_OCEAN_VEGETATION);
@@ -297,6 +298,9 @@ public final class TropicraftBiomes {
 
         // KELP!
         TropicraftVegetationPlacements.addKelp(generation);
+
+        // Needed as oceans can sometimes produce land above sea level
+        TropicraftVegetationPlacements.addPalmTrees(generation);
 
         TropicraftVegetationPlacements.addUndergroundSeagrass(generation);
         TropicraftVegetationPlacements.addUndergroundPickles(generation);
@@ -336,6 +340,33 @@ public final class TropicraftBiomes {
                 .specialEffects(defaultAmbience(false).build())
                 .build();
     }
+
+    private static Biome createTropicalPeaks() {
+        BiomeGenerationSettings.Builder generation = defaultGeneration();
+
+        TropicraftMiscPlacements.addTropicsGems(generation);
+        TropicraftVegetationPlacements.addRainforestTrees(generation);
+        TropicraftVegetationPlacements.addPapaya(generation);
+        TropicraftVegetationPlacements.addRegularSeagrass(generation);
+
+        BiomeDefaultFeatures.addJungleGrass(generation);
+        BiomeDefaultFeatures.addLightBambooVegetation(generation);
+
+        TropicraftVegetationPlacements.addRainforestPlants(generation);
+        TropicraftVegetationPlacements.addUndergrowth(generation);
+
+        MobSpawnSettings.Builder spawns = defaultSpawns();
+
+        return new Biome.BiomeBuilder()
+                .precipitation(Biome.Precipitation.RAIN)
+                .temperature(1.5F).downfall(1.25F)
+                .biomeCategory(Biome.BiomeCategory.MOUNTAIN)
+                .generationSettings(generation.build())
+                .mobSpawnSettings(spawns.build())
+                .specialEffects(defaultAmbience(true).build())
+                .build();
+    }
+
 
     // TODO: rebalance all spawns
     private static Biome createMangroves(boolean overgrown) {

@@ -46,7 +46,8 @@ public class TropicraftBiomeSource extends BiomeSource {
             TropicraftBiomes.KELP_FOREST,
             TropicraftBiomes.MANGROVES,
             TropicraftBiomes.OVERGROWN_MANGROVES,
-            TropicraftBiomes.OSA_RAINFOREST
+            TropicraftBiomes.OSA_RAINFOREST,
+            TropicraftBiomes.TROPICAL_PEAKS
     ).map(RegistryObject::getKey).collect(Collectors.toSet());
 
     private final long seed;
