@@ -253,7 +253,9 @@ public class ChairEntity extends FurnitureEntity {
 
     @Override
     public InteractionResult interact(Player player, InteractionHand hand) {
-        if (!level.isClientSide && !player.isShiftKeyDown()) {
+        if(invulnerablityCheck(player, hand) == InteractionResult.SUCCESS) {
+            return InteractionResult.SUCCESS;
+        } else if (!level.isClientSide && !player.isShiftKeyDown()) {
             player.startRiding(this);
             return InteractionResult.SUCCESS;
         }

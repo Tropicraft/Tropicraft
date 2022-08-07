@@ -1,11 +1,17 @@
 package net.tropicraft.core.common.entity.placeable;
 
+import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.ChatType;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
@@ -14,6 +20,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
@@ -29,6 +36,7 @@ public abstract class FurnitureEntity extends Entity {
     private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(FurnitureEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Integer> FORWARD_DIRECTION = SynchedEntityData.defineId(FurnitureEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> TIME_SINCE_HIT = SynchedEntityData.defineId(FurnitureEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> INVULNERABLE = SynchedEntityData.defineId(FurnitureEntity.class, EntityDataSerializers.BOOLEAN);
     
     private static final int DAMAGE_THRESHOLD = 40;
     
@@ -53,7 +61,12 @@ public abstract class FurnitureEntity extends Entity {
         //TODO this will result in pushing acting weird - but the variable is gone in 1.17 (apparently)
         // this.pushthrough = .95F;
     }
-    
+
+    @Override
+    public boolean isInvulnerableTo(DamageSource pSource) {
+        return entityData.get(INVULNERABLE) || super.isInvulnerableTo(pSource);
+    }
+
     public void setRotation(float yaw) {
         this.lerpYaw = Mth.wrapDegrees(yaw);
         this.setYRot((float) this.lerpYaw);
@@ -70,6 +83,7 @@ public abstract class FurnitureEntity extends Entity {
         this.getEntityData().define(DAMAGE, (float) 0);
         this.getEntityData().define(FORWARD_DIRECTION, 1);
         this.getEntityData().define(TIME_SINCE_HIT, 0);
+        this.getEntityData().define(INVULNERABLE, false);
     }
 
     @Override
@@ -147,11 +161,39 @@ public abstract class FurnitureEntity extends Entity {
     }
 
     @Override
+    public InteractionResult interact(Player pPlayer, InteractionHand pHand) {
+        if(invulnerablityCheck(pPlayer, pHand) == InteractionResult.SUCCESS) {
+            return InteractionResult.SUCCESS;
+        }
+
+        return super.interact(pPlayer, pHand);
+    }
+
+    public InteractionResult invulnerablityCheck(Player pPlayer, InteractionHand pHand){
+        if(pPlayer.getItemInHand(pHand).is(Items.DEBUG_STICK)){
+            if(!this.level.isClientSide) {
+                this.entityData.set(INVULNERABLE, !this.entityData.get(INVULNERABLE));
+                ((ServerPlayer)pPlayer).sendMessage(new TranslatableComponent("Invulnerability Mode: " + (this.entityData.get(INVULNERABLE) ? "On" : "Off")), ChatType.GAME_INFO, Util.NIL_UUID);
+            }
+
+            return InteractionResult.SUCCESS;
+        }
+
+        return InteractionResult.FAIL;
+    }
+
+
+    @Override
     public boolean hurt(DamageSource damageSource, float amount) {
         if (this.isInvulnerableTo(damageSource)) {
+            if(damageSource.getEntity() instanceof Player player){
+                return player.getMainHandItem().is(Items.DEBUG_STICK);
+            }
+
             return false;
         }
-        else if (!this.level.isClientSide && isAlive()) {
+
+        if (!this.level.isClientSide && isAlive()) {
             this.setForwardDirection(-this.getForwardDirection());
             this.setTimeSinceHit(10);
             this.setDamage(this.getDamage() + amount * 10.0F);
@@ -209,11 +251,17 @@ public abstract class FurnitureEntity extends Entity {
     @Override
     protected void readAdditionalSaveData(CompoundTag nbt) {
         setColor(DyeColor.byId(nbt.getInt("Color")));
+
+        if(nbt.contains("Invulnerable")){
+            entityData.set(INVULNERABLE, nbt.getBoolean("Invulnerable"));
+        }
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag nbt) {
         nbt.putInt("Color", getColor().ordinal());
+
+        nbt.putBoolean("Invulnerable", entityData.get(INVULNERABLE));
     }
 
     public void setColor(DyeColor color) {
