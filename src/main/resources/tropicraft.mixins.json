@@ -4,6 +4,9 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "tropicraft.refmap.json",
   "mixins": [
+    "accessors.EntityAccessor",
+    "accessors.ServerGamePacketListenerImplAccessor",
+    "TeleportCommandMixin",
     "worldgen.LevelStemAccessor",
     "worldgen.RegistryCodecsMixin",
     "worldgen.RegistryLoaderMixin"
