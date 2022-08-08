@@ -263,6 +263,20 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             dropsSelf(TropicraftBlocks.STRIPPED_MANGROVE_WOOD);
             dropsSelf(TropicraftBlocks.MANGROVE_PLANKS);
 
+            //Buttons
+            dropsSelf(TropicraftBlocks.MAHOGANY_BUTTON);
+            dropsSelf(TropicraftBlocks.PALM_BUTTON);
+            dropsSelf(TropicraftBlocks.MANGROVE_BUTTON);
+            dropsSelf(TropicraftBlocks.BAMBOO_BUTTON);
+            dropsSelf(TropicraftBlocks.THATCH_BUTTON);
+
+            //Pressure Plate
+            dropsSelf(TropicraftBlocks.MAHOGANY_PRESSURE_PLATE);
+            dropsSelf(TropicraftBlocks.PALM_PRESSURE_PLATE);
+            dropsSelf(TropicraftBlocks.MANGROVE_PRESSURE_PLATE);
+            dropsSelf(TropicraftBlocks.BAMBOO_PRESSURE_PLATE);
+            dropsSelf(TropicraftBlocks.THATCH_PRESSURE_PLATE);
+
             // Stairs & Slabs
             dropsSelf(TropicraftBlocks.BAMBOO_STAIRS);
             dropsSelf(TropicraftBlocks.THATCH_STAIRS);
@@ -379,6 +393,12 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             dropsSelf(TropicraftBlocks.GOLDEN_LEATHER_FERN);
             dropsOther(TropicraftBlocks.TALL_GOLDEN_LEATHER_FERN, TropicraftBlocks.GOLDEN_LEATHER_FERN);
             dropsOther(TropicraftBlocks.LARGE_GOLDEN_LEATHER_FERN, TropicraftBlocks.GOLDEN_LEATHER_FERN);
+
+            dropsOther(TropicraftBlocks.MAHOGANY_SIGN, TropicraftItems.MAHOGANY_SIGN);
+            dropsOther(TropicraftBlocks.PALM_SIGN, TropicraftItems.PALM_SIGN);
+            dropsOther(TropicraftBlocks.MANGROVE_SIGN, TropicraftItems.MANGROVE_SIGN);
+            dropsOther(TropicraftBlocks.BAMBOO_SIGN, TropicraftItems.BAMBOO_SIGN);
+            dropsOther(TropicraftBlocks.THATCH_SIGN, TropicraftItems.THATCH_SIGN);
         }
         
         private void dropsSelf(Supplier<? extends Block> block) {

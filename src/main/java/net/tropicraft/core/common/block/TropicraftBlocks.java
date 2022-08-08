@@ -179,6 +179,34 @@ public class TropicraftBlocks {
     public static final RegistryObject<DoorBlock> MANGROVE_DOOR = register("mangrove_door", () -> new DoorBlock(Block.Properties.copy(Blocks.OAK_DOOR)) {});
     public static final RegistryObject<TrapDoorBlock> MANGROVE_TRAPDOOR = register("mangrove_trapdoor", () -> new TrapDoorBlock(Block.Properties.copy(MANGROVE_DOOR.get())) {});
 
+    //Wooden Buttons
+    public static final RegistryObject<WoodButtonBlock> MAHOGANY_BUTTON = register("mahogany_button", Builder.woodenButton());
+    public static final RegistryObject<WoodButtonBlock> PALM_BUTTON = register("palm_button", Builder.woodenButton());
+    public static final RegistryObject<WoodButtonBlock> MANGROVE_BUTTON = register("mangrove_button", Builder.woodenButton());
+    public static final RegistryObject<WoodButtonBlock> BAMBOO_BUTTON = register("bamboo_button", Builder.woodenButton());
+    public static final RegistryObject<WoodButtonBlock> THATCH_BUTTON = register("thatch_button", Builder.woodenButton());
+
+    //Wooden Pressure Plates
+    public static final RegistryObject<PressurePlateBlock> MAHOGANY_PRESSURE_PLATE = register("mahogany_pressure_plate", Builder.woodenPresurePlate(MaterialColor.COLOR_BROWN));
+    public static final RegistryObject<PressurePlateBlock> PALM_PRESSURE_PLATE = register("palm_pressure_plate", Builder.woodenPresurePlate(MaterialColor.WOOD));
+    public static final RegistryObject<PressurePlateBlock> MANGROVE_PRESSURE_PLATE = register("mangrove_pressure_plate", Builder.woodenPresurePlate(MaterialColor.WOOD));
+    public static final RegistryObject<PressurePlateBlock> BAMBOO_PRESSURE_PLATE = register("bamboo_pressure_plate", Builder.woodenPresurePlate(MaterialColor.PLANT));
+    public static final RegistryObject<PressurePlateBlock> THATCH_PRESSURE_PLATE = register("thatch_pressure_plate", Builder.woodenPresurePlate(MaterialColor.WOOD));
+
+    //Wooden Signs
+    public static final RegistryObject<StandingSignBlock> MAHOGANY_SIGN = registerNoItem("mahogany_sign", Builder.sign(MaterialColor.COLOR_BROWN, TropicraftWoodTypes.MAHOGANY));
+    public static final RegistryObject<StandingSignBlock> PALM_SIGN = registerNoItem("palm_sign", Builder.sign(MaterialColor.WOOD, TropicraftWoodTypes.PALM));
+    public static final RegistryObject<StandingSignBlock> MANGROVE_SIGN = registerNoItem("mangrove_sign", Builder.sign(MaterialColor.WOOD, TropicraftWoodTypes.MANGROVE_RED));
+    public static final RegistryObject<StandingSignBlock> BAMBOO_SIGN = registerNoItem("bamboo_sign", Builder.sign(MaterialColor.PLANT, TropicraftWoodTypes.BAMBOO));
+    public static final RegistryObject<StandingSignBlock> THATCH_SIGN = registerNoItem("thatch_sign", Builder.sign(MaterialColor.WOOD, TropicraftWoodTypes.THATCH));
+
+    //Wooden Wall Signs
+    public static final RegistryObject<WallSignBlock> MAHOGANY_WALL_SIGN = registerNoItem("mahogany_wall_sign", Builder.wallSign(MAHOGANY_SIGN, MaterialColor.COLOR_BROWN, TropicraftWoodTypes.MAHOGANY));
+    public static final RegistryObject<WallSignBlock> PALM_WALL_SIGN = registerNoItem("palm_wall_sign", Builder.wallSign(PALM_SIGN, MaterialColor.WOOD, TropicraftWoodTypes.PALM));
+    public static final RegistryObject<WallSignBlock> MANGROVE_WALL_SIGN = registerNoItem("mangrove_wall_sign", Builder.wallSign(MANGROVE_SIGN, MaterialColor.WOOD, TropicraftWoodTypes.MANGROVE_RED));
+    public static final RegistryObject<WallSignBlock> BAMBOO_WALL_SIGN = registerNoItem("bamboo_wall_sign", Builder.wallSign(BAMBOO_SIGN, MaterialColor.PLANT, TropicraftWoodTypes.BAMBOO));
+    public static final RegistryObject<WallSignBlock> THATCH_WALL_SIGN = registerNoItem("thatch_wall_sign", Builder.wallSign(THATCH_SIGN, MaterialColor.WOOD, TropicraftWoodTypes.THATCH));
+
     public static final RegistryObject<ReedsBlock> REEDS = register("reeds", () -> new ReedsBlock(Block.Properties.copy(Blocks.SUGAR_CANE)));
     public static final RegistryObject<PapayaBlock> PAPAYA = registerWithFood("papaya", () -> new PapayaBlock(Block.Properties.of(Material.PLANT).randomTicks().strength(0.2F, 3.0F).sound(SoundType.WOOD).noOcclusion()), Foods.PAPAYA);
 

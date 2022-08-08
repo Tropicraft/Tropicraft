@@ -7,6 +7,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.grower.AbstractTreeGrower;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.registries.RegistryObject;
@@ -76,6 +77,23 @@ public class Builder {
 
     public static Supplier<Block> plank(final MaterialColor color) {
         return block(prop(Material.WOOD, color).strength(2.0F, 3.0F).sound(SoundType.WOOD));
+    }
+
+    public static Supplier<StandingSignBlock> sign(final MaterialColor color, WoodType woodType) {
+        return block((prop) -> woodType == TropicraftWoodTypes.MANGROVE_RED ? new TropicraftStandingSignBlock(prop, woodType) : new StandingSignBlock(prop, woodType),
+                prop(Material.WOOD, color).noCollission().strength(1.0F).sound(SoundType.WOOD));
+    }
+
+    public static Supplier<WallSignBlock> wallSign(Supplier<StandingSignBlock> standingSign, final MaterialColor color, WoodType woodType) {
+        return block((prop) -> new WallSignBlock(prop, woodType), prop(Material.WOOD, color).noCollission().strength(1.0F).sound(SoundType.WOOD).lootFrom(standingSign));
+    }
+
+    public static Supplier<WoodButtonBlock> woodenButton(){
+        return block(WoodButtonBlock::new, BlockBehaviour.Properties.of(Material.DECORATION).noCollission().strength(0.5F).sound(SoundType.WOOD));
+    }
+
+    public static Supplier<PressurePlateBlock> woodenPresurePlate(MaterialColor color){
+        return block(properties -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, properties), BlockBehaviour.Properties.of(Material.WOOD, color).noCollission().strength(0.5F).sound(SoundType.WOOD));
     }
 
     public static Supplier<RotatedPillarBlock> log(final MaterialColor topColor, final MaterialColor sideColor) {

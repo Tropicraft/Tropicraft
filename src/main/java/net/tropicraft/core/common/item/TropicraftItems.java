@@ -6,6 +6,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
+import net.minecraft.world.item.SignItem;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraftforge.event.RegistryEvent;
@@ -104,6 +105,12 @@ public class TropicraftItems {
 
     public static final RegistryObject<Item> BAMBOO_ITEM_FRAME = register(
             "bamboo_item_frame", () -> new BambooItemFrameItem(new Item.Properties().tab(Tropicraft.TROPICRAFT_ITEM_GROUP)));
+
+    public static final RegistryObject<SignItem> MAHOGANY_SIGN = register("mahogany_sign", Builder.sign(TropicraftBlocks.MAHOGANY_SIGN, TropicraftBlocks.MAHOGANY_WALL_SIGN));
+    public static final RegistryObject<SignItem> PALM_SIGN = register("palm_sign", Builder.sign(TropicraftBlocks.PALM_SIGN, TropicraftBlocks.PALM_WALL_SIGN));
+    public static final RegistryObject<SignItem> MANGROVE_SIGN = register("mangrove_sign", Builder.sign(TropicraftBlocks.MANGROVE_SIGN, TropicraftBlocks.MANGROVE_WALL_SIGN));
+    public static final RegistryObject<SignItem> BAMBOO_SIGN = register("bamboo_sign", Builder.sign(TropicraftBlocks.BAMBOO_SIGN, TropicraftBlocks.BAMBOO_WALL_SIGN));
+    public static final RegistryObject<SignItem> THATCH_SIGN = register("thatch_sign", Builder.sign(TropicraftBlocks.THATCH_SIGN, TropicraftBlocks.THATCH_WALL_SIGN));
     
     public static final ImmutableMap<RecordMusic, RegistryObject<TropicalMusicDiscItem>> MUSIC_DISCS = Arrays.stream(RecordMusic.values())
             .collect(Maps.<RecordMusic, RecordMusic, RegistryObject<TropicalMusicDiscItem>>toImmutableEnumMap(Function.identity(), type -> register("music_disc_" + type.name().toLowerCase(Locale.ROOT), Builder.musicDisc(type))));

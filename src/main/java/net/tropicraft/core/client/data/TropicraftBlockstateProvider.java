@@ -2,9 +2,13 @@ package net.tropicraft.core.client.data;
 
 import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.models.BlockModelGenerators;
+import net.minecraft.data.models.model.ModelTemplate;
+import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
@@ -145,6 +149,27 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         slabBlock(TropicraftBlocks.PALM_SLAB, TropicraftBlocks.PALM_PLANKS);
         slabBlock(TropicraftBlocks.MAHOGANY_SLAB, TropicraftBlocks.MAHOGANY_PLANKS);
         slabBlock(TropicraftBlocks.MANGROVE_SLAB, TropicraftBlocks.MANGROVE_PLANKS);
+
+        //buttons
+        buttonBlock(TropicraftBlocks.MAHOGANY_BUTTON, "mahogany_planks");
+        buttonBlock(TropicraftBlocks.PALM_BUTTON, "palm_planks");
+        buttonBlock(TropicraftBlocks.MANGROVE_BUTTON, "mangrove_planks");
+        buttonBlock(TropicraftBlocks.BAMBOO_BUTTON, "bamboo_end");
+        buttonBlock(TropicraftBlocks.THATCH_BUTTON, "thatch_end");
+
+        //Pressure Plate
+        pressurePlateBlock(TropicraftBlocks.MAHOGANY_PRESSURE_PLATE, "mahogany_planks");
+        pressurePlateBlock(TropicraftBlocks.PALM_PRESSURE_PLATE, "palm_planks");
+        pressurePlateBlock(TropicraftBlocks.MANGROVE_PRESSURE_PLATE, "mangrove_planks");
+        pressurePlateBlock(TropicraftBlocks.BAMBOO_PRESSURE_PLATE, "bamboo_end");
+        pressurePlateBlock(TropicraftBlocks.THATCH_PRESSURE_PLATE, "thatch_end");
+
+        //Wooden Signs
+        signBlock(TropicraftBlocks.MAHOGANY_SIGN, TropicraftBlocks.MAHOGANY_WALL_SIGN, "mahogany_planks");
+        signBlock(TropicraftBlocks.PALM_SIGN, TropicraftBlocks.PALM_WALL_SIGN, "palm_planks");
+        signBlock(TropicraftBlocks.MANGROVE_SIGN, TropicraftBlocks.MANGROVE_WALL_SIGN, "mangrove_planks");
+        signBlock(TropicraftBlocks.BAMBOO_SIGN, TropicraftBlocks.BAMBOO_WALL_SIGN, "bamboo_end");
+        signBlock(TropicraftBlocks.THATCH_SIGN, TropicraftBlocks.THATCH_WALL_SIGN, "thatch_end");
 
         // Leaves
         simpleBlock(TropicraftBlocks.MAHOGANY_LEAVES);
@@ -384,6 +409,18 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
 
     private void slabBlock(Supplier<? extends SlabBlock> block, Supplier<? extends Block> doubleslab, String side, String end) {
         slabBlock(block.get(), doubleslab.get().getRegistryName(), modBlockLoc(side), modBlockLoc(end), modBlockLoc(end));
+    }
+
+    private void buttonBlock(Supplier<? extends WoodButtonBlock> block, String texture) {
+        buttonBlock(block.get(), modBlockLoc(texture));
+    }
+
+    private void pressurePlateBlock(Supplier<? extends PressurePlateBlock> block, String texture) {
+        pressurePlateBlock(block.get(), modBlockLoc(texture));
+    }
+
+    private void signBlock(Supplier<StandingSignBlock> standingBlock, Supplier<WallSignBlock> wallBlock, String texture){
+        signBlock(standingBlock.get(), wallBlock.get(), modBlockLoc(texture));
     }
 
     private void plant(Supplier<? extends BushBlock> block) {

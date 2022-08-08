@@ -133,6 +133,20 @@ public class TropicraftLangProvider extends LanguageProvider {
         addBlock(TropicraftBlocks.MAHOGANY_SLAB);
         addBlock(TropicraftBlocks.MANGROVE_SLAB);
 
+        //Buttons
+        addBlock(TropicraftBlocks.MAHOGANY_BUTTON);
+        addBlock(TropicraftBlocks.PALM_BUTTON);
+        addBlock(TropicraftBlocks.MANGROVE_BUTTON);
+        addBlock(TropicraftBlocks.BAMBOO_BUTTON);
+        addBlock(TropicraftBlocks.THATCH_BUTTON);
+
+        //Pressure Plate
+        addBlock(TropicraftBlocks.MAHOGANY_PRESSURE_PLATE);
+        addBlock(TropicraftBlocks.PALM_PRESSURE_PLATE);
+        addBlock(TropicraftBlocks.MANGROVE_PRESSURE_PLATE);
+        addBlock(TropicraftBlocks.BAMBOO_PRESSURE_PLATE);
+        addBlock(TropicraftBlocks.THATCH_PRESSURE_PLATE);
+
         // Leaves
         addBlock(TropicraftBlocks.MAHOGANY_LEAVES);
         addBlock(TropicraftBlocks.PALM_LEAVES);
@@ -399,6 +413,12 @@ public class TropicraftLangProvider extends LanguageProvider {
         
         addItem(TropicraftItems.YELLOW_PONY_BOTTLE);
         addItem(TropicraftItems.PINK_PONY_BOTTLE);
+
+        addItem(TropicraftItems.MAHOGANY_SIGN);
+        addItem(TropicraftItems.PALM_SIGN);
+        addItem(TropicraftItems.MANGROVE_SIGN);
+        addItem(TropicraftItems.BAMBOO_SIGN);
+        addItem(TropicraftItems.THATCH_SIGN);
 
         // ENTITIES
         

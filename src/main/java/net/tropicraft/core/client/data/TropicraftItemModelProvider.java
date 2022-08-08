@@ -120,6 +120,20 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         blockItem(TropicraftBlocks.MAHOGANY_SLAB);
         blockItem(TropicraftBlocks.MANGROVE_SLAB);
 
+        //Buttons
+        button(TropicraftBlocks.MAHOGANY_BUTTON, TropicraftBlocks.MAHOGANY_PLANKS);
+        button(TropicraftBlocks.PALM_BUTTON, TropicraftBlocks.PALM_PLANKS);
+        button(TropicraftBlocks.MANGROVE_BUTTON, TropicraftBlocks.MANGROVE_PLANKS);
+        button(TropicraftBlocks.BAMBOO_BUTTON, "bamboo_end");
+        button(TropicraftBlocks.THATCH_BUTTON, "thatch_end");
+
+        //Pressure Plate
+        blockItem(TropicraftBlocks.MAHOGANY_PRESSURE_PLATE);
+        blockItem(TropicraftBlocks.PALM_PRESSURE_PLATE);
+        blockItem(TropicraftBlocks.MANGROVE_PRESSURE_PLATE);
+        blockItem(TropicraftBlocks.BAMBOO_PRESSURE_PLATE);
+        blockItem(TropicraftBlocks.THATCH_PRESSURE_PLATE);
+
         // Leaves
         blockItem(TropicraftBlocks.MAHOGANY_LEAVES);
         blockItem(TropicraftBlocks.PALM_LEAVES);
@@ -399,6 +413,12 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         
         generated(TropicraftItems.YELLOW_PONY_BOTTLE);
         generated(TropicraftItems.PINK_PONY_BOTTLE);
+
+        generated(TropicraftItems.MAHOGANY_SIGN);
+        generated(TropicraftItems.PALM_SIGN);
+        generated(TropicraftItems.MANGROVE_SIGN);
+        generated(TropicraftItems.BAMBOO_SIGN);
+        generated(TropicraftItems.THATCH_SIGN);
     }
     
     private String name(Supplier<? extends ItemLike> item) {
@@ -412,7 +432,17 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
     private ItemModelBuilder blockItem(Supplier<? extends Block> block) {
         return blockItem(block, "");
     }
-    
+
+    private ItemModelBuilder button(Supplier<? extends Block> block, Supplier<? extends Block> BlockTexture) {
+        return button(block, name(BlockTexture));
+    }
+
+    //If you find this, just know that buttons are hell
+    private ItemModelBuilder button(Supplier<? extends Block> block, String textureLoc) {
+        return withExistingParent(name(block), new ResourceLocation("block/button_inventory"))
+                .texture("texture", modLoc("block/" + textureLoc));
+    }
+
     private ItemModelBuilder blockItem(Supplier<? extends Block> block, String suffix) {
         return withExistingParent(name(block), modLoc("block/" + name(block) + suffix));
     }

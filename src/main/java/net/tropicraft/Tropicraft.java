@@ -1,6 +1,7 @@
 package net.tropicraft;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.reflect.Reflection;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.client.resources.model.ModelBakery;
@@ -12,6 +13,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -67,8 +69,13 @@ import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.item.scuba.ScubaData;
 import net.tropicraft.core.common.item.scuba.ScubaGogglesItem;
 import net.tropicraft.core.common.network.TropicraftPackets;
+import net.tropicraft.core.mixin.BlockEntityTypeAccessor;
 
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static net.tropicraft.core.common.block.TropicraftBlocks.*;
 
 @Mod(Constants.MODID)
 public class Tropicraft {
@@ -175,6 +182,8 @@ public class Tropicraft {
     }
 
     private void setup(final FMLCommonSetupEvent event) {
+        registerSigns();
+
         TropicraftPackets.init();
         TropicraftEntities.registerSpawns();
 
@@ -191,6 +200,20 @@ public class Tropicraft {
                 TropicraftTreeDecorators.class,
                 TropicraftLootConditions.class
         );
+    }
+
+    private void registerSigns(){
+        ((BlockEntityTypeAccessor) BlockEntityType.SIGN)
+            .tropicraft$setValidBlocks(new ImmutableSet.Builder<Block>()
+                    .addAll(((BlockEntityTypeAccessor) BlockEntityType.SIGN).tropicraft$getValidBlocks())
+                    .addAll(Stream.of(MAHOGANY_SIGN, MAHOGANY_WALL_SIGN,
+                                    PALM_SIGN, PALM_WALL_SIGN,
+                                    MANGROVE_SIGN, MANGROVE_WALL_SIGN,
+                                    BAMBOO_SIGN, BAMBOO_WALL_SIGN,
+                                    THATCH_SIGN, THATCH_WALL_SIGN)
+                            .map(RegistryObject::get)
+                            .collect(Collectors.toSet()))
+                    .build());
     }
 
     private void registerCaps(RegisterCapabilitiesEvent event) {

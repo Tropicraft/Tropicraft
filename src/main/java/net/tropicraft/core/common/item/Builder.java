@@ -7,6 +7,8 @@ import net.minecraft.world.entity.animal.AbstractFish;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.StandingSignBlock;
+import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.registries.RegistryObject;
 import net.tropicraft.Tropicraft;
@@ -51,6 +53,9 @@ public class Builder {
         return item(p -> new ItemNameBlockItem(block.get(), p));
     }
 
+    public static Supplier<SignItem> sign(Supplier<StandingSignBlock> standingSign, Supplier<WallSignBlock> wallSign) {
+        return item(p -> new SignItem(p.stacksTo(16), standingSign.get(), wallSign.get()));
+    }
     private static <T extends FurnitureEntity> Supplier<FurnitureItem<T>> furniture(Supplier<EntityType<T>> type, DyeColor color) {
         return item(p -> new FurnitureItem<>(p, type, color));
     }

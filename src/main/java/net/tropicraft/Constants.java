@@ -1,5 +1,7 @@
 package net.tropicraft;
 
+import net.minecraft.resources.ResourceLocation;
+
 public class Constants {
     public static final String MODID = "tropicraft";
     public static final String ARMOR_LOCATION = MODID + ":textures/models/armor/";
@@ -35,4 +37,8 @@ public class Constants {
             "boni", "Torgosaves", "Aroma1997", "Mr. Rube", "Mark Conrad", "destruc7i0n", "SpiderStorm", "Kasia", "HelenAngel",
             "Junicus", "nan", "PhoenixfireLune", "Tavinnea", "Girafi", "Buuz135", "Drullkus", "iChun", "LoveTropics", "Twisted_Code"
     };
+
+    public static ResourceLocation id(String path){
+        return new ResourceLocation(MODID, path);
+    }
 }
