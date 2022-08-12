@@ -115,7 +115,7 @@ dependencies {
     if (System.getProperty("idea.sync.active") != "true") {
         annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     }
-    
+
     compileOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli}:api")
     implementation fg.deobf("vazkii.patchouli:Patchouli:${patchouli}") //runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli}")
 }

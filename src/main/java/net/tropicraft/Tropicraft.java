@@ -43,6 +43,7 @@ import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.block.tileentity.TropicraftBlockEntityTypes;
 import net.tropicraft.core.common.command.TropicraftCommands;
 import net.tropicraft.core.common.command.debug.MapBiomesCommand;
+import net.tropicraft.core.common.compat.patchouli.ComponenetRegistry;
 import net.tropicraft.core.common.data.*;
 import net.tropicraft.core.common.data.loot.TropicraftLootConditions;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
@@ -92,6 +93,10 @@ public class Tropicraft {
             // Client setup
             modBus.addListener(this::setupClient);
             modBus.addListener(this::registerItemColors);
+
+            if(ModList.get().isLoaded("patchouli")){
+                ComponenetRegistry.init();
+            }
         });
 
         MinecraftForge.EVENT_BUS.addListener(this::onServerStarting);

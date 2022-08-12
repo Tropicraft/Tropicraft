@@ -8,6 +8,10 @@
     "worldgen.RegistryCodecsMixin",
     "worldgen.RegistryLoaderMixin"
   ],
+  "client": [
+    "client.pageAddButtonInvoker"
+  ],
+  "plugin": "net.tropicraft.core.mixin.plugins.TropicraftMixinPlugin",
   "injectors": {
     "defaultRequire": 1
   },
