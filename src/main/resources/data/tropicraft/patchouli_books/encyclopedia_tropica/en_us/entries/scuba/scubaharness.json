@@ -1,0 +1,17 @@
+{
+  "name": "tropicraft.encyclopedia.scubaharness.title",
+  "icon": "tropicraft:pink_scuba_harness",
+  "category": "tropicraft:scuba",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(wipdesc)"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tropicraft:yellow_scuba_harness",
+      "recipe2": "tropicraft:pink_scuba_harness"
+    }
+  ]
+}

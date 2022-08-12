@@ -1,0 +1,17 @@
+{
+  "name": "tropicraft.encyclopedia.grapefruit.title",
+  "icon": "tropicraft:grapefruit",
+  "category": "tropicraft:foods",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.grapefruit.desc"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tropicraft:grapefruit_leaves",
+      "text": "tropicraft.encyclopedia.fruitleaf.desc"
+    }
+  ]
+}

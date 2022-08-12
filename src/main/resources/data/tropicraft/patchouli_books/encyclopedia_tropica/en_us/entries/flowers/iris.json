@@ -1,0 +1,17 @@
+{
+  "name": "tropicraft.encyclopedia.iris.title",
+  "icon": "tropicraft:iris",
+  "category": "tropicraft:flowers",
+  "sortnum": 14,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.iris.desc"
+    },
+    {
+      "type": "tropicraft:flower_template",
+      "image1": "tropicraft:images/flowers/iris_1280.png",
+      "text": "tropicraft.encyclopedia.iris.craftingdesc"
+    }
+  ]
+}

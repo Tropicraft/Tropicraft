@@ -1,0 +1,18 @@
+{
+  "name": "tropicraft.encyclopedia.pinacolada.title",
+  "icon": "tropicraft:pina_colada",
+  "category": "tropicraft:drinks",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.pinacolada.desc"
+    },
+    {
+      "type": "tropicraft:drink_template",
+      "item": "tropicraft:coconut_chunk",
+      "item2": "minecraft:water_bucket",
+      "item3": "tropicraft:pineapple_cubes"
+    }
+  ]
+}

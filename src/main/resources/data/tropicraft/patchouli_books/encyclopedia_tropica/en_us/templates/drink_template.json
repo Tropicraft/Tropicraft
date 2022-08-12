@@ -1,0 +1,49 @@
+{
+  "components": [
+    {
+      "type": "patchouli:item",
+      "x": 10,
+      "y": 125,
+      "item": "#item",
+      "framed": true
+    },
+    {
+      "type": "patchouli:item",
+      "x": 50,
+      "y": 125,
+      "item": "#item2",
+      "framed": true
+    },
+    {
+      "type": "patchouli:item",
+      "x": 90,
+      "y": 125,
+      "item": "#item3",
+      "framed": true
+    },
+    {
+      "type": "patchouli:image",
+      "image": "tropicraft:images/drink_mixer_image.png",
+      "x": 8,
+      "y": 10,
+      "width": "100",
+      "height": "100",
+      "u": "80",
+      "v": "20",
+      "texture_width": "256",
+      "texture_height": "137",
+      "scale ": 2
+    },
+    {
+      "type": "patchouli:frame",
+      "x": -1,
+      "y": -1
+    },
+
+    {
+      "type": "patchouli:separator",
+      "x": -1,
+      "y": 115
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "tropicraft.encyclopedia.coconutbomb.title",
+  "icon": "tropicraft:coconut_bomb",
+  "category": "tropicraft:tools",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.coconutbomb.desc"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tropicraft:coconut_bomb",
+      "text": "tropicraft.encyclopedia.coconutbomb.desc2"
+    }
+  ]
+}

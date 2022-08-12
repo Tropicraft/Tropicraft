@@ -1,0 +1,17 @@
+{
+  "name": "tropicraft.encyclopedia.anemone.title",
+  "icon": "tropicraft:anemone",
+  "category": "tropicraft:flowers",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.anemone.desc"
+    },
+    {
+      "type": "tropicraft:flower_template",
+      "image1": "tropicraft:images/flowers/anemone_1280.png",
+      "text": "tropicraft.encyclopedia.anemone.craftingdesc"
+    }
+  ]
+}

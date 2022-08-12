@@ -1,0 +1,18 @@
+{
+  "name": "tropicraft.encyclopedia.lemonade.title",
+  "icon": "tropicraft:lemonade",
+  "category": "tropicraft:drinks",
+  "sortnum": 6,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.lemonade.desc"
+    },
+    {
+      "type": "tropicraft:drink_template",
+      "item": "tropicraft:lemon",
+      "item2": "minecraft:water_bucket",
+      "item3": "minecraft:sugar"
+    }
+  ]
+}

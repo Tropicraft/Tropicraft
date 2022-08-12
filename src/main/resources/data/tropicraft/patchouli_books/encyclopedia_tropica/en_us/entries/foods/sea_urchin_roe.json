@@ -1,0 +1,12 @@
+{
+  "name": "tropicraft.encyclopedia.seaurchinroe.title",
+  "icon": "tropicraft:sea_urchin_roe",
+  "category": "tropicraft:foods",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.seaurchinroe.desc"
+    }
+  ]
+}

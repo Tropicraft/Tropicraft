@@ -1,0 +1,20 @@
+{
+  "name": "tropicraft.encyclopedia.fire_armor.entry",
+  "icon": "tropicraft:fire_helmet",
+  "category": "tropicraft:armor",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.scale_armor.desc"
+    },
+    {
+      "type": "tropicraft:fire_armor_template",
+      "item": "tropicraft:fire_helmet",
+      "item2": "tropicraft:fire_chestplate",
+      "item3": "tropicraft:fire_leggings",
+      "item4": "tropicraft:fire_boots",
+      "header": "tropicraft.encyclopedia.fire_armor.crafting",
+      "text": "tropicraft.encyclopedia.fire_armor.crafting.desc"
+    }
+  ]
+}

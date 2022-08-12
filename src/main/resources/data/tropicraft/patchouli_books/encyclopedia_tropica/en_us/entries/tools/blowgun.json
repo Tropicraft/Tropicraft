@@ -1,0 +1,17 @@
+{
+  "name": "tropicraft.encyclopedia.blowgun.title",
+  "icon": "tropicraft:blow_gun",
+  "category": "tropicraft:tools",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.blowgun.desc"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tropicraft:blow_gun",
+      "text": "$(wip)"
+    }
+  ]
+}

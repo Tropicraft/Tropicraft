@@ -1,0 +1,18 @@
+{
+  "name": "tropicraft.encyclopedia.mai_tai.title",
+  "icon": "tropicraft:mai_tai",
+  "category": "tropicraft:drinks",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.mai_tai.desc"
+    },
+    {
+      "type": "tropicraft:drink_template",
+      "item": "tropicraft:orange",
+      "item2": "minecraft:water_bucket",
+      "item3": "tropicraft:lime"
+    }
+  ]
+}

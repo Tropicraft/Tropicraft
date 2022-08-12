@@ -1,0 +1,17 @@
+{
+  "name": "tropicraft.encyclopedia.golden_fern.title",
+  "icon": "tropicraft:small_golden_leather_fern",
+  "category": "tropicraft:flowers",
+  "sortnum": 13,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.golden_fern.desc"
+    },
+    {
+      "type": "tropicraft:flower_template",
+      "image1": "tropicraft:images/flowers/golden_fern_1280.png",
+      "text": "tropicraft.encyclopedia.golden_fern.craftingdesc"
+    }
+  ]
+}

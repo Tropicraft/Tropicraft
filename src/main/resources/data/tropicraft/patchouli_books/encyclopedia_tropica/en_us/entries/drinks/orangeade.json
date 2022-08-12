@@ -1,0 +1,18 @@
+{
+  "name": "tropicraft.encyclopedia.orangeade.title",
+  "icon": "tropicraft:lemonade",
+  "category": "tropicraft:drinks",
+  "sortnum": 8,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.orangeade.desc"
+    },
+    {
+      "type": "tropicraft:drink_template",
+      "item": "tropicraft:orange",
+      "item2": "minecraft:water_bucket",
+      "item3": "minecraft:sugar"
+    }
+  ]
+}

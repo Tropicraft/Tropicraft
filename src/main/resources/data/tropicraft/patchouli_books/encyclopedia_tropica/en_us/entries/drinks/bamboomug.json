@@ -1,0 +1,17 @@
+{
+  "name": "tropicraft.encyclopedia.bamboomug.title",
+  "icon": "tropicraft:bamboo_mug",
+  "category": "tropicraft:drinks",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.bamboomug.desc"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tropicraft:bamboo_mug",
+      "text": "$(wip)"
+    }
+  ]
+}

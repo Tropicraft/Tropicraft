@@ -1,0 +1,17 @@
+{
+  "name": "tropicraft.encyclopedia.fishingrod.title",
+  "icon": "tropicraft:fishing_rod",
+  "category": "tropicraft:tools",
+  "sortnum": 7,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.fishingrod.desc"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "minecraft:fishing_rod",
+      "text": "[WIP] Possible reimplementation of this could come within the future. TEMPORARY PLACE HOLDER"
+    }
+  ]
+}

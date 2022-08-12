@@ -1,0 +1,17 @@
+{
+  "name": "tropicraft.encyclopedia.canna.title",
+  "icon": "tropicraft:canna",
+  "category": "tropicraft:flowers",
+  "sortnum": 6,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.canna.desc"
+    },
+    {
+      "type": "tropicraft:flower_template",
+      "image1": "tropicraft:images/flowers/canna_1280.png",
+      "text": "tropicraft.encyclopedia.canna.craftingdesc"
+    }
+  ]
+}

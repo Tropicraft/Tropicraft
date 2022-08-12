@@ -1,0 +1,17 @@
+{
+  "name": "tropicraft.encyclopedia.toastednori.title",
+  "icon": "tropicraft:toasted_nori",
+  "category": "tropicraft:foods",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.toastednori.desc"
+    },
+    {
+      "type": "patchouli:smelting",
+      "recipe": "tropicraft:toasted_nori",
+      "text": "tropicraft.encyclopedia.toastednori.desc2"
+    }
+  ]
+}

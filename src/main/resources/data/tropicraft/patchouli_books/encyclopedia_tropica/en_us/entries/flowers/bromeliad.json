@@ -1,0 +1,17 @@
+{
+  "name": "tropicraft.encyclopedia.bromeliad.title",
+  "icon": "tropicraft:bromeliad",
+  "category": "tropicraft:flowers",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.bromeliad.desc"
+    },
+    {
+      "type": "tropicraft:flower_template",
+      "image1": "tropicraft:images/flowers/bromeliad_1280.png",
+      "text": "tropicraft.encyclopedia.bromeliad.craftingdesc"
+    }
+  ]
+}

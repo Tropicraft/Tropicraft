@@ -1,0 +1,17 @@
+{
+  "name": "tropicraft.encyclopedia.croton.title",
+  "icon": "tropicraft:croton",
+  "category": "tropicraft:flowers",
+  "sortnum": 9,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.croton.desc"
+    },
+    {
+      "type": "tropicraft:flower_template",
+      "image1": "tropicraft:images/flowers/croton_1280.png",
+      "text": "tropicraft.encyclopedia.croton.craftingdesc"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "tropicraft.encyclopedia.buriedtreasure.title",
+  "icon": "tropicraft:music_disc_buried_treasure",
+  "category": "tropicraft:music",
+  "sortnum": 6,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.buriedtreasure.desc"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tropicraft:music_disc_buried_treasure",
+      "text": "item.tropicraft.music_disc_buried_treasure.desc.0"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "tropicraft.encyclopedia.sifter.title",
+  "icon": "tropicraft:sifter",
+  "category": "tropicraft:machines",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.sifter.desc"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tropicraft:sifter",
+      "text": "$(wipdesc)"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "name": "tropicraft.encyclopedia.fruit.title",
+  "icon": "tropicraft:lemon_sapling",
+  "category": "tropicraft:foods",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.fruit.desc"
+    },
+    {
+      "type": "patchouli:relations",
+      "entries": [
+        "tropicraft:foods/pineapple",
+        "tropicraft:foods/lemon",
+        "tropicraft:foods/lime",
+        "tropicraft:foods/grapefruit",
+        "tropicraft:foods/orange"
+      ],
+      "title": "Fruits of the Tropics"
+    }
+  ]
+}

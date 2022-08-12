@@ -1,0 +1,33 @@
+{
+  "components": [
+    {
+      "type": "patchouli:multi_image_debug",
+      "images": ["#image1", "#image2", "#image3"],
+      "x": 8,
+      "y": 0,
+      "width": "100",
+      "height": "100",
+      "u": "#u_",
+      "v": "#v_",
+      "texture_width": "#texture_width_",
+      "texture_height": "#texture_height_",
+      "scale": "#scale_"
+    },
+    {
+      "type": "patchouli:frame",
+      "x": 5,
+      "y": -3
+    },
+    {
+      "type": "patchouli:separator",
+      "x": -1,
+      "y": 107
+    },
+    {
+      "type": "patchouli:text",
+      "text": "#text",
+      "x": 4,
+      "y": 115
+    }
+  ]
+}

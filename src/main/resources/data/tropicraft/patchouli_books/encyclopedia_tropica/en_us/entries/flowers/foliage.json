@@ -1,0 +1,17 @@
+{
+  "name": "tropicraft.encyclopedia.foliage.title",
+  "icon": "tropicraft:foliage",
+  "category": "tropicraft:flowers",
+  "sortnum": 12,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.foliage.desc"
+    },
+    {
+      "type": "tropicraft:flower_template",
+      "image1": "tropicraft:images/flowers/foliage_1280.png",
+      "text": "tropicraft.encyclopedia.foliage.craftingdesc"
+    }
+  ]
+}

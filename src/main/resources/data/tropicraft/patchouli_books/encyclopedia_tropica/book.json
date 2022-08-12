@@ -1,0 +1,13 @@
+{
+  "name": "tropicraft.encyclopedia_tropica.name",
+  "landing_text": "tropicraft.encyclopedia.encyclopedia.desc",
+  "version": 1,
+  "model": "tropicraft:encyclopedia_tropica",
+  "use_blocky_font": "true",
+  "custom_book_item": "tropicraft:encyclopedia_tropica",
+  "i18n": "true",
+  "macros": {
+    "$(wip)": "[WIP] Will be reimplemented when portal's are working again",
+    "$(wipdesc)": "Work in progress description"
+  }
+}

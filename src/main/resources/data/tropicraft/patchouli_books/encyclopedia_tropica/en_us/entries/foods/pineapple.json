@@ -1,0 +1,17 @@
+{
+  "name": "tropicraft.encyclopedia.pineapple.title",
+  "icon": "tropicraft:pineapple",
+  "category": "tropicraft:foods",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.pineapple.desc"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tropicraft:pineapple_cubes",
+      "text": "tropicraft.encyclopedia.pineapplecubes.desc"
+    }
+  ]
+}

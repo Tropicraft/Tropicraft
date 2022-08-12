@@ -1,0 +1,17 @@
+{
+  "name": "tropicraft.encyclopedia.easternisles.title",
+  "icon": "tropicraft:music_disc_eastern_isles",
+  "category": "tropicraft:music",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.easternisles.desc"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tropicraft:music_disc_eastern_isles",
+      "text": "item.tropicraft.music_disc_eastern_isles.desc.0"
+    }
+  ]
+}

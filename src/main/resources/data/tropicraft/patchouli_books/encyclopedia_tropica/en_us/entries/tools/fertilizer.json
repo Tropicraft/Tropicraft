@@ -1,0 +1,16 @@
+{
+  "name": "tropicraft.encyclopedia.fertilizer.title",
+  "icon": "tropicraft:tropical_fertilizer",
+  "category": "tropicraft:tools",
+  "sortnum": 6,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.fertilizer.desc"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tropicraft:tropical_fertilizer"
+    }
+  ]
+}

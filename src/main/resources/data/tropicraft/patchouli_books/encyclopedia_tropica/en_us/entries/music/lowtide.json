@@ -1,0 +1,17 @@
+{
+  "name": "tropicraft.encyclopedia.lowtide.title",
+  "icon": "tropicraft:music_disc_low_tide",
+  "category": "tropicraft:music",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.lowtide.desc"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tropicraft:music_disc_low_tide",
+      "text": "item.tropicraft.music_disc_low_tide.desc.0"
+    }
+  ]
+}

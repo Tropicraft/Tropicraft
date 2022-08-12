@@ -1,0 +1,21 @@
+{
+  "name": "tropicraft.encyclopedia.scale_armor.entry",
+  "icon": "tropicraft:scale_helmet",
+  "category": "tropicraft:armor",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.scale_armor.desc"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tropicraft:scale_helmet",
+      "recipe2": "tropicraft:scale_chestplate"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tropicraft:scale_leggings",
+      "recipe2": "tropicraft:scale_boots"
+    }
+  ]
+}

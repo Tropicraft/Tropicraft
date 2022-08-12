@@ -1,0 +1,17 @@
+{
+  "name": "tropicraft.encyclopedia.marlinmeat.title",
+  "icon": "tropicraft:fresh_marlin",
+  "category": "tropicraft:foods",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.marlinmeat.desc"
+    },
+    {
+      "type": "patchouli:smelting",
+      "recipe": "tropicraft:seared_marlin",
+      "text": "tropicraft.encyclopedia.marlincooked.desc"
+    }
+  ]
+}

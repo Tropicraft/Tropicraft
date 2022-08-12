@@ -1,0 +1,17 @@
+{
+  "name": "tropicraft.encyclopedia.scubaflippers.title",
+  "icon": "tropicraft:pink_scuba_flippers",
+  "category": "tropicraft:scuba",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.scubaflippers.desc"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tropicraft:yellow_scuba_flippers",
+      "recipe2": "tropicraft:pink_scuba_flippers"
+    }
+  ]
+}

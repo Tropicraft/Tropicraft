@@ -1,0 +1,17 @@
+{
+  "name": "tropicraft.encyclopedia.coconut.title",
+  "icon": "tropicraft:coconut",
+  "category": "tropicraft:foods",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.coconut.desc"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tropicraft:coconut_chunk",
+      "text": "tropicraft.encyclopedia.coconutchunks.desc"
+    }
+  ]
+}

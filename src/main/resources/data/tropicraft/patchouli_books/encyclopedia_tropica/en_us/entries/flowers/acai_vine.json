@@ -1,0 +1,17 @@
+{
+  "name": "tropicraft.encyclopedia.acai_vine.title",
+  "icon": "tropicraft:acai_vine",
+  "category": "tropicraft:flowers",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.acai_vine.desc"
+    },
+    {
+      "type": "tropicraft:flower_template",
+      "image1": "tropicraft:images/flowers/acai_vine_1280.png",
+      "text": "tropicraft.encyclopedia.acai_vine.craftingdesc"
+    }
+  ]
+}

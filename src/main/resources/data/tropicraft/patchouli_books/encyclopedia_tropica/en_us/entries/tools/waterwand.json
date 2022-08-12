@@ -1,0 +1,17 @@
+{
+  "name": "tropicraft.encyclopedia.waterwand.title",
+  "icon": "tropicraft:water_wand",
+  "category": "tropicraft:tools",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.waterwand.desc"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tropicraft:water_wand",
+      "text": "$(wip)"
+    }
+  ]
+}

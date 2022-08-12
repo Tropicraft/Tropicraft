@@ -1,0 +1,17 @@
+{
+  "name": "tropicraft.encyclopedia.tropical_fern.title",
+  "icon": "tropicraft:tropical_fern",
+  "category": "tropicraft:flowers",
+  "sortnum": 11,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.tropical_fern.desc"
+    },
+    {
+      "type": "tropicraft:flower_template",
+      "image1": "tropicraft:images/flowers/tropical_fern_1280.png",
+      "text": "tropicraft.encyclopedia.tropical_fern.craftingdesc"
+    }
+  ]
+}

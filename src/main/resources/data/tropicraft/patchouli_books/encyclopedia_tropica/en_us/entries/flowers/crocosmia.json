@@ -1,0 +1,17 @@
+{
+  "name": "tropicraft.encyclopedia.crocosmia.title",
+  "icon": "tropicraft:crocosmia",
+  "category": "tropicraft:flowers",
+  "sortnum": 8,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.crocosmia.desc"
+    },
+    {
+      "type": "tropicraft:flower_template",
+      "image1": "tropicraft:images/flowers/crocosmia_1280.png",
+      "text": "tropicraft.encyclopedia.crocosmia.craftingdesc"
+    }
+  ]
+}

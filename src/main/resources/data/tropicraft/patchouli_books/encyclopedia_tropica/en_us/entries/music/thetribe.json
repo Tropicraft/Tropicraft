@@ -1,0 +1,17 @@
+{
+  "name": "tropicraft.encyclopedia.thetribe.title",
+  "icon": "tropicraft:music_disc_the_tribe",
+  "category": "tropicraft:music",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.thetribe.desc"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tropicraft:music_disc_the_tribe",
+      "text": "item.tropicraft.music_disc_the_tribe.desc.0"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "tropicraft.encyclopedia.froglegs.title",
+  "icon": "tropicraft:frog_leg",
+  "category": "tropicraft:foods",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.froglegs.desc"
+    },
+    {
+      "type": "patchouli:smelting",
+      "recipe": "tropicraft:cooked_frog_leg",
+      "text": "tropicraft.encyclopedia.froglegscooked.desc"
+    }
+  ]
+}

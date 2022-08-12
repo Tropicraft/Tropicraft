@@ -1,0 +1,17 @@
+{
+  "name": "tropicraft.encyclopedia.aircompressor.title",
+  "icon": "tropicraft:air_compressor",
+  "category": "tropicraft:machines",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.aircompressor.desc"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tropicraft:air_compressor",
+      "text": "block.tropicraft.air_compressor.desc"
+    }
+  ]
+}

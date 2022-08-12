@@ -1,0 +1,17 @@
+{
+  "name": "tropicraft.encyclopedia.fishbucket.title",
+  "icon": "tropicraft:tropical_fish_bucket",
+  "category": "tropicraft:tools",
+  "sortnum": 6,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.fishbucket.desc"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tropicraft:tropical_fish_bucket",
+      "text": "$(wip)"
+    }
+  ]
+}

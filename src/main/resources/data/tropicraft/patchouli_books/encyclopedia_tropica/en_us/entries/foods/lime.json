@@ -1,0 +1,17 @@
+{
+  "name": "tropicraft.encyclopedia.lime.title",
+  "icon": "tropicraft:lime",
+  "category": "tropicraft:foods",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "tropicraft.encyclopedia.lime.desc"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tropicraft:lime_leaves",
+      "text": "tropicraft.encyclopedia.fruitleaf.desc"
+    }
+  ]
+}
