@@ -6,7 +6,13 @@ import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackResources;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
+import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -21,6 +27,7 @@ import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
@@ -33,7 +40,9 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
+import net.minecraftforge.forgespi.locating.IModFile;
 import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.resource.PathResourcePack;
 import net.tropicraft.core.client.BasicColorHandler;
 import net.tropicraft.core.client.ClientSetup;
 import net.tropicraft.core.client.data.TropicraftBlockstateProvider;
@@ -69,6 +78,8 @@ import net.tropicraft.core.common.item.scuba.ScubaData;
 import net.tropicraft.core.common.item.scuba.ScubaGogglesItem;
 import net.tropicraft.core.common.network.TropicraftPackets;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.regex.Pattern;
 
 @Mod(Constants.MODID)
@@ -93,6 +104,7 @@ public class Tropicraft {
             // Client setup
             modBus.addListener(this::setupClient);
             modBus.addListener(this::registerItemColors);
+            modBus.addListener(this::loadTropicraftLangPack);
 
             if(ModList.get().isLoaded("patchouli")){
                 ComponenetRegistry.init();
@@ -176,6 +188,31 @@ public class Tropicraft {
             if (item instanceof IColoredItem) {
                 evt.getItemColors().register(basic, item);
             }
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public void loadTropicraftLangPack(AddPackFindersEvent event){
+        try {
+            if(event.getPackType() == PackType.CLIENT_RESOURCES) {
+                IModFile file = ModList.get().getModFileById(Constants.MODID).getFile();
+                Path resourcePath = file.findResource("tropicraft_lang");
+
+                PackResources pack = new PathResourcePack(file.getFileName() + ":" + resourcePath, resourcePath);
+
+                PackMetadataSection metadataSection = pack.getMetadataSection(PackMetadataSection.SERIALIZER);
+
+                if (metadataSection != null) {
+                    event.addRepositorySource((packConsumer, packConstructor) ->
+                        packConsumer.accept(packConstructor.create(
+                            "builtin/tropicraft_extra_lang_files", new TextComponent("Tropicraft Languages"), true,
+                            () -> pack, metadataSection, Pack.Position.BOTTOM, PackSource.BUILT_IN, true))
+                    );
+                }
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException("Seems that there was issue loading Tropicrafts extra Lang Pack which might cause some text to be messed up!", e);
         }
     }
 
