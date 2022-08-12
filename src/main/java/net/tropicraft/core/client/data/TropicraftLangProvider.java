@@ -400,6 +400,8 @@ public class TropicraftLangProvider extends LanguageProvider {
         addItem(TropicraftItems.YELLOW_PONY_BOTTLE);
         addItem(TropicraftItems.PINK_PONY_BOTTLE);
 
+        addItem(TropicraftItems.ENCYCLOPEDIA);
+
         // ENTITIES
         
         addEntityType(TropicraftEntities.KOA_HUNTER, "Koa");

@@ -206,6 +206,8 @@ public class TropicraftItems {
 
     public static final RegistryObject<Item> PIANGUAS = register("pianguas", () -> new Item(new Item.Properties().tab(Tropicraft.TROPICRAFT_ITEM_GROUP)));
 
+    public static final RegistryObject<Item> ENCYCLOPEDIA = register("encyclopedia_tropica", () -> new EncyclopediaTropica(new Item.Properties().tab(Tropicraft.TROPICRAFT_ITEM_GROUP).stacksTo(1)));
+
     private static <T extends Item> RegistryObject<T> register(final String name, final Supplier<T> sup) {
         return ITEMS.register(name, sup);
     }
