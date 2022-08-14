@@ -6,7 +6,8 @@
   "mixins": [
     "worldgen.LevelStemAccessor",
     "worldgen.RegistryCodecsMixin",
-    "worldgen.RegistryLoaderMixin"
+    "worldgen.RegistryLoaderMixin",
+    "LeavesBlockMixin"
   ],
   "injectors": {
     "defaultRequire": 1
