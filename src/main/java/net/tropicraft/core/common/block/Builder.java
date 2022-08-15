@@ -112,8 +112,12 @@ public class Builder {
         return block(SlabBlock::new, lazyProp(source));
     }
 
-    public static Supplier<LeavesBlock> leaves(boolean decay) {
-        return block(decay ? LeavesBlock::new : TropicraftExperimentalLeaveBlock::new, lazyProp(Blocks.OAK_LEAVES.delegate));
+    public static Supplier<LeavesBlock> leaves() {
+        return block(LeavesBlock::new, lazyProp(Blocks.OAK_LEAVES.delegate));
+    }
+
+    public static Supplier<LeavesBlock> experimentalLeaves(int maxDistance) {
+        return block((prop) -> new TropicraftExperimentalLeaveBlock(prop, maxDistance), lazyProp(Blocks.OAK_LEAVES.delegate));
     }
 
     public static Supplier<LeavesBlock> mangroveLeaves(Supplier<RegistryObject<PropaguleBlock>> propagule) {
