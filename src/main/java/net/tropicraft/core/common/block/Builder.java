@@ -117,7 +117,11 @@ public class Builder {
     }
 
     public static Supplier<LeavesBlock> experimentalLeaves(int maxDistance) {
-        return block((prop) -> new TropicraftExperimentalLeaveBlock(prop, maxDistance), lazyProp(Blocks.OAK_LEAVES.delegate));
+        return block((prop) -> {
+            TropicraftExperimentalLeaveBlock.currentMaxDistanceBeforeDecay = maxDistance;
+
+            return new TropicraftExperimentalLeaveBlock(prop);
+        }, lazyProp(Blocks.OAK_LEAVES.delegate));
     }
 
     public static Supplier<LeavesBlock> mangroveLeaves(Supplier<RegistryObject<PropaguleBlock>> propagule) {

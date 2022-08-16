@@ -1,10 +1,12 @@
 package net.tropicraft.core.common.block.experimental;
 
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -15,37 +17,26 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
+import java.util.Optional;
 import java.util.Random;
 
 @SuppressWarnings("NullableProblems")
 public class TropicraftExperimentalLeaveBlock extends LeavesBlock {
 
-    private static final int MAX_DISTANCE = 20;
+    public static int currentMaxDistanceBeforeDecay = 0;
 
-    private final int maxDistanceBeforeDecay;
+    public int maxDistanceBeforeDecay;
 
     public IntegerProperty CUSTOM_DISTANCE;
 
     //Property to check if there has even been a block update to prevent unwanted decay instantly
     public static BooleanProperty TEMPORARY_IGNORE_DECAY = BooleanProperty.create("temp_ignore_decay");
 
-    public TropicraftExperimentalLeaveBlock(Properties settings, int maxDistance){
+    public TropicraftExperimentalLeaveBlock(Properties settings){
         super(settings);
 
-        //Cursedness inbound
-        this.CUSTOM_DISTANCE = IntegerProperty.create("custom_distance", 1, maxDistance);
-        this.maxDistanceBeforeDecay = maxDistance;
-
-        StateDefinition.Builder<Block, BlockState> builder = new StateDefinition.Builder<>(this);
-
-        this.createBlockStateDefinition(builder);
-        builder.add(CUSTOM_DISTANCE);
-
-        ObfuscationReflectionHelper.setPrivateValue(Block.class, this, builder.create(Block::defaultBlockState, BlockState::new), "f_49792_");
-
-        this.registerDefaultState(this.stateDefinition.any()
-                .setValue(PERSISTENT, false)
-                .setValue(CUSTOM_DISTANCE, maxDistanceBeforeDecay)
+        this.registerDefaultState(this.defaultBlockState()
+                .setValue(CUSTOM_DISTANCE, maxDistanceBeforeDecay - 1) //maxDistanceBeforeDecay
                 .setValue(TEMPORARY_IGNORE_DECAY, false));
     }
 
@@ -95,7 +86,10 @@ public class TropicraftExperimentalLeaveBlock extends LeavesBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) { //*
-        builder.add(PERSISTENT, TEMPORARY_IGNORE_DECAY); //, (!hasCustomBeenSet ? IntegerProperty.create("temp_1", 0, 1) : CUSTOM_DISTANCE)
+        this.maxDistanceBeforeDecay = currentMaxDistanceBeforeDecay;
+        this.CUSTOM_DISTANCE = IntegerProperty.create("custom_distance_" + maxDistanceBeforeDecay, 1, maxDistanceBeforeDecay);
+
+        builder.add(PERSISTENT, CUSTOM_DISTANCE, TEMPORARY_IGNORE_DECAY);
     }
 
     @Override
@@ -124,7 +118,7 @@ public class TropicraftExperimentalLeaveBlock extends LeavesBlock {
 
     //Used as to get distance info from log block if not blacklisted and distance info from all leaf block's around it
     private static int getDistanceFromLeave(BlockState state, boolean blackListBlock, TropicraftExperimentalLeaveBlock block) {
-        return (state.is(BlockTags.LOGS) && !blackListBlock) ? 0 : ((state.getBlock() instanceof TropicraftExperimentalLeaveBlock) ? state.getValue(block.CUSTOM_DISTANCE) : block.maxDistanceBeforeDecay);
+        return (state.is(BlockTags.LOGS) && !blackListBlock) ? 0 : ((state.getBlock() instanceof TropicraftExperimentalLeaveBlock && state.hasProperty(block.CUSTOM_DISTANCE)) ? state.getValue(block.CUSTOM_DISTANCE) : block.maxDistanceBeforeDecay);
     }
 
     /**
