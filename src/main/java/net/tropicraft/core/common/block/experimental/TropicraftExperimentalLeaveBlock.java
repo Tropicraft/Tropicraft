@@ -29,15 +29,11 @@ public class TropicraftExperimentalLeaveBlock extends LeavesBlock {
 
     public IntegerProperty CUSTOM_DISTANCE;
 
-    //Property to check if there has even been a block update to prevent unwanted decay instantly
-    public static BooleanProperty TEMPORARY_IGNORE_DECAY = BooleanProperty.create("temp_ignore_decay");
-
     public TropicraftExperimentalLeaveBlock(Properties settings){
         super(settings);
 
         this.registerDefaultState(this.defaultBlockState()
-                .setValue(CUSTOM_DISTANCE, maxDistanceBeforeDecay - 1) //maxDistanceBeforeDecay
-                .setValue(TEMPORARY_IGNORE_DECAY, false));
+                .setValue(CUSTOM_DISTANCE, maxDistanceBeforeDecay));
     }
 
     @Override
@@ -49,7 +45,7 @@ public class TropicraftExperimentalLeaveBlock extends LeavesBlock {
     @Override
     public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random random) {
         //Checks for leaf's extra distance and also checks the first cycle value to prevent random decay to happen prematurely
-        if (!state.getValue(PERSISTENT) && state.getValue(CUSTOM_DISTANCE) == maxDistanceBeforeDecay && state.getValue(TEMPORARY_IGNORE_DECAY)) {
+        if (!state.getValue(PERSISTENT) && state.getValue(CUSTOM_DISTANCE) == maxDistanceBeforeDecay) {
             dropResources(state, world, pos);
             world.removeBlock(pos, false);
         }
@@ -89,7 +85,7 @@ public class TropicraftExperimentalLeaveBlock extends LeavesBlock {
         this.maxDistanceBeforeDecay = currentMaxDistanceBeforeDecay;
         this.CUSTOM_DISTANCE = IntegerProperty.create("custom_distance_" + maxDistanceBeforeDecay, 1, maxDistanceBeforeDecay);
 
-        builder.add(PERSISTENT, CUSTOM_DISTANCE, TEMPORARY_IGNORE_DECAY);
+        builder.add(PERSISTENT, CUSTOM_DISTANCE);
     }
 
     @Override
@@ -99,7 +95,7 @@ public class TropicraftExperimentalLeaveBlock extends LeavesBlock {
 
     //------------------------------------------------------------------------------------------------
 
-    private static BlockState updateDistanceFromLeaves(BlockState state, LevelAccessor world, BlockPos pos, TropicraftExperimentalLeaveBlock block) {
+    public static BlockState updateDistanceFromLeaves(BlockState state, LevelAccessor world, BlockPos pos, TropicraftExperimentalLeaveBlock block) {
         int currentExtraDistance = block.maxDistanceBeforeDecay;
 
         for(BlockPos neighborPos : BlockPos.betweenClosed(pos.offset(-1,-1,-1), pos.offset(1,1,1))){
@@ -113,7 +109,7 @@ public class TropicraftExperimentalLeaveBlock extends LeavesBlock {
             }
         }
 
-        return state.setValue(block.CUSTOM_DISTANCE, currentExtraDistance).setValue(TEMPORARY_IGNORE_DECAY, true);
+        return state.setValue(block.CUSTOM_DISTANCE, currentExtraDistance);
     }
 
     //Used as to get distance info from log block if not blacklisted and distance info from all leaf block's around it

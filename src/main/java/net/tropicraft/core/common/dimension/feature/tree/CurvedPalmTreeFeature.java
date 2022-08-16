@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.dimension.feature.tree;
 
+import com.google.common.collect.Iterables;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelSimulatedRW;
@@ -9,8 +10,14 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraft.world.phys.shapes.DiscreteVoxelShape;
 
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
+import java.util.function.Consumer;
 
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.isBBAvailable;
@@ -83,12 +90,15 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
             }
         }
 
+        Set<BlockPos> logPositions = new HashSet<>();
+        Set<BlockPos> leafPositions = new HashSet<>();
+
         // generate curved trunk
         for (int xx = 0, yy = 0; yy < height; yy++) {
-            placeBlockWithDir(world, xx, yy+ y, 0, getLog());
+            placeBlockWithDir(world, xx, yy+ y, 0, getLog(), logPositions::add);
             if (yy == 0 || yy == 1 || yy == 3) {
                 xx++;
-                placeBlockWithDir(world, xx, yy + y, 0, getLog());
+                placeBlockWithDir(world, xx, yy + y, 0, getLog(), logPositions::add);
             }
             if (yy == height - 2) {
                 spawnCoconuts(world, getPosWithDir(xx, yy + y, 0), random, 2, getLeaf());
@@ -101,9 +111,9 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
         // inner leaf placement
         for (int yy = 1; yy < 5; yy++) {
             if (yy == 4) {
-                this.placeBlockWithDir(world, 1, yy + y + height - 1, 0, getLeaf());
+                this.placeBlockWithDir(world, 1, yy + y + height - 1, 0, getLeaf(), leafPositions::add);
             } else {
-                this.placeBlockWithDir(world, 0, yy + y + height - 1, 0, getLeaf());
+                this.placeBlockWithDir(world, 0, yy + y + height - 1, 0, getLeaf(), leafPositions::add);
             }
         }
 
@@ -113,24 +123,28 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
 
             int yy = height - 1;
 
-            placeBlockWithDir(world, 1, yy - 1 + y, 1, getLeaf());
-            placeBlockWithDir(world, 2, yy - 2 + y, 1, getLeaf());
-            placeBlockWithDir(world, 1, yy - 2 + y, 2, getLeaf());
-            placeBlockWithDir(world, 2, yy - 3 + y, 2, getLeaf());
-            placeBlockWithDir(world, 1, yy + 1 + y, 1, getLeaf());
-            placeBlockWithDir(world, 2, yy + 2 + y, 1, getLeaf());
-            placeBlockWithDir(world, 1, yy + 2 + y, 2, getLeaf());
-            placeBlockWithDir(world, 2, yy + 3 + y, 2, getLeaf());
+            placeBlockWithDir(world, 1, yy - 1 + y, 1, getLeaf(), leafPositions::add);
+            placeBlockWithDir(world, 2, yy - 2 + y, 1, getLeaf(), leafPositions::add);
+            placeBlockWithDir(world, 1, yy - 2 + y, 2, getLeaf(), leafPositions::add);
+            placeBlockWithDir(world, 2, yy - 3 + y, 2, getLeaf(), leafPositions::add);
+            placeBlockWithDir(world, 1, yy + 1 + y, 1, getLeaf(), leafPositions::add);
+            placeBlockWithDir(world, 2, yy + 2 + y, 1, getLeaf(), leafPositions::add);
+            placeBlockWithDir(world, 1, yy + 2 + y, 2, getLeaf(), leafPositions::add);
+            placeBlockWithDir(world, 2, yy + 3 + y, 2, getLeaf(), leafPositions::add);
 
             for (int xx = 1; xx < 5; xx++) {
                 if (xx == 4) {
                     yy--;
                 }
-                placeBlockWithDir(world, xx, yy + y, 0, getLeaf());
+                placeBlockWithDir(world, xx, yy + y, 0, getLeaf(), leafPositions::add);
             }
         }
 
-        return true;
+        return BoundingBox.encapsulatingPositions(Iterables.concat(logPositions, leafPositions)).map((p_160521_) -> {
+            DiscreteVoxelShape discretevoxelshape = CustomTreeUpdateUtil.updateLeaves(world, p_160521_, logPositions, leafPositions);
+            StructureTemplate.updateShapeAtEdge(world, 3, discretevoxelshape, p_160521_.minX(), p_160521_.minY(), p_160521_.minZ());
+            return true;
+        }).orElse(false);
     }
 
     private int findWater(final LevelSimulatedRW world, final Random rand, int x, int z) {
@@ -242,19 +256,19 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
         return BlockPos.ZERO;
     }
 
-    private void placeBlockWithDir(final LevelWriter world, int x, int y, int z, BlockState state) {
+    private void placeBlockWithDir(final LevelWriter world, int x, int y, int z, BlockState state, Consumer<BlockPos> addToSet) {
         switch (dir) {
             case 2:
-                setBlock(world, pos(this.originX + x, y, this.originZ + z), state);
+                setBlock(world, pos(this.originX + x, y, this.originZ + z, addToSet), state);
                 return;
             case 0:
-                setBlock(world, pos(this.originX + z, y, this.originZ - x), state);
+                setBlock(world, pos(this.originX + z, y, this.originZ - x, addToSet), state);
                 return;
             case 3:
-                setBlock(world, pos(this.originX - x, y, this.originZ - z), state);
+                setBlock(world, pos(this.originX - x, y, this.originZ - z, addToSet), state);
                 return;
             case 1:
-                setBlock(world, pos(this.originX - z, y, this.originZ + x), state);
+                setBlock(world, pos(this.originX - z, y, this.originZ + x, addToSet), state);
         }
     }
 
@@ -284,6 +298,14 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
                 return this.originZ + i;
         }
         return this.originZ;
+    }
+
+    public BlockPos pos(int x, int y, int z, Consumer<BlockPos> addToSet) {
+        BlockPos pos = new BlockPos(x, y, z);
+
+        addToSet.accept(pos);
+
+        return pos;
     }
 
     public BlockPos pos(int x, int y, int z) {

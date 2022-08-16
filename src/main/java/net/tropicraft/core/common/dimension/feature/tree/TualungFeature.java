@@ -1,13 +1,19 @@
 package net.tropicraft.core.common.dimension.feature.tree;
 
+import com.google.common.collect.Iterables;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraft.world.phys.shapes.DiscreteVoxelShape;
 
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.isBBAvailable;
@@ -51,6 +57,9 @@ public class TualungFeature extends RainforestTreeFeature {
             return false;
         }
 
+        Set<BlockPos> logPositions = new HashSet<>();
+        Set<BlockPos> leafPositions = new HashSet<>();
+
         setState(world, new BlockPos(i, j - 1, k), Blocks.DIRT.defaultBlockState());
         setState(world, new BlockPos(i - 1, j - 1, k), Blocks.DIRT.defaultBlockState());
         setState(world, new BlockPos(i + 1, j - 1, k), Blocks.DIRT.defaultBlockState());
@@ -58,11 +67,11 @@ public class TualungFeature extends RainforestTreeFeature {
         setState(world, new BlockPos(i, j - 1, k + 1), Blocks.DIRT.defaultBlockState());
 
         for (int y = j; y < height; y++) {
-            placeLog(world, i, y, k);
-            placeLog(world, i - 1, y, k);
-            placeLog(world, i + 1, y, k);
-            placeLog(world, i, y, k - 1);
-            placeLog(world, i, y, k + 1);
+            placeLog(world, i, y, k, logPositions::add);
+            placeLog(world, i - 1, y, k, logPositions::add);
+            placeLog(world, i + 1, y, k, logPositions::add);
+            placeLog(world, i, y, k - 1, logPositions::add);
+            placeLog(world, i, y, k + 1, logPositions::add);
         }
 
         for (int x = 0; x < branches; x++) {
@@ -72,11 +81,15 @@ public class TualungFeature extends RainforestTreeFeature {
 
             placeBlockLine(world, new int[] { i + sign((bx - i) / 2), height, k + sign((bz - k) / 2) }, new int[] { bx, branchHeight, bz }, getLog());
 
-            genCircle(world, bx, branchHeight, bz, 2, 1, getLeaf(), false);
-            genCircle(world, bx, branchHeight + 1, bz, 3, 2, getLeaf(), false);
+            genCircle(world, bx, branchHeight, bz, 2, 1, getLeaf(), false, leafPositions::add);
+            genCircle(world, bx, branchHeight + 1, bz, 3, 2, getLeaf(), false, leafPositions::add);
         }
 
-        return true;
+        return BoundingBox.encapsulatingPositions(Iterables.concat(logPositions, leafPositions)).map((p_160521_) -> {
+            DiscreteVoxelShape discretevoxelshape = CustomTreeUpdateUtil.updateLeaves(world, p_160521_, logPositions, leafPositions);
+            StructureTemplate.updateShapeAtEdge(world, 3, discretevoxelshape, p_160521_.minX(), p_160521_.minY(), p_160521_.minZ());
+            return true;
+        }).orElse(false);
     }
 
     private int sign(int i) {

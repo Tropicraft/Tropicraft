@@ -15,6 +15,7 @@ import net.tropicraft.core.common.block.TropicraftBlocks;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Random;
+import java.util.function.Consumer;
 
 public abstract class PalmTreeFeature extends Feature<NoneFeatureConfiguration> {
 
@@ -34,24 +35,26 @@ public abstract class PalmTreeFeature extends Feature<NoneFeatureConfiguration> 
         return TropicraftBlocks.PALM_LOG.get().defaultBlockState();
     }
 
-    protected void placeLeaf(final LevelSimulatedRW world, int x, int y, int z) {
-        this.placeLeaf(world, new BlockPos(x, y, z));
-    }
+    protected void placeLeaf(final LevelSimulatedRW world, int x, int y, int z, Consumer<BlockPos> addLeafPos) {
+        BlockPos pos = new BlockPos(x, y, z);
 
-    protected void placeLeaf(final LevelSimulatedRW world, BlockPos pos) {
         // From FoliagePlacer
         if (TreeFeature.validTreePos(world, pos)) {
             setBlock(world, pos, getLeaf());
+
+            addLeafPos.accept(pos);
         }
     }
 
-    protected void placeLog(final LevelSimulatedRW world, int x, int y, int z) {
-        this.placeLog(world, new BlockPos(x, y, z));
+    protected void placeLog(final LevelSimulatedRW world, int x, int y, int z, Consumer<BlockPos> addLogPos){
+        this.placeLog(world, new BlockPos(x, y, z), addLogPos);
     }
 
-    protected void placeLog(final LevelSimulatedRW world, BlockPos pos) {
+    protected void placeLog(final LevelSimulatedRW world, BlockPos pos, Consumer<BlockPos> addLogPos) {
         if (TreeFeature.isFree(world, pos)) {
             setBlock(world, pos, getLog());
+
+            addLogPos.accept(pos);
         }
     }
 

@@ -15,6 +15,7 @@ import net.tropicraft.core.common.block.TropicraftBlocks;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.function.Consumer;
 
 public abstract class RainforestTreeFeature extends Feature<NoneFeatureConfiguration> {
 
@@ -49,12 +50,16 @@ public abstract class RainforestTreeFeature extends Feature<NoneFeatureConfigura
         setState(world, new BlockPos(x, y, z), getLeaf());
     }
 
-    protected void placeLog(final LevelSimulatedRW world, int x, int y, int z) {
-        setState(world, new BlockPos(x, y, z), getLog());
+    protected void placeLog(final LevelSimulatedRW world, int x, int y, int z, Consumer<BlockPos> addToLogSet) {
+        BlockPos pos = new BlockPos(x, y, z);
+
+        addToLogSet.accept(pos);
+
+        setState(world, pos, getLog());
     }
 
-    protected boolean genCircle(LevelSimulatedRW world, int x, int y, int z, double outerRadius, double innerRadius, BlockState state, boolean solid) {
-        return genCircle(world, new BlockPos(x, y, z), outerRadius, innerRadius, state, solid);
+    protected boolean genCircle(LevelSimulatedRW world, int x, int y, int z, double outerRadius, double innerRadius, BlockState state, boolean solid, Consumer<BlockPos> addToLeaveSet) {
+        return genCircle(world, new BlockPos(x, y, z), outerRadius, innerRadius, state, solid, addToLeaveSet);
     }
 
     protected boolean genVines(final LevelSimulatedRW world, final Random rand, int i, int j, int k) {
@@ -145,7 +150,7 @@ public abstract class RainforestTreeFeature extends Feature<NoneFeatureConfigura
      * @param state BlockState to generate
      * @param solid Whether it should place the block if another block is already occupying that space
      */
-    public boolean genCircle(LevelSimulatedRW world, BlockPos pos, double outerRadius, double innerRadius, BlockState state, boolean solid) {
+    public boolean genCircle(LevelSimulatedRW world, BlockPos pos, double outerRadius, double innerRadius, BlockState state, boolean solid, Consumer<BlockPos> addToLeaveSet) {
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
@@ -158,6 +163,7 @@ public abstract class RainforestTreeFeature extends Feature<NoneFeatureConfigura
                     BlockPos pos2 = new BlockPos(i, y, k);
                     if (isAir(world, pos2) || solid) {
                         if (world.setBlock(pos2, state, Block.UPDATE_ALL)) {
+                            addToLeaveSet.accept(pos2);
                             hasGenned = true;
                         }
                     }
@@ -166,4 +172,7 @@ public abstract class RainforestTreeFeature extends Feature<NoneFeatureConfigura
         }
         return hasGenned;
     }
+
+
+
 }
