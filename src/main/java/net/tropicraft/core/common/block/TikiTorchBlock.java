@@ -97,7 +97,7 @@ public class TikiTorchBlock extends Block {
             return defaultBlockState().setValue(SECTION, TorchSection.UPPER);
         }
         BlockState ret = defaultBlockState().setValue(SECTION, TorchSection.LOWER);
-        return blockpos.getY() < context.getLevel().getHeight() - 1 &&
+        return blockpos.getY() < context.getLevel().getMaxBuildHeight() - 1 &&
                 context.getLevel().getBlockState(blockpos.above()).canBeReplaced(context) &&
                 context.getLevel().getBlockState(blockpos.above(2)).canBeReplaced(context) ? ret : null;
     }

@@ -39,7 +39,7 @@ public class TualungFeature extends RainforestTreeFeature {
             return false;
         }
 
-        if (height + 6 > world.getHeight()) {
+        if (height + 6 > world.getMaxBuildHeight()) {
             return false;
         }
 
