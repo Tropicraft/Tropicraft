@@ -304,7 +304,7 @@ public class TropicraftEntities {
     }
 
     private static EntityType.Builder<SeaTurtleEntity> turtle() {
-        return EntityType.Builder.of(SeaTurtleEntity::new, MobCategory.MONSTER)
+        return EntityType.Builder.of(SeaTurtleEntity::new, MobCategory.WATER_CREATURE)
                 .sized(0.8F, 0.35F)
                 .setTrackingRange(8)
                 .setUpdateInterval(3)
