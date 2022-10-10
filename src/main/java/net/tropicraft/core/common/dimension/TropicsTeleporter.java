@@ -108,7 +108,7 @@ public class TropicsTeleporter implements ITeleporter {
                 for (int z = entityZ - searchArea; z <= entityZ + searchArea; z++) {
                     double distZ = z + 0.5D - entity.getOnPos().getZ();
 
-                    for (int y = world.getHeight() - 1; y >= 0; y--) {
+                    for (int y = world.getMaxBuildHeight() - 1; y >= 0; y--) {
                         mutablePos.set(x, y, z);
                         if (world.getBlockState(mutablePos).getBlock() == PORTAL_BLOCK) {
                             mutablePos.move(Direction.DOWN);
@@ -170,7 +170,7 @@ public class TropicsTeleporter implements ITeleporter {
                 double distZ = (z + 0.5D) - entity.getZ();
 
                 // Find topmost solid block at this x,z location
-                int y = world.getHeight() - 1;
+                int y = world.getMaxBuildHeight() - 1;
                 BlockPos pos = new BlockPos(x, y, z);
                 for (; y >= 63 - 1 && (world.getBlockState(pos).getBlock() == Blocks.AIR ||
                         !getValidBuildBlocks().contains(world.getBlockState(pos))); pos = pos.below()) {
@@ -185,7 +185,7 @@ public class TropicsTeleporter implements ITeleporter {
                 if (getValidBuildBlocks().contains(world.getBlockState(tryPos))) {
                     for (int xOffset = -2; xOffset <= 2; xOffset++) {
                         for (int zOffset = -2; zOffset <= 2; zOffset++) {
-                            int otherY = world.getHeight() - 1;
+                            int otherY = world.getMaxBuildHeight() - 1;
                             BlockPos pos1 = new BlockPos(x + xOffset, otherY, z + zOffset);
                             BlockPos pos2 = tryPos.mutable();
                             for (; otherY >= 63 && (world.getBlockState(pos1).getBlock() == Blocks.AIR ||
