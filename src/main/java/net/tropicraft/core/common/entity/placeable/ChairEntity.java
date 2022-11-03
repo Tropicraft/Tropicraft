@@ -139,10 +139,8 @@ public class ChairEntity extends FurnitureEntity {
                     }
                 }
 
-            if (this.getComeSailAway() && this.onGround) {
-                setDeltaMovement(getDeltaMovement().multiply(0.5, 0.5, 0.5));
-            } else if (this.onGround) {
-                setDeltaMovement(Vec3.ZERO);
+            if (this.onGround) {
+                setDeltaMovement(getDeltaMovement().multiply(0.5, 1.0, 0.5));
             }
 
             this.move(MoverType.SELF, getDeltaMovement());
