@@ -1,5 +1,7 @@
 package net.tropicraft.core.common.item;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -26,26 +28,31 @@ public class ExplodingCoconutItem extends Item {
         final boolean canPlayerThrow = player.isCreative() || player.canUseGameMasterBlocks();
         //allow to use anywhere but in the main area of the server
         final boolean ltOverride = world.dimension() != TropicraftDimension.WORLD;
-        ItemStack itemstack = player.getItemInHand(hand);
+        ItemStack item = player.getItemInHand(hand);
         if (!canPlayerThrow && !ltOverride) {
             if (!world.isClientSide) {
                 player.displayClientMessage(new TranslatableComponent("tropicraft.coconutBombWarning"), false);
             }
-            return new InteractionResultHolder<>(InteractionResult.PASS, itemstack);
+            return new InteractionResultHolder<>(InteractionResult.PASS, item);
         }
         
         if (!player.isCreative()) {
-            itemstack.shrink(1);
+            item.shrink(1);
         }
         world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (player.getRandom().nextFloat() * 0.4F + 0.8F));
         if (!world.isClientSide) {
-            ExplodingCoconutEntity snowballentity = new ExplodingCoconutEntity(world, player);
-            snowballentity.setItem(itemstack);
-            snowballentity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);
-            world.addFreshEntity(snowballentity);
+            float explosionRadius = ExplodingCoconutEntity.DEFAULT_EXPLOSION_RADIUS;
+            CompoundTag tag = item.getTag();
+            if (tag != null && tag.contains("explosion_radius", Tag.TAG_FLOAT)) {
+                explosionRadius = tag.getFloat("explosion_radius");
+            }
+            ExplodingCoconutEntity coconut = new ExplodingCoconutEntity(world, player, explosionRadius);
+            coconut.setItem(item);
+            coconut.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);
+            world.addFreshEntity(coconut);
         }
 
         player.awardStat(Stats.ITEM_USED.get(this));
-        return new InteractionResultHolder<>(InteractionResult.SUCCESS, itemstack);
+        return new InteractionResultHolder<>(InteractionResult.SUCCESS, item);
     }
 }
