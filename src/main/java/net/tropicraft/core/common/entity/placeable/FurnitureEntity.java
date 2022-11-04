@@ -15,6 +15,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.RegistryObject;
@@ -48,7 +49,6 @@ public abstract class FurnitureEntity extends Entity {
     protected FurnitureEntity(EntityType<?> entityTypeIn, Level worldIn, Function<DyeColor, Item> itemLookup) {
         super(entityTypeIn, worldIn);
         this.itemLookup = itemLookup;
-        this.noCulling = true;
         this.blocksBuilding = true;
         //TODO this will result in pushing acting weird - but the variable is gone in 1.17 (apparently)
         // this.pushthrough = .95F;

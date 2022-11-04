@@ -279,4 +279,9 @@ public class ChairEntity extends FurnitureEntity {
     public ItemStack getPickedResult(HitResult target) {
         return new ItemStack(TropicraftItems.CHAIRS.get(DyeColor.byId(getColor().getId())).get());
     }
+
+    @Override
+    public AABB getBoundingBoxForCulling() {
+        return getBoundingBox().expandTowards(0.0, 1.0, 0.0);
+    }
 }
