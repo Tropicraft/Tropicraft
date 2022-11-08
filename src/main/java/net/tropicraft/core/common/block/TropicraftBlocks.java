@@ -139,6 +139,7 @@ public class TropicraftBlocks {
     public static final RegistryObject<LeavesBlock> RED_FLOWERING_LEAVES = register("red_flowering_leaves", Builder.leaves(true));
     public static final RegistryObject<LeavesBlock> BLUE_FLOWERING_LEAVES = register("blue_flowering_leaves", Builder.leaves(true));
     public static final RegistryObject<LeavesBlock> PURPLE_FLOWERING_LEAVES = register("purple_flowering_leaves", Builder.leaves(true));
+    public static final RegistryObject<LeavesBlock> YELLOW_FLOWERING_LEAVES = register("yellow_flowering_leaves", Builder.leaves(true));
 
     public static final RegistryObject<SaplingBlock> GRAPEFRUIT_SAPLING = register("grapefruit_sapling", Builder.sapling(TropicraftTrees.GRAPEFRUIT));
     public static final RegistryObject<SaplingBlock> LEMON_SAPLING = register("lemon_sapling", Builder.sapling(TropicraftTrees.LEMON));

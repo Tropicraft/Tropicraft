@@ -151,6 +151,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         addBlock(TropicraftBlocks.RED_FLOWERING_LEAVES);
         addBlock(TropicraftBlocks.BLUE_FLOWERING_LEAVES);
         addBlock(TropicraftBlocks.PURPLE_FLOWERING_LEAVES);
+        addBlock(TropicraftBlocks.YELLOW_FLOWERING_LEAVES);
 
         // Saplings
         addBlock(TropicraftBlocks.MAHOGANY_SAPLING);

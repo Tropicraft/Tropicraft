@@ -80,6 +80,9 @@ public final class TropicraftVegetationPlacements {
     public static final RegistryObject<PlacedFeature> TREES_PLEODENDRON = REGISTER.placed("trees_pleodendron", TropicraftVegetationFeatures.TREES_PLEODENDRON, () -> REGISTER.treePlacement(0, 0.1f, 1));
     public static final RegistryObject<PlacedFeature> TREES_PAPAYA = REGISTER.placed("trees_papaya", TropicraftVegetationFeatures.TREES_PAPAYA, () -> REGISTER.treePlacement(0, 0.2f, 1));
 
+    public static final RegistryObject<PlacedFeature> BUSH_FLOWERING_COMMON = REGISTER.placed("bush_flowering_common", TropicraftVegetationFeatures.BUSH_FLOWERING, () -> REGISTER.treePlacement(0, 1.0f / 4.0f, 1));
+    public static final RegistryObject<PlacedFeature> BUSH_FLOWERING_RARE = REGISTER.placed("bush_flowering_rare", TropicraftVegetationFeatures.BUSH_FLOWERING, () -> REGISTER.treePlacement(0, 1.0f / 8.0f, 1));
+
     public static final RegistryObject<PlacedFeature> PATCH_GRASS_TROPICS = REGISTER.placed("tropics_grass", TropicraftVegetationFeatures.PATCH_GRASS_TROPICS, () -> worldSurfaceSquaredWithCount(10));
 
     public static final RegistryObject<PlacedFeature> BAMBOO = REGISTER.placed("bamboo", TropicraftVegetationFeatures.BAMBOO, () -> List.of(
@@ -160,6 +163,14 @@ public final class TropicraftVegetationPlacements {
 
     public static void addFruitTrees(BiomeGenerationSettings.Builder generation) {
         addVegetalDecoration(generation, TREES_FRUIT);
+    }
+
+    public static void addFloweringBushes(BiomeGenerationSettings.Builder generation) {
+        addVegetalDecoration(generation, BUSH_FLOWERING_COMMON);
+    }
+
+    public static void addRareFloweringBushes(BiomeGenerationSettings.Builder generation) {
+        addVegetalDecoration(generation, BUSH_FLOWERING_RARE);
     }
 
     public static void addPalmTrees(BiomeGenerationSettings.Builder generation) {

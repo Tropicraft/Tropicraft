@@ -297,6 +297,7 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             leavesNoSapling(TropicraftBlocks.RED_FLOWERING_LEAVES);
             leavesNoSapling(TropicraftBlocks.BLUE_FLOWERING_LEAVES);
             leavesNoSapling(TropicraftBlocks.PURPLE_FLOWERING_LEAVES);
+            leavesNoSapling(TropicraftBlocks.YELLOW_FLOWERING_LEAVES);
 
             // Saplings
             dropsSelf(TropicraftBlocks.MAHOGANY_SAPLING);

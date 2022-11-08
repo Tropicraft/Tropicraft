@@ -134,6 +134,7 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         blockItem(TropicraftBlocks.RED_FLOWERING_LEAVES);
         blockItem(TropicraftBlocks.BLUE_FLOWERING_LEAVES);
         blockItem(TropicraftBlocks.PURPLE_FLOWERING_LEAVES);
+        blockItem(TropicraftBlocks.YELLOW_FLOWERING_LEAVES);
 
         blockItem(TropicraftBlocks.RED_MANGROVE_LEAVES);
         blockItem(TropicraftBlocks.TALL_MANGROVE_LEAVES);
