@@ -113,6 +113,8 @@ public final class TropicraftBiomes {
 
         TropicraftConfiguredCarvers.addLand(generation);
 
+        TropicraftVegetationPlacements.addFloweringBushes(generation);
+
         TropicraftVegetationPlacements.addFruitTrees(generation);
         TropicraftVegetationPlacements.addPalmTrees(generation);
         TropicraftMiscPlacements.addEih(generation);
@@ -176,6 +178,8 @@ public final class TropicraftBiomes {
 
         TropicraftVegetationPlacements.addGoldenLeatherFern(generation);
 
+        TropicraftVegetationPlacements.addFloweringBushes(generation);
+
         TropicraftMiscPlacements.addTropicsGems(generation);
         TropicraftVegetationPlacements.addPleodendron(generation);
         TropicraftVegetationPlacements.addRainforestTrees(generation);
@@ -219,6 +223,7 @@ public final class TropicraftBiomes {
 
         TropicraftConfiguredCarvers.addLand(generation);
 
+        TropicraftVegetationPlacements.addRareFloweringBushes(generation);
         TropicraftMiscPlacements.addTropicsGems(generation);
         TropicraftVegetationPlacements.addRainforestTrees(generation);
         TropicraftVegetationPlacements.addPapaya(generation);

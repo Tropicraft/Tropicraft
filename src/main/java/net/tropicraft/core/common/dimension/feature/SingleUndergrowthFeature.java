@@ -15,24 +15,22 @@ import java.util.Random;
 
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
 
-public class SingleUndergrowthFeature extends Feature<NoneFeatureConfiguration> {
+public class SingleUndergrowthFeature extends Feature<SimpleTreeFeatureConfig> {
     private static final int LARGE_BUSH_CHANCE = 4;
 
-    public SingleUndergrowthFeature(Codec<NoneFeatureConfiguration> codec) {
+    public SingleUndergrowthFeature(Codec<SimpleTreeFeatureConfig> codec) {
         super(codec);
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
+    public boolean place(FeaturePlaceContext<SimpleTreeFeatureConfig> context) {
         WorldGenLevel level = context.level();
         context.chunkGenerator();
         Random rand = context.random();
         BlockPos pos = context.origin();
-        context.config();
-        int size = 2;
-        if (rand.nextInt(LARGE_BUSH_CHANCE) == 0) {
-            size = 3;
-        }
+        SimpleTreeFeatureConfig config = context.config();
+
+        int size = rand.nextInt(LARGE_BUSH_CHANCE) == 0 ? 3 : 2;
 
         if (!isValidPosition(level, pos)) {
             return false;
@@ -50,7 +48,7 @@ public class SingleUndergrowthFeature extends Feature<NoneFeatureConfiguration> 
 
         int count = 0;
 
-        if (isValidPosition(level, pos) && pos.getY() < 255) {
+        if (isValidPosition(level, pos) && pos.getY() < level.getMaxBuildHeight() - 1) {
             for (int y = pos.getY(); y < pos.getY() + size; y++) {
                 int bushWidth = size - (y - pos.getY());
                 for (int x = pos.getX() - bushWidth; x < pos.getX() + bushWidth; x++) {
@@ -59,7 +57,7 @@ public class SingleUndergrowthFeature extends Feature<NoneFeatureConfiguration> 
                         int zVariance = z - pos.getZ();
                         final BlockPos newPos = new BlockPos(x, y, z);
                         if ((Math.abs(xVariance) != bushWidth || Math.abs(zVariance) != bushWidth || rand.nextInt(2) != 0) && isValidPosition(level, newPos)) {
-                            setBlock(level, newPos, TropicraftBlocks.KAPOK_LEAVES.get().defaultBlockState());
+                            setBlock(level, newPos, config.leaves().get());
                         }
                     }
                 }
@@ -67,7 +65,7 @@ public class SingleUndergrowthFeature extends Feature<NoneFeatureConfiguration> 
             ++count;
         }
 
-        setBlock(level, pos, TropicraftBlocks.MAHOGANY_LOG.get().defaultBlockState());
+        setBlock(level, pos, config.log().get());
 
         return count > 0;
     }
