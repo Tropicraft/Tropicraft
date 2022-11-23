@@ -2,7 +2,9 @@ package net.tropicraft.core.common.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.grower.AbstractTreeGrower;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -132,6 +134,16 @@ public class Builder {
     @SafeVarargs
     public static Supplier<SaplingBlock> sapling(final AbstractTreeGrower tree, final Supplier<? extends Block>... validPlantBlocks) {
         return block(p -> new SaplingBlock(tree, p) {
+            @Override
+            public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
+                if (validPlantBlocks == null || validPlantBlocks.length == 0) {
+                    return super.canSurvive(pState, pLevel, pPos);
+                } else {
+                    BlockPos blockpos = pPos.below();
+                    return this.mayPlaceOn(pLevel.getBlockState(blockpos), pLevel, blockpos);
+                }
+            }
+
             @Override
             protected boolean mayPlaceOn(BlockState state, BlockGetter worldIn, BlockPos pos) {
                 final Block block = state.getBlock();

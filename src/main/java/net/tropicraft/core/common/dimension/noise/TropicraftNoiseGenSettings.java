@@ -7,7 +7,7 @@ import net.minecraft.world.level.levelgen.*;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import net.tropicraft.Constants;
-import net.tropicraft.core.common.TropicraftSurfaces;
+import net.tropicraft.core.common.dimension.TropicraftSurfaces;
 import net.tropicraft.core.common.dimension.TropicraftTerrainShaper;
 
 public final class TropicraftNoiseGenSettings {
