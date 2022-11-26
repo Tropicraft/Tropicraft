@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_seagrass",
+  "textures": {
+    "texture": "tropicraft:block/eel_grass",
+    "particle": "tropicraft:block/eel_grass"
+  }
+}

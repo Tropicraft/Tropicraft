@@ -51,6 +51,14 @@ public class ClientSetup {
         ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.PALM_TRAPDOOR.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.PALM_DOOR.get(), cutout);
 
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.EEL_GRASS.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.TALL_EEL_GRASS.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.FERN_SEAGRASS.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.TALL_FERN_SEAGRASS.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.SICKLE_SEAGRASS.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.TALL_SICKLE_SEAGRASS.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.NOODLE_SEAGRASS.get(), cutout);
+
         ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.MANGROVE_TRAPDOOR.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.MANGROVE_DOOR.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.BAMBOO_TRAPDOOR.get(), cutout);

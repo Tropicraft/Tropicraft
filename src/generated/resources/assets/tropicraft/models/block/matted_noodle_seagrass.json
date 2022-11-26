@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "side": "tropicraft:block/matted_noodle_seagrass_side",
+    "bottom": "tropicraft:block/purified_sand",
+    "top": "tropicraft:block/matted_noodle_seagrass_top"
+  }
+}

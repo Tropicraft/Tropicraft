@@ -136,6 +136,20 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         blockItem(TropicraftBlocks.TEA_MANGROVE_LEAVES);
         blockItem(TropicraftBlocks.BLACK_MANGROVE_LEAVES);
 
+        blockSprite(TropicraftBlocks.EEL_GRASS);
+        blockSprite(TropicraftBlocks.FERN_SEAGRASS);
+        blockSprite(TropicraftBlocks.SICKLE_SEAGRASS);
+        blockSprite(TropicraftBlocks.NOODLE_SEAGRASS);
+
+        blockItem(TropicraftBlocks.MATTED_EEL_GRASS);
+        blockItem(TropicraftBlocks.MATTED_FERN_SEAGRASS);
+        blockItem(TropicraftBlocks.MATTED_SICKLE_SEAGRASS);
+        blockItem(TropicraftBlocks.MATTED_NOODLE_SEAGRASS);
+        blockItem(TropicraftBlocks.EEL_GRASS_BLOCK);
+        blockItem(TropicraftBlocks.FERN_SEAGRASS_BLOCK);
+        blockItem(TropicraftBlocks.SICKLE_SEAGRASS_BLOCK);
+        blockItem(TropicraftBlocks.NOODLE_SEAGRASS_BLOCK);
+
         // Saplings
         blockSprite(TropicraftBlocks.MAHOGANY_SAPLING);
         blockSprite(TropicraftBlocks.PALM_SAPLING);
