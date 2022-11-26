@@ -10,8 +10,6 @@ public final class TropicraftTerrainShaper {
 
     public static TerrainShaper tropics() {
         ToFloatFunction<Float> offsetTransform = offset -> offset + 0.5f;
-        ToFloatFunction<Float> erosionTransform = NO_TRANSFORM;
-        ToFloatFunction<Float> jaggednessTransform = NO_TRANSFORM;
 
         CubicSpline<TerrainShaper.Point> nearInlandDepth = buildErosionOffsetSpline(-0.15F, 0.0F, 0.0F, 0.1F, 0.0F, -0.03F, false, false, offsetTransform);
         CubicSpline<TerrainShaper.Point> midInlandDepth = buildErosionOffsetSpline(-0.1F, 0.03F, 0.1F, 0.1F, 0.01F, -0.03F, false, false, offsetTransform);
@@ -45,22 +43,24 @@ public final class TropicraftTerrainShaper {
                 .addPoint(-0.92F, 3.95F, 0.0F)
                 .addPoint(-0.19F, 3.95F, 0.0F)
                 .addPoint(-0.15F, getErosionFactor(beachFactorStrength, true, NO_TRANSFORM), 0.0F)
-                .addPoint(-0.1F, getErosionFactor(nearinlandFactorStrength, true, erosionTransform), 0.0F)
-                .addPoint(0.03F, getErosionFactor(midInlandFactorStrength, true, erosionTransform), 0.0F)
-                .addPoint(0.06F, getErosionFactor(furtherInlandFactorStrength, false, erosionTransform), 0.0F)
+                .addPoint(-0.1F, getErosionFactor(nearinlandFactorStrength, true, NO_TRANSFORM), 0.0F)
+                .addPoint(0.03F, getErosionFactor(midInlandFactorStrength, true, NO_TRANSFORM), 0.0F)
+                .addPoint(0.06F, getErosionFactor(furtherInlandFactorStrength, false, NO_TRANSFORM), 0.0F)
                 .build();
 
-        float f4 = 0.65F;
-        CubicSpline<TerrainShaper.Point> jaggednessSampler = CubicSpline.builder(TerrainShaper.Coordinate.CONTINENTS, jaggednessTransform)
+        float jaggednessMax = 0.65F;
+        CubicSpline<TerrainShaper.Point> jaggednessSampler = CubicSpline.builder(TerrainShaper.Coordinate.CONTINENTS, NO_TRANSFORM)
                 .addPoint(-0.11F, 0.0F, 0.0F)
-                .addPoint(0.03F, buildErosionJaggednessSpline(1.0F, 0.5F, 0.0F, 0.0F, jaggednessTransform), 0.0F)
-                .addPoint(0.65F, buildErosionJaggednessSpline(1.0F, 1.0F, 1.0F, 0.0F, jaggednessTransform), 0.0F).
+                .addPoint(0.03F, buildErosionJaggednessSpline(1.0F, 0.5F, 0.0F, 0.0F, NO_TRANSFORM), 0.0F)
+                .addPoint(jaggednessMax, buildErosionJaggednessSpline(1.0F, 1.0F, 1.0F, 0.0F, NO_TRANSFORM), 0.0F).
                 build();
+
         return new TerrainShaper(offsetSampler, factorSampler, jaggednessSampler);
     }
 
-    public static float peaksAndValleys(float p_187266_) {
-        return -(Math.abs(Math.abs(p_187266_) - 0.6666667F) - 0.33333334F) * 3.0F;
+    // Desmos: -\left(\left|\left|x\right|-\frac{2}{3}\right|-\frac{1}{3}\right)\cdot3
+    public static float peaksAndValleys(float weirdness) {
+        return -(Math.abs(Math.abs(weirdness) - 0.6666667F) - 0.33333334F) * 3.0F;
     }
 
     private static CubicSpline<TerrainShaper.Point> buildErosionJaggednessSpline(float p_187295_, float p_187296_, float p_187297_, float p_187298_, ToFloatFunction<Float> p_187299_) {
@@ -175,8 +175,8 @@ public final class TropicraftTerrainShaper {
                 .build();
     }
 
-    private static CubicSpline<TerrainShaper.Point> buildMountainRidgeSplineWithPoints(float p_187331_, boolean p_187332_, ToFloatFunction<Float> p_187333_) {
-        CubicSpline.Builder<TerrainShaper.Point> builder = CubicSpline.builder(TerrainShaper.Coordinate.RIDGES, p_187333_);
+    private static CubicSpline<TerrainShaper.Point> buildMountainRidgeSplineWithPoints(float p_187331_, boolean p_187332_, ToFloatFunction<Float> transform) {
+        CubicSpline.Builder<TerrainShaper.Point> builder = CubicSpline.builder(TerrainShaper.Coordinate.RIDGES, transform);
         float f = -0.7F;
         float f1 = -1.0F;
         float f2 = mountainContinentalness(-1.0F, p_187331_, -0.7F);
@@ -235,31 +235,55 @@ public final class TropicraftTerrainShaper {
         return f3 / (0.46082947F * f2) - 1.17F;
     }
 
-    private static CubicSpline<TerrainShaper.Point> buildErosionOffsetSpline(float p_187285_, float p_187286_, float p_187287_, float p_187288_, float p_187289_, float p_187290_, boolean p_187291_, boolean p_187292_, ToFloatFunction<Float> p_187293_) {
+    private static CubicSpline<TerrainShaper.Point> buildErosionOffsetSpline(float p_187285_, float p_187286_, float p_187287_, float p_187288_, float p_187289_, float p_187290_, boolean buildSaddleValley, boolean p_187292_, ToFloatFunction<Float> transform) {
         float f = 0.6F;
         float f1 = 0.5F;
         float f2 = 0.5F;
-        CubicSpline<TerrainShaper.Point> cubicspline = buildMountainRidgeSplineWithPoints(Mth.lerp(p_187288_, 0.6F, 1.5F), p_187292_, p_187293_);
-        CubicSpline<TerrainShaper.Point> cubicspline1 = buildMountainRidgeSplineWithPoints(Mth.lerp(p_187288_, 0.6F, 1.0F), p_187292_, p_187293_);
-        CubicSpline<TerrainShaper.Point> cubicspline2 = buildMountainRidgeSplineWithPoints(p_187288_, p_187292_, p_187293_);
-        CubicSpline<TerrainShaper.Point> cubicspline3 = ridgeSpline(p_187285_ - 0.15F, 0.5F * p_187288_, Mth.lerp(0.5F, 0.5F, 0.5F) * p_187288_, 0.5F * p_187288_, 0.6F * p_187288_, 0.5F, p_187293_);
-        CubicSpline<TerrainShaper.Point> cubicspline4 = ridgeSpline(p_187285_, p_187289_ * p_187288_, p_187286_ * p_187288_, 0.5F * p_187288_, 0.6F * p_187288_, 0.5F, p_187293_);
-        CubicSpline<TerrainShaper.Point> cubicspline5 = ridgeSpline(p_187285_, p_187289_, p_187289_, p_187286_, p_187287_, 0.5F, p_187293_);
-        CubicSpline<TerrainShaper.Point> cubicspline6 = ridgeSpline(p_187285_, p_187289_, p_187289_, p_187286_, p_187287_, 0.5F, p_187293_);
-        CubicSpline<TerrainShaper.Point> cubicspline7 = CubicSpline.builder(TerrainShaper.Coordinate.RIDGES, p_187293_).addPoint(-1.0F, p_187285_, 0.0F).addPoint(-0.4F, cubicspline5, 0.0F).addPoint(0.0F, p_187287_ + 0.07F, 0.0F).build();
-        CubicSpline<TerrainShaper.Point> cubicspline8 = ridgeSpline(-0.02F, p_187290_, p_187290_, p_187286_, p_187287_, 0.0F, p_187293_);
-        CubicSpline.Builder<TerrainShaper.Point> builder = CubicSpline.builder(TerrainShaper.Coordinate.EROSION, p_187293_).addPoint(-0.85F, cubicspline, 0.0F).addPoint(-0.7F, cubicspline1, 0.0F).addPoint(-0.4F, cubicspline2, 0.0F).addPoint(-0.35F, cubicspline3, 0.0F).addPoint(-0.1F, cubicspline4, 0.0F).addPoint(0.2F, cubicspline5, 0.0F);
-        if (p_187291_) {
-            builder.addPoint(0.4F, cubicspline6, 0.0F).addPoint(0.45F, cubicspline7, 0.0F).addPoint(0.55F, cubicspline7, 0.0F).addPoint(0.58F, cubicspline6, 0.0F);
+        CubicSpline<TerrainShaper.Point> cubicspline = buildMountainRidgeSplineWithPoints(Mth.lerp(p_187288_, 0.6F, 1.5F), p_187292_, transform);
+        CubicSpline<TerrainShaper.Point> cubicspline1 = buildMountainRidgeSplineWithPoints(Mth.lerp(p_187288_, 0.6F, 1.0F), p_187292_, transform);
+        CubicSpline<TerrainShaper.Point> cubicspline2 = buildMountainRidgeSplineWithPoints(p_187288_, p_187292_, transform);
+
+        CubicSpline<TerrainShaper.Point> cubicspline3 = ridgeSpline(p_187285_ - 0.15F, 0.5F * p_187288_, Mth.lerp(0.5F, 0.5F, 0.5F) * p_187288_, 0.5F * p_187288_, 0.6F * p_187288_, 0.5F, transform);
+        CubicSpline<TerrainShaper.Point> cubicspline4 = ridgeSpline(p_187285_, p_187289_ * p_187288_, p_187286_ * p_187288_, 0.5F * p_187288_, 0.6F * p_187288_, 0.5F, transform);
+        CubicSpline<TerrainShaper.Point> cubicspline5 = ridgeSpline(p_187285_, p_187289_, p_187289_, p_187286_, p_187287_, 0.5F, transform);
+
+        CubicSpline<TerrainShaper.Point> saddleValleySlope = ridgeSpline(p_187285_, p_187289_, p_187289_, p_187286_, p_187287_, 0.5F, transform);
+        CubicSpline<TerrainShaper.Point> saddleValleyMin = CubicSpline.builder(TerrainShaper.Coordinate.RIDGES, transform)
+                .addPoint(-1.0F, p_187285_, 0.0F)
+                .addPoint(-0.4F, cubicspline5, 0.0F)
+                .addPoint(0.0F, p_187287_ + 0.07F, 0.0F).build();
+        CubicSpline<TerrainShaper.Point> cubicspline8 = ridgeSpline(-0.02F, p_187290_, p_187290_, p_187286_, p_187287_, 0.0F, transform);
+
+        CubicSpline.Builder<TerrainShaper.Point> erosionBuilder = CubicSpline.builder(TerrainShaper.Coordinate.EROSION, transform)
+                .addPoint(-0.85F, cubicspline, 0.0F)
+                .addPoint(-0.7F, cubicspline1, 0.0F)
+                .addPoint(-0.4F, cubicspline2, 0.0F)
+                .addPoint(-0.35F, cubicspline3, 0.0F)
+                .addPoint(-0.1F, cubicspline4, 0.0F)
+                .addPoint(0.2F, cubicspline5, 0.0F);
+
+        if (buildSaddleValley) {
+            erosionBuilder.addPoint(0.4F, saddleValleySlope, 0.0F)
+                    .addPoint(0.45F, saddleValleyMin, 0.0F)
+                    .addPoint(0.55F, saddleValleyMin, 0.0F)
+                    .addPoint(0.58F, saddleValleySlope, 0.0F);
         }
 
-        builder.addPoint(0.7F, cubicspline8, 0.0F);
-        return builder.build();
+        erosionBuilder.addPoint(0.7F, cubicspline8, 0.0F);
+
+        return erosionBuilder.build();
     }
 
-    private static CubicSpline<TerrainShaper.Point> ridgeSpline(float p_187277_, float p_187278_, float p_187279_, float p_187280_, float p_187281_, float p_187282_, ToFloatFunction<Float> p_187283_) {
-        float f = Math.max(0.5F * (p_187278_ - p_187277_), p_187282_);
+    // Build a spline that uses the peaks and valleys type to go from bottom (river, valley) to top (mountain, peak)
+    private static CubicSpline<TerrainShaper.Point> ridgeSpline(float riverHeight, float p_187278_, float p_187279_, float p_187280_, float peakHeight, float p_187282_, ToFloatFunction<Float> transform) {
+        float f = Math.max(0.5F * (p_187278_ - riverHeight), p_187282_);
         float f1 = 5.0F * (p_187279_ - p_187278_);
-        return CubicSpline.builder(TerrainShaper.Coordinate.RIDGES, p_187283_).addPoint(-1.0F, p_187277_, f).addPoint(-0.4F, p_187278_, Math.min(f, f1)).addPoint(0.0F, p_187279_, f1).addPoint(0.4F, p_187280_, 2.0F * (p_187280_ - p_187279_)).addPoint(1.0F, p_187281_, 0.7F * (p_187281_ - p_187280_)).build();
+        return CubicSpline.builder(TerrainShaper.Coordinate.RIDGES, transform)
+                .addPoint(-1.0F, riverHeight, f)
+                .addPoint(-0.4F, p_187278_, Math.min(f, f1))
+                .addPoint(0.0F, p_187279_, f1)
+                .addPoint(0.4F, p_187280_, 2.0F * (p_187280_ - p_187279_))
+                .addPoint(1.0F, peakHeight, 0.7F * (peakHeight - p_187280_))
+                .build();
     }
 }

@@ -147,6 +147,11 @@ public class TropicraftLangProvider extends LanguageProvider {
         addBlock(TropicraftBlocks.TEA_MANGROVE_LEAVES);
         addBlock(TropicraftBlocks.BLACK_MANGROVE_LEAVES);
         addBlock(TropicraftBlocks.PAPAYA_LEAVES);
+        addBlock(TropicraftBlocks.WHITE_FLOWERING_LEAVES);
+        addBlock(TropicraftBlocks.RED_FLOWERING_LEAVES);
+        addBlock(TropicraftBlocks.BLUE_FLOWERING_LEAVES);
+        addBlock(TropicraftBlocks.PURPLE_FLOWERING_LEAVES);
+        addBlock(TropicraftBlocks.YELLOW_FLOWERING_LEAVES);
 
         // Saplings
         addBlock(TropicraftBlocks.MAHOGANY_SAPLING);
@@ -477,6 +482,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         addBiome(TropicraftBiomes.MANGROVES);
         addBiome(TropicraftBiomes.OVERGROWN_MANGROVES);
         addBiome(TropicraftBiomes.OSA_RAINFOREST);
+        addBiome(TropicraftBiomes.TROPICAL_PEAKS);
 
         // MISC
         

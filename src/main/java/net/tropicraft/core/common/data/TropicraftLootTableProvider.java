@@ -294,6 +294,11 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             leavesNoSapling(TropicraftBlocks.TEA_MANGROVE_LEAVES);
             leavesNoSapling(TropicraftBlocks.BLACK_MANGROVE_LEAVES);
             leaves(TropicraftBlocks.PAPAYA_LEAVES, TropicraftBlocks.PAPAYA_SAPLING, SAPLING_RATES);
+            leavesNoSapling(TropicraftBlocks.WHITE_FLOWERING_LEAVES);
+            leavesNoSapling(TropicraftBlocks.RED_FLOWERING_LEAVES);
+            leavesNoSapling(TropicraftBlocks.BLUE_FLOWERING_LEAVES);
+            leavesNoSapling(TropicraftBlocks.PURPLE_FLOWERING_LEAVES);
+            leavesNoSapling(TropicraftBlocks.YELLOW_FLOWERING_LEAVES);
 
             // Seagrass
             seagrass(TropicraftBlocks.EEL_GRASS);

@@ -1,10 +1,11 @@
-package net.tropicraft.core.common;
+package net.tropicraft.core.common.dimension;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Noises;
+import net.minecraft.world.level.levelgen.SurfaceRules;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.tropicraft.core.common.block.BlockTropicraftSand;
 import net.tropicraft.core.common.block.TropicraftBlocks;
@@ -18,6 +19,7 @@ public final class TropicraftSurfaces {
     private static final RuleSource DIRT = makeStateRule(Blocks.DIRT);
     private static final RuleSource GRASS_BLOCK = makeStateRule(Blocks.GRASS_BLOCK);
     private static final RuleSource WATER = makeStateRule(Blocks.WATER);
+    private static final RuleSource STONE = makeStateRule(Blocks.STONE);
 
     private static final RuleSource PURIFIED_SAND = makeStateRule(TropicraftBlocks.PURIFIED_SAND.get());
     private static final RuleSource UNDERWATER_PURIFIED_SAND = makeStateRule(TropicraftBlocks.PURIFIED_SAND.get().defaultBlockState().setValue(BlockTropicraftSand.UNDERWATER, true));
@@ -35,18 +37,26 @@ public final class TropicraftSurfaces {
         ConditionSource atOrAboveSeaLevel = yBlockCheck(VerticalAnchor.absolute(126), 0);
         ConditionSource aboveSeaLevel = yBlockCheck(VerticalAnchor.absolute(127), 0);
         ConditionSource notUnderWater = waterBlockCheck(-1, 0);
+
+        ConditionSource isMangrovey = isBiome(TropicraftBiomes.MANGROVES.getKey(), TropicraftBiomes.OVERGROWN_MANGROVES.getKey());
         ConditionSource notUnderDeepWater = waterStartCheck(-6, -1);
 
         RuleSource grassRule = sequence(ifTrue(notUnderWater, GRASS_BLOCK), DIRT);
         RuleSource sandRule = sequence(ifTrue(not(notUnderWater), UNDERWATER_PURIFIED_SAND), PURIFIED_SAND);
 
-        ConditionSource isSandy = isBiome(TropicraftBiomes.OCEAN.getKey(), TropicraftBiomes.RIVER.getKey(), TropicraftBiomes.BEACH.getKey());
+        ConditionSource isSandy = isBiome(TropicraftBiomes.OCEAN.getKey(), TropicraftBiomes.KELP_FOREST.getKey(), TropicraftBiomes.RIVER.getKey(), TropicraftBiomes.BEACH.getKey());
+        ConditionSource isStony = isBiome(TropicraftBiomes.TROPICAL_PEAKS.getKey());
 
+        // Applies to both top surface and under
         RuleSource surfaceRule = sequence(
-                ifTrue(isBiome(TropicraftBiomes.MANGROVES.getKey()), ifTrue(noiseCondition(Noises.CALCITE, -0.0125, 0.0125), MUD)),
-                ifTrue(isBiome(TropicraftBiomes.MANGROVES.getKey()), ifTrue(surfaceNoiseAbove(2.25), MUD)),
+                ifTrue(isMangrovey, ifTrue(noiseCondition(Noises.CALCITE, -0.0125, 0.0125), MUD)),
+                ifTrue(isMangrovey, ifTrue(surfaceNoiseAbove(2.25), MUD)),
                 ifTrue(isBiome(TropicraftBiomes.TROPICS.getKey()), ifTrue(surfaceNoiseAbove(1.35), sandRule)),
-                ifTrue(isSandy, sandRule)
+                ifTrue(isSandy, sandRule),
+                ifTrue(isStony, sequence(
+                        ifTrue(steep(), STONE),
+                        ifTrue(noiseCondition(Noises.CALCITE, -0.0125, 0.0125), STONE)
+                ))
         );
 
         RuleSource underFloorRule = sequence(
@@ -61,7 +71,7 @@ public final class TropicraftSurfaces {
 
         RuleSource aboveSurface = sequence(
                 ifTrue(ON_FLOOR, sequence(
-                        ifTrue(isBiome(TropicraftBiomes.MANGROVES.getKey()), ifTrue(atOrAboveSeaLevel,
+                        ifTrue(isMangrovey, ifTrue(atOrAboveSeaLevel,
                                 ifTrue(not(aboveSeaLevel), ifTrue(noiseCondition(Noises.SWAMP, 0.0), WATER)))),
                         ifTrue(notUnderWater, floorRule)
                 )),
