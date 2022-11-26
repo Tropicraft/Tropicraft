@@ -303,6 +303,8 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             // Seagrass
             seagrass(TropicraftBlocks.EEL_GRASS);
             tallSeagrass(TropicraftBlocks.TALL_EEL_GRASS, TropicraftBlocks.EEL_GRASS);
+            seagrass(TropicraftBlocks.FLOWERING_EEL_GRASS);
+            tallSeagrass(TropicraftBlocks.FLOWERING_TALL_EEL_GRASS, TropicraftBlocks.FLOWERING_EEL_GRASS);
             seagrass(TropicraftBlocks.FERN_SEAGRASS);
             tallSeagrass(TropicraftBlocks.TALL_FERN_SEAGRASS, TropicraftBlocks.FERN_SEAGRASS);
             seagrass(TropicraftBlocks.SICKLE_SEAGRASS);

@@ -273,6 +273,8 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
 
         seagrass(TropicraftBlocks.EEL_GRASS);
         tallSeagrass(TropicraftBlocks.TALL_EEL_GRASS);
+        seagrass(TropicraftBlocks.FLOWERING_EEL_GRASS);
+        tallSeagrass(TropicraftBlocks.FLOWERING_TALL_EEL_GRASS);
         seagrass(TropicraftBlocks.FERN_SEAGRASS);
         tallSeagrass(TropicraftBlocks.TALL_FERN_SEAGRASS);
         seagrass(TropicraftBlocks.SICKLE_SEAGRASS);

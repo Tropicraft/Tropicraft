@@ -33,6 +33,7 @@ import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.dimension.carver.TropicraftConfiguredCarvers;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
 import net.tropicraft.core.common.dimension.feature.TropicraftMiscPlacements;
+import net.tropicraft.core.common.dimension.feature.TropicraftVegetationFeatures;
 import net.tropicraft.core.common.dimension.feature.TropicraftVegetationPlacements;
 import net.tropicraft.core.common.dimension.feature.tree.PalmTreeFeature;
 import net.tropicraft.core.common.entity.TropicraftEntities;
@@ -122,7 +123,7 @@ public final class TropicraftBiomes {
         TropicraftVegetationPlacements.addPapaya(generation);
         TropicraftVegetationPlacements.addTropicsFlowers(generation);
         TropicraftVegetationPlacements.addPineapples(generation);
-        TropicraftVegetationPlacements.addRegularSeagrass(generation);
+        TropicraftVegetationPlacements.addSeagrass(generation);
 
         TropicraftVegetationPlacements.addTropicsGrass(generation);
         BiomeDefaultFeatures.addFerns(generation);
@@ -149,11 +150,9 @@ public final class TropicraftBiomes {
         BiomeGenerationSettings.Builder generation = defaultGeneration();
 //                .surfaceBuilder(surfaces.sandy);
 
-        TropicraftConfiguredCarvers.addUnderwater(generation);
-
         TropicraftVegetationPlacements.addPalmTrees(generation);
         TropicraftVegetationPlacements.addTropicsFlowers(generation);
-        TropicraftVegetationPlacements.addRegularSeagrass(generation);
+        TropicraftVegetationPlacements.addSeagrass(generation);
 
 //        generation.addStructureStart(structures.koaVillage);
 
@@ -189,7 +188,7 @@ public final class TropicraftBiomes {
         TropicraftVegetationPlacements.addTropicsFlowers(generation);
         TropicraftVegetationPlacements.addPineapples(generation);
 
-        TropicraftVegetationPlacements.addRegularSeagrass(generation);
+        TropicraftVegetationPlacements.addSeagrass(generation);
         TropicraftVegetationPlacements.addTropicsGrass(generation);
         BiomeDefaultFeatures.addFerns(generation);
         BiomeDefaultFeatures.addSavannaGrass(generation);
@@ -228,7 +227,7 @@ public final class TropicraftBiomes {
         TropicraftMiscPlacements.addTropicsGems(generation);
         TropicraftVegetationPlacements.addRainforestTrees(generation);
         TropicraftVegetationPlacements.addPapaya(generation);
-        TropicraftVegetationPlacements.addRegularSeagrass(generation);
+        TropicraftVegetationPlacements.addSeagrass(generation);
 
         BiomeDefaultFeatures.addJungleGrass(generation);
         BiomeDefaultFeatures.addLightBambooVegetation(generation);
@@ -266,11 +265,11 @@ public final class TropicraftBiomes {
         BiomeGenerationSettings.Builder generation = defaultGeneration();
 //                .surfaceBuilder(surfaces.sandy);
 
-        TropicraftConfiguredCarvers.addUnderwater(generation);
-
         // Needed as oceans can sometimes produce land above sea level
         TropicraftVegetationPlacements.addPalmTrees(generation);
         TropicraftMiscPlacements.addTropicsMetals(generation);
+
+        generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TropicraftVegetationPlacements.TROPI_SEAGRASS.getHolder().get());
 
         generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AquaticPlacements.WARM_OCEAN_VEGETATION);
 
@@ -299,16 +298,12 @@ public final class TropicraftBiomes {
         BiomeGenerationSettings.Builder generation = defaultGeneration();
 //                .surfaceBuilder(surfaces.sandy);
 
-        TropicraftConfiguredCarvers.addUnderwater(generation);
-
-        // KELP!
-        TropicraftVegetationPlacements.addKelp(generation);
-
         // Needed as oceans can sometimes produce land above sea level
         TropicraftVegetationPlacements.addPalmTrees(generation);
 
-        TropicraftVegetationPlacements.addUndergroundSeagrass(generation);
-        TropicraftVegetationPlacements.addUndergroundPickles(generation);
+        TropicraftVegetationPlacements.addSeagrass(generation);
+        // KELP!
+        TropicraftVegetationPlacements.addKelp(generation);
 
         MobSpawnSettings.Builder spawns = defaultSpawns();
         addOceanWaterCreatures(spawns);
@@ -331,6 +326,7 @@ public final class TropicraftBiomes {
         TropicraftConfiguredCarvers.addLand(generation);
 
         TropicraftVegetationPlacements.addTropicsFlowers(generation);
+        TropicraftVegetationPlacements.addSeagrass(generation);
 
         MobSpawnSettings.Builder spawns = defaultSpawns();
         addRiverWaterCreatures(spawns);
@@ -352,7 +348,7 @@ public final class TropicraftBiomes {
         TropicraftMiscPlacements.addTropicsGems(generation);
         TropicraftVegetationPlacements.addRainforestTrees(generation);
         TropicraftVegetationPlacements.addPapaya(generation);
-        TropicraftVegetationPlacements.addRegularSeagrass(generation);
+        TropicraftVegetationPlacements.addSeagrass(generation);
 
         BiomeDefaultFeatures.addJungleGrass(generation);
         BiomeDefaultFeatures.addLightBambooVegetation(generation);

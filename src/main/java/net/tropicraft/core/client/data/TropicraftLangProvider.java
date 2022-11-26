@@ -213,6 +213,8 @@ public class TropicraftLangProvider extends LanguageProvider {
 
         addBlock(TropicraftBlocks.EEL_GRASS);
         addBlock(TropicraftBlocks.TALL_EEL_GRASS);
+        addBlock(TropicraftBlocks.FLOWERING_EEL_GRASS);
+        addBlock(TropicraftBlocks.FLOWERING_TALL_EEL_GRASS);
         addBlock(TropicraftBlocks.FERN_SEAGRASS);
         addBlock(TropicraftBlocks.TALL_FERN_SEAGRASS);
         addBlock(TropicraftBlocks.SICKLE_SEAGRASS);

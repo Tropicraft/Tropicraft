@@ -142,6 +142,7 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         blockItem(TropicraftBlocks.BLACK_MANGROVE_LEAVES);
 
         blockSprite(TropicraftBlocks.EEL_GRASS);
+        blockSprite(TropicraftBlocks.FLOWERING_EEL_GRASS);
         blockSprite(TropicraftBlocks.FERN_SEAGRASS);
         blockSprite(TropicraftBlocks.SICKLE_SEAGRASS);
         blockSprite(TropicraftBlocks.NOODLE_SEAGRASS);

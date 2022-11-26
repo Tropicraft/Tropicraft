@@ -51,6 +51,7 @@ public class TropicraftFeatures {
     public static final RegistryObject<CoffeePlantFeature> COFFEE_BUSH = register("coffee_bush", () -> new CoffeePlantFeature(NoneFeatureConfiguration.CODEC));
 
     public static final RegistryObject<ReedsFeature> REEDS = register("reeds", () -> new ReedsFeature(NoneFeatureConfiguration.CODEC));
+    public static final RegistryObject<SeagrassFeature> SEAGRASS = register("seagrass", () -> new SeagrassFeature(NoneFeatureConfiguration.CODEC));
     public static final RegistryObject<HugePlantFeature> HUGE_PLANT = register("huge_plant", () -> new HugePlantFeature(SimpleBlockConfiguration.CODEC));
 
     private static <T extends Feature<?>> RegistryObject<T> register(final String name, final Supplier<T> sup) {

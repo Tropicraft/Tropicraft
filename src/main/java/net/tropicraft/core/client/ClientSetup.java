@@ -53,6 +53,8 @@ public class ClientSetup {
 
         ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.EEL_GRASS.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.TALL_EEL_GRASS.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.FLOWERING_EEL_GRASS.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.FLOWERING_TALL_EEL_GRASS.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.FERN_SEAGRASS.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.TALL_FERN_SEAGRASS.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.SICKLE_SEAGRASS.get(), cutout);

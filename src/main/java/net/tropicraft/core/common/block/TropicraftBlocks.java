@@ -281,7 +281,6 @@ public class TropicraftBlocks {
 
     // Short and tall seagrass
 
-    // TODO: flowering and not flowering varieties
     public static final RegistryObject<CustomSeagrassBlock> EEL_GRASS = register(
             "eel_grass",
             () -> new CustomSeagrassBlock(Block.Properties.copy(Blocks.SEAGRASS), "Enhalus acoroides", () -> TropicraftBlocks.TALL_EEL_GRASS)
@@ -290,6 +289,16 @@ public class TropicraftBlocks {
     public static final RegistryObject<CustomTallSeagrassBlock> TALL_EEL_GRASS = registerNoItem(
             "tall_eel_grass",
             () -> new CustomTallSeagrassBlock(Block.Properties.copy(Blocks.SEAGRASS), "Enhalus acoroides", EEL_GRASS::get)
+    );
+
+    public static final RegistryObject<CustomSeagrassBlock> FLOWERING_EEL_GRASS = register(
+            "flowering_eel_grass",
+            () -> new CustomSeagrassBlock(Block.Properties.copy(Blocks.SEAGRASS), "Enhalus acoroides", () -> TropicraftBlocks.FLOWERING_TALL_EEL_GRASS)
+    );
+
+    public static final RegistryObject<CustomTallSeagrassBlock> FLOWERING_TALL_EEL_GRASS = registerNoItem(
+            "flowering_tall_eel_grass",
+            () -> new CustomTallSeagrassBlock(Block.Properties.copy(Blocks.SEAGRASS), "Enhalus acoroides", FLOWERING_EEL_GRASS::get)
     );
 
     public static final RegistryObject<Block> MATTED_EEL_GRASS = register(

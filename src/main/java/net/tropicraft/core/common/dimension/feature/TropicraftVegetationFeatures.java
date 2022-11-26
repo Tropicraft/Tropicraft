@@ -67,4 +67,5 @@ public final class TropicraftVegetationFeatures {
     public static final RegistryObject<ConfiguredFeature<?, ?>> UNDERGROUND_SEA_PICKLES = REGISTER.feature("underground_sea_pickles", TropicraftFeatures.UNDERGROUND_SEA_PICKLE);
 
     public static final RegistryObject<ConfiguredFeature<?, ?>> MANGROVE_REEDS = REGISTER.feature("mangrove_reeds", TropicraftFeatures.REEDS);
+    public static final RegistryObject<ConfiguredFeature<?, ?>> TROPI_SEAGRASS = REGISTER.feature("tropi_seagrass", TropicraftFeatures.SEAGRASS);
 }
