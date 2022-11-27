@@ -41,6 +41,7 @@ import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.registries.RegistryObject;
 import net.tropicraft.Constants;
+import net.tropicraft.core.common.block.CustomSeagrassBlock;
 import net.tropicraft.core.common.block.PapayaBlock;
 import net.tropicraft.core.common.block.TikiTorchBlock;
 import net.tropicraft.core.common.block.TropicraftBlocks;
@@ -299,6 +300,26 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             leavesNoSapling(TropicraftBlocks.PURPLE_FLOWERING_LEAVES);
             leavesNoSapling(TropicraftBlocks.YELLOW_FLOWERING_LEAVES);
 
+            // Seagrass
+            seagrass(TropicraftBlocks.EEL_GRASS);
+            tallSeagrass(TropicraftBlocks.TALL_EEL_GRASS, TropicraftBlocks.EEL_GRASS);
+            seagrass(TropicraftBlocks.FLOWERING_EEL_GRASS);
+            tallSeagrass(TropicraftBlocks.FLOWERING_TALL_EEL_GRASS, TropicraftBlocks.FLOWERING_EEL_GRASS);
+            seagrass(TropicraftBlocks.FERN_SEAGRASS);
+            tallSeagrass(TropicraftBlocks.TALL_FERN_SEAGRASS, TropicraftBlocks.FERN_SEAGRASS);
+            seagrass(TropicraftBlocks.SICKLE_SEAGRASS);
+            tallSeagrass(TropicraftBlocks.TALL_SICKLE_SEAGRASS, TropicraftBlocks.SICKLE_SEAGRASS);
+            seagrass(TropicraftBlocks.NOODLE_SEAGRASS);
+
+            dropsSelf(TropicraftBlocks.MATTED_EEL_GRASS);
+            dropsSelf(TropicraftBlocks.MATTED_FERN_SEAGRASS);
+            dropsSelf(TropicraftBlocks.MATTED_SICKLE_SEAGRASS);
+            dropsSelf(TropicraftBlocks.MATTED_NOODLE_SEAGRASS);
+            dropsSelf(TropicraftBlocks.EEL_GRASS_BLOCK);
+            dropsSelf(TropicraftBlocks.FERN_SEAGRASS_BLOCK);
+            dropsSelf(TropicraftBlocks.SICKLE_SEAGRASS_BLOCK);
+            dropsSelf(TropicraftBlocks.NOODLE_SEAGRASS_BLOCK);
+
             // Saplings
             dropsSelf(TropicraftBlocks.MAHOGANY_SAPLING);
             dropsSelf(TropicraftBlocks.PALM_SAPLING);
@@ -415,7 +436,22 @@ public class TropicraftLootTableProvider extends LootTableProvider {
         }
         
         protected static LootTable.Builder onlyWithSilkTouchOrShears(Block block) {
-            return LootTable.lootTable().withPool(LootPool.lootPool().when(HAS_SHEARS_OR_SILK_TOUCH).setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(block)));
+            return LootTable.lootTable()
+                    .withPool(
+                            LootPool.lootPool()
+                                    .when(HAS_SHEARS_OR_SILK_TOUCH)
+                                    .setRolls(ConstantValue.exactly(1))
+                                    .add(LootItem.lootTableItem(block)
+                                    )
+                    );
+        }
+
+        private void seagrass(Supplier<? extends CustomSeagrassBlock> block) {
+            add(block.get(), b -> onlyWithSilkTouchOrShears(b));
+        }
+
+        private void tallSeagrass(Supplier<? extends TallSeagrassBlock> block, Supplier<? extends CustomSeagrassBlock> drop) {
+            add(block.get(), b -> onlyWithSilkTouchOrShears(drop.get()));
         }
         
         protected static LootTable.Builder droppingWithSticks(Block block) {

@@ -279,6 +279,94 @@ public class TropicraftBlocks {
                     .setPickItem(() -> TropicraftBlocks.GOLDEN_LEATHER_FERN)
     );
 
+    // Short and tall seagrass
+
+    public static final RegistryObject<CustomSeagrassBlock> EEL_GRASS = register(
+            "eel_grass",
+            () -> new CustomSeagrassBlock(Block.Properties.copy(Blocks.SEAGRASS), "Enhalus acoroides", () -> TropicraftBlocks.TALL_EEL_GRASS)
+    );
+
+    public static final RegistryObject<CustomTallSeagrassBlock> TALL_EEL_GRASS = registerNoItem(
+            "tall_eel_grass",
+            () -> new CustomTallSeagrassBlock(Block.Properties.copy(Blocks.SEAGRASS), "Enhalus acoroides", EEL_GRASS::get)
+    );
+
+    public static final RegistryObject<CustomSeagrassBlock> FLOWERING_EEL_GRASS = register(
+            "flowering_eel_grass",
+            () -> new CustomSeagrassBlock(Block.Properties.copy(Blocks.SEAGRASS), "Enhalus acoroides", () -> TropicraftBlocks.FLOWERING_TALL_EEL_GRASS)
+    );
+
+    public static final RegistryObject<CustomTallSeagrassBlock> FLOWERING_TALL_EEL_GRASS = registerNoItem(
+            "flowering_tall_eel_grass",
+            () -> new CustomTallSeagrassBlock(Block.Properties.copy(Blocks.SEAGRASS), "Enhalus acoroides", FLOWERING_EEL_GRASS::get)
+    );
+
+    public static final RegistryObject<Block> MATTED_EEL_GRASS = register(
+            "matted_eel_grass",
+            () -> new ScientificNameBlock(Block.Properties.copy(Blocks.SAND), "Enhalus acoroides")
+    );
+
+    public static final RegistryObject<Block> EEL_GRASS_BLOCK = register(
+            "eel_grass_block",
+            () -> new ScientificNameBlock(Block.Properties.copy(Blocks.SAND), "Enhalus acoroides")
+    );
+
+    public static final RegistryObject<CustomSeagrassBlock> FERN_SEAGRASS = register(
+            "fern_seagrass",
+            () -> new CustomSeagrassBlock(Block.Properties.copy(Blocks.SEAGRASS), "Halophila spinulosa", () -> TropicraftBlocks.TALL_FERN_SEAGRASS)
+    );
+
+    public static final RegistryObject<CustomTallSeagrassBlock> TALL_FERN_SEAGRASS = registerNoItem(
+            "tall_fern_seagrass",
+            () -> new CustomTallSeagrassBlock(Block.Properties.copy(Blocks.SEAGRASS), "Halophila spinulosa", FERN_SEAGRASS::get)
+    );
+
+    public static final RegistryObject<Block> MATTED_FERN_SEAGRASS = register(
+            "matted_fern_seagrass",
+            () -> new ScientificNameBlock(Block.Properties.copy(Blocks.SAND), "Halophila spinulosa")
+    );
+
+    public static final RegistryObject<Block> FERN_SEAGRASS_BLOCK = register(
+            "fern_seagrass_block",
+            () -> new ScientificNameBlock(Block.Properties.copy(Blocks.SAND), "Halophila spinulosa")
+    );
+
+    public static final RegistryObject<CustomSeagrassBlock> SICKLE_SEAGRASS = register(
+            "sickle_seagrass",
+            () -> new CustomSeagrassBlock(Block.Properties.copy(Blocks.SEAGRASS), "Thalassodendron ciliatum", () -> TropicraftBlocks.TALL_SICKLE_SEAGRASS)
+    );
+
+    public static final RegistryObject<CustomTallSeagrassBlock> TALL_SICKLE_SEAGRASS = registerNoItem(
+            "tall_sickle_seagrass",
+            () -> new CustomTallSeagrassBlock(Block.Properties.copy(Blocks.SEAGRASS), "Thalassodendron ciliatum", SICKLE_SEAGRASS::get)
+    );
+
+    public static final RegistryObject<Block> MATTED_SICKLE_SEAGRASS = register(
+            "matted_sickle_seagrass",
+            () -> new ScientificNameBlock(Block.Properties.copy(Blocks.SAND), "Thalassodendron ciliatum")
+    );
+
+    public static final RegistryObject<Block> SICKLE_SEAGRASS_BLOCK = register(
+            "sickle_seagrass_block",
+            () -> new ScientificNameBlock(Block.Properties.copy(Blocks.SAND), "Thalassodendron ciliatum")
+    );
+
+    // Short only seagrass
+    public static final RegistryObject<CustomSeagrassBlock> NOODLE_SEAGRASS = register(
+            "noodle_seagrass",
+            () -> new CustomSeagrassBlock(Block.Properties.copy(Blocks.SEAGRASS), "Syringodium isoetifolium", null)
+    );
+
+    public static final RegistryObject<Block> MATTED_NOODLE_SEAGRASS = register(
+            "matted_noodle_seagrass",
+            () -> new ScientificNameBlock(Block.Properties.copy(Blocks.SAND), "Syringodium isoetifolium")
+    );
+
+    public static final RegistryObject<Block> NOODLE_SEAGRASS_BLOCK = register(
+            "noodle_seagrass_block",
+            () -> new ScientificNameBlock(Block.Properties.copy(Blocks.SAND), "Syringodium isoetifolium")
+    );
+
     @SuppressWarnings("unchecked")
     private static final Set<RegistryObject<? extends Block>> POTTABLE_PLANTS = ImmutableSet.<RegistryObject<? extends Block>>builder()
             .add(PALM_SAPLING, MAHOGANY_SAPLING, GRAPEFRUIT_SAPLING, LEMON_SAPLING, LIME_SAPLING, ORANGE_SAPLING)

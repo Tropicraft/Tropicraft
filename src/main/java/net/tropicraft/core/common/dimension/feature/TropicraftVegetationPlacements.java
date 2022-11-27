@@ -11,8 +11,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.placement.*;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -90,6 +88,13 @@ public final class TropicraftVegetationPlacements {
 
     public static final RegistryObject<PlacedFeature> BAMBOO = REGISTER.placed("bamboo", TropicraftVegetationFeatures.BAMBOO, () -> List.of(
             NoiseBasedCountPlacement.of(50, 140.0D, 0.5D),
+            InSquarePlacement.spread(),
+            PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
+            BiomeFilter.biome()
+    ));
+
+    public static final RegistryObject<PlacedFeature> TROPI_SEAGRASS = REGISTER.placed("tropi_seagrass", TropicraftVegetationFeatures.TROPI_SEAGRASS, () -> List.of(
+            NoiseBasedCountPlacement.of(1, 150.0, 0),
             InSquarePlacement.spread(),
             PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
             BiomeFilter.biome()
@@ -253,7 +258,8 @@ public final class TropicraftVegetationPlacements {
         addVegetalDecoration(generation, UNDERGROUND_SEAGRASS_ON_DIRT);
     }
 
-    public static void addRegularSeagrass(BiomeGenerationSettings.Builder generation) {
+    public static void addSeagrass(BiomeGenerationSettings.Builder generation) {
+        addVegetalDecoration(generation, TROPI_SEAGRASS);
         addVegetalDecoration(generation, SEAGRASS);
     }
 
