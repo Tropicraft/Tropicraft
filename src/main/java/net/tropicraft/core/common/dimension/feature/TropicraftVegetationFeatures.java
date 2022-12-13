@@ -52,7 +52,14 @@ public final class TropicraftVegetationFeatures {
     public static final RegistryObject<ConfiguredFeature<?, ?>> COFFEE_BUSH = REGISTER.feature("coffee_bush", TropicraftFeatures.COFFEE_BUSH);
 
     public static final RegistryObject<ConfiguredFeature<?, ?>> UNDERGROWTH = REGISTER.feature("undergrowth", TropicraftFeatures.UNDERGROWTH);
-    public static final RegistryObject<ConfiguredFeature<?, ?>> SINGLE_UNDERGROWTH = REGISTER.feature("single_undergrowth", TropicraftFeatures.SINGLE_UNDERGROWTH);
+    public static final RegistryObject<ConfiguredFeature<?, ?>> SINGLE_UNDERGROWTH = REGISTER.feature("single_undergrowth", TropicraftFeatures.SINGLE_UNDERGROWTH, () -> new SimpleTreeFeatureConfig(() -> TropicraftBlocks.MAHOGANY_LOG.get().defaultBlockState(), () -> TropicraftBlocks.KAPOK_LEAVES.get().defaultBlockState()));
+    public static final RegistryObject<ConfiguredFeature<?, ?>> RED_FLOWERING_BUSH = REGISTER.feature("red_flowering_bush", TropicraftFeatures.SINGLE_UNDERGROWTH, () -> new SimpleTreeFeatureConfig(() -> TropicraftBlocks.MAHOGANY_LOG.get().defaultBlockState(), () -> TropicraftBlocks.RED_FLOWERING_LEAVES.get().defaultBlockState()));
+    public static final RegistryObject<ConfiguredFeature<?, ?>> WHITE_FLOWERING_BUSH = REGISTER.feature("white_flowering_bush", TropicraftFeatures.SINGLE_UNDERGROWTH, () -> new SimpleTreeFeatureConfig(() -> TropicraftBlocks.MAHOGANY_LOG.get().defaultBlockState(), () -> TropicraftBlocks.WHITE_FLOWERING_LEAVES.get().defaultBlockState()));
+    public static final RegistryObject<ConfiguredFeature<?, ?>> BLUE_FLOWERING_BUSH = REGISTER.feature("blue_flowering_bush", TropicraftFeatures.SINGLE_UNDERGROWTH, () -> new SimpleTreeFeatureConfig(() -> TropicraftBlocks.MAHOGANY_LOG.get().defaultBlockState(), () -> TropicraftBlocks.BLUE_FLOWERING_LEAVES.get().defaultBlockState()));
+    public static final RegistryObject<ConfiguredFeature<?, ?>> PURPLE_FLOWERING_BUSH = REGISTER.feature("purple_flowering_bush", TropicraftFeatures.SINGLE_UNDERGROWTH, () -> new SimpleTreeFeatureConfig(() -> TropicraftBlocks.MAHOGANY_LOG.get().defaultBlockState(), () -> TropicraftBlocks.PURPLE_FLOWERING_LEAVES.get().defaultBlockState()));
+    public static final RegistryObject<ConfiguredFeature<?, ?>> YELLOW_FLOWERING_BUSH = REGISTER.feature("yellow_flowering_bush", TropicraftFeatures.SINGLE_UNDERGROWTH, () -> new SimpleTreeFeatureConfig(() -> TropicraftBlocks.MAHOGANY_LOG.get().defaultBlockState(), () -> TropicraftBlocks.YELLOW_FLOWERING_LEAVES.get().defaultBlockState()));
+
+    public static final RegistryObject<ConfiguredFeature<?, ?>> BUSH_FLOWERING = REGISTER.randomFeature("flowering_bushes", RED_FLOWERING_BUSH, WHITE_FLOWERING_BUSH, BLUE_FLOWERING_BUSH, PURPLE_FLOWERING_BUSH, YELLOW_FLOWERING_BUSH);
 
     public static final RegistryObject<ConfiguredFeature<?, ?>> SEAGRASS = REGISTER.feature("seagrass", Feature.SEAGRASS, () -> new ProbabilityFeatureConfiguration(0.3f));
 
@@ -60,4 +67,5 @@ public final class TropicraftVegetationFeatures {
     public static final RegistryObject<ConfiguredFeature<?, ?>> UNDERGROUND_SEA_PICKLES = REGISTER.feature("underground_sea_pickles", TropicraftFeatures.UNDERGROUND_SEA_PICKLE);
 
     public static final RegistryObject<ConfiguredFeature<?, ?>> MANGROVE_REEDS = REGISTER.feature("mangrove_reeds", TropicraftFeatures.REEDS);
+    public static final RegistryObject<ConfiguredFeature<?, ?>> TROPI_SEAGRASS = REGISTER.feature("tropi_seagrass", TropicraftFeatures.SEAGRASS);
 }

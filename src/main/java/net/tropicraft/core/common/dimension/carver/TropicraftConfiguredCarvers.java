@@ -52,10 +52,6 @@ public final class TropicraftConfiguredCarvers {
         generation.addCarver(GenerationStep.Carving.AIR, CANYON.getHolder().orElseThrow());
     }
 
-    @Deprecated
-    public static void addUnderwater(BiomeGenerationSettings.Builder generation) {
-    }
-
     public static <C extends CarverConfiguration, WC extends WorldCarver<C>> RegistryObject<ConfiguredWorldCarver<?>> register(String id, RegistryObject<WC> carver, C config) {
         return REGISTER.register(id, () -> carver.get().configured(config));
     }

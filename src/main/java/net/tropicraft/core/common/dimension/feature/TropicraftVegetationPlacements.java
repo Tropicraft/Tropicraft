@@ -2,6 +2,7 @@ package net.tropicraft.core.common.dimension.feature;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.data.worldgen.features.AquaticFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
@@ -27,21 +28,21 @@ public final class TropicraftVegetationPlacements {
     ));
 
     public static final RegistryObject<PlacedFeature> SMALL_GOLDEN_LEATHER_FERN = REGISTER.placed("small_golden_leather_fern", TropicraftVegetationFeatures.SMALL_GOLDEN_LEATHER_FERN, () -> List.of(
-            RarityFilter.onAverageOnceEvery(5),
+            RarityFilter.onAverageOnceEvery(4),
             InSquarePlacement.spread(),
             PlacementUtils.HEIGHTMAP,
             BiomeFilter.biome()
     ));
 
     public static final RegistryObject<PlacedFeature> TALL_GOLDEN_LEATHER_FERN = REGISTER.placed("tall_golden_leather_fern", TropicraftVegetationFeatures.TALL_GOLDEN_LEATHER_FERN, () -> List.of(
-            RarityFilter.onAverageOnceEvery(10),
+            RarityFilter.onAverageOnceEvery(8),
             InSquarePlacement.spread(),
             PlacementUtils.HEIGHTMAP,
             BiomeFilter.biome()
     ));
 
     public static final RegistryObject<PlacedFeature> HUGE_GOLDEN_LEATHER_FERN = REGISTER.placed("huge_golden_leather_fern", TropicraftVegetationFeatures.HUGE_GOLDEN_LEATHER_FERN, () -> List.of(
-            RarityFilter.onAverageOnceEvery(20),
+            RarityFilter.onAverageOnceEvery(12),
             InSquarePlacement.spread(),
             PlacementUtils.HEIGHTMAP,
             BiomeFilter.biome()
@@ -49,7 +50,7 @@ public final class TropicraftVegetationPlacements {
 
     public static final RegistryObject<PlacedFeature> OVERGROWN_SMALL_GOLDEN_LEATHER_FERN = REGISTER.placed("overgrown_small_golden_leather_fern", TropicraftVegetationFeatures.SMALL_GOLDEN_LEATHER_FERN, () -> List.of(
             RarityFilter.onAverageOnceEvery(2),
-            CountPlacement.of(10),
+            CountPlacement.of(3),
             InSquarePlacement.spread(),
             PlacementUtils.HEIGHTMAP,
             BiomeFilter.biome()
@@ -57,7 +58,7 @@ public final class TropicraftVegetationPlacements {
 
     public static final RegistryObject<PlacedFeature> OVERGROWN_TALL_GOLDEN_LEATHER_FERN = REGISTER.placed("overgrown_tall_golden_leather_fern", TropicraftVegetationFeatures.TALL_GOLDEN_LEATHER_FERN, () -> List.of(
             RarityFilter.onAverageOnceEvery(2),
-            CountPlacement.of(8),
+            CountPlacement.of(1),
             InSquarePlacement.spread(),
             PlacementUtils.HEIGHTMAP,
             BiomeFilter.biome()
@@ -80,10 +81,20 @@ public final class TropicraftVegetationPlacements {
     public static final RegistryObject<PlacedFeature> TREES_PLEODENDRON = REGISTER.placed("trees_pleodendron", TropicraftVegetationFeatures.TREES_PLEODENDRON, () -> REGISTER.treePlacement(0, 0.1f, 1));
     public static final RegistryObject<PlacedFeature> TREES_PAPAYA = REGISTER.placed("trees_papaya", TropicraftVegetationFeatures.TREES_PAPAYA, () -> REGISTER.treePlacement(0, 0.2f, 1));
 
+    public static final RegistryObject<PlacedFeature> BUSH_FLOWERING_COMMON = REGISTER.placed("bush_flowering_common", TropicraftVegetationFeatures.BUSH_FLOWERING, () -> REGISTER.treePlacement(0, 1.0f / 4.0f, 1));
+    public static final RegistryObject<PlacedFeature> BUSH_FLOWERING_RARE = REGISTER.placed("bush_flowering_rare", TropicraftVegetationFeatures.BUSH_FLOWERING, () -> REGISTER.treePlacement(0, 1.0f / 8.0f, 1));
+
     public static final RegistryObject<PlacedFeature> PATCH_GRASS_TROPICS = REGISTER.placed("tropics_grass", TropicraftVegetationFeatures.PATCH_GRASS_TROPICS, () -> worldSurfaceSquaredWithCount(10));
 
     public static final RegistryObject<PlacedFeature> BAMBOO = REGISTER.placed("bamboo", TropicraftVegetationFeatures.BAMBOO, () -> List.of(
             NoiseBasedCountPlacement.of(50, 140.0D, 0.5D),
+            InSquarePlacement.spread(),
+            PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
+            BiomeFilter.biome()
+    ));
+
+    public static final RegistryObject<PlacedFeature> TROPI_SEAGRASS = REGISTER.placed("tropi_seagrass", TropicraftVegetationFeatures.TROPI_SEAGRASS, () -> List.of(
+            NoiseBasedCountPlacement.of(1, 150.0, 0),
             InSquarePlacement.spread(),
             PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
             BiomeFilter.biome()
@@ -142,6 +153,13 @@ public final class TropicraftVegetationPlacements {
             BiomeFilter.biome()
     ));
 
+    public static final RegistryObject<PlacedFeature> KELP = REGISTER.placed("kelp", AquaticFeatures.KELP, () -> List.of(
+            NoiseBasedCountPlacement.of(75, 80.0D, 0.55D),
+            InSquarePlacement.spread(),
+            PlacementUtils.HEIGHTMAP_TOP_SOLID,
+            BiomeFilter.biome()
+    ));
+
     public static List<PlacementModifier> worldSurfaceSquaredWithChance(int onceEvery) {
         return List.of(RarityFilter.onAverageOnceEvery(onceEvery), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome());
     }
@@ -160,6 +178,14 @@ public final class TropicraftVegetationPlacements {
 
     public static void addFruitTrees(BiomeGenerationSettings.Builder generation) {
         addVegetalDecoration(generation, TREES_FRUIT);
+    }
+
+    public static void addFloweringBushes(BiomeGenerationSettings.Builder generation) {
+        addVegetalDecoration(generation, BUSH_FLOWERING_COMMON);
+    }
+
+    public static void addRareFloweringBushes(BiomeGenerationSettings.Builder generation) {
+        addVegetalDecoration(generation, BUSH_FLOWERING_RARE);
     }
 
     public static void addPalmTrees(BiomeGenerationSettings.Builder generation) {
@@ -232,12 +258,17 @@ public final class TropicraftVegetationPlacements {
         addVegetalDecoration(generation, UNDERGROUND_SEAGRASS_ON_DIRT);
     }
 
-    public static void addRegularSeagrass(BiomeGenerationSettings.Builder generation) {
+    public static void addSeagrass(BiomeGenerationSettings.Builder generation) {
+        addVegetalDecoration(generation, TROPI_SEAGRASS);
         addVegetalDecoration(generation, SEAGRASS);
     }
 
     public static void addUndergroundPickles(BiomeGenerationSettings.Builder generation) {
         addVegetalDecoration(generation, UNDERGROUND_SEA_PICKLES);
+    }
+
+    public static void addKelp(BiomeGenerationSettings.Builder generation) {
+        addVegetalDecoration(generation, KELP);
     }
 
     private static void addVegetalDecoration(BiomeGenerationSettings.Builder generation, RegistryObject<PlacedFeature> feature) {

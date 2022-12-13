@@ -31,7 +31,7 @@ public class ChairEntity extends FurnitureEntity {
     // TODO add drips after being wet
     // TODO make it so monkies can sit in the chair ouo
     private static final EntityDataAccessor<Byte> COMESAILAWAY = SynchedEntityData.defineId(ChairEntity.class, EntityDataSerializers.BYTE);
-    
+
     /** Is any entity sitting in the chair? */
     public boolean isChairEmpty = true;
 
@@ -53,80 +53,61 @@ public class ChairEntity extends FurnitureEntity {
     @Override
     public void tick() {
         super.tick();
-        byte b0 = 5;
-        double d0 = 0.0D;
+        double waterHeight = 0.0;
 
         if (this.getComeSailAway()) {
-            for (int i = 0; i < b0; ++i) {
-                double d1 = this.getBoundingBox().minY + (this.getBoundingBox().maxY - this.getBoundingBox().minY) * (double)(i + 0) / (double)b0 - 0.125D;
-                double d3 = this.getBoundingBox().minY + (this.getBoundingBox().maxY - this.getBoundingBox().minY) * (double)(i + 1) / (double)b0 - 0.125D;
-                AABB axisalignedbb = new AABB(this.getBoundingBox().minX, d1, this.getBoundingBox().minZ, this.getBoundingBox().maxX, d3, this.getBoundingBox().maxZ);
+            waterHeight = findWaterHeight(waterHeight);
+        }
 
-                if (this.level.containsAnyLiquid(axisalignedbb)) {
-                    d0 += 1.0D / (double)b0;
+        double speed = getDeltaMovement().length();
+        if (this.getComeSailAway() && speed > 0.2625) {
+            double forwardX = Math.cos(this.getYRot() * Mth.DEG_TO_RAD);
+            double forwardZ = Math.sin(this.getYRot() * Mth.DEG_TO_RAD);
+
+            for (int i = 0; i < 1.0D + speed * 60.0D; ++i) {
+                double d5 = random.nextFloat() * 2.0F - 1.0F;
+                double d6 = (double) (random.nextInt(2) * 2 - 1) * 0.7D;
+                double particleX;
+                double particleZ;
+
+                if (random.nextBoolean()) {
+                    particleX = getX() - forwardX * d5 * 0.8D + forwardZ * d6;
+                    particleZ = getZ() - forwardZ * d5 * 0.8D - forwardX * d6;
+                } else {
+                    particleX = getX() + forwardX + forwardZ * d5 * 0.7D;
+                    particleZ = getZ() + forwardZ - forwardX * d5 * 0.7D;
                 }
+                level.addParticle(ParticleTypes.SPLASH, particleX, getY() - 0.125D, particleZ, getDeltaMovement().x, getDeltaMovement().y, getDeltaMovement().z);
             }
         }
 
-        double d10 = Math.sqrt(this.getDeltaMovement().x * this.getDeltaMovement().x + this.getDeltaMovement().z * this.getDeltaMovement().z);
-        double d2;
-        double d4;
-        int j;
-
-        if (/*this.getComeSailAway() && */d10 > 0.26249999999999996D) {
-            d2 = Math.cos((double) this.getYRot() * Math.PI / 180.0D);
-            d4 = Math.sin((double) this.getYRot() * Math.PI / 180.0D);
-
-            if (this.getComeSailAway())
-                for (j = 0; (double)j < 1.0D + d10 * 60.0D; ++j) {
-                    double d5 = random.nextFloat() * 2.0F - 1.0F;
-                    double d6 = (double)(random.nextInt(2) * 2 - 1) * 0.7D;
-                    double particleX;
-                    double particleZ;
-
-                    if (random.nextBoolean()) {
-                        particleX = getX() - d2 * d5 * 0.8D + d4 * d6;
-                        particleZ = getZ() - d4 * d5 * 0.8D - d2 * d6;
-                    } else {
-                        particleX = getX() + d2 + d4 * d5 * 0.7D;
-                        particleZ = getZ() + d4 - d2 * d5 * 0.7D;
-                    }
-                    level.addParticle(ParticleTypes.SPLASH, particleX, getY() - 0.125D, particleZ, getDeltaMovement().x, getDeltaMovement().y, getDeltaMovement().z);
-                }
-        }
-
-        double d11;
-        double d12;
-
         if (!this.level.isClientSide || this.getComeSailAway()) {
-            if (d0 < 1.0D) {
-                d2 = d0 * 2.0D - 1.0D;
-                setDeltaMovement(getDeltaMovement().add(0, 0.03999999910593033D * d2, 0));
+            if (waterHeight < 1.0D) {
+                double d2 = waterHeight * 2.0 - 1.0;
+                setDeltaMovement(getDeltaMovement().add(0, 0.04 * d2, 0));
             } else {
-                if (this.getDeltaMovement().y < 0.0D) {
+                if (this.getDeltaMovement().y < 0.0) {
                     setDeltaMovement(getDeltaMovement().multiply(1, 0.5, 1));
                 }
 
-                setDeltaMovement(getDeltaMovement().add(0, 0.007000000216066837D, 0));
+                setDeltaMovement(getDeltaMovement().add(0, 0.007, 0));
             }
 
-            if (this.getComeSailAway() && this.getControllingPassenger() != null && this.getControllingPassenger() instanceof LivingEntity) {
-                LivingEntity entitylivingbase = (LivingEntity)this.getControllingPassenger();
-                float f = this.getControllingPassenger().getYRot() + -entitylivingbase.xxa * 90.0F;
-                double moveX = -Math.sin((double)(f * (float)Math.PI / 180.0F)) * this.speedMultiplier * (double)entitylivingbase.zza * 0.05000000074505806D;
-                double moveZ = Math.cos((double)(f * (float)Math.PI / 180.0F)) * this.speedMultiplier * (double)entitylivingbase.zza * 0.05000000074505806D;
+            if (this.getComeSailAway() && this.getControllingPassenger() instanceof LivingEntity passenger) {
+                float yRot = passenger.getYRot() + -passenger.xxa * 90.0F;
+                double moveX = -Math.sin(yRot * Mth.DEG_TO_RAD) * this.speedMultiplier * passenger.zza * 0.05;
+                double moveZ = Math.cos(yRot * Mth.DEG_TO_RAD) * this.speedMultiplier * passenger.zza * 0.05;
                 setDeltaMovement(getDeltaMovement().add(moveX, 0, moveZ));
             }
 
-            d2 = Math.sqrt(this.getDeltaMovement().x * this.getDeltaMovement().x + this.getDeltaMovement().z * this.getDeltaMovement().z);
-
-            if (d2 > 0.45D) {
-                d4 = 0.45D / d2;
-                setDeltaMovement(getDeltaMovement().multiply(d4, 1, d4));
-                d2 = 0.45D;
+            double newSpeed = getDeltaMovement().length();
+            if (newSpeed > 0.45) {
+                double friction = 0.45 / newSpeed;
+                setDeltaMovement(getDeltaMovement().multiply(friction, 1, friction));
+                newSpeed = 0.45;
             }
 
-            if (d2 > d10 && this.speedMultiplier < 0.45D) {
+            if (newSpeed > speed && this.speedMultiplier < 0.45D) {
                 this.speedMultiplier += (0.45D - this.speedMultiplier) / 45.0D;
 
                 if (this.speedMultiplier > 0.45D) {
@@ -140,18 +121,14 @@ public class ChairEntity extends FurnitureEntity {
                 }
             }
 
-            int l;
-
             if (this.getComeSailAway())
-                for (l = 0; l < 4; ++l) {
-                    int i1 = Mth.floor(this.getX() + ((double)(l % 2) - 0.5D) * 0.8D);
-                    j = Mth.floor(this.getZ() + ((double)(l / 2) - 0.5D) * 0.8D);
-
+                for (int i = 0; i < 4; ++i) {
+                    int x = Mth.floor(this.getX() + ((double)(i % 2) - 0.5D) * 0.8D);
+                    int z = Mth.floor(this.getZ() + ((double)(i / 2) - 0.5D) * 0.8D);
                     for (int j1 = 0; j1 < 2; ++j1) {
                         int k = Mth.floor(this.getY()) + j1;
-                        BlockPos pos = new BlockPos(i1, k, j);
+                        BlockPos pos = new BlockPos(x, k, z);
                         Block block = this.level.getBlockState(pos).getBlock();
-                        
                         if (block == Blocks.SNOW) {
                             this.level.destroyBlock(pos, true);
                             this.horizontalCollision = false;
@@ -162,10 +139,8 @@ public class ChairEntity extends FurnitureEntity {
                     }
                 }
 
-            if (this.getComeSailAway() && this.onGround) {
-                setDeltaMovement(getDeltaMovement().multiply(0.5, 0.5, 0.5));
-            } else if (this.onGround) {
-                setDeltaMovement(Vec3.ZERO);
+            if (this.onGround) {
+                setDeltaMovement(getDeltaMovement().multiply(0.5, 1.0, 0.5));
             }
 
             this.move(MoverType.SELF, getDeltaMovement());
@@ -173,41 +148,29 @@ public class ChairEntity extends FurnitureEntity {
             // This will never trigger since d10 will only ever get up to 0.45 >:D *evil laugh*
             // In other words, when come sail away, there is no stopping this sucker
             if (this.getComeSailAway()) {
-                setDeltaMovement(getDeltaMovement().multiply(0.9900000095367432D, 0.949999988079071D, 0.9900000095367432D));
+                setDeltaMovement(getDeltaMovement().multiply(0.99, 0.95, 0.99));
             }
 
             this.setXRot(0.0F);
-            d4 = this.getYRot();
-            d11 = this.xo - this.getX();
-            d12 = this.zo - this.getZ();
+            float targetYRot = this.getYRot();
+            double deltaX = this.xo - this.getX();
+            double deltaZ = this.zo - this.getZ();
 
-            if (d11 * d11 + d12 * d12 > 0.001D) {
-                d4 = (double)((float)(Math.atan2(d12, d11) * 180.0D / Math.PI));
+            if (deltaX * deltaX + deltaZ * deltaZ > 0.001D) {
+                targetYRot = (float)(Math.atan2(deltaZ, deltaX) * 180.0D / Math.PI);
             }
 
-            double d7 = Mth.wrapDegrees(d4 - (double)this.getYRot());
+            double yRotStep = Mth.wrapDegrees(targetYRot - (double)this.getYRot());
+            yRotStep = Mth.clamp(yRotStep, -20.0, 20.0);
 
-            if (d7 > 20.0D) {
-                d7 = 20.0D;
-            }
-
-            if (d7 < -20.0D) {
-                d7 = -20.0D;
-            }
-
-            this.setYRot((float)((double)this.getYRot() + d7));
+            this.setYRot((float) (this.getYRot() + yRotStep));
             this.setRot(this.getYRot(), this.getXRot());
 
             if (!this.level.isClientSide) {
-                List<?> list = this.level.getEntities(this, this.getBoundingBox().inflate(0.20000000298023224D, 0.0D, 0.20000000298023224D));
-
-                if (list != null && !list.isEmpty()) {
-                    for (int k1 = 0; k1 < list.size(); ++k1) {
-                        Entity entity = (Entity)list.get(k1);
-
-                        if (entity != this.getControllingPassenger() && entity.isPushable() && entity instanceof ChairEntity) {
-                            entity.push(this);
-                        }
+                List<Entity> entities = this.level.getEntities(this, this.getBoundingBox().inflate(0.2, 0.0, 0.2));
+                for (Entity entity : entities) {
+                    if (entity != this.getControllingPassenger() && entity.isPushable() && entity instanceof ChairEntity) {
+                        entity.push(this);
                     }
                 }
 
@@ -220,14 +183,27 @@ public class ChairEntity extends FurnitureEntity {
         }
 
         this.rotationDelta *= FRICTION;
-        Entity rider = getControllingPassenger();
-        if (level.isClientSide && rider instanceof Player) {
-            Player controller = (Player) rider;
+
+        if (level.isClientSide && getControllingPassenger() instanceof Player controller) {
             this.rotationDelta += -controller.xxa * ROTATION_SPEED;
             setYRot(getYRot() + rotationDelta);
         }
     }
-    
+
+    private double findWaterHeight(double waterHeight) {
+        AABB bounds = this.getBoundingBox();
+        int steps = 5;
+        for (int i = 0; i < steps; i++) {
+            double start = Mth.lerp((double) i / steps, bounds.minY, bounds.maxY) - 0.125;
+            double end = Mth.lerp((double) (i + 1) / steps, bounds.minY, bounds.maxY) - 0.125;
+            AABB testBounds = new AABB(bounds.minX, start, bounds.minZ, bounds.maxX, end, bounds.maxZ);
+            if (level.containsAnyLiquid(testBounds)) {
+                waterHeight += 1.0 / (double) steps;
+            }
+        }
+        return waterHeight;
+    }
+
     @Override
     protected boolean preventMotion() {
         return !getComeSailAway();
@@ -268,7 +244,7 @@ public class ChairEntity extends FurnitureEntity {
     public boolean isPickable() {
         return isAlive();
     }
-    
+
     @Override
     @Nullable
     public Entity getControllingPassenger() {
@@ -280,7 +256,7 @@ public class ChairEntity extends FurnitureEntity {
     public double getPassengersRidingOffset() {
         return 0.11;
     }
-    
+
     @Override
     public void positionRider(Entity passenger) {
         if (this.hasPassenger(passenger)) {
@@ -302,5 +278,10 @@ public class ChairEntity extends FurnitureEntity {
     @Override
     public ItemStack getPickedResult(HitResult target) {
         return new ItemStack(TropicraftItems.CHAIRS.get(DyeColor.byId(getColor().getId())).get());
+    }
+
+    @Override
+    public AABB getBoundingBoxForCulling() {
+        return getBoundingBox().expandTowards(0.0, 1.0, 0.0);
     }
 }

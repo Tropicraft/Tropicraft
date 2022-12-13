@@ -42,7 +42,7 @@ public class TropicraftFeatures {
     public static final RegistryObject<RainforestTreeFeature> TALL_TREE = register("tall_tree", () -> new TallRainforestTreeFeature(NoneFeatureConfiguration.CODEC));
     public static final RegistryObject<EIHFeature> EIH = register("eih", () -> new EIHFeature(NoneFeatureConfiguration.CODEC));
     public static final RegistryObject<UndergrowthFeature> UNDERGROWTH = register("undergrowth", () -> new UndergrowthFeature(NoneFeatureConfiguration.CODEC));
-    public static final RegistryObject<SingleUndergrowthFeature> SINGLE_UNDERGROWTH = register("single_undergrowth", () -> new SingleUndergrowthFeature(NoneFeatureConfiguration.CODEC));
+    public static final RegistryObject<SingleUndergrowthFeature> SINGLE_UNDERGROWTH = register("single_undergrowth", () -> new SingleUndergrowthFeature(SimpleTreeFeatureConfig.CODEC));
     public static final RegistryObject<RainforestVinesFeature> VINES = register("rainforest_vines", () -> new RainforestVinesFeature(RainforestVinesConfig.CODEC));
     public static final RegistryObject<UndergroundSeaPickleFeature> UNDERGROUND_SEA_PICKLE = register("underground_sea_pickle", () -> new UndergroundSeaPickleFeature(NoneFeatureConfiguration.CODEC));
 
@@ -51,6 +51,7 @@ public class TropicraftFeatures {
     public static final RegistryObject<CoffeePlantFeature> COFFEE_BUSH = register("coffee_bush", () -> new CoffeePlantFeature(NoneFeatureConfiguration.CODEC));
 
     public static final RegistryObject<ReedsFeature> REEDS = register("reeds", () -> new ReedsFeature(NoneFeatureConfiguration.CODEC));
+    public static final RegistryObject<SeagrassFeature> SEAGRASS = register("seagrass", () -> new SeagrassFeature(NoneFeatureConfiguration.CODEC));
     public static final RegistryObject<HugePlantFeature> HUGE_PLANT = register("huge_plant", () -> new HugePlantFeature(SimpleBlockConfiguration.CODEC));
 
     private static <T extends Feature<?>> RegistryObject<T> register(final String name, final Supplier<T> sup) {
@@ -170,6 +171,10 @@ public class TropicraftFeatures {
 
         public RegistryObject<PlacedFeature> placed(String id, RegistryObject<ConfiguredFeature<?, ?>> feature, Supplier<List<PlacementModifier>> placement) {
             return placed.register(id, () -> new PlacedFeature(holderOf(feature), placement.get()));
+        }
+
+        public RegistryObject<PlacedFeature> placed(String id, Holder<? extends ConfiguredFeature<?, ?>> feature, Supplier<List<PlacementModifier>> placement) {
+            return placed.register(id, () -> new PlacedFeature((Holder<ConfiguredFeature<?, ?>>) feature, placement.get()));
         }
 
         public List<PlacementModifier> sparseTreePlacement(float chance) {

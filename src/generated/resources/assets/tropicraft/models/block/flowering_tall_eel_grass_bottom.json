@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_seagrass",
+  "textures": {
+    "texture": "tropicraft:block/flowering_tall_eel_grass_bottom",
+    "particle": "tropicraft:block/flowering_tall_eel_grass_bottom"
+  }
+}

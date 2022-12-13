@@ -156,6 +156,11 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         simpleBlock(TropicraftBlocks.LIME_LEAVES);
         simpleBlock(TropicraftBlocks.ORANGE_LEAVES);
         simpleBlock(TropicraftBlocks.PAPAYA_LEAVES);
+        simpleBlock(TropicraftBlocks.WHITE_FLOWERING_LEAVES);
+        simpleBlock(TropicraftBlocks.RED_FLOWERING_LEAVES);
+        simpleBlock(TropicraftBlocks.BLUE_FLOWERING_LEAVES);
+        simpleBlock(TropicraftBlocks.PURPLE_FLOWERING_LEAVES);
+        simpleBlock(TropicraftBlocks.YELLOW_FLOWERING_LEAVES);
 
         simpleBlock(TropicraftBlocks.RED_MANGROVE_LEAVES);
         simpleBlock(TropicraftBlocks.TALL_MANGROVE_LEAVES);
@@ -265,6 +270,26 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         for (RegistryObject<FlowerPotBlock> block : TropicraftBlocks.BAMBOO_POTTED_VANILLA_PLANTS) {
             flowerPot(block, TropicraftBlocks.BAMBOO_FLOWER_POT, modBlockLoc("bamboo_side"));
         }
+
+        seagrass(TropicraftBlocks.EEL_GRASS);
+        tallSeagrass(TropicraftBlocks.TALL_EEL_GRASS);
+        seagrass(TropicraftBlocks.FLOWERING_EEL_GRASS);
+        tallSeagrass(TropicraftBlocks.FLOWERING_TALL_EEL_GRASS);
+        seagrass(TropicraftBlocks.FERN_SEAGRASS);
+        tallSeagrass(TropicraftBlocks.TALL_FERN_SEAGRASS);
+        seagrass(TropicraftBlocks.SICKLE_SEAGRASS);
+        tallSeagrass(TropicraftBlocks.TALL_SICKLE_SEAGRASS);
+        seagrass(TropicraftBlocks.NOODLE_SEAGRASS);
+
+        mattedSeagrass(TropicraftBlocks.MATTED_EEL_GRASS, TropicraftBlocks.EEL_GRASS);
+        mattedSeagrass(TropicraftBlocks.MATTED_FERN_SEAGRASS, TropicraftBlocks.FERN_SEAGRASS);
+        mattedSeagrass(TropicraftBlocks.MATTED_SICKLE_SEAGRASS, TropicraftBlocks.SICKLE_SEAGRASS);
+        mattedSeagrass(TropicraftBlocks.MATTED_NOODLE_SEAGRASS, TropicraftBlocks.NOODLE_SEAGRASS);
+
+        seagrassBlock(TropicraftBlocks.EEL_GRASS_BLOCK, TropicraftBlocks.EEL_GRASS);
+        seagrassBlock(TropicraftBlocks.FERN_SEAGRASS_BLOCK, TropicraftBlocks.FERN_SEAGRASS);
+        seagrassBlock(TropicraftBlocks.SICKLE_SEAGRASS_BLOCK, TropicraftBlocks.SICKLE_SEAGRASS);
+        seagrassBlock(TropicraftBlocks.NOODLE_SEAGRASS_BLOCK, TropicraftBlocks.NOODLE_SEAGRASS);
 
         models.withExistingParent("bamboo_item_frame", "item_frame")
             .texture("particle", modBlockLoc("bamboo_side"))
@@ -432,6 +457,52 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         getVariantBuilder(block.get())
             .partialState().with(TallFlowerBlock.HALF, DoubleBlockHalf.LOWER).addModels(new ConfiguredModel(models.cross(name + "_bottom", modBlockLoc(name + "_bottom"))))
             .partialState().with(TallFlowerBlock.HALF, DoubleBlockHalf.UPPER).addModels(new ConfiguredModel(models.cross(name + "_top", modBlockLoc(name + "_top"))));
+    }
+
+    private void tallSeagrass(Supplier<? extends CustomTallSeagrassBlock> block) {
+        ModelFile top = models().withExistingParent(name(block) + "_top", mcLoc("template_seagrass"))
+                .texture("texture", modBlockLoc(name(block) + "_top"))
+                .texture("particle", modBlockLoc(name(block) + "_top"));
+
+        ModelFile bottom = models().withExistingParent(name(block) + "_bottom", mcLoc("template_seagrass"))
+                .texture("texture", modBlockLoc(name(block) + "_bottom"))
+                .texture("particle", modBlockLoc(name(block) + "_bottom"));
+
+        MultiPartBlockStateBuilder builder = getMultipartBuilder(block.get());
+
+        builder.part().modelFile(top).addModel()
+                .condition(TallSeagrassBlock.HALF, DoubleBlockHalf.UPPER)
+                .end();
+
+        builder.part().modelFile(bottom).addModel()
+                .condition(TallSeagrassBlock.HALF, DoubleBlockHalf.LOWER)
+                .end();
+    }
+
+    private void seagrass(Supplier<? extends CustomSeagrassBlock> block) {
+        BlockModelBuilder tex = models().withExistingParent(name(block), mcLoc("template_seagrass"))
+                .texture("texture", modBlockLoc(name(block)))
+                .texture("particle", modBlockLoc(name(block)));
+
+        simpleBlock(block.get(), tex);
+    }
+
+    private void mattedSeagrass(Supplier<? extends Block> block, Supplier<? extends CustomSeagrassBlock> name) {
+        BlockModelBuilder builder = models().cubeBottomTop(name(block),
+                modBlockLoc("matted_" + name(name) + "_side"),
+                modBlockLoc(name(TropicraftBlocks.PURIFIED_SAND)),
+                modBlockLoc("matted_" + name(name) + "_top")
+        );
+
+        simpleBlock(block, builder);
+    }
+
+    private void seagrassBlock(Supplier<? extends Block> block, Supplier<? extends CustomSeagrassBlock> name) {
+        BlockModelBuilder builder = models().cubeAll(name(block),
+                modBlockLoc("matted_" + name(name) + "_top")
+        );
+
+        simpleBlock(block, builder);
     }
 
     private void reedsBlock(Supplier<? extends ReedsBlock> block) {

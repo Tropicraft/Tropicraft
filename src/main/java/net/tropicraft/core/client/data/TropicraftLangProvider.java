@@ -147,6 +147,11 @@ public class TropicraftLangProvider extends LanguageProvider {
         addBlock(TropicraftBlocks.TEA_MANGROVE_LEAVES);
         addBlock(TropicraftBlocks.BLACK_MANGROVE_LEAVES);
         addBlock(TropicraftBlocks.PAPAYA_LEAVES);
+        addBlock(TropicraftBlocks.WHITE_FLOWERING_LEAVES);
+        addBlock(TropicraftBlocks.RED_FLOWERING_LEAVES);
+        addBlock(TropicraftBlocks.BLUE_FLOWERING_LEAVES);
+        addBlock(TropicraftBlocks.PURPLE_FLOWERING_LEAVES);
+        addBlock(TropicraftBlocks.YELLOW_FLOWERING_LEAVES);
 
         // Saplings
         addBlock(TropicraftBlocks.MAHOGANY_SAPLING);
@@ -205,6 +210,25 @@ public class TropicraftLangProvider extends LanguageProvider {
         addBlock(TropicraftBlocks.PALM_BOARDWALK);
         addBlock(TropicraftBlocks.MAHOGANY_BOARDWALK);
         addBlock(TropicraftBlocks.MANGROVE_BOARDWALK);
+
+        addBlock(TropicraftBlocks.EEL_GRASS);
+        addBlock(TropicraftBlocks.TALL_EEL_GRASS);
+        addBlock(TropicraftBlocks.FLOWERING_EEL_GRASS);
+        addBlock(TropicraftBlocks.FLOWERING_TALL_EEL_GRASS);
+        addBlock(TropicraftBlocks.FERN_SEAGRASS);
+        addBlock(TropicraftBlocks.TALL_FERN_SEAGRASS);
+        addBlock(TropicraftBlocks.SICKLE_SEAGRASS);
+        addBlock(TropicraftBlocks.TALL_SICKLE_SEAGRASS);
+        addBlock(TropicraftBlocks.NOODLE_SEAGRASS);
+
+        addBlock(TropicraftBlocks.MATTED_EEL_GRASS);
+        addBlock(TropicraftBlocks.MATTED_FERN_SEAGRASS);
+        addBlock(TropicraftBlocks.MATTED_SICKLE_SEAGRASS);
+        addBlock(TropicraftBlocks.MATTED_NOODLE_SEAGRASS);
+        addBlock(TropicraftBlocks.EEL_GRASS_BLOCK);
+        addBlock(TropicraftBlocks.FERN_SEAGRASS_BLOCK);
+        addBlock(TropicraftBlocks.SICKLE_SEAGRASS_BLOCK);
+        addBlock(TropicraftBlocks.NOODLE_SEAGRASS_BLOCK);
 
         addBlock(TropicraftBlocks.BAMBOO_CHEST);
         add(Constants.MODID + ".container.bambooChest", "Bamboo Chest");
@@ -460,6 +484,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         addBiome(TropicraftBiomes.MANGROVES);
         addBiome(TropicraftBiomes.OVERGROWN_MANGROVES);
         addBiome(TropicraftBiomes.OSA_RAINFOREST);
+        addBiome(TropicraftBiomes.TROPICAL_PEAKS);
 
         // MISC
         

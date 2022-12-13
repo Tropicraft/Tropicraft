@@ -135,6 +135,11 @@ public class TropicraftBlocks {
     public static final RegistryObject<LeavesBlock> LIME_LEAVES = register("lime_leaves", Builder.leaves(true));
     public static final RegistryObject<LeavesBlock> ORANGE_LEAVES = register("orange_leaves", Builder.leaves(true));
     public static final RegistryObject<LeavesBlock> PAPAYA_LEAVES = register("papaya_leaves", Builder.leaves(false));
+    public static final RegistryObject<LeavesBlock> WHITE_FLOWERING_LEAVES = register("white_flowering_leaves", Builder.leaves(true));
+    public static final RegistryObject<LeavesBlock> RED_FLOWERING_LEAVES = register("red_flowering_leaves", Builder.leaves(true));
+    public static final RegistryObject<LeavesBlock> BLUE_FLOWERING_LEAVES = register("blue_flowering_leaves", Builder.leaves(true));
+    public static final RegistryObject<LeavesBlock> PURPLE_FLOWERING_LEAVES = register("purple_flowering_leaves", Builder.leaves(true));
+    public static final RegistryObject<LeavesBlock> YELLOW_FLOWERING_LEAVES = register("yellow_flowering_leaves", Builder.leaves(true));
 
     public static final RegistryObject<SaplingBlock> GRAPEFRUIT_SAPLING = register("grapefruit_sapling", Builder.sapling(TropicraftTrees.GRAPEFRUIT));
     public static final RegistryObject<SaplingBlock> LEMON_SAPLING = register("lemon_sapling", Builder.sapling(TropicraftTrees.LEMON));
@@ -272,6 +277,94 @@ public class TropicraftBlocks {
             "golden_leather_fern", // TODO: update name before release
             () -> new HugePlantBlock(Block.Properties.of(Material.PLANT).noOcclusion().noCollission().instabreak().sound(SoundType.GRASS))
                     .setPickItem(() -> TropicraftBlocks.GOLDEN_LEATHER_FERN)
+    );
+
+    // Short and tall seagrass
+
+    public static final RegistryObject<CustomSeagrassBlock> EEL_GRASS = register(
+            "eel_grass",
+            () -> new CustomSeagrassBlock(Block.Properties.copy(Blocks.SEAGRASS), "Enhalus acoroides", () -> TropicraftBlocks.TALL_EEL_GRASS)
+    );
+
+    public static final RegistryObject<CustomTallSeagrassBlock> TALL_EEL_GRASS = registerNoItem(
+            "tall_eel_grass",
+            () -> new CustomTallSeagrassBlock(Block.Properties.copy(Blocks.SEAGRASS), "Enhalus acoroides", EEL_GRASS::get)
+    );
+
+    public static final RegistryObject<CustomSeagrassBlock> FLOWERING_EEL_GRASS = register(
+            "flowering_eel_grass",
+            () -> new CustomSeagrassBlock(Block.Properties.copy(Blocks.SEAGRASS), "Enhalus acoroides", () -> TropicraftBlocks.FLOWERING_TALL_EEL_GRASS)
+    );
+
+    public static final RegistryObject<CustomTallSeagrassBlock> FLOWERING_TALL_EEL_GRASS = registerNoItem(
+            "flowering_tall_eel_grass",
+            () -> new CustomTallSeagrassBlock(Block.Properties.copy(Blocks.SEAGRASS), "Enhalus acoroides", FLOWERING_EEL_GRASS::get)
+    );
+
+    public static final RegistryObject<Block> MATTED_EEL_GRASS = register(
+            "matted_eel_grass",
+            () -> new ScientificNameBlock(Block.Properties.copy(Blocks.SAND), "Enhalus acoroides")
+    );
+
+    public static final RegistryObject<Block> EEL_GRASS_BLOCK = register(
+            "eel_grass_block",
+            () -> new ScientificNameBlock(Block.Properties.copy(Blocks.SAND), "Enhalus acoroides")
+    );
+
+    public static final RegistryObject<CustomSeagrassBlock> FERN_SEAGRASS = register(
+            "fern_seagrass",
+            () -> new CustomSeagrassBlock(Block.Properties.copy(Blocks.SEAGRASS), "Halophila spinulosa", () -> TropicraftBlocks.TALL_FERN_SEAGRASS)
+    );
+
+    public static final RegistryObject<CustomTallSeagrassBlock> TALL_FERN_SEAGRASS = registerNoItem(
+            "tall_fern_seagrass",
+            () -> new CustomTallSeagrassBlock(Block.Properties.copy(Blocks.SEAGRASS), "Halophila spinulosa", FERN_SEAGRASS::get)
+    );
+
+    public static final RegistryObject<Block> MATTED_FERN_SEAGRASS = register(
+            "matted_fern_seagrass",
+            () -> new ScientificNameBlock(Block.Properties.copy(Blocks.SAND), "Halophila spinulosa")
+    );
+
+    public static final RegistryObject<Block> FERN_SEAGRASS_BLOCK = register(
+            "fern_seagrass_block",
+            () -> new ScientificNameBlock(Block.Properties.copy(Blocks.SAND), "Halophila spinulosa")
+    );
+
+    public static final RegistryObject<CustomSeagrassBlock> SICKLE_SEAGRASS = register(
+            "sickle_seagrass",
+            () -> new CustomSeagrassBlock(Block.Properties.copy(Blocks.SEAGRASS), "Thalassodendron ciliatum", () -> TropicraftBlocks.TALL_SICKLE_SEAGRASS)
+    );
+
+    public static final RegistryObject<CustomTallSeagrassBlock> TALL_SICKLE_SEAGRASS = registerNoItem(
+            "tall_sickle_seagrass",
+            () -> new CustomTallSeagrassBlock(Block.Properties.copy(Blocks.SEAGRASS), "Thalassodendron ciliatum", SICKLE_SEAGRASS::get)
+    );
+
+    public static final RegistryObject<Block> MATTED_SICKLE_SEAGRASS = register(
+            "matted_sickle_seagrass",
+            () -> new ScientificNameBlock(Block.Properties.copy(Blocks.SAND), "Thalassodendron ciliatum")
+    );
+
+    public static final RegistryObject<Block> SICKLE_SEAGRASS_BLOCK = register(
+            "sickle_seagrass_block",
+            () -> new ScientificNameBlock(Block.Properties.copy(Blocks.SAND), "Thalassodendron ciliatum")
+    );
+
+    // Short only seagrass
+    public static final RegistryObject<CustomSeagrassBlock> NOODLE_SEAGRASS = register(
+            "noodle_seagrass",
+            () -> new CustomSeagrassBlock(Block.Properties.copy(Blocks.SEAGRASS), "Syringodium isoetifolium", null)
+    );
+
+    public static final RegistryObject<Block> MATTED_NOODLE_SEAGRASS = register(
+            "matted_noodle_seagrass",
+            () -> new ScientificNameBlock(Block.Properties.copy(Blocks.SAND), "Syringodium isoetifolium")
+    );
+
+    public static final RegistryObject<Block> NOODLE_SEAGRASS_BLOCK = register(
+            "noodle_seagrass_block",
+            () -> new ScientificNameBlock(Block.Properties.copy(Blocks.SAND), "Syringodium isoetifolium")
     );
 
     @SuppressWarnings("unchecked")

@@ -13,7 +13,7 @@
       <img src="http://cf.way2muchnoise.eu/short_tropicraft.svg" alt="Minecraft Version">
   </a>
   <br>
-  <strong><a href="https://tropicraft.net/">Website</a> | <a href="https://www.minecraftforum.net/topic/533512">Minecraft Forum Thread</a> </strong>
+  <strong><a href="https://tropicraft.net/">Website</a> | <a rel="me" href="https://craftodon.social/@tropicraft">Mastodon</a> | <a href="https://www.minecraftforum.net/topic/533512">Minecraft Forum Thread</a> </strong>
 </p>   
    
       

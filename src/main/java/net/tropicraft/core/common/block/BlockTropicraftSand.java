@@ -5,9 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.FallingBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -39,7 +37,7 @@ public class BlockTropicraftSand extends FallingBlock {
         BlockState plant = plantable.getPlant(world, pos.relative(facing));
         PlantType type = plantable.getPlantType(world, pos.relative(facing));
 
-        if (plant.is(Blocks.SEAGRASS) || plant.is(Blocks.TALL_SEAGRASS)) {
+        if (plant.getBlock() instanceof SeagrassBlock || plant.getBlock() instanceof TallSeagrassBlock) {
             return true;
         }
 

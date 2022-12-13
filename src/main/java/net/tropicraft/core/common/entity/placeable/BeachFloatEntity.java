@@ -55,7 +55,6 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
 
     public BeachFloatEntity(EntityType<BeachFloatEntity> type, Level worldIn) {
         super(type, worldIn, TropicraftItems.BEACH_FLOATS);
-        this.noCulling = true;
         this.isEmpty = true;
         this.blocksBuilding = true;
         setId(this.getId());
@@ -363,5 +362,10 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
     @Override
     public ItemStack getPickedResult(HitResult target) {
         return new ItemStack(TropicraftItems.BEACH_FLOATS.get(DyeColor.byId(getColor().getId())).get());
+    }
+
+    @Override
+    public AABB getBoundingBoxForCulling() {
+        return getBoundingBox().inflate(0.1, 0.1, 0.1);
     }
 }
