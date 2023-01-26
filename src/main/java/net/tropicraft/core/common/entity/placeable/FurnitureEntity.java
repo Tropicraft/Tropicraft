@@ -36,7 +36,7 @@ public abstract class FurnitureEntity extends Entity {
     private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(FurnitureEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Integer> FORWARD_DIRECTION = SynchedEntityData.defineId(FurnitureEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> TIME_SINCE_HIT = SynchedEntityData.defineId(FurnitureEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> INVULNERABLE = SynchedEntityData.defineId(FurnitureEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> GLUED_DOWN = SynchedEntityData.defineId(FurnitureEntity.class, EntityDataSerializers.BOOLEAN);
     
     private static final int DAMAGE_THRESHOLD = 40;
     
@@ -64,7 +64,7 @@ public abstract class FurnitureEntity extends Entity {
 
     @Override
     public boolean isInvulnerableTo(DamageSource pSource) {
-        return entityData.get(INVULNERABLE) || super.isInvulnerableTo(pSource);
+        return entityData.get(GLUED_DOWN) || super.isInvulnerableTo(pSource);
     }
 
     public void setRotation(float yaw) {
@@ -83,7 +83,7 @@ public abstract class FurnitureEntity extends Entity {
         this.getEntityData().define(DAMAGE, (float) 0);
         this.getEntityData().define(FORWARD_DIRECTION, 1);
         this.getEntityData().define(TIME_SINCE_HIT, 0);
-        this.getEntityData().define(INVULNERABLE, false);
+        this.getEntityData().define(GLUED_DOWN, false);
     }
 
     @Override
@@ -172,8 +172,8 @@ public abstract class FurnitureEntity extends Entity {
     public InteractionResult invulnerablityCheck(Player pPlayer, InteractionHand pHand){
         if(pPlayer.getItemInHand(pHand).is(Items.DEBUG_STICK)){
             if(!this.level.isClientSide) {
-                this.entityData.set(INVULNERABLE, !this.entityData.get(INVULNERABLE));
-                ((ServerPlayer)pPlayer).sendMessage(new TranslatableComponent("Invulnerability Mode: " + (this.entityData.get(INVULNERABLE) ? "On" : "Off")), ChatType.GAME_INFO, Util.NIL_UUID);
+                this.entityData.set(GLUED_DOWN, !this.entityData.get(GLUED_DOWN));
+                ((ServerPlayer)pPlayer).sendMessage(new TranslatableComponent("Invulnerability Mode: " + (this.entityData.get(GLUED_DOWN) ? "On" : "Off")), ChatType.GAME_INFO, Util.NIL_UUID);
             }
 
             return InteractionResult.SUCCESS;
@@ -252,8 +252,8 @@ public abstract class FurnitureEntity extends Entity {
     protected void readAdditionalSaveData(CompoundTag nbt) {
         setColor(DyeColor.byId(nbt.getInt("Color")));
 
-        if(nbt.contains("Invulnerable")){
-            entityData.set(INVULNERABLE, nbt.getBoolean("Invulnerable"));
+        if(nbt.contains("GluedDown")){
+            entityData.set(GLUED_DOWN, nbt.getBoolean("GluedDown"));
         }
     }
 
@@ -261,7 +261,7 @@ public abstract class FurnitureEntity extends Entity {
     protected void addAdditionalSaveData(CompoundTag nbt) {
         nbt.putInt("Color", getColor().ordinal());
 
-        nbt.putBoolean("Invulnerable", entityData.get(INVULNERABLE));
+        nbt.putBoolean("GluedDown", entityData.get(GLUED_DOWN));
     }
 
     public void setColor(DyeColor color) {
