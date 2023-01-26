@@ -183,7 +183,9 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
 
     @Override
     public InteractionResult interact(Player player, InteractionHand hand) {
-        if (!this.level.isClientSide && !player.isShiftKeyDown()) {
+        if(invulnerablityCheck(player, hand) == InteractionResult.SUCCESS) {
+            return InteractionResult.SUCCESS;
+        } else if (!this.level.isClientSide && !player.isShiftKeyDown()) {
             player.startRiding(this);
             return InteractionResult.SUCCESS;
         }
