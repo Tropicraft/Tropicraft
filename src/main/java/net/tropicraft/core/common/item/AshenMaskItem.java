@@ -70,7 +70,7 @@ public class AshenMaskItem extends ArmorItem {
     }
 
     @OnlyIn(Dist.CLIENT)
-    @Nullable
+    // @Nullable // IDE was screaming at me about this
     @Override
     public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.IItemRenderProperties> consumer) {
         consumer.accept(new IItemRenderProperties() {
