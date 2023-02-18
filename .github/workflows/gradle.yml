@@ -23,13 +23,17 @@ jobs:
       uses: gradle/gradle-build-action@v2
       with:
         arguments: build
-
+        
     - name: Locate built JARfile
       id: jar
-      run: echo "##[set-output name=jarfile;]$(ls -1 build/libs/)"
+      run: echo "jarfile=$(find build/libs/ -name "*.jar" -not -name "*slim*" -not -name "*source*")" >> $GITHUB_OUTPUT
+
+    - name: Set Artifact name
+      id: jarname
+      run: echo "jarname=$(find build/libs/ -name "*.jar" -not -name "*slim*" -not -name "*source*" | sed 's:.*/::')" >> $GITHUB_OUTPUT
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2.2.3
       with:
-          name: ${{ steps.jar.outputs.jarfile }}
-          path: build/libs/${{ steps.jar.outputs.jarfile }}
+          name: ${{ steps.jarname.outputs.jarname }}
+          path: ${{ steps.jar.outputs.jarfile }}
