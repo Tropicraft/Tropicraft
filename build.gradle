@@ -19,6 +19,8 @@ apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'eclipse'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
+jarJar.enable()
+
 group = 'net.tropicraft'
 archivesBaseName = 'Tropicraft'
 
@@ -105,15 +107,24 @@ sourceSets.main.resources {
 }
 
 repositories {
+    maven {
+        url "https://maven.tterrag.com/"
+    }
 	mavenLocal()
 }
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
+    jarJar(implementation(fg.deobf("com.tterrag.registrate:Registrate:MC${minecraft_version}-${registrate_version}"))) {
+        jarJar.ranged(it, "[MC${minecraft_version}-${registrate_version},MC1.19)")
+    }
+
     if (System.getProperty("idea.sync.active") != "true") {
         annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     }
+
+    jarJar(group: 'com.tterrag.registrate', name: 'Registrate', version: "[MC1.18.2,MC1.19)")
 }
 
 jar {
@@ -129,6 +140,20 @@ jar {
             "MixinConfigs": "tropicraft.mixins.json"
         ])
     }
+    
+    classifier 'slim'
+}
+
+
+tasks.jarJar.configure {
+    // remove '-all' from jarJar jar file
+    classifier ''
+    finalizedBy('reobfJarJar')
+}
+
+
+reobf {
+    jarJar { }
 }
 
 tasks.curseforge.enabled = !dev && project.hasProperty('cojo_curseforge_key')
