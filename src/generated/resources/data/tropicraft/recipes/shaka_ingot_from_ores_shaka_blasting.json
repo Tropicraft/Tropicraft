@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "tag": "forge:ores/shaka"
+  },
+  "result": "tropicraft:shaka_ingot",
+  "experience": 0.5,
+  "cookingtime": 100
+}

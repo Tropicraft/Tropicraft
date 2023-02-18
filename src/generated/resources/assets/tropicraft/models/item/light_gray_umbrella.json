@@ -1,3 +1,7 @@
 {
-  "parent": "tropicraft:item/umbrella"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "tropicraft:item/umbrella",
+    "layer1": "tropicraft:item/umbrella_inverted"
+  }
 }

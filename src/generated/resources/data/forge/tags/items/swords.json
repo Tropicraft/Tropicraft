@@ -7,8 +7,8 @@
     "minecraft:golden_sword",
     "minecraft:diamond_sword",
     "minecraft:netherite_sword",
-    "tropicraft:eudialyte_sword",
     "tropicraft:zircon_sword",
-    "tropicraft:zirconium_sword"
+    "tropicraft:zirconium_sword",
+    "tropicraft:eudialyte_sword"
   ]
 }

@@ -1,3 +1,6 @@
 {
-  "parent": "tropicraft:block/chunk_wall_inventory"
+  "parent": "minecraft:block/wall_inventory",
+  "textures": {
+    "wall": "tropicraft:block/chunk"
+  }
 }

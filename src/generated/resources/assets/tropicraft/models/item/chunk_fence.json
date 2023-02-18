@@ -1,3 +1,6 @@
 {
-  "parent": "tropicraft:block/chunk_fence_inventory"
+  "parent": "minecraft:block/fence_inventory",
+  "textures": {
+    "texture": "tropicraft:block/chunk"
+  }
 }

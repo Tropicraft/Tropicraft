@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
-    "#tropicraft:leaves"
+    "tropicraft:mahogany_leaves",
+    "tropicraft:palm_leaves",
+    "tropicraft:papaya_leaves"
   ]
 }

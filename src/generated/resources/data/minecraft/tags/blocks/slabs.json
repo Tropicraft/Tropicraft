@@ -1,6 +1,6 @@
 {
   "replace": false,
   "values": [
-    "#tropicraft:slabs"
+    "tropicraft:chunk_slab"
   ]
 }

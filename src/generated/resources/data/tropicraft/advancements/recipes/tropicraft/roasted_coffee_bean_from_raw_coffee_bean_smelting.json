@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tropicraft:roasted_coffee_bean_from_raw_coffee_bean_smelting"
+    ]
+  },
+  "criteria": {
+    "has_raw_coffee_bean": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tropicraft:raw_coffee_bean"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tropicraft:roasted_coffee_bean_from_raw_coffee_bean_smelting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_raw_coffee_bean",
+      "has_the_recipe"
+    ]
+  ]
+}

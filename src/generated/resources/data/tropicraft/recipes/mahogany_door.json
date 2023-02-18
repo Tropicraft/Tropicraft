@@ -2,9 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "group": "wooden_door",
   "pattern": [
-    "XX",
-    "XX",
-    "XX"
+    "XXX",
+    "XXX"
   ],
   "key": {
     "X": {
@@ -13,6 +12,6 @@
   },
   "result": {
     "item": "tropicraft:mahogany_door",
-    "count": 3
+    "count": 2
   }
 }

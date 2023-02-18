@@ -1,3 +1,6 @@
 {
-  "parent": "tropicraft:block/bamboo_fence_inventory"
+  "parent": "minecraft:block/fence_inventory",
+  "textures": {
+    "texture": "tropicraft:block/bamboo_side"
+  }
 }

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tropicraft:eudialyte_gem_from_ores_eudialyte_smelting"
+    ]
+  },
+  "criteria": {
+    "has_ores_eudialyte": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:ores/eudialyte"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tropicraft:eudialyte_gem_from_ores_eudialyte_smelting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_ores_eudialyte",
+      "has_the_recipe"
+    ]
+  ]
+}

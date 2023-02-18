@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "ingredient": {
+    "item": "tropicraft:raw_ray"
+  },
+  "result": "tropicraft:cooked_ray",
+  "experience": 0.15,
+  "cookingtime": 600
+}

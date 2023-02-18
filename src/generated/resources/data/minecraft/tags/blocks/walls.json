@@ -1,6 +1,6 @@
 {
   "replace": false,
   "values": [
-    "#tropicraft:walls"
+    "tropicraft:chunk_wall"
   ]
 }

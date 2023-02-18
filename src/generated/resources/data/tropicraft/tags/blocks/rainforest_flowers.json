@@ -1,15 +1,15 @@
 {
   "replace": false,
   "values": [
-    "tropicraft:magic_mushroom",
-    "tropicraft:crocosmia",
-    "tropicraft:commelina_diffusa",
-    "tropicraft:orchid",
     "tropicraft:anemone",
     "tropicraft:bromeliad",
     "tropicraft:canna",
-    "tropicraft:red_anthurium",
+    "tropicraft:commelina_diffusa",
+    "tropicraft:crocosmia",
     "tropicraft:dracaena",
-    "tropicraft:orange_anthurium"
+    "tropicraft:magic_mushroom",
+    "tropicraft:orange_anthurium",
+    "tropicraft:orchid",
+    "tropicraft:red_anthurium"
   ]
 }

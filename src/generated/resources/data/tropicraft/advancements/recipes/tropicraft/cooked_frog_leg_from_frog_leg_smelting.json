@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tropicraft:cooked_frog_leg_from_frog_leg_smelting"
+    ]
+  },
+  "criteria": {
+    "has_frog_leg": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tropicraft:frog_leg"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tropicraft:cooked_frog_leg_from_frog_leg_smelting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_frog_leg",
+      "has_the_recipe"
+    ]
+  ]
+}

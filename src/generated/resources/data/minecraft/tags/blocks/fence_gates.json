@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "tropicraft:mangrove_fence_gate",
+    "tropicraft:bamboo_fence_gate",
+    "tropicraft:thatch_fence_gate",
+    "tropicraft:chunk_fence_gate",
+    "tropicraft:palm_fence_gate",
+    "tropicraft:mahogany_fence_gate"
+  ]
+}

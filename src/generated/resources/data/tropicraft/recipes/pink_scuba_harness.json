@@ -10,7 +10,7 @@
       "item": "minecraft:pink_dye"
     },
     "Y": {
-      "tag": "tropicraft:leather"
+      "tag": "forge:leather"
     },
     "Z": {
       "item": "tropicraft:azurite_gem"
