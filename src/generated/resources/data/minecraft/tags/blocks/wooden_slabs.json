@@ -1,6 +1,10 @@
 {
   "replace": false,
   "values": [
-    "#tropicraft:wooden_slabs"
+    "tropicraft:bamboo_slab",
+    "tropicraft:thatch_slab",
+    "tropicraft:palm_slab",
+    "tropicraft:mahogany_slab",
+    "tropicraft:mangrove_slab"
   ]
 }

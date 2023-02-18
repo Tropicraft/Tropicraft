@@ -1,6 +1,6 @@
 {
   "replace": false,
   "values": [
-    "#tropicraft:stairs"
+    "tropicraft:chunk_stairs"
   ]
 }

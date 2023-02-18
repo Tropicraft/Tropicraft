@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tropicraft:toasted_nori_from_seagrass_campfire"
+    ]
+  },
+  "criteria": {
+    "has_seagrass": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:seagrass"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tropicraft:toasted_nori_from_seagrass_campfire"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_seagrass",
+      "has_the_recipe"
+    ]
+  ]
+}

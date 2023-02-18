@@ -6,13 +6,13 @@
     ]
   },
   "criteria": {
-    "has_pink_stained_glass_pane": {
+    "has_yellow_stained_glass_pane": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:pink_stained_glass_pane"
+              "minecraft:yellow_stained_glass_pane"
             ]
           }
         ]
@@ -27,7 +27,7 @@
   },
   "requirements": [
     [
-      "has_pink_stained_glass_pane",
+      "has_yellow_stained_glass_pane",
       "has_the_recipe"
     ]
   ]

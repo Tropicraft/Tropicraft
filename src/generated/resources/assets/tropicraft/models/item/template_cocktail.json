@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "tropicraft:item/cocktail",
-    "layer1": "tropicraft:item/cocktail_contents"
-  }
-}

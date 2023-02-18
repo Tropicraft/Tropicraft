@@ -1,11 +1,11 @@
 {
   "replace": false,
   "values": [
+    "tropicraft:anemone",
+    "tropicraft:commelina_diffusa",
+    "tropicraft:orange_anthurium",
     "tropicraft:orchid",
     "tropicraft:pathos",
-    "tropicraft:red_anthurium",
-    "tropicraft:commelina_diffusa",
-    "tropicraft:anemone",
-    "tropicraft:orange_anthurium"
+    "tropicraft:red_anthurium"
   ]
 }

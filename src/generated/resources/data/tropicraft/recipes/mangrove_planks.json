@@ -1,9 +1,18 @@
 {
   "type": "minecraft:crafting_shapeless",
+  "group": "planks",
   "ingredients": [
-    {
-      "tag": "tropicraft:mangrove_logs"
-    }
+    [
+      {
+        "item": "tropicraft:light_mangrove_log"
+      },
+      {
+        "item": "tropicraft:red_mangrove_log"
+      },
+      {
+        "item": "tropicraft:black_mangrove_log"
+      }
+    ]
   ],
   "result": {
     "item": "tropicraft:mangrove_planks",

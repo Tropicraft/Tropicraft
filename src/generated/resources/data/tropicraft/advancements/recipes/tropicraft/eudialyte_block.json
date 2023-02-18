@@ -6,7 +6,7 @@
     ]
   },
   "criteria": {
-    "has_at_least_9_eudialyte_gem": {
+    "has_eudialyte_gem": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -27,7 +27,7 @@
   },
   "requirements": [
     [
-      "has_at_least_9_eudialyte_gem",
+      "has_eudialyte_gem",
       "has_the_recipe"
     ]
   ]

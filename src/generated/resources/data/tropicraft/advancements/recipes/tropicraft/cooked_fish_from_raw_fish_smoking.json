@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tropicraft:cooked_fish_from_raw_fish_smoking"
+    ]
+  },
+  "criteria": {
+    "has_raw_fish": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tropicraft:raw_fish"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tropicraft:cooked_fish_from_raw_fish_smoking"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_raw_fish",
+      "has_the_recipe"
+    ]
+  ]
+}

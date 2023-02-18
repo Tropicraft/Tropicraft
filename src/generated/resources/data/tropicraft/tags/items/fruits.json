@@ -2,9 +2,9 @@
   "replace": false,
   "values": [
     "minecraft:apple",
-    "tropicraft:grapefruit",
     "tropicraft:lemon",
     "tropicraft:lime",
+    "tropicraft:grapefruit",
     "tropicraft:orange"
   ]
 }

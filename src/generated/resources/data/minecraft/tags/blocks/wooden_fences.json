@@ -1,6 +1,11 @@
 {
   "replace": false,
   "values": [
-    "#tropicraft:wooden_fences"
+    "tropicraft:mangrove_fence",
+    "tropicraft:bamboo_fence",
+    "tropicraft:thatch_fence",
+    "tropicraft:chunk_fence",
+    "tropicraft:palm_fence",
+    "tropicraft:mahogany_fence"
   ]
 }
