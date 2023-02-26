@@ -198,8 +198,8 @@ public class TropicraftFeatures {
             return List.of(count, InSquarePlacement.spread(), height, BiomeFilter.biome());
         }
 
-        public List<PlacementModifier> commonOrePlacement(int rarity, PlacementModifier height) {
-            return orePlacement(CountPlacement.of(rarity), height);
+        public List<PlacementModifier> commonOrePlacement(int count, PlacementModifier height) {
+            return orePlacement(CountPlacement.of(count), height);
         }
     }
 }

@@ -26,30 +26,29 @@ public final class TropicraftMiscPlacements {
             BiomeFilter.biome()
     ));
 
-    // TODO 1.18 decide ore placements in 1.18
-    public static final RegistryObject<PlacedFeature> AZURITE = REGISTER.placed("azurite", TropicraftMiscFeatures.AZURITE, () -> REGISTER.rareOrePlacement(
-            3,
-            HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-80), VerticalAnchor.aboveBottom(80))
+    public static final RegistryObject<PlacedFeature> AZURITE = REGISTER.placed("azurite", TropicraftMiscFeatures.AZURITE, () -> REGISTER.commonOrePlacement(
+            4,
+            HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-20), VerticalAnchor.belowTop(80))
     ));
 
-    public static final RegistryObject<PlacedFeature> EUDIALYTE = REGISTER.placed("eudialyte", TropicraftMiscFeatures.EUDIALYTE, () -> REGISTER.rareOrePlacement(
-            10,
-            HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-80), VerticalAnchor.aboveBottom(80))
-    ));
-
-    public static final RegistryObject<PlacedFeature> ZIRCON = REGISTER.placed("zircon", TropicraftMiscFeatures.ZIRCON, () -> REGISTER.rareOrePlacement(
-            15,
-            HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-80), VerticalAnchor.aboveBottom(80))
-    ));
-
-    public static final RegistryObject<PlacedFeature> MANGANESE = REGISTER.placed("manganese", TropicraftMiscFeatures.MANGANESE, () -> REGISTER.rareOrePlacement(
-            8,
-            HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(-16), VerticalAnchor.aboveBottom(32))
-    ));
-
-    public static final RegistryObject<PlacedFeature> SHAKA = REGISTER.placed("shaka", TropicraftMiscFeatures.SHAKA, () -> REGISTER.rareOrePlacement(
+    public static final RegistryObject<PlacedFeature> EUDIALYTE = REGISTER.placed("eudialyte", TropicraftMiscFeatures.EUDIALYTE, () -> REGISTER.commonOrePlacement(
             6,
-            HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(-16), VerticalAnchor.aboveBottom(32))
+            HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-20), VerticalAnchor.belowTop(80))
+    ));
+
+    public static final RegistryObject<PlacedFeature> ZIRCON = REGISTER.placed("zircon", TropicraftMiscFeatures.ZIRCON, () -> REGISTER.commonOrePlacement(
+            10,
+            HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-20), VerticalAnchor.belowTop(80))
+    ));
+
+    public static final RegistryObject<PlacedFeature> MANGANESE = REGISTER.placed("manganese", TropicraftMiscFeatures.MANGANESE, () -> REGISTER.commonOrePlacement(
+            8,
+            HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(8), VerticalAnchor.belowTop(32))
+    ));
+
+    public static final RegistryObject<PlacedFeature> SHAKA = REGISTER.placed("shaka", TropicraftMiscFeatures.SHAKA, () -> REGISTER.commonOrePlacement(
+            6,
+            HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(8), VerticalAnchor.belowTop(32))
     ));
 
     public static void addMudDisks(BiomeGenerationSettings.Builder generation) {

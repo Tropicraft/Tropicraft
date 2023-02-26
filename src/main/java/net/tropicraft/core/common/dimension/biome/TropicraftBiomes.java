@@ -462,6 +462,7 @@ public final class TropicraftBiomes {
 
         BiomeDefaultFeatures.addDefaultCrystalFormations(generation);
         BiomeDefaultFeatures.addDefaultUndergroundVariety(generation);
+        BiomeDefaultFeatures.addDefaultOres(generation);
 
         return generation;
     }
