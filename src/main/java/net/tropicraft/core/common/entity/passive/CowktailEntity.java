@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.entity.passive;
 
+import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -69,7 +70,7 @@ public class CowktailEntity extends Cow implements IForgeShearable {
 				itemstack.shrink(1);
 			}
 
-			final List<RegistryObject<CocktailItem>> cocktails = new ArrayList<>(TropicraftItems.COCKTAILS.values());
+			final List<RegistryEntry<CocktailItem>> cocktails = new ArrayList<>(TropicraftItems.COCKTAILS.values());
 			// Remove generic cocktail from cowktail
 			cocktails.removeIf(cocktail -> cocktail.isPresent() && cocktail.get().getDrink() == Drink.COCKTAIL);
 			final ItemStack cocktailItem = new ItemStack(cocktails.get(random.nextInt(cocktails.size())).get());

@@ -1,5 +1,7 @@
 package net.tropicraft.core.client;
 
+import com.tterrag.registrate.util.entry.ItemEntry;
+import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraft.client.model.CowModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
@@ -124,9 +126,9 @@ public class TropicraftRenderLayers {
         WHITE_LIPPED_PECCARY_LAYER = registerMain("white_lipped_peccary", WhiteLippedPeccaryModel::create, event);
 
         //ArrayList<MaskArmorProvider> MASK_PROVIDER = new ArrayList<>();
-        final List<RegistryObject<AshenMaskItem>> masks = TropicraftItems.ASHEN_MASKS.values().asList();
+        final List<ItemEntry<AshenMaskItem>> masks = TropicraftItems.ASHEN_MASKS.values().asList();
 
-        for (RegistryObject<AshenMaskItem> maskItem : masks) {
+        for (ItemEntry<AshenMaskItem> maskItem : masks) {
             ModelLayerLocation ashen_mask_layer = registerMain("ashen_mask_" + maskItem.get().getMaskType().name().toLowerCase(Locale.ROOT), PlayerHeadpieceModel::create, event);
             ASHEN_MASK_LAYERS.add(ashen_mask_layer);
         }

@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.dimension.feature;
 
+import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
@@ -36,15 +37,15 @@ public final class TropicraftTreePlacements {
 
     public static final RegistryObject<PlacedFeature> LIGHT_MANGROVES_CHECKED = REGISTER.randomChecked("light_mangroves", TALL_MANGROVE_CHECKED, TEA_MANGROVE_CHECKED, BLACK_MANGROVE_CHECKED);
 
-    private static List<PlacementModifier> checkTree(RegistryObject<? extends Block> sapling) {
+    private static List<PlacementModifier> checkTree(RegistryEntry<? extends Block> sapling) {
         return List.of(saplingFilter(sapling));
     }
 
-    private static List<PlacementModifier> checkMangrove(RegistryObject<? extends Block> sapling, int maxWaterDepth) {
+    private static List<PlacementModifier> checkMangrove(RegistryEntry<? extends Block> sapling, int maxWaterDepth) {
         return List.of(SurfaceWaterDepthFilter.forMaxDepth(maxWaterDepth), saplingFilter(sapling));
     }
 
-    private static BlockPredicateFilter saplingFilter(RegistryObject<? extends Block> sapling) {
+    private static BlockPredicateFilter saplingFilter(RegistryEntry<? extends Block> sapling) {
         return BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(sapling.get().defaultBlockState(), BlockPos.ZERO));
     }
 }

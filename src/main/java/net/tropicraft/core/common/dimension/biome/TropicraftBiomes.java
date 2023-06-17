@@ -1,6 +1,9 @@
 package net.tropicraft.core.common.dimension.biome;
 
 import com.google.common.collect.ImmutableList;
+import com.tterrag.registrate.Registrate;
+import com.tterrag.registrate.providers.ProviderType;
+import com.tterrag.registrate.providers.RegistrateLangProvider;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
@@ -29,22 +32,42 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.dimension.carver.TropicraftConfiguredCarvers;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
 import net.tropicraft.core.common.dimension.feature.TropicraftMiscPlacements;
-import net.tropicraft.core.common.dimension.feature.TropicraftVegetationFeatures;
 import net.tropicraft.core.common.dimension.feature.TropicraftVegetationPlacements;
 import net.tropicraft.core.common.dimension.feature.tree.PalmTreeFeature;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import static net.minecraft.data.worldgen.placement.VegetationPlacements.TREE_THRESHOLD;
 
 @Mod.EventBusSubscriber(modid = Constants.MODID)
 public final class TropicraftBiomes {
+    public static final Registrate REGISTRATE = Tropicraft.registrate();
+
     public static final DeferredRegister<Biome> REGISTER = DeferredRegister.create(Registry.BIOME_REGISTRY, Constants.MODID);
+
+    static {
+        REGISTRATE.addDataGenerator(ProviderType.LANG, prov -> {
+            final Consumer<String> register = name -> prov.add("biome." + Constants.MODID + "." + name, RegistrateLangProvider.toEnglishName(name));
+            register.accept("tropics");
+            register.accept("beach");
+            register.accept("rainforest");
+            register.accept("bamboo_rainforest");
+            register.accept("osa_rainforest");
+            register.accept("ocean");
+            register.accept("kelp_forest");
+            register.accept("river");
+            register.accept("mangroves");
+            register.accept("overgrown_mangroves");
+            register.accept("tropical_peaks");
+        });
+    }
 
     public static final int TROPICS_WATER_COLOR = 0x4eecdf;
     public static final int TROPICS_WATER_FOG_COLOR = 0x041f33;
@@ -473,10 +496,10 @@ public final class TropicraftBiomes {
         spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.PARROT, 15, 1, 2));
         spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TropicraftEntities.V_MONKEY.get(), 15, 1, 3));
         spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TropicraftEntities.IGUANA.get(), 15, 4, 4));
-        spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TropicraftEntities.TROPI_CREEPER.get(), 4, 1, 2));
+        spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TropicraftEntities.TROPICREEPER.get(), 4, 1, 2));
         spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TropicraftEntities.EIH.get(), 5, 1, 1));
 
-        spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TropicraftEntities.TROPI_SKELLY.get(), 8, 2, 4));
+        spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TropicraftEntities.TROPISKELLY.get(), 8, 2, 4));
         spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TropicraftEntities.TROPI_SPIDER.get(), 8, 2, 2));
 
         return spawns;

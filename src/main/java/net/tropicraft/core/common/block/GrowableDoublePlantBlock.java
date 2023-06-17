@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.block;
 
+import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
@@ -14,7 +15,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.registries.RegistryObject;
 import net.tropicraft.core.common.block.huge_plant.HugePlantBlock;
 
 import java.util.Collections;
@@ -23,15 +23,15 @@ import java.util.Random;
 import java.util.function.Supplier;
 
 public final class GrowableDoublePlantBlock extends DoublePlantBlock implements BonemealableBlock {
-    private final Supplier<RegistryObject<HugePlantBlock>> growInto;
-    private Supplier<RegistryObject<? extends ItemLike>> pickItem;
+    private final Supplier<RegistryEntry<HugePlantBlock>> growInto;
+    private Supplier<RegistryEntry<? extends ItemLike>> pickItem;
 
-    public GrowableDoublePlantBlock(Properties properties, Supplier<RegistryObject<HugePlantBlock>> growInto) {
+    public GrowableDoublePlantBlock(Properties properties, Supplier<RegistryEntry<HugePlantBlock>> growInto) {
         super(properties);
         this.growInto = growInto;
     }
 
-    public GrowableDoublePlantBlock setPickItem(Supplier<RegistryObject<? extends ItemLike>> item) {
+    public GrowableDoublePlantBlock setPickItem(Supplier<RegistryEntry<? extends ItemLike>> item) {
         this.pickItem = item;
         return this;
     }

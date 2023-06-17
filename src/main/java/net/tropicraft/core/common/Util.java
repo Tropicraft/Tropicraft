@@ -274,12 +274,6 @@ public class Util {
         return rand.nextBoolean() ? rand.nextInt(i) : -(rand.nextInt(i));
     }
 
-    public static final String toEnglishName(String internalName) {
-        return Arrays.stream(internalName.toLowerCase(Locale.ROOT).split("_"))
-                .map(StringUtils::capitalize)
-                .collect(Collectors.joining(" "));
-    }
-
     // Returns the axis that a rotatable block should face based on a start and end position
     public static Direction.Axis getAxisBetween(BlockPos start, BlockPos end) {
         Direction.Axis axis = Direction.Axis.Y;

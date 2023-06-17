@@ -8,7 +8,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.tropicraft.core.common.block.tileentity.TropicraftBlockEntityTypes;
 import net.tropicraft.core.common.block.tileentity.VolcanoBlockEntity;
 
 import javax.annotation.Nullable;
@@ -22,12 +21,12 @@ public class VolcanoBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return createTickerHelper(type, TropicraftBlockEntityTypes.VOLCANO.get(), VolcanoBlockEntity::volcanoTick);
+        return createTickerHelper(type, TropicraftBlocks.VOLCANO_ENTITY.get(), VolcanoBlockEntity::volcanoTick);
     }
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new VolcanoBlockEntity(pos, state);
+        return new VolcanoBlockEntity(TropicraftBlocks.VOLCANO_ENTITY.get(), pos, state);
     }
 }

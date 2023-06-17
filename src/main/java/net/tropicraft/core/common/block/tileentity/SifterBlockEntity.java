@@ -6,12 +6,14 @@ import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.TropicraftTags;
@@ -43,8 +45,8 @@ public class SifterBlockEntity extends BlockEntity {
     @Nonnull
     private ItemStack siftItem = ItemStack.EMPTY;
 
-    public SifterBlockEntity(final BlockPos pos, final BlockState state) {
-        super(TropicraftBlockEntityTypes.SIFTER.get(), pos, state);
+    public SifterBlockEntity(final BlockEntityType<SifterBlockEntity> type, final BlockPos pos, final BlockState state) {
+        super(type, pos, state);
         rand = new Random();
         currentSiftTime = SIFT_TIME;
     }

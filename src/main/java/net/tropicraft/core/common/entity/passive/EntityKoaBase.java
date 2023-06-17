@@ -2,7 +2,7 @@ package net.tropicraft.core.common.entity.passive;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Sets;
+import com.tterrag.registrate.util.entry.ItemEntry;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.Minecraft;
@@ -59,7 +59,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.registries.RegistryObject;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.ai.*;
@@ -113,7 +112,7 @@ public class EntityKoaBase extends Villager {
 
     public int druggedTime = 0;
 
-    private static final Set<RegistryObject<Item>> TEMPTATION_ITEMS = Sets.newHashSet(TropicraftItems.NIGEL_STACHE);
+    private static final Set<ItemEntry<? extends Item>> TEMPTATION_ITEMS = Set.of(TropicraftItems.NIGEL_STACHE);
 
     private boolean isMating;
     private boolean isPlaying;
@@ -492,7 +491,7 @@ public class EntityKoaBase extends Villager {
 
     @Override
     public Villager getBreedOffspring(ServerLevel world, AgeableMob ageable) {
-        EntityKoaHunter child = new EntityKoaHunter(TropicraftEntities.KOA_HUNTER.get(), this.level);
+        EntityKoaHunter child = new EntityKoaHunter(TropicraftEntities.KOA.get(), this.level);
         child.finalizeSpawn(world, world.getCurrentDifficultyAt(child.blockPosition()), MobSpawnType.BREEDING, null, null);
         return child;
     }

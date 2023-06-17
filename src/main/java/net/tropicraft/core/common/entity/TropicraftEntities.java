@@ -1,25 +1,50 @@
 package net.tropicraft.core.common.entity;
 
+import com.tterrag.registrate.Registrate;
+import com.tterrag.registrate.providers.loot.RegistrateEntityLootTables;
+import com.tterrag.registrate.util.entry.RegistryEntry;
+import net.minecraft.Util;
+import net.minecraft.advancements.critereon.EntityFlagsPredicate;
+import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.critereon.NbtPredicate;
+import net.minecraft.client.renderer.entity.DolphinRenderer;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Material;
-import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.LootingEnchantFunction;
+import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
+import net.tropicraft.core.client.ClientSetup;
+import net.tropicraft.core.client.entity.render.*;
 import net.tropicraft.core.common.TropicraftTags;
+import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
-import net.tropicraft.core.common.entity.egg.*;
+import net.tropicraft.core.common.entity.egg.SeaTurtleEggEntity;
+import net.tropicraft.core.common.entity.egg.SeaUrchinEggEntity;
+import net.tropicraft.core.common.entity.egg.StarfishEggEntity;
+import net.tropicraft.core.common.entity.egg.TropiSpiderEggEntity;
 import net.tropicraft.core.common.entity.hostile.AshenEntity;
 import net.tropicraft.core.common.entity.hostile.TropiSkellyEntity;
 import net.tropicraft.core.common.entity.hostile.TropiSpiderEntity;
@@ -33,510 +58,497 @@ import net.tropicraft.core.common.entity.projectile.LavaBallEntity;
 import net.tropicraft.core.common.entity.projectile.PoisonBlotEntity;
 import net.tropicraft.core.common.entity.projectile.SpearEntity;
 import net.tropicraft.core.common.entity.underdasea.*;
+import net.tropicraft.core.common.item.RecordMusic;
+import net.tropicraft.core.common.item.TropicraftItems;
 
 import java.util.Random;
-import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(modid = Constants.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TropicraftEntities {
+    public static final Registrate REGISTRATE = Tropicraft.registrate();
 
     private static final float EGG_WIDTH = 0.4F;
     private static final float EGG_HEIGHT = 0.5F;
 
-    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, Constants.MODID);
-
-    public static final RegistryObject<EntityType<EntityKoaHunter>> KOA_HUNTER = register("koa", TropicraftEntities::koaHunter);
-    public static final RegistryObject<EntityType<TropiCreeperEntity>> TROPI_CREEPER = register("tropicreeper", TropicraftEntities::tropicreeper);
-    public static final RegistryObject<EntityType<IguanaEntity>> IGUANA = register("iguana", TropicraftEntities::iguana);
-    public static final RegistryObject<EntityType<UmbrellaEntity>> UMBRELLA = register("umbrella", TropicraftEntities::umbrella);
-    public static final RegistryObject<EntityType<ChairEntity>> CHAIR = register("chair", TropicraftEntities::chair);
-    public static final RegistryObject<EntityType<BeachFloatEntity>> BEACH_FLOAT = register("beach_float", TropicraftEntities::beachFloat);
-    public static final RegistryObject<EntityType<TropiSkellyEntity>> TROPI_SKELLY = register("tropiskelly", TropicraftEntities::tropiskelly);
-    public static final RegistryObject<EntityType<EIHEntity>> EIH = register("eih", TropicraftEntities::eih);
-    public static final RegistryObject<EntityType<WallItemEntity>> WALL_ITEM = register("wall_item", TropicraftEntities::wallItem);
-    public static final RegistryObject<EntityType<BambooItemFrame>> BAMBOO_ITEM_FRAME = register("bamboo_item_frame", TropicraftEntities::bambooItemFrame);
-    // TODO: Register again when volcano eruption is finished
-    public static final RegistryObject<EntityType<LavaBallEntity>> LAVA_BALL = null;//register("lava_ball", TropicraftEntities::lavaBall);
-    public static final RegistryObject<EntityType<SeaTurtleEntity>> SEA_TURTLE = register("turtle", TropicraftEntities::turtle);
-    public static final RegistryObject<EntityType<MarlinEntity>> MARLIN = register("marlin", TropicraftEntities::marlin);
-    public static final RegistryObject<EntityType<FailgullEntity>> FAILGULL = register("failgull", TropicraftEntities::failgull);
-    public static final RegistryObject<EntityType<TropicraftDolphinEntity>> DOLPHIN = register("dolphin", TropicraftEntities::dolphin);
-    public static final RegistryObject<EntityType<SeahorseEntity>> SEAHORSE = register("seahorse", TropicraftEntities::seahorse);
-    public static final RegistryObject<EntityType<PoisonBlotEntity>> POISON_BLOT = register("poison_blot", TropicraftEntities::poisonBlot);
-    public static final RegistryObject<EntityType<TreeFrogEntity>> TREE_FROG = register("tree_frog", TropicraftEntities::treeFrog);
-    public static final RegistryObject<EntityType<SeaUrchinEntity>> SEA_URCHIN = register("sea_urchin", TropicraftEntities::seaUrchin);
-    public static final RegistryObject<EntityType<SeaUrchinEggEntity>> SEA_URCHIN_EGG_ENTITY = register("sea_urchin_egg", TropicraftEntities::seaUrchinEgg);
-    public static final RegistryObject<EntityType<StarfishEntity>> STARFISH = register("starfish", TropicraftEntities::starfish);
-    public static final RegistryObject<EntityType<StarfishEggEntity>> STARFISH_EGG = register("starfish_egg", TropicraftEntities::starfishEgg);
-    public static final RegistryObject<EntityType<VMonkeyEntity>> V_MONKEY = register("v_monkey", TropicraftEntities::vervetMonkey);
-    public static final RegistryObject<EntityType<SardineEntity>> RIVER_SARDINE = register("sardine", TropicraftEntities::riverSardine);
-    public static final RegistryObject<EntityType<PiranhaEntity>> PIRANHA = register("piranha", TropicraftEntities::piranha);
-    public static final RegistryObject<EntityType<TropicraftTropicalFishEntity>> TROPICAL_FISH = register("tropical_fish", TropicraftEntities::tropicalFish);
-    public static final RegistryObject<EntityType<EagleRayEntity>> EAGLE_RAY = register("eagle_ray", TropicraftEntities::eagleRay);
-    public static final RegistryObject<EntityType<TropiSpiderEntity>> TROPI_SPIDER = register("tropi_spider", TropicraftEntities::tropiSpider);
-    public static final RegistryObject<EntityType<TropiSpiderEggEntity>> TROPI_SPIDER_EGG = register("tropi_spider_egg", TropicraftEntities::tropiSpiderEgg);
-    public static final RegistryObject<EntityType<AshenMaskEntity>> ASHEN_MASK = register("ashen_mask", TropicraftEntities::ashenMask);
-    public static final RegistryObject<EntityType<AshenEntity>> ASHEN = register("ashen", TropicraftEntities::ashen);
-    public static final RegistryObject<EntityType<ExplodingCoconutEntity>> EXPLODING_COCONUT = register("exploding_coconut", TropicraftEntities::explodingCoconut);
-    public static final RegistryObject<EntityType<SharkEntity>> HAMMERHEAD = register("hammerhead", TropicraftEntities::hammerhead);
-    public static final RegistryObject<EntityType<SeaTurtleEggEntity>> SEA_TURTLE_EGG = register("turtle_egg", TropicraftEntities::turtleEgg);
-    public static final RegistryObject<EntityType<TropiBeeEntity>> TROPI_BEE = register("tropibee", TropicraftEntities::tropiBee);
-    public static final RegistryObject<EntityType<CowktailEntity>> COWKTAIL = register("cowktail", TropicraftEntities::cowktail);
-    public static final RegistryObject<EntityType<ManOWarEntity>> MAN_O_WAR = register("man_o_war", TropicraftEntities::manOWar);
-    public static final RegistryObject<EntityType<TapirEntity>> TAPIR = register("tapir", TropicraftEntities::tapir);
-    public static final RegistryObject<EntityType<JaguarEntity>> JAGUAR = register("jaguar", TropicraftEntities::jaguar);
-    public static final RegistryObject<EntityType<BasiliskLizardEntity>> BROWN_BASILISK_LIZARD = register("brown_basilisk_lizard", TropicraftEntities::basiliskLizard);
-    public static final RegistryObject<EntityType<BasiliskLizardEntity>> GREEN_BASILISK_LIZARD = register("green_basilisk_lizard", TropicraftEntities::basiliskLizard);
-    public static final RegistryObject<EntityType<HummingbirdEntity>> HUMMINGBIRD = register("hummingbird", TropicraftEntities::hummingbird);
-    public static final RegistryObject<EntityType<FiddlerCrabEntity>> FIDDLER_CRAB = register("fiddler_crab", TropicraftEntities::fiddlerCrab);
-    public static final RegistryObject<EntityType<SpiderMonkeyEntity>> SPIDER_MONKEY = register("spider_monkey", TropicraftEntities::spiderMonkey);
-    public static final RegistryObject<EntityType<WhiteLippedPeccaryEntity>> WHITE_LIPPED_PECCARY = register("white_lipped_peccary", TropicraftEntities::whiteLippedPeccary);
-    public static final RegistryObject<EntityType<CuberaEntity>> CUBERA = register("cubera", TropicraftEntities::cubera);
-    public static final RegistryObject<EntityType<FishingBobberEntity>> FISHING_BOBBER = register("fishing_bobber", TropicraftEntities::fishingBobber);
-
-    public static final RegistryObject<EntityType<SpearEntity>> SPEAR = register("spear", TropicraftEntities::spear);
-
-
-    private static <E extends Entity, T extends EntityType<E>> RegistryObject<EntityType<E>> register(final String name, final Supplier<EntityType.Builder<E>> sup) {
-        return ENTITIES.register(name, () -> sup.get().build(name));
-    }
-
     // TODO review -- tracking range is in chunks...these values seem way too high
 
-    private static EntityType.Builder<CowktailEntity> cowktail() {
-        return EntityType.Builder.of(CowktailEntity::new, MobCategory.MONSTER)
-                .sized(0.9F, 1.4F)
-                .setTrackingRange(10)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(true);
-    }
+    public static final RegistryEntry<EntityType<EntityKoaHunter>> KOA = REGISTRATE.entity("koa", EntityKoaHunter::new, MobCategory.MISC)
+            .properties(b -> b.sized(0.6F, 1.95F)
+                    .setTrackingRange(8)
+                    .setUpdateInterval(3)
+                    .fireImmune()
+                    .setShouldReceiveVelocityUpdates(true))
+            .attributes(EntityKoaBase::createAttributes)
+            .spawnPlacement(SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canAnimalSpawn)
+            .renderer(() -> KoaRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<TropiCreeperEntity>> TROPICREEPER = REGISTRATE.entity("tropicreeper", TropiCreeperEntity::new, MobCategory.MONSTER)
+            .properties(b -> b.sized(0.6F, 1.7F)
+                    .setTrackingRange(8)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .attributes(TropiCreeperEntity::createAttributes)
+            .spawnPlacement(SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canAnimalSpawn)
+            .loot((lootTables, entity) -> lootTables.add(entity, LootTable.lootTable()
+                    .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TropicraftItems.MUSIC_DISCS.get(RecordMusic.EASTERN_ISLES).get()))
+                            .when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.KILLER,
+                                    EntityPredicate.Builder.entity().of(EntityTypeTags.SKELETONS))))))
+            .renderer(() -> TropiCreeperRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<IguanaEntity>> IGUANA = REGISTRATE.entity("iguana", IguanaEntity::new, MobCategory.MONSTER)
+            .properties(b -> b.sized(1.0F, 0.4F)
+                    .setTrackingRange(8)
+                    .setUpdateInterval(3)
+                    .fireImmune()
+                    .setShouldReceiveVelocityUpdates(true))
+            .attributes(IguanaEntity::createAttributes)
+            .spawnPlacement(SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canAnimalSpawn)
+            .loot((lootTables, entity) -> dropItemsWithEnchantBonus(lootTables, entity, TropicraftItems.IGUANA_LEATHER, TropicraftItems.SCALE, ConstantValue.exactly(3)))
+            .renderer(() -> IguanaRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<UmbrellaEntity>> UMBRELLA = REGISTRATE.entity("umbrella", UmbrellaEntity::new, MobCategory.MISC)
+            .properties(b -> b.sized(1.0F, 4.0F)
+                    .setTrackingRange(10)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(false))
+            .renderer(() -> UmbrellaRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<ChairEntity>> CHAIR = REGISTRATE.entity("chair", ChairEntity::new, MobCategory.MISC)
+            .properties(b -> b.sized(1.5F, 0.5F)
+                    .setTrackingRange(10)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(false))
+            .renderer(() -> ChairRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<BeachFloatEntity>> BEACH_FLOAT = REGISTRATE.entity("beach_float", BeachFloatEntity::new, MobCategory.MISC)
+            .properties(b -> b.sized(2F, 0.175F)
+                    .setTrackingRange(8)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(false))
+            .renderer(() -> BeachFloatRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<TropiSkellyEntity>> TROPISKELLY = REGISTRATE.entity("tropiskelly", TropiSkellyEntity::new, MobCategory.MONSTER)
+            .properties(b -> b.sized(0.7F, 1.95F)
+                    .setTrackingRange(8)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules)
+            .attributes(TropiSkellyEntity::createAttributes)
+            .loot(TropicraftEntities::noDrops)
+            .renderer(() -> TropiSkellyRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<EIHEntity>> EIH = REGISTRATE.entity("eih", EIHEntity::new, MobCategory.MONSTER)
+            .properties(b -> b.sized(1.2F, 3.25F)
+                    .setTrackingRange(8)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canAnimalSpawn)
+            .attributes(EIHEntity::createAttributes)
+            .loot((lootTables, entity) -> dropItemsWithEnchantBonus(lootTables, entity, TropicraftBlocks.CHUNK.get(), ConstantValue.exactly(3)))
+            .lang("Easter Island Head")
+            .renderer(() -> EIHRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<WallItemEntity>> WALL_ITEM = REGISTRATE.entity("wall_item", (EntityType.EntityFactory<WallItemEntity>) WallItemEntity::new, MobCategory.MISC)
+            .properties(b -> b.sized(0.5F, 0.5F)
+                    .setTrackingRange(8)
+                    .setUpdateInterval(Integer.MAX_VALUE)
+                    .setShouldReceiveVelocityUpdates(false))
+            .renderer(() -> WallItemRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<BambooItemFrame>> BAMBOO_ITEM_FRAME = REGISTRATE.entity("bamboo_item_frame", (EntityType.EntityFactory<BambooItemFrame>) BambooItemFrame::new, MobCategory.MISC)
+            .properties(b -> b.sized(0.5F, 0.5F)
+                    .setTrackingRange(8)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(false))
+            .renderer(() -> BambooItemFrameRenderer::new)
+            .register();
+    // TODO: Register again when volcano eruption is finished
+    public static final RegistryEntry<EntityType<LavaBallEntity>> LAVA_BALL = null;//register("lava_ball", TropicraftEntities::lavaBall);
+    public static final RegistryEntry<EntityType<SeaTurtleEntity>> SEA_TURTLE = REGISTRATE.entity("turtle", SeaTurtleEntity::new, MobCategory.WATER_CREATURE)
+            .properties(b -> b.sized(0.8F, 0.35F)
+                    .setTrackingRange(8)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, SeaTurtleEntity::canSpawnOnLand)
+            .attributes(SeaTurtleEntity::createAttributes)
+            .loot((lootTables, entity) -> dropItem(lootTables, entity, TropicraftItems.TURTLE_SHELL))
+            .renderer(() -> SeaTurtleRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<MarlinEntity>> MARLIN = REGISTRATE.entity("marlin", MarlinEntity::new, MobCategory.WATER_CREATURE)
+            .properties(b -> b.sized(1.4F, 0.95F)
+                    .setTrackingRange(8)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canSpawnOceanWaterMob)
+            .attributes(MarlinEntity::createAttributes)
+            .tag(EntityTypeTags.AXOLOTL_HUNT_TARGETS)
+            .loot((lootTables, entity) -> dropItemsWithEnchantBonus(lootTables, entity, TropicraftItems.FRESH_MARLIN, UniformGenerator.between(1, 3)))
+            .renderer(() -> MarlinRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<FailgullEntity>> FAILGULL = REGISTRATE.entity("failgull", FailgullEntity::new, MobCategory.AMBIENT)
+            .properties(b -> b.sized(0.4F, 0.6F)
+                    .setTrackingRange(8)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules)
+            .attributes(FailgullEntity::createAttributes)
+            .loot(TropicraftEntities::noDrops)
+            .renderer(() -> FailgullRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<TropicraftDolphinEntity>> DOLPHIN = REGISTRATE.entity("dolphin", TropicraftDolphinEntity::new, MobCategory.WATER_CREATURE)
+            .properties(b -> b.sized(1.4F, 0.5F)
+                    .setTrackingRange(8)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canSpawnOceanWaterMob)
+            .attributes(TropicraftDolphinEntity::createAttributes)
+            .loot((lootTables, entity) -> dropItemsWithEnchantBonus(lootTables, entity, TropicraftItems.TROPICAL_FERTILIZER, UniformGenerator.between(1, 3)))
+            .renderer(() -> DolphinRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<SeahorseEntity>> SEAHORSE = REGISTRATE.entity("seahorse", SeahorseEntity::new, MobCategory.WATER_AMBIENT)
+            .properties(b -> b.sized(0.5F, 0.6F)
+                    .setTrackingRange(8)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canSpawnOceanWaterMob)
+            .attributes(SeahorseEntity::createAttributes)
+            .tag(EntityTypeTags.AXOLOTL_HUNT_TARGETS)
+            .loot(TropicraftEntities::noDrops)
+            .renderer(() -> SeahorseRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<PoisonBlotEntity>> POISON_BLOT = REGISTRATE.entity("poison_blot", (EntityType.EntityFactory<PoisonBlotEntity>) PoisonBlotEntity::new, MobCategory.MISC)
+            .properties(b -> b.sized(0.25F, 0.25F)
+                    .setTrackingRange(4)
+                    .setUpdateInterval(20)
+                    .setShouldReceiveVelocityUpdates(true))
+            .renderer(() -> PoisonBlotRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<TreeFrogEntity>> TREE_FROG = REGISTRATE.entity("tree_frog", TreeFrogEntity::new, MobCategory.MONSTER)
+            .properties(b -> b.sized(0.6F, 0.4F)
+                    .setTrackingRange(8)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canAnimalSpawn)
+            .attributes(TreeFrogEntity::createAttributes)
+            .loot((lootTables, entity) -> lootTables.add(entity, LootTable.lootTable()
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS,
+                                    EntityPredicate.Builder.entity().flags(new EntityFlagsPredicate(null, null, null, null, false))
+                                            .nbt(new NbtPredicate(Util.make(new CompoundTag(), c -> c.putInt("Type", TreeFrogEntity.Type.GREEN.ordinal()))))))
+                            .add(LootItem.lootTableItem(TropicraftItems.POISON_FROG_SKIN.get())))
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(2))
+                            .add(LootItem.lootTableItem(TropicraftItems.FROG_LEG.get())))))
+            .renderer(() -> TreeFrogRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<SeaUrchinEntity>> SEA_URCHIN = REGISTRATE.entity("sea_urchin", SeaUrchinEntity::new, MobCategory.WATER_AMBIENT)
+            .properties(b -> b.sized(0.5F, 0.5F)
+                    .setTrackingRange(8)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canSpawnOceanWaterMob)
+            .attributes(SeaUrchinEntity::createAttributes)
+            .loot((lootTables, entity) -> dropItem(lootTables, entity, TropicraftItems.SEA_URCHIN_ROE))
+            .renderer(() -> SeaUrchinRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<SeaUrchinEggEntity>> SEA_URCHIN_EGG_ENTITY = REGISTRATE.entity("sea_urchin_egg", SeaUrchinEggEntity::new, MobCategory.WATER_AMBIENT)
+            .properties(b -> b.sized(0.4F, 0.5F)
+                    .setTrackingRange(6)
+                    .setUpdateInterval(15)
+                    .setShouldReceiveVelocityUpdates(false))
+            .attributes(SeaUrchinEggEntity::createAttributes)
+            .loot(TropicraftEntities::noDrops)
+            .renderer(() -> ClientSetup::seaUrchinEggRenderer)
+            .register();
 
-    private static EntityType.Builder<ManOWarEntity> manOWar() {
-        return EntityType.Builder.of(ManOWarEntity::new, MobCategory.WATER_AMBIENT)
-                .sized(0.6F, 0.8F)
-                .setTrackingRange(10)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(true);
-    }
+    public static final RegistryEntry<EntityType<StarfishEntity>> STARFISH = REGISTRATE.entity("starfish", StarfishEntity::new, MobCategory.WATER_AMBIENT)
+            .properties(b -> b.sized(0.5F, 0.5F)
+                    .setTrackingRange(4)
+                    .setUpdateInterval(15)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canSpawnOceanWaterMob)
+            .attributes(StarfishEntity::createAttributes)
+            .tag(EntityTypeTags.AXOLOTL_HUNT_TARGETS)
+            .loot((lootTables, entity) -> dropItem(lootTables, entity, TropicraftItems.STARFISH))
+            .renderer(() -> StarfishRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<StarfishEggEntity>> STARFISH_EGG = REGISTRATE.entity("starfish_egg", StarfishEggEntity::new, MobCategory.WATER_AMBIENT)
+            .properties(b -> b.sized(0.4F, 0.5F)
+                    .setTrackingRange(8)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(false))
+            .attributes(StarfishEggEntity::createAttributes)
+            .loot(TropicraftEntities::noDrops)
+            .renderer(() -> ClientSetup::starfishEggRenderer)
+            .register();
+    public static final RegistryEntry<EntityType<VMonkeyEntity>> V_MONKEY = REGISTRATE.entity("v_monkey", VMonkeyEntity::new, MobCategory.MONSTER)
+            .properties(b -> b.sized(0.8F, 0.8F)
+                    .setTrackingRange(8)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canAnimalSpawn)
+            .attributes(VMonkeyEntity::createAttributes)
+            .loot(TropicraftEntities::noDrops)
+            .lang("Vervet Monkey")
+            .renderer(() -> VMonkeyRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<SardineEntity>> RIVER_SARDINE = REGISTRATE.entity("sardine", SardineEntity::new, MobCategory.WATER_AMBIENT)
+            .properties(b -> b.sized(0.3F, 0.4F)
+                    .setTrackingRange(4)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WaterAnimal::checkSurfaceWaterAnimalSpawnRules)
+            .attributes(SardineEntity::createAttributes)
+            .loot((lootTables, entity) -> dropItem(lootTables, entity, TropicraftItems.RAW_FISH))
+            .renderer(() -> SardineRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<PiranhaEntity>> PIRANHA = REGISTRATE.entity("piranha", PiranhaEntity::new, MobCategory.WATER_CREATURE)
+            .properties(b -> b.sized(0.3F, 0.4F)
+                    .setTrackingRange(4)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WaterAnimal::checkSurfaceWaterAnimalSpawnRules)
+            .attributes(PiranhaEntity::createAttributes)
+            .tag(EntityTypeTags.AXOLOTL_HUNT_TARGETS)
+            .loot((lootTables, entity) -> dropItem(lootTables, entity, TropicraftItems.RAW_FISH))
+            .renderer(() -> PiranhaRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<TropicraftTropicalFishEntity>> TROPICAL_FISH = REGISTRATE.entity("tropical_fish", TropicraftTropicalFishEntity::new, MobCategory.WATER_AMBIENT)
+            .properties(b -> b.sized(0.3F, 0.4F)
+                    .setTrackingRange(4)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WaterAnimal::checkSurfaceWaterAnimalSpawnRules)
+            .attributes(TropicraftTropicalFishEntity::createAttributes)
+            .tag(EntityTypeTags.AXOLOTL_HUNT_TARGETS)
+            .loot((lootTables, entity) -> dropItem(lootTables, entity, TropicraftItems.RAW_FISH))
+            .renderer(() -> TropicraftTropicalFishRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<EagleRayEntity>> EAGLE_RAY = REGISTRATE.entity("eagle_ray", EagleRayEntity::new, MobCategory.WATER_CREATURE)
+            .properties(b -> b.sized(2F, 0.4F)
+                    .setTrackingRange(8)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canSpawnOceanWaterMob)
+            .attributes(EagleRayEntity::createAttributes)
+            .loot((lootTables, entity) -> dropItem(lootTables, entity, TropicraftItems.RAW_RAY))
+            .lang("Spotted Eagle Ray")
+            .renderer(() -> EagleRayRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<TropiSpiderEntity>> TROPI_SPIDER = REGISTRATE.entity("tropi_spider", TropiSpiderEntity::new, MobCategory.MONSTER)
+            .properties(b -> b.sized(1.4F, 0.9F)
+                    .setTrackingRange(8)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules)
+            .attributes(TropiSpiderEntity::createAttributes)
+            .loot(TropicraftEntities::noDrops)
+            .renderer(() -> TropiSpiderRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<TropiSpiderEggEntity>> TROPI_SPIDER_EGG = REGISTRATE.entity("tropi_spider_egg", TropiSpiderEggEntity::new, MobCategory.MONSTER)
+            .properties(b -> b.sized(EGG_WIDTH, EGG_HEIGHT)
+                    .setTrackingRange(6)
+                    .setUpdateInterval(10)
+                    .setShouldReceiveVelocityUpdates(false))
+            .attributes(TropiSpiderEggEntity::createAttributes)
+            .loot(TropicraftEntities::noDrops)
+            .lang("Tropics Spider Egg")
+            .renderer(() -> ClientSetup::tropiSpiderEggRenderer)
+            .register();
+    public static final RegistryEntry<EntityType<AshenMaskEntity>> ASHEN_MASK = REGISTRATE.entity("ashen_mask", AshenMaskEntity::new, MobCategory.MISC)
+            .properties(b -> b.sized(0.8F, 0.2F)
+                    .setTrackingRange(6)
+                    .setUpdateInterval(100)
+                    .setShouldReceiveVelocityUpdates(true))
+            .renderer(() -> AshenMaskRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<AshenEntity>> ASHEN = REGISTRATE.entity("ashen", AshenEntity::new, MobCategory.MONSTER)
+            .properties(b -> b.sized(0.5F, 1.3F)
+                    .setTrackingRange(8)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules)
+            .attributes(AshenEntity::createAttributes)
+            .loot(TropicraftEntities::noDrops)
+            .renderer(() -> AshenRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<ExplodingCoconutEntity>> EXPLODING_COCONUT = REGISTRATE.entity("exploding_coconut", (EntityType.EntityFactory<ExplodingCoconutEntity>) ExplodingCoconutEntity::new, MobCategory.MISC)
+            .properties(b -> b.sized(0.25F, 0.25F)
+                    .setTrackingRange(4)
+                    .setUpdateInterval(10)
+                    .setShouldReceiveVelocityUpdates(true))
+            .renderer(() -> ThrownItemRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<SharkEntity>> HAMMERHEAD = REGISTRATE.entity("hammerhead", SharkEntity::new, MobCategory.WATER_CREATURE)
+            .properties(b -> b.sized(2.4F, 1.4F)
+                    .setTrackingRange(5)
+                    .setUpdateInterval(2)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canSpawnOceanWaterMob)
+            .attributes(SharkEntity::createAttributes)
+            .loot((lootTables, entity) -> dropItemsWithEnchantBonus(lootTables, entity, TropicraftItems.TROPICAL_FERTILIZER, UniformGenerator.between(1, 3)))
+            .renderer(() -> SharkRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<SeaTurtleEggEntity>> SEA_TURTLE_EGG = REGISTRATE.entity("turtle_egg", SeaTurtleEggEntity::new, MobCategory.MONSTER)
+            .properties(b -> b.sized(EGG_WIDTH, EGG_HEIGHT)
+                    .setTrackingRange(6)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(false))
+            .attributes(SeaTurtleEggEntity::createAttributes)
+            .loot(TropicraftEntities::noDrops)
+            .lang("Sea Turtle Egg")
+            .renderer(() -> ClientSetup::seaTurtleEggRenderer)
+            .register();
+    public static final RegistryEntry<EntityType<TropiBeeEntity>> TROPI_BEE = REGISTRATE.entity("tropibee", TropiBeeEntity::new, MobCategory.MONSTER)
+            .properties(b -> b.sized(0.4F, 0.6F)
+                    .setTrackingRange(8)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules)
+            .attributes(TropiBeeEntity::createAttributes)
+            .tag(EntityTypeTags.BEEHIVE_INHABITORS)
+            .loot(TropicraftEntities::noDrops)
+            .renderer(() -> TropiBeeRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<CowktailEntity>> COWKTAIL = REGISTRATE.entity("cowktail", CowktailEntity::new, MobCategory.MONSTER)
+            .properties(b -> b.sized(0.9F, 1.4F)
+                    .setTrackingRange(10)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canAnimalSpawn)
+            .attributes(CowktailEntity::createAttributes)
+            .loot(TropicraftEntities::noDrops)
+            .renderer(() -> CowktailRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<ManOWarEntity>> MAN_O_WAR = REGISTRATE.entity("man_o_war", ManOWarEntity::new, MobCategory.WATER_AMBIENT)
+            .properties(b -> b.sized(0.6F, 0.8F)
+                    .setTrackingRange(10)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canSpawnSurfaceOceanWaterMob)
+            .attributes(ManOWarEntity::createAttributes)
+            .loot((lootTables, entity) -> dropItemsWithEnchantBonus(lootTables, entity, Items.SLIME_BALL, UniformGenerator.between(3, 4)))
+            .lang("Man o' War")
+            .renderer(() -> ManOWarRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<TapirEntity>> TAPIR = REGISTRATE.entity("tapir", TapirEntity::new, MobCategory.MONSTER)
+            .properties(b -> b.sized(0.8F, 1.0F)
+                    .setTrackingRange(10)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canAnimalSpawn)
+            .attributes(TapirEntity::createAttributes)
+            .loot(TropicraftEntities::noDrops)
+            .renderer(() -> TapirRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<JaguarEntity>> JAGUAR = REGISTRATE.entity("jaguar", JaguarEntity::new, MobCategory.MONSTER)
+            .properties(b -> b.sized(0.9F, 1.0F)
+                    .setTrackingRange(10)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canAnimalSpawn)
+            .attributes(JaguarEntity::createAttributes)
+            .loot(TropicraftEntities::noDrops)
+            .renderer(() -> JaguarRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<BasiliskLizardEntity>> BROWN_BASILISK_LIZARD = REGISTRATE.entity("brown_basilisk_lizard", BasiliskLizardEntity::new, MobCategory.MONSTER)
+            .properties(b -> b.sized(0.7F, 0.4F)
+                    .setTrackingRange(8)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canAnimalSpawn)
+            .attributes(BasiliskLizardEntity::createAttributes)
+            .loot(TropicraftEntities::noDrops)
+            .renderer(() -> BasiliskLizardRenderer::brown)
+            .register();
+    public static final RegistryEntry<EntityType<BasiliskLizardEntity>> GREEN_BASILISK_LIZARD = REGISTRATE.entity("green_basilisk_lizard", BasiliskLizardEntity::new, MobCategory.MONSTER)
+            .properties(b -> b.sized(0.7F, 0.4F)
+                    .setTrackingRange(8)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canAnimalSpawn)
+            .attributes(BasiliskLizardEntity::createAttributes)
+            .loot(TropicraftEntities::noDrops)
+            .renderer(() -> BasiliskLizardRenderer::green)
+            .register();
+    public static final RegistryEntry<EntityType<HummingbirdEntity>> HUMMINGBIRD = REGISTRATE.entity("hummingbird", HummingbirdEntity::new, MobCategory.MONSTER)
+            .properties(b -> b.sized(0.5F, 0.5F)
+                    .setTrackingRange(8)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, HummingbirdEntity::canHummingbirdSpawnOn)
+            .attributes(HummingbirdEntity::createAttributes)
+            .loot(TropicraftEntities::noDrops)
+            .renderer(() -> HummingbirdRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<FiddlerCrabEntity>> FIDDLER_CRAB = REGISTRATE.entity("fiddler_crab", FiddlerCrabEntity::new, MobCategory.MONSTER)
+            .properties(b -> b.sized(0.5F, 0.2F)
+                    .setTrackingRange(10)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, FiddlerCrabEntity::canCrabSpawn)
+            .attributes(FiddlerCrabEntity::createAttributes)
+            .loot(TropicraftEntities::noDrops)
+            .renderer(() -> FiddlerCrabRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<SpiderMonkeyEntity>> SPIDER_MONKEY = REGISTRATE.entity("spider_monkey", SpiderMonkeyEntity::new, MobCategory.MONSTER)
+            .properties(b -> b.sized(0.5F, 0.6F)
+                    .setTrackingRange(10)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canAnimalSpawn)
+            .attributes(SpiderMonkeyEntity::createAttributes)
+            .loot(TropicraftEntities::noDrops)
+            .renderer(() -> SpiderMonkeyRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<WhiteLippedPeccaryEntity>> WHITE_LIPPED_PECCARY = REGISTRATE.entity("white_lipped_peccary", WhiteLippedPeccaryEntity::new, MobCategory.MONSTER)
+            .properties(b -> b.sized(0.7F, 0.8F)
+                    .setTrackingRange(8)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canAnimalSpawn)
+            .attributes(WhiteLippedPeccaryEntity::createAttributes)
+            .loot(TropicraftEntities::noDrops)
+            .renderer(() -> WhiteLippedPeccaryRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<CuberaEntity>> CUBERA = REGISTRATE.entity("cubera", CuberaEntity::new, MobCategory.WATER_CREATURE)
+            .properties(b -> b.sized(1.2F, 0.8F)
+                    .setTrackingRange(8)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canSpawnOceanWaterMob)
+            .attributes(CuberaEntity::createAttributes)
+            .loot((lootTables, entity) -> dropItem(lootTables, entity, TropicraftItems.RAW_FISH))
+            .renderer(() -> CuberaRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<FishingBobberEntity>> FISHING_BOBBER = REGISTRATE.entity("fishing_bobber", (EntityType.EntityFactory<FishingBobberEntity>) FishingBobberEntity::new, MobCategory.MISC)
+            .properties(b -> b.sized(1.2F, 0.8F)
+                    /*.setTrackingRange(8)*/
+                    .setTrackingRange(128)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .attributes(FishingBobberEntity::createAttributes)
+            .renderer(() -> FishingBobberEntityRenderer::new)
+            .register();
 
-    private static EntityType.Builder<TropiBeeEntity> tropiBee() {
-        return EntityType.Builder.of(TropiBeeEntity::new, MobCategory.MONSTER)
-                .sized(0.4F, 0.6F)
-                .setTrackingRange(8)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(true);
-    }
+    public static final RegistryEntry<EntityType<SpearEntity>> SPEAR = REGISTRATE.entity("spear", (EntityType.EntityFactory<SpearEntity>) SpearEntity::new, MobCategory.MISC)
+            .properties(b -> b.sized(0.8F, 0.8F)
+                    .setTrackingRange(4).updateInterval(20)
+                    .setShouldReceiveVelocityUpdates(true))
+            .renderer(() -> SpearRenderer::new)
+            .register();
 
-    private static EntityType.Builder<SeaTurtleEggEntity> turtleEgg() {
-        return EntityType.Builder.of(SeaTurtleEggEntity::new, MobCategory.MONSTER)
-                .sized(EGG_WIDTH, EGG_HEIGHT)
-                .setTrackingRange(6)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(false);
-    }
-    
-    private static EntityType.Builder<SharkEntity> hammerhead() {
-        return EntityType.Builder.of(SharkEntity::new, MobCategory.WATER_CREATURE)
-                .sized(2.4F, 1.4F)
-                .setTrackingRange(5)
-                .setUpdateInterval(2)
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    private static EntityType.Builder<ExplodingCoconutEntity> explodingCoconut() {
-        return EntityType.Builder.<ExplodingCoconutEntity>of(ExplodingCoconutEntity::new, MobCategory.MISC)
-                .sized(0.25F, 0.25F)
-                .setTrackingRange(4)
-                .setUpdateInterval(10)
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    private static EntityType.Builder<AshenMaskEntity> ashenMask() {
-        return EntityType.Builder.<AshenMaskEntity>of(AshenMaskEntity::new, MobCategory.MISC)
-                .sized(0.8F, 0.2F)
-                .setTrackingRange(6)
-                .setUpdateInterval(100)
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    private static EntityType.Builder<AshenEntity> ashen() {
-        return EntityType.Builder.of(AshenEntity::new, MobCategory.MONSTER)
-                .sized(0.5F, 1.3F)
-                .setTrackingRange(8)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    private static EntityType.Builder<TropiSpiderEntity> tropiSpider() {
-        return EntityType.Builder.of(TropiSpiderEntity::new, MobCategory.MONSTER)
-                .sized(1.4F, 0.9F)
-                .setTrackingRange(8)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    private static EntityType.Builder<TropiSpiderEggEntity> tropiSpiderEgg() {
-        return EntityType.Builder.of(TropiSpiderEggEntity::new, MobCategory.MONSTER)
-                .sized(EGG_WIDTH, EGG_HEIGHT)
-                .setTrackingRange(6)
-                .setUpdateInterval(10)
-                .setShouldReceiveVelocityUpdates(false);
-    }
-
-    private static EntityType.Builder<EagleRayEntity> eagleRay() {
-        return EntityType.Builder.of(EagleRayEntity::new, MobCategory.WATER_CREATURE)
-                .sized(2F, 0.4F)
-                .setTrackingRange(8)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    private static EntityType.Builder<TropicraftTropicalFishEntity> tropicalFish() {
-        return EntityType.Builder.of(TropicraftTropicalFishEntity::new, MobCategory.WATER_AMBIENT)
-                .sized(0.3F, 0.4F)
-                .setTrackingRange(4)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    private static EntityType.Builder<SardineEntity> riverSardine() {
-        return EntityType.Builder.of(SardineEntity::new, MobCategory.WATER_AMBIENT)
-                .sized(0.3F, 0.4F)
-                .setTrackingRange(4)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    private static EntityType.Builder<PiranhaEntity> piranha() {
-        return EntityType.Builder.of(PiranhaEntity::new, MobCategory.WATER_CREATURE)
-                .sized(0.3F, 0.4F)
-                .setTrackingRange(4)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    private static EntityType.Builder<VMonkeyEntity> vervetMonkey() {
-        return EntityType.Builder.of(VMonkeyEntity::new, MobCategory.MONSTER)
-                .sized(0.8F, 0.8F)
-                .setTrackingRange(8)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    private static EntityType.Builder<StarfishEggEntity> starfishEgg() {
-        return EntityType.Builder.of(StarfishEggEntity::new, MobCategory.WATER_AMBIENT)
-                .sized(0.4F, 0.5F)
-                .setTrackingRange(8)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(false);
-    }
-
-    private static EntityType.Builder<StarfishEntity> starfish() {
-        return EntityType.Builder.of(StarfishEntity::new, MobCategory.WATER_AMBIENT)
-                .sized(0.5F, 0.5F)
-                .setTrackingRange(4)
-                .setUpdateInterval(15)
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    private static EntityType.Builder<SeaUrchinEggEntity> seaUrchinEgg() {
-        return EntityType.Builder.of(SeaUrchinEggEntity::new, MobCategory.WATER_AMBIENT)
-                .sized(0.4F, 0.5F)
-                .setTrackingRange(6)
-                .setUpdateInterval(15)
-                .setShouldReceiveVelocityUpdates(false);
-    }
-
-    private static EntityType.Builder<SeaUrchinEntity> seaUrchin() {
-        return EntityType.Builder.of(SeaUrchinEntity::new, MobCategory.WATER_AMBIENT)
-                .sized(0.5F, 0.5F)
-                .setTrackingRange(8)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    private static EntityType.Builder<TreeFrogEntity> treeFrog() {
-        return EntityType.Builder.of(TreeFrogEntity::new, MobCategory.MONSTER)
-                .sized(0.6F, 0.4F)
-                .setTrackingRange(8)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    private static EntityType.Builder<PoisonBlotEntity> poisonBlot() {
-        return EntityType.Builder.<PoisonBlotEntity>of(PoisonBlotEntity::new, MobCategory.MISC)
-                .sized(0.25F, 0.25F)
-                .setTrackingRange(4)
-                .setUpdateInterval(20)
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    private static EntityType.Builder<SeahorseEntity> seahorse() {
-        return EntityType.Builder.of(SeahorseEntity::new, MobCategory.WATER_AMBIENT)
-                .sized(0.5F, 0.6F)
-                .setTrackingRange(8)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    private static EntityType.Builder<TropicraftDolphinEntity> dolphin() {
-        return EntityType.Builder.of(TropicraftDolphinEntity::new, MobCategory.WATER_CREATURE)
-                .sized(1.4F, 0.5F)
-                .setTrackingRange(8)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    private static EntityType.Builder<FailgullEntity> failgull() {
-        return EntityType.Builder.of(FailgullEntity::new, MobCategory.AMBIENT)
-                .sized(0.4F, 0.6F)
-                .setTrackingRange(8)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    private static EntityType.Builder<MarlinEntity> marlin() {
-        return EntityType.Builder.of(MarlinEntity::new, MobCategory.WATER_CREATURE)
-                .sized(1.4F, 0.95F)
-                .setTrackingRange(8)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    private static EntityType.Builder<SeaTurtleEntity> turtle() {
-        return EntityType.Builder.of(SeaTurtleEntity::new, MobCategory.WATER_CREATURE)
-                .sized(0.8F, 0.35F)
-                .setTrackingRange(8)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    private static EntityType.Builder<BambooItemFrame> bambooItemFrame() {
-        return EntityType.Builder.<BambooItemFrame>of(BambooItemFrame::new, MobCategory.MISC)
-                .sized(0.5F, 0.5F)
-                .setTrackingRange(8)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(false);
-    }
-
-    private static EntityType.Builder<LavaBallEntity> lavaBall() {
-        return EntityType.Builder.<LavaBallEntity>of(LavaBallEntity::new, MobCategory.MISC)
-                .sized(1.0F, 1.0F)
-                .setTrackingRange(8)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    private static EntityType.Builder<WallItemEntity> wallItem() {
-        return EntityType.Builder.<WallItemEntity>of(WallItemEntity::new, MobCategory.MISC)
-                .sized(0.5F, 0.5F)
-                .setTrackingRange(8)
-                .setUpdateInterval(Integer.MAX_VALUE)
-                .setShouldReceiveVelocityUpdates(false);
-    }
-
-    private static EntityType.Builder<EIHEntity> eih() {
-        return EntityType.Builder.of(EIHEntity::new, MobCategory.MONSTER)
-                .sized(1.2F, 3.25F)
-                .setTrackingRange(8)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    private static EntityType.Builder<TropiSkellyEntity> tropiskelly() {
-        return EntityType.Builder.of(TropiSkellyEntity::new, MobCategory.MONSTER)
-                .sized(0.7F, 1.95F)
-                .setTrackingRange(8)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    private static EntityType.Builder<UmbrellaEntity> umbrella() {
-        return EntityType.Builder.<UmbrellaEntity>of(UmbrellaEntity::new, MobCategory.MISC)
-                .sized(1.0F, 4.0F)
-                .setTrackingRange(10)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(false);
-    }
-
-    private static EntityType.Builder<ChairEntity> chair() {
-        return EntityType.Builder.<ChairEntity>of(ChairEntity::new, MobCategory.MISC)
-                .sized(1.5F, 0.5F)
-                .setTrackingRange(10)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(false);
-    }
-
-    private static EntityType.Builder<BeachFloatEntity> beachFloat() {
-        return EntityType.Builder.<BeachFloatEntity>of(BeachFloatEntity::new, MobCategory.MISC)
-                .sized(2F, 0.175F)
-                .setTrackingRange(8)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(false);
-    }
-    
-    private static EntityType.Builder<IguanaEntity> iguana() {
-        return EntityType.Builder.of(IguanaEntity::new, MobCategory.MONSTER)
-                .sized(1.0F, 0.4F)
-                .setTrackingRange(8)
-                .setUpdateInterval(3)
-                .fireImmune()
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    private static EntityType.Builder<EntityKoaHunter> koaHunter() {
-        return EntityType.Builder.of(EntityKoaHunter::new, MobCategory.MISC)
-                .sized(0.6F, 1.95F)
-                .setTrackingRange(8)
-                .setUpdateInterval(3)
-                .fireImmune()
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    private static EntityType.Builder<TropiCreeperEntity> tropicreeper() {
-        return EntityType.Builder.of(TropiCreeperEntity::new, MobCategory.MONSTER)
-                .sized(0.6F, 1.7F)
-                .setTrackingRange(8)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    private static EntityType.Builder<TapirEntity> tapir() {
-        return EntityType.Builder.of(TapirEntity::new, MobCategory.MONSTER)
-                .sized(0.8F, 1.0F)
-                .setTrackingRange(10)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    private static EntityType.Builder<JaguarEntity> jaguar() {
-        return EntityType.Builder.of(JaguarEntity::new, MobCategory.MONSTER)
-                .sized(0.9F, 1.0F)
-                .setTrackingRange(10)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    private static EntityType.Builder<BasiliskLizardEntity> basiliskLizard() {
-        return EntityType.Builder.of(BasiliskLizardEntity::new, MobCategory.MONSTER)
-                .sized(0.7F, 0.4F)
-                .setTrackingRange(8)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    private static EntityType.Builder<HummingbirdEntity> hummingbird() {
-        return EntityType.Builder.of(HummingbirdEntity::new, MobCategory.MONSTER)
-                .sized(0.5F, 0.5F)
-                .setTrackingRange(8)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    private static EntityType.Builder<FiddlerCrabEntity> fiddlerCrab() {
-        return EntityType.Builder.of(FiddlerCrabEntity::new, MobCategory.MONSTER)
-                .sized(0.5F, 0.2F)
-                .setTrackingRange(10)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    private static EntityType.Builder<SpiderMonkeyEntity> spiderMonkey() {
-        return EntityType.Builder.of(SpiderMonkeyEntity::new, MobCategory.MONSTER)
-                .sized(0.5F, 0.6F)
-                .setTrackingRange(10)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    private static EntityType.Builder<WhiteLippedPeccaryEntity> whiteLippedPeccary() {
-        return EntityType.Builder.of(WhiteLippedPeccaryEntity::new, MobCategory.MONSTER)
-                .sized(0.7F, 0.8F)
-                .setTrackingRange(8)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    private static EntityType.Builder<CuberaEntity> cubera() {
-        return EntityType.Builder.of(CuberaEntity::new, MobCategory.WATER_CREATURE)
-                .sized(1.2F, 0.8F)
-                .setTrackingRange(8)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    private static EntityType.Builder<FishingBobberEntity> fishingBobber() {
-        return EntityType.Builder.<FishingBobberEntity>of(FishingBobberEntity::new, MobCategory.MISC)
-                .sized(1.2F, 0.8F)
-                /*.setTrackingRange(8)*/
-                .setTrackingRange(128)
-                .setUpdateInterval(3)
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    private static EntityType.Builder<SpearEntity> spear() {
-        return EntityType.Builder.<SpearEntity>of(SpearEntity::new, MobCategory.MISC)
-                .sized(0.8F, 0.8F)
-                .setTrackingRange(4).updateInterval(20)
-                .setShouldReceiveVelocityUpdates(true);
-    }
-
-    public static void registerSpawns() {
-        registerWaterSpawn(TROPICAL_FISH.get(), WaterAnimal::checkSurfaceWaterAnimalSpawnRules);
-        registerWaterSpawn(RIVER_SARDINE.get(), WaterAnimal::checkSurfaceWaterAnimalSpawnRules);
-        registerWaterSpawn(PIRANHA.get(), WaterAnimal::checkSurfaceWaterAnimalSpawnRules);
-        registerWaterSpawn(DOLPHIN.get(), TropicraftEntities::canSpawnOceanWaterMob);
-        registerWaterSpawn(EAGLE_RAY.get(), TropicraftEntities::canSpawnOceanWaterMob);
-        registerWaterSpawn(MARLIN.get(), TropicraftEntities::canSpawnOceanWaterMob);
-        registerWaterSpawn(SEAHORSE.get(), TropicraftEntities::canSpawnOceanWaterMob);
-        registerWaterSpawn(SEA_URCHIN.get(), TropicraftEntities::canSpawnOceanWaterMob);
-        registerWaterSpawn(STARFISH.get(), TropicraftEntities::canSpawnOceanWaterMob);
-        registerWaterSpawn(HAMMERHEAD.get(), TropicraftEntities::canSpawnOceanWaterMob);
-        registerWaterSpawn(MAN_O_WAR.get(), TropicraftEntities::canSpawnSurfaceOceanWaterMob);
-
-        registerLandSpawn(KOA_HUNTER.get(), TropicraftEntities::canAnimalSpawn);
-        registerLandSpawn(TROPI_CREEPER.get(), TropicraftEntities::canAnimalSpawn);
-        registerLandSpawn(IGUANA.get(), TropicraftEntities::canAnimalSpawn);
-        registerLandSpawn(TROPI_SKELLY.get(), Monster::checkMonsterSpawnRules);
-        registerLandSpawn(TROPI_SPIDER.get(), Monster::checkMonsterSpawnRules);
-        registerLandSpawn(EIH.get(), TropicraftEntities::canAnimalSpawn);
-        registerLandSpawn(SEA_TURTLE.get(), SeaTurtleEntity::canSpawnOnLand);
-        registerLandSpawn(TREE_FROG.get(), TropicraftEntities::canAnimalSpawn);
-        registerLandSpawn(V_MONKEY.get(), TropicraftEntities::canAnimalSpawn);
-        registerLandSpawn(COWKTAIL.get(), TropicraftEntities::canAnimalSpawn);
-        registerLandSpawn(TAPIR.get(), TropicraftEntities::canAnimalSpawn);
-        registerLandSpawn(JAGUAR.get(), TropicraftEntities::canAnimalSpawn);
-        registerLandSpawn(BROWN_BASILISK_LIZARD.get(), TropicraftEntities::canAnimalSpawn);
-        registerLandSpawn(GREEN_BASILISK_LIZARD.get(), TropicraftEntities::canAnimalSpawn);
-        registerLandSpawn(HUMMINGBIRD.get(), HummingbirdEntity::canHummingbirdSpawnOn);
-        registerNoRestrictionSpawn(FIDDLER_CRAB.get(), FiddlerCrabEntity::canCrabSpawn);
-        registerLandSpawn(SPIDER_MONKEY.get(), TropicraftEntities::canAnimalSpawn);
-        registerLandSpawn(WHITE_LIPPED_PECCARY.get(), TropicraftEntities::canAnimalSpawn);
-        registerWaterSpawn(CUBERA.get(), TropicraftEntities::canSpawnOceanWaterMob);
-
-        registerLandSpawn(ASHEN.get(), Mob::checkMobSpawnRules);
-        registerLandSpawn(FAILGULL.get(), Mob::checkMobSpawnRules);
-        registerLandSpawn(TROPI_BEE.get(), Mob::checkMobSpawnRules);
-        // TODO tropibee, or from nests?
-    }
+    //    private static void lavaBall(EntityType.Builder<LavaBallEntity> b) {
+//        return EntityType.Builder.<LavaBallEntity>of(LavaBallEntity::new, MobCategory.MISC)
+//                .sized(1.0F, 1.0F)
+//                .setTrackingRange(8)
+//                .setUpdateInterval(3)
+//                .setShouldReceiveVelocityUpdates(true);
+//    }
 
     public static boolean canAnimalSpawn(EntityType<? extends Mob> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
         BlockState groundState = worldIn.getBlockState(pos.below());
         return groundState.getBlock() == Blocks.GRASS_BLOCK
                 || groundState.getMaterial() == Material.SAND
                 || groundState.is(TropicraftTags.Blocks.MUD);
-    }
-
-    private static <T extends Mob> void registerLandSpawn(final EntityType<T> type, SpawnPlacements.SpawnPredicate<T> predicate) {
-        SpawnPlacements.register(type, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, predicate);
-    }
-
-    private static <T extends Mob> void registerWaterSpawn(final EntityType<T> type, SpawnPlacements.SpawnPredicate<T> predicate) {
-        SpawnPlacements.register(type, SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, predicate);
-    }
-
-    private static <T extends Mob> void registerNoRestrictionSpawn(final EntityType<T> type,  SpawnPlacements.SpawnPredicate<T> predicate) {
-        SpawnPlacements.register(type, SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, predicate);
     }
 
     public static <T extends Mob> boolean canSpawnOceanWaterMob(EntityType<T> waterMob, LevelAccessor world, MobSpawnType reason, BlockPos pos, Random rand) {
@@ -549,44 +561,41 @@ public class TropicraftEntities {
         return pos.getY() > seaLevel - 3 && pos.getY() < seaLevel && world.getFluidState(pos).is(FluidTags.WATER);
     }
 
-    @SubscribeEvent
-    public static void onCreateEntityAttributes(EntityAttributeCreationEvent event) {
-        event.put(KOA_HUNTER.get(), EntityKoaBase.createAttributes().build());
-        event.put(TROPI_CREEPER.get(), TropiCreeperEntity.createAttributes().build());
-        event.put(IGUANA.get(), IguanaEntity.createAttributes().build());
-        event.put(TROPI_SKELLY.get(), TropiSkellyEntity.createAttributes().build());
-        event.put(EIH.get(), EIHEntity.createAttributes().build());
-        event.put(SEA_TURTLE.get(), SeaTurtleEntity.createAttributes().build());
-        event.put(MARLIN.get(), MarlinEntity.createAttributes().build());
-        event.put(FAILGULL.get(), FailgullEntity.createAttributes().build());
-        event.put(DOLPHIN.get(), TropicraftDolphinEntity.createAttributes().build());
-        event.put(SEAHORSE.get(), SeahorseEntity.createAttributes().build());
-        event.put(TREE_FROG.get(), TreeFrogEntity.createAttributes().build());
-        event.put(SEA_URCHIN.get(), SeaUrchinEntity.createAttributes().build());
-        event.put(SEA_URCHIN_EGG_ENTITY.get(), EggEntity.createAttributes().build());
-        event.put(STARFISH.get(), StarfishEntity.createAttributes().build());
-        event.put(STARFISH_EGG.get(), EggEntity.createAttributes().build());
-        event.put(V_MONKEY.get(), VMonkeyEntity.createAttributes().build());
-        event.put(RIVER_SARDINE.get(), SardineEntity.createAttributes().build());
-        event.put(PIRANHA.get(), PiranhaEntity.createAttributes().build());
-        event.put(TROPICAL_FISH.get(), TropicraftTropicalFishEntity.createAttributes().build());
-        event.put(EAGLE_RAY.get(), EagleRayEntity.createAttributes().build());
-        event.put(TROPI_SPIDER.get(), TropiSpiderEntity.createAttributes().build());
-        event.put(TROPI_SPIDER_EGG.get(), EggEntity.createAttributes().build());
-        event.put(ASHEN.get(), AshenEntity.createAttributes().build());
-        event.put(HAMMERHEAD.get(), SharkEntity.createAttributes().build());
-        event.put(SEA_TURTLE_EGG.get(), EggEntity.createAttributes().build());
-        event.put(TROPI_BEE.get(), TropiBeeEntity.createAttributes().build());
-        event.put(COWKTAIL.get(), CowktailEntity.createAttributes().build());
-        event.put(MAN_O_WAR.get(), ManOWarEntity.createAttributes().build());
-        event.put(TAPIR.get(), TapirEntity.createAttributes().build());
-        event.put(JAGUAR.get(), JaguarEntity.createAttributes().build());
-        event.put(BROWN_BASILISK_LIZARD.get(), BasiliskLizardEntity.createAttributes().build());
-        event.put(GREEN_BASILISK_LIZARD.get(), BasiliskLizardEntity.createAttributes().build());
-        event.put(HUMMINGBIRD.get(), HummingbirdEntity.createAttributes().build());
-        event.put(FIDDLER_CRAB.get(), FiddlerCrabEntity.createAttributes().build());
-        event.put(SPIDER_MONKEY.get(), SpiderMonkeyEntity.createAttributes().build());
-        event.put(WHITE_LIPPED_PECCARY.get(), WhiteLippedPeccaryEntity.createAttributes().build());
-        event.put(CUBERA.get(), CuberaEntity.createAttributes().build());
+    private static void noDrops(RegistrateEntityLootTables loot, EntityType<?> type) {
+        loot.add(type, LootTable.lootTable());
+    }
+
+    // Drops a single item, not affected by enchantment, and several other items
+    // that are affected by Enchantment
+    // Looting will at most double yield with Looting III
+    private static <T extends LivingEntity> void dropItemsWithEnchantBonus(RegistrateEntityLootTables lootTables, EntityType<T> entity, RegistryEntry<Item> loot, RegistryEntry<Item> multiLoot, NumberProvider range) {
+        lootTables.add(entity, LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .setRolls(ConstantValue.exactly(1))
+                        .add(LootItem.lootTableItem(loot.get()))
+                )
+                .withPool(LootPool.lootPool()
+                        .setRolls(range)
+                        .add(LootItem.lootTableItem(multiLoot.get())
+                                .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0F, 1F / 3F))))
+                ));
+    }
+
+    // Just drops a single item, not affected by enchantment
+    private static <T extends LivingEntity> void dropItem(RegistrateEntityLootTables lootTables, EntityType<T> entity, RegistryEntry<? extends ItemLike> loot) {
+        lootTables.add(entity, LootTable.lootTable().withPool(
+                LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(loot.get()))));
+    }
+
+    private static <T extends LivingEntity> void dropItemsWithEnchantBonus(RegistrateEntityLootTables lootTables, EntityType<T> entity, RegistryEntry<? extends ItemLike> loot, NumberProvider range) {
+        dropItemsWithEnchantBonus(lootTables, entity, loot.get(), range);
+    }
+
+    // Drops several items that are affected by Enchantment
+    // Looting will at most double yield with Looting III
+    private static <T extends LivingEntity> void dropItemsWithEnchantBonus(RegistrateEntityLootTables lootTables, EntityType<T> entity, ItemLike loot, NumberProvider range) {
+        lootTables.add(entity,
+                LootTable.lootTable().withPool(LootPool.lootPool().setRolls(range).add(LootItem.lootTableItem(loot)
+                        .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0F, 1F / 3F))))));
     }
 }

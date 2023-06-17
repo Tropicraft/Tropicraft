@@ -26,7 +26,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.core.common.block.tileentity.DrinkMixerBlockEntity;
-import net.tropicraft.core.common.block.tileentity.TropicraftBlockEntityTypes;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.item.TropicraftItems;
@@ -45,7 +44,7 @@ public class DrinkMixerBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return createTickerHelper(type, TropicraftBlockEntityTypes.DRINK_MIXER.get(), DrinkMixerBlockEntity::mixTick);
+        return createTickerHelper(type, TropicraftBlocks.DRINK_MIXER_ENTITY.get(), DrinkMixerBlockEntity::mixTick);
     }
 
     @Override
@@ -121,6 +120,6 @@ public class DrinkMixerBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(final BlockPos pos, final BlockState state) {
-        return new DrinkMixerBlockEntity(pos, state);
+        return new DrinkMixerBlockEntity(TropicraftBlocks.DRINK_MIXER_ENTITY.get(), pos, state);
     }
 }

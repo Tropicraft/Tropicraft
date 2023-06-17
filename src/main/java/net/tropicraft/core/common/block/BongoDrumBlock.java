@@ -31,14 +31,16 @@ public class BongoDrumBlock extends Block {
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
     public enum Size {
-        SMALL(8, () -> Sounds.BONGO_HIGH),
-        MEDIUM(10, () -> Sounds.BONGO_MED),
-        LARGE(12, () -> Sounds.BONGO_LOW);
+        SMALL(8, () -> Sounds.BONGO_HIGH, 1),
+        MEDIUM(10, () -> Sounds.BONGO_MED, 2),
+        LARGE(12, () -> Sounds.BONGO_LOW, 3);
 
         public final VoxelShape shape;
         final Supplier<SoundEvent> soundEvent;
+        public final int recipeColumns;
 
-        Size(int size, final Supplier<SoundEvent> soundEvent) {
+        Size(int size, final Supplier<SoundEvent> soundEvent, int recipeColumns) {
+            this.recipeColumns = recipeColumns;
             double offset = (16 - size) / 2;
             this.shape = box(offset, 0, offset, 16 - offset, 16, 16 - offset);
             this.soundEvent = soundEvent;

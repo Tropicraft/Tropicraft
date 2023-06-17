@@ -24,9 +24,9 @@ public class CustomSeagrassBlock extends SeagrassBlock {
 
 	private final String scientificName;
 	@Nullable
-	private final Supplier<Supplier<? extends TallSeagrassBlock>> tall;
+	private final Supplier<? extends TallSeagrassBlock> tall;
 
-	public CustomSeagrassBlock(Properties properties, String scientificName, @Nullable Supplier<Supplier<? extends TallSeagrassBlock>> tall) {
+	public CustomSeagrassBlock(Properties properties, String scientificName, @Nullable Supplier<? extends TallSeagrassBlock> tall) {
 		super(properties);
 		this.scientificName = scientificName;
 		this.tall = tall;
@@ -41,7 +41,7 @@ public class CustomSeagrassBlock extends SeagrassBlock {
 	public void performBonemeal(ServerLevel level, Random random, BlockPos pos, BlockState state) {
 		if (tall == null) return;
 
-		BlockState bottomState = tall.get().get().defaultBlockState();
+		BlockState bottomState = tall.get().defaultBlockState();
 		BlockState topState = bottomState.setValue(TallSeagrassBlock.HALF, DoubleBlockHalf.UPPER);
 
 		BlockPos topPos = pos.above();

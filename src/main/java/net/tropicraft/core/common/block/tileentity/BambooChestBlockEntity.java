@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.tropicraft.Constants;
@@ -13,8 +14,8 @@ public class BambooChestBlockEntity extends ChestBlockEntity {
     /** Is this chest unbreakble (Koa chest) */
     private boolean unbreakable = false;
 
-    public BambooChestBlockEntity(final BlockPos pos, final BlockState state) {
-        super(TropicraftBlockEntityTypes.BAMBOO_CHEST.get(), pos, state);
+    public BambooChestBlockEntity(final BlockEntityType<BambooChestBlockEntity> type, final BlockPos pos, final BlockState state) {
+        super(type, pos, state);
     }
 
     @Override
