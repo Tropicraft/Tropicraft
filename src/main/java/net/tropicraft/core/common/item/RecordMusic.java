@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.item;
 
+import com.tterrag.registrate.providers.RegistrateLangProvider;
 import net.minecraft.sounds.SoundEvent;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.sound.Sounds;
@@ -24,7 +25,7 @@ public enum RecordMusic {
     public final String url;
     
     RecordMusic(Supplier<SoundEvent> sound, String author, String url) {
-        this.name = Util.toEnglishName(name());
+        this.name = RegistrateLangProvider.toEnglishName(name());
         this.sound = sound;
         this.author = author;
         this.url = url;

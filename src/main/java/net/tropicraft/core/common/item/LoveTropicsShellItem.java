@@ -12,7 +12,7 @@ import java.awt.*;
 import java.util.Map;
 import java.util.Random;
 
-public class LoveTropicsShellItem extends ShellItem implements IColoredItem {
+public class LoveTropicsShellItem extends ShellItem {
 
     public static class LTUtil {
         private static final Map<String, Integer> colors = Maps.newHashMap();
@@ -30,8 +30,7 @@ public class LoveTropicsShellItem extends ShellItem implements IColoredItem {
         super(properties);
     }
 
-    @Override
-    public int getColor(ItemStack itemstack, int pass) {
+    public static int getColor(ItemStack itemstack, int pass) {
         final CompoundTag tag = itemstack.getTag();
         if (tag != null && !tag.isEmpty() && tag.contains("Name")) {
             return pass == 0 ? 0xFFFFFFFF : LTUtil.colors.get(tag.getString("Name"));

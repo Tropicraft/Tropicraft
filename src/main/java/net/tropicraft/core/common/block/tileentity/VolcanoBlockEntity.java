@@ -10,6 +10,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.Vec3;
@@ -44,8 +45,8 @@ public class VolcanoBlockEntity extends BlockEntity {
 	private VolcanoState state = VolcanoState.DORMANT;
 	private int heightOffset = Integer.MIN_VALUE;
 
-	public VolcanoBlockEntity(final BlockPos pos, final BlockState state) {
-		super(TropicraftBlockEntityTypes.VOLCANO.get(), pos, state);
+	public VolcanoBlockEntity(final BlockEntityType<VolcanoBlockEntity> type, final BlockPos pos, final BlockState state) {
+		super(type, pos, state);
 	}
 
 	public static void volcanoTick(Level level, BlockPos pos, BlockState state, VolcanoBlockEntity volcano) {

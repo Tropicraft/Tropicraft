@@ -11,6 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.tropicraft.core.common.block.DrinkMixerBlock;
 import net.tropicraft.core.common.drinks.Drink;
@@ -39,8 +40,8 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
     private boolean mixing;
     public ItemStack result = ItemStack.EMPTY;
 
-    public DrinkMixerBlockEntity(final BlockPos pos, final BlockState state) {
-        super(TropicraftBlockEntityTypes.DRINK_MIXER.get(), pos, state);
+    public DrinkMixerBlockEntity(final BlockEntityType<DrinkMixerBlockEntity> type, final BlockPos pos, final BlockState state) {
+        super(type, pos, state);
         mixing = false;
         ingredients = NonNullList.withSize(MAX_NUM_INGREDIENTS, ItemStack.EMPTY);
     }

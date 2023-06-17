@@ -2,27 +2,48 @@ package net.tropicraft.core.common.item;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.tterrag.registrate.Registrate;
+import com.tterrag.registrate.builders.ItemBuilder;
+import com.tterrag.registrate.providers.ProviderType;
+import com.tterrag.registrate.util.DataIngredient;
+import com.tterrag.registrate.util.entry.ItemEntry;
+import com.tterrag.registrate.util.entry.RegistryEntry;
+import net.minecraft.client.color.item.ItemColor;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemNameBlockItem;
+import net.minecraft.world.entity.animal.AbstractFish;
+import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.*;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerPotBlock;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraftforge.client.model.generators.ItemModelBuilder;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.Foods;
+import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.block.TropicraftBlocks;
+import net.tropicraft.core.common.block.TropicraftFlower;
 import net.tropicraft.core.common.drinks.Drink;
+import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
 import net.tropicraft.core.common.entity.placeable.ChairEntity;
+import net.tropicraft.core.common.entity.placeable.FurnitureEntity;
 import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
 import net.tropicraft.core.common.item.scuba.*;
 
@@ -31,185 +52,607 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
+
+import static com.tterrag.registrate.providers.RegistrateRecipeProvider.has;
+import static net.tropicraft.core.common.block.TropicraftBlocks.CHUNK;
 
 @EventBusSubscriber(modid = Constants.MODID, bus = Bus.MOD)
 public class TropicraftItems {
-    
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Constants.MODID);
-    
-    public static final RegistryObject<Item> AZURITE = register("azurite_gem", Builder.item());
-    public static final RegistryObject<Item> EUDIALYTE = register("eudialyte_gem", Builder.item());
-    public static final RegistryObject<Item> ZIRCON = register("zircon_gem", Builder.item());
-    public static final RegistryObject<Item> SHAKA = register("shaka_ingot", Builder.item());
-    public static final RegistryObject<Item> MANGANESE = register("manganese_ingot", Builder.item());
-    public static final RegistryObject<Item> ZIRCONIUM = register("zirconium_gem", Builder.item());
-    
-    public static final Map<DyeColor, RegistryObject<FurnitureItem<UmbrellaEntity>>> UMBRELLAS = Arrays.stream(DyeColor.values())
-            .collect(Maps.<DyeColor, DyeColor,RegistryObject<FurnitureItem<UmbrellaEntity>>>toImmutableEnumMap(Function.identity(), c -> register(c.getSerializedName() + "_umbrella", Builder.umbrella(c))));
-    public static final Map<DyeColor, RegistryObject<FurnitureItem<ChairEntity>>> CHAIRS = Arrays.stream(DyeColor.values())
-            .collect(Maps.<DyeColor, DyeColor,RegistryObject<FurnitureItem<ChairEntity>>>toImmutableEnumMap(Function.identity(), c -> register(c.getSerializedName() + "_chair", Builder.chair(c))));
-    public static final Map<DyeColor, RegistryObject<FurnitureItem<BeachFloatEntity>>> BEACH_FLOATS = Arrays.stream(DyeColor.values())
-            .collect(Maps.<DyeColor, DyeColor,RegistryObject<FurnitureItem<BeachFloatEntity>>>toImmutableEnumMap(Function.identity(), c -> register(c.getSerializedName() + "_beach_float", Builder.beachFloat(c))));
+    public static final Registrate REGISTRATE = Tropicraft.registrate();
 
-    public static final RegistryObject<Item> BAMBOO_STICK = register("bamboo_stick", Builder.item());
+    static {
+        REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, prov -> {
+            prov.tag(Tags.Items.GEMS).addTags(TropicraftTags.Items.AZURITE_GEM, TropicraftTags.Items.EUDIALYTE_GEM, TropicraftTags.Items.ZIRCON_GEM, TropicraftTags.Items.ZIRCONIUM_GEM);
+            prov.tag(Tags.Items.INGOTS).addTags(TropicraftTags.Items.MANGANESE_INGOT, TropicraftTags.Items.SHAKA_INGOT);
 
-    public static final RegistryObject<Item> BAMBOO_SPEAR = register(
-            "bamboo_spear", () -> new SpearItem(TropicraftToolTiers.BAMBOO, 3, -2.4F, new Item.Properties().tab(Tropicraft.TROPICRAFT_ITEM_GROUP)));
-    public static final RegistryObject<Item> SOLONOX_SHELL = register("solonox_shell", Builder.shell());
-    public static final RegistryObject<Item> FROX_CONCH = register("frox_conch", Builder.shell());
-    public static final RegistryObject<Item> PAB_SHELL = register("pab_shell", Builder.shell());
-    public static final RegistryObject<Item> RUBE_NAUTILUS = register("rube_nautilus", Builder.shell());
-    public static final RegistryObject<Item> STARFISH = register("starfish", Builder.shell());
-    public static final RegistryObject<Item> TURTLE_SHELL = register("turtle_shell", Builder.shell());
+            // TODO: Replace with Vanilla tag in 1.20+
+            prov.tag(TropicraftTags.Items.SWORDS).add(Items.WOODEN_SWORD, Items.STONE_SWORD, Items.IRON_SWORD, Items.GOLDEN_SWORD, Items.DIAMOND_SWORD, Items.NETHERITE_SWORD);
 
-    public static final RegistryObject<LoveTropicsShellItem> LOVE_TROPICS_SHELL = register(
-            "love_tropics_shell", () -> new LoveTropicsShellItem(new Item.Properties()));
-    public static final RegistryObject<Item> LEMON = register("lemon", Builder.food(Foods.LEMON));
-    public static final RegistryObject<Item> LIME = register("lime", Builder.food(Foods.LIME));
-    public static final RegistryObject<Item> GRAPEFRUIT = register("grapefruit", Builder.food(Foods.GRAPEFRUIT));
-    public static final RegistryObject<Item> ORANGE = register("orange", Builder.food(Foods.ORANGE));
-    public static final RegistryObject<Item> PINEAPPLE_CUBES = register("pineapple_cubes", Builder.food(Foods.PINEAPPLE_CUBES));
-    public static final RegistryObject<Item> COCONUT_CHUNK = register("coconut_chunk", Builder.food(Foods.COCONUT_CHUNK));
-    public static final RegistryObject<ItemNameBlockItem> RAW_COFFEE_BEAN = register("raw_coffee_bean", Builder.blockNamedItem(TropicraftBlocks.COFFEE_BUSH));
-    public static final RegistryObject<Item> ROASTED_COFFEE_BEAN = register("roasted_coffee_bean", Builder.item());
-    public static final RegistryObject<Item> COFFEE_BERRY = register("coffee_berry", Builder.item());
-    public static final RegistryObject<Item> BAMBOO_MUG = register("bamboo_mug", Builder.item());
+            prov.tag(TropicraftTags.Items.FRUITS).add(Items.APPLE);
+            prov.tag(TropicraftTags.Items.MEATS).add(Items.BEEF, Items.PORKCHOP, Items.CHICKEN, Items.RABBIT, Items.MUTTON);
+        });
+    }
+
+    public static final ItemEntry<Item> AZURITE = simpleItem("azurite_gem")
+            .tag(TropicraftTags.Items.AZURITE_GEM)
+            .recipe((ctx, prov) -> prov.smeltingAndBlasting(DataIngredient.tag(TropicraftTags.Items.AZURITE_ORE), ctx, 0.3f))
+            .register();
+    public static final ItemEntry<Item> EUDIALYTE = simpleItem("eudialyte_gem")
+            .tag(TropicraftTags.Items.EUDIALYTE_GEM)
+            .recipe((ctx, prov) -> prov.smeltingAndBlasting(DataIngredient.tag(TropicraftTags.Items.EUDIALYTE_ORE), ctx, 0.5f))
+            .register();
+    public static final ItemEntry<Item> ZIRCON = simpleItem("zircon_gem")
+            .tag(TropicraftTags.Items.ZIRCON_GEM)
+            .recipe((ctx, prov) -> prov.smeltingAndBlasting(DataIngredient.tag(TropicraftTags.Items.ZIRCON_ORE), ctx, 0.5f))
+            .register();
+    public static final ItemEntry<Item> SHAKA = simpleItem("shaka_ingot")
+            .tag(TropicraftTags.Items.SHAKA_INGOT)
+            .recipe((ctx, prov) -> prov.smeltingAndBlasting(DataIngredient.tag(TropicraftTags.Items.SHAKA_ORE), ctx, 0.5f))
+            .register();
+    public static final ItemEntry<Item> MANGANESE = simpleItem("manganese_ingot")
+            .tag(TropicraftTags.Items.MANGANESE_INGOT)
+            .recipe((ctx, prov) -> prov.smeltingAndBlasting(DataIngredient.tag(TropicraftTags.Items.MANGANESE_ORE), ctx, 0.5f))
+            .register();
+    public static final ItemEntry<Item> ZIRCONIUM = simpleItem("zirconium_gem")
+            .tag(TropicraftTags.Items.ZIRCONIUM_GEM)
+            .lang("Zirconium")
+            .recipe((ctx, prov) -> ShapelessRecipeBuilder.shapeless(ctx.get())
+                    .requires(AZURITE.get(), 2)
+                    .requires(ZIRCON.get(), 2)
+                    .unlockedBy("has_zircon", has(ZIRCON.get()))
+                    .unlockedBy("has_azurite", has(AZURITE.get()))
+                    .save(prov))
+            .register();
+
+    public static final Map<DyeColor, ItemEntry<FurnitureItem<UmbrellaEntity>>> UMBRELLAS = Arrays.stream(DyeColor.values())
+            .collect(Maps.<DyeColor, DyeColor, ItemEntry<FurnitureItem<UmbrellaEntity>>>toImmutableEnumMap(Function.identity(), color ->
+                    furniture(color.getSerializedName() + "_umbrella", TropicraftEntities.UMBRELLA, color)
+                            .recipe((ctx, prov) -> {
+                                ItemLike wool = Sheep.ITEM_BY_DYE.get(color);
+                                ShapedRecipeBuilder.shaped(ctx.get())
+                                        .pattern("WWW").pattern(" B ").pattern(" B ")
+                                        .group(Constants.MODID + ":umbrellas")
+                                        .define('W', wool)
+                                        .define('B', TropicraftItems.BAMBOO_STICK.get())
+                                        .unlockedBy("has_" + color.getSerializedName() + "_wool", has(wool))
+                                        .save(prov);
+                            })
+                            .model((ctx, prov) -> prov.generated(ctx, prov.modLoc("item/umbrella"), prov.modLoc("item/umbrella_inverted")))
+                            .register()
+            ));
+    public static final Map<DyeColor, ItemEntry<FurnitureItem<ChairEntity>>> CHAIRS = Arrays.stream(DyeColor.values())
+            .collect(Maps.<DyeColor, DyeColor, ItemEntry<FurnitureItem<ChairEntity>>>toImmutableEnumMap(Function.identity(), color ->
+                    furniture(color.getSerializedName() + "_chair", TropicraftEntities.CHAIR, color)
+                            .recipe((ctx, prov) -> {
+                                ItemLike wool = Sheep.ITEM_BY_DYE.get(color);
+                                ShapedRecipeBuilder.shaped(ctx.get())
+                                        .pattern("BWB").pattern("BWB").pattern("BWB")
+                                        .group(Constants.MODID + ":chairs")
+                                        .define('W', wool)
+                                        .define('B', TropicraftItems.BAMBOO_STICK.get())
+                                        .unlockedBy("has_" + color.getSerializedName() + "_wool", has(wool))
+                                        .save(prov);
+                            })
+                            .model((ctx, prov) -> prov.generated(ctx, prov.modLoc("item/chair"), prov.modLoc("item/chair_inverted")))
+                            .register()
+            ));
+    public static final Map<DyeColor, ItemEntry<FurnitureItem<BeachFloatEntity>>> BEACH_FLOATS = Arrays.stream(DyeColor.values())
+            .collect(Maps.<DyeColor, DyeColor, ItemEntry<FurnitureItem<BeachFloatEntity>>>toImmutableEnumMap(Function.identity(), color ->
+                    furniture(color.getSerializedName() + "_beach_float", TropicraftEntities.BEACH_FLOAT, color)
+                            .recipe((ctx, prov) -> {
+                                ItemLike wool = Sheep.ITEM_BY_DYE.get(color);
+                                ShapedRecipeBuilder.shaped(ctx.get())
+                                        .pattern("WWW").pattern("BBB")
+                                        .group(Constants.MODID + ":beach_floats")
+                                        .define('W', wool)
+                                        .define('B', Blocks.BAMBOO)
+                                        .unlockedBy("has_" + color.getSerializedName() + "_wool", has(wool))
+                                        .save(prov);
+                            })
+                            .model((ctx, prov) -> prov.generated(ctx, prov.modLoc("item/beach_float"), prov.modLoc("item/beach_float_inverted")))
+                            .register()
+            ));
+
+    private static <T extends FurnitureEntity> ItemBuilder<FurnitureItem<T>, Registrate> furniture(String name, Supplier<EntityType<T>> type, DyeColor color) {
+        return REGISTRATE.item(name, p -> new FurnitureItem<>(p, type, color))
+                .color(() -> () -> (stack, tintIndex) -> tintIndex == 0 ? 0xffffff : color.getTextColor());
+    }
+
+    public static final ItemEntry<Item> BAMBOO_STICK = simpleItem("bamboo_stick")
+            .tag(Tags.Items.RODS_WOODEN)
+            .recipe((ctx, prov) -> {
+                // Override the vanilla recipe to output ours, it's tagged so it will behave the same
+                ShapedRecipeBuilder.shaped(ctx.get())
+                        .pattern("X").pattern("X")
+                        .define('X', Items.BAMBOO)
+                        .unlockedBy("has_bamboo", has(Items.BAMBOO))
+                        .save(prov, new ResourceLocation("stick_from_bamboo_item"));
+            })
+            .model((ctx, prov) -> prov.handheld(ctx))
+            .register();
+
+    public static final ItemEntry<SpearItem> BAMBOO_SPEAR = REGISTRATE.item("bamboo_spear", p -> new SpearItem(TropicraftToolTiers.BAMBOO, 3, -2.4F, p))
+            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get())
+                    .pattern("X ").pattern(" X")
+                    .define('X', BAMBOO_STICK.get())
+                    .unlockedBy("has_bamboo_stick", has(BAMBOO_STICK.get()))
+                    .save(prov))
+            .model((ctx, prov) -> {
+                ItemModelBuilder throwing = prov.withExistingParent(ctx.getName() + "_throwing", prov.modLoc("spear_throwing"))
+                        .texture("layer0", prov.itemTexture(ctx));
+                prov.withExistingParent(ctx.getName(), prov.modLoc("spear"))
+                        .texture("layer0", prov.itemTexture(ctx))
+                        .override()
+                        .predicate(prov.mcLoc("throwing"), 1)
+                        .model(throwing);
+            })
+            .register();
+    public static final ItemEntry<ShellItem> SOLONOX_SHELL = shell("solonox_shell").register();
+    public static final ItemEntry<ShellItem> FROX_CONCH = shell("frox_conch").register();
+    public static final ItemEntry<ShellItem> PAB_SHELL = shell("pab_shell").register();
+    public static final ItemEntry<ShellItem> RUBE_NAUTILUS = shell("rube_nautilus").register();
+    public static final ItemEntry<ShellItem> STARFISH = shell("starfish").register();
+    public static final ItemEntry<ShellItem> TURTLE_SHELL = shell("turtle_shell").register();
+
+    private static ItemBuilder<ShellItem, Registrate> shell(String name) {
+        return REGISTRATE.item(name, ShellItem::new)
+                .tag(TropicraftTags.Items.SHELLS);
+    }
+
+    public static final ItemEntry<LoveTropicsShellItem> LOVE_TROPICS_SHELL = REGISTRATE.item("love_tropics_shell", LoveTropicsShellItem::new)
+            .initialProperties(Item.Properties::new)
+            .model((ctx, prov) -> prov.generated(ctx, prov.modLoc("item/ltshell"), prov.modLoc("item/ltshell_inverted")))
+            .color(() -> () -> LoveTropicsShellItem::getColor)
+            .addMiscData(ProviderType.LANG, prov -> {
+                prov.add("item.tropicraft.shell.owned.normal", "%s's Shell");
+                prov.add("item.tropicraft.shell.owned.with_s", "%s' Shell");
+            })
+            .register();
+
+    public static final ItemEntry<Item> LEMON = food("lemon", Foods.LEMON)
+            .tag(TropicraftTags.Items.FRUITS)
+            .register();
+    public static final ItemEntry<Item> LIME = food("lime", Foods.LIME)
+            .tag(TropicraftTags.Items.FRUITS)
+            .register();
+    public static final ItemEntry<Item> GRAPEFRUIT = food("grapefruit", Foods.GRAPEFRUIT)
+            .tag(TropicraftTags.Items.FRUITS)
+            .register();
+    public static final ItemEntry<Item> ORANGE = food("orange", Foods.ORANGE)
+            .tag(TropicraftTags.Items.FRUITS)
+            .register();
+    public static final ItemEntry<Item> PINEAPPLE_CUBES = food("pineapple_cubes", Foods.PINEAPPLE_CUBES).register();
+    public static final ItemEntry<Item> COCONUT_CHUNK = food("coconut_chunk", Foods.COCONUT_CHUNK).register();
+
+    public static final ItemEntry<ItemNameBlockItem> RAW_COFFEE_BEAN = REGISTRATE.item("raw_coffee_bean", p -> new ItemNameBlockItem(TropicraftBlocks.COFFEE_BUSH.get(), p))
+            .recipe((ctx, prov) -> ShapelessRecipeBuilder.shapeless(ctx.get())
+                    .requires(TropicraftItems.COFFEE_BERRY.get())
+                    .unlockedBy("has_coffee_bean", has(TropicraftItems.COFFEE_BERRY.get()))
+                    .save(prov))
+            .register();
+    public static final ItemEntry<Item> ROASTED_COFFEE_BEAN = simpleItem("roasted_coffee_bean")
+            .recipe((ctx, prov) -> prov.food(DataIngredient.items(RAW_COFFEE_BEAN), ctx, 0.1f))
+            .register();
+    public static final ItemEntry<Item> COFFEE_BERRY = simpleItem("coffee_berry").register();
+    public static final ItemEntry<Item> BAMBOO_MUG = simpleItem("bamboo_mug")
+            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get())
+                    .pattern("X X").pattern("X X").pattern("XXX")
+                    .define('X', Items.BAMBOO)
+                    .unlockedBy("has_bamboo", has(Items.BAMBOO))
+                    .save(prov))
+            .register();
 
     // Cocktails
-    public static final ImmutableMap<Drink, RegistryObject<CocktailItem>> COCKTAILS = ImmutableMap.copyOf(
-            Drink.DRINKS.values().stream()
-                .collect(Collectors.toMap(Function.identity(), d -> register(d.name, Builder.cocktail(d)))));
+    public static final ImmutableMap<Drink, ItemEntry<CocktailItem>> COCKTAILS = Drink.DRINKS.values().stream()
+            .collect(ImmutableMap.toImmutableMap(Function.identity(), drink ->
+                    REGISTRATE.item(drink.name, p -> {
+                                CocktailItem item = new CocktailItem(drink, p);
+                                MixerRecipes.setDrinkItem(drink, item);
+                                return item;
+                            })
+                            .properties(p -> p.durability(0).stacksTo(1).craftRemainder(BAMBOO_MUG.get()))
+                            .model((ctx, prov) -> prov.generated(ctx, prov.modLoc("item/cocktail"), prov.modLoc("item/cocktail_contents")))
+                            .color(() -> () -> (ItemColor) (stack, tintIndex) -> (tintIndex == 0 ? 0xffffff : drink.color))
+                            .lang(drink.getName())
+                            .register()
+            ));
 
-    public static final RegistryObject<Item> WHITE_PEARL = register("white_pearl", Builder.item());
-    public static final RegistryObject<Item> BLACK_PEARL = register("black_pearl", Builder.item());
-    public static final RegistryObject<Item> SCALE = register("scale", Builder.item());
-    public static final RegistryObject<Item> NIGEL_STACHE = register(
-            "nigel_stache", () -> new NigelStacheItem(new Item.Properties().tab(Tropicraft.TROPICRAFT_ITEM_GROUP)));
+    static {
+        REGISTRATE.addDataGenerator(ProviderType.RECIPE, prov -> {
+            ShapelessRecipeBuilder.shapeless(COCKTAILS.get(Drink.PINA_COLADA).get())
+                    .requires(BAMBOO_MUG.get())
+                    .requires(COCONUT_CHUNK.get())
+                    .requires(PINEAPPLE_CUBES.get())
+                    .unlockedBy("has_bamboo_mug", has(BAMBOO_MUG.get()))
+                    .save(prov);
+        });
+    }
 
-    public static final RegistryObject<Item> FRESH_MARLIN = register("fresh_marlin", Builder.food(Foods.FRESH_MARLIN));
-    public static final RegistryObject<Item> SEARED_MARLIN = register("seared_marlin", Builder.food(Foods.SEARED_MARLIN));
-    public static final RegistryObject<Item> RAW_RAY = register("raw_ray", Builder.food(Foods.RAW_RAY));
-    public static final RegistryObject<Item> COOKED_RAY = register("cooked_ray", Builder.food(Foods.COOKED_RAY));
-    public static final RegistryObject<Item> FROG_LEG = register("frog_leg", Builder.food(Foods.RAW_FROG_LEG));
-    public static final RegistryObject<Item> COOKED_FROG_LEG = register("cooked_frog_leg", Builder.food(Foods.COOKED_FROG_LEG));
-    public static final RegistryObject<Item> SEA_URCHIN_ROE = register("sea_urchin_roe", Builder.food(Foods.SEA_URCHIN_ROE));
-    public static final RegistryObject<Item> TOASTED_NORI = register("toasted_nori", Builder.food(Foods.TOASTED_NORI));
-    public static final RegistryObject<Item> RAW_FISH = register("raw_fish", Builder.food(Foods.RAW_FISH));
-    public static final RegistryObject<Item> COOKED_FISH = register("cooked_fish", Builder.food(Foods.COOKED_FISH));
-    public static final RegistryObject<Item> POISON_FROG_SKIN = register("poison_frog_skin", Builder.item());
-    
-    public static final RegistryObject<Item> IGUANA_LEATHER = register("iguana_leather", Builder.item());
-    public static final RegistryObject<Item> TROPICAL_FERTILIZER = register("tropical_fertilizer", Builder.item(TropicalFertilizerItem::new));
+    public static final ItemEntry<Item> WHITE_PEARL = simpleItem("white_pearl").register();
+    public static final ItemEntry<Item> BLACK_PEARL = simpleItem("black_pearl").register();
+    public static final ItemEntry<Item> SCALE = simpleItem("scale").register();
+    public static final ItemEntry<NigelStacheItem> NIGEL_STACHE = REGISTRATE.item("nigel_stache", NigelStacheItem::new)
+            .lang("Nigel's Moustache")
+            .register();
 
-    public static final RegistryObject<Item> BAMBOO_ITEM_FRAME = register(
-            "bamboo_item_frame", () -> new BambooItemFrameItem(new Item.Properties().tab(Tropicraft.TROPICRAFT_ITEM_GROUP)));
-    
-    public static final ImmutableMap<RecordMusic, RegistryObject<TropicalMusicDiscItem>> MUSIC_DISCS = Arrays.stream(RecordMusic.values())
-            .collect(Maps.<RecordMusic, RecordMusic, RegistryObject<TropicalMusicDiscItem>>toImmutableEnumMap(Function.identity(), type -> register("music_disc_" + type.name().toLowerCase(Locale.ROOT), Builder.musicDisc(type))));
+    public static final ItemEntry<Item> FRESH_MARLIN = food("fresh_marlin", Foods.FRESH_MARLIN).register();
+    public static final ItemEntry<Item> SEARED_MARLIN = food("seared_marlin", Foods.SEARED_MARLIN)
+            .recipe((ctx, prov) -> prov.food(DataIngredient.items(FRESH_MARLIN), ctx, 0.15f))
+            .register();
+    public static final ItemEntry<Item> RAW_RAY = food("raw_ray", Foods.RAW_RAY).register();
+    public static final ItemEntry<Item> COOKED_RAY = food("cooked_ray", Foods.COOKED_RAY)
+            .recipe((ctx, prov) -> prov.food(DataIngredient.items(RAW_RAY), ctx, 0.15f))
+            .register();
+    public static final ItemEntry<Item> FROG_LEG = food("frog_leg", Foods.RAW_FROG_LEG).register();
+    public static final ItemEntry<Item> COOKED_FROG_LEG = food("cooked_frog_leg", Foods.COOKED_FROG_LEG)
+            .recipe((ctx, prov) -> prov.food(DataIngredient.items(FROG_LEG), ctx, 0.1f))
+            .register();
+    public static final ItemEntry<Item> SEA_URCHIN_ROE = food("sea_urchin_roe", Foods.SEA_URCHIN_ROE).register();
+    public static final ItemEntry<Item> TOASTED_NORI = food("toasted_nori", Foods.TOASTED_NORI)
+            .recipe((ctx, prov) -> prov.food(DataIngredient.items(Items.SEAGRASS), ctx, 0.1f))
+            .register();
+    public static final ItemEntry<Item> RAW_FISH = food("raw_fish", Foods.RAW_FISH)
+            .tag(ItemTags.FISHES)
+            .model((ctx, prov) -> prov.generated(ctx, prov.modLoc("item/smolfish")))
+            .register();
+    public static final ItemEntry<Item> COOKED_FISH = food("cooked_fish", Foods.COOKED_FISH)
+            .tag(ItemTags.FISHES)
+            .recipe((ctx, prov) -> prov.food(DataIngredient.items(RAW_FISH), ctx, 0.1f))
+            .model((ctx, prov) -> prov.generated(ctx, prov.modLoc("item/cooked_smolfish")))
+            .register();
+    public static final ItemEntry<Item> POISON_FROG_SKIN = simpleItem("poison_frog_skin").register();
 
-    public static final RegistryObject<Item> TROPICAL_FISH_BUCKET = register("tropical_fish_bucket", Builder.fishBucket(TropicraftEntities.TROPICAL_FISH));
-    public static final RegistryObject<Item> SARDINE_BUCKET = register("sardine_bucket", Builder.fishBucket(TropicraftEntities.RIVER_SARDINE));
-    public static final RegistryObject<Item> PIRANHA_BUCKET = register("piranha_bucket", Builder.fishBucket(TropicraftEntities.PIRANHA));
+    public static final ItemEntry<Item> IGUANA_LEATHER = simpleItem("iguana_leather")
+            .tag(Tags.Items.LEATHER)
+            .register();
+    public static final ItemEntry<TropicalFertilizerItem> TROPICAL_FERTILIZER = REGISTRATE.item("tropical_fertilizer", TropicalFertilizerItem::new)
+            .recipe((ctx, prov) -> ShapelessRecipeBuilder.shapeless(ctx.get())
+                    .requires(TropicraftFlower.MAGIC_MUSHROOM.get())
+                    .requires(TropicraftFlower.CROTON.get())
+                    .unlockedBy("has_magic_mushroom", has(TropicraftFlower.MAGIC_MUSHROOM.get()))
+                    .save(prov))
+            .register();
 
-    public static final RegistryObject<Item> KOA_SPAWN_EGG = register("koa_spawn_egg", Builder.spawnEgg(TropicraftEntities.KOA_HUNTER));
-    public static final RegistryObject<Item> TROPICREEPER_SPAWN_EGG = register("tropicreeper_spawn_egg", Builder.spawnEgg(TropicraftEntities.TROPI_CREEPER));
-    public static final RegistryObject<Item> IGUANA_SPAWN_EGG = register("iguana_spawn_egg", Builder.spawnEgg(TropicraftEntities.IGUANA));
-    public static final RegistryObject<Item> TROPISKELLY_SPAWN_EGG = register("tropiskelly_spawn_egg", Builder.spawnEgg(TropicraftEntities.TROPI_SKELLY));
-    public static final RegistryObject<Item> EIH_SPAWN_EGG = register("eih_spawn_egg", Builder.spawnEgg(TropicraftEntities.EIH));
-    public static final RegistryObject<Item> SEA_TURTLE_SPAWN_EGG = register("sea_turtle_spawn_egg", Builder.spawnEgg(TropicraftEntities.SEA_TURTLE));
-    public static final RegistryObject<Item> MARLIN_SPAWN_EGG = register("marlin_spawn_egg", Builder.spawnEgg(TropicraftEntities.MARLIN));
-    public static final RegistryObject<Item> FAILGULL_SPAWN_EGG = register("failgull_spawn_egg", Builder.spawnEgg(TropicraftEntities.FAILGULL));
-    public static final RegistryObject<Item> DOLPHIN_SPAWN_EGG = register("dolphin_spawn_egg", Builder.spawnEgg(TropicraftEntities.DOLPHIN));
-    public static final RegistryObject<Item> SEAHORSE_SPAWN_EGG = register("seahorse_spawn_egg", Builder.spawnEgg(TropicraftEntities.SEAHORSE));
-    public static final RegistryObject<Item> TREE_FROG_SPAWN_EGG = register("tree_frog_spawn_egg", Builder.spawnEgg(TropicraftEntities.TREE_FROG));
-    public static final RegistryObject<Item> SEA_URCHIN_SPAWN_EGG = register("sea_urchin_spawn_egg", Builder.spawnEgg(TropicraftEntities.SEA_URCHIN));
-    public static final RegistryObject<Item> V_MONKEY_SPAWN_EGG = register("v_monkey_spawn_egg", Builder.spawnEgg(TropicraftEntities.V_MONKEY));
-    public static final RegistryObject<Item> PIRANHA_SPAWN_EGG = register("piranha_spawn_egg", Builder.spawnEgg(TropicraftEntities.PIRANHA));
-    public static final RegistryObject<Item> SARDINE_SPAWN_EGG = register("sardine_spawn_egg", Builder.spawnEgg(TropicraftEntities.RIVER_SARDINE));
-    public static final RegistryObject<Item> TROPICAL_FISH_SPAWN_EGG = register("tropical_fish_spawn_egg", Builder.spawnEgg(TropicraftEntities.TROPICAL_FISH));
-    public static final RegistryObject<Item> EAGLE_RAY_SPAWN_EGG = register("eagle_ray_spawn_egg", Builder.spawnEgg(TropicraftEntities.EAGLE_RAY));
-    public static final RegistryObject<Item> TROPI_SPIDER_SPAWN_EGG = register("tropi_spider_spawn_egg", Builder.spawnEgg(TropicraftEntities.TROPI_SPIDER));
-    public static final RegistryObject<Item> ASHEN_SPAWN_EGG = register("ashen_spawn_egg", Builder.spawnEgg(TropicraftEntities.ASHEN));
-    public static final RegistryObject<Item> HAMMERHEAD_SPAWN_EGG = register("hammerhead_spawn_egg", Builder.spawnEgg(TropicraftEntities.HAMMERHEAD));
-    public static final RegistryObject<Item> COWKTAIL_SPAWN_EGG = register("cowktail_spawn_egg", Builder.spawnEgg(TropicraftEntities.COWKTAIL));
-    public static final RegistryObject<Item> MAN_O_WAR_SPAWN_EGG = register("man_o_war_spawn_egg", Builder.spawnEgg(TropicraftEntities.MAN_O_WAR));
-    public static final RegistryObject<Item> TROPIBEE_SPAWN_EGG = register("tropibee_spawn_egg", Builder.spawnEgg(TropicraftEntities.TROPI_BEE));
-    public static final RegistryObject<Item> TAPIR_SPAWN_EGG = register("tapir_spawn_egg", Builder.spawnEgg(TropicraftEntities.TAPIR));
-    public static final RegistryObject<Item> JAGUAR_SPAWN_EGG = register("jaguar_spawn_egg", Builder.spawnEgg(TropicraftEntities.JAGUAR));
-    public static final RegistryObject<Item> BROWN_BASILISK_LIZARD_SPAWN_EGG = register("brown_basilisk_lizard_spawn_egg", Builder.spawnEgg(TropicraftEntities.BROWN_BASILISK_LIZARD));
-    public static final RegistryObject<Item> GREEN_BASILISK_LIZARD_SPAWN_EGG = register("green_basilisk_lizard_spawn_egg", Builder.spawnEgg(TropicraftEntities.GREEN_BASILISK_LIZARD));
-    public static final RegistryObject<Item> HUMMINGBIRD_SPAWN_EGG = register("hummingbird_spawn_egg", Builder.spawnEgg(TropicraftEntities.HUMMINGBIRD));
-    public static final RegistryObject<Item> FIDDLER_CRAB_SPAWN_EGG = register("fiddler_crab_spawn_egg", Builder.spawnEgg(TropicraftEntities.FIDDLER_CRAB));
-    public static final RegistryObject<Item> SPIDER_MONKEY_SPAWN_EGG = register("spider_monkey_spawn_egg", Builder.spawnEgg(TropicraftEntities.SPIDER_MONKEY));
-    public static final RegistryObject<Item> WHITE_LIPPED_PECCARY_SPAWN_EGG = register("white_lipped_peccary_spawn_egg", Builder.spawnEgg(TropicraftEntities.WHITE_LIPPED_PECCARY));
-    public static final RegistryObject<Item> CUBERA_SPAWN_EGG = register("cubera_spawn_egg", Builder.spawnEgg(TropicraftEntities.CUBERA));
+    public static final ItemEntry<BambooItemFrameItem> BAMBOO_ITEM_FRAME = REGISTRATE.item("bamboo_item_frame", BambooItemFrameItem::new)
+            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get(), 1)
+                    .pattern("XXX")
+                    .pattern("XYX")
+                    .pattern("XXX")
+                    .define('X', Items.BAMBOO)
+                    .define('Y', Items.LEATHER)
+                    .unlockedBy("has_bamboo", has(Items.BAMBOO))
+                    .unlockedBy("has_leather", has(Items.LEATHER))
+                    .save(prov))
+            .register();
 
-    public static final ImmutableMap<AshenMasks, RegistryObject<AshenMaskItem>> ASHEN_MASKS = Arrays.stream(AshenMasks.values())
-            .collect(Maps.<AshenMasks, AshenMasks, RegistryObject<AshenMaskItem>>toImmutableEnumMap(Function.identity(), type -> register("ashen_mask_" + type.name().toLowerCase(Locale.ROOT), Builder.mask(type))));
+    public static final ImmutableMap<RecordMusic, ItemEntry<TropicalMusicDiscItem>> MUSIC_DISCS = Arrays.stream(RecordMusic.values())
+            .collect(Maps.<RecordMusic, RecordMusic, ItemEntry<TropicalMusicDiscItem>>toImmutableEnumMap(Function.identity(), type ->
+                    REGISTRATE.item("music_disc_" + type.name().toLowerCase(Locale.ROOT), p -> new TropicalMusicDiscItem(type, p))
+                            .properties(p -> p.rarity(Rarity.RARE))
+                            .tag(ItemTags.MUSIC_DISCS)
+                            .setData(ProviderType.LANG, (ctx, prov) -> prov.addItemWithTooltip(ctx, "Music Disc", type.getTooltip()))
+                            .register()
+            ));
 
-    public static final RegistryObject<Item> DAGGER = register(
-            "dagger", () -> new DaggerItem(TropicraftToolTiers.ZIRCON, new Item.Properties().tab(Tropicraft.TROPICRAFT_ITEM_GROUP).stacksTo(1)));
+    public static final ItemEntry<Item> TROPICAL_FISH_BUCKET = fishBucket("tropical_fish_bucket", TropicraftEntities.TROPICAL_FISH).register();
+    public static final ItemEntry<Item> SARDINE_BUCKET = fishBucket("sardine_bucket", TropicraftEntities.RIVER_SARDINE).register();
+    public static final ItemEntry<Item> PIRANHA_BUCKET = fishBucket("piranha_bucket", TropicraftEntities.PIRANHA).register();
 
-    public static final RegistryObject<Item> BLOW_GUN = register(
-            "blow_gun", () -> new BlowGunItem(new Item.Properties().tab(Tropicraft.TROPICRAFT_ITEM_GROUP).stacksTo(1)));
+    private static <T extends AbstractFish> ItemBuilder<Item, Registrate> fishBucket(final String name, final Supplier<? extends EntityType<T>> entity) {
+        return REGISTRATE.item(name, p -> (Item) new TropicraftFishBucketItem<>(entity, Fluids.WATER, p))
+                .properties(p -> p.stacksTo(1));
+    }
+
+    public static final ItemEntry<Item> KOA_SPAWN_EGG = spawnEgg("koa_spawn_egg", TropicraftEntities.KOA).lang("Koa Headband").register();
+    public static final ItemEntry<Item> TROPICREEPER_SPAWN_EGG = spawnEgg("tropicreeper_spawn_egg", TropicraftEntities.TROPICREEPER).lang("TropiCreeper Hat").register();
+    public static final ItemEntry<Item> IGUANA_SPAWN_EGG = spawnEgg("iguana_spawn_egg", TropicraftEntities.IGUANA).register();
+    public static final ItemEntry<Item> TROPISKELLY_SPAWN_EGG = spawnEgg("tropiskelly_spawn_egg", TropicraftEntities.TROPISKELLY).lang("TropiSkelly Skirt").register();
+    public static final ItemEntry<Item> EIH_SPAWN_EGG = spawnEgg("eih_spawn_egg", TropicraftEntities.EIH).lang("Eye of Head").register();
+    public static final ItemEntry<Item> SEA_TURTLE_SPAWN_EGG = spawnEgg("sea_turtle_spawn_egg", TropicraftEntities.SEA_TURTLE).register();
+    public static final ItemEntry<Item> MARLIN_SPAWN_EGG = spawnEgg("marlin_spawn_egg", TropicraftEntities.MARLIN).register();
+    public static final ItemEntry<Item> FAILGULL_SPAWN_EGG = spawnEgg("failgull_spawn_egg", TropicraftEntities.FAILGULL).register();
+    public static final ItemEntry<Item> DOLPHIN_SPAWN_EGG = spawnEgg("dolphin_spawn_egg", TropicraftEntities.DOLPHIN).register();
+    public static final ItemEntry<Item> SEAHORSE_SPAWN_EGG = spawnEgg("seahorse_spawn_egg", TropicraftEntities.SEAHORSE).register();
+    public static final ItemEntry<Item> TREE_FROG_SPAWN_EGG = spawnEgg("tree_frog_spawn_egg", TropicraftEntities.TREE_FROG).register();
+    public static final ItemEntry<Item> SEA_URCHIN_SPAWN_EGG = spawnEgg("sea_urchin_spawn_egg", TropicraftEntities.SEA_URCHIN).register();
+    public static final ItemEntry<Item> V_MONKEY_SPAWN_EGG = spawnEgg("v_monkey_spawn_egg", TropicraftEntities.V_MONKEY).lang("Vervet Monkey Spawn Egg").register();
+    public static final ItemEntry<Item> PIRANHA_SPAWN_EGG = spawnEgg("piranha_spawn_egg", TropicraftEntities.PIRANHA).register();
+    public static final ItemEntry<Item> SARDINE_SPAWN_EGG = spawnEgg("sardine_spawn_egg", TropicraftEntities.RIVER_SARDINE).register();
+    public static final ItemEntry<Item> TROPICAL_FISH_SPAWN_EGG = spawnEgg("tropical_fish_spawn_egg", TropicraftEntities.TROPICAL_FISH).register();
+    public static final ItemEntry<Item> EAGLE_RAY_SPAWN_EGG = spawnEgg("eagle_ray_spawn_egg", TropicraftEntities.EAGLE_RAY).register();
+    public static final ItemEntry<Item> TROPI_SPIDER_SPAWN_EGG = spawnEgg("tropi_spider_spawn_egg", TropicraftEntities.TROPI_SPIDER).register();
+    public static final ItemEntry<Item> ASHEN_SPAWN_EGG = spawnEgg("ashen_spawn_egg", TropicraftEntities.ASHEN).lang("Ashen Ash").register();
+    public static final ItemEntry<Item> HAMMERHEAD_SPAWN_EGG = spawnEgg("hammerhead_spawn_egg", TropicraftEntities.HAMMERHEAD).register();
+    public static final ItemEntry<Item> COWKTAIL_SPAWN_EGG = spawnEgg("cowktail_spawn_egg", TropicraftEntities.COWKTAIL).register();
+    public static final ItemEntry<Item> MAN_O_WAR_SPAWN_EGG = spawnEgg("man_o_war_spawn_egg", TropicraftEntities.MAN_O_WAR).register();
+    public static final ItemEntry<Item> TROPIBEE_SPAWN_EGG = spawnEgg("tropibee_spawn_egg", TropicraftEntities.TROPI_BEE).register();
+    public static final ItemEntry<Item> TAPIR_SPAWN_EGG = spawnEgg("tapir_spawn_egg", TropicraftEntities.TAPIR).register();
+    public static final ItemEntry<Item> JAGUAR_SPAWN_EGG = spawnEgg("jaguar_spawn_egg", TropicraftEntities.JAGUAR).register();
+    public static final ItemEntry<Item> BROWN_BASILISK_LIZARD_SPAWN_EGG = spawnEgg("brown_basilisk_lizard_spawn_egg", TropicraftEntities.BROWN_BASILISK_LIZARD).register();
+    public static final ItemEntry<Item> GREEN_BASILISK_LIZARD_SPAWN_EGG = spawnEgg("green_basilisk_lizard_spawn_egg", TropicraftEntities.GREEN_BASILISK_LIZARD).register();
+    public static final ItemEntry<Item> HUMMINGBIRD_SPAWN_EGG = spawnEgg("hummingbird_spawn_egg", TropicraftEntities.HUMMINGBIRD).register();
+    public static final ItemEntry<Item> FIDDLER_CRAB_SPAWN_EGG = spawnEgg("fiddler_crab_spawn_egg", TropicraftEntities.FIDDLER_CRAB).register();
+    public static final ItemEntry<Item> SPIDER_MONKEY_SPAWN_EGG = spawnEgg("spider_monkey_spawn_egg", TropicraftEntities.SPIDER_MONKEY).register();
+    public static final ItemEntry<Item> WHITE_LIPPED_PECCARY_SPAWN_EGG = spawnEgg("white_lipped_peccary_spawn_egg", TropicraftEntities.WHITE_LIPPED_PECCARY).register();
+    public static final ItemEntry<Item> CUBERA_SPAWN_EGG = spawnEgg("cubera_spawn_egg", TropicraftEntities.CUBERA).register();
+
+    private static <T extends Entity> ItemBuilder<Item, Registrate> spawnEgg(final String name, final RegistryEntry<EntityType<T>> entity) {
+        return REGISTRATE.item(name, p -> new TropicraftSpawnEgg<>(entity, p));
+    }
+
+    public static final ImmutableMap<AshenMasks, ItemEntry<AshenMaskItem>> ASHEN_MASKS = Arrays.stream(AshenMasks.values())
+            .collect(Maps.<AshenMasks, AshenMasks, ItemEntry<AshenMaskItem>>toImmutableEnumMap(Function.identity(), type ->
+                    REGISTRATE.item("ashen_mask_" + type.name().toLowerCase(Locale.ROOT), p -> new AshenMaskItem(ArmorMaterials.ASHEN_MASK, type, p))
+                            .tag(TropicraftTags.Items.ASHEN_MASKS)
+                            .lang(type.getName())
+                            .register()
+            ));
+
+    public static final ItemEntry<DaggerItem> DAGGER = REGISTRATE.item("dagger", p -> new DaggerItem(TropicraftToolTiers.ZIRCON, p))
+            .properties(p -> p.stacksTo(1))
+            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get())
+                    .pattern("X")
+                    .pattern("I")
+                    .define('X', CHUNK.get())
+                    .define('I', BAMBOO_STICK.get())
+                    .unlockedBy("has_" + prov.safeName(CHUNK.get()), has(CHUNK.get()))
+                    .unlockedBy("has_bamboo", has(Items.BAMBOO))
+                    .save(prov))
+            .register();
+
+    public static final ItemEntry<BlowGunItem> BLOW_GUN = REGISTRATE.item("blow_gun", BlowGunItem::new)
+            .properties(p -> p.stacksTo(1))
+            .recipe((ctx, prov) ->   ShapedRecipeBuilder.shaped(ctx.get())
+                    .pattern("X  ")
+                    .pattern(" I ")
+                    .pattern("  X")
+                    .define('X', BAMBOO_STICK.get())
+                    .define('I', ZIRCON.get())
+                    .unlockedBy("has_" + prov.safeName(ZIRCON.get()), has(ZIRCON.get()))
+                    .unlockedBy("has_" + prov.safeName(BAMBOO_STICK.get()), has(BAMBOO_STICK.get()))
+                    .save(prov))
+            .register();
 
     // TODO add zirconium tools
 
-    public static final RegistryObject<Item> ZIRCON_HOE = register("zircon_hoe", Builder.hoe(TropicraftToolTiers.ZIRCON));
-    public static final RegistryObject<Item> ZIRCONIUM_HOE = register("zirconium_hoe", Builder.hoe(TropicraftToolTiers.ZIRCONIUM));
-    public static final RegistryObject<Item> EUDIALYTE_HOE = register("eudialyte_hoe", Builder.hoe(TropicraftToolTiers.EUDIALYTE));
+    public static final ItemEntry<Item> ZIRCON_HOE = hoe("zircon_hoe", TropicraftToolTiers.ZIRCON, ZIRCON).register();
+    public static final ItemEntry<Item> ZIRCONIUM_HOE = hoe("zirconium_hoe", TropicraftToolTiers.ZIRCONIUM, ZIRCONIUM).register();
+    public static final ItemEntry<Item> EUDIALYTE_HOE = hoe("eudialyte_hoe", TropicraftToolTiers.EUDIALYTE, EUDIALYTE).register();
 
-    public static final RegistryObject<Item> ZIRCON_AXE = register("zircon_axe", Builder.axe(TropicraftToolTiers.ZIRCON));
-    public static final RegistryObject<Item> ZIRCONIUM_AXE = register("zirconium_axe", Builder.axe(TropicraftToolTiers.ZIRCONIUM));
-    public static final RegistryObject<Item> EUDIALYTE_AXE = register("eudialyte_axe", Builder.axe(TropicraftToolTiers.EUDIALYTE));
+    public static final ItemEntry<Item> ZIRCON_AXE = axe("zircon_axe", TropicraftToolTiers.ZIRCON, ZIRCON).register();
+    public static final ItemEntry<Item> ZIRCONIUM_AXE = axe("zirconium_axe", TropicraftToolTiers.ZIRCONIUM, ZIRCONIUM).register();
+    public static final ItemEntry<Item> EUDIALYTE_AXE = axe("eudialyte_axe", TropicraftToolTiers.EUDIALYTE, EUDIALYTE).register();
 
-    public static final RegistryObject<Item> ZIRCON_PICKAXE = register("zircon_pickaxe", Builder.pickaxe(TropicraftToolTiers.ZIRCON));
-    public static final RegistryObject<Item> ZIRCONIUM_PICKAXE = register("zirconium_pickaxe", Builder.pickaxe(TropicraftToolTiers.ZIRCONIUM));
-    public static final RegistryObject<Item> EUDIALYTE_PICKAXE = register("eudialyte_pickaxe", Builder.pickaxe(TropicraftToolTiers.EUDIALYTE));
+    public static final ItemEntry<Item> ZIRCON_PICKAXE = pickaxe("zircon_pickaxe", TropicraftToolTiers.ZIRCON, ZIRCON).register();
+    public static final ItemEntry<Item> ZIRCONIUM_PICKAXE = pickaxe("zirconium_pickaxe", TropicraftToolTiers.ZIRCONIUM, ZIRCONIUM).register();
+    public static final ItemEntry<Item> EUDIALYTE_PICKAXE = pickaxe("eudialyte_pickaxe", TropicraftToolTiers.EUDIALYTE, EUDIALYTE).register();
 
-    public static final RegistryObject<Item> ZIRCON_SHOVEL = register("zircon_shovel", Builder.shovel(TropicraftToolTiers.ZIRCON));
-    public static final RegistryObject<Item> ZIRCONIUM_SHOVEL = register("zirconium_shovel", Builder.shovel(TropicraftToolTiers.ZIRCONIUM));
-    public static final RegistryObject<Item> EUDIALYTE_SHOVEL = register("eudialyte_shovel", Builder.shovel(TropicraftToolTiers.EUDIALYTE));
+    public static final ItemEntry<Item> ZIRCON_SHOVEL = shovel("zircon_shovel", TropicraftToolTiers.ZIRCON, ZIRCON).register();
+    public static final ItemEntry<Item> ZIRCONIUM_SHOVEL = shovel("zirconium_shovel", TropicraftToolTiers.ZIRCONIUM, ZIRCONIUM).register();
+    public static final ItemEntry<Item> EUDIALYTE_SHOVEL = shovel("eudialyte_shovel", TropicraftToolTiers.EUDIALYTE, EUDIALYTE).register();
 
-    public static final RegistryObject<Item> ZIRCON_SWORD = register("zircon_sword", Builder.sword(TropicraftToolTiers.ZIRCON));
-    public static final RegistryObject<Item> ZIRCONIUM_SWORD = register("zirconium_sword", Builder.sword(TropicraftToolTiers.ZIRCONIUM));
-    public static final RegistryObject<Item> EUDIALYTE_SWORD = register("eudialyte_sword", Builder.sword(TropicraftToolTiers.EUDIALYTE));
+    public static final ItemEntry<Item> ZIRCON_SWORD = sword("zircon_sword", TropicraftToolTiers.ZIRCON, ZIRCON).register();
+    public static final ItemEntry<Item> ZIRCONIUM_SWORD = sword("zirconium_sword", TropicraftToolTiers.ZIRCONIUM, ZIRCONIUM).register();
+    public static final ItemEntry<Item> EUDIALYTE_SWORD = sword("eudialyte_sword", TropicraftToolTiers.EUDIALYTE, EUDIALYTE).register();
 
-    public static final RegistryObject<Item> FIRE_BOOTS = register("fire_boots", Builder.fireArmor(EquipmentSlot.FEET));
-    public static final RegistryObject<Item> FIRE_LEGGINGS = register("fire_leggings", Builder.fireArmor(EquipmentSlot.LEGS));
-    public static final RegistryObject<Item> FIRE_CHESTPLATE = register("fire_chestplate", Builder.fireArmor(EquipmentSlot.CHEST));
-    public static final RegistryObject<Item> FIRE_HELMET = register("fire_helmet", Builder.fireArmor(EquipmentSlot.HEAD));
-
-    public static final RegistryObject<Item> SCALE_BOOTS = register("scale_boots", Builder.scaleArmor(EquipmentSlot.FEET));
-    public static final RegistryObject<Item> SCALE_LEGGINGS = register("scale_leggings", Builder.scaleArmor(EquipmentSlot.LEGS));
-    public static final RegistryObject<Item> SCALE_CHESTPLATE = register("scale_chestplate", Builder.scaleArmor(EquipmentSlot.CHEST));
-    public static final RegistryObject<Item> SCALE_HELMET = register("scale_helmet", Builder.scaleArmor(EquipmentSlot.HEAD));
-    
-    public static final RegistryObject<ScubaGogglesItem> YELLOW_SCUBA_GOGGLES = register("yellow_scuba_goggles", Builder.scubaGoggles(ScubaType.YELLOW));
-    public static final RegistryObject<ScubaHarnessItem> YELLOW_SCUBA_HARNESS = register("yellow_scuba_harness", Builder.scubaHarness(ScubaType.YELLOW));
-    public static final RegistryObject<ScubaFlippersItem> YELLOW_SCUBA_FLIPPERS = register("yellow_scuba_flippers", Builder.scubaFlippers(ScubaType.YELLOW));
-    public static final RegistryObject<ScubaGogglesItem> PINK_SCUBA_GOGGLES = register("pink_scuba_goggles", Builder.scubaGoggles(ScubaType.PINK));
-    public static final RegistryObject<ScubaHarnessItem> PINK_SCUBA_HARNESS = register("pink_scuba_harness", Builder.scubaHarness(ScubaType.PINK));
-    public static final RegistryObject<ScubaFlippersItem> PINK_SCUBA_FLIPPERS = register("pink_scuba_flippers", Builder.scubaFlippers(ScubaType.PINK));
-    
-    public static final RegistryObject<PonyBottleItem> YELLOW_PONY_BOTTLE = register("yellow_pony_bottle", Builder.item(PonyBottleItem::new, Builder.getDefaultProperties().stacksTo(1).durability(32)));
-    public static final RegistryObject<PonyBottleItem> PINK_PONY_BOTTLE = register("pink_pony_bottle", Builder.item(PonyBottleItem::new, Builder.getDefaultProperties().stacksTo(1).durability(32)));
-
-    public static final RegistryObject<Item> WATER_WAND = register(
-            "water_wand", () -> new WaterWandItem(new Item.Properties().tab(Tropicraft.TROPICRAFT_ITEM_GROUP).stacksTo(1).durability(2000)));
-
-    public static final RegistryObject<Item> EXPLODING_COCONUT = register(
-            "exploding_coconut", () -> new ExplodingCoconutItem(new Item.Properties().tab(Tropicraft.TROPICRAFT_ITEM_GROUP)));
-
-    public static final RegistryObject<Item> FISHING_NET = register("fishing_net", () -> new Item(new Item.Properties().tab(Tropicraft.TROPICRAFT_ITEM_GROUP).stacksTo(1)));
-
-    public static final RegistryObject<Item> PIANGUAS = register("pianguas", () -> new Item(new Item.Properties().tab(Tropicraft.TROPICRAFT_ITEM_GROUP)));
-
-    private static <T extends Item> RegistryObject<T> register(final String name, final Supplier<T> sup) {
-        return ITEMS.register(name, sup);
+    private static ItemBuilder<Item, Registrate> hoe(final String name, final TropicraftToolTiers tier, final Supplier<? extends Item> input) {
+        return REGISTRATE.item(name, p -> (Item) new HoeItem(tier, 0, -2.0f, p))
+                .model((ctx, prov) -> prov.handheld(ctx))
+                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get())
+                        .pattern("XX")
+                        .pattern(" B")
+                        .pattern(" B")
+                        .define('X', input.get())
+                        .define('B', BAMBOO_STICK.get())
+                        .unlockedBy("has_" + prov.safeName(input.get()), has(input.get()))
+                        .unlockedBy("has_" + prov.safeName(Items.BAMBOO), has(Items.BAMBOO))
+                        .save(prov)
+                );
     }
-    
+
+    private static ItemBuilder<Item, Registrate> shovel(final String name, final Tier tier, final Supplier<? extends Item> input) {
+        return REGISTRATE.item(name, p -> (Item) new ShovelItem(tier, 2.0f, -3.0f, p))
+                .model((ctx, prov) -> prov.handheld(ctx))
+                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get())
+                        .pattern("X")
+                        .pattern("B")
+                        .pattern("B")
+                        .define('X', input.get())
+                        .define('B', BAMBOO_STICK.get())
+                        .unlockedBy("has_" + prov.safeName(input.get()), has(input.get()))
+                        .unlockedBy("has_" + prov.safeName(Items.BAMBOO), has(Items.BAMBOO))
+                        .save(prov)
+                );
+    }
+
+    private static ItemBuilder<Item, Registrate> pickaxe(final String name, final Tier tier, final Supplier<? extends Item> input) {
+        return REGISTRATE.item(name, p -> (Item) new PickaxeItem(tier, 2, -2.0f, p))
+                .model((ctx, prov) -> prov.handheld(ctx))
+                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get())
+                        .pattern("XXX")
+                        .pattern(" B ")
+                        .pattern(" B ")
+                        .define('X', input.get())
+                        .define('B', BAMBOO_STICK.get())
+                        .unlockedBy("has_" + prov.safeName(input.get()), has(input.get()))
+                        .unlockedBy("has_" + prov.safeName(Items.BAMBOO), has(Items.BAMBOO))
+                        .save(prov)
+                );
+    }
+
+    private static ItemBuilder<Item, Registrate> axe(final String name, final Tier tier, final Supplier<? extends Item> input) {
+        return REGISTRATE.item(name, p -> (Item) new AxeItem(tier, 5.0f, -2.0f, p))
+                .model((ctx, prov) -> prov.handheld(ctx))
+                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get())
+                        .pattern("XX")
+                        .pattern("XB")
+                        .pattern(" B")
+                        .define('X', input.get())
+                        .define('B', BAMBOO_STICK.get())
+                        .unlockedBy("has_" + prov.safeName(input.get()), has(input.get()))
+                        .unlockedBy("has_" + prov.safeName(Items.BAMBOO), has(Items.BAMBOO))
+                        .save(prov)
+                );
+    }
+
+    private static ItemBuilder<Item, Registrate> sword(final String name, final Tier tier, final Supplier<? extends Item> input) {
+        return REGISTRATE.item(name, p -> (Item) new SwordItem(tier, 3, -3.0f, p))
+                .tag(TropicraftTags.Items.SWORDS)
+                .model((ctx, prov) -> prov.handheld(ctx))
+                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get())
+                        .pattern("X")
+                        .pattern("X")
+                        .pattern("B")
+                        .define('X', input.get())
+                        .define('B', BAMBOO_STICK.get())
+                        .unlockedBy("has_" + prov.safeName(input.get()), has(input.get()))
+                        .unlockedBy("has_" + prov.safeName(Items.BAMBOO), has(Items.BAMBOO))
+                        .save(prov)
+                );
+    }
+
+    public static final ItemEntry<Item> FIRE_BOOTS = fireArmor("fire_boots", EquipmentSlot.FEET).register();
+    public static final ItemEntry<Item> FIRE_LEGGINGS = fireArmor("fire_leggings", EquipmentSlot.LEGS).register();
+    public static final ItemEntry<Item> FIRE_CHESTPLATE = fireArmor("fire_chestplate", EquipmentSlot.CHEST).register();
+    public static final ItemEntry<Item> FIRE_HELMET = fireArmor("fire_helmet", EquipmentSlot.HEAD).register();
+
+    public static final ItemEntry<Item> SCALE_BOOTS = scaleArmor("scale_boots", EquipmentSlot.FEET)
+            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get())
+                    .pattern("X X")
+                    .pattern("X X")
+                    .define('X', SCALE.get())
+                    .unlockedBy("has_" + prov.safeName(SCALE.get()), has(SCALE.get()))
+                    .save(prov))
+            .register();
+    public static final ItemEntry<Item> SCALE_LEGGINGS = scaleArmor("scale_leggings", EquipmentSlot.LEGS)
+            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get())
+                    .pattern("XXX")
+                    .pattern("X X")
+                    .pattern("X X")
+                    .define('X', SCALE.get())
+                    .unlockedBy("has_" + prov.safeName(SCALE.get()), has(SCALE.get()))
+                    .save(prov))
+            .register();
+    public static final ItemEntry<Item> SCALE_CHESTPLATE = scaleArmor("scale_chestplate", EquipmentSlot.CHEST)
+            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get())
+                    .pattern("X X")
+                    .pattern("XXX")
+                    .pattern("XXX")
+                    .define('X', SCALE.get())
+                    .unlockedBy("has_" + prov.safeName(SCALE.get()), has(SCALE.get()))
+                    .save(prov))
+            .register();
+    public static final ItemEntry<Item> SCALE_HELMET = scaleArmor("scale_helmet", EquipmentSlot.HEAD)
+            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get())
+                    .pattern("XXX")
+                    .pattern("X X")
+                    .define('X', SCALE.get())
+                    .unlockedBy("has_" + prov.safeName(SCALE.get()), has(SCALE.get()))
+                    .save(prov))
+            .register();
+
+    public static final ItemEntry<ScubaGogglesItem> YELLOW_SCUBA_GOGGLES = scubaGoggles("yellow_scuba_goggles", ScubaType.YELLOW, Items.YELLOW_DYE.delegate).register();
+    public static final ItemEntry<ScubaHarnessItem> YELLOW_SCUBA_HARNESS = scubaHarness("yellow_scuba_harness", ScubaType.YELLOW, Items.YELLOW_DYE.delegate).register();
+    public static final ItemEntry<ScubaFlippersItem> YELLOW_SCUBA_FLIPPERS = scubaFlippers("yellow_scuba_flippers", ScubaType.YELLOW, Items.YELLOW_DYE.delegate).register();
+    public static final ItemEntry<ScubaGogglesItem> PINK_SCUBA_GOGGLES = scubaGoggles("pink_scuba_goggles", ScubaType.PINK, Items.PINK_DYE.delegate).register();
+    public static final ItemEntry<ScubaHarnessItem> PINK_SCUBA_HARNESS = scubaHarness("pink_scuba_harness", ScubaType.PINK, Items.PINK_DYE.delegate).register();
+    public static final ItemEntry<ScubaFlippersItem> PINK_SCUBA_FLIPPERS = scubaFlippers("pink_scuba_flippers", ScubaType.PINK, Items.PINK_DYE.delegate).register();
+
+    private static ItemBuilder<Item, Registrate> fireArmor(final String name, final EquipmentSlot slotType) {
+        return REGISTRATE.item(name, p -> (Item) new FireArmorItem(slotType, p))
+                .properties(p -> p.stacksTo(1).durability(300));
+    }
+
+    private static ItemBuilder<Item, Registrate> scaleArmor(final String name, final EquipmentSlot slotType) {
+        return REGISTRATE.item(name, p -> (Item) new ScaleArmorItem(slotType, p))
+                .properties(p -> p.stacksTo(1));
+    }
+
+    private static ItemBuilder<ScubaGogglesItem, Registrate> scubaGoggles(final String name, final ScubaType type, Supplier<? extends Item> source) {
+        return REGISTRATE.item(name, p -> new ScubaGogglesItem(type, p))
+                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get(), 1)
+                        .pattern("YYY")
+                        .pattern("X X")
+                        .pattern(" Z ")
+                        .define('X', Blocks.GLASS_PANE)
+                        .define('Y', ZIRCON.get())
+                        .define('Z', source.get())
+                        .unlockedBy("has_" + prov.safeName(source.get()), has(source.get()))
+                        .unlockedBy("has_" + prov.safeName(ZIRCON.get()), has(ZIRCON.get()))
+                        .save(prov));
+    }
+
+    private static ItemBuilder<ScubaHarnessItem, Registrate> scubaHarness(final String name, final ScubaType type, Supplier<? extends Item> source) {
+        return REGISTRATE.item(name, p -> new ScubaHarnessItem(type, p))
+                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get(), 1)
+                        .pattern("Y Y")
+                        .pattern("YXY")
+                        .pattern("YZY")
+                        .define('X', source.get())
+                        .define('Y', Tags.Items.LEATHER)
+                        .define('Z', AZURITE.get())
+                        .unlockedBy("has_" + prov.safeName(AZURITE.get()), has(AZURITE.get()))
+                        .save(prov));
+    }
+
+    private static ItemBuilder<ScubaFlippersItem, Registrate> scubaFlippers(final String name, final ScubaType type, Supplier<? extends Item> source) {
+        return REGISTRATE.item(name, p -> new ScubaFlippersItem(type, p))
+                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get(), 1)
+                        .pattern("XX")
+                        .pattern("YY")
+                        .pattern("XX")
+                        .define('X', source.get())
+                        .define('Y', ZIRCON.get())
+                        .unlockedBy("has_" + prov.safeName(source.get()), has(source.get()))
+                        .unlockedBy("has_" + prov.safeName(ZIRCON.get()), has(ZIRCON.get()))
+                        .save(prov));
+    }
+
+    public static final ItemEntry<PonyBottleItem> YELLOW_PONY_BOTTLE = ponyBottle("yellow_pony_bottle", Blocks.YELLOW_STAINED_GLASS_PANE);
+    public static final ItemEntry<PonyBottleItem> PINK_PONY_BOTTLE = ponyBottle("pink_pony_bottle", Blocks.PINK_STAINED_GLASS_PANE);
+
+    private static ItemEntry<PonyBottleItem> ponyBottle(String name, Block glassPane) {
+        return REGISTRATE.item(name, PonyBottleItem::new)
+                .properties(p -> p.stacksTo(1).durability(32))
+                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get(), 1)
+                        .pattern("Y")
+                        .pattern("X")
+                        .define('X', glassPane)
+                        .define('Y', Blocks.LEVER)
+                        .unlockedBy("has_" + prov.safeName(glassPane), has(glassPane))
+                        .save(prov))
+                .register();
+    }
+
+    public static final ItemEntry<WaterWandItem> WATER_WAND = REGISTRATE.item("water_wand", WaterWandItem::new)
+            .properties(p -> p.stacksTo(1).durability(2000))
+            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get(), 1)
+                    .pattern("  X")
+                    .pattern(" Y ")
+                    .pattern("Y  ")
+                    .define('X', AZURITE.get())
+                    .define('Y', Items.GOLD_INGOT)
+                    .unlockedBy("has_" + prov.safeName(AZURITE.get()), has(AZURITE.get()))
+                    .unlockedBy("has_gold_ingot", has(Items.GOLD_INGOT))
+                    .save(prov))
+            .register();
+
+    public static final ItemEntry<ExplodingCoconutItem> EXPLODING_COCONUT = REGISTRATE.item("exploding_coconut", ExplodingCoconutItem::new).register();
+
+    public static final ItemEntry<Item> FISHING_NET = simpleItem("fishing_net")
+            .properties(p -> p.stacksTo(1))
+            .register();
+
+    public static final ItemEntry<Item> PIANGUAS = simpleItem("pianguas").register();
+
+    private static ItemBuilder<Item, Registrate> simpleItem(String name) {
+        return REGISTRATE.item(name, Item::new);
+    }
+
+    private static ItemBuilder<Item, Registrate> food(final String name, final FoodProperties food) {
+        return simpleItem(name).properties(p -> p.food(food));
+    }
+
     @SubscribeEvent
     public static void onItemRegister(RegistryEvent.Register<Item> event) {
         ForgeRegistries.BLOCKS.getValues().stream()

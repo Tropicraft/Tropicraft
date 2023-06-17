@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.entity.placeable;
 
+import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.ChatType;
@@ -50,7 +51,7 @@ public abstract class FurnitureEntity extends Entity {
     protected double lerpYaw = Double.NaN; // Force first-time sync even if packet is incomplete
     protected double lerpPitch;
     
-    protected FurnitureEntity(EntityType<?> entityTypeIn, Level worldIn, Map<DyeColor, ? extends RegistryObject<? extends Item>> items) {
+    protected FurnitureEntity(EntityType<?> entityTypeIn, Level worldIn, Map<DyeColor, ? extends RegistryEntry<? extends Item>> items) {
         this(entityTypeIn, worldIn, c -> items.get(c).get());        
     }
 

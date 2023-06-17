@@ -16,7 +16,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.tropicraft.core.common.block.tileentity.SifterBlockEntity;
-import net.tropicraft.core.common.block.tileentity.TropicraftBlockEntityTypes;
 
 import javax.annotation.Nullable;
 
@@ -29,7 +28,7 @@ public class SifterBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new SifterBlockEntity(pos, state);
+        return new SifterBlockEntity(TropicraftBlocks.SIFTER_ENTITY.get(), pos, state);
     }
 
     @Override
@@ -40,7 +39,7 @@ public class SifterBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return createTickerHelper(type, TropicraftBlockEntityTypes.SIFTER.get(), SifterBlockEntity::siftTick);
+        return createTickerHelper(type, TropicraftBlocks.SIFTER_ENTITY.get(), SifterBlockEntity::siftTick);
     }
 
     @Override

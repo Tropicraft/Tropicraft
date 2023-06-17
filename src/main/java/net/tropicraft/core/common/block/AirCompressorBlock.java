@@ -26,7 +26,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.core.common.block.tileentity.AirCompressorBlockEntity;
-import net.tropicraft.core.common.block.tileentity.TropicraftBlockEntityTypes;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -45,7 +44,7 @@ public class AirCompressorBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return createTickerHelper(type, TropicraftBlockEntityTypes.AIR_COMPRESSOR.get(), AirCompressorBlockEntity::compressTick);
+        return createTickerHelper(type, TropicraftBlocks.AIR_COMPRESSOR_ENTITY.get(), AirCompressorBlockEntity::compressTick);
     }
 
     /**
@@ -107,7 +106,7 @@ public class AirCompressorBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos p, BlockState s) {
-        return new AirCompressorBlockEntity(p, s);
+        return new AirCompressorBlockEntity(TropicraftBlocks.AIR_COMPRESSOR_ENTITY.get(), p, s);
     }
 
     @Override

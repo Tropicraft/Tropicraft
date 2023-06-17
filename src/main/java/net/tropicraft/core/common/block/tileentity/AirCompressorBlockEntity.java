@@ -11,6 +11,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.network.PacketDistributor;
 import net.tropicraft.core.common.block.AirCompressorBlock;
@@ -38,8 +39,8 @@ public class AirCompressorBlockEntity extends BlockEntity implements IMachineBlo
 
     private ScubaArmorItem tank;
 
-    public AirCompressorBlockEntity(final BlockPos pos, final BlockState state) {
-        super(TropicraftBlockEntityTypes.AIR_COMPRESSOR.get(), pos, state);
+    public AirCompressorBlockEntity(final BlockEntityType<AirCompressorBlockEntity> type, final BlockPos pos, final BlockState state) {
+        super(type, pos, state);
         this.stack = ItemStack.EMPTY;
     }
 

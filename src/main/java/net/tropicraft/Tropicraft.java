@@ -3,12 +3,13 @@ package net.tropicraft;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.reflect.Reflection;
 import com.mojang.brigadier.CommandDispatcher;
+import com.tterrag.registrate.Registrate;
+import com.tterrag.registrate.providers.ProviderType;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -17,10 +18,10 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.util.NonNullLazy;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
@@ -33,17 +34,11 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
-import net.minecraftforge.registries.RegistryObject;
-import net.tropicraft.core.client.BasicColorHandler;
 import net.tropicraft.core.client.ClientSetup;
-import net.tropicraft.core.client.data.TropicraftBlockstateProvider;
-import net.tropicraft.core.client.data.TropicraftItemModelProvider;
-import net.tropicraft.core.client.data.TropicraftLangProvider;
+import net.tropicraft.core.client.data.TropicraftLangKeys;
 import net.tropicraft.core.common.block.TropicraftBlocks;
-import net.tropicraft.core.common.block.tileentity.TropicraftBlockEntityTypes;
 import net.tropicraft.core.common.command.TropicraftCommands;
 import net.tropicraft.core.common.command.debug.MapBiomesCommand;
-import net.tropicraft.core.common.data.*;
 import net.tropicraft.core.common.data.loot.TropicraftLootConditions;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomeSource;
@@ -61,8 +56,6 @@ import net.tropicraft.core.common.dimension.feature.tree.TropicraftTreeDecorator
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftTrunkPlacers;
 import net.tropicraft.core.common.dimension.noise.TropicraftNoiseGenSettings;
 import net.tropicraft.core.common.drinks.MixerRecipes;
-import net.tropicraft.core.common.entity.TropicraftEntities;
-import net.tropicraft.core.common.item.IColoredItem;
 import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.item.scuba.ScubaData;
 import net.tropicraft.core.common.item.scuba.ScubaGogglesItem;
@@ -73,11 +66,23 @@ import java.util.regex.Pattern;
 @Mod(Constants.MODID)
 public class Tropicraft {
     public static final CreativeModeTab TROPICRAFT_ITEM_GROUP = (new CreativeModeTab("tropicraft") {
-        @OnlyIn(Dist.CLIENT)
+        @Override
         public ItemStack makeIcon() {
             return new ItemStack(TropicraftBlocks.PALM_SAPLING.get());
         }
     });
+
+    private static final NonNullLazy<Registrate> REGISTRATE = NonNullLazy.of(() -> Registrate.create(Constants.MODID)
+            .creativeModeTab(() -> TROPICRAFT_ITEM_GROUP, "Tropicraft")
+            .addDataGenerator(ProviderType.LANG, prov -> {
+                prov.add("attribute.name." + ForgeMod.SWIM_SPEED.get().getRegistryName().getPath(), "Swim Speed");
+                TropicraftLangKeys.generate(prov);
+            })
+    );
+
+    public static Registrate registrate() {
+        return REGISTRATE.get();
+    }
 
     public Tropicraft() {
         // Compatible with all versions that match the semver (excluding the qualifier e.g. "-beta+42")
@@ -86,12 +91,10 @@ public class Tropicraft {
 
         // General mod setup
         modBus.addListener(this::setup);
-        modBus.addListener(this::gatherData);
 
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
             // Client setup
             modBus.addListener(this::setupClient);
-            modBus.addListener(this::registerItemColors);
         });
 
         MinecraftForge.EVENT_BUS.addListener(this::onServerStarting);
@@ -99,13 +102,8 @@ public class Tropicraft {
         TropicraftDimension.addDefaultDimensionKey();
 
         // Registry objects
-        TropicraftBlocks.BLOCKS.register(modBus);
-        TropicraftBlocks.BLOCKITEMS.register(modBus);
-        TropicraftItems.ITEMS.register(modBus);
         ScubaGogglesItem.ATTRIBUTES.register(modBus);
         MixerRecipes.addMixerRecipes();
-        TropicraftBlockEntityTypes.BLOCK_ENTITIES.register(modBus);
-        TropicraftEntities.ENTITIES.register(modBus);
         TropicraftCarvers.CARVERS.register(modBus);
         TropicraftFoliagePlacers.REGISTER.register(modBus);
         TropicraftTrunkPlacers.REGISTER.register(modBus);
@@ -158,25 +156,11 @@ public class Tropicraft {
 
     @OnlyIn(Dist.CLIENT)
     private void setupClient(final FMLClientSetupEvent event) {
-        ClientSetup.setupBlockRenderLayers();
-
         ClientSetup.setupDimensionRenderInfo();
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    private void registerItemColors(ColorHandlerEvent.Item evt) {
-        BasicColorHandler basic = new BasicColorHandler();
-        for (RegistryObject<Item> ro : TropicraftItems.ITEMS.getEntries()) {
-            Item item = ro.get();
-            if (item instanceof IColoredItem) {
-                evt.getItemColors().register(basic, item);
-            }
-        }
     }
 
     private void setup(final FMLCommonSetupEvent event) {
         TropicraftPackets.init();
-        TropicraftEntities.registerSpawns();
 
         TropicraftChunkGenerator.register();
         TropicraftBiomeSource.register();
@@ -204,26 +188,6 @@ public class Tropicraft {
         // Dev only debug!
         if (!FMLEnvironment.production) {
             MapBiomesCommand.register(dispatcher);
-        }
-    }
-
-    private void gatherData(GatherDataEvent event) {
-        DataGenerator gen = event.getGenerator();
-        ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
-
-        if (event.includeClient()) {
-            TropicraftBlockstateProvider blockstates = new TropicraftBlockstateProvider(gen, existingFileHelper);
-            gen.addProvider(blockstates);
-            gen.addProvider(new TropicraftItemModelProvider(gen, blockstates.getExistingHelper()));
-            gen.addProvider(new TropicraftLangProvider(gen));
-        }
-        if (event.includeServer()) {
-            TropicraftBlockTagsProvider blockTags = new TropicraftBlockTagsProvider(gen, existingFileHelper);
-            gen.addProvider(blockTags);
-            gen.addProvider(new TropicraftItemTagsProvider(gen, blockTags, existingFileHelper));
-            gen.addProvider(new TropicraftRecipeProvider(gen));
-            gen.addProvider(new TropicraftLootTableProvider(gen));
-            gen.addProvider(new TropicraftEntityTypeTagsProvider(gen, existingFileHelper));
         }
     }
 }

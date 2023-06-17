@@ -23,7 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class FurnitureItem<T extends FurnitureEntity> extends Item implements IColoredItem {
+public class FurnitureItem<T extends FurnitureEntity> extends Item {
 
     private final Supplier<? extends EntityType<T>> entityType;
     private final DyeColor color;
@@ -32,11 +32,6 @@ public class FurnitureItem<T extends FurnitureEntity> extends Item implements IC
         super(properties);
         this.entityType = entityType;
         this.color = color;
-    }
-
-    @Override
-    public int getColor(ItemStack stack, int pass) {
-        return (pass == 0 ? 0xFFFFFF : color.getTextColor());
     }
 
     @Override

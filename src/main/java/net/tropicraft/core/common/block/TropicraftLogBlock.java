@@ -13,9 +13,9 @@ import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
 public final class TropicraftLogBlock extends RotatedPillarBlock {
-    private final Supplier<RotatedPillarBlock> strippedBlock;
+    private final Supplier<? extends RotatedPillarBlock> strippedBlock;
 
-    public TropicraftLogBlock(Properties properties, Supplier<RotatedPillarBlock> strippedBlock) {
+    public TropicraftLogBlock(Properties properties, Supplier<? extends RotatedPillarBlock> strippedBlock) {
         super(properties);
         this.strippedBlock = strippedBlock;
     }

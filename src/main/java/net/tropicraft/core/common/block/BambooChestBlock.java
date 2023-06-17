@@ -91,7 +91,7 @@ public class BambooChestBlock extends ChestBlock {
 
     @Override
     public BlockEntity newBlockEntity(final BlockPos pos, final BlockState state) {
-        return new BambooChestBlockEntity(pos, state);
+        return new BambooChestBlockEntity(TropicraftBlocks.BAMBOO_CHEST_ENTITY.get(), pos, state);
     }
 
     @Override

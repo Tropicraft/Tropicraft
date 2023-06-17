@@ -1,6 +1,6 @@
 package net.tropicraft.core.common.entity.ai;
 
-import com.google.common.collect.Sets;
+import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
@@ -37,15 +37,15 @@ public class EntityAITemptHelmet extends Goal
     private int delayTemptCounter;
     /** True if this EntityAITempt task is running */
     private boolean isRunning;
-    private final Set<RegistryObject<Item>> temptItem;
+    private final Set<ItemEntry<? extends Item>> temptItem;
     /** Whether the entity using this AI will be scared by the tempter's sudden movement. */
     private final boolean scaredByPlayerMovement;
 
-    public EntityAITemptHelmet(PathfinderMob temptedEntityIn, double speedIn, RegistryObject<Item> temptItemIn, boolean scaredByPlayerMovementIn) {
-        this(temptedEntityIn, speedIn, scaredByPlayerMovementIn, Sets.newHashSet(temptItemIn));
+    public EntityAITemptHelmet(PathfinderMob temptedEntityIn, double speedIn, ItemEntry<? extends Item> temptItemIn, boolean scaredByPlayerMovementIn) {
+        this(temptedEntityIn, speedIn, scaredByPlayerMovementIn, Set.of(temptItemIn));
     }
 
-    public EntityAITemptHelmet(PathfinderMob temptedEntityIn, double speedIn, boolean scaredByPlayerMovementIn, Set<RegistryObject<Item>> temptItemIn) {
+    public EntityAITemptHelmet(PathfinderMob temptedEntityIn, double speedIn, boolean scaredByPlayerMovementIn, Set<ItemEntry<? extends Item>> temptItemIn) {
         this.temptedEntity = temptedEntityIn;
         this.speed = speedIn;
         this.temptItem = temptItemIn;
@@ -91,7 +91,7 @@ public class EntityAITemptHelmet extends Goal
     }
 
     protected boolean isTempting(ItemStack stack) {
-        for (RegistryObject<Item> items : temptItem) {
+        for (ItemEntry<? extends Item> items : temptItem) {
             if (items.isPresent() && items.get().asItem() == stack.getItem()) {
                 return true;
             }

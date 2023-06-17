@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.drinks;
 
+import com.tterrag.registrate.providers.RegistrateLangProvider;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.ChatFormatting;
@@ -80,5 +81,9 @@ public class Drink {
 
     public static boolean isDrink(final Item item) {
         return TropicraftItems.COCKTAILS.values().stream().anyMatch(ri -> ri.get() == item);
+    }
+
+    public String getName() {
+        return this == PINA_COLADA ? "Pi\u00F1a Colada" : RegistrateLangProvider.toEnglishName(name);
     }
 }

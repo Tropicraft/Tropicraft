@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.block;
 
+import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.BlockGetter;
@@ -12,7 +13,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.registries.RegistryObject;
 
 import java.util.Random;
 import java.util.function.Supplier;
@@ -20,9 +20,9 @@ import java.util.function.Supplier;
 public final class GrowableSinglePlantBlock extends BushBlock implements BonemealableBlock {
     private static final VoxelShape SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 13.0, 14.0);
 
-    private final Supplier<RegistryObject<DoublePlantBlock>> growInto;
+    private final Supplier<RegistryEntry<GrowableDoublePlantBlock>> growInto;
 
-    public GrowableSinglePlantBlock(Properties properties, Supplier<RegistryObject<DoublePlantBlock>> growInto) {
+    public GrowableSinglePlantBlock(Properties properties, Supplier<RegistryEntry<GrowableDoublePlantBlock>> growInto) {
         super(properties);
         this.growInto = growInto;
     }

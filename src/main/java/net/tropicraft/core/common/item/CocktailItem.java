@@ -28,7 +28,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class CocktailItem extends Item implements IColoredItem {
+public class CocktailItem extends Item {
 
     private static final int DEFAULT_COLOR = 0xf3be36;
     
@@ -241,12 +241,6 @@ public class CocktailItem extends Item implements IColoredItem {
         return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
     }
 
-    @Override
-    public int getColor(ItemStack itemstack, int tintIndex) {
-        Drink drink = getDrink(itemstack);
-        return (tintIndex == 0 || drink == null ? 16777215 : drink.color);
-    }
-    
     @Override
     public Component getName(ItemStack stack) {
         Drink drink = getDrink(stack);

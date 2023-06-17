@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.block.huge_plant;
 
+import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
@@ -19,7 +20,6 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.registries.RegistryObject;
 import net.tropicraft.core.client.ParticleEffects;
 
 import javax.annotation.Nullable;
@@ -31,14 +31,14 @@ import java.util.function.Supplier;
 public final class HugePlantBlock extends BushBlock {
     public static final EnumProperty<Type> TYPE = EnumProperty.create("type", Type.class);
 
-    private Supplier<RegistryObject<? extends ItemLike>> pickItem;
+    private Supplier<RegistryEntry<? extends ItemLike>> pickItem;
 
     public HugePlantBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(TYPE, Type.SEED));
     }
 
-    public HugePlantBlock setPickItem(Supplier<RegistryObject<? extends ItemLike>> item) {
+    public HugePlantBlock setPickItem(Supplier<RegistryEntry<? extends ItemLike>> item) {
         this.pickItem = item;
         return this;
     }

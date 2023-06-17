@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.item;
 
+import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -31,9 +32,9 @@ import java.util.Objects;
 
 public class TropicraftSpawnEgg<T extends Entity> extends Item {
 
-    private final RegistryObject<EntityType<T>> typeIn;
+    private final RegistryEntry<EntityType<T>> typeIn;
 
-    public TropicraftSpawnEgg(final RegistryObject<EntityType<T>> type, Properties properties) {
+    public TropicraftSpawnEgg(final RegistryEntry<EntityType<T>> type, Properties properties) {
         super(properties);
         this.typeIn = type;
     }

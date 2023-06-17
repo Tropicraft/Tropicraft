@@ -207,7 +207,7 @@ public class TropiCreeperEntity extends PathfinderMob {
             int radius = 5;
             int radiusSq = radius * radius;
             BlockPos center = blockPosition();
-            final HolderSet<Block> smallFlowers = Registry.BLOCK.getOrCreateTag(TropicraftTags.Blocks.SMALL_FLOWERS);
+            final HolderSet<Block> flowers = Registry.BLOCK.getOrCreateTag(TropicraftTags.Blocks.TROPICS_FLOWERS);
             for (int i = 0; i < 3 * radiusSq; i++) {
                 BlockPos attempt = center.offset(random.nextInt((radius * 2) + 1) - radius, 0, random.nextInt((radius * 2) + 1) - radius);
                 if (attempt.distSqr(center) < radiusSq) {
@@ -216,7 +216,7 @@ public class TropiCreeperEntity extends PathfinderMob {
                         attempt = attempt.below();
                     }
                     attempt = attempt.above();
-                    final BlockState state = smallFlowers.getRandomElement(random).map(Holder::value).orElse(Blocks.AIR).defaultBlockState();
+                    final BlockState state = flowers.getRandomElement(random).map(Holder::value).orElse(Blocks.AIR).defaultBlockState();
                     if (state.canSurvive(level, attempt)) {
                         level.setBlockAndUpdate(attempt, state);
                     }
