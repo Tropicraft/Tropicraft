@@ -41,6 +41,7 @@ public final class TropicraftVegetationFeatures {
     public static final RegistryObject<ConfiguredFeature<?, ?>> TREES_PLEODENDRON = REGISTER.randomPlacedFeature("trees_pleodendron", TropicraftTreePlacements.PLEODENDRON_CHECKED);
 
     public static final RegistryObject<ConfiguredFeature<?, ?>> PATCH_GRASS_TROPICS = REGISTER.copyFeature("patch_grass_tropics", VegetationFeatures.PATCH_GRASS_JUNGLE);
+    public static final RegistryObject<ConfiguredFeature<?, ?>> PINEAPPLE = REGISTER.feature("pineapple", Feature.SIMPLE_BLOCK, () -> new SimpleBlockConfiguration(REGISTER.stateProvider(TropicraftBlocks.PINEAPPLE)));
     public static final RegistryObject<ConfiguredFeature<?, ?>> PATCH_PINEAPPLE = REGISTER.feature("patch_pineapple", Feature.RANDOM_PATCH, () -> REGISTER.randomPatch(TropicraftBlocks.PINEAPPLE));
     public static final RegistryObject<ConfiguredFeature<?, ?>> PATCH_IRIS = REGISTER.feature("iris_flowers", Feature.RANDOM_PATCH, () -> REGISTER.randomPatch(TropicraftBlocks.IRIS));
 

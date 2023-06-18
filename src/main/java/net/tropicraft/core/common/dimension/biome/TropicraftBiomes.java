@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateLangProvider;
-import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.data.worldgen.placement.AquaticPlacements;
@@ -19,12 +18,9 @@ import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
-import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraft.world.level.levelgen.placement.*;
+import net.minecraft.world.level.levelgen.placement.BiomeFilter;
+import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
+import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -33,12 +29,9 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
-import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.dimension.carver.TropicraftConfiguredCarvers;
-import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
 import net.tropicraft.core.common.dimension.feature.TropicraftMiscPlacements;
 import net.tropicraft.core.common.dimension.feature.TropicraftVegetationPlacements;
-import net.tropicraft.core.common.dimension.feature.tree.PalmTreeFeature;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 
 import java.util.List;
@@ -107,29 +100,12 @@ public final class TropicraftBiomes {
         BiomeGenerationSettingsBuilder generation = event.getGeneration();
 
         if (category == Biome.BiomeCategory.BEACH) {
-            generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, palmTree(TropicraftFeatures.NORMAL_PALM_TREE));
-            generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, palmTree(TropicraftFeatures.CURVED_PALM_TREE));
-            generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, palmTree(TropicraftFeatures.LARGE_PALM_TREE));
+            TropicraftVegetationPlacements.TREES_PALM_OVERWORLD.getHolder()
+                    .ifPresent(feature -> generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, feature));
         } else if (category == Biome.BiomeCategory.JUNGLE) {
-            generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, pineapple());
+            TropicraftVegetationPlacements.PINEAPPLE.getHolder()
+                    .ifPresent(feature -> generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, feature));
         }
-    }
-
-    private static Holder<PlacedFeature> palmTree(final RegistryObject<PalmTreeFeature> palmTreeFeature) {
-        final ConfiguredFeature<?, ?> configuredFeature = new ConfiguredFeature<>(palmTreeFeature.get(), NoneFeatureConfiguration.INSTANCE);
-        return Holder.direct(new PlacedFeature(
-                Holder.direct(configuredFeature),
-                treePlacement(PlacementUtils.countExtra(0, 0.1F, 1))
-        ));
-    }
-
-    private static Holder<PlacedFeature> pineapple() {
-        final SimpleBlockConfiguration config = new SimpleBlockConfiguration(BlockStateProvider.simple(TropicraftBlocks.PINEAPPLE.get()));
-        final ConfiguredFeature<?, ?> configuredFeature = new ConfiguredFeature<>(Feature.SIMPLE_BLOCK, config);
-        return Holder.direct(new PlacedFeature(
-                Holder.direct(configuredFeature),
-                List.of(RarityFilter.onAverageOnceEvery(6), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome())
-        ));
     }
 
     private static Biome createTropics() {
