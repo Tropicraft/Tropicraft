@@ -76,6 +76,7 @@ public final class TropicraftVegetationPlacements {
 
     public static final RegistryObject<PlacedFeature> TREES_FRUIT = REGISTER.placed("trees_fruit", TropicraftVegetationFeatures.TREES_FRUIT, () -> REGISTER.sparseTreePlacement(0.1F));
     public static final RegistryObject<PlacedFeature> TREES_PALM = REGISTER.placed("trees_palm", TropicraftVegetationFeatures.TREES_PALM, () -> REGISTER.sparseTreePlacement(1.0f / 2.0f));
+    public static final RegistryObject<PlacedFeature> TREES_PALM_OVERWORLD = REGISTER.placed("trees_palm_overworld", TropicraftVegetationFeatures.TREES_PALM, () -> REGISTER.sparseTreePlacement(1.0f / 10.0f));
     public static final RegistryObject<PlacedFeature> TREES_RAINFOREST = REGISTER.placed("trees_rainforest", TropicraftVegetationFeatures.TREES_RAINFOREST, () -> REGISTER.treePlacement(1, 1.0f / 2.0f, 1));
 
     public static final RegistryObject<PlacedFeature> TREES_PLEODENDRON = REGISTER.placed("trees_pleodendron", TropicraftVegetationFeatures.TREES_PLEODENDRON, () -> REGISTER.treePlacement(0, 0.1f, 1));
@@ -97,6 +98,13 @@ public final class TropicraftVegetationPlacements {
             NoiseBasedCountPlacement.of(1, 150.0, 0),
             InSquarePlacement.spread(),
             PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
+            BiomeFilter.biome()
+    ));
+
+    public static final RegistryObject<PlacedFeature> PINEAPPLE = REGISTER.placed("pineapple", TropicraftVegetationFeatures.PINEAPPLE, () -> List.of(
+            RarityFilter.onAverageOnceEvery(6),
+            InSquarePlacement.spread(),
+            PlacementUtils.HEIGHTMAP,
             BiomeFilter.biome()
     ));
 
