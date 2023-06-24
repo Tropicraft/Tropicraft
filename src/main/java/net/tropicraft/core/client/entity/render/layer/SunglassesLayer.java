@@ -8,15 +8,17 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.resources.ResourceLocation;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
 import net.tropicraft.core.client.entity.model.TropiBeeModel;
 import net.tropicraft.core.common.entity.TropiBeeEntity;
 
 public class SunglassesLayer extends RenderLayer<TropiBeeEntity, TropiBeeModel> {
+    private static final ResourceLocation TEXTURE = TropicraftRenderUtils.getTextureEntity("sunglasses");
 
-    private TropicraftSpecialRenderHelper mask;
-    private TropiBeeModel beeModel;
+    private final TropicraftSpecialRenderHelper mask;
+    private final TropiBeeModel beeModel;
 
     public SunglassesLayer(RenderLayerParent<TropiBeeEntity, TropiBeeModel> featureRendererContext) {
         super(featureRendererContext);
@@ -28,7 +30,7 @@ public class SunglassesLayer extends RenderLayer<TropiBeeEntity, TropiBeeModel> 
     public void render(PoseStack stack, MultiBufferSource bufferIn, int packedLightIn, TropiBeeEntity bee, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         stack.pushPose();
         beeModel.setupAnim(bee, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        beeModel.getBody().translateAndRotate(stack);
+        beeModel.body().translateAndRotate(stack);
 
         if (!bee.isBaby()) {
             stack.translate(0.03125F, 1.350F, -.313F);
@@ -37,8 +39,8 @@ public class SunglassesLayer extends RenderLayer<TropiBeeEntity, TropiBeeModel> 
             stack.scale(0.55F, 0.55F, 0.55F);
         }
         stack.mulPose(Vector3f.YP.rotationDegrees(180));
-        VertexConsumer ivertexbuilder = bufferIn.getBuffer(RenderType.entityCutoutNoCull(TropicraftRenderUtils.getTextureEntity("sunglasses")));
-        mask.renderMask(stack, ivertexbuilder, 0, packedLightIn, OverlayTexture.NO_OVERLAY);
+        VertexConsumer consumer = bufferIn.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
+        mask.renderMask(stack, consumer, 0, packedLightIn, OverlayTexture.NO_OVERLAY);
         stack.popPose();
     }
 }

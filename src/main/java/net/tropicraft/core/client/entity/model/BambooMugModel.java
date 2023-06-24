@@ -1,6 +1,5 @@
 package net.tropicraft.core.client.entity.model;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.Model;
@@ -13,72 +12,54 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 
+import javax.annotation.Nullable;
+import java.util.List;
 import java.util.function.Function;
 
 public class BambooMugModel extends Model {
+    private final List<ModelPart> parts;
+    @Nullable
+    private final ModelPart liquid;
 
-    public ModelPart base;
-    public ModelPart wall1;
-    public ModelPart wall2;
-    public ModelPart wall3;
-    public ModelPart wall4;
-    public ModelPart liquid;
-    public ModelPart handletop;
-    public ModelPart handlebottom;
-    public ModelPart handle;
-
-    public boolean renderLiquid;
-    public int liquidColor;
-
-    public BambooMugModel(ModelPart root, Function<ResourceLocation, RenderType> renderTypeIn) {
-        super(renderTypeIn);
-        this.base = root.getChild("base");
-        this.wall1 = root.getChild("wall1");
-        this.wall2 = root.getChild("wall2");
-        this.wall3 = root.getChild("wall3");
-        this.wall4 = root.getChild("wall4");
-        this.liquid = root.getChild("liquid");
-        this.handletop = root.getChild("handletop");
-        this.handlebottom = root.getChild("handlebottom");
-        this.handle = root.getChild("handle");
-
+    public BambooMugModel(ModelPart root, Function<ResourceLocation, RenderType> renderType, boolean hasLiquid) {
+        super(renderType);
+        parts = List.of(
+                root.getChild("base"),
+                root.getChild("wall1"),
+                root.getChild("wall2"),
+                root.getChild("wall3"),
+                root.getChild("wall4"),
+                root.getChild("handletop"),
+                root.getChild("handlebottom"),
+                root.getChild("handle")
+        );
+        liquid = hasLiquid ? root.getChild("liquid") : null;
     }
 
     public static LayerDefinition create() {
-        MeshDefinition modelData = new MeshDefinition();
-        PartDefinition modelPartData = modelData.getRoot();
+        MeshDefinition mesh = new MeshDefinition();
+        PartDefinition root = mesh.getRoot();
 
-        modelPartData.addOrReplaceChild("base", CubeListBuilder.create().texOffs(10,0).mirror().addBox(-2F, 23F, -2F, 4, 1, 4), PartPose.offset(0F, 0F, 0F));
-        modelPartData.addOrReplaceChild("wall1", CubeListBuilder.create().texOffs(0,10).mirror().addBox(-2F, 17F, -3F, 4, 6, 1),PartPose.offset(0F, 0F, 0F));
-        modelPartData.addOrReplaceChild("wall2", CubeListBuilder.create().texOffs(0,10).mirror().addBox(-2F, 17F, 2F, 4, 6, 1),PartPose.offset(0F, 0F, 0F));
-        modelPartData.addOrReplaceChild("wall3", CubeListBuilder.create().texOffs(0,0).mirror().addBox(2F, 17F, -2F, 1, 6, 4),PartPose.offset(0F, 0F, 0F));
-        modelPartData.addOrReplaceChild("wall4", CubeListBuilder.create().texOffs(0,0).mirror().addBox(-3F, 17F, -2F, 1, 6, 4),PartPose.offset(0F, 0F, 0F));
-        modelPartData.addOrReplaceChild("liquid", CubeListBuilder.create().texOffs(10,5).mirror().addBox(-2F, 18F, -2F, 4, 1, 4),PartPose.offset(0F, 0F, 0F));
-        modelPartData.addOrReplaceChild("handletop", CubeListBuilder.create().texOffs(26,0).mirror().addBox(-1F, 18F, -4F, 2, 1, 1),PartPose.offset(0F, 0F, 0F));
-        modelPartData.addOrReplaceChild("handlebottom", CubeListBuilder.create().texOffs(26,2).mirror().addBox(-1F, 21F, -4F, 2, 1, 1),PartPose.offset(0F, 0F, 0F));
-        modelPartData.addOrReplaceChild("handle", CubeListBuilder.create().texOffs(32,0).mirror().addBox(-1F, 19F, -5F, 2, 2, 1),PartPose.offset(0F, 0F, 0F));
+        root.addOrReplaceChild("base", CubeListBuilder.create().texOffs(10, 0).mirror().addBox(-2F, 23F, -2F, 4, 1, 4), PartPose.offset(0F, 0F, 0F));
+        root.addOrReplaceChild("wall1", CubeListBuilder.create().texOffs(0, 10).mirror().addBox(-2F, 17F, -3F, 4, 6, 1), PartPose.offset(0F, 0F, 0F));
+        root.addOrReplaceChild("wall2", CubeListBuilder.create().texOffs(0, 10).mirror().addBox(-2F, 17F, 2F, 4, 6, 1), PartPose.offset(0F, 0F, 0F));
+        root.addOrReplaceChild("wall3", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(2F, 17F, -2F, 1, 6, 4), PartPose.offset(0F, 0F, 0F));
+        root.addOrReplaceChild("wall4", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-3F, 17F, -2F, 1, 6, 4), PartPose.offset(0F, 0F, 0F));
+        root.addOrReplaceChild("liquid", CubeListBuilder.create().texOffs(10, 5).mirror().addBox(-2F, 18F, -2F, 4, 1, 4), PartPose.offset(0F, 0F, 0F));
+        root.addOrReplaceChild("handletop", CubeListBuilder.create().texOffs(26, 0).mirror().addBox(-1F, 18F, -4F, 2, 1, 1), PartPose.offset(0F, 0F, 0F));
+        root.addOrReplaceChild("handlebottom", CubeListBuilder.create().texOffs(26, 2).mirror().addBox(-1F, 21F, -4F, 2, 1, 1), PartPose.offset(0F, 0F, 0F));
+        root.addOrReplaceChild("handle", CubeListBuilder.create().texOffs(32, 0).mirror().addBox(-1F, 19F, -5F, 2, 2, 1), PartPose.offset(0F, 0F, 0F));
 
-        return LayerDefinition.create(modelData,64,32);
-    }
-
-    public Iterable<ModelPart> getMugParts() {
-        return ImmutableList.of(
-            base, wall1, wall2, wall3, wall4, handletop, handlebottom, handle
-        );
+        return LayerDefinition.create(mesh, 64, 32);
     }
 
     @Override
-    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-        getMugParts().forEach((part) -> {
-            part.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-        });
-
-        if (renderLiquid) {
-            float r = (float)(liquidColor >> 16 & 255) / 255.0F;
-            float g = (float)(liquidColor >> 8 & 255) / 255.0F;
-            float b = (float)(liquidColor & 255) / 255.0F;
-
-            liquid.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red * r, green * g, blue * b, alpha);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer consumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        for (ModelPart part : parts) {
+            part.render(poseStack, consumer, packedLight, packedOverlay, 1.0f, 1.0f, 1.0f, 1.0f);
+        }
+        if (liquid != null) {
+            liquid.render(poseStack, consumer, packedLight, packedOverlay, red, green, blue, alpha);
         }
     }
 }

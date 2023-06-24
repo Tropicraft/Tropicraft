@@ -12,13 +12,15 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.animal.AbstractFish;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
-import net.tropicraft.core.client.entity.model.AbstractFishModel;
+import net.tropicraft.core.client.entity.model.TropicraftFishModel;
 import net.tropicraft.core.common.entity.underdasea.IAtlasFish;
 
-public class TropicraftFishRenderer<T extends AbstractFish, M extends AbstractFishModel<T>> extends MobRenderer<T, M> {
-    private TropicraftSpecialRenderHelper renderHelper;
+public class TropicraftFishRenderer<T extends AbstractFish> extends MobRenderer<T, TropicraftFishModel<T>> {
+    private static final ResourceLocation TEXTURE = TropicraftRenderUtils.getTextureEntity("tropical_fish");
 
-    public TropicraftFishRenderer(final EntityRendererProvider.Context context, M modelbase, float f) {
+    private final TropicraftSpecialRenderHelper renderHelper;
+
+    public TropicraftFishRenderer(final EntityRendererProvider.Context context, TropicraftFishModel<T> modelbase, float f) {
         super(context, modelbase, f);
         renderHelper = new TropicraftSpecialRenderHelper();
     }
@@ -69,6 +71,6 @@ public class TropicraftFishRenderer<T extends AbstractFish, M extends AbstractFi
 
     @Override
     public ResourceLocation getTextureLocation(T entity) {
-        return TropicraftRenderUtils.getTextureEntity("tropical_fish");
+        return TEXTURE;
     }
 }

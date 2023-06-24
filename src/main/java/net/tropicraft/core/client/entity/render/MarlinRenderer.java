@@ -1,7 +1,5 @@
 package net.tropicraft.core.client.entity.render;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -19,12 +17,6 @@ public class MarlinRenderer extends MobRenderer<MarlinEntity, MarlinModel> {
     public MarlinRenderer(final EntityRendererProvider.Context context) {
         super(context, new MarlinModel(context.bakeLayer(TropicraftRenderLayers.MARLIN_LAYER)), 0.5F);
         shadowStrength = 0.5f;
-    }
-
-    @Override
-    public void render(MarlinEntity marlin, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
-        getModel().inWater = marlin.isInWater();
-        super.render(marlin, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
     }
 
     @Nullable

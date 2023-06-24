@@ -11,57 +11,36 @@ import net.minecraft.world.entity.LivingEntity;
 import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
 
 public class PlayerHeadpieceModel extends HumanoidModel<LivingEntity> {
-	private int textureIndex;
+	private final int textureIndex;
 	private final double xOffset, yOffset;
-	protected TropicraftSpecialRenderHelper renderer;
-	private static float scale;
-	final ModelPart headpiece;
-
-	public PlayerHeadpieceModel(ModelPart modelPart, final int textureIndex) {
-		this(modelPart,0, textureIndex, 0, 0);
-	}
+	private final TropicraftSpecialRenderHelper renderer;
 
 	public PlayerHeadpieceModel(ModelPart modelPart, final int textureIndex, final double xOffset, final double yOffset) {
-		this(modelPart,0, textureIndex, xOffset, yOffset);
-	}
-
-	public PlayerHeadpieceModel(ModelPart modelPart, float scale, final int textureIndex, final double xOffset, final double yOffset) {
 		super(modelPart, RenderType::entityCutoutNoCull);
 		this.textureIndex = textureIndex;
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
-		this.scale = scale;
 		renderer = new TropicraftSpecialRenderHelper();
-
-		headpiece = modelPart.getChild(PartNames.HAT);
 	}
-
-	/*
-
-	public PlayerHeadpieceModel(ModelPart modelPart) {
-		super(modelPart, RenderLayer::getEntityCutoutNoCull);
-	}
-
-	 */
 
 	public static LayerDefinition create() {
-		MeshDefinition modelData = new MeshDefinition();
-		PartDefinition modelPartData = modelData.getRoot();
+		MeshDefinition mesh = new MeshDefinition();
+		PartDefinition root = mesh.getRoot();
 
-		modelPartData.addOrReplaceChild("head", CubeListBuilder.create(), PartPose.ZERO);
-		//modelPartData.addChild("hat", ModelPartBuilder.create(), ModelTransform.NONE);
-		modelPartData.addOrReplaceChild("body", CubeListBuilder.create(), PartPose.ZERO);
-		modelPartData.addOrReplaceChild("right_arm", CubeListBuilder.create(), PartPose.ZERO);
-		modelPartData.addOrReplaceChild("left_arm", CubeListBuilder.create(), PartPose.ZERO);
-		modelPartData.addOrReplaceChild("right_leg", CubeListBuilder.create(), PartPose.ZERO);
-		modelPartData.addOrReplaceChild("left_leg", CubeListBuilder.create(), PartPose.ZERO);
+		root.addOrReplaceChild("head", CubeListBuilder.create(), PartPose.ZERO);
+		//root.addChild("hat", ModelPartBuilder.create(), ModelTransform.NONE);
+		root.addOrReplaceChild("body", CubeListBuilder.create(), PartPose.ZERO);
+		root.addOrReplaceChild("right_arm", CubeListBuilder.create(), PartPose.ZERO);
+		root.addOrReplaceChild("left_arm", CubeListBuilder.create(), PartPose.ZERO);
+		root.addOrReplaceChild("right_leg", CubeListBuilder.create(), PartPose.ZERO);
+		root.addOrReplaceChild("left_leg", CubeListBuilder.create(), PartPose.ZERO);
 
-		CubeDeformation dilation_hat = new CubeDeformation(scale + 0.5f);
-		PartDefinition hat = modelPartData.addOrReplaceChild(PartNames.HAT,
+		CubeDeformation dilation_hat = new CubeDeformation(0.5f);
+		root.addOrReplaceChild(PartNames.HAT,
 				CubeListBuilder.create().texOffs(32, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, dilation_hat),
 				PartPose.ZERO);
 
-		return LayerDefinition.create(modelData, 64, 32);
+		return LayerDefinition.create(mesh, 64, 32);
 	}
 
 	public static PlayerHeadpieceModel createModel(ModelLayerLocation entityModelLayer, EntityModelSet entityModelLoader, final int textureIndex, final double xOffset, final double yOffset) {
