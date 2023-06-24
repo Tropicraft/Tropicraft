@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.entity.underdasea;
 
+import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -7,6 +8,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -27,7 +29,6 @@ import net.minecraft.world.phys.HitResult;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
 public class TropicraftTropicalFishEntity extends AbstractSchoolingFish implements IAtlasFish {
 
@@ -57,8 +58,8 @@ public class TropicraftTropicalFishEntity extends AbstractSchoolingFish implemen
             return CLOWNFISH;
         }
 
-        private static FishType getRandomType(final Random rand) {
-            return VALUES[rand.nextInt(FishType.values().length)];
+        private static FishType getRandomType(final RandomSource rand) {
+            return Util.getRandom(VALUES, rand);
         }
     }
 

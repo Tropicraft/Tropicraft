@@ -7,6 +7,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -171,7 +172,7 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
 
 	@Nullable
 	private BlockPos getRandomLocation() {
-		final Random random = getRandom();
+		final RandomSource random = getRandom();
 		for (int i = 0; i < 20; i++) {
 			double nextXPos = getX() + (double) ((random.nextFloat() * 2.0F - 1.0F) * 48);
 			double nextYPos = getY() + (double) ((random.nextFloat() * 2.0F - 1.0F) * 3);

@@ -221,9 +221,9 @@ public class EIHEntity extends TropicraftCreatureEntity {
     @Override
     protected SoundEvent getAmbientSound() {
         if (isAware()) {
-            return random.nextInt(10) == 0 ? Sounds.HEAD_MED : null;
+            return random.nextInt(10) == 0 ? Sounds.HEAD_MED.get() : null;
         } else if (isAngry()) {
-            return random.nextInt(10) == 0 ? Sounds.HEAD_SHORT : null;
+            return random.nextInt(10) == 0 ? Sounds.HEAD_SHORT.get() : null;
         } else {
             return null;
         }
@@ -231,12 +231,12 @@ public class EIHEntity extends TropicraftCreatureEntity {
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSource) {
-        return Sounds.HEAD_PAIN;
+        return Sounds.HEAD_PAIN.get();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return Sounds.HEAD_DEATH;
+        return Sounds.HEAD_DEATH.get();
     }
 
     @Override
@@ -258,7 +258,7 @@ public class EIHEntity extends TropicraftCreatureEntity {
             if (!heldItem.isEmpty() && heldItem.getItem() instanceof PickaxeItem pickaxe && isValidPickaxeTier(pickaxe.getTier())) {
                 return super.hurt(source, amount);
             } else {
-                playSound(Sounds.HEAD_LAUGHING, getSoundVolume(), getVoicePitch());
+                playSound(Sounds.HEAD_LAUGHING.get(), getSoundVolume(), getVoicePitch());
                 setLastHurtByMob(player);
             }
 

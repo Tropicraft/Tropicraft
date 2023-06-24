@@ -2,6 +2,7 @@ package net.tropicraft.core.common.entity.ai;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -16,7 +17,6 @@ import net.tropicraft.core.common.item.TropicraftItems;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Random;
 
 public class EntityAIGoneFishin extends Goal {
 
@@ -33,7 +33,7 @@ public class EntityAIGoneFishin extends Goal {
     private boolean debugTask = false;
 
     private EntityKoaBase entity;
-    private Random rand;
+    private RandomSource rand;
 
     private BlockPos posLastWaterFound;
     private BlockPos posLastLandFound;
@@ -61,7 +61,7 @@ public class EntityAIGoneFishin extends Goal {
     public EntityAIGoneFishin(EntityKoaBase entity) {
         this.entity = entity;
         this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
-        rand = new Random();
+        rand = RandomSource.create();
 
         walkingTimeout = walkingTimeoutMax;
         fishingTimeout = fishingTimeoutMax;

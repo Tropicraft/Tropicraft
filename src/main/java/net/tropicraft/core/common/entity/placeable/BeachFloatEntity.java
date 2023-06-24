@@ -8,6 +8,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -32,12 +33,11 @@ import net.tropicraft.core.common.item.TropicraftItems;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Random;
 
 public class BeachFloatEntity extends FurnitureEntity implements IEntityAdditionalSpawnData {
 
     @Nonnull
-    private static final Random rand = new Random(298457L);
+    private static final RandomSource rand = RandomSource.create(298457L);
     @Nonnull
     private static final PerlinSimplexNoise windNoise = new PerlinSimplexNoise(new WorldgenRandom(new LegacyRandomSource(298457L)), ImmutableList.of(0));
 

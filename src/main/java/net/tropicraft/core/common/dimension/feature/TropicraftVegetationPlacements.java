@@ -174,9 +174,9 @@ public final class TropicraftVegetationPlacements {
 
     private static List<PlacementModifier> seagrassPlacement(final Supplier<? extends Block> belowBlock) {
         final BlockPredicateFilter seagrassPredicate = BlockPredicateFilter.forPredicate(BlockPredicate.allOf(
-                BlockPredicate.matchesBlock(belowBlock.get(), new BlockPos(0, -1, 0)),
-                BlockPredicate.matchesBlock(Blocks.WATER, BlockPos.ZERO),
-                BlockPredicate.matchesBlock(Blocks.WATER, new BlockPos(0, 1, 0))));
+                BlockPredicate.matchesBlocks(new BlockPos(0, -1, 0), belowBlock.get()),
+                BlockPredicate.matchesBlocks(BlockPos.ZERO, Blocks.WATER),
+                BlockPredicate.matchesBlocks(new BlockPos(0, 1, 0), Blocks.WATER)));
 
         return List.of(CarvingMaskPlacement.forStep(GenerationStep.Carving.LIQUID),
                 RarityFilter.onAverageOnceEvery(10),

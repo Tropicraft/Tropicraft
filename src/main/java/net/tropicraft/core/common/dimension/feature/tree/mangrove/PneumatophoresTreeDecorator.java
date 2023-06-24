@@ -4,37 +4,34 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelSimulatedRW;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftTreeDecorators;
 
-import java.util.List;
-import java.util.Random;
-import java.util.function.BiConsumer;
-
 import static net.minecraft.world.level.levelgen.feature.TreeFeature.validTreePos;
 
 public class PneumatophoresTreeDecorator extends TreeDecorator {
     public static final Codec<PneumatophoresTreeDecorator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Registry.BLOCK.byNameCodec().fieldOf("roots_block").forGetter(c -> c.rootsBlock),
+            Registry.BLOCK.holderByNameCodec().fieldOf("roots_block").forGetter(c -> c.rootsBlock),
             Codec.INT.fieldOf("min_count").forGetter(c -> c.minCount),
             Codec.INT.fieldOf("max_count").forGetter(c -> c.maxCount),
             Codec.INT.fieldOf("spread").forGetter(c -> c.spread)
     ).apply(instance, PneumatophoresTreeDecorator::new));
 
-    private final Block rootsBlock;
+    private final Holder<Block> rootsBlock;
     private final int minCount;
     private final int maxCount;
     private final int spread;
 
-    public PneumatophoresTreeDecorator(Block rootsBlock, int minCount, int maxCount, int spread) {
-        this.rootsBlock = rootsBlock;
+    public PneumatophoresTreeDecorator(Holder<? extends Block> rootsBlock, int minCount, int maxCount, int spread) {
+        this.rootsBlock = Holder.hackyErase(rootsBlock);
         this.minCount = minCount;
         this.maxCount = maxCount;
         this.spread = spread;
@@ -46,17 +43,19 @@ public class PneumatophoresTreeDecorator extends TreeDecorator {
     }
 
     @Override
-    public void place(LevelSimulatedReader pLevel, BiConsumer<BlockPos, BlockState> pBlockSetter, Random random, List<BlockPos> pLogPositions, List<BlockPos> pLeafPositions) {
-        BlockPos origin = Util.findLowestBlock(pLogPositions);
+    public void place(Context context) {
+        BlockPos origin = Util.findLowestBlock(context.logs());
         if (origin == null) return;
 
+        LevelSimulatedReader level = context.level();
+        RandomSource random = context.random();
         int spread = this.spread;
         int count = random.nextInt(this.maxCount - this.minCount + 1) + this.minCount;
         int maxTopY = origin.getY() + 3;
         int minBottomY = origin.getY() - 6;
 
         BlockPos.MutableBlockPos mutablePos = origin.mutable();
-        while (MangroveTrunkPlacer.isWaterAt(pLevel, mutablePos) && mutablePos.getY() < maxTopY) {
+        while (MangroveTrunkPlacer.isWaterAt(level, mutablePos) && mutablePos.getY() < maxTopY) {
             mutablePos.move(Direction.UP);
         }
 
@@ -74,7 +73,7 @@ public class PneumatophoresTreeDecorator extends TreeDecorator {
             for (int y = topY; y >= minBottomY; y--) {
                 mutablePos.setY(y);
 
-                if (!validTreePos(pLevel, mutablePos)) {
+                if (!validTreePos(level, mutablePos)) {
                     canGenerate = true;
                     minY = y;
                     break;
@@ -88,7 +87,7 @@ public class PneumatophoresTreeDecorator extends TreeDecorator {
             int y = topY;
             while (y >= minY) {
                 mutablePos.setY(y--);
-                MangroveTrunkPlacer.setRootsAt((LevelSimulatedRW) pLevel, mutablePos, this.rootsBlock);
+                MangroveTrunkPlacer.setRootsAt((LevelSimulatedRW) level, mutablePos, this.rootsBlock.value());
             }
         }
     }

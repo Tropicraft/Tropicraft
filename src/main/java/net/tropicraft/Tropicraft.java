@@ -5,11 +5,14 @@ import com.google.common.reflect.Reflection;
 import com.mojang.brigadier.CommandDispatcher;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.providers.ProviderType;
+import com.tterrag.registrate.providers.RegistrateTagsProvider;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -47,17 +50,22 @@ import net.tropicraft.core.common.dimension.chunk.TropicraftChunkGenerator;
 import net.tropicraft.core.common.dimension.feature.*;
 import net.tropicraft.core.common.dimension.feature.block_state_provider.TropicraftBlockStateProviders;
 import net.tropicraft.core.common.dimension.feature.jigsaw.*;
-import net.tropicraft.core.common.dimension.feature.jigsaw.piece.*;
+import net.tropicraft.core.common.dimension.feature.jigsaw.piece.HomeTreeBranchPiece;
+import net.tropicraft.core.common.dimension.feature.jigsaw.piece.NoRotateSingleJigsawPiece;
+import net.tropicraft.core.common.dimension.feature.jigsaw.piece.SingleNoAirJigsawPiece;
+import net.tropicraft.core.common.dimension.feature.jigsaw.piece.TropicraftStructurePoolElementTypes;
 import net.tropicraft.core.common.dimension.feature.pools.TropicraftTemplatePools;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftFoliagePlacers;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftTreeDecorators;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftTrunkPlacers;
 import net.tropicraft.core.common.dimension.noise.TropicraftNoiseGenSettings;
+import net.tropicraft.core.common.dimension.noise.TropicraftNoiseRouterData;
 import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.item.scuba.ScubaData;
 import net.tropicraft.core.common.item.scuba.ScubaGogglesItem;
 import net.tropicraft.core.common.network.TropicraftPackets;
+import net.tropicraft.core.common.sound.Sounds;
 
 import java.util.regex.Pattern;
 
@@ -70,10 +78,12 @@ public class Tropicraft {
         }
     });
 
+    public static final ProviderType<RegistrateTagsProvider<Biome>> BIOME_TAGS = ProviderType.register("tags/biome", type -> (p, e) -> new RegistrateTagsProvider<>(p, type, "biome", e.getGenerator(), BuiltinRegistries.BIOME, e.getExistingFileHelper()));
+
     private static final NonNullLazy<Registrate> REGISTRATE = NonNullLazy.of(() -> Registrate.create(Constants.MODID)
             .creativeModeTab(() -> TROPICRAFT_ITEM_GROUP, "Tropicraft")
             .addDataGenerator(ProviderType.LANG, prov -> {
-                prov.add("attribute.name." + ForgeMod.SWIM_SPEED.get().getRegistryName().getPath(), "Swim Speed");
+                prov.add("attribute.name." + ForgeMod.SWIM_SPEED.getId().getPath(), "Swim Speed");
                 TropicraftLangKeys.generate(prov);
             })
     );
@@ -100,6 +110,7 @@ public class Tropicraft {
         TropicraftDimension.addDefaultDimensionKey();
 
         // Registry objects
+        Sounds.REGISTER.register(modBus);
         ScubaGogglesItem.ATTRIBUTES.register(modBus);
         MixerRecipes.addMixerRecipes();
         TropicraftCarvers.CARVERS.register(modBus);
@@ -107,9 +118,7 @@ public class Tropicraft {
         TropicraftTrunkPlacers.REGISTER.register(modBus);
         TropicraftTreeDecorators.REGISTER.register(modBus);
         TropicraftFeatures.FEATURES.register(modBus);
-        TropicraftFeatures.STRUCTURES.register(modBus);
         TropicraftBlockStateProviders.BLOCK_STATE_PROVIDERS.register(modBus);
-        TropicraftStructurePieceTypes.REGISTER.register(modBus);
         TropicraftStructurePoolElementTypes.REGISTER.register(modBus);
         TropicraftProcessorTypes.REGISTER.register(modBus);
 
@@ -122,9 +131,11 @@ public class Tropicraft {
         TropicraftProcessorLists.REGISTER.register(modBus);
         TropicraftConfiguredCarvers.REGISTER.register(modBus);
         TropicraftTemplatePools.REGISTER.register(modBus);
-        TropicraftConfiguredStructures.REGISTER.register(modBus);
+        TropicraftStructureTypes.REGISTER.register(modBus);
+        TropicraftStructures.REGISTER.register(modBus);
         TropicraftBiomes.REGISTER.register(modBus);
         TropicraftStructureSets.REGISTER.register(modBus);
+        TropicraftNoiseRouterData.REGISTER.register(modBus);
         TropicraftNoiseGenSettings.REGISTER.register(modBus);
 
         // Hack in our item frame models the way vanilla does

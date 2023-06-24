@@ -56,7 +56,7 @@ public class ScubaAmbienceTicker {
         if (currentSound != sound) {
             stop();
             currentSound = sound;
-            Minecraft.getInstance().getSoundManager().play(new SimpleSoundInstance(sound.getLocation(), SoundSource.AMBIENT, 0.4f, 1.0f, true, 0, SoundInstance.Attenuation.NONE, 0.0F, 0.0F, 0.0F, true));
+            Minecraft.getInstance().getSoundManager().play(new SimpleSoundInstance(sound.getLocation(), SoundSource.AMBIENT, 0.4f, 1.0f, SoundInstance.createUnseededRandom(), true, 0, SoundInstance.Attenuation.NONE, 0.0F, 0.0F, 0.0F, true));
         }
     }
     

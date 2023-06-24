@@ -3,14 +3,11 @@ package net.tropicraft.core.common.item.scuba;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -27,15 +24,15 @@ public class ScubaHarnessItem extends ScubaArmorItem {
     public ScubaHarnessItem(ScubaType type, Properties properties) {
         super(type, EquipmentSlot.CHEST, properties);
     }
-    
+
     @Override
-    @OnlyIn(Dist.CLIENT)
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
         int airRemaining = getRemainingAir(stack);
         tooltip.add(TropicraftLangKeys.SCUBA_AIR_TIME
-                .format(new TextComponent(ScubaHUD.formatTime(airRemaining))
+                .format(Component.literal(ScubaHUD.formatTime(airRemaining))
                         .withStyle(ScubaHUD.getAirTimeColor(airRemaining, worldIn)))
+                .copy()
                 .withStyle(ChatFormatting.GRAY));
     }
 
@@ -54,7 +51,7 @@ public class ScubaHarnessItem extends ScubaArmorItem {
             player.setAirSupply(player.getMaxAirSupply());
         }
     }
-    
+
     @Override
     public int addAir(int air, ItemStack stack) {
         if (air > 0) {
@@ -71,13 +68,13 @@ public class ScubaHarnessItem extends ScubaArmorItem {
     public int getRemainingAir(ItemStack stack) {
         return stack.getOrCreateTagElement("scuba").getInt("air");
     }
-    
+
     @Override
     public int getMaxAir(ItemStack stack) {
         return 20 * 60 * 10; // 10 Minutes
     }
-    
+
     public static void handleUnderwaterBreathing(PlayerTickEvent event) {
-        
+
     }
 }

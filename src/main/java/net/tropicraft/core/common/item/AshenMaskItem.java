@@ -13,15 +13,13 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.PlayerHeadpieceModel;
 import net.tropicraft.core.common.entity.placeable.WallItemEntity;
 
-import javax.annotation.Nullable;
+import java.util.function.Consumer;
 
 public class AshenMaskItem extends ArmorItem {
     private final AshenMasks maskType;
@@ -69,15 +67,11 @@ public class AshenMaskItem extends ArmorItem {
         return player.mayUseItemAt(pos, direction, heldStack);
     }
 
-    @OnlyIn(Dist.CLIENT)
-    // @Nullable // IDE was screaming at me about this
     @Override
-    public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.IItemRenderProperties> consumer) {
-        consumer.accept(new IItemRenderProperties() {
-            @OnlyIn(Dist.CLIENT)
-            @Nullable
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
             @Override
-            public HumanoidModel getArmorModel(final LivingEntity entityLiving, final ItemStack itemStack, final EquipmentSlot armorSlot, final HumanoidModel model) {
+            public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlot equipmentSlot, HumanoidModel<?> original) {
                 return slot == EquipmentSlot.HEAD ? PlayerHeadpieceModel.createModel(TropicraftRenderLayers.ASHEN_MASK_LAYERS.get(maskType.ordinal()), null, maskType.ordinal(), maskType.getXOffset(), maskType.getYOffset()) : null;
             }
         });

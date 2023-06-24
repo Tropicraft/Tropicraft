@@ -5,6 +5,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -21,8 +22,6 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.HitResult;
 import net.tropicraft.core.common.item.TropicraftItems;
-
-import java.util.Random;
 
 public final class FiddlerCrabEntity extends Animal {
     public FiddlerCrabEntity(EntityType<? extends FiddlerCrabEntity> type, Level world) {
@@ -113,7 +112,7 @@ public final class FiddlerCrabEntity extends Animal {
         return 30;
     }
 
-    public static boolean canCrabSpawn(EntityType<? extends FiddlerCrabEntity> type, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
+    public static boolean canCrabSpawn(EntityType<? extends FiddlerCrabEntity> type, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {
         BlockPos groundPos = pos.below();
         BlockState groundBlock = world.getBlockState(groundPos);
         if (groundBlock.getMaterial() != Material.SAND) {

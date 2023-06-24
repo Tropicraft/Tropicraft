@@ -3,6 +3,7 @@ package net.tropicraft.core.common.dimension.feature.tree;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.state.BlockState;
@@ -10,7 +11,6 @@ import net.minecraft.world.level.levelgen.feature.configurations.TreeConfigurati
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 
-import java.util.Random;
 import java.util.function.BiConsumer;
 
 public class PleodendronFoliagePlacer extends FoliagePlacer {
@@ -33,7 +33,7 @@ public class PleodendronFoliagePlacer extends FoliagePlacer {
    }
 
    @Override
-   protected void createFoliage(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> acceptor, Random random, TreeConfiguration config, int offset, FoliageAttachment foliage, int y, int radius, int start) {
+   protected void createFoliage(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> acceptor, RandomSource random, TreeConfiguration config, int offset, FoliageAttachment foliage, int y, int radius, int start) {
       int i = foliage.doubleTrunk() ? offset : 2;
 
       for(int j = start; j >= start - i; --j) {
@@ -43,12 +43,12 @@ public class PleodendronFoliagePlacer extends FoliagePlacer {
    }
 
    @Override
-   public int foliageHeight(Random random, int height, TreeConfiguration config) {
+   public int foliageHeight(RandomSource random, int height, TreeConfiguration config) {
       return this.height;
    }
 
    @Override
-   protected boolean shouldSkipLocation(Random random, int dx, int y, int dz, int radius, boolean mega) {
+   protected boolean shouldSkipLocation(RandomSource random, int dx, int y, int dz, int radius, boolean mega) {
       if (dx + dz >= 7) {
          return true;
       } else {

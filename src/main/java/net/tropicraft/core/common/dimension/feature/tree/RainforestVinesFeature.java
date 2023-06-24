@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -12,8 +13,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.tropicraft.core.common.dimension.feature.config.RainforestVinesConfig;
-
-import java.util.Random;
 
 import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_LEAVES;
 
@@ -28,7 +27,7 @@ public class RainforestVinesFeature extends Feature<RainforestVinesConfig> {
     @Override
     public boolean place(FeaturePlaceContext<RainforestVinesConfig> context) {
         WorldGenLevel world = context.level();
-        Random rand = context.random();
+        RandomSource rand = context.random();
         BlockPos pos = context.origin();
         RainforestVinesConfig config = context.config();
 

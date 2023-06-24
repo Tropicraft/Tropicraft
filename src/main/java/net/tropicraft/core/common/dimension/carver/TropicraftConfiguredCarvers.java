@@ -13,6 +13,7 @@ import net.minecraft.world.level.levelgen.heightproviders.BiasedToBottomHeight;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import net.tropicraft.Constants;
+import net.tropicraft.core.common.TropicraftTags;
 
 public final class TropicraftConfiguredCarvers {
     public static final DeferredRegister<ConfiguredWorldCarver<?>> REGISTER = DeferredRegister.create(Registry.CONFIGURED_CARVER_REGISTRY, Constants.MODID);
@@ -23,7 +24,7 @@ public final class TropicraftConfiguredCarvers {
                     BiasedToBottomHeight.of(VerticalAnchor.absolute(0), VerticalAnchor.absolute(240), 8),
                     ConstantFloat.of(0.5F),
                     VerticalAnchor.aboveBottom(10),
-                    CarverDebugSettings.of(false, Blocks.CRIMSON_BUTTON.defaultBlockState()),
+                    Registry.BLOCK.getOrCreateTag(TropicraftTags.Blocks.CARVER_REPLACEABLES),
                     ConstantFloat.of(1.0F),
                     ConstantFloat.of(1.0F),
                     ConstantFloat.of(-0.7F)
@@ -33,10 +34,11 @@ public final class TropicraftConfiguredCarvers {
     public static final RegistryObject<ConfiguredWorldCarver<?>> CANYON = register("canyon", TropicraftCarvers.CANYON,
             new CanyonCarverConfiguration(
                     0.02F,
-                    BiasedToBottomHeight.of(VerticalAnchor.absolute(20), VerticalAnchor.absolute(67), 8),
+                    BiasedToBottomHeight.of(VerticalAnchor.absolute(20), VerticalAnchor.absolute(106), 8),
                     ConstantFloat.of(3.0F),
                     VerticalAnchor.aboveBottom(10),
                     CarverDebugSettings.of(false, Blocks.WARPED_BUTTON.defaultBlockState()),
+                    Registry.BLOCK.getOrCreateTag(TropicraftTags.Blocks.CARVER_REPLACEABLES),
                     UniformFloat.of(-0.125F, 0.125F),
                     new CanyonCarverConfiguration.CanyonShapeConfiguration(
                             UniformFloat.of(0.75F, 1.0F),

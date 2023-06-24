@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.LevelAccessor;
@@ -36,7 +37,6 @@ import net.tropicraft.core.common.dimension.feature.tree.PapayaTreeDecorator;
 
 import javax.annotation.Nullable;
 import java.util.OptionalInt;
-import java.util.Random;
 import java.util.function.Supplier;
 
 public class TropicraftTrees {
@@ -125,12 +125,12 @@ public class TropicraftTrees {
         return new AbstractTreeGrower() {
             @Nullable
             @Override
-            protected Holder<? extends ConfiguredFeature<?, ?>> getConfiguredFeature(Random random, boolean beehive) {
+            protected Holder<? extends ConfiguredFeature<?, ?>> getConfiguredFeature(RandomSource random, boolean beehive) {
                 return null;
             }
 
             @Override
-            public boolean growTree(ServerLevel world, ChunkGenerator generator, BlockPos pos, BlockState sapling, Random random) {
+            public boolean growTree(ServerLevel world, ChunkGenerator generator, BlockPos pos, BlockState sapling, RandomSource random) {
                 ConfiguredFeature<?, ?> feature = featureProvider.getFeature(world.getServer(), random, this.hasFlowers(world, pos));
                 if (feature == null) {
                     return false;
@@ -160,6 +160,6 @@ public class TropicraftTrees {
 
     interface FeatureProvider {
         @Nullable
-        ConfiguredFeature<?, ?> getFeature(MinecraftServer server, Random random, boolean beehive);
+        ConfiguredFeature<?, ?> getFeature(MinecraftServer server, RandomSource random, boolean beehive);
     }
 }

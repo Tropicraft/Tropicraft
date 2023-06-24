@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -23,8 +24,6 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
-import java.util.Random;
 
 public final class MangroveRootsBlock extends Block implements SimpleWaterloggedBlock {
     private static final Reference2ByteMap<BlockState> STATE_TO_KEY = new Reference2ByteOpenHashMap<>();
@@ -260,13 +259,13 @@ public final class MangroveRootsBlock extends Block implements SimpleWaterlogged
     }
 
     @Override
-    public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random random) {
+    public void randomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
         if (random.nextInt(PIANGUA_GROW_CHANCE) == 0) {
             this.tryGrowPianguas(world, pos, random);
         }
     }
 
-    private void tryGrowPianguas(ServerLevel world, BlockPos pos, Random random) {
+    private void tryGrowPianguas(ServerLevel world, BlockPos pos, RandomSource random) {
         BlockPos soilPos = pos.below();
         if (!world.getBlockState(soilPos).is(TropicraftBlocks.MUD.get())) {
             return;

@@ -1,9 +1,8 @@
 package net.tropicraft.core.common.dimension.noise.generator;
 
+import net.minecraft.util.RandomSource;
 import net.tropicraft.core.common.dimension.noise.FishyNoise;
 import net.tropicraft.core.common.dimension.noise.NoiseModule;
-
-import java.util.Random;
 
 public class RidgedMulti extends NoiseModule {
 	private final FishyNoise noiseGen;
@@ -15,7 +14,7 @@ public class RidgedMulti extends NoiseModule {
 
 	public RidgedMulti(long seed, int nOctaves) {
 		numOctaves = nOctaves;
-		final Random rand = new Random(seed);
+		final RandomSource rand = RandomSource.create(seed);
 		offsetX = rand.nextDouble() / 2 + 0.01D;
 		offsetY = rand.nextDouble() / 2 + 0.01D;
 		offsetZ = rand.nextDouble() / 2 + 0.01D;

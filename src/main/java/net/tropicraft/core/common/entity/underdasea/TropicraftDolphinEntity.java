@@ -95,7 +95,7 @@ public class TropicraftDolphinEntity extends Dolphin {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return Sounds.DOLPHIN;
+        return Sounds.DOLPHIN.get();
     }
 
     @Override

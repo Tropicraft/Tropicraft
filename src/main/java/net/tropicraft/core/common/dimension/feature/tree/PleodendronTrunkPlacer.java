@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelSimulatedRW;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -16,7 +17,6 @@ import net.tropicraft.core.common.Util;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.function.BiConsumer;
 
 public class PleodendronTrunkPlacer extends TrunkPlacer {
@@ -35,7 +35,7 @@ public class PleodendronTrunkPlacer extends TrunkPlacer {
     }
 
     @Override
-    public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> acceptor, Random random, int height, BlockPos origin, TreeConfiguration config) {
+    public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> acceptor, RandomSource random, int height, BlockPos origin, TreeConfiguration config) {
         setDirtAt(world, acceptor, random, origin.below(), config);
         List<FoliagePlacer.FoliageAttachment> leafNodes = new ArrayList<>();
 
@@ -54,7 +54,7 @@ public class PleodendronTrunkPlacer extends TrunkPlacer {
         return leafNodes;
     }
 
-    private void growBranches(LevelSimulatedRW world, BiConsumer<BlockPos, BlockState> acceptor, Random random, BlockPos origin, TreeConfiguration config, List<FoliagePlacer.FoliageAttachment> leafNodes) {
+    private void growBranches(LevelSimulatedRW world, BiConsumer<BlockPos, BlockState> acceptor, RandomSource random, BlockPos origin, TreeConfiguration config, List<FoliagePlacer.FoliageAttachment> leafNodes) {
         int count = random.nextInt(2) + 1;
         double thetaOffset = random.nextDouble() * 2 * Math.PI;
 

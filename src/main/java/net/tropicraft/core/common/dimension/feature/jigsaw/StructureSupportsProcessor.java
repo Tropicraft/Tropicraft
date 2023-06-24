@@ -2,10 +2,12 @@ package net.tropicraft.core.common.dimension.feature.jigsaw;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryCodecs;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -16,31 +18,24 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
 public class StructureSupportsProcessor extends CheatyStructureProcessor {
-
-    public static final Codec<StructureSupportsProcessor> CODEC = RecordCodecBuilder.create(instance -> {
-        return instance.group(
-            Codec.BOOL.optionalFieldOf("can_replace_land", false).forGetter(p -> p.canReplaceLand),
-            ResourceLocation.CODEC.listOf().fieldOf("states_to_extend").forGetter(p -> new ArrayList<>(p.statesToExtend))
-        ).apply(instance, StructureSupportsProcessor::new);
-    });
+    public static final Codec<StructureSupportsProcessor> CODEC = RecordCodecBuilder.create(i -> i.group(
+        Codec.BOOL.optionalFieldOf("can_replace_land", false).forGetter(p -> p.canReplaceLand),
+        RegistryCodecs.homogeneousList(Registry.BLOCK_REGISTRY).fieldOf("blocks_to_extend").forGetter(p -> p.blocksToExtend)
+    ).apply(i, StructureSupportsProcessor::new));
 
     private final boolean canReplaceLand;
-    private final Set<ResourceLocation> statesToExtend;
+    private final HolderSet<Block> blocksToExtend;
 
-    public StructureSupportsProcessor(boolean canReplaceLand, List<ResourceLocation> statesToExtend) {
+    public StructureSupportsProcessor(boolean canReplaceLand, HolderSet<Block> blocksToExtend) {
         this.canReplaceLand = canReplaceLand;
-        this.statesToExtend = new ObjectOpenHashSet<>(statesToExtend);
+        this.blocksToExtend = blocksToExtend;
     }
 
     @Override
     public StructureBlockInfo process(LevelReader world, BlockPos seedPos, BlockPos pos2, StructureBlockInfo originalInfo, StructureBlockInfo blockInfo, StructurePlaceSettings placement, StructureTemplate template) {
         BlockPos pos = blockInfo.pos;
-        if (originalInfo.pos.getY() <= 1 && statesToExtend.contains(blockInfo.state.getBlock().getRegistryName())) {
+        if (originalInfo.pos.getY() <= 1 && blockInfo.state.is(blocksToExtend)) {
             if (!canReplaceLand && !canPassThrough(world, pos)) {
                 // Delete blocks that would generate inside land
                 return null;

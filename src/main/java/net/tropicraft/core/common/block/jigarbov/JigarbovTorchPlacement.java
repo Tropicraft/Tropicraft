@@ -6,7 +6,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RedstoneWallTorchBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
-import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.tropicraft.Constants;
@@ -26,7 +26,7 @@ public final class JigarbovTorchPlacement {
                 BlockState jigarbovTorch = jigarbovTorchBlock.get().defaultBlockState();
                 jigarbovTorch = copyPropertiesTo(jigarbovTorch, placedState);
 
-                event.getWorld().setBlock(event.getPos(), jigarbovTorch, Block.UPDATE_ALL);
+                event.getLevel().setBlock(event.getPos(), jigarbovTorch, Block.UPDATE_ALL);
             }
         }
     }

@@ -26,11 +26,11 @@ import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegisterEvent;
 import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.Foods;
@@ -402,7 +402,7 @@ public class TropicraftItems {
 
     public static final ItemEntry<BlowGunItem> BLOW_GUN = REGISTRATE.item("blow_gun", BlowGunItem::new)
             .properties(p -> p.stacksTo(1))
-            .recipe((ctx, prov) ->   ShapedRecipeBuilder.shaped(ctx.get())
+            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get())
                     .pattern("X  ")
                     .pattern(" I ")
                     .pattern("  X")
@@ -551,12 +551,12 @@ public class TropicraftItems {
                     .save(prov))
             .register();
 
-    public static final ItemEntry<ScubaGogglesItem> YELLOW_SCUBA_GOGGLES = scubaGoggles("yellow_scuba_goggles", ScubaType.YELLOW, Items.YELLOW_DYE.delegate).register();
-    public static final ItemEntry<ScubaHarnessItem> YELLOW_SCUBA_HARNESS = scubaHarness("yellow_scuba_harness", ScubaType.YELLOW, Items.YELLOW_DYE.delegate).register();
-    public static final ItemEntry<ScubaFlippersItem> YELLOW_SCUBA_FLIPPERS = scubaFlippers("yellow_scuba_flippers", ScubaType.YELLOW, Items.YELLOW_DYE.delegate).register();
-    public static final ItemEntry<ScubaGogglesItem> PINK_SCUBA_GOGGLES = scubaGoggles("pink_scuba_goggles", ScubaType.PINK, Items.PINK_DYE.delegate).register();
-    public static final ItemEntry<ScubaHarnessItem> PINK_SCUBA_HARNESS = scubaHarness("pink_scuba_harness", ScubaType.PINK, Items.PINK_DYE.delegate).register();
-    public static final ItemEntry<ScubaFlippersItem> PINK_SCUBA_FLIPPERS = scubaFlippers("pink_scuba_flippers", ScubaType.PINK, Items.PINK_DYE.delegate).register();
+    public static final ItemEntry<ScubaGogglesItem> YELLOW_SCUBA_GOGGLES = scubaGoggles("yellow_scuba_goggles", ScubaType.YELLOW, () -> Items.YELLOW_DYE).register();
+    public static final ItemEntry<ScubaHarnessItem> YELLOW_SCUBA_HARNESS = scubaHarness("yellow_scuba_harness", ScubaType.YELLOW, () -> Items.YELLOW_DYE).register();
+    public static final ItemEntry<ScubaFlippersItem> YELLOW_SCUBA_FLIPPERS = scubaFlippers("yellow_scuba_flippers", ScubaType.YELLOW, () -> Items.YELLOW_DYE).register();
+    public static final ItemEntry<ScubaGogglesItem> PINK_SCUBA_GOGGLES = scubaGoggles("pink_scuba_goggles", ScubaType.PINK, () -> Items.PINK_DYE).register();
+    public static final ItemEntry<ScubaHarnessItem> PINK_SCUBA_HARNESS = scubaHarness("pink_scuba_harness", ScubaType.PINK, () -> Items.PINK_DYE).register();
+    public static final ItemEntry<ScubaFlippersItem> PINK_SCUBA_FLIPPERS = scubaFlippers("pink_scuba_flippers", ScubaType.PINK, () -> Items.PINK_DYE).register();
 
     private static ItemBuilder<Item, Registrate> fireArmor(final String name, final EquipmentSlot slotType) {
         return REGISTRATE.item(name, p -> (Item) new FireArmorItem(slotType, p))
@@ -676,20 +676,24 @@ public class TropicraftItems {
     }
 
     @SubscribeEvent
-    public static void onItemRegister(RegistryEvent.Register<Item> event) {
-        ForgeRegistries.BLOCKS.getValues().stream()
-            .filter(b -> b instanceof FlowerPotBlock)
-            .map(b -> (FlowerPotBlock) b)
-            .forEach(b -> {
-                if (b.getEmptyPot().getRegistryName().equals(TropicraftBlocks.BAMBOO_FLOWER_POT.getId()) && b.getEmptyPot() != b) {
-                    addPlant(TropicraftBlocks.BAMBOO_FLOWER_POT.get(), b);
-                } else if (b.getContent().getRegistryName().getNamespace().equals(Constants.MODID)) {
-                    addPlant((FlowerPotBlock) Blocks.FLOWER_POT, b);
+    public static void onItemRegister(RegisterEvent event) {
+        if (!ForgeRegistries.ITEMS.equals(event.getForgeRegistry())) {
+            return;
+        }
+        ForgeRegistries.BLOCKS.getEntries().forEach(entry -> {
+            if (entry.getValue() instanceof FlowerPotBlock flowerPot) {
+                FlowerPotBlock emptyPot = flowerPot.getEmptyPot();
+                Block content = flowerPot.getContent();
+                if (emptyPot.builtInRegistryHolder().is(TropicraftBlocks.BAMBOO_FLOWER_POT.getId()) && emptyPot != flowerPot) {
+                    addPlant(TropicraftBlocks.BAMBOO_FLOWER_POT.get(), flowerPot);
+                } else if (content.builtInRegistryHolder().key().location().getNamespace().equals(Constants.MODID)) {
+                    addPlant((FlowerPotBlock) Blocks.FLOWER_POT, flowerPot);
                 }
-            });
+            }
+        });
     }
-    
+
     private static void addPlant(FlowerPotBlock empty, FlowerPotBlock full) {
-        empty.addPlant(full.getContent().getRegistryName(), full.delegate);
+        empty.addPlant(full.getContent().builtInRegistryHolder().key().location(), full.builtInRegistryHolder());
     }
 }

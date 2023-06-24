@@ -3,6 +3,7 @@ package net.tropicraft.core.common.dimension.feature;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -13,8 +14,6 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.tropicraft.core.common.block.ReedsBlock;
 import net.tropicraft.core.common.block.TropicraftBlocks;
-
-import java.util.Random;
 
 public final class ReedsFeature extends Feature<NoneFeatureConfiguration> {
     private static final BlockState REEDS = TropicraftBlocks.REEDS.get().defaultBlockState();
@@ -31,7 +30,7 @@ public final class ReedsFeature extends Feature<NoneFeatureConfiguration> {
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
         WorldGenLevel world = context.level();
-        Random random = context.random();
+        RandomSource random = context.random();
         BlockPos origin = context.origin();
 
         if (!world.getBlockState(origin).is(Blocks.WATER) || !world.isEmptyBlock(origin.above())) {
@@ -55,7 +54,7 @@ public final class ReedsFeature extends Feature<NoneFeatureConfiguration> {
         return generated;
     }
 
-    private boolean generateOne(WorldGenLevel world, BlockPos pos, Random random, BlockPos.MutableBlockPos mutablePos) {
+    private boolean generateOne(WorldGenLevel world, BlockPos pos, RandomSource random, BlockPos.MutableBlockPos mutablePos) {
         if (!REEDS.canSurvive(world, pos) || !this.canReplace(world.getBlockState(pos))) {
             return false;
         }

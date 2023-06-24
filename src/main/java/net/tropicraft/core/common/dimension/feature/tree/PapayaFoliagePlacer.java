@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.level.LevelSimulatedRW;
 import net.minecraft.world.level.LevelSimulatedReader;
@@ -13,7 +14,6 @@ import net.minecraft.world.level.levelgen.feature.configurations.TreeConfigurati
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 
-import java.util.Random;
 import java.util.function.BiConsumer;
 
 public final class PapayaFoliagePlacer extends FoliagePlacer {
@@ -32,7 +32,7 @@ public final class PapayaFoliagePlacer extends FoliagePlacer {
     }
 
     @Override
-    protected void createFoliage(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> acceptor, Random random, TreeConfiguration config, int pMaxFreeTreeHeight, FoliageAttachment node, int pFoliageHeight, int radius, int pOffset) {
+    protected void createFoliage(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> acceptor, RandomSource random, TreeConfiguration config, int pMaxFreeTreeHeight, FoliageAttachment node, int pFoliageHeight, int radius, int pOffset) {
         // Top + shape
         this.placeLeavesRow(world, acceptor, random, config, node.pos(), 1, 1, node.doubleTrunk());
 
@@ -60,19 +60,19 @@ public final class PapayaFoliagePlacer extends FoliagePlacer {
         }
     }
 
-    private static void set(LevelSimulatedReader world, BlockPos pos, Random random, TreeConfiguration config) {
+    private static void set(LevelSimulatedReader world, BlockPos pos, RandomSource random, TreeConfiguration config) {
         if (TreeFeature.isAirOrLeaves(world, pos)) {
             ((LevelSimulatedRW)world).setBlock(pos, config.foliageProvider.getState(random, pos), 19);
         }
     }
 
     @Override
-    public int foliageHeight(Random pRandom, int pHeight, TreeConfiguration pConfig) {
+    public int foliageHeight(RandomSource pRandom, int pHeight, TreeConfiguration pConfig) {
         return 0;
     }
 
     @Override
-    protected boolean shouldSkipLocation(Random random, int dx, int y, int dz, int radius, boolean giantTrunk) {
+    protected boolean shouldSkipLocation(RandomSource random, int dx, int y, int dz, int radius, boolean giantTrunk) {
         return radius != 0 && dx == radius && dz == radius;
     }
 

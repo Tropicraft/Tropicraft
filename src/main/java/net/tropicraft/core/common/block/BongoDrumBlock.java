@@ -31,9 +31,9 @@ public class BongoDrumBlock extends Block {
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
     public enum Size {
-        SMALL(8, () -> Sounds.BONGO_HIGH, 1),
-        MEDIUM(10, () -> Sounds.BONGO_MED, 2),
-        LARGE(12, () -> Sounds.BONGO_LOW, 3);
+        SMALL(8, Sounds.BONGO_HIGH, 1),
+        MEDIUM(10, Sounds.BONGO_MED, 2),
+        LARGE(12, Sounds.BONGO_LOW, 3);
 
         public final VoxelShape shape;
         final Supplier<SoundEvent> soundEvent;
@@ -101,11 +101,11 @@ public class BongoDrumBlock extends Block {
 
     @SubscribeEvent
     public static void onBlockLeftClick(PlayerInteractEvent.LeftClickBlock event) {
-        final Level world = event.getWorld();
-        final BlockState state = world.getBlockState(event.getPos());
+        final Level level = event.getLevel();
+        final BlockState state = level.getBlockState(event.getPos());
         final Block block = state.getBlock();
         if (state.getBlock() instanceof BongoDrumBlock && event.getFace() == Direction.UP) {
-            ((BongoDrumBlock)block).playBongoSound(world, event.getPos(), state);
+            ((BongoDrumBlock)block).playBongoSound(level, event.getPos(), state);
         }
     }
 

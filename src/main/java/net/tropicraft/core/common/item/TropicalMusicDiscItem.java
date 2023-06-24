@@ -3,7 +3,6 @@ package net.tropicraft.core.common.item;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.RecordItem;
 import net.minecraft.world.item.TooltipFlag;
@@ -18,7 +17,7 @@ public class TropicalMusicDiscItem extends RecordItem {
     private final RecordMusic type;
 
     public TropicalMusicDiscItem(RecordMusic type, Properties builder) {
-        super(13, type.getSound(), builder);
+        super(13, type::getSound, builder, type.lengthInTicks());
         this.type = type;
     }
     
@@ -29,7 +28,7 @@ public class TropicalMusicDiscItem extends RecordItem {
     }
     
     private MutableComponent getDescLine(int i) {
-        return new TranslatableComponent(this.getDescriptionId() + ".desc." + i);
+        return Component.translatable(this.getDescriptionId() + ".desc." + i);
     }
 
     @Override

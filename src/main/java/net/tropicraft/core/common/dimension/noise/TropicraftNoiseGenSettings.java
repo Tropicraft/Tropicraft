@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.dimension.noise;
 
 import net.minecraft.core.Registry;
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.data.worldgen.SurfaceRuleData;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
@@ -9,8 +10,10 @@ import net.minecraft.world.level.levelgen.SurfaceRules;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import net.tropicraft.Constants;
+import net.tropicraft.core.common.dimension.TropicraftDimension;
 import net.tropicraft.core.common.dimension.TropicraftSurfaces;
-import net.tropicraft.core.common.dimension.TropicraftTerrainShaper;
+
+import java.util.List;
 
 public final class TropicraftNoiseGenSettings {
     public static final DeferredRegister<NoiseGeneratorSettings> REGISTER = DeferredRegister.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, Constants.MODID);
@@ -19,23 +22,17 @@ public final class TropicraftNoiseGenSettings {
 
     public static NoiseGeneratorSettings createNoise(boolean tropisurface) {
         // Constant ternaries are amplified, keeping temporarily until we figure out good noise values
-        // TODO: hook up custom terrain shaper and surface rule data
-
-        NoiseSettings settings = NoiseSettings.create(-64, 384,
-                new NoiseSamplingSettings(1.0D, 1.0D, 80.0D, 160.0D),
-                new NoiseSlider(-0.078125D, 2, 8),
-                new NoiseSlider(0.1171875D, 3, 0),
-                1, 2,
-                TropicraftTerrainShaper.tropics()
-        );
+        NoiseSettings settings = NoiseSettings.create(-64, 384, 1, 2);
 
         final SurfaceRules.RuleSource surface = tropisurface ? TropicraftSurfaces.tropics() : SurfaceRuleData.overworld();
         return new NoiseGeneratorSettings(
                 settings,
-                Blocks.STONE.defaultBlockState(), Blocks.WATER.defaultBlockState(),
-                TropicraftNoiseGen.tropics(settings),
+                Blocks.STONE.defaultBlockState(),
+                Blocks.WATER.defaultBlockState(),
+                TropicraftNoiseRouterData.tropics(BuiltinRegistries.DENSITY_FUNCTION),
                 surface,
-                127,
+                List.of(),
+                TropicraftDimension.SEA_LEVEL,
                 false,
                 true,
                 true,
