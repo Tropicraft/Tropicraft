@@ -187,6 +187,7 @@ public class AshenModel extends ListModel<AshenEntity> implements ArmedModel {
         rightArm.zRot -= Mth.sin(ageInTicks * 0.25F) * 0.020F;
     }
 
+    @Override
     public Iterable<ModelPart> parts() {
         return ImmutableList.of(body, head, rightArm, leftArm, leftLeg, rightLeg);
     }

@@ -279,6 +279,7 @@ public class EIHEntity extends TropicraftCreatureEntity {
             super(eih, Player.class, true);
         }
 
+        @Override
         public boolean canUse() {
             return ((EIHEntity) mob).isAngry() && super.canUse();
         }

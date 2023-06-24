@@ -41,6 +41,7 @@ public class SpearEntity extends AbstractArrow {
 		this.entityData.set(ID_FOIL, p_37571_.hasFoil());
 	}
 
+	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		this.entityData.define(ID_LOYALTY, (byte) 0);
@@ -50,6 +51,7 @@ public class SpearEntity extends AbstractArrow {
 	/**
 	 * Called to update the entity's position/logic.
 	 */
+	@Override
 	public void tick() {
 		if (this.inGroundTime > 4) {
 			this.dealtDamage = true;
@@ -94,6 +96,7 @@ public class SpearEntity extends AbstractArrow {
 		}
 	}
 
+	@Override
 	public ItemStack getPickupItem() {
 		return this.spearItem.copy();
 	}
@@ -105,6 +108,7 @@ public class SpearEntity extends AbstractArrow {
 	/**
 	 * Gets the EntityRayTraceResult representing the entity hit
 	 */
+	@Override
 	@Nullable
 	protected EntityHitResult findHitEntity(Vec3 pStartVec, Vec3 pEndVec) {
 		return this.dealtDamage ? null : super.findHitEntity(pStartVec, pEndVec);
@@ -113,6 +117,7 @@ public class SpearEntity extends AbstractArrow {
 	/**
 	 * Called when the arrow hits an entity
 	 */
+	@Override
 	protected void onHitEntity(EntityHitResult pResult) {
 		Entity entity = pResult.getEntity();
 		float f = 6.0F;
@@ -147,6 +152,7 @@ public class SpearEntity extends AbstractArrow {
 		this.playSound(soundevent, f1, 1.0F);
 	}
 
+	@Override
 	protected boolean tryPickup(Player p_150196_) {
 		return super.tryPickup(p_150196_) || this.isNoPhysics() && this.ownedBy(p_150196_) && p_150196_.getInventory().add(this.getPickupItem());
 	}
@@ -154,6 +160,7 @@ public class SpearEntity extends AbstractArrow {
 	/**
 	 * The sound made when an entity is hit by this projectile
 	 */
+	@Override
 	protected SoundEvent getDefaultHitGroundSoundEvent() {
 		return SoundEvents.ARROW_HIT;
 	}
@@ -161,6 +168,7 @@ public class SpearEntity extends AbstractArrow {
 	/**
 	 * Called by a player entity when they collide with an entity
 	 */
+	@Override
 	public void playerTouch(Player pEntity) {
 		if (this.ownedBy(pEntity) || this.getOwner() == null) {
 			super.playerTouch(pEntity);
@@ -171,6 +179,7 @@ public class SpearEntity extends AbstractArrow {
 	/**
 	 * (abstract) Protected helper method to read subclass entity data from NBT.
 	 */
+	@Override
 	public void readAdditionalSaveData(CompoundTag pCompound) {
 		super.readAdditionalSaveData(pCompound);
 		if (pCompound.contains("Spear", 10)) {
@@ -181,12 +190,14 @@ public class SpearEntity extends AbstractArrow {
 		this.entityData.set(ID_LOYALTY, (byte) EnchantmentHelper.getLoyalty(this.spearItem));
 	}
 
+	@Override
 	public void addAdditionalSaveData(CompoundTag pCompound) {
 		super.addAdditionalSaveData(pCompound);
 		pCompound.put("Spear", this.spearItem.save(new CompoundTag()));
 		pCompound.putBoolean("DealtDamage", this.dealtDamage);
 	}
 
+	@Override
 	public void tickDespawn() {
 		int i = this.entityData.get(ID_LOYALTY);
 		if (this.pickup != AbstractArrow.Pickup.ALLOWED || i <= 0) {
@@ -195,10 +206,12 @@ public class SpearEntity extends AbstractArrow {
 
 	}
 
+	@Override
 	protected float getWaterInertia() {
 		return 0.99F;
 	}
 
+	@Override
 	public boolean shouldRender(double pX, double pY, double pZ) {
 		return true;
 	}
