@@ -1,28 +1,19 @@
-buildscript {
-    repositories {
-        maven { url = 'https://maven.minecraftforge.net' }
-        maven { url = 'https://repo.spongepowered.org/maven' }
-        maven { url = 'https://maven.parchmentmc.org' }
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath "org.parchmentmc:librarian:1.+"
-        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
-    }
-}
 plugins {
+    id 'eclipse'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
     id 'com.matthewprenger.cursegradle' version '1.4.0'
+    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+    id 'org.spongepowered.mixin' version '0.7+'
 }
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'org.spongepowered.mixin'
-apply plugin: 'eclipse'
-apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
 jarJar.enable()
 
 group = 'net.tropicraft'
-archivesBaseName = 'Tropicraft'
+base {
+    archivesName = 'Tropicraft'
+}
 
 boolean dev = System.getenv('RELEASE') == null || System.getenv('RELEASE').equals('false');
 
@@ -49,6 +40,8 @@ minecraft {
         client {
         	taskName 'tropicraft_client'
 
+            copyIdeResources = true
+
             workingDirectory project.file('run')
 
             property 'forge.logging.markers', 'REGISTRIES,REGISTRYDUMP'
@@ -65,6 +58,8 @@ minecraft {
         server {
         	taskName 'tropicraft_server'
 
+            copyIdeResources = true
+
             workingDirectory project.file('run')
 
             property 'forge.logging.markers', 'REGISTRIES,REGISTRYDUMP'
@@ -80,6 +75,8 @@ minecraft {
 
         data {
         	taskName 'tropicraft_data'
+
+            copyIdeResources = true
 
             workingDirectory project.file('run')
 
@@ -134,23 +131,21 @@ jar {
             "Specification-Vendor": "Tropicraft",
             "Specification-Version": "1", // We are version 1 of ourselves
             "Implementation-Title": project.name,
-            "Implementation-Version": "${version}",
+            "Implementation-Version": project.jar.archiveVersion,
             "Implementation-Vendor" :"Tropicraft",
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
             "MixinConfigs": "tropicraft.mixins.json"
         ])
     }
-    
-    classifier 'slim'
-}
 
+    archiveClassifier = 'slim'
+}
 
 tasks.jarJar.configure {
     // remove '-all' from jarJar jar file
-    classifier ''
+    archiveClassifier = ''
     finalizedBy('reobfJarJar')
 }
-
 
 reobf {
     jarJar { }
@@ -179,4 +174,20 @@ mixin {
     add sourceSets.main, "tropicraft.refmap.json"
 }
 
+def resourceTargets = ['META-INF/mods.toml', 'pack.mcmeta']
+def replaceProperties = [
+        mod_version: mod_version,
+]
 
+processResources {
+    inputs.properties replaceProperties
+    replaceProperties.put 'project', project
+
+    filesMatching(resourceTargets) {
+        expand replaceProperties
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
