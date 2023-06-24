@@ -1,17 +1,18 @@
 package net.tropicraft.core.common.dimension.feature;
 
-import com.google.common.collect.ImmutableList;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.feature.stateproviders.RuleBasedBlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
 import net.minecraftforge.registries.RegistryObject;
@@ -61,7 +62,7 @@ public final class TropicraftTreeFeatures {
                     new PapayaFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0)),
                     new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
             )
-                    .decorators(ImmutableList.of(TropicraftTrees.BEEHIVE_005, new PapayaTreeDecorator()))
+                    .decorators(List.of(TropicraftTrees.BEEHIVE_005, new PapayaTreeDecorator()))
                     .build());
 
     private static final Supplier<FoliagePlacer> MANGROVE_FOLIAGE = () -> new MangroveFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0));
@@ -77,7 +78,7 @@ public final class TropicraftTreeFeatures {
                     MANGROVE_FOLIAGE.get(),
                     MANGROVE_MINIMUM_SIZE
             )
-                    .decorators(ImmutableList.of(BEEHIVE_002, PianguasTreeDecorator.REGULAR))
+                    .decorators(List.of(BEEHIVE_002, addPianguasInMud(8, 4)))
                     .build());
 
     public static final RegistryObject<ConfiguredFeature<?, ?>> RED_MANGROVE_SMALL = REGISTER.feature("red_mangrove_small", Feature.TREE, () ->
@@ -88,7 +89,7 @@ public final class TropicraftTreeFeatures {
                     new SmallMangroveFoliagePlacer(ConstantInt.of(1), ConstantInt.of(0)),
                     MANGROVE_MINIMUM_SIZE
             )
-                    .decorators(ImmutableList.of(BEEHIVE_002, PianguasTreeDecorator.SMALL))
+                    .decorators(List.of(BEEHIVE_002, addPianguasInMud(2, 2)))
                     .build());
     public static final RegistryObject<ConfiguredFeature<?, ?>> RED_MANGROVE = REGISTER.randomFeature("red_mangrove", RED_MANGROVE_SHORT, RED_MANGROVE_SMALL);
 
@@ -100,7 +101,7 @@ public final class TropicraftTreeFeatures {
                     MANGROVE_FOLIAGE.get(),
                     MANGROVE_MINIMUM_SIZE
             )
-                    .decorators(ImmutableList.of(BEEHIVE_002, PianguasTreeDecorator.REGULAR))
+                    .decorators(List.of(BEEHIVE_002, addPianguasInMud(8, 4)))
                     .build());
 
     public static final RegistryObject<ConfiguredFeature<?, ?>> TEA_MANGROVE = REGISTER.feature("tea_mangrove", Feature.TREE, () ->
@@ -111,7 +112,7 @@ public final class TropicraftTreeFeatures {
                     MANGROVE_FOLIAGE.get(),
                     MANGROVE_MINIMUM_SIZE
             )
-                    .decorators(List.of(BEEHIVE_002, PianguasTreeDecorator.REGULAR, new PneumatophoresTreeDecorator(TropicraftBlocks.LIGHT_MANGROVE_ROOTS.getHolder().orElseThrow(), 2, 6, 4)))
+                    .decorators(List.of(BEEHIVE_002, addPianguasInMud(8, 4), new PneumatophoresTreeDecorator(REGISTER.stateProvider(TropicraftBlocks.LIGHT_MANGROVE_ROOTS), 2, 6, 4)))
                     .build());
 
     public static final RegistryObject<ConfiguredFeature<?, ?>> BLACK_MANGROVE = REGISTER.feature("black_mangrove", Feature.TREE, () ->
@@ -122,7 +123,7 @@ public final class TropicraftTreeFeatures {
                     MANGROVE_FOLIAGE.get(),
                     MANGROVE_MINIMUM_SIZE
             )
-                    .decorators(List.of(BEEHIVE_002, PianguasTreeDecorator.REGULAR, new PneumatophoresTreeDecorator(TropicraftBlocks.BLACK_MANGROVE_ROOTS.getHolder().orElseThrow(), 8, 16, 6)))
+                    .decorators(List.of(BEEHIVE_002, addPianguasInMud(8, 4), new PneumatophoresTreeDecorator(REGISTER.stateProvider(TropicraftBlocks.BLACK_MANGROVE_ROOTS), 8, 16, 6)))
                     .build());
 
     private static TreeConfiguration fruitTree(Supplier<? extends Block> fruitLeaves) {
@@ -137,5 +138,13 @@ public final class TropicraftTreeFeatures {
                 new CitrusFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0)),
                 new TwoLayersFeatureSize(1, 0, 2)
         ).build();
+    }
+
+    private static ReplaceInSoilDecorator addPianguasInMud(int count, int spread) {
+        return new ReplaceInSoilDecorator(count,
+                spread,
+                RuleBasedBlockStateProvider.simple(TropicraftBlocks.MUD_WITH_PIANGUAS.get()),
+                BlockPredicate.matchesBlocks(TropicraftBlocks.MUD.get())
+        );
     }
 }
