@@ -81,6 +81,7 @@ public class SeaTurtleEntity extends Turtle {
         return this.moveDist + 0.15F;
     }
 
+    @Override
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficultyInstance, MobSpawnType spawnReason, @Nullable SpawnGroupData data, @Nullable CompoundTag nbt) {
         setRandomTurtleType();

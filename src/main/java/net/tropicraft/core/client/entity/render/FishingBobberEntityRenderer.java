@@ -30,6 +30,7 @@ public class FishingBobberEntityRenderer extends EntityRenderer<FishingBobberEnt
       super(p_174117_);
    }
 
+   @Override
    public void render(FishingBobberEntity pEntity, float pEntityYaw, float pPartialTicks, PoseStack pMatrixStack, MultiBufferSource pBuffer, int pPackedLight) {
       EntityKoaBase koa = pEntity.getAngler();
       if (koa != null) {
@@ -113,6 +114,7 @@ public class FishingBobberEntityRenderer extends EntityRenderer<FishingBobberEnt
    /**
     * Returns the location of an entity's texture.
     */
+   @Override
    public ResourceLocation getTextureLocation(FishingBobberEntity pEntity) {
       return TEXTURE_LOCATION;
    }

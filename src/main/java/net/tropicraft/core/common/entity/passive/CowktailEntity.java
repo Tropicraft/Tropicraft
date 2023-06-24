@@ -160,6 +160,7 @@ public class CowktailEntity extends Cow implements IForgeShearable {
 		return ret;
 	}
 
+	@Override
 	@Nullable
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficultyInstance, MobSpawnType spawnReason, @Nullable SpawnGroupData data, @Nullable CompoundTag nbt) {
 		setCowktailType(Type.getRandomType(random));

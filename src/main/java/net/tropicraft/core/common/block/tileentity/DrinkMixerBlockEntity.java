@@ -284,11 +284,13 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         }
     }
 
+    @Override
     @Nullable
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
+    @Override
     public CompoundTag getUpdateTag() {
         return writeItems(new CompoundTag());
     }

@@ -59,14 +59,17 @@ public final class MudBlock extends Block implements BonemealableBlock {
         return 0.2F;
     }
 
+    @Override
     public boolean isValidBonemealTarget(BlockGetter pLevel, BlockPos pPos, BlockState pState, boolean pIsClient) {
         return pLevel.getBlockState(pPos.above()).isAir();
     }
 
+    @Override
     public boolean isBonemealSuccess(Level pLevel, Random pRand, BlockPos pPos, BlockState pState) {
         return true;
     }
 
+    @Override
     public void performBonemeal(ServerLevel pLevel, Random pRand, BlockPos pPos, BlockState pState) {
         mainLoop:
         for(int i = 0; i < 96; ++i) {

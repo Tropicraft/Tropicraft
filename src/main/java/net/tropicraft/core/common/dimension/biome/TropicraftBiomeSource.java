@@ -86,6 +86,7 @@ public class TropicraftBiomeSource extends BiomeSource {
         return this.parameters.findValue(sampler.sample(x, y, z));
     }
 
+    @Override
     public void addDebugInfo(List<String> p_207895_, BlockPos p_207896_, Climate.Sampler p_207897_) {
         int i = QuartPos.fromBlock(p_207896_.getX());
         int j = QuartPos.fromBlock(p_207896_.getY());
