@@ -46,14 +46,10 @@ import net.tropicraft.core.common.dimension.biome.TropicraftBiomeSource;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
 import net.tropicraft.core.common.dimension.carver.TropicraftCarvers;
 import net.tropicraft.core.common.dimension.carver.TropicraftConfiguredCarvers;
-import net.tropicraft.core.common.dimension.chunk.TropicraftChunkGenerator;
 import net.tropicraft.core.common.dimension.feature.*;
 import net.tropicraft.core.common.dimension.feature.block_state_provider.TropicraftBlockStateProviders;
 import net.tropicraft.core.common.dimension.feature.jigsaw.*;
-import net.tropicraft.core.common.dimension.feature.jigsaw.piece.HomeTreeBranchPiece;
-import net.tropicraft.core.common.dimension.feature.jigsaw.piece.NoRotateSingleJigsawPiece;
-import net.tropicraft.core.common.dimension.feature.jigsaw.piece.SingleNoAirJigsawPiece;
-import net.tropicraft.core.common.dimension.feature.jigsaw.piece.TropicraftStructurePoolElementTypes;
+import net.tropicraft.core.common.dimension.feature.jigsaw.piece.*;
 import net.tropicraft.core.common.dimension.feature.pools.TropicraftTemplatePools;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftFoliagePlacers;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftTreeDecorators;
@@ -133,6 +129,7 @@ public class Tropicraft {
         TropicraftTemplatePools.REGISTER.register(modBus);
         TropicraftStructureTypes.REGISTER.register(modBus);
         TropicraftStructures.REGISTER.register(modBus);
+        TropicraftStructurePieceTypes.REGISTER.register(modBus);
         TropicraftBiomes.REGISTER.register(modBus);
         TropicraftStructureSets.REGISTER.register(modBus);
         TropicraftNoiseRouterData.REGISTER.register(modBus);
@@ -171,7 +168,6 @@ public class Tropicraft {
     private void setup(final FMLCommonSetupEvent event) {
         TropicraftPackets.init();
 
-        TropicraftChunkGenerator.register();
         TropicraftBiomeSource.register();
 
         Reflection.initialize(
