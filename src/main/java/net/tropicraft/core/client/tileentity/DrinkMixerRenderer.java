@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -12,6 +13,8 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -24,7 +27,10 @@ import net.tropicraft.core.common.block.tileentity.DrinkMixerBlockEntity;
 import net.tropicraft.core.common.item.CocktailItem;
 
 public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerBlockEntity> {
-    private final BambooMugModel modelBambooMug;
+    private static final ResourceLocation TEXTURE = TropicraftRenderUtils.getTextureTE("bamboo_mug");
+
+    private final BambooMugModel emptyMugModel;
+    private final BambooMugModel filledMugModel;
     private final ItemRenderer renderItem;
     private ItemEntity dummyEntityItem;
 
@@ -41,9 +47,11 @@ public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerBlockEntity> {
     };
 
     public DrinkMixerRenderer(final BlockEntityRendererProvider.Context context) {
-        super(context, TropicraftBlocks.DRINK_MIXER.get(), new EIHMachineModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(TropicraftRenderLayers.EIHMACHINE_LAYER)));
-        this.renderItem = Minecraft.getInstance().getItemRenderer();
-        this.modelBambooMug = new BambooMugModel(Minecraft.getInstance().getEntityModels().bakeLayer(TropicraftRenderLayers.BAMBOO_MUG), RenderType::entityCutout);
+        super(context, TropicraftBlocks.DRINK_MIXER.get(), new EIHMachineModel<>(context.getModelSet().bakeLayer(TropicraftRenderLayers.EIHMACHINE_LAYER)));
+        this.renderItem = context.getItemRenderer();
+        ModelPart mugLayer = context.getModelSet().bakeLayer(TropicraftRenderLayers.BAMBOO_MUG);
+        emptyMugModel = new BambooMugModel(mugLayer, RenderType::entityCutout, false);
+        filledMugModel = new BambooMugModel(mugLayer, RenderType::entityCutout, true);
     }
 
     @Override
@@ -54,7 +62,7 @@ public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerBlockEntity> {
     @Override
     public void renderIngredients(final DrinkMixerBlockEntity te, final PoseStack stack, final MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn) {
         if (dummyEntityItem == null) {
-             dummyEntityItem = new ItemEntity(Minecraft.getInstance().level, 0.0, 0.0, 0.0, new ItemStack(Items.SUGAR));
+            dummyEntityItem = new ItemEntity(Minecraft.getInstance().level, 0.0, 0.0, 0.0, new ItemStack(Items.SUGAR));
         }
         final NonNullList<ItemStack> ingredients = te.getIngredients();
 
@@ -71,13 +79,16 @@ public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerBlockEntity> {
             stack.pushPose();
             stack.translate(-0.2f, -0.25f, 0.0f);
             if (te.isDoneMixing()) {
-                modelBambooMug.renderLiquid = true;
-                modelBambooMug.liquidColor = CocktailItem.getCocktailColor(te.result);
+                int liquidColor = CocktailItem.getCocktailColor(te.result);
+                float red = FastColor.ARGB32.red(liquidColor) / 255.0F;
+                float green = FastColor.ARGB32.green(liquidColor) / 255.0F;
+                float blue = FastColor.ARGB32.blue(liquidColor) / 255.0F;
+                VertexConsumer consumer = buffer.getBuffer(filledMugModel.renderType(TEXTURE));
+                filledMugModel.renderToBuffer(stack, consumer, combinedLightIn, combinedOverlayIn, red, green, blue, 1.0f);
             } else {
-                modelBambooMug.renderLiquid = false;
+                VertexConsumer consumer = buffer.getBuffer(emptyMugModel.renderType(TEXTURE));
+                emptyMugModel.renderToBuffer(stack, consumer, combinedLightIn, combinedOverlayIn, 1.0f, 1.0f, 1.0f, 1.0f);
             }
-            VertexConsumer ivertexbuilder = buffer.getBuffer(modelBambooMug.renderType(TropicraftRenderUtils.getTextureTE("bamboo_mug")));
-            modelBambooMug.renderToBuffer(stack, ivertexbuilder, combinedLightIn, combinedOverlayIn, 1, 1, 1, 1);
             stack.popPose();
         }
     }

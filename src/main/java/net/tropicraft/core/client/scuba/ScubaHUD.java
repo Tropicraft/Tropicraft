@@ -10,7 +10,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
@@ -41,17 +40,16 @@ public class ScubaHUD {
         if (renderViewEntity instanceof Player player) {
             // TODO support other slots than chest?
             ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
-            Item chestItem = chestStack.getItem();
-            if (chestItem instanceof ScubaArmorItem) {
+            if (chestStack.getItem() instanceof ScubaArmorItem scuba) {
                 LazyOptional<ScubaData> data = player.getCapability(ScubaData.CAPABILITY);
-                int airRemaining = ((ScubaArmorItem)chestItem).getRemainingAir(chestStack);
+                int airRemaining = scuba.getRemainingAir(chestStack);
                 ChatFormatting airColor = getAirTimeColor(airRemaining, player.level);
                 double depth = ScubaData.getDepth(player);
-                String depthStr;
+                Component depthStr;
                 if (depth > 0) {
-                    depthStr = String.format("%.1fm", depth);
+                    depthStr = Component.literal(String.format("%.1fm", depth));
                 } else {
-                    depthStr = TropicraftLangKeys.NA.getLocalizedText();
+                    depthStr = TropicraftLangKeys.NA.component();
                 }
                 data.ifPresent(d -> drawHUDStrings(poseStack,
                         TropicraftLangKeys.SCUBA_AIR_TIME.format(airColor + formatTime(airRemaining)),

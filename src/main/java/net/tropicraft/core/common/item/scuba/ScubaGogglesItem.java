@@ -37,7 +37,7 @@ public class ScubaGogglesItem extends ScubaArmorItem {
     // Just here for the nice tooltip
     private static final RegistryObject<Attribute> UNDERWATER_VISIBILITY = ATTRIBUTES.register(
             "underwater_visibility",
-            () -> new RangedAttribute(TropicraftLangKeys.SCUBA_VISIBILITY_STAT.getKey(), 0, -1, 1)
+            () -> new RangedAttribute(TropicraftLangKeys.SCUBA_VISIBILITY_STAT.key(), 0, -1, 1)
     );
     private static final AttributeModifier VISIBILITY_BOOST = new AttributeModifier(UUID.fromString("b09a907f-8264-455b-af81-997c06aa2268"), Constants.MODID + ".underwater.visibility", 0.25, Operation.MULTIPLY_BASE);
 

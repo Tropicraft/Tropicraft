@@ -94,9 +94,9 @@ public class TropicraftRenderLayers {
         SEA_URCHIN_EGG_ENTITY_LAYER = registerMain("sea_urchin_egg", EggModel::create, event);
         STARFISH_EGG_LAYER = registerMain("starfish_egg", EggModel::create, event);
         V_MONKEY_LAYER = registerMain("v_monkey", VMonkeyModel::create, event);
-        PIRANHA_LAYER = registerMain("piranha", PiranhaModel::create, event);
-        RIVER_SARDINE_LAYER = registerMain("river_sardine", SardineModel::create, event);
-        TROPICAL_FISH_LAYER = registerMain("tropical_fish", TropicraftTropicalFishModel::create, event);
+        PIRANHA_LAYER = registerMain("piranha", TropicraftFishModel::create, event);
+        RIVER_SARDINE_LAYER = registerMain("river_sardine", TropicraftFishModel::create, event);
+        TROPICAL_FISH_LAYER = registerMain("tropical_fish", TropicraftFishModel::create, event);
         EAGLE_RAY_LAYER = registerMain("eagle_ray", EagleRayModel::create, event);
         TROPI_SPIDER_EGG_LAYER = registerMain("tropi_spider_egg", EggModel::create, event);
         ASHEN_LAYER = registerMain("ashen", AshenModel::create, event);
