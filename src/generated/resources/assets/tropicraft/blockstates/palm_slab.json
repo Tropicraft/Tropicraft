@@ -1,13 +1,13 @@
 {
   "variants": {
-    "type=top": {
-      "model": "tropicraft:block/palm_slab_top"
-    },
     "type=bottom": {
       "model": "tropicraft:block/palm_slab"
     },
     "type=double": {
       "model": "tropicraft:block/palm_planks"
+    },
+    "type=top": {
+      "model": "tropicraft:block/palm_slab_top"
     }
   }
 }

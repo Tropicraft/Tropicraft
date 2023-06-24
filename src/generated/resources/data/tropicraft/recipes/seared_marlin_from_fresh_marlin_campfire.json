@@ -1,9 +1,9 @@
 {
   "type": "minecraft:campfire_cooking",
+  "cookingtime": 600,
+  "experience": 0.15,
   "ingredient": {
     "item": "tropicraft:fresh_marlin"
   },
-  "result": "tropicraft:seared_marlin",
-  "experience": 0.15,
-  "cookingtime": 600
+  "result": "tropicraft:seared_marlin"
 }

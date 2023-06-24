@@ -1,34 +1,34 @@
 {
   "variants": {
+    "age=0,facing=east": {
+      "model": "tropicraft:block/papaya_stage0",
+      "y": 270
+    },
     "age=0,facing=north": {
       "model": "tropicraft:block/papaya_stage0",
-      "y": 180
-    },
-    "age=1,facing=north": {
-      "model": "tropicraft:block/papaya_stage1",
       "y": 180
     },
     "age=0,facing=south": {
       "model": "tropicraft:block/papaya_stage0"
     },
-    "age=1,facing=south": {
-      "model": "tropicraft:block/papaya_stage1"
-    },
     "age=0,facing=west": {
       "model": "tropicraft:block/papaya_stage0",
       "y": 90
     },
-    "age=1,facing=west": {
-      "model": "tropicraft:block/papaya_stage1",
-      "y": 90
-    },
-    "age=0,facing=east": {
-      "model": "tropicraft:block/papaya_stage0",
-      "y": 270
-    },
     "age=1,facing=east": {
       "model": "tropicraft:block/papaya_stage1",
       "y": 270
+    },
+    "age=1,facing=north": {
+      "model": "tropicraft:block/papaya_stage1",
+      "y": 180
+    },
+    "age=1,facing=south": {
+      "model": "tropicraft:block/papaya_stage1"
+    },
+    "age=1,facing=west": {
+      "model": "tropicraft:block/papaya_stage1",
+      "y": 90
     }
   }
 }

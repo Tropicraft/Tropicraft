@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
   "group": "bark",
-  "pattern": [
-    "##",
-    "##"
-  ],
   "key": {
     "#": {
       "item": "tropicraft:papaya_log"
     }
   },
+  "pattern": [
+    "##",
+    "##"
+  ],
   "result": {
-    "item": "tropicraft:papaya_wood",
-    "count": 3
+    "count": 3,
+    "item": "tropicraft:papaya_wood"
   }
 }

@@ -1,14 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
   "group": "wooden_pressure_plate",
-  "pattern": [
-    "##"
-  ],
   "key": {
     "#": {
       "item": "tropicraft:mangrove_planks"
     }
   },
+  "pattern": [
+    "##"
+  ],
   "result": {
     "item": "tropicraft:mangrove_pressure_plate"
   }

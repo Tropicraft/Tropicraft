@@ -2,14 +2,7 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "tropicraft:flowering_eel_grass"
-        }
-      ],
       "conditions": [
         {
           "condition": "minecraft:alternative",
@@ -37,7 +30,14 @@
             }
           ]
         }
-      ]
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tropicraft:flowering_eel_grass"
+        }
+      ],
+      "rolls": 1.0
     }
   ]
 }

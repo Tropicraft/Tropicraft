@@ -1,9 +1,9 @@
 {
   "type": "minecraft:campfire_cooking",
+  "cookingtime": 600,
+  "experience": 0.1,
   "ingredient": {
     "item": "tropicraft:raw_coffee_bean"
   },
-  "result": "tropicraft:roasted_coffee_bean",
-  "experience": 0.1,
-  "cookingtime": 600
+  "result": "tropicraft:roasted_coffee_bean"
 }

@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cube_column",
   "textures": {
-    "side": "tropicraft:block/light_mangrove_log",
-    "end": "tropicraft:block/light_mangrove_log_top"
+    "end": "tropicraft:block/light_mangrove_log_top",
+    "side": "tropicraft:block/light_mangrove_log"
   }
 }

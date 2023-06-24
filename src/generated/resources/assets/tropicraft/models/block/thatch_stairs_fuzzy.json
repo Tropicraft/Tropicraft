@@ -1,9 +1,9 @@
 {
   "parent": "tropicraft:block/stairs_fuzzy",
   "textures": {
-    "side": "tropicraft:block/thatch_side",
     "bottom": "tropicraft:block/thatch_end",
-    "top": "tropicraft:block/thatch_end",
-    "cross": "tropicraft:block/thatch_grass"
+    "cross": "tropicraft:block/thatch_grass",
+    "side": "tropicraft:block/thatch_side",
+    "top": "tropicraft:block/thatch_end"
   }
 }

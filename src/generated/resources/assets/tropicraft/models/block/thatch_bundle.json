@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cube_column",
   "textures": {
-    "side": "tropicraft:block/thatch_side",
-    "end": "tropicraft:block/thatch_end"
+    "end": "tropicraft:block/thatch_end",
+    "side": "tropicraft:block/thatch_side"
   }
 }

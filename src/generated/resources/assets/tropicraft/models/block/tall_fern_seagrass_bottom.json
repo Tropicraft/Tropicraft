@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/template_seagrass",
   "textures": {
-    "texture": "tropicraft:block/tall_fern_seagrass_bottom",
-    "particle": "tropicraft:block/tall_fern_seagrass_bottom"
+    "particle": "tropicraft:block/tall_fern_seagrass_bottom",
+    "texture": "tropicraft:block/tall_fern_seagrass_bottom"
   }
 }

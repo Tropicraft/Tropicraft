@@ -1,9 +1,9 @@
 {
   "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.15,
   "ingredient": {
     "item": "tropicraft:raw_ray"
   },
-  "result": "tropicraft:cooked_ray",
-  "experience": 0.15,
-  "cookingtime": 200
+  "result": "tropicraft:cooked_ray"
 }
