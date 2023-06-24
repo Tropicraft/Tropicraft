@@ -21,6 +21,7 @@ import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.network.TropicraftPackets;
 import net.tropicraft.core.common.network.message.MessageSifterInventory;
+import net.tropicraft.core.common.network.message.MessageSifterStart;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -167,7 +168,7 @@ public class SifterBlockEntity extends BlockEntity {
         currentSiftTime = SIFT_TIME;
 
         if (!level.isClientSide) {
-            TropicraftPackets.CHANNEL.send(PacketDistributor.DIMENSION.with(level::dimension), new MessageSifterStart(this));
+            TropicraftPackets.CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(getBlockPos())), new MessageSifterStart(getBlockPos()));
         }
     }
 
@@ -228,7 +229,7 @@ public class SifterBlockEntity extends BlockEntity {
 
     protected void syncInventory() {
         if (!level.isClientSide()) {
-            TropicraftPackets.CHANNEL.send(PacketDistributor.DIMENSION.with(level::dimension), new MessageSifterInventory(this));
+            TropicraftPackets.CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(getBlockPos())), new MessageSifterInventory(this));
         }
     }
 

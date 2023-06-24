@@ -192,7 +192,7 @@ public class AirCompressorBlockEntity extends BlockEntity implements IMachineBlo
 
     protected void syncInventory() {
         if (!level.isClientSide) {
-            TropicraftPackets.CHANNEL.send(PacketDistributor.DIMENSION.with(level::dimension), new MessageAirCompressorInventory(this));
+            TropicraftPackets.CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(getBlockPos())), new MessageAirCompressorInventory(this));
         }
     }
 
