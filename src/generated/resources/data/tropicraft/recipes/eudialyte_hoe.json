@@ -1,18 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "item": "tropicraft:bamboo_stick"
+    },
+    "X": {
+      "item": "tropicraft:eudialyte_gem"
+    }
+  },
   "pattern": [
     "XX",
     " B",
     " B"
   ],
-  "key": {
-    "X": {
-      "item": "tropicraft:eudialyte_gem"
-    },
-    "B": {
-      "item": "tropicraft:bamboo_stick"
-    }
-  },
   "result": {
     "item": "tropicraft:eudialyte_hoe"
   }

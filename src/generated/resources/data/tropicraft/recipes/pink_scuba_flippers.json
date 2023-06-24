@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "XX",
-    "YY",
-    "XX"
-  ],
   "key": {
     "X": {
       "item": "minecraft:pink_dye"
@@ -13,6 +8,11 @@
       "item": "tropicraft:zircon_gem"
     }
   },
+  "pattern": [
+    "XX",
+    "YY",
+    "XX"
+  ],
   "result": {
     "item": "tropicraft:pink_scuba_flippers"
   }

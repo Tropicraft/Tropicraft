@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cocoa_stage2",
   "textures": {
-    "particle": "tropicraft:block/papaya_stage0",
-    "cocoa": "tropicraft:block/papaya_stage0"
+    "cocoa": "tropicraft:block/papaya_stage0",
+    "particle": "tropicraft:block/papaya_stage0"
   }
 }

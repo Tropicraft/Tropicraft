@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cube_column_horizontal",
   "textures": {
-    "side": "tropicraft:block/bamboo_side",
-    "end": "tropicraft:block/bamboo_end"
+    "end": "tropicraft:block/bamboo_end",
+    "side": "tropicraft:block/bamboo_side"
   }
 }

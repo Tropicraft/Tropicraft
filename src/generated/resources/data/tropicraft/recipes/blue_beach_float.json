@@ -1,18 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
   "group": "tropicraft:beach_floats",
+  "key": {
+    "B": {
+      "item": "minecraft:bamboo"
+    },
+    "W": {
+      "item": "minecraft:blue_wool"
+    }
+  },
   "pattern": [
     "WWW",
     "BBB"
   ],
-  "key": {
-    "W": {
-      "item": "minecraft:blue_wool"
-    },
-    "B": {
-      "item": "minecraft:bamboo"
-    }
-  },
   "result": {
     "item": "tropicraft:blue_beach_float"
   }

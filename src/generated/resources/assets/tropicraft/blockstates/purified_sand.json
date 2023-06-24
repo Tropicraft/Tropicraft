@@ -7,87 +7,87 @@
       },
       {
         "model": "tropicraft:block/purified_sand",
-        "y": 90,
-        "weight": 50
+        "weight": 50,
+        "y": 90
       },
       {
         "model": "tropicraft:block/purified_sand",
-        "y": 180,
-        "weight": 50
+        "weight": 50,
+        "y": 180
       },
       {
         "model": "tropicraft:block/purified_sand",
-        "y": 270,
-        "weight": 50
+        "weight": 50,
+        "y": 270
       },
       {
         "model": "tropicraft:block/purified_sand",
+        "weight": 50,
+        "x": 90
+      },
+      {
+        "model": "tropicraft:block/purified_sand",
+        "weight": 50,
         "x": 90,
-        "weight": 50
+        "y": 90
       },
       {
         "model": "tropicraft:block/purified_sand",
+        "weight": 50,
         "x": 90,
-        "y": 90,
-        "weight": 50
+        "y": 180
       },
       {
         "model": "tropicraft:block/purified_sand",
+        "weight": 50,
         "x": 90,
-        "y": 180,
-        "weight": 50
+        "y": 270
       },
       {
         "model": "tropicraft:block/purified_sand",
-        "x": 90,
-        "y": 270,
-        "weight": 50
+        "weight": 50,
+        "x": 180
       },
       {
         "model": "tropicraft:block/purified_sand",
+        "weight": 50,
         "x": 180,
-        "weight": 50
+        "y": 90
       },
       {
         "model": "tropicraft:block/purified_sand",
+        "weight": 50,
         "x": 180,
-        "y": 90,
-        "weight": 50
+        "y": 180
       },
       {
         "model": "tropicraft:block/purified_sand",
+        "weight": 50,
         "x": 180,
-        "y": 180,
-        "weight": 50
+        "y": 270
       },
       {
         "model": "tropicraft:block/purified_sand",
-        "x": 180,
-        "y": 270,
-        "weight": 50
+        "weight": 50,
+        "x": 270
       },
       {
         "model": "tropicraft:block/purified_sand",
+        "weight": 50,
         "x": 270,
-        "weight": 50
+        "y": 90
       },
       {
         "model": "tropicraft:block/purified_sand",
+        "weight": 50,
         "x": 270,
-        "y": 90,
-        "weight": 50
+        "y": 180
       },
       {
         "model": "tropicraft:block/purified_sand",
+        "weight": 50,
         "x": 270,
-        "y": 180,
-        "weight": 50
-      },
-      {
-        "model": "tropicraft:block/purified_sand",
-        "x": 270,
-        "y": 270,
-        "weight": 50
+        "y": 270
       },
       {
         "model": "tropicraft:block/purified_sand_calcified",
@@ -95,18 +95,18 @@
       },
       {
         "model": "tropicraft:block/purified_sand_calcified",
-        "y": 90,
-        "weight": 5
+        "weight": 5,
+        "y": 90
       },
       {
         "model": "tropicraft:block/purified_sand_calcified",
-        "y": 180,
-        "weight": 5
+        "weight": 5,
+        "y": 180
       },
       {
         "model": "tropicraft:block/purified_sand_calcified",
-        "y": 270,
-        "weight": 5
+        "weight": 5,
+        "y": 270
       }
     ],
     "underwater=true": [
@@ -116,87 +116,87 @@
       },
       {
         "model": "tropicraft:block/purified_sand",
-        "y": 90,
-        "weight": 50
+        "weight": 50,
+        "y": 90
       },
       {
         "model": "tropicraft:block/purified_sand",
-        "y": 180,
-        "weight": 50
+        "weight": 50,
+        "y": 180
       },
       {
         "model": "tropicraft:block/purified_sand",
-        "y": 270,
-        "weight": 50
+        "weight": 50,
+        "y": 270
       },
       {
         "model": "tropicraft:block/purified_sand",
+        "weight": 50,
+        "x": 90
+      },
+      {
+        "model": "tropicraft:block/purified_sand",
+        "weight": 50,
         "x": 90,
-        "weight": 50
+        "y": 90
       },
       {
         "model": "tropicraft:block/purified_sand",
+        "weight": 50,
         "x": 90,
-        "y": 90,
-        "weight": 50
+        "y": 180
       },
       {
         "model": "tropicraft:block/purified_sand",
+        "weight": 50,
         "x": 90,
-        "y": 180,
-        "weight": 50
+        "y": 270
       },
       {
         "model": "tropicraft:block/purified_sand",
-        "x": 90,
-        "y": 270,
-        "weight": 50
+        "weight": 50,
+        "x": 180
       },
       {
         "model": "tropicraft:block/purified_sand",
+        "weight": 50,
         "x": 180,
-        "weight": 50
+        "y": 90
       },
       {
         "model": "tropicraft:block/purified_sand",
+        "weight": 50,
         "x": 180,
-        "y": 90,
-        "weight": 50
+        "y": 180
       },
       {
         "model": "tropicraft:block/purified_sand",
+        "weight": 50,
         "x": 180,
-        "y": 180,
-        "weight": 50
+        "y": 270
       },
       {
         "model": "tropicraft:block/purified_sand",
-        "x": 180,
-        "y": 270,
-        "weight": 50
+        "weight": 50,
+        "x": 270
       },
       {
         "model": "tropicraft:block/purified_sand",
+        "weight": 50,
         "x": 270,
-        "weight": 50
+        "y": 90
       },
       {
         "model": "tropicraft:block/purified_sand",
+        "weight": 50,
         "x": 270,
-        "y": 90,
-        "weight": 50
+        "y": 180
       },
       {
         "model": "tropicraft:block/purified_sand",
+        "weight": 50,
         "x": 270,
-        "y": 180,
-        "weight": 50
-      },
-      {
-        "model": "tropicraft:block/purified_sand",
-        "x": 270,
-        "y": 270,
-        "weight": 50
+        "y": 270
       },
       {
         "model": "tropicraft:block/purified_sand_dune1",
@@ -204,18 +204,18 @@
       },
       {
         "model": "tropicraft:block/purified_sand_dune1",
-        "y": 90,
-        "weight": 10
+        "weight": 10,
+        "y": 90
       },
       {
         "model": "tropicraft:block/purified_sand_dune1",
-        "y": 180,
-        "weight": 10
+        "weight": 10,
+        "y": 180
       },
       {
         "model": "tropicraft:block/purified_sand_dune1",
-        "y": 270,
-        "weight": 10
+        "weight": 10,
+        "y": 270
       },
       {
         "model": "tropicraft:block/purified_sand_dune2",
@@ -223,18 +223,18 @@
       },
       {
         "model": "tropicraft:block/purified_sand_dune2",
-        "y": 90,
-        "weight": 10
+        "weight": 10,
+        "y": 90
       },
       {
         "model": "tropicraft:block/purified_sand_dune2",
-        "y": 180,
-        "weight": 10
+        "weight": 10,
+        "y": 180
       },
       {
         "model": "tropicraft:block/purified_sand_dune2",
-        "y": 270,
-        "weight": 10
+        "weight": 10,
+        "y": 270
       },
       {
         "model": "tropicraft:block/purified_sand_starfish"

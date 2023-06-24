@@ -1,19 +1,19 @@
 {
   "multipart": [
     {
-      "when": {
-        "half": "upper"
-      },
       "apply": {
         "model": "tropicraft:block/tall_sickle_seagrass_top"
+      },
+      "when": {
+        "half": "upper"
       }
     },
     {
-      "when": {
-        "half": "lower"
-      },
       "apply": {
         "model": "tropicraft:block/tall_sickle_seagrass_bottom"
+      },
+      "when": {
+        "half": "lower"
       }
     }
   ]

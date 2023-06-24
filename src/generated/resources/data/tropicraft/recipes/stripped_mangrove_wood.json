@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
   "group": "bark",
-  "pattern": [
-    "##",
-    "##"
-  ],
   "key": {
     "#": {
       "item": "tropicraft:stripped_mangrove_log"
     }
   },
+  "pattern": [
+    "##",
+    "##"
+  ],
   "result": {
-    "item": "tropicraft:stripped_mangrove_wood",
-    "count": 3
+    "count": 3,
+    "item": "tropicraft:stripped_mangrove_wood"
   }
 }
