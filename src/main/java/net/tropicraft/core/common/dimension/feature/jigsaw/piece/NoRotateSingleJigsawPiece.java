@@ -5,9 +5,11 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -15,14 +17,13 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pools.SinglePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElementType;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 
 import java.util.List;
-import java.util.Random;
 import java.util.function.Function;
 
 public class NoRotateSingleJigsawPiece extends SinglePoolElement {
@@ -55,27 +56,32 @@ public class NoRotateSingleJigsawPiece extends SinglePoolElement {
     }
 
     @Override
-    public void handleDataMarker(LevelAccessor worldIn, StructureBlockInfo p_214846_2_, BlockPos pos, Rotation rotationIn, Random rand, BoundingBox p_214846_6_) {
+    public void handleDataMarker(LevelAccessor worldIn, StructureBlockInfo p_214846_2_, BlockPos pos, Rotation rotationIn, RandomSource rand, BoundingBox p_214846_6_) {
         super.handleDataMarker(worldIn, p_214846_2_, pos, Rotation.NONE, rand, p_214846_6_);
     }
 
     @Override
-    public List<StructureBlockInfo> getDataMarkers(StructureManager p_214857_1_, BlockPos p_214857_2_, Rotation p_214857_3_, boolean p_214857_4_) {
+    public List<StructureBlockInfo> getDataMarkers(StructureTemplateManager p_214857_1_, BlockPos p_214857_2_, Rotation p_214857_3_, boolean p_214857_4_) {
         return super.getDataMarkers(p_214857_1_, p_214857_2_, Rotation.NONE, p_214857_4_);
     }
 
     @Override
-    public BoundingBox getBoundingBox(StructureManager templateManagerIn, BlockPos pos, Rotation rotationIn) {
+    public BoundingBox getBoundingBox(StructureTemplateManager templateManagerIn, BlockPos pos, Rotation rotationIn) {
         return super.getBoundingBox(templateManagerIn, pos, Rotation.NONE);
     }
 
     @Override
-    public List<StructureBlockInfo> getShuffledJigsawBlocks(StructureManager templateManager, BlockPos pos, Rotation rotation, Random random) {
+    public List<StructureBlockInfo> getShuffledJigsawBlocks(StructureTemplateManager templateManager, BlockPos pos, Rotation rotation, RandomSource random) {
         return super.getShuffledJigsawBlocks(templateManager, pos, Rotation.NONE, random);
     }
 
     @Override
-    public boolean place(StructureManager templates, WorldGenLevel world, StructureFeatureManager structures, ChunkGenerator generator, BlockPos pos, BlockPos pos2, Rotation rotation, BoundingBox box, Random random, boolean b) {
+    public boolean place(StructureTemplateManager templates, WorldGenLevel world, StructureManager structures, ChunkGenerator generator, BlockPos pos, BlockPos pos2, Rotation rotation, BoundingBox box, RandomSource random, boolean b) {
         return super.place(templates, world, structures, generator, pos, pos2, Rotation.NONE, box, random, b);
+    }
+
+    @Override
+    public Vec3i getSize(StructureTemplateManager templateManager, Rotation rotation) {
+        return super.getSize(templateManager, Rotation.NONE);
     }
 }

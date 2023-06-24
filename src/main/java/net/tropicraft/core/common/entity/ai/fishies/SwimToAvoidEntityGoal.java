@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.entity.ai.fishies;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.tropicraft.core.common.entity.underdasea.TropicraftFishEntity;
@@ -7,12 +8,11 @@ import net.tropicraft.core.common.entity.underdasea.TropicraftFishEntity;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Random;
 
 public class SwimToAvoidEntityGoal extends Goal {
 
     public TropicraftFishEntity entity;
-    public Random rand;
+    public RandomSource rand;
     public Class<? extends Entity>[] entityClassToAvoid;
     public double distanceToAvoid;
 

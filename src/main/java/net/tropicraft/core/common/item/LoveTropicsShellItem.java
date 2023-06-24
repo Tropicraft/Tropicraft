@@ -3,20 +3,19 @@ package net.tropicraft.core.common.item;
 import com.google.common.collect.Maps;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.tropicraft.Constants;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.awt.*;
 import java.util.Map;
-import java.util.Random;
 
 public class LoveTropicsShellItem extends ShellItem {
 
     public static class LTUtil {
         private static final Map<String, Integer> colors = Maps.newHashMap();
-        private static final Random rand = new Random();
+        private static final RandomSource rand = RandomSource.create();
 
         static {
             for (final String name : ArrayUtils.addAll(Constants.LT17_NAMES, Constants.LT18_NAMES)) {
@@ -45,6 +44,6 @@ public class LoveTropicsShellItem extends ShellItem {
         }
         final String name = stack.getTag().getString("Name");
         final String type = name.endsWith("s") ? "with_s" : "normal";
-        return new TranslatableComponent("item.tropicraft.shell.owned." + type, name);
+        return Component.translatable("item.tropicraft.shell.owned." + type, name);
     }
 }

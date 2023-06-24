@@ -3,6 +3,7 @@ package net.tropicraft.core.common;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -16,7 +17,6 @@ import net.minecraft.world.level.material.Material;
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Random;
 import java.util.function.BiPredicate;
 
 public class Util {
@@ -85,7 +85,7 @@ public class Util {
 
                 LivingEntity center = ent;
 
-                Random rand = world.random;
+                RandomSource rand = world.random;
 
                 float randLook = rand.nextInt(90)-45;
                 //int height = 10;
@@ -266,7 +266,7 @@ public class Util {
         }
     }
 
-    public static int randFlip(final Random rand, final int i) {
+    public static int randFlip(final RandomSource rand, final int i) {
         return rand.nextBoolean() ? rand.nextInt(i) : -(rand.nextInt(i));
     }
 

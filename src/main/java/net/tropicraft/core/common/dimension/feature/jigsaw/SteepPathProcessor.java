@@ -12,6 +12,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.tropicraft.core.common.block.TropicraftBlocks;
+import net.tropicraft.core.common.dimension.TropicraftDimension;
 
 public class SteepPathProcessor extends PathStructureProcessor {
     public static final Codec<SteepPathProcessor> CODEC = Codec.unit(new SteepPathProcessor());
@@ -63,7 +64,7 @@ public class SteepPathProcessor extends PathStructureProcessor {
         Direction dir = ladder.getValue(LadderBlock.FACING).getOpposite();
         pos = pos.above();
         if (bridgeTo == pos.getY() && canPlaceLadderAt(level, pos.above(), dir) == null) {
-        	if (pos.getY() > 127) {
+        	if (pos.getY() > TropicraftDimension.SEA_LEVEL) {
 	            // If the next spot up can't support a ladder, this is a one block step, so place a stair block
 	            setBlockState(level, pos, TropicraftBlocks.THATCH_STAIRS.get().defaultBlockState().setValue(StairBlock.FACING, dir));
         	}

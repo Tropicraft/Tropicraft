@@ -2,134 +2,38 @@ package net.tropicraft.core.common.sound;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.level.block.Block;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import net.tropicraft.Constants;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-
-/**
- * All Tropicraft mod sounds are registered here. To create a new one:
- *
- * - Create a new public static SoundEvent field named whatever you want
- * - Set that field = null
- * - Add an @SoundName annotation with a string inside equal to whatever you put as the key in sounds.json
- * - Reference it anywhere. This class is initialized super early so you don't have to worry about
- *   something using it before its values are set.
- */
 public class Sounds {
-    @SoundName("buried_treasure")
-    public static SoundEvent BURIED_TREASURE = null;
+    public static final DeferredRegister<SoundEvent> REGISTER = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Constants.MODID);
 
-    @SoundName("eastern_isles")
-    public static SoundEvent EASTERN_ISLES = null;
+    public static final RegistryObject<SoundEvent> BURIED_TREASURE = register("buried_treasure");
+    public static final RegistryObject<SoundEvent> EASTERN_ISLES = register("eastern_isles");
+    public static final RegistryObject<SoundEvent> LOW_TIDE = register("low_tide");
+    public static final RegistryObject<SoundEvent> SUMMERING = register("summering");
+    public static final RegistryObject<SoundEvent> THE_TRIBE = register("the_tribe");
+    public static final RegistryObject<SoundEvent> TRADE_WINDS = register("trade_winds");
+    public static final RegistryObject<SoundEvent> PAGE_FLIP = register("page_flip");
+    public static final RegistryObject<SoundEvent> BONGO_LOW = register("bongo.low");
+    public static final RegistryObject<SoundEvent> BONGO_MED = register("bongo.med");
+    public static final RegistryObject<SoundEvent> BONGO_HIGH = register("bongo.high");
+    public static final RegistryObject<SoundEvent> HEAD_LAUGHING = register("headlaughing");
+    public static final RegistryObject<SoundEvent> HEAD_ATTACK = register("headattack");
+    public static final RegistryObject<SoundEvent> HEAD_SHORT = register("headshort");
+    public static final RegistryObject<SoundEvent> HEAD_MED = register("headmed");
+    public static final RegistryObject<SoundEvent> HEAD_PAIN = register("headpain");
+    public static final RegistryObject<SoundEvent> HEAD_DEATH = register("headdeath");
+    public static final RegistryObject<SoundEvent> IGGY_ATTACK = register("iggyattack");
+    public static final RegistryObject<SoundEvent> IGGY_DEATH = register("iggydeath");
+    public static final RegistryObject<SoundEvent> IGGY_LIVING = register("iggyliving");
+    public static final RegistryObject<SoundEvent> ASHEN_LAUGH = register("ashen_laugh");
+    public static final RegistryObject<SoundEvent> DOLPHIN = register("dolphin");
+    public static final RegistryObject<SoundEvent> FROG_SPIT = register("frogspit");
 
-    @SoundName("low_tide")
-    public static SoundEvent LOW_TIDE = null;
-
-    @SoundName("summering")
-    public static SoundEvent SUMMERING = null;
-
-    @SoundName("the_tribe")
-    public static SoundEvent THE_TRIBE = null;
-
-    @SoundName("trade_winds")
-    public static SoundEvent TRADE_WINDS = null;
-
-    @SoundName("page_flip")
-    public static SoundEvent PAGE_FLIP = null;
-
-    @SoundName("bongo.low")
-    public static SoundEvent BONGO_LOW = null;
-
-    @SoundName("bongo.medium")
-    public static SoundEvent BONGO_MED = null;
-
-    @SoundName("bongo.high")
-    public static SoundEvent BONGO_HIGH = null;
-
-    @SoundName("headlaughing")
-    public static SoundEvent HEAD_LAUGHING = null;
-
-    @SoundName("headattack")
-    public static SoundEvent HEAD_ATTACK = null;
-
-    @SoundName("headshort")
-    public static SoundEvent HEAD_SHORT = null;
-
-    @SoundName("headmed")
-    public static SoundEvent HEAD_MED = null;
-
-    @SoundName("headpain")
-    public static SoundEvent HEAD_PAIN = null;
-
-    @SoundName("headdeath")
-    public static SoundEvent HEAD_DEATH = null;
-
-    @SoundName("iggyattack")
-    public static SoundEvent IGGY_ATTACK = null;
-
-    @SoundName("iggydeath")
-    public static SoundEvent IGGY_DEATH = null;
-
-    @SoundName("iggyliving")
-    public static SoundEvent IGGY_LIVING = null;
-
-    @SoundName("ashen_laugh")
-    public static SoundEvent ASHEN_LAUGH = null;
-
-    @SoundName("dolphin")
-    public static SoundEvent DOLPHIN = null;
-
-    @SoundName("frogspit")
-    public static SoundEvent FROG_SPIT = null;
-
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.FIELD)
-    public static @interface SoundName {
-        String value();
-    }
-
-    /**
-     * Maintains a list of registered sounds so we can check for duplicate registrations
-     */
-    private static List<String> registeredSounds = new ArrayList<>();
-
-    @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
-    public static class RegistryEvents {
-        @SubscribeEvent(priority = EventPriority.HIGHEST)
-        public static void onBlocksRegistry(final RegistryEvent.Register<Block> event) {
-            for (Field f : Sounds.class.getDeclaredFields()) {
-                if (f.isAnnotationPresent(SoundName.class)) {
-                    try {
-                        f.set(null, register(f.getAnnotation(SoundName.class).value()));
-                    } catch (IllegalArgumentException | IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-    }
-
-    private static SoundEvent register(String soundPath) {
-        ResourceLocation resLoc = new ResourceLocation(Constants.MODID, soundPath);
-        SoundEvent soundEvent = new SoundEvent(resLoc);
-        ForgeRegistries.SOUND_EVENTS.register(soundEvent.setRegistryName(resLoc));
-        if (registeredSounds.contains(soundPath)) {
-            System.out.println("TCWARNING: duplicate sound registration for " + soundPath);
-        }
-        registeredSounds.add(soundPath);
-
-        return soundEvent;
+    private static RegistryObject<SoundEvent> register(String name) {
+        return REGISTER.register(name, () -> new SoundEvent(new ResourceLocation(Constants.MODID, name)));
     }
 }

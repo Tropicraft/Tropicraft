@@ -3,6 +3,7 @@ package net.tropicraft.core.common.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -20,8 +21,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraftforge.common.IPlantable;
-
-import java.util.Random;
 
 public class PineappleBlock extends TallFlowerBlock implements BonemealableBlock, IPlantable {
 
@@ -46,12 +45,12 @@ public class PineappleBlock extends TallFlowerBlock implements BonemealableBlock
     }
 
     @Override
-    public boolean isBonemealSuccess(Level world, Random random, BlockPos blockPos, BlockState blockState) {
+    public boolean isBonemealSuccess(Level world, RandomSource random, BlockPos blockPos, BlockState blockState) {
         return true;
     }
 
     @Override
-    public void performBonemeal(final ServerLevel world, final Random random, final BlockPos pos, final BlockState state) {
+    public void performBonemeal(final ServerLevel world, final RandomSource random, final BlockPos pos, final BlockState state) {
         final int currentStage = state.getValue(STAGE);
         if (currentStage < TOTAL_GROW_TICKS) {
             final BlockState growthState = state.setValue(STAGE, currentStage + 1);
@@ -70,7 +69,7 @@ public class PineappleBlock extends TallFlowerBlock implements BonemealableBlock
     }
 
     @Override
-    public void tick(final BlockState state, final ServerLevel world, final BlockPos pos, final Random random) {
+    public void tick(final BlockState state, final ServerLevel world, final BlockPos pos, final RandomSource random) {
         if (pos.getY() > world.getMaxBuildHeight() - 2) {
             return;
         }

@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -25,8 +26,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.Tags;
 
-import java.util.Random;
-
 public final class ReedsBlock extends Block implements SimpleWaterloggedBlock, IPlantable {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final EnumProperty<Type> TYPE = EnumProperty.create("type", Type.class);
@@ -44,7 +43,7 @@ public final class ReedsBlock extends Block implements SimpleWaterloggedBlock, I
     }
 
     @Override
-    public void tick(BlockState state, ServerLevel world, BlockPos pos, Random rand) {
+    public void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource rand) {
         if (!state.canSurvive(world, pos)) {
             world.destroyBlock(pos, true);
         }

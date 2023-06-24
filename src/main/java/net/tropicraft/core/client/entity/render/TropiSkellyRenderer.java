@@ -20,9 +20,9 @@ public class TropiSkellyRenderer extends HumanoidMobRenderer<TropiSkellyEntity, 
 
         layers.clear();
 
-        addLayer(new CustomHeadLayer<>(this, context.getModelSet()));
+        addLayer(new CustomHeadLayer<>(this, context.getModelSet(), context.getItemInHandRenderer()));
         addLayer(new ElytraLayer<>(this, context.getModelSet()));           // wtf?
-        addLayer(new ItemInHandLayer<>(this));
+        addLayer(new ItemInHandLayer<>(this, context.getItemInHandRenderer()));
     }
 
     @Override

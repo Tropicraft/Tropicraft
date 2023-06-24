@@ -33,8 +33,8 @@ public final class TropicraftSurfaces {
     }
 
     public static RuleSource tropics() {
-        ConditionSource atOrAboveSeaLevel = yBlockCheck(VerticalAnchor.absolute(126), 0);
-        ConditionSource aboveSeaLevel = yBlockCheck(VerticalAnchor.absolute(127), 0);
+        ConditionSource atOrAboveSeaLevel = yBlockCheck(VerticalAnchor.absolute(TropicraftDimension.SEA_LEVEL - 1), 0);
+        ConditionSource aboveSeaLevel = yBlockCheck(VerticalAnchor.absolute(TropicraftDimension.SEA_LEVEL), 0);
         ConditionSource notUnderWater = waterBlockCheck(-1, 0);
 
         ConditionSource isMangrovey = isBiome(TropicraftBiomes.MANGROVES.getKey(), TropicraftBiomes.OVERGROWN_MANGROVES.getKey());

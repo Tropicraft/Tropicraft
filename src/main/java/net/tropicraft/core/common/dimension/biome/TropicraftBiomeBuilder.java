@@ -12,11 +12,10 @@ public class TropicraftBiomeBuilder {
     private final Climate.Parameter landContinentalness = Climate.Parameter.span(-0.1F, 1.0F);
 
     private final Climate.Parameter coastContinentalness = Climate.Parameter.span(-0.19F, -0.1F);
-    private final Climate.Parameter inlandContinentalness = Climate.Parameter.span(-0.05F, 0.55F);
     private final Climate.Parameter nearInlandContinentalness = Climate.Parameter.span(-0.1F, 0.03F);
     private final Climate.Parameter midInlandContinentalness = Climate.Parameter.span(0.03F, 0.3F);
     private final Climate.Parameter farInlandContinentalness = Climate.Parameter.span(0.3F, 1.0F);
-    private final Climate.Parameter FULL_RANGE = Climate.Parameter.span(-1.0F, 1.0F);
+    private final Climate.Parameter fullRange = Climate.Parameter.span(-1.0F, 1.0F);
 
     // 0 is the coldest, 4 is the hottest
     private final Climate.Parameter[] temperatures = new Climate.Parameter[] {
@@ -47,227 +46,209 @@ public class TropicraftBiomeBuilder {
             Climate.Parameter.span(0.55F, 1.0F)
     };
 
-    private final Climate.Parameter FROZEN_RANGE = this.temperatures[0];
-    private final Climate.Parameter UNFROZEN_RANGE = Climate.Parameter.span(this.temperatures[1], this.temperatures[4]);
-
-    private final Climate.Parameter WET = Climate.Parameter.span(this.humidities[2], this.humidities[4]);
-    private final Climate.Parameter LESS_WET = Climate.Parameter.span(this.humidities[0], this.humidities[1]);
-    private final Climate.Parameter MED_WET = Climate.Parameter.span(this.humidities[2], this.humidities[3]);
-    private final Climate.Parameter MOST_WET = Climate.Parameter.span(this.humidities[3], this.humidities[4]);
+    private final Climate.Parameter wet = Climate.Parameter.span(humidities[2], humidities[4]);
+    private final Climate.Parameter lessWet = Climate.Parameter.span(humidities[0], humidities[1]);
+    private final Climate.Parameter mostWet = Climate.Parameter.span(humidities[3], humidities[4]);
 
     public void addBiomes(BiConsumer<Climate.ParameterPoint, RegistryObject<Biome>> consumer) {
         addInlandBiomes(consumer);
 
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, Climate.Parameter.span(LESS_WET, this.humidities[2]), this.oceanContinentalness, this.FULL_RANGE, this.FULL_RANGE, 0.0F, TropicraftBiomes.OCEAN);
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.MOST_WET, this.oceanContinentalness, this.FULL_RANGE, this.FULL_RANGE, 0.0F, TropicraftBiomes.KELP_FOREST);
+        addSurfaceBiome(consumer, fullRange, Climate.Parameter.span(lessWet, humidities[2]), oceanContinentalness, fullRange, fullRange, 0.0F, TropicraftBiomes.OCEAN);
+        addSurfaceBiome(consumer, fullRange, mostWet, oceanContinentalness, fullRange, fullRange, 0.0F, TropicraftBiomes.KELP_FOREST);
 
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.islandContinentalness, this.FULL_RANGE, this.FULL_RANGE, 0.0F, TropicraftBiomes.RAINFOREST);
+        addSurfaceBiome(consumer, fullRange, fullRange, islandContinentalness, fullRange, fullRange, 0.0F, TropicraftBiomes.RAINFOREST);
     }
 
     private void addInlandBiomes(BiConsumer<Climate.ParameterPoint, RegistryObject<Biome>> consumer) {
-        this.addMidSlice(consumer, Climate.Parameter.span(-1.0F, -0.93333334F));
-        this.addHighSlice(consumer, Climate.Parameter.span(-0.93333334F, -0.7666667F));
-        this.addPeaks(consumer, Climate.Parameter.span(-0.7666667F, -0.56666666F));
-        this.addHighSlice(consumer, Climate.Parameter.span(-0.56666666F, -0.4F));
-        this.addMidSlice(consumer, Climate.Parameter.span(-0.4F, -0.26666668F));
-        this.addLowSlice(consumer, Climate.Parameter.span(-0.26666668F, -0.05F));
-        this.addValleys(consumer, Climate.Parameter.span(-0.05F, 0.05F));
-        this.addLowSlice(consumer, Climate.Parameter.span(0.05F, 0.26666668F));
-        this.addMidSlice(consumer, Climate.Parameter.span(0.26666668F, 0.4F));
-        this.addHighSlice(consumer, Climate.Parameter.span(0.4F, 0.56666666F));
-        this.addPeaks(consumer, Climate.Parameter.span(0.56666666F, 0.7666667F));
-        this.addHighSlice(consumer, Climate.Parameter.span(0.7666667F, 0.93333334F));
-        this.addMidSlice(consumer, Climate.Parameter.span(0.93333334F, 1.0F));
+        addMidSlice(consumer, Climate.Parameter.span(-1.0F, -0.93333334F));
+        addHighSlice(consumer, Climate.Parameter.span(-0.93333334F, -0.7666667F));
+        addPeaks(consumer, Climate.Parameter.span(-0.7666667F, -0.56666666F));
+        addHighSlice(consumer, Climate.Parameter.span(-0.56666666F, -0.4F));
+        addMidSlice(consumer, Climate.Parameter.span(-0.4F, -0.26666668F));
+        addLowSlice(consumer, Climate.Parameter.span(-0.26666668F, -0.05F));
+        addValleys(consumer, Climate.Parameter.span(-0.05F, 0.05F));
+        addLowSlice(consumer, Climate.Parameter.span(0.05F, 0.26666668F));
+        addMidSlice(consumer, Climate.Parameter.span(0.26666668F, 0.4F));
+        addHighSlice(consumer, Climate.Parameter.span(0.4F, 0.56666666F));
+        addPeaks(consumer, Climate.Parameter.span(0.56666666F, 0.7666667F));
+        addHighSlice(consumer, Climate.Parameter.span(0.7666667F, 0.93333334F));
+        addMidSlice(consumer, Climate.Parameter.span(0.93333334F, 1.0F));
     }
 
     private void addValleys(BiConsumer<Climate.ParameterPoint, RegistryObject<Biome>> consumer, Climate.Parameter weirdness) {
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.nearInlandContinentalness, Climate.Parameter.span(this.erosions[0], this.erosions[1]), weirdness, 0.0F, TropicraftBiomes.RIVER);
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, Climate.Parameter.span(humidities[3], humidities[4]), landContinentalness, this.erosions[6], weirdness, 0.0F, TropicraftBiomes.MANGROVES);
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, Climate.Parameter.span(humidities[3], humidities[4]), landContinentalness, this.erosions[4], weirdness, 0.0F, TropicraftBiomes.MANGROVES);
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, Climate.Parameter.span(this.coastContinentalness, this.farInlandContinentalness), Climate.Parameter.span(this.erosions[2], this.erosions[3]), weirdness, 0.0F, TropicraftBiomes.RIVER);
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, Climate.Parameter.span(this.coastContinentalness, this.farInlandContinentalness), Climate.Parameter.span(this.erosions[5], this.erosions[5]), weirdness, 0.0F, TropicraftBiomes.RIVER);
+        addSurfaceBiome(consumer, fullRange, fullRange, nearInlandContinentalness, Climate.Parameter.span(erosions[0], erosions[1]), weirdness, 0.0F, TropicraftBiomes.RIVER);
+        addSurfaceBiome(consumer, fullRange, Climate.Parameter.span(humidities[3], humidities[4]), landContinentalness, erosions[6], weirdness, 0.0F, TropicraftBiomes.MANGROVES);
+        addSurfaceBiome(consumer, fullRange, Climate.Parameter.span(humidities[3], humidities[4]), landContinentalness, erosions[4], weirdness, 0.0F, TropicraftBiomes.MANGROVES);
+        addSurfaceBiome(consumer, fullRange, fullRange, Climate.Parameter.span(coastContinentalness, farInlandContinentalness), Climate.Parameter.span(erosions[2], erosions[3]), weirdness, 0.0F, TropicraftBiomes.RIVER);
+        addSurfaceBiome(consumer, fullRange, fullRange, Climate.Parameter.span(coastContinentalness, farInlandContinentalness), Climate.Parameter.span(erosions[5], erosions[5]), weirdness, 0.0F, TropicraftBiomes.RIVER);
 
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.coastContinentalness, this.erosions[6], weirdness, 0.0F, TropicraftBiomes.RIVER);
+        addSurfaceBiome(consumer, fullRange, fullRange, coastContinentalness, erosions[6], weirdness, 0.0F, TropicraftBiomes.RIVER);
 
         // Saddle valley plateau
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, LESS_WET, farInlandContinentalness, Climate.Parameter.span(this.erosions[0], this.erosions[1]), weirdness, 0.0F, TropicraftBiomes.TROPICS);
+        addSurfaceBiome(consumer, fullRange, lessWet, farInlandContinentalness, Climate.Parameter.span(erosions[0], erosions[1]), weirdness, 0.0F, TropicraftBiomes.TROPICS);
     }
 
     private void addLowSlice(BiConsumer<Climate.ParameterPoint, RegistryObject<Biome>> consumer, Climate.Parameter weirdness) {
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.coastContinentalness, Climate.Parameter.span(this.erosions[4], this.erosions[6]), weirdness, 0.0F, TropicraftBiomes.BEACH);
+        addSurfaceBiome(consumer, fullRange, fullRange, coastContinentalness, Climate.Parameter.span(erosions[4], erosions[6]), weirdness, 0.0F, TropicraftBiomes.BEACH);
 
         if (weirdness.max() < 0) {
-            this.addSurfaceBiome(consumer, this.FULL_RANGE, Climate.Parameter.span(humidities[3], humidities[4]), this.landContinentalness, this.erosions[6], weirdness, 0.0F, TropicraftBiomes.OVERGROWN_MANGROVES);
-            this.addSurfaceBiome(consumer, this.FULL_RANGE, Climate.Parameter.span(humidities[3], humidities[4]), this.landContinentalness, this.erosions[4], weirdness, 0.0F, TropicraftBiomes.OVERGROWN_MANGROVES);
+            addSurfaceBiome(consumer, fullRange, Climate.Parameter.span(humidities[3], humidities[4]), landContinentalness, erosions[6], weirdness, 0.0F, TropicraftBiomes.OVERGROWN_MANGROVES);
+            addSurfaceBiome(consumer, fullRange, Climate.Parameter.span(humidities[3], humidities[4]), landContinentalness, erosions[4], weirdness, 0.0F, TropicraftBiomes.OVERGROWN_MANGROVES);
         } else {
-            this.addSurfaceBiome(consumer, this.FULL_RANGE, Climate.Parameter.span(humidities[3], humidities[4]), this.landContinentalness, this.erosions[6], weirdness, 0.0F, TropicraftBiomes.MANGROVES);
-            this.addSurfaceBiome(consumer, this.FULL_RANGE, Climate.Parameter.span(humidities[3], humidities[4]), this.landContinentalness, this.erosions[4], weirdness, 0.0F, TropicraftBiomes.MANGROVES);
+            addSurfaceBiome(consumer, fullRange, Climate.Parameter.span(humidities[3], humidities[4]), landContinentalness, erosions[6], weirdness, 0.0F, TropicraftBiomes.MANGROVES);
+            addSurfaceBiome(consumer, fullRange, Climate.Parameter.span(humidities[3], humidities[4]), landContinentalness, erosions[4], weirdness, 0.0F, TropicraftBiomes.MANGROVES);
         }
 
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.landContinentalness, this.erosions[3], weirdness, 0.0F, TropicraftBiomes.TROPICS);
+        addSurfaceBiome(consumer, fullRange, fullRange, landContinentalness, erosions[3], weirdness, 0.0F, TropicraftBiomes.TROPICS);
 
         if (weirdness.max() < 0) {
-            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.WET, this.landContinentalness, this.erosions[3], weirdness, 0.0F, TropicraftBiomes.OSA_RAINFOREST);
+            addSurfaceBiome(consumer, fullRange, wet, landContinentalness, erosions[3], weirdness, 0.0F, TropicraftBiomes.OSA_RAINFOREST);
         } else {
-            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.WET, this.landContinentalness, this.erosions[3], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+            addSurfaceBiome(consumer, fullRange, wet, landContinentalness, erosions[3], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
         }
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.LESS_WET, this.landContinentalness, this.erosions[2], weirdness, 0.0F, TropicraftBiomes.TROPICS);
+        addSurfaceBiome(consumer, fullRange, lessWet, landContinentalness, erosions[2], weirdness, 0.0F, TropicraftBiomes.TROPICS);
 
         if (weirdness.max() < 0) {
-            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.WET, this.landContinentalness, this.erosions[1], weirdness, 0.0F, TropicraftBiomes.OSA_RAINFOREST);
-            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.WET, this.landContinentalness, this.erosions[0], weirdness, 0.0F, TropicraftBiomes.OSA_RAINFOREST);
+            addSurfaceBiome(consumer, fullRange, wet, landContinentalness, erosions[1], weirdness, 0.0F, TropicraftBiomes.OSA_RAINFOREST);
+            addSurfaceBiome(consumer, fullRange, wet, landContinentalness, erosions[0], weirdness, 0.0F, TropicraftBiomes.OSA_RAINFOREST);
         } else {
-            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.WET, this.landContinentalness, this.erosions[1], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
-            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.WET, this.landContinentalness, this.erosions[0], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+            addSurfaceBiome(consumer, fullRange, wet, landContinentalness, erosions[1], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+            addSurfaceBiome(consumer, fullRange, wet, landContinentalness, erosions[0], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
         }
     }
 
     private void addMidSlice(BiConsumer<Climate.ParameterPoint, RegistryObject<Biome>> consumer, Climate.Parameter weirdness) {
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.coastContinentalness, Climate.Parameter.span(this.erosions[4], this.erosions[6]), weirdness, 0.0F, TropicraftBiomes.BEACH);
+        addSurfaceBiome(consumer, fullRange, fullRange, coastContinentalness, Climate.Parameter.span(erosions[4], erosions[6]), weirdness, 0.0F, TropicraftBiomes.BEACH);
 
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.landContinentalness, this.erosions[5], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+        addSurfaceBiome(consumer, fullRange, fullRange, landContinentalness, erosions[5], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
 
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, WET, this.landContinentalness, this.erosions[3], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, LESS_WET, this.landContinentalness, this.erosions[3], weirdness, 0.0F, TropicraftBiomes.TROPICS);
+        addSurfaceBiome(consumer, fullRange, wet, landContinentalness, erosions[3], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+        addSurfaceBiome(consumer, fullRange, lessWet, landContinentalness, erosions[3], weirdness, 0.0F, TropicraftBiomes.TROPICS);
 
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.landContinentalness, this.erosions[2], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.landContinentalness, this.erosions[1], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, this.landContinentalness, this.erosions[0], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+        addSurfaceBiome(consumer, fullRange, fullRange, landContinentalness, erosions[2], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+        addSurfaceBiome(consumer, fullRange, fullRange, landContinentalness, erosions[1], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+        addSurfaceBiome(consumer, fullRange, fullRange, landContinentalness, erosions[0], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
     }
 
     private void addHighSlice(BiConsumer<Climate.ParameterPoint, RegistryObject<Biome>> consumer, Climate.Parameter weirdness) {
-        Climate.Parameter coastInwards = Climate.Parameter.span(this.coastContinentalness, this.farInlandContinentalness);
-        Climate.Parameter midInwards = Climate.Parameter.span(this.coastContinentalness, this.farInlandContinentalness);
+        Climate.Parameter coastInwards = Climate.Parameter.span(coastContinentalness, farInlandContinentalness);
+        Climate.Parameter midInwards = Climate.Parameter.span(coastContinentalness, farInlandContinentalness);
 
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, coastInwards, this.erosions[6], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+        addSurfaceBiome(consumer, fullRange, fullRange, coastInwards, erosions[6], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
 
-        if (weirdness.max() < 0L) {
-            this.addSurfaceBiome(consumer, this.FULL_RANGE, WET, coastInwards, this.erosions[5], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+        if (weirdness.max() < 0) {
+            addSurfaceBiome(consumer, fullRange, wet, coastInwards, erosions[5], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
         } else {
-            this.addSurfaceBiome(consumer, this.FULL_RANGE, WET, coastInwards, this.erosions[5], weirdness, 0.0F, TropicraftBiomes.BAMBOO_RAINFOREST);
+            addSurfaceBiome(consumer, fullRange, wet, coastInwards, erosions[5], weirdness, 0.0F, TropicraftBiomes.BAMBOO_RAINFOREST);
         }
 
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, LESS_WET, coastInwards, this.erosions[5], weirdness, 0.0F, TropicraftBiomes.TROPICS);
+        addSurfaceBiome(consumer, fullRange, lessWet, coastInwards, erosions[5], weirdness, 0.0F, TropicraftBiomes.TROPICS);
 
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, coastInwards, this.erosions[4], weirdness, 0.0F, TropicraftBiomes.TROPICS);
+        addSurfaceBiome(consumer, fullRange, fullRange, coastInwards, erosions[4], weirdness, 0.0F, TropicraftBiomes.TROPICS);
 
-        if (weirdness.max() < 0L) {
-            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[3], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
-            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[2], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
-            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[1], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
-            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[0], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+        if (weirdness.max() < 0) {
+            addSurfaceBiome(consumer, fullRange, fullRange, midInwards, erosions[3], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+            addSurfaceBiome(consumer, fullRange, fullRange, midInwards, erosions[2], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+            addSurfaceBiome(consumer, fullRange, fullRange, midInwards, erosions[1], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+            addSurfaceBiome(consumer, fullRange, fullRange, midInwards, erosions[0], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
         } else {
-            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[3], weirdness, 0.0F, TropicraftBiomes.BAMBOO_RAINFOREST);
-            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[2], weirdness, 0.0F, TropicraftBiomes.BAMBOO_RAINFOREST);
-            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[1], weirdness, 0.0F, TropicraftBiomes.BAMBOO_RAINFOREST);
-            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[0], weirdness, 0.0F, TropicraftBiomes.BAMBOO_RAINFOREST);
+            addSurfaceBiome(consumer, fullRange, fullRange, midInwards, erosions[3], weirdness, 0.0F, TropicraftBiomes.BAMBOO_RAINFOREST);
+            addSurfaceBiome(consumer, fullRange, fullRange, midInwards, erosions[2], weirdness, 0.0F, TropicraftBiomes.BAMBOO_RAINFOREST);
+            addSurfaceBiome(consumer, fullRange, fullRange, midInwards, erosions[1], weirdness, 0.0F, TropicraftBiomes.BAMBOO_RAINFOREST);
+            addSurfaceBiome(consumer, fullRange, fullRange, midInwards, erosions[0], weirdness, 0.0F, TropicraftBiomes.BAMBOO_RAINFOREST);
         }
     }
 
     private void addPeaks(BiConsumer<Climate.ParameterPoint, RegistryObject<Biome>> consumer, Climate.Parameter weirdness) {
-        Climate.Parameter coastInwards = Climate.Parameter.span(this.coastContinentalness, this.farInlandContinentalness);
-        Climate.Parameter midInwards = Climate.Parameter.span(this.coastContinentalness, this.farInlandContinentalness);
+        Climate.Parameter coastInwards = Climate.Parameter.span(coastContinentalness, farInlandContinentalness);
+        Climate.Parameter midInwards = Climate.Parameter.span(coastContinentalness, farInlandContinentalness);
 
+        addSurfaceBiome(consumer, fullRange, fullRange, coastInwards, erosions[6], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
 
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, coastInwards, this.erosions[6], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
-
-        if (weirdness.max() < 0L) {
-            this.addSurfaceBiome(consumer, this.FULL_RANGE, WET, coastInwards, this.erosions[5], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+        if (weirdness.max() < 0) {
+            addSurfaceBiome(consumer, fullRange, wet, coastInwards, erosions[5], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
         } else {
-            this.addSurfaceBiome(consumer, this.FULL_RANGE, WET, coastInwards, this.erosions[5], weirdness, 0.0F, TropicraftBiomes.BAMBOO_RAINFOREST);
+            addSurfaceBiome(consumer, fullRange, wet, coastInwards, erosions[5], weirdness, 0.0F, TropicraftBiomes.BAMBOO_RAINFOREST);
         }
 
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, LESS_WET, coastInwards, this.erosions[5], weirdness, 0.0F, TropicraftBiomes.TROPICS);
+        addSurfaceBiome(consumer, fullRange, lessWet, coastInwards, erosions[5], weirdness, 0.0F, TropicraftBiomes.TROPICS);
 
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, coastInwards, this.erosions[4], weirdness, 0.0F, TropicraftBiomes.TROPICS);
+        addSurfaceBiome(consumer, fullRange, fullRange, coastInwards, erosions[4], weirdness, 0.0F, TropicraftBiomes.TROPICS);
 
-        if (weirdness.max() < 0L) {
-            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[3], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
-            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[2], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+        if (weirdness.max() < 0) {
+            addSurfaceBiome(consumer, fullRange, fullRange, midInwards, erosions[3], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
+            addSurfaceBiome(consumer, fullRange, fullRange, midInwards, erosions[2], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
         } else {
-            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[3], weirdness, 0.0F, TropicraftBiomes.BAMBOO_RAINFOREST);
-            this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, midInwards, this.erosions[2], weirdness, 0.0F, TropicraftBiomes.BAMBOO_RAINFOREST);
+            addSurfaceBiome(consumer, fullRange, fullRange, midInwards, erosions[3], weirdness, 0.0F, TropicraftBiomes.BAMBOO_RAINFOREST);
+            addSurfaceBiome(consumer, fullRange, fullRange, midInwards, erosions[2], weirdness, 0.0F, TropicraftBiomes.BAMBOO_RAINFOREST);
         }
 
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, Climate.Parameter.span(this.coastContinentalness, this.farInlandContinentalness), this.erosions[0], weirdness, 0.0F, TropicraftBiomes.TROPICAL_PEAKS);
-        this.addSurfaceBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, Climate.Parameter.span(this.midInlandContinentalness, this.farInlandContinentalness), this.erosions[1], weirdness, 0.0F, TropicraftBiomes.TROPICAL_PEAKS);
+        addSurfaceBiome(consumer, fullRange, fullRange, Climate.Parameter.span(coastContinentalness, farInlandContinentalness), erosions[0], weirdness, 0.0F, TropicraftBiomes.TROPICAL_PEAKS);
+        addSurfaceBiome(consumer, fullRange, fullRange, Climate.Parameter.span(midInlandContinentalness, farInlandContinentalness), erosions[1], weirdness, 0.0F, TropicraftBiomes.TROPICAL_PEAKS);
     }
 
-    private void addSurfaceBiome(BiConsumer<Climate.ParameterPoint, RegistryObject<Biome>> consumer, Climate.Parameter p_187182_, Climate.Parameter p_187183_, Climate.Parameter p_187184_, Climate.Parameter p_187185_, Climate.Parameter p_187186_, float p_187187_, RegistryObject<Biome> p_187188_) {
+    private void addSurfaceBiome(BiConsumer<Climate.ParameterPoint, RegistryObject<Biome>> consumer, Climate.Parameter temperature, Climate.Parameter humidity, Climate.Parameter continentalness, Climate.Parameter erosion, Climate.Parameter weirdness, float offset, RegistryObject<Biome> biomeRegistry) {
         // Depth 0
         consumer.accept(Climate.parameters(
-                p_187182_,
-                p_187183_,
-                p_187184_,
-                p_187185_,
+                temperature,
+                humidity,
+                continentalness,
+                erosion,
                 Climate.Parameter.point(0.0F),
-                p_187186_,
-                p_187187_),
-                p_187188_
+                weirdness,
+                offset),
+                biomeRegistry
         );
 
         // Depth 1
         consumer.accept(Climate.parameters(
-                p_187182_,
-                p_187183_,
-                p_187184_,
-                p_187185_,
+                temperature,
+                humidity,
+                continentalness,
+                erosion,
                 Climate.Parameter.point(1.0F),
-                p_187186_,
-                p_187187_),
-                p_187188_
+                weirdness,
+                offset),
+                biomeRegistry
         );
     }
 
-    private void addUndergroundBiome(BiConsumer<Climate.ParameterPoint, RegistryObject<Biome>> consumer, Climate.Parameter p_187202_, Climate.Parameter p_187203_, Climate.Parameter p_187204_, Climate.Parameter p_187205_, Climate.Parameter p_187206_, float p_187207_, RegistryObject<Biome> p_187208_) {
-        consumer.accept(Climate.parameters(
-                p_187202_,
-                p_187203_,
-                p_187204_,
-                p_187205_,
-                Climate.Parameter.span(0.2F, 0.9F),
-                p_187206_,
-                p_187207_),
-                p_187208_
-        );
-    }
-
-    public String getDebugStringForContinentalness(double p_187190_) {
-        double d0 = (double)Climate.quantizeCoord((float)p_187190_);
-        if (d0 < (double)this.islandContinentalness.max()) {
+    public String getDebugStringForContinentalness(double continentalness) {
+        double quantized = Climate.quantizeCoord((float) continentalness);
+        if (quantized < islandContinentalness.max()) {
             return "Islands";
-        } else if (d0 < (double)this.oceanContinentalness.max()) {
+        } else if (quantized < oceanContinentalness.max()) {
             return "Ocean";
-        } else if (d0 < (double)this.coastContinentalness.max()) {
+        } else if (quantized < coastContinentalness.max()) {
             return "Coast";
-        } else if (d0 < (double)this.nearInlandContinentalness.max()) {
+        } else if (quantized < nearInlandContinentalness.max()) {
             return "Near inland";
+        } else if (quantized < midInlandContinentalness.max()) {
+            return "Mid inland";
         } else {
-            return d0 < (double)this.midInlandContinentalness.max() ? "Mid inland" : "Far inland";
+            return "Far inland";
         }
     }
 
-    public String getDebugStringForErosion(double p_187210_) {
-        return getDebugStringForNoiseValue(p_187210_, this.erosions);
+    public String getDebugStringForErosion(double erosion) {
+        return getDebugStringForNoiseValue(erosion, erosions);
     }
 
-    public String getDebugStringForTemperature(double p_187221_) {
-        return getDebugStringForNoiseValue(p_187221_, this.temperatures);
+    public String getDebugStringForTemperature(double temperature) {
+        return getDebugStringForNoiseValue(temperature, temperatures);
     }
 
-    public String getDebugStringForHumidity(double p_187232_) {
-        return getDebugStringForNoiseValue(p_187232_, this.humidities);
+    public String getDebugStringForHumidity(double humidity) {
+        return getDebugStringForNoiseValue(humidity, humidities);
     }
 
-    private static String getDebugStringForNoiseValue(double p_187158_, Climate.Parameter[] p_187159_) {
-        double d0 = (double)Climate.quantizeCoord((float)p_187158_);
-
-        for(int i = 0; i < p_187159_.length; ++i) {
-            if (d0 < (double)p_187159_[i].max()) {
-                return "" + i;
+    private static String getDebugStringForNoiseValue(double value, Climate.Parameter[] parameters) {
+        double quantizedCoord = Climate.quantizeCoord((float) value);
+        for (int i = 0; i < parameters.length; ++i) {
+            if (quantizedCoord < parameters[i].max()) {
+                return String.valueOf(i);
             }
         }
-
         return "?";
     }
 }

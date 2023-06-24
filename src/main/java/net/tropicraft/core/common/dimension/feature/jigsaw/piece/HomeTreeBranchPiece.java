@@ -1,6 +1,5 @@
 package net.tropicraft.core.common.dimension.feature.jigsaw.piece;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
@@ -8,7 +7,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -23,23 +23,20 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElementType;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Random;
 import java.util.function.Function;
 
-public final class HomeTreeBranchPiece extends StructurePoolElement implements PieceWithGenerationBounds {
-    public static final Codec<HomeTreeBranchPiece> CODEC = RecordCodecBuilder.create(instance -> {
-        return instance.group(
-                Codec.FLOAT.fieldOf("min_angle").forGetter(c -> c.minAngle),
-                Codec.FLOAT.fieldOf("max_angle").forGetter(c -> c.maxAngle)
-        ).apply(instance, HomeTreeBranchPiece::new);
-    });
+public final class HomeTreeBranchPiece extends StructurePoolElement implements IntersectionAllowedPiece {
+    public static final Codec<HomeTreeBranchPiece> CODEC = RecordCodecBuilder.create(i -> i.group(
+            Codec.FLOAT.fieldOf("min_angle").forGetter(c -> c.minAngle),
+            Codec.FLOAT.fieldOf("max_angle").forGetter(c -> c.maxAngle)
+    ).apply(i, HomeTreeBranchPiece::new));
 
     private static final int MAX_RADIUS = 48;
     private static final Direction.Axis[] ALL_AXIS = Direction.Axis.values();
@@ -73,14 +70,19 @@ public final class HomeTreeBranchPiece extends StructurePoolElement implements P
     }
 
     @Override
-    public List<StructureTemplate.StructureBlockInfo> getShuffledJigsawBlocks(StructureManager templates, BlockPos pos, Rotation rotation, Random random) {
+    public List<StructureTemplate.StructureBlockInfo> getShuffledJigsawBlocks(StructureTemplateManager templates, BlockPos pos, Rotation rotation, RandomSource random) {
         FrontAndTop orientation = FrontAndTop.fromFrontAndTop(Direction.DOWN, Direction.SOUTH);
         BlockState state = Blocks.JIGSAW.defaultBlockState().setValue(JigsawBlock.ORIENTATION, orientation);
-        return ImmutableList.of(new StructureTemplate.StructureBlockInfo(pos, state, JIGSAW_NBT));
+        return List.of(new StructureTemplate.StructureBlockInfo(pos, state, JIGSAW_NBT));
     }
 
     @Override
-    public BoundingBox getGenerationBounds(StructureManager templates, BlockPos pos, Rotation rotation) {
+    public Vec3i getSize(StructureTemplateManager templates, Rotation rotation) {
+        return Vec3i.ZERO;
+    }
+
+    @Override
+    public BoundingBox getBoundingBox(StructureTemplateManager templates, BlockPos pos, Rotation rotation) {
         return new BoundingBox(
                 pos.getX() - MAX_RADIUS, pos.getY() - MAX_RADIUS, pos.getZ() - MAX_RADIUS,
                 pos.getX() + MAX_RADIUS, pos.getY() + MAX_RADIUS, pos.getZ() + MAX_RADIUS
@@ -88,20 +90,9 @@ public final class HomeTreeBranchPiece extends StructurePoolElement implements P
     }
 
     @Override
-    public Vec3i getSize(StructureManager templates, Rotation rotation) {
-        return Vec3i.ZERO;
-    }
-
-    @Override
-    public BoundingBox getBoundingBox(StructureManager templates, BlockPos pos, Rotation rotation) {
-        // hack: return an empty bounding box when running jigsaw assembly so that we can intersect with other branches
-        return new BoundingBox(pos);
-    }
-
-    @Override
-    public boolean place(StructureManager templates, WorldGenLevel world, StructureFeatureManager structures, ChunkGenerator generator, BlockPos origin, BlockPos p_230378_6_, Rotation rotation, BoundingBox chunkBounds, Random random, boolean p_230378_10_) {
-        WorldgenRandom rand = new WorldgenRandom(new LegacyRandomSource(world.getSeed()));
-        rand.setDecorationSeed(world.getSeed(), origin.getX(), origin.getZ());
+    public boolean place(StructureTemplateManager templates, WorldGenLevel level, StructureManager structureManager, ChunkGenerator generator, BlockPos origin, BlockPos p_227341_, Rotation rotation, BoundingBox chunkBounds, RandomSource random, boolean p_227345_) {
+        WorldgenRandom rand = new WorldgenRandom(new LegacyRandomSource(level.getSeed()));
+        rand.setDecorationSeed(level.getSeed(), origin.getX(), origin.getZ());
 
         final int branchLength = rand.nextInt(10) + 15;
         // TODO make configurable
@@ -119,17 +110,17 @@ public final class HomeTreeBranchPiece extends StructurePoolElement implements P
         final int leafCircleSizeConstant = 3;
         final int y2 = origin.getY() + branchY2;
 
-        placeBlockLine(world, new BlockPos(branchX1, origin.getY(), branchZ1), new BlockPos(branchX2, y2, branchZ2), wood, chunkBounds);
-        placeBlockLine(world, new BlockPos(branchX1 + 1, origin.getY(), branchZ1), new BlockPos(branchX2 + 1, y2, branchZ2), wood, chunkBounds);
-        placeBlockLine(world, new BlockPos(branchX1 - 1, origin.getY(), branchZ1), new BlockPos(branchX2 - 1, y2, branchZ2), wood, chunkBounds);
-        placeBlockLine(world, new BlockPos(branchX1, origin.getY(), branchZ1 + 1), new BlockPos(branchX2, y2, branchZ2 + 1), wood, chunkBounds);
-        placeBlockLine(world, new BlockPos(branchX1, origin.getY(), branchZ1 - 1), new BlockPos(branchX2, y2, branchZ2 - 1), wood, chunkBounds);
-        placeBlockLine(world, new BlockPos(branchX1, origin.getY() - 1, branchZ1), new BlockPos(branchX2, y2 - 1, branchZ2), wood, chunkBounds);
-        placeBlockLine(world, new BlockPos(branchX1, origin.getY() + 1, branchZ1), new BlockPos(branchX2, y2 + 1, branchZ2), wood, chunkBounds);
-        genLeafCircle(world, branchX2, y2 - 1, branchZ2, leafCircleSizeConstant + 5, leafCircleSizeConstant + 3, leaf, chunkBounds);
-        genLeafCircle(world, branchX2, y2, branchZ2, leafCircleSizeConstant + 6, 0, leaf, chunkBounds);
-        genLeafCircle(world, branchX2, y2 + 1, branchZ2, leafCircleSizeConstant + 10, 0, leaf, chunkBounds);
-        genLeafCircle(world, branchX2, y2 + 2, branchZ2, leafCircleSizeConstant + 9, 0, leaf, chunkBounds);
+        placeBlockLine(level, new BlockPos(branchX1, origin.getY(), branchZ1), new BlockPos(branchX2, y2, branchZ2), wood, chunkBounds);
+        placeBlockLine(level, new BlockPos(branchX1 + 1, origin.getY(), branchZ1), new BlockPos(branchX2 + 1, y2, branchZ2), wood, chunkBounds);
+        placeBlockLine(level, new BlockPos(branchX1 - 1, origin.getY(), branchZ1), new BlockPos(branchX2 - 1, y2, branchZ2), wood, chunkBounds);
+        placeBlockLine(level, new BlockPos(branchX1, origin.getY(), branchZ1 + 1), new BlockPos(branchX2, y2, branchZ2 + 1), wood, chunkBounds);
+        placeBlockLine(level, new BlockPos(branchX1, origin.getY(), branchZ1 - 1), new BlockPos(branchX2, y2, branchZ2 - 1), wood, chunkBounds);
+        placeBlockLine(level, new BlockPos(branchX1, origin.getY() - 1, branchZ1), new BlockPos(branchX2, y2 - 1, branchZ2), wood, chunkBounds);
+        placeBlockLine(level, new BlockPos(branchX1, origin.getY() + 1, branchZ1), new BlockPos(branchX2, y2 + 1, branchZ2), wood, chunkBounds);
+        genLeafCircle(level, branchX2, y2 - 1, branchZ2, leafCircleSizeConstant + 5, leafCircleSizeConstant + 3, leaf, chunkBounds);
+        genLeafCircle(level, branchX2, y2, branchZ2, leafCircleSizeConstant + 6, 0, leaf, chunkBounds);
+        genLeafCircle(level, branchX2, y2 + 1, branchZ2, leafCircleSizeConstant + 10, 0, leaf, chunkBounds);
+        genLeafCircle(level, branchX2, y2 + 2, branchZ2, leafCircleSizeConstant + 9, 0, leaf, chunkBounds);
 
         return true;
     }

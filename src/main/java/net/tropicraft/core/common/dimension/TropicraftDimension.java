@@ -24,7 +24,7 @@ import net.minecraft.world.level.storage.LevelResource;
 import net.minecraft.world.level.storage.LevelStorageSource;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.tropicraft.Constants;
@@ -53,12 +53,13 @@ public class TropicraftDimension {
     public static final ResourceKey<DimensionType> DIMENSION_TYPE = ResourceKey.create(Registry.DIMENSION_TYPE_REGISTRY, ID);
     public static final ResourceKey<NoiseGeneratorSettings> DIMENSION_SETTINGS = ResourceKey.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, ID);
 
+    public static final int SEA_LEVEL = 127;
+
     @SubscribeEvent
-    public static void onWorldLoad(WorldEvent.Load event) {
-        if (event.getWorld() instanceof ServerLevel) {
-            ServerLevel world = (ServerLevel) event.getWorld();
-            if (world.dimension() == Level.OVERWORLD) {
-                upgradeTropicraftDimension(world.getServer());
+    public static void onLevelLoad(LevelEvent.Load event) {
+        if (event.getLevel() instanceof ServerLevel level) {
+            if (level.dimension() == Level.OVERWORLD) {
+                upgradeTropicraftDimension(level.getServer());
             }
         }
     }
@@ -93,22 +94,21 @@ public class TropicraftDimension {
             Registry<StructureSet> structureSetRegistry,
             Registry<Biome> biomeRegistry,
             Registry<NoiseGeneratorSettings> dimensionSettingsRegistry,
-            Registry<NormalNoise.NoiseParameters> paramRegistry,
-            long seed
+            Registry<NormalNoise.NoiseParameters> paramRegistry
     ) {
-        ChunkGenerator generator = TropicraftDimension.createGenerator(structureSetRegistry, paramRegistry, biomeRegistry, dimensionSettingsRegistry, seed);
+        ChunkGenerator generator = TropicraftDimension.createGenerator(structureSetRegistry, paramRegistry, biomeRegistry, dimensionSettingsRegistry);
 
         return new LevelStem(dimensionTypeRegistry.getHolderOrThrow(TropicraftDimension.DIMENSION_TYPE), generator);
     }
 
-    public static ChunkGenerator createGenerator(Registry<StructureSet> structureSetRegistry, Registry<NormalNoise.NoiseParameters> params, Registry<Biome> biomeRegistry, Registry<NoiseGeneratorSettings> dimensionSettingsRegistry, long seed) {
+    public static ChunkGenerator createGenerator(Registry<StructureSet> structureSetRegistry, Registry<NormalNoise.NoiseParameters> params, Registry<Biome> biomeRegistry, Registry<NoiseGeneratorSettings> dimensionSettingsRegistry) {
         Supplier<NoiseGeneratorSettings> dimensionSettings = () -> {
             // fallback to overworld so that we don't crash before our datapack is loaded (horrible workaround)
             NoiseGeneratorSettings settings = dimensionSettingsRegistry.get(DIMENSION_SETTINGS);
             return settings != null ? settings : dimensionSettingsRegistry.getOrThrow(NoiseGeneratorSettings.OVERWORLD);
         };
-        TropicraftBiomeSource biomeSource = new TropicraftBiomeSource(seed, biomeRegistry);
-        return new TropicraftChunkGenerator(structureSetRegistry, params, biomeSource, seed,
+        TropicraftBiomeSource biomeSource = new TropicraftBiomeSource(biomeRegistry);
+        return new TropicraftChunkGenerator(structureSetRegistry, params, biomeSource,
                 dimensionSettingsRegistry.getHolderOrThrow(dimensionSettingsRegistry.getResourceKey(dimensionSettings.get()).get())
         );
     }
@@ -188,7 +188,7 @@ public class TropicraftDimension {
         } else if (world instanceof Level) {
             ResourceKey<Level> dimensionKey = ((Level) world).dimension();
             if (dimensionKey == WORLD) {
-                return 127;
+                return SEA_LEVEL;
             }
         }
         return world.getSeaLevel();

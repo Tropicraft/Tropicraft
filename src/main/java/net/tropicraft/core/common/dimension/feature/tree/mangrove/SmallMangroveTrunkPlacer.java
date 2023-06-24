@@ -6,6 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelSimulatedRW;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.Block;
@@ -19,7 +20,6 @@ import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftTrunkPlacers;
 
 import java.util.List;
-import java.util.Random;
 import java.util.function.BiConsumer;
 
 public class SmallMangroveTrunkPlacer extends TrunkPlacer {
@@ -42,7 +42,7 @@ public class SmallMangroveTrunkPlacer extends TrunkPlacer {
     }
 
     @Override
-    public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> acceptor, Random random, int height, BlockPos origin, TreeConfiguration config) {
+    public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> acceptor, RandomSource random, int height, BlockPos origin, TreeConfiguration config) {
         if (world.isStateAtPosition(origin.below(), b -> b.is(Blocks.GRASS_BLOCK))) {
             setDirtAt(world, acceptor, random, origin.below(), config);
         }
@@ -56,7 +56,7 @@ public class SmallMangroveTrunkPlacer extends TrunkPlacer {
         return ImmutableList.of(new FoliagePlacer.FoliageAttachment(origin.above(height - 1), 1, false));
     }
 
-    private void generateRoots(LevelSimulatedRW world, Random random, BlockPos origin, int depth) {
+    private void generateRoots(LevelSimulatedRW world, RandomSource random, BlockPos origin, int depth) {
         for (Direction direction : Direction.Plane.HORIZONTAL) {
             BlockPos offset = origin.relative(direction);
 

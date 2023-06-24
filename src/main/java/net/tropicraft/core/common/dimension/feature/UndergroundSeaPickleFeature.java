@@ -2,6 +2,7 @@ package net.tropicraft.core.common.dimension.feature;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -11,8 +12,6 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-import java.util.Random;
-
 public class UndergroundSeaPickleFeature extends Feature<NoneFeatureConfiguration> {
     public UndergroundSeaPickleFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
@@ -21,7 +20,7 @@ public class UndergroundSeaPickleFeature extends Feature<NoneFeatureConfiguratio
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
         WorldGenLevel world = context.level();
-        Random random = context.random();
+        RandomSource random = context.random();
         BlockPos pos = context.origin();
 
         BlockState surface = world.getBlockState(pos.below());

@@ -6,6 +6,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -13,8 +14,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
+import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -29,12 +30,15 @@ import javax.annotation.Nullable;
 
 @EventBusSubscriber(value = Dist.CLIENT, modid = Constants.MODID, bus = Bus.FORGE)
 public class ScubaHUD {
-    
+
     @SubscribeEvent
-    public static void renderHUD(RenderGameOverlayEvent event) {
+    public static void registerOverlayRenderer(RegisterGuiOverlaysEvent event) {
+        event.registerBelow(new ResourceLocation("debug_text"), "scuba_hud", ScubaHUD::draw);
+    }
+
+    private static void draw(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
         Entity renderViewEntity = Minecraft.getInstance().cameraEntity;
-        if (event.getType() == ElementType.TEXT && renderViewEntity instanceof Player) {
-            Player player = (Player) renderViewEntity;
+        if (renderViewEntity instanceof Player player) {
             // TODO support other slots than chest?
             ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
             Item chestItem = chestStack.getItem();
@@ -45,23 +49,23 @@ public class ScubaHUD {
                 double depth = ScubaData.getDepth(player);
                 String depthStr;
                 if (depth > 0) {
-                    depthStr = String.format("%.1fm", depth); 
+                    depthStr = String.format("%.1fm", depth);
                 } else {
                     depthStr = TropicraftLangKeys.NA.getLocalizedText();
                 }
-                data.ifPresent(d -> drawHUDStrings(event.getMatrixStack(),
-                    TropicraftLangKeys.SCUBA_AIR_TIME.format(airColor + formatTime(airRemaining)),
-                    TropicraftLangKeys.SCUBA_DIVE_TIME.format(formatTime(d.getDiveTime())),
-                    TropicraftLangKeys.SCUBA_DEPTH.format(depthStr),
-                    TropicraftLangKeys.SCUBA_MAX_DEPTH.format(String.format("%.1fm", d.getMaxDepth()))));
+                data.ifPresent(d -> drawHUDStrings(poseStack,
+                        TropicraftLangKeys.SCUBA_AIR_TIME.format(airColor + formatTime(airRemaining)),
+                        TropicraftLangKeys.SCUBA_DIVE_TIME.format(formatTime(d.getDiveTime())),
+                        TropicraftLangKeys.SCUBA_DEPTH.format(depthStr),
+                        TropicraftLangKeys.SCUBA_MAX_DEPTH.format(String.format("%.1fm", d.getMaxDepth()))));
             }
         }
     }
-    
+
     public static String formatTime(long time) {
         return DurationFormatUtils.formatDuration(time * (1000 / 20), "HH:mm:ss");
     }
-    
+
     public static ChatFormatting getAirTimeColor(int airRemaining, @Nullable Level world) {
         if (airRemaining < 20 * 60) { // 1 minute
             // Flash white/red
@@ -73,14 +77,14 @@ public class ScubaHUD {
             return ChatFormatting.GREEN;
         }
     }
-    
+
     private static void drawHUDStrings(PoseStack matrixStack, Component... components) {
         Font fr = Minecraft.getInstance().font;
         Window mw = Minecraft.getInstance().getWindow();
 
         int startY = mw.getGuiScaledHeight() - 5 - (fr.lineHeight * components.length);
         int startX = mw.getGuiScaledWidth() - 5;
-        
+
         for (Component text : components) {
             String s = text.getString();
             fr.drawShadow(matrixStack, s, startX - fr.width(s), startY, -1);

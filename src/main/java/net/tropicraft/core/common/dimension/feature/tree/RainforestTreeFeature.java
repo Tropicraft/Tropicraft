@@ -6,15 +6,14 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.LevelSimulatedRW;
 import net.minecraft.world.level.LevelWriter;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SaplingBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public abstract class RainforestTreeFeature extends Feature<NoneFeatureConfiguration> {
 
@@ -45,47 +44,12 @@ public abstract class RainforestTreeFeature extends Feature<NoneFeatureConfigura
         return TropicraftBlocks.MAHOGANY_LOG.get().defaultBlockState();
     }
 
-    protected void placeLeaf(final LevelSimulatedRW world, int x, int y, int z) {
-        setState(world, new BlockPos(x, y, z), getLeaf());
-    }
-
     protected void placeLog(final LevelSimulatedRW world, int x, int y, int z) {
         setState(world, new BlockPos(x, y, z), getLog());
     }
 
     protected boolean genCircle(LevelSimulatedRW world, int x, int y, int z, double outerRadius, double innerRadius, BlockState state, boolean solid) {
         return genCircle(world, new BlockPos(x, y, z), outerRadius, innerRadius, state, solid);
-    }
-
-    protected boolean genVines(final LevelSimulatedRW world, final Random rand, int i, int j, int k) {
-        int m = 2;
-
-        do {
-            if (m > 5) {
-                return false;
-            }
-
-            final BlockPos pos = new BlockPos(i, j, k);
-            if (isAir(world, pos)) {
-                setBlockStateInternally(world, pos, Blocks.VINE.defaultBlockState());
-                break;
-            }
-
-            m++;
-        } while (true);
-
-        int length = rand.nextInt(4) + 4;
-
-        for (int y = j - 1; y > j - length; y--) {
-            final BlockPos vinePos = new BlockPos(i, y, k);
-            if (isAir(world, vinePos)) {
-                setBlockStateInternally(world, vinePos, Blocks.VINE.defaultBlockState());
-            } else {
-                return true;
-            }
-        }
-
-        return true;
     }
 
     /**
@@ -156,7 +120,7 @@ public abstract class RainforestTreeFeature extends Feature<NoneFeatureConfigura
                 double d = (i - x) * (i - x) + (k - z) * (k - z);
                 if (d <= outerRadius * outerRadius && d >= innerRadius * innerRadius) {
                     BlockPos pos2 = new BlockPos(i, y, k);
-                    if (isAir(world, pos2) || solid) {
+                    if (world.isStateAtPosition(pos2, BlockBehaviour.BlockStateBase::isAir) || solid) {
                         if (world.setBlock(pos2, state, Block.UPDATE_ALL)) {
                             hasGenned = true;
                         }

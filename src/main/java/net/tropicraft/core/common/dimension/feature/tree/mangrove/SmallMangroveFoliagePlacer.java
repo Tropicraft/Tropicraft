@@ -3,6 +3,7 @@ package net.tropicraft.core.common.dimension.feature.tree.mangrove;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.state.BlockState;
@@ -11,7 +12,6 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftFoliagePlacers;
 
-import java.util.Random;
 import java.util.function.BiConsumer;
 
 public final class SmallMangroveFoliagePlacer extends FoliagePlacer {
@@ -29,18 +29,18 @@ public final class SmallMangroveFoliagePlacer extends FoliagePlacer {
     }
 
     @Override
-    protected void createFoliage(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> blockSetter, Random random, TreeConfiguration config, int maxFreeTreeHeight, FoliageAttachment attachment, int foliageHeight, int foliageRadius, int offset) {
+    protected void createFoliage(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> blockSetter, RandomSource random, TreeConfiguration config, int maxFreeTreeHeight, FoliageAttachment attachment, int foliageHeight, int foliageRadius, int offset) {
         this.placeLeavesRow(world, blockSetter, random, config, attachment.pos(), foliageRadius, 0, attachment.doubleTrunk());
         this.placeLeavesRow(world, blockSetter, random, config, attachment.pos(), foliageRadius, 1, attachment.doubleTrunk());
     }
 
     @Override
-    public int foliageHeight(Random random, int p_230374_2_, TreeConfiguration config) {
+    public int foliageHeight(RandomSource random, int p_230374_2_, TreeConfiguration config) {
         return 0;
     }
 
     @Override
-    protected boolean shouldSkipLocation(Random random, int dx, int y, int dz, int radius, boolean giantTrunk) {
+    protected boolean shouldSkipLocation(RandomSource random, int dx, int y, int dz, int radius, boolean giantTrunk) {
         if (y == 0) {
             return radius != 0 && dx == radius && dz == radius && random.nextInt(2) == 0;
         }

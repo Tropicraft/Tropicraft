@@ -12,7 +12,6 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import net.minecraft.world.level.material.Material;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
-import java.util.Random;
 import java.util.function.Supplier;
 
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
@@ -30,7 +29,6 @@ public class EIHFeature extends Feature<NoneFeatureConfiguration> {
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
         WorldGenLevel world = context.level();
-        Random rand = context.random();
         BlockPos pos = context.origin();
 
         byte height = 5;

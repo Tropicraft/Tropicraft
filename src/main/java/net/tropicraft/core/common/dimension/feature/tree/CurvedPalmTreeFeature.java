@@ -2,6 +2,7 @@ package net.tropicraft.core.common.dimension.feature.tree;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelSimulatedRW;
 import net.minecraft.world.level.LevelWriter;
 import net.minecraft.world.level.WorldGenLevel;
@@ -9,8 +10,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-
-import java.util.Random;
+import net.tropicraft.core.common.dimension.TropicraftDimension;
 
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.isBBAvailable;
@@ -33,7 +33,7 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
         WorldGenLevel world = context.level();
-        Random random = context.random();
+        RandomSource random = context.random();
         BlockPos pos = context.origin();
 
         pos = pos.immutable();
@@ -133,24 +133,24 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
         return true;
     }
 
-    private int findWater(final LevelSimulatedRW world, final Random rand, int x, int z) {
+    private int findWater(final LevelSimulatedRW world, final RandomSource rand, int x, int z) {
         int iPos = 0;
         int iNeg = 0;
         int kPos = 0;
         int kNeg = 0;
-        while (iPos < WATER_SEARCH_DIST &&  !isWater(world, new BlockPos(x + iPos, 127, z))) {
+        while (iPos < WATER_SEARCH_DIST &&  !isWater(world, new BlockPos(x + iPos, TropicraftDimension.SEA_LEVEL, z))) {
             iPos++;
         }
 
-        while (iNeg > -WATER_SEARCH_DIST && !isWater(world, new BlockPos(x + iNeg, 127, z))) {
+        while (iNeg > -WATER_SEARCH_DIST && !isWater(world, new BlockPos(x + iNeg, TropicraftDimension.SEA_LEVEL, z))) {
             iNeg--;
         }
 
-        while (kPos < WATER_SEARCH_DIST &&  !isWater(world, new BlockPos(x, 127, z + kPos))) {
+        while (kPos < WATER_SEARCH_DIST &&  !isWater(world, new BlockPos(x, TropicraftDimension.SEA_LEVEL, z + kPos))) {
             kPos++;
         }
 
-        while (kNeg > -WATER_SEARCH_DIST &&  !isWater(world, new BlockPos(x, 127, z + kNeg))) {
+        while (kNeg > -WATER_SEARCH_DIST &&  !isWater(world, new BlockPos(x, TropicraftDimension.SEA_LEVEL, z + kNeg))) {
             kNeg--;
         }
 
@@ -205,7 +205,7 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
         return world.isStateAtPosition(pos, state -> state.is(Blocks.WATER));
     }
 
-    private int pickDirection(final LevelSimulatedRW world, final Random rand, int x, int z) {
+    private int pickDirection(final LevelSimulatedRW world, final RandomSource rand, int x, int z) {
         int direction = findWater(world, rand, x, z);
         if (direction != -1) {
             return direction;

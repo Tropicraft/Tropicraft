@@ -142,7 +142,7 @@ public class ScubaData implements INBTSerializable<CompoundTag> {
     public static void onPlayerClone(PlayerEvent.Clone event) {
         if (event.isWasDeath()) {
             event.getOriginal().getCapability(CAPABILITY).ifPresent(d -> {
-                event.getPlayer().getCapability(CAPABILITY).ifPresent(d2 -> d2.copyFrom(d));
+                event.getEntity().getCapability(CAPABILITY).ifPresent(d2 -> d2.copyFrom(d));
             });
         }
     }
@@ -163,8 +163,8 @@ public class ScubaData implements INBTSerializable<CompoundTag> {
     }
     
     private static void updateClient(PlayerEvent event) {
-        if (!event.getPlayer().level.isClientSide) {
-            event.getPlayer().getCapability(CAPABILITY).ifPresent(d -> d.updateClient((ServerPlayer) event.getPlayer(), true));
+        if (!event.getEntity().level.isClientSide) {
+            event.getEntity().getCapability(CAPABILITY).ifPresent(d -> d.updateClient((ServerPlayer) event.getEntity(), true));
         }
     }
 

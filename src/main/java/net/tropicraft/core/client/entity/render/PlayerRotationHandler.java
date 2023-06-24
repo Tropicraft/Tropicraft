@@ -7,7 +7,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderNameplateEvent;
+import net.minecraftforge.client.event.RenderNameTagEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -29,7 +29,7 @@ public class PlayerRotationHandler {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onRenderPlayer(RenderPlayerEvent.Pre event) {
         PoseStack stack = event.getPoseStack();
-        Player p = event.getPlayer();
+        Player p = event.getEntity();
         Entity riding = p.getVehicle();
         final float partialTick = event.getPartialTick();
 
@@ -86,7 +86,7 @@ public class PlayerRotationHandler {
 
     @SubscribeEvent
     public static void onRenderPlayerPost(RenderPlayerEvent.Post event) {
-        Player p = event.getPlayer();
+        Player p = event.getEntity();
         if (p.getVehicle() instanceof BeachFloatEntity || p.getVehicle() instanceof SeaTurtleEntity) {
             event.getPoseStack().popPose();
             p.setXRot(rotationPitch);
@@ -99,7 +99,7 @@ public class PlayerRotationHandler {
     }
 
     @SubscribeEvent
-    public static void onRenderPlayerSpecials(RenderNameplateEvent event) {
+    public static void onRenderPlayerSpecials(RenderNameTagEvent event) {
         if (event.getEntity().getVehicle() instanceof BeachFloatEntity) {
             event.setResult(Result.DENY);
         }

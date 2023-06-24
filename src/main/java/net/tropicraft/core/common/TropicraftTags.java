@@ -4,6 +4,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.tropicraft.Constants;
 
@@ -16,6 +17,7 @@ public class TropicraftTags {
         public static final TagKey<Block> TROPICS_FLOWERS = modTag("tropics_flowers");
         public static final TagKey<Block> RAINFOREST_FLOWERS = modTag("rainforest_flowers");
         public static final TagKey<Block> OVERWORLD_FLOWERS = modTag("overworld_flowers");
+        public static final TagKey<Block> CARVER_REPLACEABLES = modTag("carver_replaceables");
 
         public static final TagKey<Block> ROOTS = modTag("roots");
 
@@ -70,6 +72,21 @@ public class TropicraftTags {
 
         static TagKey<Item> compatTag(String name) {
             return tag("forge", name);
+        }
+    }
+
+    public static class Biomes extends TropicraftTags {
+        public static final TagKey<Biome> HAS_HOME_TREE = modTag("has_structure/home_tree");
+        public static final TagKey<Biome> HAS_KOA_VILLAGE = modTag("has_structure/koa_village");
+        public static final TagKey<Biome> HAS_LAND_VOLCANO = modTag("has_structure/land_volcano");
+        public static final TagKey<Biome> HAS_OCEAN_VOLCANO = modTag("has_structure/ocean_volcano");
+
+        static TagKey<Biome> tag(String modid, String name) {
+            return TagKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(modid, name));
+        }
+
+        static TagKey<Biome> modTag(String name) {
+            return tag(Constants.MODID, name);
         }
     }
 }

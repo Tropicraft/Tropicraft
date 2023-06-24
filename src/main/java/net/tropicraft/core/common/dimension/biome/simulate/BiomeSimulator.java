@@ -5,14 +5,15 @@ import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.Reference2IntMap;
 import it.unimi.dsi.fastutil.objects.Reference2IntOpenHashMap;
 import net.minecraft.SharedConstants;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.Bootstrap;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
-import net.minecraft.world.level.biome.TerrainShaper;
+import net.tropicraft.Constants;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomeBuilder;
-import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -23,27 +24,32 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+// TODO: Currently does not run due to missing registry data
 public class BiomeSimulator {
     private static final Map<ResourceKey<Biome>, Integer> COLORS = new HashMap<>();
     static {
         SharedConstants.tryDetectVersion();
         Bootstrap.bootStrap();
 
-        COLORS.put(TropicraftBiomes.OCEAN.getKey(), 0x4eecdf);
-        COLORS.put(TropicraftBiomes.RIVER.getKey(), 0x4eecdf);
-        COLORS.put(TropicraftBiomes.BEACH.getKey(), 0xFADE55);
-        COLORS.put(TropicraftBiomes.RAINFOREST.getKey(), 0x056621);
-        COLORS.put(TropicraftBiomes.BAMBOO_RAINFOREST.getKey(), 0x57c23c);
+        COLORS.put(biomeKey("ocean"), 0x4eecdf);
+        COLORS.put(biomeKey("river"), 0x4eecdf);
+        COLORS.put(biomeKey("beach"), 0xFADE55);
+        COLORS.put(biomeKey("rainforest"), 0x056621);
+        COLORS.put(biomeKey("bamboo_rainforest"), 0x57c23c);
         // TODO: colors too close to each other
-        COLORS.put(TropicraftBiomes.OSA_RAINFOREST.getKey(), 0x58d14d);
-        COLORS.put(TropicraftBiomes.TROPICS.getKey(), 0x8DB360);
-        COLORS.put(TropicraftBiomes.MANGROVES.getKey(), 0x528a50);
-        COLORS.put(TropicraftBiomes.OVERGROWN_MANGROVES.getKey(), 0x5d8733);
+        COLORS.put(biomeKey("osa_rainforest"), 0x58d14d);
+        COLORS.put(biomeKey("tropics"), 0x8DB360);
+        COLORS.put(biomeKey("mangroves"), 0x528a50);
+        COLORS.put(biomeKey("overgrown_mangroves"), 0x5d8733);
+    }
+
+    private static ResourceKey<Biome> biomeKey(String name) {
+        return ResourceKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(Constants.MODID, name));
     }
 
     public static void main(String[] args) {
-
-        init(new NoiseSimulationHelper(new Random(101).nextLong()));
+        long seed = new Random(101).nextLong();
+        init(new NoiseSimulationHelper(seed));
     }
 
     public static void init(NoiseSimulationHelper sampler) {
@@ -89,7 +95,6 @@ public class BiomeSimulator {
 
                 int y = 40;
                 ResourceKey<Biome> value = params.findValue(sampler.sample(x, y, z));
-                TerrainShaper.Point point = sampler.buildPoint(x, 40, z);
 
                 if (!COLORS.containsKey(value)) throw new RuntimeException("Resource key not found: " + value);
 
@@ -98,9 +103,9 @@ public class BiomeSimulator {
                 biomeMap.setRGB(x, z, COLORS.getOrDefault(value, 0));
 
                 if (generateTerrainData) {
-                    int prelimSurface = (int) (sampler.prelimSurfaceLevel(x, z)); // needs to be mapped [0, 255]?
-                    int o = (int) (Mth.clampedMap((sampler.offset(point)), -0.3, 1.2, 0, 255));
-                    int f = (int) ((sampler.factor(point)) * 35);
+                    int prelimSurface = sampler.prelimSurfaceLevel(x, z); // needs to be mapped [0, 255]?
+                    int o = (int) (Mth.clampedMap((sampler.offset(x, 40, z)), -0.3, 1.2, 0, 255));
+                    int f = (int) ((sampler.factor(x, 40, z)) * 35);
                     int pv = (int) ((sampler.peaksAndValleys(x, y, z)) * 127) + 128;
                     baseDepthMap.setRGB(x, z, getIntFromColor(prelimSurface, prelimSurface, prelimSurface));
                     biomeDepth.setRGB(x, z, getIntFromColor(o, o, o));

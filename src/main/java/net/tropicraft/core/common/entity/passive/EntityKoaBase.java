@@ -12,7 +12,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -22,6 +21,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -29,23 +29,10 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LightningBolt;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.world.entity.ai.goal.MoveTowardsRestrictionGoal;
-import net.minecraft.world.entity.ai.goal.TradeWithPlayerGoal;
-import net.minecraft.world.entity.ai.goal.WrappedGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
@@ -73,28 +60,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.entity.TropicraftEntities;
-import net.tropicraft.core.common.entity.ai.EntityAIAvoidEntityOnLowHealth;
-import net.tropicraft.core.common.entity.ai.EntityAIChillAtFire;
-import net.tropicraft.core.common.entity.ai.EntityAIEatToHeal;
-import net.tropicraft.core.common.entity.ai.EntityAIGoneFishin;
-import net.tropicraft.core.common.entity.ai.EntityAIKoaMate;
-import net.tropicraft.core.common.entity.ai.EntityAIPartyTime;
-import net.tropicraft.core.common.entity.ai.EntityAIPlayKoa;
-import net.tropicraft.core.common.entity.ai.EntityAITemptHelmet;
-import net.tropicraft.core.common.entity.ai.EntityAIWanderNotLazy;
+import net.tropicraft.core.common.entity.ai.*;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 public class EntityKoaBase extends Villager {
 
@@ -288,7 +258,7 @@ public class EntityKoaBase extends Villager {
         }
 
         @Override
-        public MerchantOffer getOffer(Entity entity, Random random) {
+        public MerchantOffer getOffer(Entity entity, RandomSource random) {
             int enchantLevel = random.nextInt(10) + 5;
             int cost = Mth.floor(enchantLevel / 1.5F);
 
@@ -317,7 +287,7 @@ public class EntityKoaBase extends Villager {
         }
 
         @Override
-        public MerchantOffer getOffer(Entity entity, Random random) {
+        public MerchantOffer getOffer(Entity entity, RandomSource random) {
             ItemStack stack = new ItemStack(this.item, this.count);
             return new MerchantOffer(new ItemStack(TropicraftItems.WHITE_PEARL.get(), this.sellCount), stack, this.maxUses, this.givenXP, this.priceMultiplier);
         }
@@ -339,7 +309,7 @@ public class EntityKoaBase extends Villager {
         }
 
         @Override
-        public MerchantOffer getOffer(Entity entity, Random random) {
+        public MerchantOffer getOffer(Entity entity, RandomSource random) {
             ItemStack stack = new ItemStack(this.item, this.count);
             return new MerchantOffer(stack, new ItemStack(TropicraftItems.WHITE_PEARL.get()), this.maxUses, this.givenXP, this.priceMultiplier);
         }
@@ -1647,7 +1617,7 @@ public class EntityKoaBase extends Villager {
 
     @Override
     public Component getDisplayName() {
-        return new TranslatableComponent("entity.tropicraft.koa." +
+        return Component.translatable("entity.tropicraft.koa." +
                 getGender().toString().toLowerCase(Locale.ROOT) + "." +
                 getRole().toString().toLowerCase(Locale.ROOT) + ".name"
         );

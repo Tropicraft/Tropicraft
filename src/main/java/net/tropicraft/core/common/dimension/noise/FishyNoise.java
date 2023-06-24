@@ -1,6 +1,6 @@
 package net.tropicraft.core.common.dimension.noise;
 
-import java.util.Random;
+import net.minecraft.util.RandomSource;
 
 public class FishyNoise {
 
@@ -18,7 +18,7 @@ public class FishyNoise {
 
 	public FishyNoise(long seed)
 	{
-		final Random rand = new Random(seed);
+		final RandomSource rand = RandomSource.create(seed);
 		for(int i = 0; i < 256; i++)
 		{
 			this.perm[i] = i; //Fill up the random array with numbers 0-256

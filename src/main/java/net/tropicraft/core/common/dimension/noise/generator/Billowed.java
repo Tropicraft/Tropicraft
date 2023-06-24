@@ -1,9 +1,8 @@
 package net.tropicraft.core.common.dimension.noise.generator;
 
+import net.minecraft.util.RandomSource;
 import net.tropicraft.core.common.dimension.noise.FishyNoise;
 import net.tropicraft.core.common.dimension.noise.NoiseModule;
-
-import java.util.Random;
 
 public class Billowed extends NoiseModule {
 	private final FishyNoise noiseGen;
@@ -16,7 +15,7 @@ public class Billowed extends NoiseModule {
 	public Billowed(long seed, int nOctaves, double p) {
 		this.numOctaves = nOctaves;
 		this.persistance = p;
-		final Random rand = new Random(seed);
+		final RandomSource rand = RandomSource.create(seed);
 		this.offsetX = rand.nextDouble() / 2 + 0.01D;
 		this.offsetY = rand.nextDouble() / 2 + 0.01D;
 		this.offsetZ = rand.nextDouble() / 2 + 0.01D;

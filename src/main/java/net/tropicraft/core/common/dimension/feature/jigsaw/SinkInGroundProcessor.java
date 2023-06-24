@@ -11,6 +11,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.tropicraft.core.common.block.TropicraftBlocks;
+import net.tropicraft.core.common.dimension.TropicraftDimension;
 
 import javax.annotation.Nullable;
 
@@ -33,7 +34,7 @@ public class SinkInGroundProcessor extends CheatyStructureProcessor {
         BlockPos groundCheck = world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE, worldPos);
         // y == 2, we're above the path, remove fence blocks that are above sea level or next to some other block
         if (sourceInfo.pos.getY() == 2 && sourceInfo.state.getBlock() == TropicraftBlocks.BAMBOO_FENCE.get()) {
-            if (groundCheck.getY() > 127 || !isAirOrWater(world, worldPos.below(2))) {
+            if (groundCheck.getY() > TropicraftDimension.SEA_LEVEL || !isAirOrWater(world, worldPos.below(2))) {
                 return null;
             }
             for (int i = 0; i < 4; i++) {
@@ -44,7 +45,7 @@ public class SinkInGroundProcessor extends CheatyStructureProcessor {
         }
         
         // If above sea level, sink into the ground by one block
-        if (groundCheck.getY() > 127) {
+        if (groundCheck.getY() > TropicraftDimension.SEA_LEVEL) {
             // Convert slabs to bundles when they are over land
             if (!isAirOrWater(world, worldPos.below()) && sourceInfo.state.getBlock() == TropicraftBlocks.THATCH_SLAB.get()) {
                 worldInfo = new StructureBlockInfo(worldPos, TropicraftBlocks.THATCH_BUNDLE.get().defaultBlockState(), null);

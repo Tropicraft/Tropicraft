@@ -4,7 +4,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.Registry;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
@@ -52,7 +52,7 @@ public class MapBiomesCommand {
 
     private static int execute(CommandSourceStack source) {
         if (!source.getLevel().dimension().equals(TropicraftDimension.WORLD)) {
-            source.sendFailure(new TextComponent("Can't execute this in non-tropicraft world!"));
+            source.sendFailure(Component.literal("Can't execute this in non-tropicraft world!"));
         }
 
         BufferedImage img = new BufferedImage(SIZE, SIZE, BufferedImage.TYPE_INT_RGB);
@@ -61,7 +61,7 @@ public class MapBiomesCommand {
         if (biomes.isPresent()) {
             for (int x = -SIZE2; x < SIZE2; x++) {
                 if (x % SIZE8 == 0) {
-                    source.sendSuccess(new TextComponent(((x + SIZE2) / (double) SIZE) * 100 + "%"), false);
+                    source.sendSuccess(Component.literal(((x + SIZE2) / (double) SIZE) * 100 + "%"), false);
                 }
 
                 for (int z = -SIZE2; z < SIZE2; z++) {
@@ -72,15 +72,15 @@ public class MapBiomesCommand {
                 }
             }
         } else {
-            source.sendFailure(new TextComponent("Biomes Registry was null!"));
+            source.sendFailure(Component.literal("Biomes Registry was null!"));
         }
 
         Path p = Paths.get("biome_colors.png");
         try {
             ImageIO.write(img, "png", p.toAbsolutePath().toFile());
-            source.sendSuccess(new TextComponent("Mapped biome colors!"), false);
+            source.sendSuccess(Component.literal("Mapped biome colors!"), false);
         } catch (IOException e) {
-            source.sendFailure(new TextComponent("Something went wrong, check the log!"));
+            source.sendFailure(Component.literal("Something went wrong, check the log!"));
             e.printStackTrace();
         }
 

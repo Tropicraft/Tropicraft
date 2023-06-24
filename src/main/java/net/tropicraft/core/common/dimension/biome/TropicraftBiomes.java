@@ -1,15 +1,13 @@
 package net.tropicraft.core.common.dimension.biome;
 
-import com.google.common.collect.ImmutableList;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateLangProvider;
 import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.data.worldgen.placement.AquaticPlacements;
-import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -18,49 +16,24 @@ import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.placement.BiomeFilter;
-import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
-import net.minecraft.world.level.levelgen.placement.PlacementModifier;
-import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
-import net.minecraftforge.event.world.BiomeLoadingEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
+import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.dimension.carver.TropicraftConfiguredCarvers;
 import net.tropicraft.core.common.dimension.feature.TropicraftMiscPlacements;
 import net.tropicraft.core.common.dimension.feature.TropicraftVegetationPlacements;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 
-import java.util.List;
 import java.util.function.Consumer;
-
-import static net.minecraft.data.worldgen.placement.VegetationPlacements.TREE_THRESHOLD;
 
 @Mod.EventBusSubscriber(modid = Constants.MODID)
 public final class TropicraftBiomes {
     public static final Registrate REGISTRATE = Tropicraft.registrate();
 
     public static final DeferredRegister<Biome> REGISTER = DeferredRegister.create(Registry.BIOME_REGISTRY, Constants.MODID);
-
-    static {
-        REGISTRATE.addDataGenerator(ProviderType.LANG, prov -> {
-            final Consumer<String> register = name -> prov.add("biome." + Constants.MODID + "." + name, RegistrateLangProvider.toEnglishName(name));
-            register.accept("tropics");
-            register.accept("beach");
-            register.accept("rainforest");
-            register.accept("bamboo_rainforest");
-            register.accept("osa_rainforest");
-            register.accept("ocean");
-            register.accept("kelp_forest");
-            register.accept("river");
-            register.accept("mangroves");
-            register.accept("overgrown_mangroves");
-            register.accept("tropical_peaks");
-        });
-    }
 
     public static final int TROPICS_WATER_COLOR = 0x4eecdf;
     public static final int TROPICS_WATER_FOG_COLOR = 0x041f33;
@@ -83,34 +56,39 @@ public final class TropicraftBiomes {
     public static final RegistryObject<Biome> OVERGROWN_MANGROVES = REGISTER.register("overgrown_mangroves", () -> createMangroves(true));
     public static final RegistryObject<Biome> TROPICAL_PEAKS = REGISTER.register("tropical_peaks", TropicraftBiomes::createTropicalPeaks);
 
-    @SubscribeEvent
-    public static void onBiomeLoad(BiomeLoadingEvent event) {
-        ResourceLocation name = event.getName();
-        if (name != null && name.getNamespace().equals(Constants.MODID)) {
-            return;
-        }
+    static {
+        REGISTRATE.addDataGenerator(ProviderType.LANG, prov -> {
+            final Consumer<String> register = name -> prov.add("biome." + Constants.MODID + "." + name, RegistrateLangProvider.toEnglishName(name));
+            register.accept("tropics");
+            register.accept("beach");
+            register.accept("rainforest");
+            register.accept("bamboo_rainforest");
+            register.accept("osa_rainforest");
+            register.accept("ocean");
+            register.accept("kelp_forest");
+            register.accept("river");
+            register.accept("mangroves");
+            register.accept("overgrown_mangroves");
+            register.accept("tropical_peaks");
+        });
 
-        Biome.BiomeCategory category = event.getCategory();
+        REGISTRATE.addDataGenerator(Tropicraft.BIOME_TAGS, prov -> {
+            prov.tag(BiomeTags.IS_OCEAN).add(OCEAN.getKey(), KELP_FOREST.getKey());
+            prov.tag(BiomeTags.IS_BEACH).add(BEACH.getKey());
+            prov.tag(BiomeTags.IS_RIVER).add(RIVER.getKey());
+            prov.tag(BiomeTags.IS_HILL).add(TROPICAL_PEAKS.getKey());
+            prov.tag(BiomeTags.IS_JUNGLE).add(RAINFOREST.getKey(), OSA_RAINFOREST.getKey(), BAMBOO_RAINFOREST.getKey());
+            prov.tag(BiomeTags.WATER_ON_MAP_OUTLINES).add(MANGROVES.getKey(), OVERGROWN_MANGROVES.getKey());
 
-        Biome.Precipitation precipitation = event.getClimate().precipitation;
-        if (precipitation == Biome.Precipitation.SNOW) {
-            return;
-        }
-
-        BiomeGenerationSettingsBuilder generation = event.getGeneration();
-
-        if (category == Biome.BiomeCategory.BEACH) {
-            TropicraftVegetationPlacements.TREES_PALM_OVERWORLD.getHolder()
-                    .ifPresent(feature -> generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, feature));
-        } else if (category == Biome.BiomeCategory.JUNGLE) {
-            TropicraftVegetationPlacements.PINEAPPLE.getHolder()
-                    .ifPresent(feature -> generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, feature));
-        }
+            prov.tag(TropicraftTags.Biomes.HAS_HOME_TREE).add(RAINFOREST.getKey(), BAMBOO_RAINFOREST.getKey(), OSA_RAINFOREST.getKey());
+            prov.tag(TropicraftTags.Biomes.HAS_KOA_VILLAGE).add(BEACH.getKey());
+            prov.tag(TropicraftTags.Biomes.HAS_LAND_VOLCANO).add(TROPICS.getKey(), RAINFOREST.getKey());
+            prov.tag(TropicraftTags.Biomes.HAS_OCEAN_VOLCANO).add(OCEAN.getKey());
+        });
     }
 
     private static Biome createTropics() {
         BiomeGenerationSettings.Builder generation = defaultGeneration();
-//                .surfaceBuilder(surfaces.tropics);
 
         TropicraftConfiguredCarvers.addLand(generation);
 
@@ -136,9 +114,7 @@ public final class TropicraftBiomes {
 
         return new Biome.BiomeBuilder()
                 .precipitation(Biome.Precipitation.RAIN)
-//                .depth(0.1F).scale(0.1F)
                 .temperature(2.0F).downfall(1.5F)
-                .biomeCategory(Biome.BiomeCategory.PLAINS)
                 .generationSettings(generation.build())
                 .mobSpawnSettings(spawns.build())
                 .specialEffects(defaultAmbience(true).build())
@@ -147,22 +123,16 @@ public final class TropicraftBiomes {
 
     private static Biome createBeach() {
         BiomeGenerationSettings.Builder generation = defaultGeneration();
-//                .surfaceBuilder(surfaces.sandy);
-
         TropicraftVegetationPlacements.addPalmTrees(generation);
         TropicraftVegetationPlacements.addTropicsFlowers(generation);
         TropicraftVegetationPlacements.addSeagrass(generation);
-
-//        generation.addStructureStart(structures.koaVillage);
 
         MobSpawnSettings.Builder spawns = defaultSpawns();
         spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TropicraftEntities.FIDDLER_CRAB.get(), 10, 1, 2));
 
         return new Biome.BiomeBuilder()
                 .precipitation(Biome.Precipitation.RAIN)
-//                .depth(-0.1F).scale(0.1F)
                 .temperature(1.5F).downfall(1.25F)
-                .biomeCategory(Biome.BiomeCategory.BEACH)
                 .generationSettings(generation.build())
                 .mobSpawnSettings(spawns.build())
                 .specialEffects(defaultAmbience(false).build())
@@ -171,7 +141,6 @@ public final class TropicraftBiomes {
 
     private static Biome createOsaRainforest() {
         BiomeGenerationSettings.Builder generation = defaultGeneration();
-//                .surfaceBuilder(surfaces.osaRainforest);
 
         TropicraftConfiguredCarvers.addLand(generation);
 
@@ -209,7 +178,6 @@ public final class TropicraftBiomes {
         return new Biome.BiomeBuilder()
                 .precipitation(Biome.Precipitation.RAIN)
                 .temperature(1.5F).downfall(2.0F)
-                .biomeCategory(Biome.BiomeCategory.JUNGLE)
                 .generationSettings(generation.build())
                 .mobSpawnSettings(spawns.build())
                 .specialEffects(defaultAmbience(true).build())
@@ -218,7 +186,6 @@ public final class TropicraftBiomes {
 
     private static Biome createRainforest(boolean bamboo) {
         BiomeGenerationSettings.Builder generation = defaultGeneration();
-//                .surfaceBuilder(SurfaceBuilders.GRASS);
 
         TropicraftConfiguredCarvers.addLand(generation);
 
@@ -253,7 +220,6 @@ public final class TropicraftBiomes {
         return new Biome.BiomeBuilder()
                 .precipitation(Biome.Precipitation.RAIN)
                 .temperature(1.5F).downfall(2.0F)
-                .biomeCategory(Biome.BiomeCategory.JUNGLE)
                 .generationSettings(generation.build())
                 .mobSpawnSettings(spawns.build())
                 .specialEffects(defaultAmbience(true).build())
@@ -262,7 +228,6 @@ public final class TropicraftBiomes {
 
     private static Biome createOcean() {
         BiomeGenerationSettings.Builder generation = defaultGeneration();
-//                .surfaceBuilder(surfaces.sandy);
 
         // Needed as oceans can sometimes produce land above sea level
         TropicraftVegetationPlacements.addPalmTrees(generation);
@@ -284,9 +249,7 @@ public final class TropicraftBiomes {
 
         return new Biome.BiomeBuilder()
                 .precipitation(Biome.Precipitation.RAIN)
-//                .depth(-1.6F).scale(0.4F)
                 .temperature(1.5F).downfall(1.25F)
-                .biomeCategory(Biome.BiomeCategory.OCEAN)
                 .generationSettings(generation.build())
                 .mobSpawnSettings(spawns.build())
                 .specialEffects(defaultAmbience(false).build())
@@ -295,7 +258,6 @@ public final class TropicraftBiomes {
 
     private static Biome createKelpForest() {
         BiomeGenerationSettings.Builder generation = defaultGeneration();
-//                .surfaceBuilder(surfaces.sandy);
 
         // Needed as oceans can sometimes produce land above sea level
         TropicraftVegetationPlacements.addPalmTrees(generation);
@@ -309,9 +271,7 @@ public final class TropicraftBiomes {
 
         return new Biome.BiomeBuilder()
                 .precipitation(Biome.Precipitation.RAIN)
-//                .depth(-1.5F).scale(0.3F)
                 .temperature(1.5F).downfall(1.25F)
-                .biomeCategory(Biome.BiomeCategory.OCEAN)
                 .generationSettings(generation.build())
                 .mobSpawnSettings(spawns.build())
                 .specialEffects(defaultAmbience(false).build())
@@ -320,8 +280,6 @@ public final class TropicraftBiomes {
 
     private static Biome createRiver() {
         BiomeGenerationSettings.Builder generation = defaultGeneration();
-//                .surfaceBuilder(surfaces.sandy);
-
         TropicraftConfiguredCarvers.addLand(generation);
 
         TropicraftVegetationPlacements.addTropicsFlowers(generation);
@@ -332,9 +290,7 @@ public final class TropicraftBiomes {
 
         return new Biome.BiomeBuilder()
                 .precipitation(Biome.Precipitation.RAIN)
-//                .depth(-0.7F).scale(0.05F)
                 .temperature(1.5F).downfall(1.25F)
-                .biomeCategory(Biome.BiomeCategory.RIVER)
                 .generationSettings(generation.build())
                 .mobSpawnSettings(spawns.build())
                 .specialEffects(defaultAmbience(false).build())
@@ -360,7 +316,6 @@ public final class TropicraftBiomes {
         return new Biome.BiomeBuilder()
                 .precipitation(Biome.Precipitation.RAIN)
                 .temperature(1.5F).downfall(1.25F)
-                .biomeCategory(Biome.BiomeCategory.MOUNTAIN)
                 .generationSettings(generation.build())
                 .mobSpawnSettings(spawns.build())
                 .specialEffects(defaultAmbience(true).build())
@@ -371,7 +326,6 @@ public final class TropicraftBiomes {
     // TODO: rebalance all spawns
     private static Biome createMangroves(boolean overgrown) {
         BiomeGenerationSettings.Builder generation = defaultGeneration();
-//                .surfaceBuilder(surfaces.mangrove);
 
         TropicraftConfiguredCarvers.addLand(generation);
 
@@ -410,9 +364,7 @@ public final class TropicraftBiomes {
 
         return new Biome.BiomeBuilder()
                 .precipitation(Biome.Precipitation.RAIN)
-//                .depth(-0.25F).scale(-0.045F)
                 .temperature(2.0F).downfall(1.5F)
-                .biomeCategory(Biome.BiomeCategory.SWAMP)
                 .generationSettings(generation.build())
                 .mobSpawnSettings(spawns.build())
                 .specialEffects(ambience.build())
@@ -492,13 +444,5 @@ public final class TropicraftBiomes {
     private static int getSkyColor(float temperature) {
         float shift = Mth.clamp(temperature / 3.0F, -1.0F, 1.0F);
         return Mth.hsvToRgb((224.0F / 360.0F) - shift * 0.05F, 0.5F + shift * 0.1F, 1.0F);
-    }
-
-    private static ImmutableList.Builder<PlacementModifier> treePlacementBase(PlacementModifier p_195485_) {
-        return ImmutableList.<PlacementModifier>builder().add(p_195485_).add(InSquarePlacement.spread()).add(TREE_THRESHOLD).add(PlacementUtils.HEIGHTMAP_OCEAN_FLOOR).add(BiomeFilter.biome());
-    }
-
-    public static List<PlacementModifier> treePlacement(PlacementModifier p_195480_) {
-        return treePlacementBase(p_195480_).build();
     }
 }

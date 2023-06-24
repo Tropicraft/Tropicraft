@@ -1,16 +1,16 @@
 package net.tropicraft.core.common.entity.ai.fishies;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.entity.underdasea.TropicraftFishEntity;
 
 import java.util.EnumSet;
-import java.util.Random;
 
 public class AvoidWallsGoal extends Goal {
     public TropicraftFishEntity entity;
-    public Random rand;
+    public RandomSource rand;
 
     public AvoidWallsGoal(EnumSet<Flag> flags, TropicraftFishEntity entityObjIn) {
         entity = entityObjIn;
