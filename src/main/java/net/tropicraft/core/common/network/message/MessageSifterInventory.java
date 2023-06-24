@@ -1,44 +1,34 @@
 package net.tropicraft.core.common.network.message;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
+import net.tropicraft.core.common.block.tileentity.AirCompressorBlockEntity;
 import net.tropicraft.core.common.block.tileentity.SifterBlockEntity;
 
 import java.util.function.Supplier;
 
-public class MessageSifterInventory extends MessageTileEntity<SifterBlockEntity> {
+public record MessageSifterInventory(BlockPos pos, ItemStack siftItem) {
+    public MessageSifterInventory(SifterBlockEntity sifter) {
+        this(sifter.getBlockPos(), sifter.getSiftItem());
+    }
 
-	private ItemStack siftItem;
+    public MessageSifterInventory(FriendlyByteBuf buf) {
+        this(buf.readBlockPos(), buf.readItem());
+    }
 
-	public MessageSifterInventory() {
-		super();
-	}
+    public void encode(final FriendlyByteBuf buf) {
+        buf.writeBlockPos(pos);
+        buf.writeItem(siftItem);
+    }
 
-	public MessageSifterInventory(SifterBlockEntity sifter) {
-		super(sifter);
-		siftItem = sifter.getSiftItem();
-	}
-
-	public static void encode(final MessageSifterInventory message, final FriendlyByteBuf buf) {
-		MessageTileEntity.encode(message, buf);
-		buf.writeItem(message.siftItem);
-	}
-
-	public static MessageSifterInventory decode(final FriendlyByteBuf buf) {
-		final MessageSifterInventory message = new MessageSifterInventory();
-		MessageTileEntity.decode(message, buf);
-		message.siftItem = buf.readItem();
-		return message;
-	}
-
-	public static void handle(final MessageSifterInventory message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			SifterBlockEntity sifter = message.getClientTileEntity();
-			if (sifter != null) {
-				sifter.setSiftItem(message.siftItem);
-			}
-		});
-		ctx.get().setPacketHandled(true);
-	}
+    public void handle(Supplier<NetworkEvent.Context> ctx) {
+        ClientLevel level = Minecraft.getInstance().level;
+        if (level != null && level.getExistingBlockEntity(pos) instanceof SifterBlockEntity sifter) {
+            sifter.setSiftItem(siftItem);
+        }
+    }
 }

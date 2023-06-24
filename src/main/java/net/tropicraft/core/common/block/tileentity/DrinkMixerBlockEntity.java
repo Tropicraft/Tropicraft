@@ -13,6 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.network.PacketDistributor;
 import net.tropicraft.core.common.block.DrinkMixerBlock;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.Drinks;
@@ -121,7 +122,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         this.ticks = 0;
         this.mixing = true;
         if (!level.isClientSide) {
-            TropicraftPackets.sendToDimension(new MessageMixerStart(this), level);
+            TropicraftPackets.CHANNEL.send(PacketDistributor.DIMENSION.with(level::dimension), new MessageMixerStart(this));
         }
     }
 
@@ -280,7 +281,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
 
     protected void syncInventory() {
         if (!level.isClientSide) {
-            TropicraftPackets.sendToDimension(new MessageMixerInventory(this), level);
+            TropicraftPackets.CHANNEL.send(PacketDistributor.DIMENSION.with(level::dimension), new MessageMixerInventory(this));
         }
     }
 
