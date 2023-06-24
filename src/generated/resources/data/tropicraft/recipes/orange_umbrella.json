@@ -1,19 +1,19 @@
 {
   "type": "minecraft:crafting_shaped",
   "group": "tropicraft:umbrellas",
+  "key": {
+    "B": {
+      "item": "tropicraft:bamboo_stick"
+    },
+    "W": {
+      "item": "minecraft:orange_wool"
+    }
+  },
   "pattern": [
     "WWW",
     " B ",
     " B "
   ],
-  "key": {
-    "W": {
-      "item": "minecraft:orange_wool"
-    },
-    "B": {
-      "item": "tropicraft:bamboo_stick"
-    }
-  },
   "result": {
     "item": "tropicraft:orange_umbrella"
   }

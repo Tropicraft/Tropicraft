@@ -1,10 +1,10 @@
 {
   "variants": {
-    "half=upper": {
-      "model": "tropicraft:block/iris_top"
-    },
     "half=lower": {
       "model": "tropicraft:block/iris_bottom"
+    },
+    "half=upper": {
+      "model": "tropicraft:block/iris_top"
     }
   }
 }

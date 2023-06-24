@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cube_column",
   "textures": {
-    "side": "tropicraft:block/papaya_log",
-    "end": "tropicraft:block/papaya_log_top"
+    "end": "tropicraft:block/papaya_log_top",
+    "side": "tropicraft:block/papaya_log"
   }
 }

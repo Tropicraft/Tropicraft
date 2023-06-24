@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "Y",
-    "X",
-    "X"
-  ],
   "key": {
     "X": {
       "item": "tropicraft:bamboo_stick"
@@ -13,6 +8,11 @@
       "tag": "minecraft:coals"
     }
   },
+  "pattern": [
+    "Y",
+    "X",
+    "X"
+  ],
   "result": {
     "item": "tropicraft:tiki_torch"
   }

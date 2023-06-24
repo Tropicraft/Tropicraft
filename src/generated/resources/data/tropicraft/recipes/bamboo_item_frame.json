@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "XXX",
-    "XYX",
-    "XXX"
-  ],
   "key": {
     "X": {
       "item": "minecraft:bamboo"
@@ -13,6 +8,11 @@
       "item": "minecraft:leather"
     }
   },
+  "pattern": [
+    "XXX",
+    "XYX",
+    "XXX"
+  ],
   "result": {
     "item": "tropicraft:bamboo_item_frame"
   }

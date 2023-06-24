@@ -1,19 +1,19 @@
 {
   "type": "minecraft:crafting_shaped",
   "group": "tropicraft:sifter",
+  "key": {
+    "I": {
+      "tag": "forge:glass_panes"
+    },
+    "X": {
+      "tag": "minecraft:planks"
+    }
+  },
   "pattern": [
     "XXX",
     "XIX",
     "XXX"
   ],
-  "key": {
-    "X": {
-      "tag": "minecraft:planks"
-    },
-    "I": {
-      "tag": "forge:glass_panes"
-    }
-  },
   "result": {
     "item": "tropicraft:sifter"
   }

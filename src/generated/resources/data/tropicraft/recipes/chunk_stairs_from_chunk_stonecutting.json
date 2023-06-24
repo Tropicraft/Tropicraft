@@ -1,8 +1,8 @@
 {
   "type": "minecraft:stonecutting",
+  "count": 1,
   "ingredient": {
     "item": "tropicraft:chunk"
   },
-  "result": "tropicraft:chunk_stairs",
-  "count": 1
+  "result": "tropicraft:chunk_stairs"
 }

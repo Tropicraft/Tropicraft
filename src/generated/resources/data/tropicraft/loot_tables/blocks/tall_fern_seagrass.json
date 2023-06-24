@@ -2,14 +2,7 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "tropicraft:fern_seagrass"
-        }
-      ],
       "conditions": [
         {
           "condition": "minecraft:alternative",
@@ -37,7 +30,14 @@
             }
           ]
         }
-      ]
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tropicraft:fern_seagrass"
+        }
+      ],
+      "rolls": 1.0
     }
   ]
 }

@@ -1,18 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
   "group": "wooden_fence_gate",
+  "key": {
+    "#": {
+      "tag": "forge:rods/wooden"
+    },
+    "W": {
+      "item": "tropicraft:thatch_bundle"
+    }
+  },
   "pattern": [
     "#W#",
     "#W#"
   ],
-  "key": {
-    "W": {
-      "item": "tropicraft:thatch_bundle"
-    },
-    "#": {
-      "tag": "forge:rods/wooden"
-    }
-  },
   "result": {
     "item": "tropicraft:thatch_fence_gate"
   }

@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "YYY",
-    "X X",
-    " Z "
-  ],
   "key": {
     "X": {
       "item": "minecraft:glass_pane"
@@ -16,6 +11,11 @@
       "item": "minecraft:pink_dye"
     }
   },
+  "pattern": [
+    "YYY",
+    "X X",
+    " Z "
+  ],
   "result": {
     "item": "tropicraft:pink_scuba_goggles"
   }

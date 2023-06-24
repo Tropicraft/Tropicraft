@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "XXX",
-    "XYX",
-    "XXX"
-  ],
   "key": {
     "X": {
       "item": "tropicraft:chunk"
@@ -13,6 +8,11 @@
       "item": "tropicraft:azurite_gem"
     }
   },
+  "pattern": [
+    "XXX",
+    "XYX",
+    "XXX"
+  ],
   "result": {
     "item": "tropicraft:air_compressor"
   }

@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
   "group": "wooden_door",
-  "pattern": [
-    "XXX",
-    "XXX"
-  ],
   "key": {
     "X": {
       "item": "tropicraft:bamboo_bundle"
     }
   },
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
   "result": {
-    "item": "tropicraft:bamboo_door",
-    "count": 2
+    "count": 2,
+    "item": "tropicraft:bamboo_door"
   }
 }

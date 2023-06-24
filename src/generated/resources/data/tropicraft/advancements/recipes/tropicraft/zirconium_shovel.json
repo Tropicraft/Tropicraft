@@ -1,25 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
-  "rewards": {
-    "recipes": [
-      "tropicraft:zirconium_shovel"
-    ]
-  },
   "criteria": {
-    "has_zirconium_gem": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "tropicraft:zirconium_gem"
-            ]
-          }
-        ]
-      }
-    },
     "has_bamboo": {
-      "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
@@ -28,13 +10,26 @@
             ]
           }
         ]
-      }
+      },
+      "trigger": "minecraft:inventory_changed"
     },
     "has_the_recipe": {
-      "trigger": "minecraft:recipe_unlocked",
       "conditions": {
         "recipe": "tropicraft:zirconium_shovel"
-      }
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_zirconium_gem": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tropicraft:zirconium_gem"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
     }
   },
   "requirements": [
@@ -43,5 +38,10 @@
       "has_bamboo",
       "has_the_recipe"
     ]
-  ]
+  ],
+  "rewards": {
+    "recipes": [
+      "tropicraft:zirconium_shovel"
+    ]
+  }
 }

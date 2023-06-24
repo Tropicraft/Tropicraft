@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/door_bottom",
-  "textures": {
-    "bottom": "tropicraft:block/bamboo_door_bottom",
-    "top": "tropicraft:block/bamboo_door_top"
-  }
-}

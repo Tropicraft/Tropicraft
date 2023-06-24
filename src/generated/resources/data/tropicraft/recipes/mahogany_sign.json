@@ -1,11 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
   "group": "wooden_sign",
-  "pattern": [
-    "###",
-    "###",
-    " | "
-  ],
   "key": {
     "#": {
       "item": "tropicraft:mahogany_planks"
@@ -14,6 +9,11 @@
       "tag": "forge:rods/wooden"
     }
   },
+  "pattern": [
+    "###",
+    "###",
+    " | "
+  ],
   "result": {
     "item": "tropicraft:mahogany_sign"
   }

@@ -7,18 +7,18 @@
       },
       {
         "model": "tropicraft:block/mud",
-        "y": 90,
-        "weight": 5
+        "weight": 5,
+        "y": 90
       },
       {
         "model": "tropicraft:block/mud",
-        "y": 180,
-        "weight": 5
+        "weight": 5,
+        "y": 180
       },
       {
         "model": "tropicraft:block/mud",
-        "y": 270,
-        "weight": 5
+        "weight": 5,
+        "y": 270
       },
       {
         "model": "tropicraft:block/mud_with_stones"

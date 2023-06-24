@@ -2,34 +2,34 @@
   "type": "minecraft:entity",
   "pools": [
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "name": "tropicraft:iguana_leather"
         }
-      ]
+      ],
+      "rolls": 1.0
     },
     {
-      "rolls": 3.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:looting_enchant",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 0.0,
-                "max": 0.33333334
-              }
+                "max": 0.33333334,
+                "min": 0.0
+              },
+              "function": "minecraft:looting_enchant"
             }
           ],
           "name": "tropicraft:scale"
         }
-      ]
+      ],
+      "rolls": 3.0
     }
   ]
 }

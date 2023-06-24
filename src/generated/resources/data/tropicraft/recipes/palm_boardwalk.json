@@ -1,20 +1,20 @@
 {
   "type": "minecraft:crafting_shaped",
   "group": "tropicraft:boardwalk",
+  "key": {
+    "S": {
+      "tag": "forge:rods/wooden"
+    },
+    "X": {
+      "item": "tropicraft:palm_slab"
+    }
+  },
   "pattern": [
     "XXX",
     "S S"
   ],
-  "key": {
-    "X": {
-      "item": "tropicraft:palm_slab"
-    },
-    "S": {
-      "tag": "forge:rods/wooden"
-    }
-  },
   "result": {
-    "item": "tropicraft:palm_boardwalk",
-    "count": 3
+    "count": 3,
+    "item": "tropicraft:palm_boardwalk"
   }
 }
