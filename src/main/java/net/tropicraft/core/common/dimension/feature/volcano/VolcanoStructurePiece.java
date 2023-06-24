@@ -16,11 +16,10 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.synth.ImprovedNoise;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.block.tileentity.VolcanoBlockEntity;
 import net.tropicraft.core.common.dimension.feature.jigsaw.piece.TropicraftStructurePieceTypes;
-import net.tropicraft.core.common.dimension.noise.NoiseModule;
-import net.tropicraft.core.common.dimension.noise.generator.Billowed;
 
 public class VolcanoStructurePiece extends StructurePiece {
     private final static int CALDERA_CUTOFF = 194; //The Y level where if the height of the volcano would pass becomes the caldera
@@ -34,7 +33,7 @@ public class VolcanoStructurePiece extends StructurePiece {
     private final int radiusZ;
     private final long noiseSeed;
 
-    private final NoiseModule noise;
+    private final ImprovedNoise noise;
 
     protected VolcanoStructurePiece(LevelHeightAccessor heightAccessor, BlockPos pos, int radiusX, int radiusZ, long noiseSeed) {
         super(TropicraftStructurePieceTypes.VOLCANO.get(), 0, boundingBox(heightAccessor, pos, radiusX, radiusZ));
@@ -63,10 +62,8 @@ public class VolcanoStructurePiece extends StructurePiece {
         );
     }
 
-    private static NoiseModule createNoise(long seed) {
-        NoiseModule noise = new Billowed(seed, 1, 1);
-        noise.amplitude = 0.45;
-        return noise;
+    private static ImprovedNoise createNoise(long seed) {
+        return new ImprovedNoise(RandomSource.create(seed));
     }
 
     @Override
@@ -148,7 +145,7 @@ public class VolcanoStructurePiece extends StructurePiece {
         if (distanceSquared >= 1.0f) {
             return Float.NaN;
         }
-        float noiseValue = (float) noise.getNoise(x * 0.21 + 0.01, z * 0.21 + 0.01) + 1.0f;
+        float noiseValue = (float) Math.abs(noise.noise(x * 0.21 + 0.01, 0.0, z * 0.21 + 0.01)) * 0.45f + 1.0f;
         return STEEPNESS / distanceSquared * noiseValue - STEEPNESS - 2.0f;
     }
 }
