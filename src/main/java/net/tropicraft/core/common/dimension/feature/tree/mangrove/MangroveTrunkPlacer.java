@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.FancyTrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
 import net.minecraft.world.level.material.Fluids;
@@ -29,13 +30,11 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
-    public static final Codec<MangroveTrunkPlacer> CODEC = RecordCodecBuilder.create(instance -> {
-        return trunkPlacerParts(instance)
-                .and(Registry.BLOCK.byNameCodec().fieldOf("roots_block").forGetter(c -> c.rootsBlock))
-                .and(Codec.BOOL.fieldOf("can_generate_raised").forGetter(c -> c.canGenerateRaised))
-                .and(Codec.BOOL.fieldOf("tea_mangrove").forGetter(c -> c.teaMangrove))
-                .apply(instance, MangroveTrunkPlacer::new);
-    });
+    public static final Codec<MangroveTrunkPlacer> CODEC = RecordCodecBuilder.create(i -> trunkPlacerParts(i).and(i.group(
+            BlockStateProvider.CODEC.fieldOf("roots_block").forGetter(c -> c.rootsBlock),
+            Codec.BOOL.fieldOf("can_generate_raised").forGetter(c -> c.canGenerateRaised),
+            Codec.BOOL.fieldOf("tea_mangrove").forGetter(c -> c.teaMangrove)
+    )).apply(i, MangroveTrunkPlacer::new));
 
     private static final int MIN_LENGTH = 2;
     private static final int MAX_LENGTH = 4;
@@ -43,11 +42,11 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
     private static final int MAX_RADIUS = MAX_LENGTH;
     private static final int MAX_SIZE = MAX_RADIUS * 2 + 1;
 
-    private final Block rootsBlock;
+    private final BlockStateProvider rootsBlock;
     private final boolean canGenerateRaised;
     private final boolean teaMangrove;
 
-    public MangroveTrunkPlacer(int baseHeight, int heightRandA, int heightRandB, Block rootsBlock, boolean canGenerateRaised, boolean teaMangrove) {
+    public MangroveTrunkPlacer(int baseHeight, int heightRandA, int heightRandB, BlockStateProvider rootsBlock, boolean canGenerateRaised, boolean teaMangrove) {
         super(baseHeight, heightRandA, heightRandB);
         this.rootsBlock = rootsBlock;
         this.canGenerateRaised = canGenerateRaised;
@@ -83,7 +82,7 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
             this.growRoots(roots, random, rootLength);
         }
 
-        this.placeRoots((LevelSimulatedRW) world, origin, rootLength, roots);
+        this.placeRoots((LevelSimulatedRW) world, origin, rootLength, roots, random);
 
         if (placeDirtOnOrigin) {
             // Set ground to dirt
@@ -186,11 +185,11 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
     }
 
     private static Direction nextFlow(RandomSource random, Direction side) {
-        switch (random.nextInt(3)) {
-            case 0: return side.getClockWise();
-            case 1: return side.getCounterClockWise();
-            default: return side;
-        }
+        return switch (random.nextInt(3)) {
+            case 0 -> side.getClockWise();
+            case 1 -> side.getCounterClockWise();
+            default -> side;
+        };
     }
 
     private void growTeaRoots(RootSystem roots, int length) {
@@ -204,7 +203,7 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         }
     }
 
-    private void placeRoots(LevelSimulatedRW world, BlockPos origin, int rootLength, RootSystem roots) {
+    private void placeRoots(LevelSimulatedRW world, BlockPos origin, int rootLength, RootSystem roots, RandomSource random) {
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
 
         for (int z = -MAX_RADIUS; z <= MAX_RADIUS; z++) {
@@ -225,7 +224,7 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
                 int y = maxY;
                 while (y >= minY) {
                     mutablePos.setY(y--);
-                    if (!this.setRootsAt(world, mutablePos)) {
+                    if (!this.setRootsAt(world, mutablePos, random)) {
                         break;
                     }
                 }
@@ -233,15 +232,14 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         }
     }
 
-    private boolean setRootsAt(LevelSimulatedRW world, BlockPos pos) {
-        return setRootsAt(world, pos, this.rootsBlock);
+    private boolean setRootsAt(LevelSimulatedRW world, BlockPos pos, RandomSource random) {
+        return setRootsAt(world, pos, this.rootsBlock.getState(random, pos));
     }
 
-    public static boolean setRootsAt(LevelSimulatedRW world, BlockPos pos, Block rootsBlock) {
+    public static boolean setRootsAt(LevelSimulatedRW world, BlockPos pos, BlockState rootsBlock) {
         if (isReplaceableAt(world, pos)) {
-            BlockState state = rootsBlock.defaultBlockState()
-                    .setValue(MangroveRootsBlock.WATERLOGGED, isWaterAt(world, pos));
-            world.setBlock(pos, state, 19);
+            BlockState state = rootsBlock.setValue(MangroveRootsBlock.WATERLOGGED, isWaterAt(world, pos));
+            world.setBlock(pos, state, Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_ALL);
             return true;
         } else {
             return false;
