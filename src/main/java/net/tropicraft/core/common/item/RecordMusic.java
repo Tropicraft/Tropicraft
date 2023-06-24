@@ -2,7 +2,6 @@ package net.tropicraft.core.common.item;
 
 import com.tterrag.registrate.providers.RegistrateLangProvider;
 import net.minecraft.sounds.SoundEvent;
-import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.sound.Sounds;
 
 import java.util.Arrays;

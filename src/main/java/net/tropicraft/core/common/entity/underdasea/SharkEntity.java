@@ -25,15 +25,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.HitResult;
-import net.tropicraft.core.common.entity.ai.fishies.AvoidWallsGoal;
-import net.tropicraft.core.common.entity.ai.fishies.RandomSwimGoal;
-import net.tropicraft.core.common.entity.ai.fishies.SwimToAvoidEntityGoal;
-import net.tropicraft.core.common.entity.ai.fishies.TargetPreyGoal;
 import net.tropicraft.core.common.item.TropicraftItems;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 
 public class SharkEntity extends WaterAnimal {
 

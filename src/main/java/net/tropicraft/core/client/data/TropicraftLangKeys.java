@@ -4,7 +4,6 @@ import com.tterrag.registrate.providers.RegistrateLangProvider;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.tropicraft.Constants;
-import net.tropicraft.core.common.Util;
 
 public enum TropicraftLangKeys {
     
