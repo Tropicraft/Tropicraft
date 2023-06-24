@@ -17,6 +17,7 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
@@ -29,7 +30,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomeSource;
-import net.tropicraft.core.common.dimension.chunk.TropicraftChunkGenerator;
 import net.tropicraft.core.mixin.worldgen.LevelStemAccessor;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
@@ -108,7 +108,7 @@ public class TropicraftDimension {
             return settings != null ? settings : dimensionSettingsRegistry.getOrThrow(NoiseGeneratorSettings.OVERWORLD);
         };
         TropicraftBiomeSource biomeSource = new TropicraftBiomeSource(biomeRegistry);
-        return new TropicraftChunkGenerator(structureSetRegistry, params, biomeSource,
+        return new NoiseBasedChunkGenerator(structureSetRegistry, params, biomeSource,
                 dimensionSettingsRegistry.getHolderOrThrow(dimensionSettingsRegistry.getResourceKey(dimensionSettings.get()).get())
         );
     }

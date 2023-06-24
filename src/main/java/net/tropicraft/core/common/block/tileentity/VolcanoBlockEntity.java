@@ -16,7 +16,7 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.TropicsConfigs;
 import net.tropicraft.core.common.block.TropicraftBlocks;
-import net.tropicraft.core.common.dimension.chunk.VolcanoGenerator;
+import net.tropicraft.core.common.dimension.feature.volcano.VolcanoStructurePiece;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.projectile.LavaBallEntity;
 import net.tropicraft.core.common.volcano.VolcanoState;
@@ -25,10 +25,10 @@ import javax.annotation.Nullable;
 
 public class VolcanoBlockEntity extends BlockEntity {
 	private static final int RAND_DORMANT_DURATION = 4000;
-	private static final int MAX_LAVA_LEVEL_DURING_RISE = VolcanoGenerator.VOLCANO_CRUST - 1;
-	private static final int MAX_LAVA_LEVEL_DURING_ERUPTION = VolcanoGenerator.VOLCANO_CRUST + 1;
-	private static final int LAVA_BASE_LEVEL = VolcanoGenerator.LAVA_LEVEL;
-	private static final int LAVA_ERUPT_LEVEL = VolcanoGenerator.LAVA_LEVEL + 11;
+	private static final int MAX_LAVA_LEVEL_DURING_RISE = VolcanoStructurePiece.VOLCANO_CRUST - 1;
+	private static final int MAX_LAVA_LEVEL_DURING_ERUPTION = VolcanoStructurePiece.VOLCANO_CRUST + 1;
+	private static final int LAVA_BASE_LEVEL = VolcanoStructurePiece.LAVA_LEVEL;
+	private static final int LAVA_ERUPT_LEVEL = VolcanoStructurePiece.LAVA_LEVEL + 11;
 
 	private int ticksUntilEruption = VolcanoState.getTimeBefore(VolcanoState.ERUPTING);
 	private int ticksUntilSmoking = VolcanoState.getTimeBefore(VolcanoState.SMOKING);
@@ -56,10 +56,6 @@ public class VolcanoBlockEntity extends BlockEntity {
 	private void tick() {
 		if (!TropicsConfigs.allowVolcanoEruption) {
 			return;
-		}
-
-		if (this.heightOffset == Integer.MIN_VALUE) {
-			this.heightOffset = VolcanoGenerator.getHeightOffsetForBiome(this.getBlockPos().getY());
 		}
 
 		if (!getLevel().isClientSide) {
@@ -292,7 +288,7 @@ public class VolcanoBlockEntity extends BlockEntity {
 	}
 
 	private void setLavaLevel() {
-		for(int y = LAVA_BASE_LEVEL + this.heightOffset; y < VolcanoGenerator.CHUNK_SIZE_Y; y++) {
+		for(int y = LAVA_BASE_LEVEL + this.heightOffset; y < level.getMaxBuildHeight(); y++) {
 			BlockPos pos2 = new BlockPos(this.worldPosition.getX(), y, this.worldPosition.getZ());
 			//if(getWorld().getBlockState(pos).getBlock() != Blocks.LAVA && getWorld().getBlockId(xPos, y, zPos) != TropicraftMod.tempLavaMoving.blockID) {\
 			if (getLevel().getBlockState(pos2).getMaterial() != Material.LAVA) {
@@ -319,6 +315,7 @@ public class VolcanoBlockEntity extends BlockEntity {
 	@Override
 	public void load(CompoundTag nbt) {
 		super.load(nbt);
+		heightOffset = nbt.getInt("height_offset");
 		state = VolcanoState.valueOf(nbt.getString("state"));
 		ticksUntilDormant = nbt.getInt("ticksUntilDormant");
 		ticksUntilSmoking = nbt.getInt("ticksUntilSmoking");
@@ -332,6 +329,7 @@ public class VolcanoBlockEntity extends BlockEntity {
 	@Override
 	public void saveAdditional(CompoundTag nbt) {
 		super.saveAdditional(nbt);
+		nbt.putInt("height_offset", heightOffset);
 		nbt.putString("state", state.name());
 		nbt.putInt("ticksUntilDormant", ticksUntilDormant);
 		nbt.putInt("ticksUntilSmoking", ticksUntilSmoking);
@@ -358,5 +356,9 @@ public class VolcanoBlockEntity extends BlockEntity {
 		CompoundTag nbt = new CompoundTag();
 		this.saveAdditional(nbt);
 		return nbt;
+	}
+
+	public void setHeightOffset(int y) {
+		heightOffset = y;
 	}
 }
