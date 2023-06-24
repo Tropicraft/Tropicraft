@@ -1,38 +1,27 @@
 package net.tropicraft.core.common.network.message;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 import net.tropicraft.core.common.block.tileentity.SifterBlockEntity;
 
 import java.util.function.Supplier;
 
-public class MessageSifterStart extends MessageTileEntity<SifterBlockEntity> {
+public record MessageSifterStart(BlockPos pos) {
+    public void encode(final FriendlyByteBuf buf) {
+        buf.writeBlockPos(pos);
+    }
 
-	public MessageSifterStart() {
-		super();
-	}
+    public MessageSifterStart(final FriendlyByteBuf buf) {
+        this(buf.readBlockPos());
+    }
 
-	public MessageSifterStart(SifterBlockEntity sifter) {
-		super(sifter);
-	}
-
-	public static void encode(final MessageSifterStart message, final FriendlyByteBuf buf) {
-		MessageTileEntity.encode(message, buf);
-	}
-
-	public static MessageSifterStart decode(final FriendlyByteBuf buf) {
-		final MessageSifterStart message = new MessageSifterStart();
-		MessageTileEntity.decode(message, buf);
-		return message;
-	}
-
-	public static void handle(final MessageSifterStart message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			final SifterBlockEntity sifter = message.getClientTileEntity();
-			if (sifter != null) {
-				sifter.startSifting();
-			}
-		});
-		ctx.get().setPacketHandled(true);
-	}
+    public void handle(Supplier<NetworkEvent.Context> ctx) {
+        ClientLevel level = Minecraft.getInstance().level;
+        if (level != null && level.getExistingBlockEntity(pos) instanceof SifterBlockEntity sifter) {
+            sifter.startSifting();
+        }
+    }
 }

@@ -1,48 +1,38 @@
 package net.tropicraft.core.common.network.message;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
 import net.tropicraft.core.common.block.tileentity.AirCompressorBlockEntity;
+import net.tropicraft.core.common.block.tileentity.DrinkMixerBlockEntity;
 
 import java.util.function.Supplier;
 
-public class MessageAirCompressorInventory extends MessageTileEntity<AirCompressorBlockEntity> {
-
-    private ItemStack tank = ItemStack.EMPTY;
-
-    public MessageAirCompressorInventory() {
-        super();
-    }
-
+public record MessageAirCompressorInventory(BlockPos pos, ItemStack tank) {
     public MessageAirCompressorInventory(AirCompressorBlockEntity airCompressor) {
-        super(airCompressor);
-        this.tank = airCompressor.getTankStack();
-    }
-    
-    public static void encode(final MessageAirCompressorInventory message, final FriendlyByteBuf buf) {
-        MessageTileEntity.encode(message, buf);
-        buf.writeItem(message.tank);
+        this(airCompressor.getBlockPos(), airCompressor.getTankStack());
     }
 
-    public static MessageAirCompressorInventory decode(final FriendlyByteBuf buf) {
-        final MessageAirCompressorInventory message = new MessageAirCompressorInventory();
-        MessageTileEntity.decode(message, buf);
-        message.tank = buf.readItem();
-        return message;
+    public MessageAirCompressorInventory(FriendlyByteBuf buf) {
+        this(buf.readBlockPos(), buf.readItem());
     }
 
-    public static void handle(final MessageAirCompressorInventory message, Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> {
-            AirCompressorBlockEntity compressor = message.getClientTileEntity();
-            if (compressor != null) {
-                if (!message.tank.isEmpty()) {
-                    compressor.addTank(message.tank);
-                } else {
-                    compressor.ejectTank();
-                }
+    public void encode(final FriendlyByteBuf buf) {
+        buf.writeBlockPos(pos);
+        buf.writeItem(tank);
+    }
+
+    public void handle(Supplier<NetworkEvent.Context> ctx) {
+        ClientLevel level = Minecraft.getInstance().level;
+        if (level != null && level.getExistingBlockEntity(pos) instanceof AirCompressorBlockEntity compressor) {
+            if (!tank.isEmpty()) {
+                compressor.addTank(tank);
+            } else {
+                compressor.ejectTank();
             }
-        });
-        ctx.get().setPacketHandled(true);
+        }
     }
 }
