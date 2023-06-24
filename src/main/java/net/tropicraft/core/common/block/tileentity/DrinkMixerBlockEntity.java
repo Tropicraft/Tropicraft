@@ -122,7 +122,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         this.ticks = 0;
         this.mixing = true;
         if (!level.isClientSide) {
-            TropicraftPackets.CHANNEL.send(PacketDistributor.DIMENSION.with(level::dimension), new MessageMixerStart(this));
+            TropicraftPackets.CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(getBlockPos())), new MessageMixerStart(getBlockPos()));
         }
     }
 
@@ -281,7 +281,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
 
     protected void syncInventory() {
         if (!level.isClientSide) {
-            TropicraftPackets.CHANNEL.send(PacketDistributor.DIMENSION.with(level::dimension), new MessageMixerInventory(this));
+            TropicraftPackets.CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(getBlockPos())), new MessageMixerInventory(this));
         }
     }
 
