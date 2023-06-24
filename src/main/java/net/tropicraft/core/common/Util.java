@@ -12,16 +12,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Material;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import java.util.Random;
 import java.util.function.BiPredicate;
-import java.util.stream.Collectors;
 
 public class Util {
 
