@@ -4,12 +4,10 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelSimulatedRW;
 import net.minecraft.world.level.LevelSimulatedReader;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
 import net.tropicraft.core.common.Util;
@@ -19,19 +17,19 @@ import static net.minecraft.world.level.levelgen.feature.TreeFeature.validTreePo
 
 public class PneumatophoresTreeDecorator extends TreeDecorator {
     public static final Codec<PneumatophoresTreeDecorator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Registry.BLOCK.holderByNameCodec().fieldOf("roots_block").forGetter(c -> c.rootsBlock),
+            BlockStateProvider.CODEC.fieldOf("roots_block").forGetter(c -> c.rootsBlock),
             Codec.INT.fieldOf("min_count").forGetter(c -> c.minCount),
             Codec.INT.fieldOf("max_count").forGetter(c -> c.maxCount),
             Codec.INT.fieldOf("spread").forGetter(c -> c.spread)
     ).apply(instance, PneumatophoresTreeDecorator::new));
 
-    private final Holder<Block> rootsBlock;
+    private final BlockStateProvider rootsBlock;
     private final int minCount;
     private final int maxCount;
     private final int spread;
 
-    public PneumatophoresTreeDecorator(Holder<? extends Block> rootsBlock, int minCount, int maxCount, int spread) {
-        this.rootsBlock = Holder.hackyErase(rootsBlock);
+    public PneumatophoresTreeDecorator(BlockStateProvider rootsBlock, int minCount, int maxCount, int spread) {
+        this.rootsBlock = rootsBlock;
         this.minCount = minCount;
         this.maxCount = maxCount;
         this.spread = spread;
@@ -87,7 +85,7 @@ public class PneumatophoresTreeDecorator extends TreeDecorator {
             int y = topY;
             while (y >= minY) {
                 mutablePos.setY(y--);
-                MangroveTrunkPlacer.setRootsAt((LevelSimulatedRW) level, mutablePos, this.rootsBlock.value());
+                MangroveTrunkPlacer.setRootsAt((LevelSimulatedRW) level, mutablePos, this.rootsBlock.getState(random, mutablePos));
             }
         }
     }
