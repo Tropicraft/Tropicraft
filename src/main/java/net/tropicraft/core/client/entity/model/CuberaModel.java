@@ -29,65 +29,65 @@ public class CuberaModel<T extends CuberaEntity> extends EntityModel<T> {
 
     public boolean inWater;
 
-    public CuberaModel(ModelPart model) {
-        this.body_base = model;
-        this.fin_anal = model.getChild("fin_anal");
-        this.fin_pelvic_right = model.getChild("fin_pelvic_right");
+    public CuberaModel(ModelPart root) {
+        this.body_base = root;
+        this.fin_anal = root.getChild("fin_anal");
+        this.fin_pelvic_right = root.getChild("fin_pelvic_right");
         this.fin_pelvic_right_r1 = this.fin_pelvic_right.getChild("fin_pelvic_right_r1");
-        this.fin_pelvic_left = model.getChild("fin_pelvic_left");
+        this.fin_pelvic_left = root.getChild("fin_pelvic_left");
         this.fin_pelvic_left_r1 = this.fin_pelvic_left.getChild("fin_pelvic_left_r1");
-        this.fin_pectoral_left = model.getChild("fin_pectoral_left");
-        this.fin_pectoral_right = model.getChild("fin_pectoral_right");
-        this.fin_dorsal = model.getChild("fin_dorsal");
-        this.body_connection = model.getChild("body_connection");
+        this.fin_pectoral_left = root.getChild("fin_pectoral_left");
+        this.fin_pectoral_right = root.getChild("fin_pectoral_right");
+        this.fin_dorsal = root.getChild("fin_dorsal");
+        this.body_connection = root.getChild("body_connection");
         this.jaw_lower = this.body_connection.getChild("jaw_lower");
-        this.head_base = model.getChild("head_base");
+        this.head_base = root.getChild("head_base");
         this.head_snout = this.head_base.getChild("head_snout");
         this.head_snout_r1 = this.head_snout.getChild("head_snout_r1");
-        this.tail_base = model.getChild("tail_base");
+        this.tail_base = root.getChild("tail_base");
         this.tail_main = this.tail_base.getChild("tail_main");
         this.fin_tail = this.tail_main.getChild("fin_tail");
     }
 
     public static LayerDefinition create() {
-        MeshDefinition meshDefinition = new MeshDefinition();
-        PartDefinition partDefinition = meshDefinition.getRoot();
+        MeshDefinition mesh = new MeshDefinition();
+        PartDefinition root = mesh.getRoot();
 
-        partDefinition.addOrReplaceChild("body_base", CubeListBuilder.create()
+        root.addOrReplaceChild("body_base", CubeListBuilder.create()
                         .texOffs(0, 0).addBox(-2.0f, -5.0f, -3.0f, 4.0f, 6.0f, 8.0f),
                 PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, 0.0436f, 0.0f, 0.0f));
 
-        partDefinition.addOrReplaceChild("fin_anal", CubeListBuilder.create()
+        root.addOrReplaceChild("fin_anal", CubeListBuilder.create()
                         .texOffs(11, 37).addBox(0.0f, -1.0f, -1.0f, 0.0f, 2.0f, 4.0f),
                 PartPose.offsetAndRotation(0.0f, 1.0f, 4.0f, -0.3054f, 0.0f, 0.0f));
 
-        PartDefinition partDefinition2 = partDefinition.addOrReplaceChild("fin_pelvic_right", CubeListBuilder.create(),
+        PartDefinition partDefinition2 = root.addOrReplaceChild("fin_pelvic_right", CubeListBuilder.create(),
                 PartPose.offsetAndRotation(-1.5f, 1.0f, -2.0f, 0.0f, 0.0f, 0.0f));
 
         partDefinition2.addOrReplaceChild("fin_pelvic_right_r1", CubeListBuilder.create()
                         .texOffs(20, 37).addBox(0.0f, -1.5f, -0.5f, 0.0f, 2.0f, 3.0f),
                 PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, -1.3526f, -0.2182f, 0.0f));
 
-        PartDefinition partDefinition4 = partDefinition.addOrReplaceChild("fin_pelvic_left", CubeListBuilder.create(),
+        PartDefinition partDefinition4 = root.addOrReplaceChild("fin_pelvic_left", CubeListBuilder.create(),
                 PartPose.offsetAndRotation(1.5f, 1.0f, -2.0f, 0.0f, 0.0f, 0.0f));
 
         partDefinition4.addOrReplaceChild("fin_pelvic_left_r1", CubeListBuilder.create()
                         .texOffs(27, 37).addBox(0.0f, -1.5f, -0.5f, 0.0f, 2.0f, 3.0f),
                 PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, -1.3526f, 0.2182f, 0.0f));
 
-        partDefinition.addOrReplaceChild("fin_pectoral_left", CubeListBuilder.create()
+        root.addOrReplaceChild("fin_pectoral_left", CubeListBuilder.create()
                         .texOffs(7, 45).addBox(0.0f, 0.0f, 0.0f, 0.0f, 2.0f, 3.0f),
                 PartPose.offsetAndRotation(2.0f, -1.0f, -2.0f, 0.4363f, 0.5672f, 0.0f));
 
-        partDefinition.addOrReplaceChild("fin_pectoral_right", CubeListBuilder.create()
+        root.addOrReplaceChild("fin_pectoral_right", CubeListBuilder.create()
                         .texOffs(0, 45).addBox(0.0f, 0.0f, 0.0f, 0.0f, 2.0f, 3.0f),
                 PartPose.offsetAndRotation(-2.0f, -1.0f, -2.0f, 0.4363f, -0.5672f, 0.0f));
 
-        partDefinition.addOrReplaceChild("fin_dorsal", CubeListBuilder.create()
+        root.addOrReplaceChild("fin_dorsal", CubeListBuilder.create()
                         .texOffs(25, 0).addBox(0.0f, -3.0f, 0.0f, 0.0f, 3.0f, 7.0f),
                 PartPose.offsetAndRotation(0.0f, -5.0f, -1.0f, -0.3054f, 0.0f, 0.0f));
 
-        PartDefinition partDefinition9 = partDefinition.addOrReplaceChild("body_connection", CubeListBuilder.create()
+        PartDefinition partDefinition9 = root.addOrReplaceChild("body_connection", CubeListBuilder.create()
                         .texOffs(28, 15).addBox(-2.0f, -2.0f, -4.0f, 4.0f, 2.0f, 4.0f),
                 PartPose.offsetAndRotation(0.0f, 1.0f, -3.0f, 0.0f, 0.0f, 0.0f));
 
@@ -95,7 +95,7 @@ public class CuberaModel<T extends CuberaEntity> extends EntityModel<T> {
                         .texOffs(15, 29).addBox(-2.0f, -1.0f, -3.0f, 4.0f, 1.0f, 3.0f),
                 PartPose.offsetAndRotation(0.0f, 0.0f, -4.0f, -0.1309f, 0.0f, 0.0f));
 
-        PartDefinition partDefinition11 = partDefinition.addOrReplaceChild("head_base", CubeListBuilder.create()
+        PartDefinition partDefinition11 = root.addOrReplaceChild("head_base", CubeListBuilder.create()
                         .texOffs(0, 15).addBox(-2.0f, 0.0f, -4.0f, 4.0f, 4.0f, 4.0f, new CubeDeformation(0.01f)),
                 PartPose.offsetAndRotation(0.0f, -5.0f, -3.0f, 0.4363f, 0.0f, 0.0f));
 
@@ -106,7 +106,7 @@ public class CuberaModel<T extends CuberaEntity> extends EntityModel<T> {
                         .texOffs(0, 29).addBox(-2.0f, 0.0f, -3.0f, 4.0f, 3.0f, 3.0f, new CubeDeformation(0.01f)),
                 PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, -0.1309f, 0.0f, 0.0f));
 
-        PartDefinition partDefinition14 = partDefinition.addOrReplaceChild("tail_base", CubeListBuilder.create()
+        PartDefinition partDefinition14 = root.addOrReplaceChild("tail_base", CubeListBuilder.create()
                         .texOffs(0, 37).addBox(-1.5f, 0.0f, 0.0f, 3.0f, 5.0f, 2.0f),
                 PartPose.offsetAndRotation(0.0f, -5.5f, 5.0f, -0.0436f, 0.0f, 0.0f));
 
@@ -118,7 +118,7 @@ public class CuberaModel<T extends CuberaEntity> extends EntityModel<T> {
                         .texOffs(17, 15).addBox(0.0f, -2.0f, -1.0f, 0.0f, 8.0f, 5.0f),
                 PartPose.offsetAndRotation(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f));
 
-        return LayerDefinition.create(meshDefinition, 64, 64);
+        return LayerDefinition.create(mesh, 64, 64);
     }
 
     @Override

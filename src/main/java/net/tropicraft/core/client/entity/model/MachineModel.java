@@ -13,10 +13,6 @@ public abstract class MachineModel<T extends BlockEntity & IMachineBlock> extend
         super(RenderType::entitySolid);
     }
 
-    public abstract float getScale(T te);
-
-    public abstract String getTexture(T te);
-
     public abstract Iterable<ModelPart> getParts();
 
     @Override

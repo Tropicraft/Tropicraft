@@ -1,12 +1,11 @@
 package net.tropicraft.core.client.entity.model;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix3f;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
-import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -15,45 +14,34 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.tropicraft.core.common.entity.underdasea.EagleRayEntity;
 
-public class EagleRayModel extends ListModel<EagleRayEntity> {
+public class EagleRayModel extends HierarchicalModel<EagleRayEntity> {
 	/**
 	 * Wing joint amplitudes, linearly interpolated between previous tick and this tick using partialTicks.
 	 */
 	private final float[] interpolatedWingAmplitudes = new float[EagleRayEntity.WING_JOINTS];
 
-	private final ModelPart body;
+	private final ModelPart root;
 
 	public EagleRayModel(ModelPart root) {
-		this.body = root.getChild("body");
-
-		//textureWidth = 128;
-		//textureHeight = 64;
-
-		//body = new ModelPart(this, 32, 0);
-		//body.addCuboid(-2F, 0F, 0F, 5, 3, 32);
-		//body.setPivot(0F, 0F, -8F);
-		//body.setTextureSize(128, 64);
-		//body.mirror = true;
-
+		this.root = root;
 	}
 
 	public static LayerDefinition create() {
-		MeshDefinition modelData = new MeshDefinition();
-		PartDefinition modelPartData = modelData.getRoot();
+		MeshDefinition mesh = new MeshDefinition();
+		PartDefinition root = mesh.getRoot();
 
-		modelPartData.addOrReplaceChild("body", CubeListBuilder.create().texOffs(32, 0).mirror().addBox(-2F, 0F, 0F, 5, 3, 32), PartPose.offset(0F,0F,-8F));
+		root.addOrReplaceChild("body", CubeListBuilder.create().texOffs(32, 0).mirror().addBox(-2F, 0F, 0F, 5, 3, 32), PartPose.offset(0F,0F,-8F));
 
-		return LayerDefinition.create(modelData,128,64);
+		return LayerDefinition.create(mesh,128,64);
 	}
 
 	@Override
 	public void setupAnim(EagleRayEntity eagleRay, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-
 	}
 
 	@Override
-	public Iterable<ModelPart> parts() {
-		return ImmutableList.of(body);
+	public ModelPart root() {
+		return root;
 	}
 
 	@Override
@@ -88,16 +76,16 @@ public class EagleRayModel extends ListModel<EagleRayEntity> {
 		matrixStackIn.pushPose();
 		matrixStackIn.translate(0.5f / 16f, 0, -0.5f); // Center on body
 		matrixStackIn.scale(2f, 0.5f, 2f); // Scale to correct size
-		
+
 		renderWing(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha, false);
-		
+
 		// Rotate around center
 		matrixStackIn.translate(0, 0, 0.5f);
 		matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180f));
 		matrixStackIn.translate(0, 0, -0.5f);
-		
+
 		renderWing(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha, true);
-		
+
 		matrixStackIn.popPose();
 	}
 
@@ -111,7 +99,7 @@ public class EagleRayModel extends ListModel<EagleRayEntity> {
 		float maxUBack = 0.25f;
 		float minVBack = 0.5f;
 		float maxVBack = 1f;
-		
+
 		stack.pushPose();
 		stack.translate(1.25f / 16f, 0, 0); // Translate out to body edge
 
@@ -143,7 +131,7 @@ public class EagleRayModel extends ListModel<EagleRayEntity> {
 			vertex(buffer, matrix, normal, x, amplitude, 1, red, green, blue, alpha, uFront, reverse ? minVFront : maxVFront, packedLightIn, packedOverlayIn);
 			vertex(buffer, matrix, normal, x, amplitude, 0, red, green, blue, alpha, uFront, reverse ? maxVFront : minVFront, packedLightIn, packedOverlayIn);
 		}
-		
+
 		stack.popPose();
 	}
 
