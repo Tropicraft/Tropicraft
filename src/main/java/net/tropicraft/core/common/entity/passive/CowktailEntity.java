@@ -30,7 +30,6 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.IForgeShearable;
-import net.minecraftforge.registries.RegistryObject;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.block.TropicraftFlower;
 import net.tropicraft.core.common.drinks.Drink;
