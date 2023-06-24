@@ -6,10 +6,7 @@ import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Either;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.builders.BlockBuilder;
-import com.tterrag.registrate.providers.DataGenContext;
-import com.tterrag.registrate.providers.ProviderType;
-import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
-import com.tterrag.registrate.providers.RegistrateItemModelProvider;
+import com.tterrag.registrate.providers.*;
 import com.tterrag.registrate.util.DataIngredient;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
@@ -44,6 +41,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.grower.AbstractTreeGrower;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.*;
@@ -63,7 +61,7 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -126,17 +124,21 @@ public class TropicraftBlocks {
                     .texture("particle", prov.modLoc("block/bamboo_side"))
                     .texture("wood", prov.modLoc("block/bamboo_side"));
         });
+
+        REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, prov -> {
+            prov.tag(TropicraftTags.Blocks.CARVER_REPLACEABLES).addTags(BlockTags.OVERWORLD_CARVER_REPLACEABLES);
+        });
     }
 
     public static final BlockEntry<PortalWaterBlock> TELEPORT_WATER = REGISTRATE.block("teleport_water", PortalWaterBlock::new)
             .initialProperties(Material.WATER)
-            .properties(Properties::noDrops)
+            .properties(Properties::noLootTable)
             .blockstate((ctx, prov) -> prov.simpleBlock(ctx.get(), prov.models().getExistingFile(prov.mcLoc("block/water"))))
             .register();
 
     public static final BlockEntry<LiquidBlock> PORTAL_WATER = REGISTRATE.block("portal_water", p -> new LiquidBlock(() -> Fluids.WATER, p))
             .initialProperties(Material.WATER)
-            .properties(Properties::noDrops)
+            .properties(Properties::noLootTable)
             .blockstate((ctx, prov) -> prov.simpleBlock(ctx.get(), prov.models().getExistingFile(prov.mcLoc("block/water"))))
             .register();
 
@@ -148,39 +150,39 @@ public class TropicraftBlocks {
             .simpleItem()
             .register();
 
-    public static final BlockEntry<OreBlock> AZURITE_ORE = ore("azurite_ore", TropicraftItems.AZURITE, MaterialColor.STONE)
+    public static final BlockEntry<DropExperienceBlock> AZURITE_ORE = ore("azurite_ore", TropicraftItems.AZURITE, MaterialColor.STONE)
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .item()
                 .tag(TropicraftTags.Items.AZURITE_ORE, Tags.Items.ORES)
                 .build()
             .register();
-    public static final BlockEntry<OreBlock> EUDIALYTE_ORE = ore("eudialyte_ore", TropicraftItems.EUDIALYTE, MaterialColor.STONE)
+    public static final BlockEntry<DropExperienceBlock> EUDIALYTE_ORE = ore("eudialyte_ore", TropicraftItems.EUDIALYTE, MaterialColor.STONE)
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .item()
                 .tag(TropicraftTags.Items.EUDIALYTE_ORE, Tags.Items.ORES)
                 .build()
             .register();
-    public static final BlockEntry<OreBlock> MANGANESE_ORE = ore("manganese_ore", MaterialColor.STONE)
+    public static final BlockEntry<DropExperienceBlock> MANGANESE_ORE = ore("manganese_ore", MaterialColor.STONE)
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .item()
                 .tag(TropicraftTags.Items.MANGANESE_ORE, Tags.Items.ORES)
                 .build()
             .register();
-    public static final BlockEntry<OreBlock> SHAKA_ORE = ore("shaka_ore", MaterialColor.COLOR_BLACK)
+    public static final BlockEntry<DropExperienceBlock> SHAKA_ORE = ore("shaka_ore", MaterialColor.COLOR_BLACK)
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .item()
                 .tag(TropicraftTags.Items.SHAKA_ORE, Tags.Items.ORES)
                 .build()
             .register();
-    public static final BlockEntry<OreBlock> ZIRCON_ORE = ore("zircon_ore", TropicraftItems.ZIRCON, MaterialColor.STONE)
+    public static final BlockEntry<DropExperienceBlock> ZIRCON_ORE = ore("zircon_ore", TropicraftItems.ZIRCON, MaterialColor.STONE)
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .item()
                 .tag(TropicraftTags.Items.ZIRCON_ORE, Tags.Items.ORES)
                 .build()
             .register();
 
-    private static BlockBuilder<OreBlock, Registrate> ore(String name, MaterialColor color) {
-        return REGISTRATE.block(name, OreBlock::new)
+    private static BlockBuilder<DropExperienceBlock, Registrate> ore(String name, MaterialColor color) {
+        return REGISTRATE.block(name, DropExperienceBlock::new)
                 .initialProperties(() -> Blocks.STONE)
                 .properties(p -> p.strength(3.0F).color(color))
                 .tag(BlockTags.MINEABLE_WITH_PICKAXE, Tags.Blocks.ORES)
@@ -189,8 +191,8 @@ public class TropicraftBlocks {
                     .build();
     }
 
-    private static BlockBuilder<OreBlock, Registrate> ore(String name, Supplier<Item> gem, MaterialColor color) {
-        return REGISTRATE.block(name, OreBlock::new)
+    private static BlockBuilder<DropExperienceBlock, Registrate> ore(String name, Supplier<Item> gem, MaterialColor color) {
+        return REGISTRATE.block(name, DropExperienceBlock::new)
                 .initialProperties(() -> Blocks.STONE)
                 .properties(p -> p.strength(3.0F).color(color))
                 .loot((loot, block) -> loot.add(block,
@@ -247,7 +249,7 @@ public class TropicraftBlocks {
                 Item dye = flower.getDye();
                 if (dye != null) {
                     builder = builder.recipe((ctx, prov) -> {
-                        prov.singleItemUnfinished(DataIngredient.items(ctx.get()), dye.delegate, 1, 2).save(prov, new ResourceLocation(Constants.MODID, dye.getRegistryName().getPath()));
+                        prov.singleItemUnfinished(DataIngredient.items(ctx.get()), () -> dye, 1, 2).save(prov, new ResourceLocation(Constants.MODID, name(dye)));
                     });
                 }
                 return builder.register();
@@ -256,7 +258,7 @@ public class TropicraftBlocks {
     public static final BlockEntry<BlockTropicraftSand> PURIFIED_SAND = REGISTRATE.block("purified_sand", BlockTropicraftSand::new)
             .initialProperties(Material.SAND, MaterialColor.SAND)
             .properties(p -> p.strength(0.5F).explosionResistance(0.5F).sound(SoundType.SAND))
-            .tag(BlockTags.SAND, BlockTags.MINEABLE_WITH_SHOVEL)
+            .tag(BlockTags.SAND, BlockTags.MINEABLE_WITH_SHOVEL, TropicraftTags.Blocks.CARVER_REPLACEABLES)
             .blockstate((ctx, prov) -> {
                 ModelFile normal = prov.cubeAll(ctx.get());
                 ModelFile calcified = cubeTop(ctx, prov, "calcified");
@@ -282,7 +284,7 @@ public class TropicraftBlocks {
             .initialProperties(Material.STONE, MaterialColor.SAND)
             .properties(p -> p.strength(0.8F).explosionResistance(0.8F).requiresCorrectToolForDrops())
             .blockstate(TropicraftBlocks::simpleBlockAllRotations)
-            .tag(BlockTags.SAND, BlockTags.MINEABLE_WITH_SHOVEL)
+            .tag(BlockTags.SAND, BlockTags.MINEABLE_WITH_SHOVEL, TropicraftTags.Blocks.CARVER_REPLACEABLES)
             .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get())
                     .pattern("XX").pattern("XX")
                     .define('X', PURIFIED_SAND.get())
@@ -297,7 +299,7 @@ public class TropicraftBlocks {
             .initialProperties(Material.SAND, MaterialColor.COLOR_PINK)
             .properties(p -> p.strength(0.5F).sound(SoundType.SAND))
             .blockstate(TropicraftBlocks::simpleBlockAllRotations)
-            .tag(BlockTags.SAND, BlockTags.MINEABLE_WITH_SHOVEL)
+            .tag(BlockTags.SAND, BlockTags.MINEABLE_WITH_SHOVEL, TropicraftTags.Blocks.CARVER_REPLACEABLES)
             .item()
                 .tag(ItemTags.SAND)
                 .build()
@@ -307,7 +309,7 @@ public class TropicraftBlocks {
             .initialProperties(Material.SAND, MaterialColor.COLOR_GREEN)
             .properties(p -> p.strength(0.5F).sound(SoundType.SAND))
             .blockstate(TropicraftBlocks::simpleBlockAllRotations)
-            .tag(BlockTags.SAND, BlockTags.MINEABLE_WITH_SHOVEL)
+            .tag(BlockTags.SAND, BlockTags.MINEABLE_WITH_SHOVEL, TropicraftTags.Blocks.CARVER_REPLACEABLES)
             .item()
                 .tag(ItemTags.SAND)
                 .build()
@@ -317,7 +319,7 @@ public class TropicraftBlocks {
             .initialProperties(Material.SAND, MaterialColor.COLOR_LIGHT_GRAY)
             .properties(p -> p.strength(0.5F).sound(SoundType.SAND))
             .blockstate(TropicraftBlocks::simpleBlockAllRotations)
-            .tag(BlockTags.SAND, BlockTags.MINEABLE_WITH_SHOVEL)
+            .tag(BlockTags.SAND, BlockTags.MINEABLE_WITH_SHOVEL, TropicraftTags.Blocks.CARVER_REPLACEABLES)
             .item()
                 .tag(ItemTags.SAND)
                 .build()
@@ -329,7 +331,7 @@ public class TropicraftBlocks {
             .blockstate((ctx, prov) -> prov.simpleBlock(
                     ctx.get(), ConfiguredModel.allRotations(prov.cubeAll(ctx.get()), false)
             ))
-            .tag(BlockTags.SAND, BlockTags.MINEABLE_WITH_SHOVEL)
+            .tag(BlockTags.SAND, BlockTags.MINEABLE_WITH_SHOVEL, TropicraftTags.Blocks.CARVER_REPLACEABLES)
             .item()
                 .tag(ItemTags.SAND)
                 .build()
@@ -338,7 +340,7 @@ public class TropicraftBlocks {
     public static final BlockEntry<Block> MUD = REGISTRATE.block("mud", Block::new)
             .initialProperties(() -> Blocks.DIRT)
             .properties(p -> p.speedFactor(0.5F).isValidSpawn((s, w, pa, e) -> true).isRedstoneConductor((s, w, pa) -> true).isViewBlocking((s, w, pa) -> true).isSuffocating((s, w, pa) -> true))
-            .tag(TropicraftTags.Blocks.MUD, BlockTags.MINEABLE_WITH_SHOVEL)
+            .tag(TropicraftTags.Blocks.MUD, BlockTags.MINEABLE_WITH_SHOVEL, TropicraftTags.Blocks.CARVER_REPLACEABLES)
             .blockstate((ctx, prov) -> prov.simpleBlock(ctx.get(),
                     ArrayUtils.addAll(
                             allYRotations(prov.models().cubeAll("mud", prov.modLoc("block/mud")), 0, false, 5),
@@ -365,7 +367,7 @@ public class TropicraftBlocks {
                                     )
                             )
             )))
-            .tag(TropicraftTags.Blocks.MUD, BlockTags.MINEABLE_WITH_SHOVEL)
+            .tag(TropicraftTags.Blocks.MUD, BlockTags.MINEABLE_WITH_SHOVEL, TropicraftTags.Blocks.CARVER_REPLACEABLES)
             .blockstate((ctx, prov) -> prov.simpleBlock(ctx.get(), model -> ConfiguredModel.allYRotations(model, 0, false)))
             .simpleItem()
             .register();
@@ -445,14 +447,14 @@ public class TropicraftBlocks {
             .blockstate((ctx, prov) -> {
                 ResourceLocation side = prov.modLoc("block/bamboo_side");
                 ResourceLocation end = prov.modLoc("block/bamboo_end");
-                prov.slabBlock(ctx.get(), BAMBOO_BUNDLE.get().getRegistryName(), side, end, end);
+                prov.slabBlock(ctx.get(), BAMBOO_BUNDLE.getId(), side, end, end);
             })
             .register();
     public static final BlockEntry<SlabBlock> THATCH_SLAB = woodenSlab("thatch_slab", THATCH_BUNDLE)
             .blockstate((ctx, prov) -> {
                 ResourceLocation side = prov.modLoc("block/thatch_side");
                 ResourceLocation end = prov.modLoc("block/thatch_end");
-                prov.slabBlock(ctx.get(), THATCH_BUNDLE.get().getRegistryName(), side, end, end);
+                prov.slabBlock(ctx.get(), THATCH_BUNDLE.getId(), side, end, end);
             })
             .register();
     public static final BlockEntry<SlabBlock> CHUNK_SLAB = stoneSlab("chunk_slab", CHUNK).register();
@@ -647,7 +649,7 @@ public class TropicraftBlocks {
             .loot((loot, block) -> loot.add(block, createSinglePropConditionTable(block, DoublePlantBlock.HALF, DoubleBlockHalf.LOWER)))
             .addLayer(() -> RenderType::cutout)
             .blockstate(TropicraftBlocks::doublePlant)
-            .recipe((ctx, prov) -> prov.singleItemUnfinished(DataIngredient.items(ctx.get()), Items.PURPLE_DYE.delegate, 1, 4).save(prov, new ResourceLocation(Constants.MODID, Items.PURPLE_DYE.getRegistryName().getPath())))
+            .recipe((ctx, prov) -> prov.singleItemUnfinished(DataIngredient.items(ctx.get()), () -> Items.PURPLE_DYE, 1, 4).save(prov, new ResourceLocation(Constants.MODID, name(Items.PURPLE_DYE))))
             .item()
                 .model((ctx, prov) -> prov.blockSprite(ctx, prov.modLoc("block/iris_top")))
                 .build()
@@ -754,7 +756,7 @@ public class TropicraftBlocks {
                     .save(prov))
             .register();
 
-    public static final BlockEntityEntry<BambooChestBlockEntity> BAMBOO_CHEST_ENTITY = BlockEntityEntry.cast(BAMBOO_CHEST.getSibling(ForgeRegistries.BLOCK_ENTITIES));
+    public static final BlockEntityEntry<BambooChestBlockEntity> BAMBOO_CHEST_ENTITY = BlockEntityEntry.cast(BAMBOO_CHEST.getSibling(ForgeRegistries.BLOCK_ENTITY_TYPES));
 
     public static final BlockEntry<SifterBlock> SIFTER = REGISTRATE.block("sifter", SifterBlock::new)
             .initialProperties(() -> Blocks.OAK_PLANKS)
@@ -781,7 +783,7 @@ public class TropicraftBlocks {
             .simpleItem()
             .register();
 
-    public static final BlockEntityEntry<SifterBlockEntity> SIFTER_ENTITY = BlockEntityEntry.cast(SIFTER.getSibling(ForgeRegistries.BLOCK_ENTITIES));
+    public static final BlockEntityEntry<SifterBlockEntity> SIFTER_ENTITY = BlockEntityEntry.cast(SIFTER.getSibling(ForgeRegistries.BLOCK_ENTITY_TYPES));
 
     public static final BlockEntry<DrinkMixerBlock> DRINK_MIXER = REGISTRATE.block("drink_mixer", DrinkMixerBlock::new)
             .initialProperties(Material.STONE)
@@ -804,7 +806,7 @@ public class TropicraftBlocks {
                     .save(prov))
             .register();
 
-    public static final BlockEntityEntry<DrinkMixerBlockEntity> DRINK_MIXER_ENTITY = BlockEntityEntry.cast(DRINK_MIXER.getSibling(ForgeRegistries.BLOCK_ENTITIES));
+    public static final BlockEntityEntry<DrinkMixerBlockEntity> DRINK_MIXER_ENTITY = BlockEntityEntry.cast(DRINK_MIXER.getSibling(ForgeRegistries.BLOCK_ENTITY_TYPES));
 
     public static final BlockEntry<AirCompressorBlock> AIR_COMPRESSOR = REGISTRATE.block("air_compressor", AirCompressorBlock::new)
             .initialProperties(Material.STONE)
@@ -830,16 +832,16 @@ public class TropicraftBlocks {
                     .save(prov))
             .register();
 
-    public static final BlockEntityEntry<AirCompressorBlockEntity> AIR_COMPRESSOR_ENTITY = BlockEntityEntry.cast(AIR_COMPRESSOR.getSibling(ForgeRegistries.BLOCK_ENTITIES));
+    public static final BlockEntityEntry<AirCompressorBlockEntity> AIR_COMPRESSOR_ENTITY = BlockEntityEntry.cast(AIR_COMPRESSOR.getSibling(ForgeRegistries.BLOCK_ENTITY_TYPES));
 
     public static final BlockEntry<VolcanoBlock> VOLCANO = REGISTRATE.block("volcano", VolcanoBlock::new)
             .initialProperties(() -> Blocks.BEDROCK)
-            .properties(Properties::noDrops)
+            .properties(Properties::noLootTable)
             .blockstate((ctx, prov) -> prov.simpleBlock(ctx.get(), prov.models().getExistingFile(prov.mcLoc("block/bedrock"))))
             .simpleBlockEntity(VolcanoBlockEntity::new)
             .register();
 
-    public static final BlockEntityEntry<VolcanoBlockEntity> VOLCANO_ENTITY = BlockEntityEntry.cast(VOLCANO.getSibling(ForgeRegistries.BLOCK_ENTITIES));
+    public static final BlockEntityEntry<VolcanoBlockEntity> VOLCANO_ENTITY = BlockEntityEntry.cast(VOLCANO.getSibling(ForgeRegistries.BLOCK_ENTITY_TYPES));
 
     public static final BlockEntry<TikiTorchBlock> TIKI_TORCH = REGISTRATE.block("tiki_torch", TikiTorchBlock::new)
             .initialProperties(() -> Blocks.TORCH)
@@ -862,7 +864,7 @@ public class TropicraftBlocks {
             .item().defaultModel().build()
             .register();
 
-    public static final BlockEntry<FlowerPotBlock> BAMBOO_FLOWER_POT = REGISTRATE.block("bamboo_flower_pot", p -> new FlowerPotBlock(null, Blocks.AIR.delegate, p))
+    public static final BlockEntry<FlowerPotBlock> BAMBOO_FLOWER_POT = REGISTRATE.block("bamboo_flower_pot", p -> new FlowerPotBlock(null, () -> Blocks.AIR, p))
             .initialProperties(Material.DECORATION)
             .properties(p -> p.strength(0.2F, 5.0F).sound(SoundType.BAMBOO))
             .addLayer(() -> RenderType::cutout)
@@ -890,6 +892,7 @@ public class TropicraftBlocks {
 
     public static final BlockEntry<GrowableSinglePlantBlock> GOLDEN_LEATHER_FERN = REGISTRATE.block("small_golden_leather_fern", p -> new GrowableSinglePlantBlock(p, () -> TropicraftBlocks.TALL_GOLDEN_LEATHER_FERN))
             .initialProperties(() -> Blocks.FERN)
+            .properties(p -> p.offsetType(BlockBehaviour.OffsetType.XZ))
             .addLayer(() -> RenderType::cutout)
             .blockstate((ctx, prov) -> prov.simpleBlock(ctx.get(), prov.models().cross(ctx.getName(), prov.modLoc("block/small_golden_leather_fern"))))
             .lang("Golden Leather Fern")
@@ -1025,7 +1028,7 @@ public class TropicraftBlocks {
                     Blocks.WHITE_TULIP, Blocks.PINK_TULIP, Blocks.OXEYE_DAISY, Blocks.CORNFLOWER, Blocks.LILY_OF_THE_VALLEY,
                     Blocks.WITHER_ROSE, Blocks.RED_MUSHROOM, Blocks.BROWN_MUSHROOM, Blocks.DEAD_BUSH, Blocks.CACTUS
             )
-            .map(plant -> bambooPot("bamboo_potted_" + plant.getRegistryName().getPath(), plant.delegate))
+            .map(plant -> bambooPot("bamboo_potted_" + name(plant), () -> plant))
             .toList();
 
     private static BlockEntry<FlowerPotBlock> bambooPot(String name, Supplier<? extends Block> plant) {
@@ -1040,19 +1043,19 @@ public class TropicraftBlocks {
     }
 
     private static BlockEntry<FlowerPotBlock> vanillaPot(String name, Supplier<? extends Block> plant) {
-        return REGISTRATE.block(name, p -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT.delegate.get(), plant, p))
+        return REGISTRATE.block(name, p -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, plant, p))
                 .initialProperties(() -> Blocks.FLOWER_POT)
                 .loot((loot, block) -> loot.add(block, pottedPlantLoot(block)))
                 .addLayer(() -> RenderType::cutout)
                 .tag(BlockTags.FLOWER_POTS)
-                .blockstate((ctx, prov) -> flowerPot(ctx, prov, Blocks.FLOWER_POT.delegate, new ResourceLocation("block/flower_pot")))
+                .blockstate((ctx, prov) -> flowerPot(ctx, prov, () -> Blocks.FLOWER_POT, new ResourceLocation("block/flower_pot")))
                 .register();
     }
 
     private static void flowerPot(DataGenContext<Block, ? extends FlowerPotBlock> ctx, RegistrateBlockstateProvider prov, Supplier<? extends Block> empty, ResourceLocation particle) {
         Block flower = ctx.get().getContent();
-        boolean isVanilla = flower.getRegistryName().getNamespace().equals("minecraft");
-        String flowerName = flower.getRegistryName().getPath();
+        boolean isVanilla = flower.builtInRegistryHolder().key().location().getNamespace().equals("minecraft");
+        String flowerName = name(flower);
         String parent = flower == Blocks.AIR ? "flower_pot" : !isVanilla ? "flower_pot_cross" : ModelProvider.BLOCK_FOLDER + "/potted_" + flowerName;
         BlockModelBuilder model = prov.models().withExistingParent(ctx.getName(), parent)
                 .texture("flowerpot", prov.blockTexture(empty.get()))
@@ -1165,7 +1168,7 @@ public class TropicraftBlocks {
                 .initialProperties(block)
                 .loot((loot, slab) -> loot.add(slab, createSlabItemTable(slab)))
                 .tag(blockTag)
-                .blockstate((ctx, prov) -> prov.slabBlock(ctx.get(), block.get().getRegistryName(), prov.blockTexture(block.get())))
+                .blockstate((ctx, prov) -> prov.slabBlock(ctx.get(), block.getId(), prov.blockTexture(block.get())))
                 .item()
                     .tag(itemTag)
                     .build();
@@ -1635,13 +1638,17 @@ public class TropicraftBlocks {
         return prov.blockSprite(ctx);
     }
 
-    private static NonNullBiFunction<Block, Item.Properties, BlockItem> itemWithRenderer(final Supplier<IItemRenderProperties> properties) {
+    private static NonNullBiFunction<Block, Item.Properties, BlockItem> itemWithRenderer(final Supplier<IClientItemExtensions> properties) {
         return (b, p) -> new BlockItem(b, p) {
             @Override
-            public void initializeClient(final Consumer<IItemRenderProperties> consumer) {
+            public void initializeClient(final Consumer<IClientItemExtensions> consumer) {
                 consumer.accept(properties.get());
             }
         };
+    }
+
+    private static String name(ItemLike item) {
+        return item.asItem().builtInRegistryHolder().key().location().getPath();
     }
 
     private static void extendBlockEntity(final BlockEntityType<?> type, final Block block) {

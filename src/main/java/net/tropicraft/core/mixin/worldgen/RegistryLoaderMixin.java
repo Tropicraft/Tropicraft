@@ -23,18 +23,19 @@ public class RegistryLoaderMixin {
      * Remove the experimental world settings warning screen for tropicraft content.
      */
     @ModifyVariable(
-            method = "overrideElementFromResources",
+            method = "overrideElementFromResources(Lnet/minecraft/core/WritableRegistry;Lnet/minecraft/resources/ResourceKey;Lcom/mojang/serialization/Codec;Lnet/minecraft/resources/ResourceKey;Ljava/util/Optional;Lcom/mojang/serialization/DynamicOps;)Lcom/mojang/serialization/DataResult;",
             at = @At(
                     value = "INVOKE_ASSIGN",
-                    target = "Lnet/minecraft/resources/RegistryResourceAccess;parseElement(Lcom/mojang/serialization/DynamicOps;Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/resources/ResourceKey;Lcom/mojang/serialization/Decoder;)Ljava/util/Optional;"
-            )
+                    target = "Lnet/minecraft/resources/RegistryResourceAccess$EntryThunk;parseElement(Lcom/mojang/serialization/DynamicOps;Lcom/mojang/serialization/Decoder;)Lcom/mojang/serialization/DataResult;"
+            ),
+            ordinal = 3
     )
-    private <E> Optional<DataResult<RegistryResourceAccess.ParsedEntry<E>>> modifyDataResult(
-            Optional<DataResult<RegistryResourceAccess.ParsedEntry<E>>> result,
-            WritableRegistry<E> registry, ResourceKey<? extends Registry<E>> registryKey, Codec<E> codec, ResourceKey<E> key, DynamicOps<JsonElement> ops
+    private <E> DataResult<RegistryResourceAccess.ParsedEntry<E>> modifyDataResult(
+            DataResult<RegistryResourceAccess.ParsedEntry<E>> result,
+            WritableRegistry<E> registry, ResourceKey<? extends Registry<E>> registryKey, Codec<E> codec, ResourceKey<E> key, Optional<RegistryResourceAccess.EntryThunk<E>> existingEntry, DynamicOps<JsonElement> ops
     ) {
         if (key.location().getNamespace().equals(Constants.MODID)) {
-            return result.map(r -> r.setLifecycle(Lifecycle.stable()));
+            return result.setLifecycle(Lifecycle.stable());
         }
         return result;
     }

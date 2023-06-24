@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.context.UseOnContext;
@@ -16,7 +17,6 @@ import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConf
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 import java.util.List;
-import java.util.Random;
 
 public class TropicalFertilizerItem extends BoneMealItem {
 
@@ -33,7 +33,7 @@ public class TropicalFertilizerItem extends BoneMealItem {
                 BlockPos blockpos = context.getClickedPos().above();
                 BlockState blockstate = Blocks.GRASS.defaultBlockState();
                 Level level = context.getLevel();
-                Random rand = level.getRandom();
+                RandomSource rand = level.getRandom();
                 for (int i = 0; i < 128; ++i) {
                     BlockPos blockpos1 = blockpos;
                     int j = 0;

@@ -14,6 +14,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -38,9 +39,7 @@ import net.tropicraft.core.common.entity.egg.SeaTurtleEggEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nullable;
-import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import java.util.Set;
 
 public class SeaTurtleEntity extends Turtle {
@@ -191,20 +190,14 @@ public class SeaTurtleEntity extends Turtle {
     
     @Override
     @Nullable
-    public Entity getControllingPassenger() {
-        final List<Entity> passengers = getPassengers();
-        return passengers.isEmpty() ? null : passengers.get(0);
+    public LivingEntity getControllingPassenger() {
+        return getFirstPassenger() instanceof LivingEntity living ? living : null;
     }
 
-    public static boolean canSpawnOnLand(EntityType<SeaTurtleEntity> turtle, LevelAccessor world, MobSpawnType reason, BlockPos pos, Random rand) {
+    public static boolean canSpawnOnLand(EntityType<SeaTurtleEntity> turtle, LevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource rand) {
         return pos.getY() < TropicraftDimension.getSeaLevel(world) + 4 && world.getBlockState(pos.below()).getBlock() == Blocks.SAND && world.getRawBrightness(pos, 0) > 8;
     }
 
-    @Override
-    public boolean canBeControlledByRider() {
-        return getControllingPassenger() instanceof LivingEntity;
-    }
-    
     @Override
     public double getPassengersRidingOffset() {
         return super.getPassengersRidingOffset() - 0.1;
@@ -259,7 +252,7 @@ public class SeaTurtleEntity extends Turtle {
         }
 
         if (this.level.isClientSide) {
-            if (isVehicle() && canBeControlledByRider()) {
+            if (isVehicle() && hasControllingPassenger()) {
                 if (isInWater() || getCanFly()) {
                     Vec3 movement = new Vec3(getX(), getY(), getZ()).subtract(xo, yo, zo);
                     double speed = movement.length();
@@ -345,15 +338,8 @@ public class SeaTurtleEntity extends Turtle {
     @Override
     public void travel(Vec3 input) {
         if (isAlive()) {
-            if (isVehicle() && canBeControlledByRider()) {
-                final Entity controllingPassenger = getControllingPassenger();
-
-                if (!(controllingPassenger instanceof LivingEntity)) {
-                    return;
-                }
-
-                final LivingEntity controllingEntity = (LivingEntity) controllingPassenger;
-
+            final LivingEntity controllingPassenger = getControllingPassenger();
+            if (isVehicle() && controllingPassenger != null) {
                 this.setYRot(controllingPassenger.getYRot());
                 this.yRotO = this.getYRot();
                 this.setXRot(controllingPassenger.getXRot());
@@ -363,9 +349,9 @@ public class SeaTurtleEntity extends Turtle {
                 this.maxUpStep = 1.0F;
                 this.flyingSpeed = this.getSpeed() * 0.1F;
 
-                float strafe = controllingEntity.xxa;
-                float forward = getNoBrakes() ? 1 : controllingEntity.zza;
-                float vertical = controllingEntity.yya; // Players never use this?
+                float strafe = controllingPassenger.xxa;
+                float forward = getNoBrakes() ? 1 : controllingPassenger.zza;
+                float vertical = controllingPassenger.yya; // Players never use this?
 
                 double verticalFromPitch = -Math.sin(Math.toRadians(getXRot())) * forward;
                 forward *= Mth.clamp(1 - (Math.abs(getXRot()) / 90), 0.01f, 1);
@@ -417,7 +403,7 @@ public class SeaTurtleEntity extends Turtle {
     }
 
     @Override
-    public boolean canBeRiddenInWater(Entity rider) {
+    public boolean rideableUnderWater() {
         return true;
     }
 
@@ -520,7 +506,7 @@ public class SeaTurtleEntity extends Turtle {
             this.turtle.setHasEgg(true);
             this.animal.resetLove();
             this.partner.resetLove();
-            Random random = this.animal.getRandom();
+            RandomSource random = this.animal.getRandom();
             if (this.level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
                 this.level.addFreshEntity(new ExperienceOrb(this.level, this.animal.getX(), this.animal.getY(), this.animal.getZ(), random.nextInt(7) + 1));
             }

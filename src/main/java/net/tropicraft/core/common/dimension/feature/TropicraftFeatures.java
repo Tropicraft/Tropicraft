@@ -8,10 +8,8 @@ import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.features.OreFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.feature.WeightedPlacedFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.*;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
@@ -29,9 +27,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class TropicraftFeatures {
-
     public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, Constants.MODID);
-    public static final DeferredRegister<StructureFeature<?>> STRUCTURES = DeferredRegister.create(ForgeRegistries.STRUCTURE_FEATURES, Constants.MODID);
 
     public static final RegistryObject<PalmTreeFeature> NORMAL_PALM_TREE = register("normal_palm_tree", () -> new NormalPalmTreeFeature(NoneFeatureConfiguration.CODEC));
     public static final RegistryObject<PalmTreeFeature> CURVED_PALM_TREE = register("curved_palm_tree", () -> new CurvedPalmTreeFeature(NoneFeatureConfiguration.CODEC));
@@ -46,8 +42,6 @@ public class TropicraftFeatures {
     public static final RegistryObject<RainforestVinesFeature> VINES = register("rainforest_vines", () -> new RainforestVinesFeature(RainforestVinesConfig.CODEC));
     public static final RegistryObject<UndergroundSeaPickleFeature> UNDERGROUND_SEA_PICKLE = register("underground_sea_pickle", () -> new UndergroundSeaPickleFeature(NoneFeatureConfiguration.CODEC));
 
-    public static final RegistryObject<StructureFeature<JigsawConfiguration>> KOA_VILLAGE = registerStructure("koa_village", new KoaVillageStructure(JigsawConfiguration.CODEC), GenerationStep.Decoration.SURFACE_STRUCTURES);
-    public static final RegistryObject<StructureFeature<JigsawConfiguration>> HOME_TREE = registerStructure("home_tree", new HomeTreeStructure(JigsawConfiguration.CODEC, HomeTreeStructure::checkLocation), GenerationStep.Decoration.SURFACE_STRUCTURES);
     public static final RegistryObject<CoffeePlantFeature> COFFEE_BUSH = register("coffee_bush", () -> new CoffeePlantFeature(NoneFeatureConfiguration.CODEC));
 
     public static final RegistryObject<ReedsFeature> REEDS = register("reeds", () -> new ReedsFeature(NoneFeatureConfiguration.CODEC));
@@ -56,11 +50,6 @@ public class TropicraftFeatures {
 
     private static <T extends Feature<?>> RegistryObject<T> register(final String name, final Supplier<T> sup) {
         return FEATURES.register(name, sup);
-    }
-
-    private static <T extends StructureFeature<?>> RegistryObject<T> registerStructure(final String name, T structure, GenerationStep.Decoration step) {
-        StructureFeature.STEP.put(structure, step);
-        return STRUCTURES.register(name, () -> structure);
     }
 
     public static <T> Holder<T> holderOf(RegistryObject<T> object) {

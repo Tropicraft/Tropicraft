@@ -3,7 +3,6 @@ package net.tropicraft.core.common.block.tileentity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -20,7 +19,7 @@ public class BambooChestBlockEntity extends ChestBlockEntity {
 
     @Override
     public Component getName() {
-        return new TranslatableComponent(Constants.MODID + ".container.bambooChest");
+        return Component.translatable(Constants.MODID + ".container.bambooChest");
     }
 
     @Override

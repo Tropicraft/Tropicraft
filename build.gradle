@@ -113,15 +113,13 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    jarJar(implementation(fg.deobf("com.tterrag.registrate:Registrate:MC${minecraft_version}-${registrate_version}"))) {
-        jarJar.ranged(it, "[MC${minecraft_version}-${registrate_version},MC1.19)")
+    jarJar(implementation(fg.deobf("com.tterrag.registrate:Registrate:MC1.19-${registrate_version}"))) {
+        jarJar.ranged(it, "[MC${minecraft_version}-${registrate_version},MC1.20)")
     }
 
     if (System.getProperty("idea.sync.active") != "true") {
         annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     }
-
-    jarJar(group: 'com.tterrag.registrate', name: 'Registrate', version: "[MC1.18.2,MC1.19)")
 }
 
 jar {

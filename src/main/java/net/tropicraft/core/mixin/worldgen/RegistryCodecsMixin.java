@@ -39,18 +39,12 @@ public class RegistryCodecsMixin<E> {
         if (overworld == null) {
             return;
         }
-
-        // steal the seed from the overworld chunk generator.
-        // not necessarily the world seed if a datapack changes it, but it's probably a safe bet.
-        long seed = overworld.generator().ringPlacementSeed;
-
         LevelStem dimension = TropicraftDimension.createDimension(
                 registryOrThrow(ops, Registry.DIMENSION_TYPE_REGISTRY),
                 registryOrThrow(ops, Registry.STRUCTURE_SET_REGISTRY),
                 registryOrThrow(ops, Registry.BIOME_REGISTRY),
                 registryOrThrow(ops, Registry.NOISE_GENERATOR_SETTINGS_REGISTRY),
-                registryOrThrow(ops, Registry.NOISE_REGISTRY),
-                seed
+                registryOrThrow(ops, Registry.NOISE_REGISTRY)
         );
         registry.registerOrOverride(OptionalInt.empty(), TropicraftDimension.DIMENSION, dimension, Lifecycle.stable());
     }

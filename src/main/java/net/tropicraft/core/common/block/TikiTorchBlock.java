@@ -5,6 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -28,7 +29,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 import java.util.Locale;
-import java.util.Random;
 
 public class TikiTorchBlock extends Block {
 
@@ -158,7 +158,7 @@ public class TikiTorchBlock extends Block {
     }
 
     @Override
-    public void animateTick(BlockState state, Level world, BlockPos pos, Random rand) {
+    public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource rand) {
         boolean isTop = state.getValue(SECTION) == TorchSection.UPPER;
         if (isTop) {
             double d = pos.getX() + 0.5F;

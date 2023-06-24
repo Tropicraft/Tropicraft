@@ -6,6 +6,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -23,7 +24,6 @@ import net.tropicraft.core.common.network.message.MessageSifterStart;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Random;
 
 public class SifterBlockEntity extends BlockEntity {
 
@@ -36,7 +36,7 @@ public class SifterBlockEntity extends BlockEntity {
     /** Current progress in sifting; -1 if not sifting */
     private int currentSiftTime;
 
-    private Random rand;
+    private RandomSource rand;
 
     public double yaw;
     public double yaw2 = 0.0D;
@@ -46,7 +46,7 @@ public class SifterBlockEntity extends BlockEntity {
 
     public SifterBlockEntity(final BlockEntityType<SifterBlockEntity> type, final BlockPos pos, final BlockState state) {
         super(type, pos, state);
-        rand = new Random();
+        rand = RandomSource.create();
         currentSiftTime = SIFT_TIME;
     }
 

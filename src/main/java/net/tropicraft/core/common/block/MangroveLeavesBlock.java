@@ -2,10 +2,10 @@ package net.tropicraft.core.common.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
-import java.util.Random;
 import java.util.function.Supplier;
 
 public class MangroveLeavesBlock extends LeavesBlock {
@@ -25,7 +25,7 @@ public class MangroveLeavesBlock extends LeavesBlock {
     }
 
     @Override
-    public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random random) {
+    public void randomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
         super.randomTick(state, world, pos, random);
 
         if (this.canGrowPropagules(state) && random.nextInt(PROPAGULE_GROW_CHANCE) == 0) {

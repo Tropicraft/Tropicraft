@@ -1,7 +1,9 @@
 package net.tropicraft.core.common.item;
 
+import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,20 +21,20 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 
+import java.util.function.Supplier;
+
 public class DaggerItem extends Item {
 
-    private final Tier tier;
-    private final Multimap<Attribute, AttributeModifier> defaultModifiers;
+    private final Supplier<Multimap<Attribute, AttributeModifier>> defaultModifiers;
 
     public DaggerItem(Tier tier, Properties properties) {
         super(properties.defaultDurability(tier.getUses()));
-        this.tier = tier;
 
-        this.defaultModifiers = ImmutableMultimap.<Attribute, AttributeModifier>builder()
+        this.defaultModifiers = Suppliers.memoize(() -> ImmutableMultimap.<Attribute, AttributeModifier>builder()
                 .putAll(super.getAttributeModifiers(EquipmentSlot.MAINHAND, new ItemStack(this)))
                 .put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", (double) tier.getAttackDamageBonus() + 2.5D, AttributeModifier.Operation.ADDITION))
                 .put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", 0, AttributeModifier.Operation.ADDITION))
-                .build();
+                .build());
     }
 
     @Override
@@ -67,7 +69,7 @@ public class DaggerItem extends Item {
 
     @Override
     public int getUseDuration(ItemStack itemstack) {
-        return 0x11940;
+        return 60 * SharedConstants.TICKS_PER_MINUTE;
     }
 
     @Override
@@ -78,7 +80,7 @@ public class DaggerItem extends Item {
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
         if (slot == EquipmentSlot.MAINHAND) {
-            return defaultModifiers;
+            return defaultModifiers.get();
         } else {
             return super.getAttributeModifiers(slot, stack);
         }

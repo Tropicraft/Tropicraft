@@ -15,7 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.tropicraft.Constants;
 import net.tropicraft.core.client.scuba.ModelScubaGear;
 import net.tropicraft.core.common.item.ArmorMaterials;
@@ -68,17 +68,15 @@ public class ScubaArmorItem extends TropicraftArmorItem {
     }
 
     @Override
-    public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-        consumer.accept(new IItemRenderProperties() {
-
-            @Nullable
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
             @Override
-            public HumanoidModel<?> getArmorModel(LivingEntity entity, ItemStack item, EquipmentSlot armorSlot, HumanoidModel<?> _default) {
-                if (item.isEmpty()) {
+            public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlot slot, HumanoidModel<?> original) {
+                if (stack.isEmpty()) {
                     return null;
                 }
 
-                HumanoidModel<?> armorModel = getArmorModel(armorSlot);
+                HumanoidModel<?> armorModel = getArmorModel(slot);
                 if (armorModel != null) {
                     prepareModel(armorModel, entity);
                     return armorModel;

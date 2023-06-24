@@ -2,7 +2,6 @@ package net.tropicraft.core.common.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.CompoundContainer;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
@@ -65,7 +64,7 @@ public class BambooChestBlock extends ChestBlock {
                     if (left.hasCustomName()) {
                         return left.getDisplayName();
                     } else {
-                        return right.hasCustomName() ? right.getDisplayName() : new TranslatableComponent(Constants.MODID + ".container.bambooChestDouble");
+                        return right.hasCustomName() ? right.getDisplayName() : Component.translatable(Constants.MODID + ".container.bambooChestDouble");
                     }
                 }
             });

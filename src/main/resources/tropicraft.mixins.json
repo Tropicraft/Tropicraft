@@ -5,6 +5,7 @@
   "refmap": "tropicraft.refmap.json",
   "mixins": [
     "BlockEntityTypeAccessor",
+    "worldgen.JigsawPlacerMixin",
     "worldgen.LevelStemAccessor",
     "worldgen.RegistryCodecsMixin",
     "worldgen.RegistryLoaderMixin"

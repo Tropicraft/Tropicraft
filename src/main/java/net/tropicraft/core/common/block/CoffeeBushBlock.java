@@ -3,6 +3,7 @@ package net.tropicraft.core.common.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -21,8 +22,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.tropicraft.core.common.item.TropicraftItems;
-
-import java.util.Random;
 
 public class CoffeeBushBlock extends CropBlock {
 
@@ -62,7 +61,7 @@ public class CoffeeBushBlock extends CropBlock {
     }
 
     @Override
-    public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand) {
+    public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource rand) {
         // Try to grow up
         if (worldIn.isEmptyBlock(pos.above())) {
             int height;

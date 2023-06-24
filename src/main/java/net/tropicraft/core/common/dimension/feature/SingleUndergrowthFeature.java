@@ -2,14 +2,13 @@ package net.tropicraft.core.common.dimension.feature;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
-
-import java.util.Random;
 
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
 
@@ -24,7 +23,7 @@ public class SingleUndergrowthFeature extends Feature<SimpleTreeFeatureConfig> {
     public boolean place(FeaturePlaceContext<SimpleTreeFeatureConfig> context) {
         WorldGenLevel level = context.level();
         context.chunkGenerator();
-        Random rand = context.random();
+        RandomSource rand = context.random();
         BlockPos pos = context.origin();
         SimpleTreeFeatureConfig config = context.config();
 

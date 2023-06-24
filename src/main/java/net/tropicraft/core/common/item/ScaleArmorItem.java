@@ -17,7 +17,7 @@ public class ScaleArmorItem extends TropicraftArmorItem {
     public static void onLivingHurt(LivingHurtEvent event) {
         var source = event.getSource();
         if (isInvincibleToDamage(source)) {
-            for (var armor : event.getEntityLiving().getArmorSlots()) {
+            for (var armor : event.getEntity().getArmorSlots()) {
                 if (armor.getItem() instanceof ScaleArmorItem) {
                     event.setCanceled(true);
                     break;

@@ -8,6 +8,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelSimulatedRW;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.Block;
@@ -25,7 +26,6 @@ import net.tropicraft.core.common.dimension.feature.tree.TropicraftTrunkPlacers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.function.BiConsumer;
 
 public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
@@ -61,7 +61,7 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
 
 
     @Override
-    public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> acceptor, Random random, int height, BlockPos origin, TreeConfiguration config) {
+    public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> acceptor, RandomSource random, int height, BlockPos origin, TreeConfiguration config) {
         int rootLength = Mth.clamp(height - 5, MIN_LENGTH, MAX_LENGTH);
 
         boolean placeDirtOnOrigin = world.isStateAtPosition(origin.below(), b -> b.is(Blocks.GRASS_BLOCK));
@@ -117,7 +117,7 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         return depth;
     }
 
-    private void growBranches(LevelSimulatedRW world, BiConsumer<BlockPos, BlockState> acceptor, Random random, int height, BlockPos origin, TreeConfiguration config, List<FoliagePlacer.FoliageAttachment> leafNodes) {
+    private void growBranches(LevelSimulatedRW world, BiConsumer<BlockPos, BlockState> acceptor, RandomSource random, int height, BlockPos origin, TreeConfiguration config, List<FoliagePlacer.FoliageAttachment> leafNodes) {
         int count = 2 + random.nextInt(3);
 
         Direction lastDirection = null;
@@ -157,7 +157,7 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         }
     }
 
-    private void growRoots(RootSystem roots, Random random, int length) {
+    private void growRoots(RootSystem roots, RandomSource random, int length) {
         RootGrower grower = new RootGrower(roots);
         grower.growAt(RootSystem.pos(-1, 0), RootSystem.seed(Direction.WEST));
         grower.growAt(RootSystem.pos(1, 0), RootSystem.seed(Direction.EAST));
@@ -185,7 +185,7 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         }
     }
 
-    private static Direction nextFlow(Random random, Direction side) {
+    private static Direction nextFlow(RandomSource random, Direction side) {
         switch (random.nextInt(3)) {
             case 0: return side.getClockWise();
             case 1: return side.getCounterClockWise();

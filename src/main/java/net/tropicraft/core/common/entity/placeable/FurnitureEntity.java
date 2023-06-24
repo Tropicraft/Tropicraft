@@ -1,15 +1,12 @@
 package net.tropicraft.core.common.entity.placeable;
 
 import com.tterrag.registrate.util.entry.RegistryEntry;
-import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.ChatType;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -172,7 +169,7 @@ public abstract class FurnitureEntity extends Entity {
         if(pPlayer.getItemInHand(pHand).is(Items.DEBUG_STICK)){
             if(!this.level.isClientSide) {
                 this.entityData.set(GLUED_DOWN, !this.entityData.get(GLUED_DOWN));
-                ((ServerPlayer)pPlayer).sendMessage(new TranslatableComponent("Invulnerability Mode: " + (this.entityData.get(GLUED_DOWN) ? "On" : "Off")), ChatType.GAME_INFO, Util.NIL_UUID);
+                pPlayer.sendSystemMessage(Component.translatable("Invulnerability Mode: " + (this.entityData.get(GLUED_DOWN) ? "On" : "Off")));
             }
 
             return InteractionResult.SUCCESS;

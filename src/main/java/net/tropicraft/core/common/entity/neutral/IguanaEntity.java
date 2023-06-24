@@ -151,17 +151,17 @@ public class IguanaEntity extends TropicraftCreatureEntity {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return Sounds.IGGY_LIVING;
+        return Sounds.IGGY_LIVING.get();
     }
 
     @Override
     protected SoundEvent getHurtSound(final DamageSource damageSource) {
-        return Sounds.IGGY_ATTACK;
+        return Sounds.IGGY_ATTACK.get();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return Sounds.IGGY_DEATH;
+        return Sounds.IGGY_DEATH.get();
     }
 
     static class TargetAggressorGoal extends NearestAttackableTargetGoal<Player> {

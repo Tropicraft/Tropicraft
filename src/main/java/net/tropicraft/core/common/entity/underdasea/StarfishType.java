@@ -1,11 +1,11 @@
 package net.tropicraft.core.common.entity.underdasea;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 public enum StarfishType implements StringRepresentable {
 	/** The red knobbed starfish. */
@@ -78,7 +78,7 @@ public enum StarfishType implements StringRepresentable {
 	}
 	
 	public static StarfishType getRandomType() {
-		int type = new Random().nextInt(2);
+		int type = RandomSource.create().nextInt(2);
 		if (type == 0) return StarfishType.RED;
 		else return StarfishType.ROYAL;
 	}

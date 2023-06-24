@@ -111,7 +111,7 @@ public final class TropicraftTreeFeatures {
                     MANGROVE_FOLIAGE.get(),
                     MANGROVE_MINIMUM_SIZE
             )
-                    .decorators(List.of(BEEHIVE_002, PianguasTreeDecorator.REGULAR, new PneumatophoresTreeDecorator(TropicraftBlocks.LIGHT_MANGROVE_ROOTS.get(), 2, 6, 4)))
+                    .decorators(List.of(BEEHIVE_002, PianguasTreeDecorator.REGULAR, new PneumatophoresTreeDecorator(TropicraftBlocks.LIGHT_MANGROVE_ROOTS.getHolder().orElseThrow(), 2, 6, 4)))
                     .build());
 
     public static final RegistryObject<ConfiguredFeature<?, ?>> BLACK_MANGROVE = REGISTER.feature("black_mangrove", Feature.TREE, () ->
@@ -122,7 +122,7 @@ public final class TropicraftTreeFeatures {
                     MANGROVE_FOLIAGE.get(),
                     MANGROVE_MINIMUM_SIZE
             )
-                    .decorators(List.of(BEEHIVE_002, PianguasTreeDecorator.REGULAR, new PneumatophoresTreeDecorator(TropicraftBlocks.BLACK_MANGROVE_ROOTS.get(), 8, 16, 6)))
+                    .decorators(List.of(BEEHIVE_002, PianguasTreeDecorator.REGULAR, new PneumatophoresTreeDecorator(TropicraftBlocks.BLACK_MANGROVE_ROOTS.getHolder().orElseThrow(), 8, 16, 6)))
                     .build());
 
     private static TreeConfiguration fruitTree(Supplier<? extends Block> fruitLeaves) {

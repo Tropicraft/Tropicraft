@@ -159,7 +159,7 @@ public class TreeFrogEntity extends TropicraftCreatureEntity implements Enemy, R
             poison.setPos(poison.getX(), poison.getY() + 1.3999999761581421D, poison.getZ());
             final double shotHeight = (entity.getY() + (double) entity.getEyeHeight()) - 0.20000000298023224D - poison.getY();
             float f1 = Mth.sqrt((float) (d * d + d1 * d1)) * 0.2F;
-            entity.getCommandSenderWorld().playSound(null, entity.blockPosition(), Sounds.FROG_SPIT, SoundSource.HOSTILE, 1, 1);
+            entity.getCommandSenderWorld().playSound(null, entity.blockPosition(), Sounds.FROG_SPIT.get(), SoundSource.HOSTILE, 1, 1);
             level.addFreshEntity(poison);
             poison.shoot(d, shotHeight + (double) f1, d1, 0.6F, 12F);
             attackTime = 50;

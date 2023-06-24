@@ -11,10 +11,9 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.HumanoidArm;
 import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
-
-import java.util.Random;
 
 public class VMonkeyModel extends ListModel<VMonkeyEntity> implements ArmedModel {
     public ModelPart body;
@@ -31,7 +30,7 @@ public class VMonkeyModel extends ListModel<VMonkeyEntity> implements ArmedModel
     public ModelPart rLegLower;
     public ModelPart face;
     public ModelPart head;
-    protected Random rand;
+    protected RandomSource rand;
     public float herps;
 
     public VMonkeyModel(ModelPart root) {

@@ -10,6 +10,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.TicketType;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Block;
@@ -30,7 +31,6 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import java.util.function.Function;
 
 // TODO: this could do with some significant rethinking & refactoring!
@@ -214,8 +214,8 @@ public class TropicsTeleporter implements ITeleporter {
             }
         }
 
-        int worldSpawnX = Mth.floor(foundX);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
-        int worldSpawnZ = Mth.floor(foundZ);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
+        int worldSpawnX = Mth.floor(foundX);//TODO + ((RandomSource.create()).nextBoolean() ? 3 : -3);
+        int worldSpawnZ = Mth.floor(foundZ);//TODO + ((RandomSource.create()).nextBoolean() ? 3 : -3);
         int worldSpawnY = getTerrainHeightAt(worldSpawnX, worldSpawnZ);//world.getHeightValue(worldSpawnX, worldSpawnZ) - 2;
 
         // Max distance to search in every direction for the nearest landmass to build a bridge to
@@ -225,7 +225,7 @@ public class TropicsTeleporter implements ITeleporter {
         // just put the portal at sea level
         if (closestSpot < 0.0D) {
             // Perhaps this was the culprit
-            Random r = new Random();
+            RandomSource r = RandomSource.create();
             foundX += r.nextInt(16) - 8;
             foundZ += r.nextInt(16) - 8;
 
@@ -381,7 +381,7 @@ public class TropicsTeleporter implements ITeleporter {
                 ChunkPos columnPos = new ChunkPos(entry.getLongKey());
                 DimensionType dimension = this.world.getLevel().dimensionType();
                 LOGGER.debug("Removing tropics portal ticket for {}:{}", dimension, columnPos);
-                this.world.getChunkSource().registerTickingTicket(TicketType.PORTAL, columnPos, 3, position.pos);
+                this.world.getChunkSource().addRegionTicket(TicketType.PORTAL, columnPos, 3, position.pos);
                 iterator.remove();
             }
         }

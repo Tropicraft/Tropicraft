@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.item;
 
+import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.sounds.SoundEvents;
@@ -20,42 +21,41 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.tropicraft.core.common.entity.projectile.SpearEntity;
 
+import java.util.function.Supplier;
+
 public class SpearItem extends TridentItem {
 
 	private final Tier tier;
 
-	private final Multimap<Attribute, AttributeModifier> defaultModifiers;
+	private final Supplier<Multimap<Attribute, AttributeModifier>> defaultModifiers;
 
 	public SpearItem(Tier tier, int attackDamage, float attackSpeed, Properties properties) {
 		super(properties.defaultDurability(tier.getUses()));
 		this.tier = tier;
 
-		this.defaultModifiers = ImmutableMultimap.<Attribute, AttributeModifier>builder()
+		this.defaultModifiers = Suppliers.memoize(() -> ImmutableMultimap.<Attribute, AttributeModifier>builder()
 				.putAll(super.getAttributeModifiers(EquipmentSlot.MAINHAND, new ItemStack(this)))
 				.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", attackDamage, AttributeModifier.Operation.ADDITION))
 				.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", attackSpeed, AttributeModifier.Operation.ADDITION))
-				.build();
+				.build());
 	}
 
 	@Override
-	public void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
-		if (entityLiving instanceof Player) {
-			Player player = (Player) entityLiving;
+	public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft) {
+		if (entity instanceof Player player) {
 			int i = this.getUseDuration(stack) - timeLeft;
 			if (i >= 10) {
-				if (!worldIn.isClientSide) {
-					stack.hurtAndBreak(1, player, (p_43388_) -> {
-						p_43388_.broadcastBreakEvent(entityLiving.getUsedItemHand());
-					});
+				if (!level.isClientSide) {
+					stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(entity.getUsedItemHand()));
 
-					SpearEntity thrownspear = new SpearEntity(worldIn, player, stack);
-					thrownspear.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.5F, 1.0F);
+					SpearEntity spear = new SpearEntity(level, player, stack);
+					spear.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.5F, 1.0F);
 					if (player.getAbilities().instabuild) {
-						thrownspear.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
+						spear.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
 					}
 
-					worldIn.addFreshEntity(thrownspear);
-					worldIn.playSound((Player) null, thrownspear, SoundEvents.TRIDENT_THROW, SoundSource.PLAYERS, 1.0F, 1.0F);
+					level.addFreshEntity(spear);
+					level.playSound(null, spear, SoundEvents.TRIDENT_THROW, SoundSource.PLAYERS, 1.0F, 1.0F);
 					if (!player.getAbilities().instabuild) {
 						player.getInventory().removeItem(stack);
 					}
@@ -69,11 +69,11 @@ public class SpearItem extends TridentItem {
 
 	@Override
 	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
-		return slot == EquipmentSlot.MAINHAND ? this.defaultModifiers : super.getAttributeModifiers(slot, stack);
+		return slot == EquipmentSlot.MAINHAND ? this.defaultModifiers.get() : super.getAttributeModifiers(slot, stack);
 	}
 
 	@Override
-	public int getItemEnchantability(ItemStack stack) {
+	public int getEnchantmentValue(ItemStack stack) {
 		return this.tier.getEnchantmentValue();
 	}
 

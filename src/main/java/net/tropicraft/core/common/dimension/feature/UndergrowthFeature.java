@@ -2,6 +2,7 @@ package net.tropicraft.core.common.dimension.feature;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelSimulatedRW;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
@@ -10,8 +11,6 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.tropicraft.core.common.block.TropicraftBlocks;
-
-import java.util.Random;
 
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
 
@@ -25,7 +24,7 @@ public class UndergrowthFeature extends Feature<NoneFeatureConfiguration> {
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
         WorldGenLevel world = context.level();
-        Random rand = context.random();
+        RandomSource rand = context.random();
         BlockPos pos = context.origin();
 
         int size = 2;

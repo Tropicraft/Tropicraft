@@ -3,12 +3,11 @@ package net.tropicraft.core.common.dimension.feature.tree;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-
-import java.util.Random;
 
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.isBBAvailable;
@@ -21,9 +20,8 @@ public class LargePalmTreeFeature extends PalmTreeFeature {
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
         WorldGenLevel world = context.level();
-        Random random = context.random();
+        RandomSource random = context.random();
         BlockPos pos = context.origin();
-        NoneFeatureConfiguration config = context.config();
         pos = pos.immutable();
 
         int height = random.nextInt(7) + 7;
