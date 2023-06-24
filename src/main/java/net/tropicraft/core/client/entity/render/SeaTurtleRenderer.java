@@ -18,6 +18,7 @@ public class SeaTurtleRenderer extends MobRenderer<SeaTurtleEntity, SeaTurtleMod
         shadowStrength = 0.5f;
     }
 
+    @Override
     public void render(SeaTurtleEntity turtle, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource bufferIn, int packedLightIn) {
         float scale = 0.3f;
         final float existingTime = (float) turtle.tickCount / 4000;

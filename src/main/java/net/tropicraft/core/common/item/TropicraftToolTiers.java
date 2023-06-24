@@ -30,26 +30,32 @@ public enum TropicraftToolTiers implements Tier {
         this.repairMaterial = new LazyLoadedValue<>(repairMaterialIn);
     }
 
+    @Override
     public int getUses() {
         return this.maxUses;
     }
 
+    @Override
     public float getSpeed() {
         return this.efficiency;
     }
 
+    @Override
     public float getAttackDamageBonus() {
         return this.attackDamage;
     }
 
+    @Override
     public int getLevel() {
         return this.harvestLevel;
     }
 
+    @Override
     public int getEnchantmentValue() {
         return this.enchantability;
     }
 
+    @Override
     public Ingredient getRepairIngredient() {
         return this.repairMaterial.get();
     }

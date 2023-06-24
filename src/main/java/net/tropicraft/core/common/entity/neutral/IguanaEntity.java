@@ -122,6 +122,7 @@ public class IguanaEntity extends TropicraftCreatureEntity {
         super.customServerAiStep();
     }
 
+    @Override
     public boolean hurt(DamageSource damageSource, float amount) {
         if (isInvulnerableTo(damageSource)) {
             return false;
@@ -168,6 +169,7 @@ public class IguanaEntity extends TropicraftCreatureEntity {
             super(iggy, Player.class, true);
         }
 
+        @Override
         public boolean canUse() {
             return ((IguanaEntity)this.mob).isAngry() && super.canUse();
         }
@@ -179,6 +181,7 @@ public class IguanaEntity extends TropicraftCreatureEntity {
             this.setAlertOthers(IguanaEntity.class);
         }
 
+        @Override
         protected void alertOther(Mob mob, LivingEntity target) {
             if (mob instanceof IguanaEntity && this.mob.hasLineOfSight(target) && ((IguanaEntity)mob).becomeAngryAt(target)) {
                 mob.setTarget(target);

@@ -22,6 +22,7 @@ public class PoisonBlotRenderer extends EntityRenderer<PoisonBlotEntity> {
         super(context);
     }
 
+    @Override
     public void render(final PoisonBlotEntity entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource bufferIn, int packedLightIn) {
         stack.pushPose();
         stack.mulPose(this.entityRenderDispatcher.cameraOrientation());

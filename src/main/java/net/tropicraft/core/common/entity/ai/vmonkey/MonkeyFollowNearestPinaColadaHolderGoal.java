@@ -78,6 +78,7 @@ public class MonkeyFollowNearestPinaColadaHolderGoal extends Goal {
         monkey.setPathfindingMalus(BlockPathTypes.WATER, oldWaterCost);
     }
 
+    @Override
     public void tick() {
         LivingEntity following = monkey.getFollowing();
         if (following != null && !monkey.isLeashed()) {

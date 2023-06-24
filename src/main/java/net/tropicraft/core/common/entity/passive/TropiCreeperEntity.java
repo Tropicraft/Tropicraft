@@ -127,6 +127,7 @@ public class TropiCreeperEntity extends PathfinderMob {
     /**
      * Called to update the entity's position/logic.
      */
+    @Override
     public void tick() {
         if (this.isAlive()) {
             this.prevTimeSinceIgnited = this.timeSinceIgnited;

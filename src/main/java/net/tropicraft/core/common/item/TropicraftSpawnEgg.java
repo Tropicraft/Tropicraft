@@ -39,6 +39,7 @@ public class TropicraftSpawnEgg<T extends Entity> extends Item {
         this.typeIn = type;
     }
 
+    @Override
     public InteractionResult useOn(UseOnContext context) {
         Level world = context.getLevel();
         if (world.isClientSide) {
@@ -78,6 +79,7 @@ public class TropicraftSpawnEgg<T extends Entity> extends Item {
         }
     }
 
+    @Override
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
         ItemStack heldItem = player.getItemInHand(hand);
         if (world.isClientSide) {

@@ -104,6 +104,7 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
 	@Override
 	protected PathNavigation createNavigation(Level worldIn) {
 		FlyingPathNavigation flyingpathnavigator = new FlyingPathNavigation(this, worldIn) {
+			@Override
 			public boolean isStableDestination(BlockPos pos) {
 				return !this.level.getBlockState(pos.below()).isAir();
 			}

@@ -20,6 +20,7 @@ public class CowktailLayer<T extends CowktailEntity> extends RenderLayer<T, CowM
       super(rendererIn);
    }
 
+   @Override
    public void render(PoseStack stack, MultiBufferSource bufferIn, int packedLightIn, T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
       if (!entitylivingbaseIn.isBaby() && !entitylivingbaseIn.isInvisible()) {
          BlockRenderDispatcher renderer = Minecraft.getInstance().getBlockRenderer();
