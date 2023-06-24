@@ -15,12 +15,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.network.PacketDistributor;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.network.TropicraftPackets;
 import net.tropicraft.core.common.network.message.MessageSifterInventory;
-import net.tropicraft.core.common.network.message.MessageSifterStart;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -167,7 +167,7 @@ public class SifterBlockEntity extends BlockEntity {
         currentSiftTime = SIFT_TIME;
 
         if (!level.isClientSide) {
-            TropicraftPackets.sendToDimension(new MessageSifterStart(this), level);
+            TropicraftPackets.CHANNEL.send(PacketDistributor.DIMENSION.with(level::dimension), new MessageSifterStart(this));
         }
     }
 
@@ -228,7 +228,7 @@ public class SifterBlockEntity extends BlockEntity {
 
     protected void syncInventory() {
         if (!level.isClientSide()) {
-            TropicraftPackets.sendToDimension(new MessageSifterInventory(this), level);
+            TropicraftPackets.CHANNEL.send(PacketDistributor.DIMENSION.with(level::dimension), new MessageSifterInventory(this));
         }
     }
 

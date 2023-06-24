@@ -211,7 +211,7 @@ public class ScubaData implements INBTSerializable<CompoundTag> {
     
     void updateClient(ServerPlayer target, boolean force) {
         if (dirty || force) {
-            TropicraftPackets.INSTANCE.send(PacketDistributor.PLAYER.with(() -> target), new MessageUpdateScubaData(this));
+            TropicraftPackets.CHANNEL.send(PacketDistributor.PLAYER.with(() -> target), new MessageUpdateScubaData(this));
         }
     }
 
