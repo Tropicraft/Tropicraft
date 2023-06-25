@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "tropicraft:mangrove_button",
+    "tropicraft:mahogany_button",
+    "tropicraft:palm_button",
+    "tropicraft:bamboo_button",
+    "tropicraft:thatch_button"
+  ]
+}

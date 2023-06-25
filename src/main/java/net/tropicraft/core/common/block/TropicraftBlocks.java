@@ -33,6 +33,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ItemLike;
@@ -526,6 +527,12 @@ public class TropicraftBlocks {
     public static final BlockEntry<FenceGateBlock> MANGROVE_FENCE_GATE = fenceGate("mangrove_fence_gate", MANGROVE_PLANKS).register();
     public static final BlockEntry<DoorBlock> MANGROVE_DOOR = woodenDoor("mangrove_door", MANGROVE_PLANKS).register();
     public static final BlockEntry<TrapDoorBlock> MANGROVE_TRAPDOOR = trapdoor("mangrove_trapdoor", MANGROVE_PLANKS).register();
+
+    public static final BlockEntry<WoodButtonBlock> MANGROVE_BUTTON = woodButton("mangrove_button", MANGROVE_PLANKS, "mangrove_planks").register();
+    public static final BlockEntry<WoodButtonBlock> MAHOGANY_BUTTON = woodButton("mahogany_button", MAHOGANY_PLANKS, "mahogany_planks").register();
+    public static final BlockEntry<WoodButtonBlock> PALM_BUTTON = woodButton("palm_button", PALM_PLANKS, "palm_planks").register();
+    public static final BlockEntry<WoodButtonBlock> BAMBOO_BUTTON = woodButton("bamboo_button", BAMBOO_BUNDLE, "bamboo_end").register();
+    public static final BlockEntry<WoodButtonBlock> THATCH_BUTTON = woodButton("thatch_button", THATCH_BUNDLE, "thatch_end").register();
 
     public static final BlockEntry<ReedsBlock> REEDS = REGISTRATE.block("reeds", ReedsBlock::new)
             .initialProperties(() -> Blocks.SUGAR_CANE)
@@ -1143,6 +1150,21 @@ public class TropicraftBlocks {
                 .item()
                     .tag(itemTag)
                     .build();
+    }
+
+    private static BlockBuilder<WoodButtonBlock, Registrate> woodButton(String name, BlockEntry<? extends Block> block, String texture) {
+        return REGISTRATE.block(name, WoodButtonBlock::new)
+            .initialProperties(block)
+            .tag(BlockTags.WOODEN_BUTTONS, BlockTags.MINEABLE_WITH_AXE)
+            .blockstate((ctx, prov) -> prov.buttonBlock(ctx.get(), prov.modLoc("block/" + texture)))
+            .recipe((ctx, prov) -> RegistrateRecipeProvider.buttonBuilder(ctx.get(), DataIngredient.items(block.get()))
+                    .unlockedBy("has_" + prov.safeName(block.get()), has(block.get()))
+                    .group("wooden_button")
+                    .save(prov))
+            .item()
+            .model((ctx, prov) -> prov.buttonInventory(ctx.getName(), prov.modLoc("block/" + texture)))
+                .tag(ItemTags.WOODEN_BUTTONS)
+                .build();
     }
 
     @SafeVarargs

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "wooden_button",
+  "ingredients": [
+    {
+      "item": "tropicraft:bamboo_bundle"
+    }
+  ],
+  "result": {
+    "item": "tropicraft:bamboo_button"
+  }
+}

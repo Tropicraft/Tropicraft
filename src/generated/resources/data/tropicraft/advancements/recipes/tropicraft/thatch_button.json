@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tropicraft:thatch_button"
+    ]
+  },
+  "criteria": {
+    "has_thatch_bundle": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tropicraft:thatch_bundle"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tropicraft:thatch_button"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_thatch_bundle",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "wooden_button",
+  "ingredients": [
+    {
+      "item": "tropicraft:mahogany_planks"
+    }
+  ],
+  "result": {
+    "item": "tropicraft:mahogany_button"
+  }
+}
