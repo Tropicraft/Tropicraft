@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:simple_block",
+  "config": {
+    "to_place": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "tropicraft:pineapple",
+        "Properties": {
+          "age": "0",
+          "half": "lower"
+        }
+      }
+    }
+  }
+}

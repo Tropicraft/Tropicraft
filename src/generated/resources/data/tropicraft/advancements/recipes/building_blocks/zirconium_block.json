@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "tropicraft:zirconium_block"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_zirconium_gem": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tropicraft:zirconium_gem"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_zirconium_gem",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "tropicraft:zirconium_block"
+    ]
+  },
+  "sends_telemetry_event": false
+}

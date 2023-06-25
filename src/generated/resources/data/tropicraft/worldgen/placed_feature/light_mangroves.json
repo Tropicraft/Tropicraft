@@ -1,0 +1,13 @@
+{
+  "feature": {
+    "type": "minecraft:simple_random_selector",
+    "config": {
+      "features": [
+        "tropicraft:tall_mangrove_checked",
+        "tropicraft:tea_mangrove_checked",
+        "tropicraft:black_mangrove_checked"
+      ]
+    }
+  },
+  "placement": []
+}

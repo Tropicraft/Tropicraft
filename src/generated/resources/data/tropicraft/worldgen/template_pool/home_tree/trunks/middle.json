@@ -1,0 +1,41 @@
+{
+  "elements": [
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "tropicraft:home_tree/trunks/middle/trunk_0",
+        "processors": "tropicraft:home_tree/base",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "tropicraft:home_tree/trunks/middle/trunk_1",
+        "processors": "tropicraft:home_tree/base",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "tropicraft:home_tree/trunks/middle/trunk_1_iguanas",
+        "processors": "tropicraft:home_tree/base",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "tropicraft:home_tree/trunks/middle/trunk_1_ashen",
+        "processors": "tropicraft:home_tree/base",
+        "projection": "rigid"
+      },
+      "weight": 1
+    }
+  ],
+  "fallback": "minecraft:empty"
+}

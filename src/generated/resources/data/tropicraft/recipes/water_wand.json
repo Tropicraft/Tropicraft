@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "equipment",
   "key": {
     "X": {
       "item": "tropicraft:azurite_gem"
@@ -15,5 +16,6 @@
   ],
   "result": {
     "item": "tropicraft:water_wand"
-  }
+  },
+  "show_notification": true
 }

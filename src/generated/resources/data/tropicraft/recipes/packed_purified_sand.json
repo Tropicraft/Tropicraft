@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "building",
   "key": {
     "X": {
       "item": "tropicraft:purified_sand"
@@ -11,5 +12,6 @@
   ],
   "result": {
     "item": "tropicraft:packed_purified_sand"
-  }
+  },
+  "show_notification": true
 }

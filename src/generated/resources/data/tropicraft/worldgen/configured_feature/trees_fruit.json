@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:simple_random_selector",
+  "config": {
+    "features": [
+      "tropicraft:grapefruit_tree_checked",
+      "tropicraft:orange_tree_checked",
+      "tropicraft:lemon_tree_checked",
+      "tropicraft:lime_tree_checked"
+    ]
+  }
+}

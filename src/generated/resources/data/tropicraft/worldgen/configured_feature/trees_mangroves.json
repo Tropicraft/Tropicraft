@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:random_boolean_selector",
+  "config": {
+    "feature_false": "tropicraft:light_mangroves",
+    "feature_true": "tropicraft:red_mangrove_checked"
+  }
+}

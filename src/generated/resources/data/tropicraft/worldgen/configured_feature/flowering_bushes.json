@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:simple_random_selector",
+  "config": {
+    "features": [
+      {
+        "feature": "tropicraft:red_flowering_bush",
+        "placement": []
+      },
+      {
+        "feature": "tropicraft:white_flowering_bush",
+        "placement": []
+      },
+      {
+        "feature": "tropicraft:blue_flowering_bush",
+        "placement": []
+      },
+      {
+        "feature": "tropicraft:purple_flowering_bush",
+        "placement": []
+      },
+      {
+        "feature": "tropicraft:yellow_flowering_bush",
+        "placement": []
+      }
+    ]
+  }
+}

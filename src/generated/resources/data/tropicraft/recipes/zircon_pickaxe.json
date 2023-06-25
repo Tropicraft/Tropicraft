@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "equipment",
   "key": {
     "B": {
       "item": "tropicraft:bamboo_stick"
@@ -15,5 +16,6 @@
   ],
   "result": {
     "item": "tropicraft:zircon_pickaxe"
-  }
+  },
+  "show_notification": true
 }

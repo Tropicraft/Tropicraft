@@ -1,0 +1,18 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 916865926,
+    "separation": 16,
+    "spacing": 64
+  },
+  "structures": [
+    {
+      "structure": "tropicraft:ocean_volcano",
+      "weight": 1
+    },
+    {
+      "structure": "tropicraft:land_volcano",
+      "weight": 1
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "type": "tropicraft:single_undergrowth",
+  "config": {
+    "leaves": {
+      "Name": "tropicraft:kapok_leaves",
+      "Properties": {
+        "distance": "7",
+        "persistent": "false",
+        "waterlogged": "false"
+      }
+    },
+    "log": {
+      "Name": "tropicraft:mahogany_log",
+      "Properties": {
+        "axis": "y"
+      }
+    }
+  }
+}

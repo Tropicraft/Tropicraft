@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "X": {
       "item": "minecraft:yellow_stained_glass_pane"
@@ -14,5 +15,6 @@
   ],
   "result": {
     "item": "tropicraft:yellow_pony_bottle"
-  }
+  },
+  "show_notification": true
 }

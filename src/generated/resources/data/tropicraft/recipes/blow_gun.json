@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "equipment",
   "key": {
     "I": {
       "item": "tropicraft:zircon_gem"
@@ -15,5 +16,6 @@
   ],
   "result": {
     "item": "tropicraft:blow_gun"
-  }
+  },
+  "show_notification": true
 }

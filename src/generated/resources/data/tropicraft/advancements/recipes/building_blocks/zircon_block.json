@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "tropicraft:zircon_block"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_zircon_gem": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tropicraft:zircon_gem"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_zircon_gem",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "tropicraft:zircon_block"
+    ]
+  },
+  "sends_telemetry_event": false
+}

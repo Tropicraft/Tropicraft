@@ -528,7 +528,7 @@
   "item.tropicraft.zirconium_pickaxe": "Zirconium Pickaxe",
   "item.tropicraft.zirconium_shovel": "Zirconium Shovel",
   "item.tropicraft.zirconium_sword": "Zirconium Sword",
-  "itemGroup.tropicraft": "Tropicraft",
+  "itemGroup.tropicraft.tropicraft": "Tropicraft",
   "scuba.tropicraft.air_time": "Air Remaining: %s",
   "scuba.tropicraft.depth": "Current Depth: %s",
   "scuba.tropicraft.dive_time": "Dive Time: %s",

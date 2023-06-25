@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "X": {
       "item": "minecraft:bamboo"
@@ -15,5 +16,6 @@
   ],
   "result": {
     "item": "tropicraft:bamboo_item_frame"
-  }
+  },
+  "show_notification": true
 }

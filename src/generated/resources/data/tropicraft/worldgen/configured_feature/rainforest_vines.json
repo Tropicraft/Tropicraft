@@ -1,0 +1,8 @@
+{
+  "type": "tropicraft:rainforest_vines",
+  "config": {
+    "height": 256,
+    "rolls_per_y": 1,
+    "xz_spread": 4
+  }
+}

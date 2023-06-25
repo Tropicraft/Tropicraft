@@ -1,0 +1,185 @@
+{
+  "carvers": {
+    "air": [
+      "tropicraft:cave",
+      "tropicraft:canyon"
+    ]
+  },
+  "downfall": 2.0,
+  "effects": {
+    "fog_color": 12248771,
+    "sky_color": 7907327,
+    "water_color": 5172447,
+    "water_fog_color": 270131
+  },
+  "features": [
+    [],
+    [],
+    [
+      "minecraft:amethyst_geode"
+    ],
+    [],
+    [],
+    [],
+    [
+      "minecraft:ore_dirt",
+      "minecraft:ore_gravel",
+      "minecraft:ore_granite_upper",
+      "minecraft:ore_granite_lower",
+      "minecraft:ore_diorite_upper",
+      "minecraft:ore_diorite_lower",
+      "minecraft:ore_andesite_upper",
+      "minecraft:ore_andesite_lower",
+      "minecraft:ore_tuff",
+      "minecraft:ore_coal_upper",
+      "minecraft:ore_coal_lower",
+      "minecraft:ore_iron_upper",
+      "minecraft:ore_iron_middle",
+      "minecraft:ore_iron_small",
+      "minecraft:ore_gold",
+      "minecraft:ore_gold_lower",
+      "minecraft:ore_redstone",
+      "minecraft:ore_redstone_lower",
+      "minecraft:ore_diamond",
+      "minecraft:ore_diamond_large",
+      "minecraft:ore_diamond_buried",
+      "minecraft:ore_lapis",
+      "minecraft:ore_lapis_buried",
+      "minecraft:ore_copper",
+      "minecraft:underwater_magma",
+      "tropicraft:azurite",
+      "tropicraft:eudialyte",
+      "tropicraft:zircon"
+    ],
+    [],
+    [],
+    [
+      "minecraft:glow_lichen",
+      "tropicraft:bush_flowering_rare",
+      "tropicraft:trees_rainforest",
+      "tropicraft:trees_papaya",
+      "tropicraft:tropi_seagrass",
+      "tropicraft:seagrass",
+      "minecraft:patch_grass_jungle",
+      "minecraft:bamboo_light",
+      "minecraft:patch_melon",
+      "tropicraft:rainforest_vines",
+      "tropicraft:coffee_bush",
+      "tropicraft:single_undergrowth",
+      "tropicraft:flowers_rainforest",
+      "tropicraft:undergrowth",
+      "tropicraft:bamboo"
+    ]
+  ],
+  "has_precipitation": true,
+  "spawn_costs": {},
+  "spawners": {
+    "ambient": [],
+    "axolotls": [],
+    "creature": [
+      {
+        "type": "minecraft:ocelot",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 10
+      },
+      {
+        "type": "minecraft:parrot",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 10
+      },
+      {
+        "type": "tropicraft:tree_frog",
+        "maxCount": 5,
+        "minCount": 2,
+        "weight": 25
+      },
+      {
+        "type": "tropicraft:tropi_spider",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 30
+      }
+    ],
+    "misc": [],
+    "monster": [
+      {
+        "type": "minecraft:parrot",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 15
+      },
+      {
+        "type": "tropicraft:v_monkey",
+        "maxCount": 3,
+        "minCount": 1,
+        "weight": 15
+      },
+      {
+        "type": "tropicraft:iguana",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 15
+      },
+      {
+        "type": "tropicraft:tropicreeper",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 4
+      },
+      {
+        "type": "tropicraft:eih",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 5
+      },
+      {
+        "type": "tropicraft:tropiskelly",
+        "maxCount": 4,
+        "minCount": 2,
+        "weight": 8
+      },
+      {
+        "type": "tropicraft:tropi_spider",
+        "maxCount": 2,
+        "minCount": 2,
+        "weight": 8
+      },
+      {
+        "type": "tropicraft:tapir",
+        "maxCount": 4,
+        "minCount": 2,
+        "weight": 15
+      },
+      {
+        "type": "tropicraft:white_lipped_peccary",
+        "maxCount": 4,
+        "minCount": 2,
+        "weight": 15
+      },
+      {
+        "type": "tropicraft:jaguar",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 5
+      },
+      {
+        "type": "tropicraft:hummingbird",
+        "maxCount": 5,
+        "minCount": 3,
+        "weight": 10
+      },
+      {
+        "type": "tropicraft:spider_monkey",
+        "maxCount": 8,
+        "minCount": 5,
+        "weight": 15
+      }
+    ],
+    "underground_water_creature": [],
+    "water_ambient": [],
+    "water_creature": []
+  },
+  "temperature": 1.5
+}

@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "X": {
       "item": "tropicraft:chunk"
@@ -15,5 +16,6 @@
   ],
   "result": {
     "item": "tropicraft:air_compressor"
-  }
+  },
+  "show_notification": true
 }

@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "X": {
       "item": "minecraft:bamboo"
@@ -11,5 +12,6 @@
   ],
   "result": {
     "item": "tropicraft:bamboo_stick"
-  }
+  },
+  "show_notification": true
 }

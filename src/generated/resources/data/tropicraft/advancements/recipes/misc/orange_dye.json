@@ -30,5 +30,6 @@
     "recipes": [
       "tropicraft:orange_dye"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "X": {
       "item": "minecraft:pink_dye"
@@ -15,5 +16,6 @@
   ],
   "result": {
     "item": "tropicraft:pink_scuba_flippers"
-  }
+  },
+  "show_notification": true
 }

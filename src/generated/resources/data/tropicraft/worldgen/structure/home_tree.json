@@ -1,0 +1,8 @@
+{
+  "type": "tropicraft:home_tree",
+  "biomes": "#tropicraft:has_structure/home_tree",
+  "size": 7,
+  "spawn_overrides": {},
+  "start_pool": "tropicraft:home_tree/starts",
+  "step": "surface_structures"
+}

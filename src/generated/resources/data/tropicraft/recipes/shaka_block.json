@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "building",
   "key": {
     "X": {
       "item": "tropicraft:shaka_ingot"
@@ -12,5 +13,6 @@
   ],
   "result": {
     "item": "tropicraft:shaka_block"
-  }
+  },
+  "show_notification": true
 }

@@ -31,5 +31,6 @@
       ],
       "rolls": 3.0
     }
-  ]
+  ],
+  "random_sequence": "tropicraft:entities/iguana"
 }

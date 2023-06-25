@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "X": {
       "item": "minecraft:yellow_dye"
@@ -15,5 +16,6 @@
   ],
   "result": {
     "item": "tropicraft:yellow_scuba_flippers"
-  }
+  },
+  "show_notification": true
 }

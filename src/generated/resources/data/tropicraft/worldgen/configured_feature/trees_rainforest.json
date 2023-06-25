@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:random_selector",
+  "config": {
+    "default": "tropicraft:rainforest_tall_tree_checked",
+    "features": [
+      {
+        "chance": 0.2,
+        "feature": "tropicraft:rainforest_up_tree_checked"
+      },
+      {
+        "chance": 0.25,
+        "feature": "tropicraft:rainforest_small_tualung_checked"
+      },
+      {
+        "chance": 0.5,
+        "feature": "tropicraft:rainforest_large_tualung_checked"
+      }
+    ]
+  }
+}

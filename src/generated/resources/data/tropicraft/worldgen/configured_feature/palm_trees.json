@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:simple_random_selector",
+  "config": {
+    "features": [
+      {
+        "feature": "tropicraft:normal_palm_tree",
+        "placement": []
+      },
+      {
+        "feature": "tropicraft:curved_palm_tree",
+        "placement": []
+      },
+      {
+        "feature": "tropicraft:large_palm_tree",
+        "placement": []
+      }
+    ]
+  }
+}
