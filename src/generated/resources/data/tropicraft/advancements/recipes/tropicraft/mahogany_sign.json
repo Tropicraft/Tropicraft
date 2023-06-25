@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tropicraft:mahogany_sign"
+    ]
+  },
+  "criteria": {
+    "has_mahogany": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tropicraft:mahogany_planks"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tropicraft:mahogany_sign"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_mahogany",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -21,9 +21,8 @@ import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.FlowerPotBlock;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.common.Tags;
@@ -38,6 +37,7 @@ import net.tropicraft.core.common.Foods;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.block.TropicraftFlower;
+import net.tropicraft.core.common.block.TropicraftWoodTypes;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.entity.TropicraftEntities;
@@ -645,12 +645,34 @@ public class TropicraftItems {
 
     public static final ItemEntry<Item> PIANGUAS = simpleItem("pianguas").register();
 
+    public static final ItemEntry<SignItem> MAHOGANY_SIGN = sign(TropicraftWoodTypes.MAHOGANY, TropicraftBlocks.MAHOGANY_PLANKS, TropicraftBlocks.MAHOGANY_SIGN, TropicraftBlocks.MAHOGANY_WALL_SIGN).register();
+    public static final ItemEntry<SignItem> PALM_SIGN = sign(TropicraftWoodTypes.PALM, TropicraftBlocks.PALM_PLANKS, TropicraftBlocks.PALM_SIGN, TropicraftBlocks.PALM_WALL_SIGN).register();
+    public static final ItemEntry<SignItem> BAMBOO_SIGN = sign(TropicraftWoodTypes.BAMBOO, TropicraftBlocks.BAMBOO_BUNDLE, TropicraftBlocks.BAMBOO_SIGN, TropicraftBlocks.BAMBOO_WALL_SIGN).register();
+    public static final ItemEntry<SignItem> THATCH_SIGN = sign(TropicraftWoodTypes.THATCH, TropicraftBlocks.THATCH_BUNDLE, TropicraftBlocks.THATCH_SIGN, TropicraftBlocks.THATCH_WALL_SIGN).register();
+    public static final ItemEntry<SignItem> MANGROVE_SIGN = sign(TropicraftWoodTypes.MANGROVE, TropicraftBlocks.MANGROVE_PLANKS, TropicraftBlocks.MANGROVE_SIGN, TropicraftBlocks.MANGROVE_WALL_SIGN).register();
+
     private static ItemBuilder<Item, Registrate> simpleItem(String name) {
         return REGISTRATE.item(name, Item::new);
     }
 
     private static ItemBuilder<Item, Registrate> food(final String name, final FoodProperties food) {
         return simpleItem(name).properties(p -> p.food(food));
+    }
+
+    private static ItemBuilder<SignItem, Registrate> sign(final WoodType woodType, final Supplier<? extends Block> planks, final Supplier<? extends StandingSignBlock> standingSign, final Supplier<? extends WallSignBlock> wallSign) {
+        String woodName = new ResourceLocation(woodType.name()).getPath();
+        return REGISTRATE.item(woodName + "_sign", p -> new SignItem(p, standingSign.get(), wallSign.get()))
+                .properties(p -> p.stacksTo(16))
+                .tag(ItemTags.SIGNS)
+                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get())
+                        .pattern("###")
+                        .pattern("###")
+                        .pattern(" | ")
+                        .define('#', planks.get())
+                        .define('|', Tags.Items.RODS_WOODEN)
+                        .unlockedBy("has_" + woodName, has(planks.get()))
+                        .group("wooden_sign")
+                        .save(prov));
     }
 
     @SubscribeEvent

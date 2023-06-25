@@ -11,6 +11,7 @@ import com.tterrag.registrate.util.DataIngredient;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemEntry;
+import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import com.tterrag.registrate.util.nullness.NonNullBiFunction;
 import net.minecraft.Util;
 import net.minecraft.advancements.critereon.EnchantmentPredicate;
@@ -33,19 +34,16 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.grower.AbstractTreeGrower;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.block.state.properties.*;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
@@ -79,6 +77,7 @@ import net.tropicraft.core.common.block.jigarbov.JigarbovTorchType;
 import net.tropicraft.core.common.block.tileentity.*;
 import net.tropicraft.core.common.data.loot.MatchSwordCondition;
 import net.tropicraft.core.common.item.TropicraftItems;
+import net.tropicraft.core.mixin.BlockEntityTypeAccessor;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
@@ -100,7 +99,6 @@ import static net.minecraft.world.level.storage.loot.entries.LootItem.lootTableI
 import static net.minecraftforge.client.model.generators.ConfiguredModel.allRotations;
 import static net.minecraftforge.client.model.generators.ConfiguredModel.allYRotations;
 import static net.tropicraft.core.common.item.TropicraftItems.*;
-import static net.tropicraft.core.common.item.TropicraftItems.AZURITE;
 
 public class TropicraftBlocks {
     private static final Registrate REGISTRATE = Tropicraft.registrate();
@@ -539,6 +537,18 @@ public class TropicraftBlocks {
     public static final BlockEntry<PressurePlateBlock> PALM_PRESSURE_PLATE = pressurePlate("palm_pressure_plate", PALM_PLANKS, "palm_planks").register();
     public static final BlockEntry<PressurePlateBlock> BAMBOO_PRESSURE_PLATE = pressurePlate("bamboo_pressure_plate", BAMBOO_BUNDLE, "bamboo_end").register();
     public static final BlockEntry<PressurePlateBlock> THATCH_PRESSURE_PLATE = pressurePlate("thatch_pressure_plate", THATCH_BUNDLE, "thatch_end").register();
+
+    public static final BlockEntry<StandingSignBlock> MAHOGANY_SIGN = standingSign(TropicraftWoodTypes.MAHOGANY, () -> TropicraftItems.MAHOGANY_SIGN.get(), "mahogany_planks").register();
+    public static final BlockEntry<StandingSignBlock> PALM_SIGN = standingSign(TropicraftWoodTypes.PALM, () -> TropicraftItems.PALM_SIGN.get(), "palm_planks").register();
+    public static final BlockEntry<StandingSignBlock> BAMBOO_SIGN = standingSign(TropicraftWoodTypes.BAMBOO, () -> TropicraftItems.BAMBOO_SIGN.get(), "bamboo_end").register();
+    public static final BlockEntry<StandingSignBlock> THATCH_SIGN = standingSign(TropicraftWoodTypes.THATCH, () -> TropicraftItems.THATCH_SIGN.get(), "thatch_end").register();
+    public static final BlockEntry<StandingSignBlock> MANGROVE_SIGN = standingSign(TropicraftWoodTypes.MANGROVE, () -> TropicraftItems.MANGROVE_SIGN.get(), "mangrove_planks").register();
+
+    public static final BlockEntry<WallSignBlock> MAHOGANY_WALL_SIGN = wallSign(TropicraftWoodTypes.MAHOGANY, () -> TropicraftItems.MAHOGANY_SIGN.get(), "mahogany_planks").register();
+    public static final BlockEntry<WallSignBlock> PALM_WALL_SIGN = wallSign(TropicraftWoodTypes.PALM, () -> TropicraftItems.PALM_SIGN.get(), "palm_planks").register();
+    public static final BlockEntry<WallSignBlock> BAMBOO_WALL_SIGN = wallSign(TropicraftWoodTypes.BAMBOO, () -> TropicraftItems.BAMBOO_SIGN.get(), "bamboo_end").register();
+    public static final BlockEntry<WallSignBlock> THATCH_WALL_SIGN = wallSign(TropicraftWoodTypes.THATCH, () -> TropicraftItems.THATCH_SIGN.get(), "thatch_end").register();
+    public static final BlockEntry<WallSignBlock> MANGROVE_WALL_SIGN = wallSign(TropicraftWoodTypes.MANGROVE, () -> TropicraftItems.MANGROVE_SIGN.get(), "mangrove_planks").register();
 
     public static final BlockEntry<ReedsBlock> REEDS = REGISTRATE.block("reeds", ReedsBlock::new)
             .initialProperties(() -> Blocks.SUGAR_CANE)
@@ -1187,6 +1197,34 @@ public class TropicraftBlocks {
                 .build();
     }
 
+    private static BlockBuilder<StandingSignBlock, Registrate> standingSign(WoodType woodType, Supplier<? extends Item> item, String texture) {
+        String woodName = new ResourceLocation(woodType.name()).getPath();
+        return REGISTRATE.block(woodName + "_sign", p -> new StandingSignBlock(p, woodType))
+                .initialProperties(() -> Blocks.OAK_SIGN)
+                .tag(BlockTags.STANDING_SIGNS, BlockTags.MINEABLE_WITH_AXE)
+                .blockstate((ctx, prov) -> {
+                    BlockModelBuilder model = prov.models().sign(woodType.name() + "_sign", prov.modLoc("block/" + texture));
+                    prov.simpleBlock(ctx.get(), model);
+                })
+                .loot((loot, b) -> loot.dropOther(b, item.get()))
+                .setData(ProviderType.LANG, NonNullBiConsumer.noop())
+                .onRegisterAfter(Registry.BLOCK_ENTITY_TYPE_REGISTRY, b -> extendBlockEntity(BlockEntityType.SIGN, b));
+    }
+
+    private static BlockBuilder<WallSignBlock, Registrate> wallSign(WoodType woodType, Supplier<? extends Item> item, String texture) {
+        String woodName = new ResourceLocation(woodType.name()).getPath();
+        return REGISTRATE.block(woodName + "_wall_sign", p -> new WallSignBlock(p, woodType))
+                .initialProperties(() -> Blocks.OAK_WALL_SIGN)
+                .tag(BlockTags.WALL_SIGNS, BlockTags.MINEABLE_WITH_AXE)
+                .blockstate((ctx, prov) -> {
+                    BlockModelBuilder model = prov.models().sign(woodType.name() + "_sign", prov.modLoc("block/" + texture));
+                    prov.simpleBlock(ctx.get(), model);
+                })
+                .loot((loot, b) -> loot.dropOther(b, item.get()))
+                .setData(ProviderType.LANG, NonNullBiConsumer.noop())
+                .onRegisterAfter(Registry.BLOCK_ENTITY_TYPE_REGISTRY, b -> extendBlockEntity(BlockEntityType.SIGN, b));
+    }
+
     @SafeVarargs
     private static BlockBuilder<SaplingBlock, Registrate> sapling(String name, AbstractTreeGrower tree, Supplier<? extends Block>... validPlantBlocks) {
         return REGISTRATE
@@ -1601,5 +1639,13 @@ public class TropicraftBlocks {
                 consumer.accept(properties.get());
             }
         };
+    }
+
+    private static void extendBlockEntity(final BlockEntityType<?> type, final Block block) {
+        ((BlockEntityTypeAccessor) type).tropicraft$setValidBlocks(ImmutableSet.<Block>builder()
+                .addAll(((BlockEntityTypeAccessor) type).tropicraft$getValidBlocks())
+                .add(block)
+                .build()
+        );
     }
 }

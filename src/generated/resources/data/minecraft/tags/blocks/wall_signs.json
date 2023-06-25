@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "tropicraft:mahogany_wall_sign",
+    "tropicraft:palm_wall_sign",
+    "tropicraft:bamboo_wall_sign",
+    "tropicraft:thatch_wall_sign",
+    "tropicraft:mangrove_wall_sign"
+  ]
+}

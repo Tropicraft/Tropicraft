@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tropicraft:mangrove_sign"
+    ]
+  },
+  "criteria": {
+    "has_mangrove": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tropicraft:mangrove_planks"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tropicraft:mangrove_sign"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_mangrove",
+      "has_the_recipe"
+    ]
+  ]
+}
