@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_azurite_gem": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tropicraft:azurite_gem"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "tropicraft:yellow_scuba_harness"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_azurite_gem",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "tropicraft:yellow_scuba_harness"
+    ]
+  },
+  "sends_telemetry_event": false
+}

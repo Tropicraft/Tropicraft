@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "group": "tropicraft:sifter",
   "key": {
     "I": {
@@ -16,5 +17,6 @@
   ],
   "result": {
     "item": "tropicraft:sifter"
-  }
+  },
+  "show_notification": true
 }

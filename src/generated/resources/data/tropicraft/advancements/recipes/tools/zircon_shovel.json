@@ -1,0 +1,48 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_bamboo": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:bamboo"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "tropicraft:zircon_shovel"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_zircon_gem": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tropicraft:zircon_gem"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_zircon_gem",
+      "has_bamboo",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "tropicraft:zircon_shovel"
+    ]
+  },
+  "sends_telemetry_event": false
+}

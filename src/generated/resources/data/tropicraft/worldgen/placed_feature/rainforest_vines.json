@@ -1,0 +1,12 @@
+{
+  "feature": "tropicraft:rainforest_vines",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 50
+    },
+    {
+      "type": "minecraft:in_square"
+    }
+  ]
+}

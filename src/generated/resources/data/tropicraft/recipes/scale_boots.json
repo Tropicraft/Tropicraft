@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "X": {
       "item": "tropicraft:scale"
@@ -11,5 +12,6 @@
   ],
   "result": {
     "item": "tropicraft:scale_boots"
-  }
+  },
+  "show_notification": true
 }

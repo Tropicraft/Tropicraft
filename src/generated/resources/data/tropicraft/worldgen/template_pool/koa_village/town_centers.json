@@ -1,0 +1,14 @@
+{
+  "elements": [
+    {
+      "element": {
+        "element_type": "tropicraft:single_no_air",
+        "location": "tropicraft:koa_village/town_centers/firepit_01",
+        "processors": "tropicraft:koa_village/town_centers",
+        "projection": "rigid"
+      },
+      "weight": 1
+    }
+  ],
+  "fallback": "minecraft:empty"
+}

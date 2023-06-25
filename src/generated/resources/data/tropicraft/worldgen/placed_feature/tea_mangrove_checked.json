@@ -1,0 +1,23 @@
+{
+  "feature": "tropicraft:tea_mangrove",
+  "placement": [
+    {
+      "type": "minecraft:surface_water_depth_filter",
+      "max_water_depth": 1
+    },
+    {
+      "type": "minecraft:block_predicate_filter",
+      "predicate": {
+        "type": "minecraft:would_survive",
+        "state": {
+          "Name": "tropicraft:tea_mangrove_propagule",
+          "Properties": {
+            "planted": "true",
+            "stage": "0",
+            "waterlogged": "false"
+          }
+        }
+      }
+    }
+  ]
+}

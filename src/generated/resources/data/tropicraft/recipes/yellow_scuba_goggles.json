@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "X": {
       "item": "minecraft:glass_pane"
@@ -18,5 +19,6 @@
   ],
   "result": {
     "item": "tropicraft:yellow_scuba_goggles"
-  }
+  },
+  "show_notification": true
 }

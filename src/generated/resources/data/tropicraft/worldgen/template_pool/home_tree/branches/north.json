@@ -1,0 +1,21 @@
+{
+  "elements": [
+    {
+      "element": {
+        "element_type": "tropicraft:home_tree_branch",
+        "max_angle": 210.0,
+        "min_angle": 150.0
+      },
+      "weight": 4
+    },
+    {
+      "element": {
+        "element_type": "tropicraft:home_tree_branch",
+        "max_angle": 180.0,
+        "min_angle": 180.0
+      },
+      "weight": 1
+    }
+  ],
+  "fallback": "minecraft:empty"
+}

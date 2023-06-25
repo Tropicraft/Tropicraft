@@ -1,0 +1,19 @@
+{
+  "feature": "tropicraft:coffee_bush",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 25
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "WORLD_SURFACE_WG"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

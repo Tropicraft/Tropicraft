@@ -1,0 +1,23 @@
+{
+  "feature": "tropicraft:huge_golden_leather_fern",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 90
+    },
+    {
+      "type": "minecraft:count",
+      "count": 6
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "MOTION_BLOCKING"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

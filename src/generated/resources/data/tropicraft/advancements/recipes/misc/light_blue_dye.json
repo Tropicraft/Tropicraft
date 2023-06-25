@@ -30,5 +30,6 @@
     "recipes": [
       "tropicraft:light_blue_dye"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

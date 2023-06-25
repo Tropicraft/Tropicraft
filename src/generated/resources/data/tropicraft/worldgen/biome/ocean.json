@@ -1,0 +1,193 @@
+{
+  "carvers": {},
+  "downfall": 1.25,
+  "effects": {
+    "fog_color": 12638463,
+    "sky_color": 7907327,
+    "water_color": 5172447,
+    "water_fog_color": 270131
+  },
+  "features": [
+    [],
+    [],
+    [
+      "minecraft:amethyst_geode"
+    ],
+    [],
+    [],
+    [],
+    [
+      "minecraft:ore_dirt",
+      "minecraft:ore_gravel",
+      "minecraft:ore_granite_upper",
+      "minecraft:ore_granite_lower",
+      "minecraft:ore_diorite_upper",
+      "minecraft:ore_diorite_lower",
+      "minecraft:ore_andesite_upper",
+      "minecraft:ore_andesite_lower",
+      "minecraft:ore_tuff",
+      "minecraft:ore_coal_upper",
+      "minecraft:ore_coal_lower",
+      "minecraft:ore_iron_upper",
+      "minecraft:ore_iron_middle",
+      "minecraft:ore_iron_small",
+      "minecraft:ore_gold",
+      "minecraft:ore_gold_lower",
+      "minecraft:ore_redstone",
+      "minecraft:ore_redstone_lower",
+      "minecraft:ore_diamond",
+      "minecraft:ore_diamond_large",
+      "minecraft:ore_diamond_buried",
+      "minecraft:ore_lapis",
+      "minecraft:ore_lapis_buried",
+      "minecraft:ore_copper",
+      "minecraft:underwater_magma",
+      "tropicraft:manganese",
+      "tropicraft:shaka"
+    ],
+    [],
+    [],
+    [
+      "minecraft:glow_lichen",
+      "tropicraft:trees_palm",
+      "tropicraft:tropi_seagrass",
+      "minecraft:warm_ocean_vegetation",
+      "minecraft:seagrass_warm",
+      "tropicraft:underground_seagrass_on_stone",
+      "tropicraft:underground_seagrass_on_dirt",
+      "minecraft:sea_pickle",
+      "tropicraft:underground_sea_pickles"
+    ]
+  ],
+  "has_precipitation": true,
+  "spawn_costs": {},
+  "spawners": {
+    "ambient": [
+      {
+        "type": "tropicraft:failgull",
+        "maxCount": 10,
+        "minCount": 5,
+        "weight": 15
+      }
+    ],
+    "axolotls": [],
+    "creature": [],
+    "misc": [],
+    "monster": [
+      {
+        "type": "minecraft:parrot",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 15
+      },
+      {
+        "type": "tropicraft:v_monkey",
+        "maxCount": 3,
+        "minCount": 1,
+        "weight": 15
+      },
+      {
+        "type": "tropicraft:iguana",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 15
+      },
+      {
+        "type": "tropicraft:tropicreeper",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 4
+      },
+      {
+        "type": "tropicraft:eih",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 5
+      },
+      {
+        "type": "tropicraft:tropiskelly",
+        "maxCount": 4,
+        "minCount": 2,
+        "weight": 8
+      },
+      {
+        "type": "tropicraft:tropi_spider",
+        "maxCount": 2,
+        "minCount": 2,
+        "weight": 8
+      }
+    ],
+    "underground_water_creature": [],
+    "water_ambient": [
+      {
+        "type": "tropicraft:tropical_fish",
+        "maxCount": 8,
+        "minCount": 4,
+        "weight": 20
+      },
+      {
+        "type": "tropicraft:starfish",
+        "maxCount": 4,
+        "minCount": 1,
+        "weight": 4
+      },
+      {
+        "type": "tropicraft:seahorse",
+        "maxCount": 12,
+        "minCount": 6,
+        "weight": 6
+      },
+      {
+        "type": "tropicraft:sea_urchin",
+        "maxCount": 4,
+        "minCount": 1,
+        "weight": 4
+      },
+      {
+        "type": "tropicraft:man_o_war",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 2
+      }
+    ],
+    "water_creature": [
+      {
+        "type": "tropicraft:marlin",
+        "maxCount": 4,
+        "minCount": 1,
+        "weight": 10
+      },
+      {
+        "type": "tropicraft:cubera",
+        "maxCount": 4,
+        "minCount": 2,
+        "weight": 10
+      },
+      {
+        "type": "tropicraft:eagle_ray",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 6
+      },
+      {
+        "type": "tropicraft:turtle",
+        "maxCount": 8,
+        "minCount": 3,
+        "weight": 6
+      },
+      {
+        "type": "tropicraft:dolphin",
+        "maxCount": 7,
+        "minCount": 4,
+        "weight": 3
+      },
+      {
+        "type": "tropicraft:hammerhead",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 2
+      }
+    ]
+  },
+  "temperature": 1.5
+}

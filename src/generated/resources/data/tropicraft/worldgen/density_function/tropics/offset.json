@@ -1,0 +1,1566 @@
+{
+  "type": "minecraft:flat_cache",
+  "argument": {
+    "type": "minecraft:cache_2d",
+    "argument": {
+      "type": "minecraft:add",
+      "argument1": {
+        "type": "minecraft:mul",
+        "argument1": {
+          "type": "minecraft:blend_offset"
+        },
+        "argument2": {
+          "type": "minecraft:add",
+          "argument1": 1.0,
+          "argument2": {
+            "type": "minecraft:mul",
+            "argument1": -1.0,
+            "argument2": {
+              "type": "minecraft:cache_once",
+              "argument": {
+                "type": "minecraft:blend_alpha"
+              }
+            }
+          }
+        }
+      },
+      "argument2": {
+        "type": "minecraft:mul",
+        "argument1": {
+          "type": "minecraft:add",
+          "argument1": -0.5037500262260437,
+          "argument2": {
+            "type": "minecraft:spline",
+            "spline": {
+              "coordinate": "minecraft:overworld/continents",
+              "points": [
+                {
+                  "derivative": 0.0,
+                  "location": -1.1,
+                  "value": 0.64
+                },
+                {
+                  "derivative": 0.0,
+                  "location": -0.92,
+                  "value": 0.2778
+                },
+                {
+                  "derivative": 0.0,
+                  "location": -0.41,
+                  "value": 0.2778
+                },
+                {
+                  "derivative": 0.0,
+                  "location": -0.34,
+                  "value": 0.38
+                },
+                {
+                  "derivative": 0.0,
+                  "location": -0.22,
+                  "value": {
+                    "coordinate": "minecraft:overworld/erosion",
+                    "points": [
+                      {
+                        "derivative": 0.0,
+                        "location": -1.0,
+                        "value": 0.38
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": 0.4,
+                        "value": 0.44
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": 1.0,
+                        "value": 0.49
+                      }
+                    ]
+                  }
+                },
+                {
+                  "derivative": 0.0,
+                  "location": -0.18,
+                  "value": {
+                    "coordinate": "minecraft:overworld/erosion",
+                    "points": [
+                      {
+                        "derivative": 0.0,
+                        "location": -1.0,
+                        "value": 0.38
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": 0.4,
+                        "value": 0.44
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": 1.0,
+                        "value": 0.49
+                      }
+                    ]
+                  }
+                },
+                {
+                  "derivative": 0.0,
+                  "location": -0.16,
+                  "value": {
+                    "coordinate": "minecraft:overworld/erosion",
+                    "points": [
+                      {
+                        "derivative": 0.0,
+                        "location": -0.85,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.38940096,
+                              "location": -1.0,
+                              "value": 0.41119814
+                            },
+                            {
+                              "derivative": 0.38940096,
+                              "location": 1.0,
+                              "value": 1.19
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": -0.7,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.37788022,
+                              "location": -1.0,
+                              "value": 0.38423964
+                            },
+                            {
+                              "derivative": 0.37788022,
+                              "location": 1.0,
+                              "value": 1.1400001
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": -0.4,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.0,
+                              "location": -1.0,
+                              "value": 0.2778
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": -0.75,
+                              "value": 0.2778
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": -0.65,
+                              "value": 0.5
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.5954547,
+                              "value": 0.5
+                            },
+                            {
+                              "derivative": 0.2534563,
+                              "location": 0.6054547,
+                              "value": 0.5
+                            },
+                            {
+                              "derivative": 0.2534563,
+                              "location": 1.0,
+                              "value": 0.6
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": -0.35,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.5,
+                              "location": -1.0,
+                              "value": 0.19999999
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": -0.4,
+                              "value": 0.55
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.0,
+                              "value": 0.55
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.4,
+                              "value": 0.55
+                            },
+                            {
+                              "derivative": 0.007000001,
+                              "location": 1.0,
+                              "value": 0.56
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": -0.1,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.5,
+                              "location": -1.0,
+                              "value": 0.35
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": -0.4,
+                              "value": 0.5
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.0,
+                              "value": 0.5
+                            },
+                            {
+                              "derivative": 0.1,
+                              "location": 0.4,
+                              "value": 0.55
+                            },
+                            {
+                              "derivative": 0.007000001,
+                              "location": 1.0,
+                              "value": 0.56
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": 0.2,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.5,
+                              "location": -1.0,
+                              "value": 0.35
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": -0.4,
+                              "value": 0.5
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.0,
+                              "value": 0.5
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.4,
+                              "value": 0.5
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 1.0,
+                              "value": 0.5
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": 0.7,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.0,
+                              "location": -1.0,
+                              "value": 0.48
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": -0.4,
+                              "value": 0.47
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.0,
+                              "value": 0.47
+                            },
+                            {
+                              "derivative": 0.06,
+                              "location": 0.4,
+                              "value": 0.5
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 1.0,
+                              "value": 0.5
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "derivative": 0.0,
+                  "location": -0.15,
+                  "value": {
+                    "coordinate": "minecraft:overworld/erosion",
+                    "points": [
+                      {
+                        "derivative": 0.0,
+                        "location": -0.85,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.38940096,
+                              "location": -1.0,
+                              "value": 0.41119814
+                            },
+                            {
+                              "derivative": 0.38940096,
+                              "location": 1.0,
+                              "value": 1.19
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": -0.7,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.37788022,
+                              "location": -1.0,
+                              "value": 0.38423964
+                            },
+                            {
+                              "derivative": 0.37788022,
+                              "location": 1.0,
+                              "value": 1.1400001
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": -0.4,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.0,
+                              "location": -1.0,
+                              "value": 0.2778
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": -0.75,
+                              "value": 0.2778
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": -0.65,
+                              "value": 0.5
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.5954547,
+                              "value": 0.5
+                            },
+                            {
+                              "derivative": 0.2534563,
+                              "location": 0.6054547,
+                              "value": 0.5
+                            },
+                            {
+                              "derivative": 0.2534563,
+                              "location": 1.0,
+                              "value": 0.6
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": -0.35,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.5,
+                              "location": -1.0,
+                              "value": 0.19999999
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": -0.4,
+                              "value": 0.55
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.0,
+                              "value": 0.55
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.4,
+                              "value": 0.55
+                            },
+                            {
+                              "derivative": 0.007000001,
+                              "location": 1.0,
+                              "value": 0.56
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": -0.1,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.5,
+                              "location": -1.0,
+                              "value": 0.35
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": -0.4,
+                              "value": 0.5
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.0,
+                              "value": 0.5
+                            },
+                            {
+                              "derivative": 0.1,
+                              "location": 0.4,
+                              "value": 0.55
+                            },
+                            {
+                              "derivative": 0.007000001,
+                              "location": 1.0,
+                              "value": 0.56
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": 0.2,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.5,
+                              "location": -1.0,
+                              "value": 0.35
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": -0.4,
+                              "value": 0.5
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.0,
+                              "value": 0.5
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.4,
+                              "value": 0.5
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 1.0,
+                              "value": 0.5
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": 0.7,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.0,
+                              "location": -1.0,
+                              "value": 0.48
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": -0.4,
+                              "value": 0.47
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.0,
+                              "value": 0.47
+                            },
+                            {
+                              "derivative": 0.06,
+                              "location": 0.4,
+                              "value": 0.5
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 1.0,
+                              "value": 0.5
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "derivative": 0.0,
+                  "location": -0.1,
+                  "value": {
+                    "coordinate": "minecraft:overworld/erosion",
+                    "points": [
+                      {
+                        "derivative": 0.0,
+                        "location": -0.85,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.38940096,
+                              "location": -1.0,
+                              "value": 0.41119814
+                            },
+                            {
+                              "derivative": 0.38940096,
+                              "location": 1.0,
+                              "value": 1.19
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": -0.7,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.37788022,
+                              "location": -1.0,
+                              "value": 0.38423964
+                            },
+                            {
+                              "derivative": 0.37788022,
+                              "location": 1.0,
+                              "value": 1.1400001
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": -0.4,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.0,
+                              "location": -1.0,
+                              "value": 0.2778
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": -0.75,
+                              "value": 0.2778
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": -0.65,
+                              "value": 0.5
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.5954547,
+                              "value": 0.5
+                            },
+                            {
+                              "derivative": 0.2534563,
+                              "location": 0.6054547,
+                              "value": 0.5
+                            },
+                            {
+                              "derivative": 0.2534563,
+                              "location": 1.0,
+                              "value": 0.6
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": -0.35,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.5,
+                              "location": -1.0,
+                              "value": 0.25
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": -0.4,
+                              "value": 0.55
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.0,
+                              "value": 0.55
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.4,
+                              "value": 0.55
+                            },
+                            {
+                              "derivative": 0.007000001,
+                              "location": 1.0,
+                              "value": 0.56
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": -0.1,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.5,
+                              "location": -1.0,
+                              "value": 0.4
+                            },
+                            {
+                              "derivative": 0.01,
+                              "location": -0.4,
+                              "value": 0.501
+                            },
+                            {
+                              "derivative": 0.01,
+                              "location": 0.0,
+                              "value": 0.503
+                            },
+                            {
+                              "derivative": 0.094000004,
+                              "location": 0.4,
+                              "value": 0.55
+                            },
+                            {
+                              "derivative": 0.007000001,
+                              "location": 1.0,
+                              "value": 0.56
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": 0.2,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.5,
+                              "location": -1.0,
+                              "value": 0.4
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": -0.4,
+                              "value": 0.51
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.0,
+                              "value": 0.51
+                            },
+                            {
+                              "derivative": 0.04,
+                              "location": 0.4,
+                              "value": 0.53
+                            },
+                            {
+                              "derivative": 0.049,
+                              "location": 1.0,
+                              "value": 0.6
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": 0.7,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.0,
+                              "location": -1.0,
+                              "value": 0.48
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": -0.4,
+                              "value": 0.47
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.0,
+                              "value": 0.47
+                            },
+                            {
+                              "derivative": 0.12,
+                              "location": 0.4,
+                              "value": 0.53
+                            },
+                            {
+                              "derivative": 0.049,
+                              "location": 1.0,
+                              "value": 0.6
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "derivative": 0.0,
+                  "location": 0.25,
+                  "value": {
+                    "coordinate": "minecraft:overworld/erosion",
+                    "points": [
+                      {
+                        "derivative": 0.0,
+                        "location": -0.85,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.0,
+                              "location": -1.0,
+                              "value": 0.7023502
+                            },
+                            {
+                              "derivative": 0.5138249,
+                              "location": 0.0,
+                              "value": 1.2161751
+                            },
+                            {
+                              "derivative": 0.5138249,
+                              "location": 1.0,
+                              "value": 1.73
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": -0.7,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.0,
+                              "location": -1.0,
+                              "value": 0.7
+                            },
+                            {
+                              "derivative": 0.43317974,
+                              "location": 0.0,
+                              "value": 0.94682026
+                            },
+                            {
+                              "derivative": 0.43317974,
+                              "location": 1.0,
+                              "value": 1.38
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": -0.4,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.0,
+                              "location": -1.0,
+                              "value": 0.7
+                            },
+                            {
+                              "derivative": 0.3917051,
+                              "location": 0.0,
+                              "value": 0.80829495
+                            },
+                            {
+                              "derivative": 0.3917051,
+                              "location": 1.0,
+                              "value": 1.2
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": -0.35,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.5,
+                              "location": -1.0,
+                              "value": 0.25
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": -0.4,
+                              "value": 0.85
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.0,
+                              "value": 0.85
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.4,
+                              "value": 0.85
+                            },
+                            {
+                              "derivative": 0.049000014,
+                              "location": 1.0,
+                              "value": 0.92
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": -0.1,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.5,
+                              "location": -1.0,
+                              "value": 0.4
+                            },
+                            {
+                              "derivative": 0.07,
+                              "location": -0.4,
+                              "value": 0.507
+                            },
+                            {
+                              "derivative": 0.07,
+                              "location": 0.0,
+                              "value": 0.521
+                            },
+                            {
+                              "derivative": 0.658,
+                              "location": 0.4,
+                              "value": 0.85
+                            },
+                            {
+                              "derivative": 0.049000014,
+                              "location": 1.0,
+                              "value": 0.92
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": 0.2,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.5,
+                              "location": -1.0,
+                              "value": 0.4
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": -0.4,
+                              "value": 0.51
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.0,
+                              "value": 0.51
+                            },
+                            {
+                              "derivative": 0.04,
+                              "location": 0.4,
+                              "value": 0.53
+                            },
+                            {
+                              "derivative": 0.049,
+                              "location": 1.0,
+                              "value": 0.6
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": 0.4,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.5,
+                              "location": -1.0,
+                              "value": 0.4
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": -0.4,
+                              "value": 0.51
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.0,
+                              "value": 0.51
+                            },
+                            {
+                              "derivative": 0.04,
+                              "location": 0.4,
+                              "value": 0.53
+                            },
+                            {
+                              "derivative": 0.049,
+                              "location": 1.0,
+                              "value": 0.6
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": 0.45,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.0,
+                              "location": -1.0,
+                              "value": 0.4
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": -0.4,
+                              "value": {
+                                "coordinate": "minecraft:overworld/ridges_folded",
+                                "points": [
+                                  {
+                                    "derivative": 0.5,
+                                    "location": -1.0,
+                                    "value": 0.4
+                                  },
+                                  {
+                                    "derivative": 0.0,
+                                    "location": -0.4,
+                                    "value": 0.51
+                                  },
+                                  {
+                                    "derivative": 0.0,
+                                    "location": 0.0,
+                                    "value": 0.51
+                                  },
+                                  {
+                                    "derivative": 0.04,
+                                    "location": 0.4,
+                                    "value": 0.53
+                                  },
+                                  {
+                                    "derivative": 0.049,
+                                    "location": 1.0,
+                                    "value": 0.6
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.0,
+                              "value": 0.67
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": 0.55,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.0,
+                              "location": -1.0,
+                              "value": 0.4
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": -0.4,
+                              "value": {
+                                "coordinate": "minecraft:overworld/ridges_folded",
+                                "points": [
+                                  {
+                                    "derivative": 0.5,
+                                    "location": -1.0,
+                                    "value": 0.4
+                                  },
+                                  {
+                                    "derivative": 0.0,
+                                    "location": -0.4,
+                                    "value": 0.51
+                                  },
+                                  {
+                                    "derivative": 0.0,
+                                    "location": 0.0,
+                                    "value": 0.51
+                                  },
+                                  {
+                                    "derivative": 0.04,
+                                    "location": 0.4,
+                                    "value": 0.53
+                                  },
+                                  {
+                                    "derivative": 0.049,
+                                    "location": 1.0,
+                                    "value": 0.6
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.0,
+                              "value": 0.67
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": 0.58,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.5,
+                              "location": -1.0,
+                              "value": 0.4
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": -0.4,
+                              "value": 0.51
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.0,
+                              "value": 0.51
+                            },
+                            {
+                              "derivative": 0.04,
+                              "location": 0.4,
+                              "value": 0.53
+                            },
+                            {
+                              "derivative": 0.049,
+                              "location": 1.0,
+                              "value": 0.6
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": 0.7,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.0,
+                              "location": -1.0,
+                              "value": 0.48
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": -0.4,
+                              "value": 0.47
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.0,
+                              "value": 0.47
+                            },
+                            {
+                              "derivative": 0.12,
+                              "location": 0.4,
+                              "value": 0.53
+                            },
+                            {
+                              "derivative": 0.049,
+                              "location": 1.0,
+                              "value": 0.6
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "derivative": 0.0,
+                  "location": 1.0,
+                  "value": {
+                    "coordinate": "minecraft:overworld/erosion",
+                    "points": [
+                      {
+                        "derivative": 0.0,
+                        "location": -0.85,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.0,
+                              "location": -1.0,
+                              "value": 0.84792626
+                            },
+                            {
+                              "derivative": 0.5760369,
+                              "location": 0.0,
+                              "value": 1.4239631
+                            },
+                            {
+                              "derivative": 0.5760369,
+                              "location": 1.0,
+                              "value": 2.0
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": -0.7,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.0,
+                              "location": -1.0,
+                              "value": 0.7
+                            },
+                            {
+                              "derivative": 0.4608295,
+                              "location": 0.0,
+                              "value": 1.0391705
+                            },
+                            {
+                              "derivative": 0.4608295,
+                              "location": 1.0,
+                              "value": 1.5
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": -0.4,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.0,
+                              "location": -1.0,
+                              "value": 0.7
+                            },
+                            {
+                              "derivative": 0.4608295,
+                              "location": 0.0,
+                              "value": 1.0391705
+                            },
+                            {
+                              "derivative": 0.4608295,
+                              "location": 1.0,
+                              "value": 1.5
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": -0.35,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.5,
+                              "location": -1.0,
+                              "value": 0.3
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": -0.4,
+                              "value": 1.0
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.0,
+                              "value": 1.0
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.4,
+                              "value": 1.0
+                            },
+                            {
+                              "derivative": 0.070000015,
+                              "location": 1.0,
+                              "value": 1.1
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": -0.1,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.5,
+                              "location": -1.0,
+                              "value": 0.45
+                            },
+                            {
+                              "derivative": 0.099999994,
+                              "location": -0.4,
+                              "value": 0.51
+                            },
+                            {
+                              "derivative": 0.099999994,
+                              "location": 0.0,
+                              "value": 0.53
+                            },
+                            {
+                              "derivative": 0.94,
+                              "location": 0.4,
+                              "value": 1.0
+                            },
+                            {
+                              "derivative": 0.070000015,
+                              "location": 1.0,
+                              "value": 1.1
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": 0.2,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.5,
+                              "location": -1.0,
+                              "value": 0.45
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": -0.4,
+                              "value": 0.51
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.0,
+                              "value": 0.51
+                            },
+                            {
+                              "derivative": 0.04,
+                              "location": 0.4,
+                              "value": 0.53
+                            },
+                            {
+                              "derivative": 0.049,
+                              "location": 1.0,
+                              "value": 0.6
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": 0.4,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.5,
+                              "location": -1.0,
+                              "value": 0.45
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": -0.4,
+                              "value": 0.51
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.0,
+                              "value": 0.51
+                            },
+                            {
+                              "derivative": 0.04,
+                              "location": 0.4,
+                              "value": 0.53
+                            },
+                            {
+                              "derivative": 0.049,
+                              "location": 1.0,
+                              "value": 0.6
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": 0.45,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.0,
+                              "location": -1.0,
+                              "value": 0.45
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": -0.4,
+                              "value": {
+                                "coordinate": "minecraft:overworld/ridges_folded",
+                                "points": [
+                                  {
+                                    "derivative": 0.5,
+                                    "location": -1.0,
+                                    "value": 0.45
+                                  },
+                                  {
+                                    "derivative": 0.0,
+                                    "location": -0.4,
+                                    "value": 0.51
+                                  },
+                                  {
+                                    "derivative": 0.0,
+                                    "location": 0.0,
+                                    "value": 0.51
+                                  },
+                                  {
+                                    "derivative": 0.04,
+                                    "location": 0.4,
+                                    "value": 0.53
+                                  },
+                                  {
+                                    "derivative": 0.049,
+                                    "location": 1.0,
+                                    "value": 0.6
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.0,
+                              "value": 0.67
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": 0.55,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.0,
+                              "location": -1.0,
+                              "value": 0.45
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": -0.4,
+                              "value": {
+                                "coordinate": "minecraft:overworld/ridges_folded",
+                                "points": [
+                                  {
+                                    "derivative": 0.5,
+                                    "location": -1.0,
+                                    "value": 0.45
+                                  },
+                                  {
+                                    "derivative": 0.0,
+                                    "location": -0.4,
+                                    "value": 0.51
+                                  },
+                                  {
+                                    "derivative": 0.0,
+                                    "location": 0.0,
+                                    "value": 0.51
+                                  },
+                                  {
+                                    "derivative": 0.04,
+                                    "location": 0.4,
+                                    "value": 0.53
+                                  },
+                                  {
+                                    "derivative": 0.049,
+                                    "location": 1.0,
+                                    "value": 0.6
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.0,
+                              "value": 0.67
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": 0.58,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.5,
+                              "location": -1.0,
+                              "value": 0.45
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": -0.4,
+                              "value": 0.51
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.0,
+                              "value": 0.51
+                            },
+                            {
+                              "derivative": 0.04,
+                              "location": 0.4,
+                              "value": 0.53
+                            },
+                            {
+                              "derivative": 0.049,
+                              "location": 1.0,
+                              "value": 0.6
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "derivative": 0.0,
+                        "location": 0.7,
+                        "value": {
+                          "coordinate": "minecraft:overworld/ridges_folded",
+                          "points": [
+                            {
+                              "derivative": 0.015,
+                              "location": -1.0,
+                              "value": 0.48
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": -0.4,
+                              "value": 0.51
+                            },
+                            {
+                              "derivative": 0.0,
+                              "location": 0.0,
+                              "value": 0.51
+                            },
+                            {
+                              "derivative": 0.04,
+                              "location": 0.4,
+                              "value": 0.53
+                            },
+                            {
+                              "derivative": 0.049,
+                              "location": 1.0,
+                              "value": 0.6
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "argument2": {
+          "type": "minecraft:cache_once",
+          "argument": {
+            "type": "minecraft:blend_alpha"
+          }
+        }
+      }
+    }
+  }
+}

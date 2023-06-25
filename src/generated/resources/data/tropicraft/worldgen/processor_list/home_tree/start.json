@@ -1,0 +1,12 @@
+{
+  "processors": [
+    {
+      "processor_type": "tropicraft:air_to_cave_air"
+    },
+    {
+      "blocks_to_extend": "tropicraft:mahogany_log",
+      "can_replace_land": true,
+      "processor_type": "tropicraft:structure_supports"
+    }
+  ]
+}

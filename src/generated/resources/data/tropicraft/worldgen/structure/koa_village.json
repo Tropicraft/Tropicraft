@@ -1,0 +1,8 @@
+{
+  "type": "tropicraft:koa_village",
+  "biomes": "#tropicraft:has_structure/koa_village",
+  "size": 6,
+  "spawn_overrides": {},
+  "start_pool": "tropicraft:koa_village/town_centers",
+  "step": "surface_structures"
+}

@@ -30,5 +30,6 @@
     "recipes": [
       "tropicraft:red_dye"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

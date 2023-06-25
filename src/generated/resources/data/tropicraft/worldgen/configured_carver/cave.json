@@ -1,0 +1,24 @@
+{
+  "type": "tropicraft:cave",
+  "config": {
+    "floor_level": -0.7,
+    "horizontal_radius_multiplier": 1.0,
+    "lava_level": {
+      "above_bottom": 10
+    },
+    "probability": 0.25,
+    "replaceable": "#tropicraft:carver_replaceables",
+    "vertical_radius_multiplier": 1.0,
+    "y": {
+      "type": "minecraft:biased_to_bottom",
+      "inner": 8,
+      "max_inclusive": {
+        "absolute": 240
+      },
+      "min_inclusive": {
+        "absolute": 0
+      }
+    },
+    "yScale": 0.5
+  }
+}

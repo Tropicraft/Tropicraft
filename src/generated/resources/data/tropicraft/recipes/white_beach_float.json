@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "group": "tropicraft:beach_floats",
   "key": {
     "B": {
@@ -15,5 +16,6 @@
   ],
   "result": {
     "item": "tropicraft:white_beach_float"
-  }
+  },
+  "show_notification": true
 }

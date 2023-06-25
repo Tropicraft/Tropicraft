@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "group": "tropicraft:chairs",
   "key": {
     "B": {
@@ -16,5 +17,6 @@
   ],
   "result": {
     "item": "tropicraft:cyan_chair"
-  }
+  },
+  "show_notification": true
 }

@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "X": {
       "item": "tropicraft:scale"
@@ -12,5 +13,6 @@
   ],
   "result": {
     "item": "tropicraft:scale_leggings"
-  }
+  },
+  "show_notification": true
 }

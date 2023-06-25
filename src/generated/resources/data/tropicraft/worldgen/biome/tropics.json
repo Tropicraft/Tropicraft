@@ -1,0 +1,151 @@
+{
+  "carvers": {
+    "air": [
+      "tropicraft:cave",
+      "tropicraft:canyon"
+    ]
+  },
+  "downfall": 1.5,
+  "effects": {
+    "fog_color": 12248771,
+    "sky_color": 7907327,
+    "water_color": 5172447,
+    "water_fog_color": 270131
+  },
+  "features": [
+    [],
+    [],
+    [
+      "minecraft:amethyst_geode"
+    ],
+    [],
+    [],
+    [],
+    [
+      "minecraft:ore_dirt",
+      "minecraft:ore_gravel",
+      "minecraft:ore_granite_upper",
+      "minecraft:ore_granite_lower",
+      "minecraft:ore_diorite_upper",
+      "minecraft:ore_diorite_lower",
+      "minecraft:ore_andesite_upper",
+      "minecraft:ore_andesite_lower",
+      "minecraft:ore_tuff",
+      "minecraft:ore_coal_upper",
+      "minecraft:ore_coal_lower",
+      "minecraft:ore_iron_upper",
+      "minecraft:ore_iron_middle",
+      "minecraft:ore_iron_small",
+      "minecraft:ore_gold",
+      "minecraft:ore_gold_lower",
+      "minecraft:ore_redstone",
+      "minecraft:ore_redstone_lower",
+      "minecraft:ore_diamond",
+      "minecraft:ore_diamond_large",
+      "minecraft:ore_diamond_buried",
+      "minecraft:ore_lapis",
+      "minecraft:ore_lapis_buried",
+      "minecraft:ore_copper",
+      "minecraft:underwater_magma"
+    ],
+    [],
+    [],
+    [
+      "minecraft:glow_lichen",
+      "tropicraft:bush_flowering_common",
+      "tropicraft:trees_fruit",
+      "tropicraft:trees_palm",
+      "tropicraft:eih",
+      "tropicraft:trees_papaya",
+      "tropicraft:flowers_tropics",
+      "tropicraft:patch_iris",
+      "tropicraft:patch_pineapple",
+      "tropicraft:tropi_seagrass",
+      "tropicraft:seagrass",
+      "tropicraft:tropics_grass",
+      "minecraft:patch_large_fern",
+      "minecraft:patch_tall_grass"
+    ]
+  ],
+  "has_precipitation": true,
+  "spawn_costs": {},
+  "spawners": {
+    "ambient": [
+      {
+        "type": "tropicraft:failgull",
+        "maxCount": 15,
+        "minCount": 5,
+        "weight": 10
+      }
+    ],
+    "axolotls": [],
+    "creature": [],
+    "misc": [],
+    "monster": [
+      {
+        "type": "minecraft:parrot",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 15
+      },
+      {
+        "type": "tropicraft:v_monkey",
+        "maxCount": 3,
+        "minCount": 1,
+        "weight": 15
+      },
+      {
+        "type": "tropicraft:iguana",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 15
+      },
+      {
+        "type": "tropicraft:tropicreeper",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 4
+      },
+      {
+        "type": "tropicraft:eih",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 5
+      },
+      {
+        "type": "tropicraft:tropiskelly",
+        "maxCount": 4,
+        "minCount": 2,
+        "weight": 8
+      },
+      {
+        "type": "tropicraft:tropi_spider",
+        "maxCount": 2,
+        "minCount": 2,
+        "weight": 8
+      },
+      {
+        "type": "tropicraft:tropibee",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      },
+      {
+        "type": "tropicraft:cowktail",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      },
+      {
+        "type": "tropicraft:tree_frog",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 4
+      }
+    ],
+    "underground_water_creature": [],
+    "water_ambient": [],
+    "water_creature": []
+  },
+  "temperature": 2.0
+}

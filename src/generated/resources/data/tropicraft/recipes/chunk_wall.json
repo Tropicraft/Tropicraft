@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "X": {
       "item": "tropicraft:chunk"
@@ -12,5 +13,6 @@
   "result": {
     "count": 6,
     "item": "tropicraft:chunk_wall"
-  }
+  },
+  "show_notification": true
 }

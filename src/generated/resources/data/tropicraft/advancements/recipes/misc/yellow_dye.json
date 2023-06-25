@@ -30,5 +30,6 @@
     "recipes": [
       "tropicraft:yellow_dye"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

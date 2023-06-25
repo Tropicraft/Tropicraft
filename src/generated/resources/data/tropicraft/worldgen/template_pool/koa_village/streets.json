@@ -1,0 +1,145 @@
+{
+  "elements": [
+    {
+      "element": {
+        "element_type": "tropicraft:single_no_air",
+        "location": "tropicraft:koa_village/streets/straight_01",
+        "processors": "tropicraft:koa_village/koa_path",
+        "projection": "terrain_matching",
+        "unprojected": true
+      },
+      "weight": 3
+    },
+    {
+      "element": {
+        "element_type": "tropicraft:single_no_air",
+        "location": "tropicraft:koa_village/streets/straight_02",
+        "processors": "tropicraft:koa_village/koa_path",
+        "projection": "terrain_matching",
+        "unprojected": true
+      },
+      "weight": 4
+    },
+    {
+      "element": {
+        "element_type": "tropicraft:single_no_air",
+        "location": "tropicraft:koa_village/streets/straight_03",
+        "processors": "tropicraft:koa_village/koa_path",
+        "projection": "terrain_matching",
+        "unprojected": true
+      },
+      "weight": 10
+    },
+    {
+      "element": {
+        "element_type": "tropicraft:single_no_air",
+        "location": "tropicraft:koa_village/streets/straight_04",
+        "processors": "tropicraft:koa_village/koa_path",
+        "projection": "terrain_matching",
+        "unprojected": true
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "tropicraft:single_no_air",
+        "location": "tropicraft:koa_village/streets/straight_05",
+        "processors": "tropicraft:koa_village/koa_path",
+        "projection": "terrain_matching",
+        "unprojected": true
+      },
+      "weight": 3
+    },
+    {
+      "element": {
+        "element_type": "tropicraft:single_no_air",
+        "location": "tropicraft:koa_village/streets/straight_06",
+        "processors": "tropicraft:koa_village/koa_path",
+        "projection": "terrain_matching",
+        "unprojected": true
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "tropicraft:single_no_air",
+        "location": "tropicraft:koa_village/streets/corner_01",
+        "processors": "tropicraft:koa_village/koa_path",
+        "projection": "terrain_matching",
+        "unprojected": true
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "tropicraft:single_no_air",
+        "location": "tropicraft:koa_village/streets/corner_02",
+        "processors": "tropicraft:koa_village/koa_path",
+        "projection": "terrain_matching",
+        "unprojected": true
+      },
+      "weight": 4
+    },
+    {
+      "element": {
+        "element_type": "tropicraft:single_no_air",
+        "location": "tropicraft:koa_village/streets/corner_03",
+        "processors": "tropicraft:koa_village/koa_path",
+        "projection": "terrain_matching",
+        "unprojected": true
+      },
+      "weight": 6
+    },
+    {
+      "element": {
+        "element_type": "tropicraft:single_no_air",
+        "location": "tropicraft:koa_village/streets/corner_04",
+        "processors": "tropicraft:koa_village/koa_path",
+        "projection": "terrain_matching",
+        "unprojected": true
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "tropicraft:single_no_air",
+        "location": "tropicraft:koa_village/streets/crossroad_01",
+        "processors": "tropicraft:koa_village/koa_path",
+        "projection": "terrain_matching",
+        "unprojected": true
+      },
+      "weight": 5
+    },
+    {
+      "element": {
+        "element_type": "tropicraft:single_no_air",
+        "location": "tropicraft:koa_village/streets/crossroad_02",
+        "processors": "tropicraft:koa_village/koa_path",
+        "projection": "terrain_matching",
+        "unprojected": true
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "tropicraft:single_no_air",
+        "location": "tropicraft:koa_village/streets/crossroad_03",
+        "processors": "tropicraft:koa_village/koa_path",
+        "projection": "terrain_matching",
+        "unprojected": true
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "tropicraft:single_no_air",
+        "location": "tropicraft:koa_village/streets/crossroad_04",
+        "processors": "tropicraft:koa_village/koa_path",
+        "projection": "terrain_matching",
+        "unprojected": true
+      },
+      "weight": 2
+    }
+  ],
+  "fallback": "tropicraft:koa_village/terminators"
+}

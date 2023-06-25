@@ -20,7 +20,10 @@
               "type": "minecraft:item",
               "conditions": [
                 {
-                  "condition": "tropicraft:match_sword"
+                  "condition": "minecraft:match_tool",
+                  "predicate": {
+                    "tag": "minecraft:swords"
+                  }
                 }
               ],
               "functions": [
@@ -50,5 +53,6 @@
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "tropicraft:blocks/pineapple"
 }

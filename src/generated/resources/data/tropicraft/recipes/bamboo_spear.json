@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "equipment",
   "key": {
     "X": {
       "item": "tropicraft:bamboo_stick"
@@ -11,5 +12,6 @@
   ],
   "result": {
     "item": "tropicraft:bamboo_spear"
-  }
+  },
+  "show_notification": true
 }
