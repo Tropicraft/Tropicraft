@@ -18,4 +18,4 @@ For any security issue, please outline the following:
 - Steps for reproducting the issue, including any Proof of Concept code
 - Any relevant CVEs
 
-We will acknowledge receiving the issue within 24 hours. Upon receipt, the team will then discuss the issue & provide a decision on whether we will act upon the issue within 5 days. Afterwards, updates will be provided at least every 7 days until the security issue is resolved.
+We will acknowledge receiving the issue as soon as possible. Upon receipt, the team will then discuss the issue & provide a decision on whether we will act upon the issue within 5 days. Afterwards, updates will be provided at least every 7 days until the security issue is resolved.
