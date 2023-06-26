@@ -22,6 +22,11 @@ Tropicraft is a [Forge](https://minecraftforge.net/)-based [Minecraft](https://m
 Founded in 2011, Tropicraft is one of the oldest Minecraft mods still being actively updated.
   
 Explore the dense tropical rainforests, build a sand castle on the vast beaches, or go diving in the deep oceans!
+  
+Installation
+============
+
+Install the relevant version of [Minecraft Forge](https://minecraftforge.net) (Unofficial guide [here](https://apexminecrafthosting.com/how-to-install-forge-client-side/)), grab the latest release for your Minecraft version from our [Modrinth](https://modrinth.com/mod/Tropicraft) page, put it into the `mods/` folder, and play!
 
 Screenshots
 ===========
@@ -42,14 +47,13 @@ Scuba ambience sampled from sounds by:
 - [davi-sh](https://freesound.org/people/davi-sh/) ([CC-0 1.0](http://creativecommons.org/publicdomain/zero/1.0/))
 - [DCSFX](https://freesound.org/people/DCSFX/) ([CC-0 1.0](http://creativecommons.org/publicdomain/zero/1.0/))
 
-FAQ
-===
+Support
+=======
+We can provide support via our [Discord Guild](https://discord.gg/Q24TRnx). If you don't want to create a Discord account, reach out via the [Discussions](https://github.com/Tropicraft/Tropicraft/discussions) tab above!
 
-**How do I contact the team?**  
-Come join our [Discord guild](https://discord.gg/Q24TRnx)! All the current devs chill within there, and we are able to provide support.  
-
-**Can I use Tropicraft in my public/private mod pack?**  
-Most likely! Find Cojo on Discord to receive permission and find out what is required from you.
+Modpacks
+========
+Tropicraft can be used in any Public & Private Modpack without permission. Feel free to reach out to us via [Discord](https://discord.gg/Q24TRnx) and let us know how you're using Tropicraft!
 
 <br> <br>
 <p align="center">
