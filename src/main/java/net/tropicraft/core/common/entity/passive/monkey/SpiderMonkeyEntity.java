@@ -134,11 +134,6 @@ public class SpiderMonkeyEntity extends Animal {
     }
 
     @Override
-    public ItemStack getPickedResult(HitResult target) {
-        return new ItemStack(TropicraftItems.SPIDER_MONKEY_SPAWN_EGG.get());
-    }
-
-    @Override
     public int getMaxFallDistance() {
         return 5;
     }

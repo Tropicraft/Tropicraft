@@ -66,9 +66,4 @@ public class PiranhaEntity extends AbstractSchoolingFish implements IAtlasFish {
     public int getAtlasSlot() {
         return 9;
     }
-
-    @Override
-    public ItemStack getPickedResult(HitResult target) {
-        return new ItemStack(TropicraftItems.PIRANHA_SPAWN_EGG.get());
-    }
 }

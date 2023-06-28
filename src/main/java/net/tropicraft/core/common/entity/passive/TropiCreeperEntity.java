@@ -259,9 +259,4 @@ public class TropiCreeperEntity extends PathfinderMob {
     public float getCreeperFlashIntensity(float partialTicks) {
        return Mth.lerp(partialTicks, (float)this.prevTimeSinceIgnited, (float)this.timeSinceIgnited) / (float)(this.fuseTime - 2);
     }
-
-    @Override
-    public ItemStack getPickedResult(HitResult target) {
-        return new ItemStack(TropicraftItems.TROPICREEPER_SPAWN_EGG.get());
-    }
 }

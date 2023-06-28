@@ -221,11 +221,6 @@ public class ManOWarEntity extends WaterAnimal {
         return this.randomMotionVecX != 0.0F || this.randomMotionVecY != 0.0F || this.randomMotionVecZ != 0.0F;
     }
 
-    @Override
-    public ItemStack getPickedResult(HitResult target) {
-        return new ItemStack(TropicraftItems.MAN_O_WAR_SPAWN_EGG.get());
-    }
-
     class FleeGoal extends Goal {
         private int tickCounter;
 

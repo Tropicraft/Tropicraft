@@ -89,15 +89,6 @@ public final class BasiliskLizardEntity extends Animal {
     }
 
     @Override
-    public ItemStack getPickedResult(HitResult target) {
-        if (getType() == TropicraftEntities.BROWN_BASILISK_LIZARD.get()) {
-            return new ItemStack(TropicraftItems.BROWN_BASILISK_LIZARD_SPAWN_EGG.get());
-        } else {
-            return new ItemStack(TropicraftItems.GREEN_BASILISK_LIZARD_SPAWN_EGG.get());
-        }
-    }
-
-    @Override
     public void tick() {
         super.tick();
 

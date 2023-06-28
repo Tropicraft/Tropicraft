@@ -44,9 +44,4 @@ public final class CuberaEntity extends AbstractFish {
     protected SoundEvent getFlopSound() {
         return SoundEvents.SALMON_FLOP;
     }
-
-    @Override
-    public ItemStack getPickedResult(HitResult target) {
-        return new ItemStack(TropicraftItems.CUBERA_SPAWN_EGG.get());
-    }
 }

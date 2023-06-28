@@ -136,11 +136,6 @@ public class TropicraftTropicalFishEntity extends AbstractSchoolingFish implemen
     }
 
     @Override
-    public ItemStack getPickedResult(HitResult target) {
-        return new ItemStack(TropicraftItems.TROPICAL_FISH_SPAWN_EGG.get());
-    }
-
-    @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!stack.isEmpty() && stack.getItem() == TropicraftItems.FISHING_NET.get()) {

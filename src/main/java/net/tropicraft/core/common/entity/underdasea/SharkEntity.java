@@ -180,9 +180,4 @@ public class SharkEntity extends WaterAnimal {
     public boolean removeWhenFarAway(double p) {
         return !isBoss() && super.removeWhenFarAway(p);
     }
-
-    @Override
-    public ItemStack getPickedResult(HitResult target) {
-        return new ItemStack(TropicraftItems.HAMMERHEAD_SPAWN_EGG.get());
-    }
 }

@@ -68,11 +68,6 @@ public final class FiddlerCrabEntity extends Animal {
     }
 
     @Override
-    public ItemStack getPickedResult(HitResult target) {
-        return new ItemStack(TropicraftItems.FIDDLER_CRAB_SPAWN_EGG.get());
-    }
-
-    @Override
     public boolean canBreatheUnderwater() {
         return true;
     }

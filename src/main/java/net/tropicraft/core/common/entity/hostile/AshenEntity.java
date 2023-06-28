@@ -25,7 +25,6 @@ import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.phys.HitResult;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.ai.ashen.AIAshenChaseAndPickupLostMask;
 import net.tropicraft.core.common.entity.ai.ashen.AIAshenShootDart;
@@ -189,10 +188,4 @@ public class AshenEntity extends TropicraftCreatureEntity implements RangedAttac
         setMaskType(mask.getMaskType());
         mask.remove(RemovalReason.DISCARDED);
     }
-
-    @Override
-    public ItemStack getPickedResult(HitResult target) {
-        return new ItemStack(TropicraftItems.ASHEN_SPAWN_EGG.get());
-    }
-
 }

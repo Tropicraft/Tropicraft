@@ -85,9 +85,4 @@ public class MarlinEntity extends AbstractFish {
     public String getTexture() {
         return getEntityData().get(TEXTURE_NAME);
     }
-
-    @Override
-    public ItemStack getPickedResult(HitResult target) {
-        return new ItemStack(TropicraftItems.MARLIN_SPAWN_EGG.get());
-    }
 }

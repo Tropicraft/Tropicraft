@@ -108,9 +108,4 @@ public class SeaUrchinEntity extends EchinodermEntity {
     public float getAdultYOffset() {
         return ADULT_YOFFSET;
     }
-
-    @Override
-    public ItemStack getPickedResult(HitResult target) {
-        return new ItemStack(TropicraftItems.SEA_URCHIN_SPAWN_EGG.get());
-    }
 }

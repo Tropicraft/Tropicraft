@@ -54,9 +54,4 @@ public class WhiteLippedPeccaryEntity extends Animal {
     public WhiteLippedPeccaryEntity getBreedOffspring(ServerLevel world, AgeableMob mate) {
         return TropicraftEntities.WHITE_LIPPED_PECCARY.get().create(this.level());
     }
-
-    @Override
-    public ItemStack getPickedResult(HitResult target) {
-        return new ItemStack(TropicraftItems.WHITE_LIPPED_PECCARY_SPAWN_EGG.get());
-    }
 }

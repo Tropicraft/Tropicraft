@@ -193,11 +193,6 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
 	}
 
 	@Override
-	public ItemStack getPickedResult(HitResult target) {
-		return new ItemStack(TropicraftItems.FAILGULL_SPAWN_EGG.get());
-	}
-
-	@Override
 	public boolean isFlying() {
 		return !this.onGround();
 	}
