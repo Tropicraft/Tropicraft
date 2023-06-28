@@ -343,40 +343,45 @@ public class TropicraftItems {
                 .properties(p -> p.stacksTo(1));
     }
 
-    public static final ItemEntry<Item> KOA_SPAWN_EGG = spawnEgg("koa_spawn_egg", TropicraftEntities.KOA).lang("Koa Headband").register();
-    public static final ItemEntry<Item> TROPICREEPER_SPAWN_EGG = spawnEgg("tropicreeper_spawn_egg", TropicraftEntities.TROPICREEPER).lang("TropiCreeper Hat").register();
-    public static final ItemEntry<Item> IGUANA_SPAWN_EGG = spawnEgg("iguana_spawn_egg", TropicraftEntities.IGUANA).register();
-    public static final ItemEntry<Item> TROPISKELLY_SPAWN_EGG = spawnEgg("tropiskelly_spawn_egg", TropicraftEntities.TROPISKELLY).lang("TropiSkelly Skirt").register();
-    public static final ItemEntry<Item> EIH_SPAWN_EGG = spawnEgg("eih_spawn_egg", TropicraftEntities.EIH).lang("Eye of Head").register();
-    public static final ItemEntry<Item> SEA_TURTLE_SPAWN_EGG = spawnEgg("sea_turtle_spawn_egg", TropicraftEntities.SEA_TURTLE).register();
-    public static final ItemEntry<Item> MARLIN_SPAWN_EGG = spawnEgg("marlin_spawn_egg", TropicraftEntities.MARLIN).register();
-    public static final ItemEntry<Item> FAILGULL_SPAWN_EGG = spawnEgg("failgull_spawn_egg", TropicraftEntities.FAILGULL).register();
-    public static final ItemEntry<Item> DOLPHIN_SPAWN_EGG = spawnEgg("dolphin_spawn_egg", TropicraftEntities.DOLPHIN).register();
-    public static final ItemEntry<Item> SEAHORSE_SPAWN_EGG = spawnEgg("seahorse_spawn_egg", TropicraftEntities.SEAHORSE).register();
-    public static final ItemEntry<Item> TREE_FROG_SPAWN_EGG = spawnEgg("tree_frog_spawn_egg", TropicraftEntities.TREE_FROG).register();
-    public static final ItemEntry<Item> SEA_URCHIN_SPAWN_EGG = spawnEgg("sea_urchin_spawn_egg", TropicraftEntities.SEA_URCHIN).register();
-    public static final ItemEntry<Item> V_MONKEY_SPAWN_EGG = spawnEgg("v_monkey_spawn_egg", TropicraftEntities.V_MONKEY).lang("Vervet Monkey Spawn Egg").register();
-    public static final ItemEntry<Item> PIRANHA_SPAWN_EGG = spawnEgg("piranha_spawn_egg", TropicraftEntities.PIRANHA).register();
-    public static final ItemEntry<Item> SARDINE_SPAWN_EGG = spawnEgg("sardine_spawn_egg", TropicraftEntities.RIVER_SARDINE).register();
-    public static final ItemEntry<Item> TROPICAL_FISH_SPAWN_EGG = spawnEgg("tropical_fish_spawn_egg", TropicraftEntities.TROPICAL_FISH).register();
-    public static final ItemEntry<Item> EAGLE_RAY_SPAWN_EGG = spawnEgg("eagle_ray_spawn_egg", TropicraftEntities.EAGLE_RAY).register();
-    public static final ItemEntry<Item> TROPI_SPIDER_SPAWN_EGG = spawnEgg("tropi_spider_spawn_egg", TropicraftEntities.TROPI_SPIDER).register();
-    public static final ItemEntry<Item> ASHEN_SPAWN_EGG = spawnEgg("ashen_spawn_egg", TropicraftEntities.ASHEN).lang("Ashen Ash").register();
-    public static final ItemEntry<Item> HAMMERHEAD_SPAWN_EGG = spawnEgg("hammerhead_spawn_egg", TropicraftEntities.HAMMERHEAD).register();
-    public static final ItemEntry<Item> COWKTAIL_SPAWN_EGG = spawnEgg("cowktail_spawn_egg", TropicraftEntities.COWKTAIL).register();
-    public static final ItemEntry<Item> MAN_O_WAR_SPAWN_EGG = spawnEgg("man_o_war_spawn_egg", TropicraftEntities.MAN_O_WAR).register();
-    public static final ItemEntry<Item> TROPIBEE_SPAWN_EGG = spawnEgg("tropibee_spawn_egg", TropicraftEntities.TROPI_BEE).register();
-    public static final ItemEntry<Item> TAPIR_SPAWN_EGG = spawnEgg("tapir_spawn_egg", TropicraftEntities.TAPIR).register();
-    public static final ItemEntry<Item> JAGUAR_SPAWN_EGG = spawnEgg("jaguar_spawn_egg", TropicraftEntities.JAGUAR).register();
-    public static final ItemEntry<Item> BROWN_BASILISK_LIZARD_SPAWN_EGG = spawnEgg("brown_basilisk_lizard_spawn_egg", TropicraftEntities.BROWN_BASILISK_LIZARD).register();
-    public static final ItemEntry<Item> GREEN_BASILISK_LIZARD_SPAWN_EGG = spawnEgg("green_basilisk_lizard_spawn_egg", TropicraftEntities.GREEN_BASILISK_LIZARD).register();
-    public static final ItemEntry<Item> HUMMINGBIRD_SPAWN_EGG = spawnEgg("hummingbird_spawn_egg", TropicraftEntities.HUMMINGBIRD).register();
-    public static final ItemEntry<Item> FIDDLER_CRAB_SPAWN_EGG = spawnEgg("fiddler_crab_spawn_egg", TropicraftEntities.FIDDLER_CRAB).register();
-    public static final ItemEntry<Item> SPIDER_MONKEY_SPAWN_EGG = spawnEgg("spider_monkey_spawn_egg", TropicraftEntities.SPIDER_MONKEY).register();
-    public static final ItemEntry<Item> WHITE_LIPPED_PECCARY_SPAWN_EGG = spawnEgg("white_lipped_peccary_spawn_egg", TropicraftEntities.WHITE_LIPPED_PECCARY).register();
-    public static final ItemEntry<Item> CUBERA_SPAWN_EGG = spawnEgg("cubera_spawn_egg", TropicraftEntities.CUBERA).register();
+    public static final ItemEntry<Item> KOA_SPAWN_EGG = customSpawnEgg("koa_spawn_egg", TropicraftEntities.KOA).lang("Koa Headband").register();
+    public static final ItemEntry<Item> TROPICREEPER_SPAWN_EGG = customSpawnEgg("tropicreeper_spawn_egg", TropicraftEntities.TROPICREEPER).lang("TropiCreeper Hat").register();
+    public static final ItemEntry<Item> IGUANA_SPAWN_EGG = customSpawnEgg("iguana_spawn_egg", TropicraftEntities.IGUANA).register();
+    public static final ItemEntry<Item> TROPISKELLY_SPAWN_EGG = customSpawnEgg("tropiskelly_spawn_egg", TropicraftEntities.TROPISKELLY).lang("TropiSkelly Skirt").register();
+    public static final ItemEntry<Item> EIH_SPAWN_EGG = customSpawnEgg("eih_spawn_egg", TropicraftEntities.EIH).lang("Eye of Head").register();
+    public static final ItemEntry<Item> SEA_TURTLE_SPAWN_EGG = customSpawnEgg("sea_turtle_spawn_egg", TropicraftEntities.SEA_TURTLE).register();
+    public static final ItemEntry<Item> MARLIN_SPAWN_EGG = customSpawnEgg("marlin_spawn_egg", TropicraftEntities.MARLIN).register();
+    public static final ItemEntry<Item> FAILGULL_SPAWN_EGG = customSpawnEgg("failgull_spawn_egg", TropicraftEntities.FAILGULL).register();
+    public static final ItemEntry<Item> DOLPHIN_SPAWN_EGG = customSpawnEgg("dolphin_spawn_egg", TropicraftEntities.DOLPHIN).register();
+    public static final ItemEntry<Item> SEAHORSE_SPAWN_EGG = customSpawnEgg("seahorse_spawn_egg", TropicraftEntities.SEAHORSE).register();
+    public static final ItemEntry<Item> TREE_FROG_SPAWN_EGG = customSpawnEgg("tree_frog_spawn_egg", TropicraftEntities.TREE_FROG).register();
+    public static final ItemEntry<Item> SEA_URCHIN_SPAWN_EGG = customSpawnEgg("sea_urchin_spawn_egg", TropicraftEntities.SEA_URCHIN).register();
+    public static final ItemEntry<Item> V_MONKEY_SPAWN_EGG = customSpawnEgg("v_monkey_spawn_egg", TropicraftEntities.V_MONKEY).lang("Vervet Monkey Spawn Egg").register();
+    public static final ItemEntry<Item> PIRANHA_SPAWN_EGG = customSpawnEgg("piranha_spawn_egg", TropicraftEntities.PIRANHA).register();
+    public static final ItemEntry<Item> SARDINE_SPAWN_EGG = customSpawnEgg("sardine_spawn_egg", TropicraftEntities.RIVER_SARDINE).register();
+    public static final ItemEntry<Item> TROPICAL_FISH_SPAWN_EGG = customSpawnEgg("tropical_fish_spawn_egg", TropicraftEntities.TROPICAL_FISH).register();
+    public static final ItemEntry<Item> EAGLE_RAY_SPAWN_EGG = customSpawnEgg("eagle_ray_spawn_egg", TropicraftEntities.EAGLE_RAY).register();
+    public static final ItemEntry<Item> TROPI_SPIDER_SPAWN_EGG = customSpawnEgg("tropi_spider_spawn_egg", TropicraftEntities.TROPI_SPIDER).register();
+    public static final ItemEntry<Item> ASHEN_SPAWN_EGG = customSpawnEgg("ashen_spawn_egg", TropicraftEntities.ASHEN).lang("Ashen Ash").register();
+    public static final ItemEntry<Item> HAMMERHEAD_SPAWN_EGG = customSpawnEgg("hammerhead_spawn_egg", TropicraftEntities.HAMMERHEAD).register();
+    public static final ItemEntry<Item> COWKTAIL_SPAWN_EGG = customSpawnEgg("cowktail_spawn_egg", TropicraftEntities.COWKTAIL).register();
+    public static final ItemEntry<Item> MAN_O_WAR_SPAWN_EGG = customSpawnEgg("man_o_war_spawn_egg", TropicraftEntities.MAN_O_WAR).register();
+    public static final ItemEntry<Item> TROPIBEE_SPAWN_EGG = customSpawnEgg("tropibee_spawn_egg", TropicraftEntities.TROPI_BEE).register();
+    public static final ItemEntry<Item> TAPIR_SPAWN_EGG = spawnEgg("tapir_spawn_egg", TropicraftEntities.TAPIR, 0x4C4434, 0xC6B89F).register();
+    public static final ItemEntry<Item> JAGUAR_SPAWN_EGG = spawnEgg("jaguar_spawn_egg", TropicraftEntities.JAGUAR, 0xC99C42, 0x443311).register();
+    public static final ItemEntry<Item> BROWN_BASILISK_LIZARD_SPAWN_EGG = spawnEgg("brown_basilisk_lizard_spawn_egg", TropicraftEntities.BROWN_BASILISK_LIZARD, 0x4C412E, 0xAD8766).register();
+    public static final ItemEntry<Item> GREEN_BASILISK_LIZARD_SPAWN_EGG = spawnEgg("green_basilisk_lizard_spawn_egg", TropicraftEntities.GREEN_BASILISK_LIZARD, 0x67CC39, 0x3B632E).register();
+    public static final ItemEntry<Item> HUMMINGBIRD_SPAWN_EGG = spawnEgg("hummingbird_spawn_egg", TropicraftEntities.HUMMINGBIRD, 0x53CCC3, 0xDEE4E8).register();
+    public static final ItemEntry<Item> FIDDLER_CRAB_SPAWN_EGG = customSpawnEgg("fiddler_crab_spawn_egg", TropicraftEntities.FIDDLER_CRAB).register();
+    public static final ItemEntry<Item> SPIDER_MONKEY_SPAWN_EGG = spawnEgg("spider_monkey_spawn_egg", TropicraftEntities.SPIDER_MONKEY, 0xF28252, 0x754730).register();
+    public static final ItemEntry<Item> WHITE_LIPPED_PECCARY_SPAWN_EGG = spawnEgg("white_lipped_peccary_spawn_egg", TropicraftEntities.WHITE_LIPPED_PECCARY, 0x665D54, 0x544D42).register();
+    public static final ItemEntry<Item> CUBERA_SPAWN_EGG = spawnEgg("cubera_spawn_egg", TropicraftEntities.CUBERA, 0xF77631, 0x872C18).register();
 
-    private static <T extends Mob> ItemBuilder<Item, Registrate> spawnEgg(final String name, final RegistryEntry<EntityType<T>> entity) {
+    private static <T extends Mob> ItemBuilder<Item, Registrate> spawnEgg(final String name, final RegistryEntry<EntityType<T>> entity, final int backgroundColor, final int highlightColor) {
+        return REGISTRATE.item(name, p -> (Item) new ForgeSpawnEggItem(entity, backgroundColor, highlightColor, p))
+                .model((ctx, prov) -> prov.withExistingParent(ctx.getName(), prov.mcLoc("item/template_spawn_egg")));
+    }
+
+    private static <T extends Mob> ItemBuilder<Item, Registrate> customSpawnEgg(final String name, final RegistryEntry<EntityType<T>> entity) {
         return REGISTRATE.item(name, p -> new ForgeSpawnEggItem(entity, 0xffffff, 0xffffff, p));
     }
 
