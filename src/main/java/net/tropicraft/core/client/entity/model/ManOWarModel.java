@@ -96,7 +96,7 @@ public class ManOWarModel extends HierarchicalModel<ManOWarEntity> {
 
     @Override
     public void setupAnim(ManOWarEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (entity.isOnGround()) {
+        if (entity.onGround()) {
             Tent3.zRot = 0F;
             Tent3.xRot = 0F;
             Tent1.zRot = 0F;

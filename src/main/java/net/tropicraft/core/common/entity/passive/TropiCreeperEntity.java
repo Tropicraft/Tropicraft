@@ -3,8 +3,8 @@ package net.tropicraft.core.common.entity.passive;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
-import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -182,9 +182,9 @@ public class TropiCreeperEntity extends PathfinderMob {
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         if (itemstack.getItem() == Items.FLINT_AND_STEEL) {
-            this.level.playSound(player, getX(), getY(), getZ(), SoundEvents.FLINTANDSTEEL_USE, this.getSoundSource(), 1.0F, this.random.nextFloat() * 0.4F + 0.8F);
+            this.level().playSound(player, getX(), getY(), getZ(), SoundEvents.FLINTANDSTEEL_USE, this.getSoundSource(), 1.0F, this.random.nextFloat() * 0.4F + 0.8F);
             player.swing(hand);
-            if (!this.level.isClientSide) {
+            if (!this.level().isClientSide) {
                 this.ignite();
                 itemstack.hurtAndBreak(1, player, p -> {
                     p.broadcastBreakEvent(hand);
@@ -200,7 +200,7 @@ public class TropiCreeperEntity extends PathfinderMob {
      * Creates an explosion as determined by this creeper's power and explosion radius.
      */
     private void explode() {
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             this.dead = true;
             //this.world.createExplosion(this, this.posX, this.posY, this.posZ, (float)this.explosionRadius, Explosion.Mode.NONE);
             //TODO: readd coconut bomb drop for creeper
@@ -208,32 +208,32 @@ public class TropiCreeperEntity extends PathfinderMob {
             int radius = 5;
             int radiusSq = radius * radius;
             BlockPos center = blockPosition();
-            final HolderSet<Block> flowers = Registry.BLOCK.getOrCreateTag(TropicraftTags.Blocks.TROPICS_FLOWERS);
+            final HolderSet<Block> flowers = level().registryAccess().registryOrThrow(Registries.BLOCK).getOrCreateTag(TropicraftTags.Blocks.TROPICS_FLOWERS);
             for (int i = 0; i < 3 * radiusSq; i++) {
                 BlockPos attempt = center.offset(random.nextInt((radius * 2) + 1) - radius, 0, random.nextInt((radius * 2) + 1) - radius);
                 if (attempt.distSqr(center) < radiusSq) {
                     attempt = attempt.above(radius);
-                    while (level.getBlockState(attempt).getMaterial().isReplaceable() && attempt.getY() > center.getY() - radius) {
+                    while (level().getBlockState(attempt).canBeReplaced() && attempt.getY() > center.getY() - radius) {
                         attempt = attempt.below();
                     }
                     attempt = attempt.above();
                     final BlockState state = flowers.getRandomElement(random).map(Holder::value).orElse(Blocks.AIR).defaultBlockState();
-                    if (state.canSurvive(level, attempt)) {
-                        level.setBlockAndUpdate(attempt, state);
+                    if (state.canSurvive(level(), attempt)) {
+                        level().setBlockAndUpdate(attempt, state);
                     }
                 }
             }
             this.remove(RemovalReason.KILLED);
             this.spawnLingeringCloud();
         } else {
-            level.addParticle(ParticleTypes.EXPLOSION_EMITTER, getX(), getY() + 1F, getZ(), 1.0D, 0.0D, 0.0D);
+            level().addParticle(ParticleTypes.EXPLOSION_EMITTER, getX(), getY() + 1F, getZ(), 1.0D, 0.0D, 0.0D);
         }
     }
 
     private void spawnLingeringCloud() {
         Collection<MobEffectInstance> collection = this.getActiveEffects();
         if (!collection.isEmpty()) {
-            AreaEffectCloud areaeffectcloudentity = new AreaEffectCloud(level, getX(), getY(), getZ());
+            AreaEffectCloud areaeffectcloudentity = new AreaEffectCloud(level(), getX(), getY(), getZ());
             areaeffectcloudentity.setRadius(2.5F);
             areaeffectcloudentity.setRadiusOnUse(-0.5F);
             areaeffectcloudentity.setWaitTime(10);
@@ -244,7 +244,7 @@ public class TropiCreeperEntity extends PathfinderMob {
                 areaeffectcloudentity.addEffect(new MobEffectInstance(effectinstance));
             }
 
-            this.level.addFreshEntity(areaeffectcloudentity);
+            this.level().addFreshEntity(areaeffectcloudentity);
         }
     }
 

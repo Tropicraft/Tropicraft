@@ -58,7 +58,7 @@ public class StarfishEggEntity extends EchinodermEggEntity implements IEntityAdd
 
 	@Override
 	public Entity onHatch() {
-		StarfishEntity baby = new StarfishEntity(TropicraftEntities.STARFISH.get(), level);
+		StarfishEntity baby = new StarfishEntity(TropicraftEntities.STARFISH.get(), level());
 		baby.setBaby();
 		baby.setStarfishType(starfishType);
 		return baby;

@@ -1,7 +1,6 @@
 package net.tropicraft.core.common.entity.ai.fishies;
 
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -34,7 +33,7 @@ public class TargetPreyGoal extends Goal {
         // Target selection
         AABB entityBB = entity.getBoundingBox();
         if (entity.tickCount % 80 == 0 && entity.aggressTarget == null || entity.getCommandSenderWorld().getEntity(entity.aggressTarget.getId()) == null) {
-                List<Entity> list = entity.level.getEntities(entity, entityBB.inflate(20D, 20D, 20D).move(0.0D, -8.0D, 0.0D), e -> e.isAlive());
+                List<Entity> list = entity.level().getEntities(entity, entityBB.inflate(20D, 20D, 20D).move(0.0D, -8.0D, 0.0D), e -> e.isAlive());
                 if(list.size() > 0) {
                     Entity ent = list.get(rand.nextInt(list.size()));
                     boolean skip = false;
@@ -73,7 +72,7 @@ public class TargetPreyGoal extends Goal {
         if(entity.aggressTarget != null) {
             if(entity.distanceToSqr(entity.aggressTarget) <= entity.getBbWidth()) {
                 if(entity.aggressTarget instanceof LivingEntity) {
-                    entity.aggressTarget.hurt(DamageSource.mobAttack(entity), (float) entity.getAttribute(Attributes.ATTACK_DAMAGE).getValue());
+                    entity.aggressTarget.hurt(entity.damageSources().mobAttack(entity), (float) entity.getAttribute(Attributes.ATTACK_DAMAGE).getValue());
                 }
                 if(entity.aggressTarget instanceof TropicraftFishEntity) {
                     // Was eaten, cancel smoke
@@ -98,7 +97,7 @@ public class TargetPreyGoal extends Goal {
             }
         }
 
-        if(entity.aggressTarget == null || entity.level.getEntity(entity.aggressTarget.getId()) == null || !entity.aggressTarget.isAlive()) {
+        if(entity.aggressTarget == null || entity.level().getEntity(entity.aggressTarget.getId()) == null || !entity.aggressTarget.isAlive()) {
             entity.aggressTarget = null;
             entity.setRandomTargetHeading();
         }

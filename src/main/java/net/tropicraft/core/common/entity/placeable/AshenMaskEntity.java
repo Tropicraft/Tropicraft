@@ -2,6 +2,7 @@ package net.tropicraft.core.common.entity.placeable;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -65,7 +66,7 @@ public class AshenMaskEntity extends Entity {
 
     @Override
     public void tick() {
-        if (!level.isClientSide) {
+        if (!level().isClientSide) {
             // Remove masks that have been on the ground abandoned for over a day
             if (tickCount >= MAX_TICKS_ALIVE) {
                 remove(RemovalReason.DISCARDED);
@@ -74,7 +75,7 @@ public class AshenMaskEntity extends Entity {
 
         final Vec3 motion = getDeltaMovement();
 
-        if (onGround) {
+        if (onGround()) {
             setDeltaMovement(motion.multiply(0.5, 0, 0.5));
         }
 
@@ -92,7 +93,7 @@ public class AshenMaskEntity extends Entity {
         if (isInvulnerableTo(damageSource)) {
             return false;
         } else {
-            if (isAlive() && !level.isClientSide) {
+            if (isAlive() && !level().isClientSide) {
                 remove(RemovalReason.KILLED);
                 markHurt();
                 dropItemStack();
@@ -103,7 +104,7 @@ public class AshenMaskEntity extends Entity {
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 

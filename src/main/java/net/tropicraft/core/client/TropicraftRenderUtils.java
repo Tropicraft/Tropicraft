@@ -3,19 +3,20 @@ package net.tropicraft.core.client;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PlayerHeadItem;
+import net.minecraft.world.level.Level;
 import net.tropicraft.Constants;
 
 import java.util.Map;
@@ -109,16 +110,16 @@ public class TropicraftRenderUtils {
         return resource;
     }
 
-    public static void renderItem(ItemStack itemStack, final float scale, boolean leftHand, PoseStack stack, MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn, BakedModel modelIn, final int seed) {
+    public static void renderItem(ItemStack itemStack, final float scale, boolean leftHand, PoseStack stack, MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn, BakedModel modelIn, final int seed, Level level) {
         if (!itemStack.isEmpty()) {
             stack.pushPose();
             stack.scale(scale, scale, scale);
 
             // TODO what is this now?
             if (/*!Minecraft.getInstance().getItemRenderer().shouldRenderItemIn3D(stack) || */itemStack.getItem() instanceof PlayerHeadItem) {
-                stack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
+                stack.mulPose(Axis.YP.rotationDegrees(180.0F));
             }
-            Minecraft.getInstance().getItemRenderer().renderStatic(itemStack, ItemTransforms.TransformType.FIXED, combinedLightIn, combinedOverlayIn, stack, buffer, seed);
+            Minecraft.getInstance().getItemRenderer().renderStatic(itemStack, ItemDisplayContext.FIXED, combinedLightIn, combinedOverlayIn, stack, buffer, level, seed);
             stack.popPose();
         }
     }

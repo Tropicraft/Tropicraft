@@ -37,10 +37,6 @@ public class NoRotateSingleJigsawPiece extends SinglePoolElement {
         super(template, processors, placementBehaviour);
     }
 
-    public NoRotateSingleJigsawPiece(StructureTemplate template) {
-        super(template);
-    }
-
     public static Function<StructureTemplatePool.Projection, NoRotateSingleJigsawPiece> createNoRotate(String id, Holder<StructureProcessorList> processors) {
         return placementBehaviour -> new NoRotateSingleJigsawPiece(Either.left(new ResourceLocation(id)), processors, placementBehaviour);
     }

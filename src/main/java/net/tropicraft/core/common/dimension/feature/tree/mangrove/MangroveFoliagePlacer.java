@@ -2,17 +2,13 @@ package net.tropicraft.core.common.dimension.feature.tree.mangrove;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.level.LevelSimulatedReader;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftFoliagePlacers;
-
-import java.util.function.BiConsumer;
 
 public final class MangroveFoliagePlacer extends FoliagePlacer {
     public static final Codec<MangroveFoliagePlacer> CODEC = RecordCodecBuilder.create((instance) -> {
@@ -29,10 +25,10 @@ public final class MangroveFoliagePlacer extends FoliagePlacer {
     }
 
     @Override
-    protected void createFoliage(LevelSimulatedReader level, BiConsumer<BlockPos, BlockState> acceptor, RandomSource random, TreeConfiguration config, int p_230372_4_, FoliageAttachment node, int p_230372_6_, int radius, int offset) {
-        this.placeLeavesRow(level, acceptor, random, config, node.pos(), node.radiusOffset(), 1, node.doubleTrunk());
-        this.placeLeavesRow(level, acceptor, random, config, node.pos(), node.radiusOffset() + 1, 0, node.doubleTrunk());
-        this.placeLeavesRow(level, acceptor, random, config, node.pos(), node.radiusOffset(), -1, node.doubleTrunk());
+    protected void createFoliage(LevelSimulatedReader level, FoliageSetter setter, RandomSource random, TreeConfiguration config, int p_225617_, FoliageAttachment node, int p_225619_, int p_225620_, int p_225621_) {
+        this.placeLeavesRow(level, setter, random, config, node.pos(), node.radiusOffset(), 1, node.doubleTrunk());
+        this.placeLeavesRow(level, setter, random, config, node.pos(), node.radiusOffset() + 1, 0, node.doubleTrunk());
+        this.placeLeavesRow(level, setter, random, config, node.pos(), node.radiusOffset(), -1, node.doubleTrunk());
     }
 
     @Override

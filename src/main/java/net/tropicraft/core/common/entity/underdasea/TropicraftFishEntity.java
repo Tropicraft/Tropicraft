@@ -64,7 +64,7 @@ public abstract class TropicraftFishEntity extends WaterAnimal {
         super.tick();
 
         // Client Side
-        if (level.isClientSide) {
+        if (level().isClientSide) {
             // TODO if we ever use this class with turtles again - if(!(this instanceof IAmphibian)) {
                 this.setXRot(-this.swimPitch);
                 this.setYRot(-this.swimYaw);
@@ -262,8 +262,8 @@ public abstract class TropicraftFishEntity extends WaterAnimal {
 
         if (waterChecks) {
             BlockPos bp = new BlockPos((int) posX, (int) posY, (int) posZ);
-            BlockState stateAtPos = level.getBlockState(bp);
-            if (!stateAtPos.getMaterial().isLiquid() || stateAtPos.getMaterial().isSolid()) {
+            BlockState stateAtPos = level().getBlockState(bp);
+            if (!stateAtPos.liquid() || stateAtPos.isSolid()) {
                 return false;
             }
         }
@@ -302,7 +302,7 @@ public abstract class TropicraftFishEntity extends WaterAnimal {
         // Try to move towards a player
         if (this.approachPlayers) {
             if (random.nextInt(50) == 0) {
-                Player closest = level.getNearestPlayer(this, 32D);
+                Player closest = level().getNearestPlayer(this, 32D);
                 if (closest != null) {
                     if (closest.isInWater())
                         result = this.setTargetHeading(closest.getX(), closest.getY(), closest.getZ(), true);

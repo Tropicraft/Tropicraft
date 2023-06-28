@@ -2,8 +2,7 @@ package net.tropicraft.core.client.entity.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -13,12 +12,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.common.entity.placeable.FurnitureEntity;
+import org.joml.Quaternionf;
 
 public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer<T> {
+    private static final Axis DEFAULT_ROCKING_AXIS = angle -> new Quaternionf().rotationAxis(angle, 1.0f, 0.0f, 1.0f);
+
     private final String textureName;
     private final EntityModel<T> model;
     private final float scale;
-    private float red = 0.0F, green = 0.0F, blue = 0.0F;
 
     public FurnitureRenderer(final EntityRendererProvider.Context context, String textureName, EntityModel<T> model) {
         this(context, textureName, model, 1);
@@ -35,20 +36,20 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
     public void render(T furniture, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int packedLightIn) {
         stack.pushPose();
         stack.translate(0, getYOffset(), 0);
-        stack.mulPose(Vector3f.YP.rotationDegrees(180 - entityYaw));
+        stack.mulPose(Axis.YP.rotationDegrees(180 - entityYaw));
         // it used to scale by 0.25, but for some reason this gets it to be around the proper size again?
         stack.scale(scale, scale, scale);
         setupTransforms(stack);
 
         final float rockingAngle = getRockingAngle(furniture, partialTicks);;
         if (!Mth.equal(rockingAngle, 0.0F)) {
-            stack.mulPose(new Quaternion(getRockingAxis(), rockingAngle, true));
+            stack.mulPose(getRockingAxis().rotationDegrees(rockingAngle));
         }
 
         final float[] color = furniture.getColor().getTextureDiffuseColors();
-        red = color[0];
-        green = color[1];
-        blue = color[2];
+        float red = color[0];
+        float green = color[1];
+        float blue = color[2];
 
         // Draw uncolored layer
         VertexConsumer ivertexbuilder = buffer.getBuffer(model.renderType(TropicraftRenderUtils.getTextureEntity(textureName + "_base_layer")));
@@ -83,8 +84,8 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
         return 0;
     }
 
-    protected Vector3f getRockingAxis() {
-        return new Vector3f(1.0F, 0.0F, 1.0F);
+    protected Axis getRockingAxis() {
+        return DEFAULT_ROCKING_AXIS;
     }
 
     protected float getRockAmount() {

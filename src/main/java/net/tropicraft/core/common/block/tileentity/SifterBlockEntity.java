@@ -2,7 +2,7 @@ package net.tropicraft.core.common.block.tileentity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderSet;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -125,7 +125,7 @@ public class SifterBlockEntity extends BlockEntity {
     private ItemStack getCommonItem() {
         // Random from -1 to size-1
 
-        HolderSet.Named<Item> tag = Registry.ITEM.getOrCreateTag(TropicraftTags.Items.SHELLS);
+        HolderSet.Named<Item> tag = level.registryAccess().registryOrThrow(Registries.ITEM).getOrCreateTag(TropicraftTags.Items.SHELLS);
 
         final int shellIndex = rand.nextInt(tag.size() + 1) - 1;
         if (shellIndex < 0) {
@@ -178,7 +178,7 @@ public class SifterBlockEntity extends BlockEntity {
         final double z = worldPosition.getZ() + level.random.nextDouble() * 1.4;
 
         if (!level.isClientSide) {
-            dumpResults(new BlockPos(x, y, z));
+            dumpResults(BlockPos.containing(x, y, z));
         }
         currentSiftTime = SIFT_TIME;
         isSifting = false;

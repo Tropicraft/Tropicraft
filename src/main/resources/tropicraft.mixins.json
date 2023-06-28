@@ -6,9 +6,10 @@
   "mixins": [
     "BlockEntityTypeAccessor",
     "worldgen.JigsawPlacerMixin",
-    "worldgen.LevelStemAccessor",
-    "worldgen.RegistryCodecsMixin",
-    "worldgen.RegistryLoaderMixin"
+    "worldgen.WorldDimensionsMixin"
+  ],
+  "client": [
+    "client.HumanoidArmorLayerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -2,9 +2,7 @@ package net.tropicraft.core.client.entity.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -15,6 +13,8 @@ import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
 import net.tropicraft.core.client.entity.model.EggModel;
 import net.tropicraft.core.common.entity.egg.EggEntity;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
 
 public class EggRenderer extends LivingEntityRenderer<EggEntity, EggModel> {
 
@@ -42,7 +42,7 @@ public class EggRenderer extends LivingEntityRenderer<EggEntity, EggModel> {
 		stack.pushPose();
 
 		stack.mulPose(this.entityRenderDispatcher.cameraOrientation());
-		stack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
+		stack.mulPose(Axis.YP.rotationDegrees(180.0F));
 
 		stack.scale(0.25f, 0.25f, 0.25f);
 
@@ -51,7 +51,6 @@ public class EggRenderer extends LivingEntityRenderer<EggEntity, EggModel> {
 		
 		Matrix4f mat = stack.last().pose();
 		Matrix3f normal = new Matrix3f();
-		normal.setIdentity();
 		TropicraftSpecialRenderHelper.vertex(buffer, mat, normal, -.5, -.25, 0, 1, 1, 1, 1, 0, 1, Direction.UP, packedLightIn, overlay);
 		TropicraftSpecialRenderHelper.vertex(buffer, mat, normal,  .5, -.25, 0, 1, 1, 1, 1, 1, 1, Direction.UP, packedLightIn, overlay);
 		TropicraftSpecialRenderHelper.vertex(buffer, mat, normal,  .5,  .75, 0, 1, 1, 1, 1, 1, 0, Direction.UP, packedLightIn, overlay);

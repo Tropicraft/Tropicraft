@@ -18,7 +18,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.HitResult;
 import net.tropicraft.core.common.item.TropicraftItems;
@@ -49,31 +48,13 @@ public final class FiddlerCrabEntity extends Animal {
     }
 
     @Override
-    public void tick() {
-        super.tick();
-        this.tickLimbSwing();
-    }
+    protected void updateWalkAnimation(float distance) {
+        float rotation = Math.abs(Mth.wrapDegrees(yBodyRot - yBodyRotO));
 
-    private void tickLimbSwing() {
-        animationSpeedOld = animationSpeed;
-
-        double deltaX = getX() - xo;
-        double deltaZ = getZ() - zo;
-        float deltaYaw = Mth.wrapDegrees(yBodyRot - yBodyRotO);
-
-        float move = Mth.sqrt((float) (deltaX * deltaX + deltaZ * deltaZ));
-        float rotate = Math.abs(deltaYaw);
-
-        float targetAmount = move * 4.0F + rotate * 0.25F;
+        float targetAmount = distance * 4.0F + rotation * 0.25F;
         targetAmount = Math.min(targetAmount, 0.25F);
 
-        animationSpeed += (targetAmount - animationSpeed) * 0.4F;
-        animationPosition += animationSpeed;
-    }
-
-    @Override
-    public void calculateEntityAnimation(LivingEntity entity, boolean flying) {
-        // limb swing logic replicated to consider rotation
+        walkAnimation.update(targetAmount, 0.4f);
     }
 
     @Override
@@ -104,7 +85,7 @@ public final class FiddlerCrabEntity extends Animal {
     @Override
     protected boolean isAffectedByFluids() {
         // avoid being affected by water while on the ground
-        return !onGround;
+        return !onGround();
     }
 
     @Override
@@ -115,7 +96,7 @@ public final class FiddlerCrabEntity extends Animal {
     public static boolean canCrabSpawn(EntityType<? extends FiddlerCrabEntity> type, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {
         BlockPos groundPos = pos.below();
         BlockState groundBlock = world.getBlockState(groundPos);
-        if (groundBlock.getMaterial() != Material.SAND) {
+        if (!groundBlock.is(BlockTags.SAND)) {
             return false;
         }
 

@@ -5,7 +5,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.AbstractFish;
@@ -26,9 +25,9 @@ public final class CuberaEntity extends AbstractFish {
     }
 
     @Override
-    public void calculateEntityAnimation(LivingEntity entity, boolean verticalMovement) {
+    public void calculateEntityAnimation(boolean verticalMovement) {
         // apply swimming animation when moving vertically
-        super.calculateEntityAnimation(entity, true);
+        super.calculateEntityAnimation(true);
     }
 
     @Override

@@ -1,21 +1,18 @@
 package net.tropicraft.core.common.dimension.feature;
 
-import net.minecraft.core.HolderSet;
-import net.minecraft.core.Registry;
-import net.minecraft.data.BuiltinRegistries;
-import net.minecraft.tags.TagKey;
-import net.minecraft.util.valueproviders.IntProvider;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.heightproviders.ConstantHeight;
-import net.minecraft.world.level.levelgen.heightproviders.HeightProvider;
-import net.minecraft.world.level.levelgen.heightproviders.HeightProviderType;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.dimension.feature.pools.TropicraftTemplatePools;
@@ -24,53 +21,61 @@ import net.tropicraft.core.common.dimension.feature.volcano.VolcanoStructure;
 import java.util.Map;
 
 public final class TropicraftStructures {
-    public static final DeferredRegister<Structure> REGISTER = DeferredRegister.create(Registry.STRUCTURE_REGISTRY, Constants.MODID);
+    public static final ResourceKey<Structure> HOME_TREE = createKey("home_tree");
+    public static final ResourceKey<Structure> KOA_VILLAGE = createKey("koa_village");
+    public static final ResourceKey<Structure> OCEAN_VOLCANO = createKey("ocean_volcano");
+    public static final ResourceKey<Structure> LAND_VOLCANO = createKey("land_volcano");
 
-    public static final RegistryObject<Structure> HOME_TREE = REGISTER.register("home_tree", () -> new HomeTreeStructure(
-            new Structure.StructureSettings(
-                    biomes(TropicraftTags.Biomes.HAS_HOME_TREE),
-                    Map.of(),
-                    GenerationStep.Decoration.SURFACE_STRUCTURES,
-                    TerrainAdjustment.NONE
-            ),
-            TropicraftTemplatePools.HOME_TREE_STARTS.getHolder().orElseThrow(),
-            7
-    ));
+    public static void bootstrap(final BootstapContext<Structure> context) {
+        final HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
+        final HolderGetter<StructureTemplatePool> pools = context.lookup(Registries.TEMPLATE_POOL);
 
-    public static final RegistryObject<Structure> KOA_VILLAGE = REGISTER.register("koa_village", () -> new KoaVillageStructure(
-            new Structure.StructureSettings(
-                    biomes(TropicraftTags.Biomes.HAS_KOA_VILLAGE),
-                    Map.of(),
-                    GenerationStep.Decoration.SURFACE_STRUCTURES,
-                    TerrainAdjustment.NONE
-            ),
-            TropicraftTemplatePools.KOA_TOWN_CENTERS.getHolder().orElseThrow(),
-            6
-    ));
+        context.register(HOME_TREE, new HomeTreeStructure(
+                new Structure.StructureSettings(
+                        biomes.get(TropicraftTags.Biomes.HAS_HOME_TREE).orElseThrow(),
+                        Map.of(),
+                        GenerationStep.Decoration.SURFACE_STRUCTURES,
+                        TerrainAdjustment.NONE
+                ),
+                pools.getOrThrow(TropicraftTemplatePools.HOME_TREE_STARTS),
+                7
+        ));
 
-    public static final RegistryObject<Structure> OCEAN_VOLCANO = REGISTER.register("ocean_volcano", () -> new VolcanoStructure(
-            new Structure.StructureSettings(
-                    biomes(TropicraftTags.Biomes.HAS_OCEAN_VOLCANO),
-                    Map.of(),
-                    GenerationStep.Decoration.SURFACE_STRUCTURES,
-                    TerrainAdjustment.NONE
-            ),
-            ConstantHeight.of(VerticalAnchor.absolute(-50)),
-            UniformInt.of(45, 64)
-    ));
+        context.register(KOA_VILLAGE, new KoaVillageStructure(
+                new Structure.StructureSettings(
+                        biomes.get(TropicraftTags.Biomes.HAS_KOA_VILLAGE).orElseThrow(),
+                        Map.of(),
+                        GenerationStep.Decoration.SURFACE_STRUCTURES,
+                        TerrainAdjustment.NONE
+                ),
+                pools.getOrThrow(TropicraftTemplatePools.KOA_TOWN_CENTERS),
+                6
+        ));
 
-    public static final RegistryObject<Structure> LAND_VOLCANO = REGISTER.register("land_volcano", () -> new VolcanoStructure(
-            new Structure.StructureSettings(
-                    biomes(TropicraftTags.Biomes.HAS_LAND_VOLCANO),
-                    Map.of(),
-                    GenerationStep.Decoration.SURFACE_STRUCTURES,
-                    TerrainAdjustment.NONE
-            ),
-            ConstantHeight.of(VerticalAnchor.absolute(0)),
-            UniformInt.of(45, 64)
-    ));
+        context.register(OCEAN_VOLCANO, new VolcanoStructure(
+                new Structure.StructureSettings(
+                        biomes.get(TropicraftTags.Biomes.HAS_OCEAN_VOLCANO).orElseThrow(),
+                        Map.of(),
+                        GenerationStep.Decoration.SURFACE_STRUCTURES,
+                        TerrainAdjustment.NONE
+                ),
+                ConstantHeight.of(VerticalAnchor.absolute(-50)),
+                UniformInt.of(45, 64)
+        ));
 
-    private static HolderSet<Biome> biomes(TagKey<Biome> pKey) {
-        return BuiltinRegistries.BIOME.getOrCreateTag(pKey);
+        context.register(LAND_VOLCANO, new VolcanoStructure(
+                new Structure.StructureSettings(
+                        biomes.get(TropicraftTags.Biomes.HAS_LAND_VOLCANO).orElseThrow(),
+                        Map.of(),
+                        GenerationStep.Decoration.SURFACE_STRUCTURES,
+                        TerrainAdjustment.NONE
+                ),
+                ConstantHeight.of(VerticalAnchor.absolute(0)),
+                UniformInt.of(45, 64)
+        ));
+    }
+
+    private static ResourceKey<Structure> createKey(final String name) {
+        return ResourceKey.create(Registries.STRUCTURE, new ResourceLocation(Constants.MODID, name));
     }
 }

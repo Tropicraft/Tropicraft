@@ -7,12 +7,12 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.TropicsConfigs;
 import net.tropicraft.core.common.block.TropicraftBlocks;
@@ -84,15 +84,13 @@ public class VolcanoBlockEntity extends BlockEntity {
 			case ERUPTING:
 				if (!getLevel().isClientSide) {
 					//	if ((ticksUntilRetreating % (getWorld().rand.nextInt(40) + 10) == 0)/* && time > 800 && !falling*/) {
-					if (getLevel().random.nextInt(15) == 0)
-					{
+					if (getLevel().random.nextInt(15) == 0) {
 						throwLavaFromCaldera(0.05 + Math.abs(getLevel().random.nextGaussian()) * (lavaLevel > 90 ? LAVA_ERUPT_LEVEL + this.heightOffset : 0.75));
 					}
 					//	}
 
 					//	if ((ticksUntilRetreating % (getWorld().rand.nextInt(40) + 10) == 0) && lavaLevel > 90) {
-					if (getLevel().random.nextInt(15) == 0)
-					{
+					if (getLevel().random.nextInt(15) == 0) {
 						throwLavaFromCaldera(0.05 + Math.abs(getLevel().random.nextGaussian()) * (lavaLevel > LAVA_ERUPT_LEVEL + this.heightOffset ? 1 : 0.75));
 					}
 					//	}
@@ -288,11 +286,13 @@ public class VolcanoBlockEntity extends BlockEntity {
 	}
 
 	private void setLavaLevel() {
-		for(int y = LAVA_BASE_LEVEL + this.heightOffset; y < level.getMaxBuildHeight(); y++) {
-			BlockPos pos2 = new BlockPos(this.worldPosition.getX(), y, this.worldPosition.getZ());
-			//if(getWorld().getBlockState(pos).getBlock() != Blocks.LAVA && getWorld().getBlockId(xPos, y, zPos) != TropicraftMod.tempLavaMoving.blockID) {\
-			if (getLevel().getBlockState(pos2).getMaterial() != Material.LAVA) {
-				lavaLevel = y - 1;
+		int x = worldPosition.getX();
+		int z = worldPosition.getZ();
+		int minY = LAVA_BASE_LEVEL + heightOffset;
+		int maxY = level.getMaxBuildHeight();
+		for (BlockPos pos : BlockPos.betweenClosed(x, minY, z, x, maxY, z)) {
+			if (!level.getFluidState(pos).is(FluidTags.LAVA)) {
+				lavaLevel = pos.getY() - 1;
 				return;
 			}
 		}
@@ -303,12 +303,13 @@ public class VolcanoBlockEntity extends BlockEntity {
 	 * @return the number of lava blocks going outwards in the +x direction from this block
 	 */
 	private int findRadius() {
-		for (int x = 0; x < 60; x++) {
-			if (getLevel().getBlockState(new BlockPos(x + this.worldPosition.getX(), 10, this.worldPosition.getZ())).getBlock() != Blocks.LAVA) {
-				return x;
+		int x = worldPosition.getX();
+		int z = worldPosition.getZ();
+		for (BlockPos pos : BlockPos.betweenClosed(x, 10, z, x + 60, 10, z)) {
+			if (!level.getFluidState(pos).is(FluidTags.LAVA)) {
+				return pos.getX() - worldPosition.getX();
 			}
 		}
-
 		return -1;
 	}
 

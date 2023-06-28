@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.item;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -10,7 +11,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.material.Material;
 
 public class WaterWandItem extends Item {
     public WaterWandItem(Properties properties) {
@@ -44,7 +44,7 @@ public class WaterWandItem extends Item {
 
     private boolean removeWater(Level world, ItemStack itemstack, Player player, BlockPos pos) {
         if (!world.isClientSide) {
-            if (world.getBlockState(pos).getMaterial() == Material.WATER) {
+            if (world.getFluidState(pos).is(FluidTags.WATER)) {
                 itemstack.hurtAndBreak(1, player, (e) -> {
                     e.broadcastBreakEvent(EquipmentSlot.MAINHAND);
                 });

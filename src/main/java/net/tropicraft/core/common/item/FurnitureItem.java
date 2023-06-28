@@ -19,7 +19,6 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.entity.placeable.FurnitureEntity;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -45,11 +44,8 @@ public class FurnitureItem<T extends FurnitureEntity> extends Item {
             List<Entity> nearbyEntities = world.getEntities(placer, placer.getBoundingBox().expandTowards(lookvec.scale(5.0D)).inflate(1.0D), EntitySelector.NO_SPECTATORS);
             if (!nearbyEntities.isEmpty()) {
                 Vec3 eyePosition = placer.getEyePosition(1.0F);
-                Iterator<Entity> nearbyEntityIterator = nearbyEntities.iterator();
-
-                while (nearbyEntityIterator.hasNext()) {
-                    Entity nearbyEnt = nearbyEntityIterator.next();
-                    AABB nearbyBB = nearbyEnt.getBoundingBox().inflate((double)nearbyEnt.getPickRadius());
+                for (Entity nearbyEnt : nearbyEntities) {
+                    AABB nearbyBB = nearbyEnt.getBoundingBox().inflate(nearbyEnt.getPickRadius());
                     if (nearbyBB.contains(eyePosition)) {
                         return new InteractionResultHolder<>(InteractionResult.PASS, heldItem);
                     }
@@ -60,7 +56,7 @@ public class FurnitureItem<T extends FurnitureEntity> extends Item {
                 Vec3 hitVec = rayTraceResult.getLocation();
 
                 final T entity = this.entityType.get().create(world);
-                entity.moveTo(new BlockPos(hitVec.x, hitVec.y, hitVec.z), 0, 0);
+                entity.moveTo(BlockPos.containing(hitVec), 0, 0);
                 entity.setDeltaMovement(Vec3.ZERO);
                 entity.setRotation(placer.getYRot() + 180);
                 entity.setColor(this.color);

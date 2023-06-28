@@ -101,7 +101,7 @@ public class SharkEntity extends WaterAnimal {
 //        setSwimSpeeds(1.1f, 2.2f, 1.5f, 3f, 5f);
         getAttribute(Attributes.MAX_HEALTH).setBaseValue(20);
         // TODO in renderer - this.setTexture("hammerhead4");
-        if (!level.isClientSide) {
+        if (!level().isClientSide) {
             bossInfo.setName(Component.literal("Elder Hammerhead"));
         }
         hasSetBoss = true;

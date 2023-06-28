@@ -43,10 +43,10 @@ public class PonyBottleItem extends Item {
             return new InteractionResultHolder<>(InteractionResult.PASS, stack);
         }
     }
-    
+
     @Override
-    public void onUsingTick(ItemStack stack, LivingEntity player, int count) {
-        super.onUsingTick(stack, player, count);
+    public void onUseTick(Level level, LivingEntity player, ItemStack stack, int count) {
+        super.onUseTick(level, player, stack, count);
         int fillAmt = FILL_RATE + 1; // +1 to counteract the -1 per tick while underwater
         // Wait for drink sound to start, and don't add air that won't fit
         if (player.getUseItemRemainingTicks() <= 25 && player.getAirSupply() < player.getMaxAirSupply() - fillAmt) {

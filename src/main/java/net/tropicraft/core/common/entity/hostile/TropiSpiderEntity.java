@@ -45,6 +45,8 @@ public class TropiSpiderEntity extends Spider {
     private long ticksSinceLastEgg = 0L;
     public byte initialType = 0;
 
+    private boolean jumping;
+
     public TropiSpiderEntity(final EntityType<? extends Spider> type, Level world) {
         super(type, world);
         tickCount = SPIDER_MATURE_AGE;
@@ -52,7 +54,7 @@ public class TropiSpiderEntity extends Spider {
     }
 
     public static TropiSpiderEntity haveBaby(final TropiSpiderEntity mother) {
-        final TropiSpiderEntity baby = new TropiSpiderEntity(TropicraftEntities.TROPI_SPIDER.get(), mother.level);
+        final TropiSpiderEntity baby = new TropiSpiderEntity(TropicraftEntities.TROPI_SPIDER.get(), mother.level());
         baby.setSpiderType(Type.CHILD);
         baby.tickCount = 0;
         baby.mother = mother;
@@ -93,6 +95,11 @@ public class TropiSpiderEntity extends Spider {
     }
 
     @Override
+    protected float getFlyingSpeed() {
+        return jumping ? 0.3f : 0.2f;
+    }
+
+    @Override
     public void tick() {
         fallDistance = 0;
         // TODO port to new getSize() method
@@ -108,14 +115,14 @@ public class TropiSpiderEntity extends Spider {
                 Util.tryMoveToEntityLivingLongDist(this, attackTarget, 0.8f);
             }
         }
-        if (!level.isClientSide && attackTarget != null && onGround && random.nextInt(3) == 0 && attackTarget.distanceTo(this) < 5) {
+        if (!level().isClientSide && attackTarget != null && onGround() && random.nextInt(3) == 0 && attackTarget.distanceTo(this) < 5) {
             getNavigation().stop();
             jumpFromGround();
-            flyingSpeed = 0.3f;
+            jumping = true;
         } else {
-            flyingSpeed = 0.2f;
+            jumping = false;
         }
-        if (!level.isClientSide) {
+        if (!level().isClientSide) {
             if (getSpiderType() == Type.CHILD) {
                 if (tickCount >= SPIDER_MATURE_AGE) {
                     setSpiderType(Type.ADULT);
@@ -185,7 +192,7 @@ public class TropiSpiderEntity extends Spider {
     }
 
     public void buildNest() {
-        if (!level.isClientSide) {
+        if (!level().isClientSide) {
             setSpiderType(Type.MOTHER);
             int r = random.nextInt(SPIDER_MAX_EGGS) + 1;
             
@@ -194,10 +201,10 @@ public class TropiSpiderEntity extends Spider {
             }
             
             for (int i = 0; i < r; i++) {
-                TropiSpiderEggEntity egg = TropicraftEntities.TROPI_SPIDER_EGG.get().create(level);
+                TropiSpiderEggEntity egg = TropicraftEntities.TROPI_SPIDER_EGG.get().create(level());
                 egg.setMotherId(getUUID());
                 egg.setPos(blockPosition().getX() + random.nextFloat(), blockPosition().getY(), blockPosition().getZ() + random.nextFloat());
-                level.addFreshEntity(egg);
+                level().addFreshEntity(egg);
                 ticksSinceLastEgg = 0;
             }
             
@@ -206,8 +213,8 @@ public class TropiSpiderEntity extends Spider {
                     if (random.nextInt(8) == 0) {
                         BlockPos pos = new BlockPos(blockPosition().getX() - 2 + x, blockPosition().getY(),
                                 blockPosition().getZ() - 2 + z);
-                        if (level.getBlockState(pos).getBlock().equals(Blocks.AIR) && level.getBlockState(pos.below()).getMaterial().isSolid()) {
-                            level.setBlockAndUpdate(pos, Blocks.COBWEB.defaultBlockState());
+                        if (level().isEmptyBlock(pos) && level().getBlockState(pos.below()).isSolid()) {
+                            level().setBlockAndUpdate(pos, Blocks.COBWEB.defaultBlockState());
                         }
                     }
                 }

@@ -53,6 +53,6 @@ public class BambooItemFrameItem extends HangingEntityItem {
 
      @Override
     protected boolean mayPlace(Player player, Direction direction, ItemStack itemStack, BlockPos pos) {
-        return !player.level.isOutsideBuildHeight(pos) && player.mayUseItemAt(pos, direction, itemStack);
+        return !player.level().isOutsideBuildHeight(pos) && player.mayUseItemAt(pos, direction, itemStack);
     }
 }

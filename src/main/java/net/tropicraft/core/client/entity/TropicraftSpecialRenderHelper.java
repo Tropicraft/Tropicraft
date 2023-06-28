@@ -2,11 +2,11 @@ package net.tropicraft.core.client.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
 
 public class TropicraftSpecialRenderHelper {
 
@@ -23,8 +23,8 @@ public class TropicraftSpecialRenderHelper {
         stack.translate(-f4, -f5, 0.0F);
         float f6 = 2F;
         stack.scale(f6, f6, f6);
-        stack.mulPose(Vector3f.YP.rotationDegrees(180F));
-        stack.mulPose(Vector3f.ZP.rotationDegrees(180F));
+        stack.mulPose(Axis.YP.rotationDegrees(180F));
+        stack.mulPose(Axis.ZP.rotationDegrees(180F));
         stack.translate(-0.5F, -0.5F, 0.0F);
         popper(f1, f2, f, f3, f1shifted, f3shifted, stack, buffer, packedLightIn, overlayLightIn);
         stack.popPose();
@@ -41,8 +41,8 @@ public class TropicraftSpecialRenderHelper {
         stack.translate(-f4, -f5, 0.0F);
         float f6 = 1.7F;
         stack.scale(f6, f6, f6);
-        stack.mulPose(Vector3f.YP.rotationDegrees(180F));
-        stack.mulPose(Vector3f.ZP.rotationDegrees(180F));
+        stack.mulPose(Axis.YP.rotationDegrees(180F));
+        stack.mulPose(Axis.ZP.rotationDegrees(180F));
         stack.translate(-0.5F, -0.5F, 0.0F);
         popper(f1, f2, f, f3, f2, f3, stack, buffer, packedLightIn, overlayLightIn);
         stack.popPose();

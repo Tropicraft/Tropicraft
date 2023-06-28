@@ -1,7 +1,7 @@
 package net.tropicraft.core.client.tileentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -28,11 +28,11 @@ public abstract class MachineRenderer<T extends BlockEntity & IMachineBlock> imp
     public void render(T te, float partialTicks, PoseStack stack, MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn) {
         stack.pushPose();
         stack.translate(0.5f, 1.5f, 0.5f);
-        stack.mulPose(Vector3f.XP.rotationDegrees(180));
-        //stack.rotate(Vector3f.ZP.rotationDegrees(180));
+        stack.mulPose(Axis.XP.rotationDegrees(180));
+        //stack.rotate(Axis.ZP.rotationDegrees(180));
 
         if (te == null || te.getLevel() == null) {
-            stack.mulPose(Vector3f.YP.rotationDegrees(-90));
+            stack.mulPose(Axis.YP.rotationDegrees(-90));
         } else {
             BlockState state = te.getLevel().getBlockState(te.getBlockPos());
             Direction facing;
@@ -41,7 +41,7 @@ public abstract class MachineRenderer<T extends BlockEntity & IMachineBlock> imp
             } else {
                 facing = te.getDirection(state);
             }
-            stack.mulPose(Vector3f.YP.rotationDegrees(facing.toYRot() + 90));
+            stack.mulPose(Axis.YP.rotationDegrees(facing.toYRot() + 90));
         }
 
         if (te != null && te.isActive()) {
@@ -66,7 +66,7 @@ public abstract class MachineRenderer<T extends BlockEntity & IMachineBlock> imp
     
     protected void animationTransform(T te, PoseStack stack, float partialTicks) {
         float angle = Mth.sin((float) (25f * 2f * Math.PI * te.getProgress(partialTicks))) * 15f;
-        stack.mulPose(Vector3f.YP.rotationDegrees(angle));
+        stack.mulPose(Axis.YP.rotationDegrees(angle));
     }
     
     protected abstract void renderIngredients(final T te, final PoseStack stack, final MultiBufferSource buffer, int packedLightIn, int combinedOverlayIn);

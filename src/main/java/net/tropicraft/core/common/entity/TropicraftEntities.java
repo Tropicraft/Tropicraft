@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.entity.DolphinRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
@@ -24,7 +25,6 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -60,6 +60,7 @@ import net.tropicraft.core.common.entity.projectile.PoisonBlotEntity;
 import net.tropicraft.core.common.entity.projectile.SpearEntity;
 import net.tropicraft.core.common.entity.underdasea.*;
 import net.tropicraft.core.common.item.RecordMusic;
+import net.tropicraft.core.common.item.TropicalFertilizerItem;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 @Mod.EventBusSubscriber(modid = Constants.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -181,7 +182,7 @@ public class TropicraftEntities {
             .spawnPlacement(SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canSpawnOceanWaterMob)
             .attributes(MarlinEntity::createAttributes)
             .tag(EntityTypeTags.AXOLOTL_HUNT_TARGETS)
-            .loot((lootTables, entity) -> dropItemsWithEnchantBonus(lootTables, entity, TropicraftItems.FRESH_MARLIN, UniformGenerator.between(1, 3)))
+            .loot((lootTables, entity) -> dropItemsWithEnchantBonus(lootTables, entity, (RegistryEntry<Item>) TropicraftItems.FRESH_MARLIN, UniformGenerator.between(1, 3)))
             .renderer(() -> MarlinRenderer::new)
             .register();
     public static final RegistryEntry<EntityType<FailgullEntity>> FAILGULL = REGISTRATE.entity("failgull", FailgullEntity::new, MobCategory.AMBIENT)
@@ -201,7 +202,7 @@ public class TropicraftEntities {
                     .setShouldReceiveVelocityUpdates(true))
             .spawnPlacement(SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canSpawnOceanWaterMob)
             .attributes(TropicraftDolphinEntity::createAttributes)
-            .loot((lootTables, entity) -> dropItemsWithEnchantBonus(lootTables, entity, TropicraftItems.TROPICAL_FERTILIZER, UniformGenerator.between(1, 3)))
+            .loot((lootTables, entity) -> dropItemsWithEnchantBonus(lootTables, entity, (RegistryEntry<TropicalFertilizerItem>) TropicraftItems.TROPICAL_FERTILIZER, UniformGenerator.between(1, 3)))
             .renderer(() -> DolphinRenderer::new)
             .register();
     public static final RegistryEntry<EntityType<SeahorseEntity>> SEAHORSE = REGISTRATE.entity("seahorse", SeahorseEntity::new, MobCategory.WATER_AMBIENT)
@@ -383,7 +384,7 @@ public class TropicraftEntities {
                     .setShouldReceiveVelocityUpdates(true))
             .spawnPlacement(SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canSpawnOceanWaterMob)
             .attributes(SharkEntity::createAttributes)
-            .loot((lootTables, entity) -> dropItemsWithEnchantBonus(lootTables, entity, TropicraftItems.TROPICAL_FERTILIZER, UniformGenerator.between(1, 3)))
+            .loot((lootTables, entity) -> dropItemsWithEnchantBonus(lootTables, entity, (RegistryEntry<TropicalFertilizerItem>) TropicraftItems.TROPICAL_FERTILIZER, UniformGenerator.between(1, 3)))
             .renderer(() -> SharkRenderer::new)
             .register();
     public static final RegistryEntry<EntityType<SeaTurtleEggEntity>> SEA_TURTLE_EGG = REGISTRATE.entity("turtle_egg", SeaTurtleEggEntity::new, MobCategory.MONSTER)
@@ -546,7 +547,7 @@ public class TropicraftEntities {
     public static boolean canAnimalSpawn(EntityType<? extends Mob> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
         BlockState groundState = worldIn.getBlockState(pos.below());
         return groundState.getBlock() == Blocks.GRASS_BLOCK
-                || groundState.getMaterial() == Material.SAND
+                || groundState.is(BlockTags.SAND)
                 || groundState.is(TropicraftTags.Blocks.MUD);
     }
 

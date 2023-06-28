@@ -107,7 +107,7 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
 		FlyingPathNavigation flyingpathnavigator = new FlyingPathNavigation(this, worldIn) {
 			@Override
 			public boolean isStableDestination(BlockPos pos) {
-				return !this.level.getBlockState(pos.below()).isAir();
+				return !level.isEmptyBlock(pos.below());
 			}
 		};
 		flyingpathnavigator.setCanOpenDoors(false);
@@ -117,10 +117,10 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
 	}
 
 	private void poop() {
-		if (!level.isClientSide && level.random.nextInt(20) == 0) {
-			Snowball s = new Snowball(level, getX(), getY(), getZ());
+		if (!level().isClientSide && level().random.nextInt(20) == 0) {
+			Snowball s = new Snowball(level(), getX(), getY(), getZ());
 			s.shoot(0, 0, 0, 0, 0);
-			level.addFreshEntity(s);
+            level().addFreshEntity(s);
 		}
 	}
 
@@ -163,8 +163,8 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
 
 	@Nullable
 	private Entity getFlockLeader() {
-		if (level instanceof ServerLevel && hasFlockLeader()) {
-			return ((ServerLevel) level).getEntity(entityData.get(FLOCK_LEADER_UUID).get());
+		if (level() instanceof ServerLevel && hasFlockLeader()) {
+			return ((ServerLevel) level()).getEntity(entityData.get(FLOCK_LEADER_UUID).get());
 		}
 
 		return null;
@@ -174,11 +174,12 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
 	private BlockPos getRandomLocation() {
 		final RandomSource random = getRandom();
 		for (int i = 0; i < 20; i++) {
-			double nextXPos = getX() + (double) ((random.nextFloat() * 2.0F - 1.0F) * 48);
-			double nextYPos = getY() + (double) ((random.nextFloat() * 2.0F - 1.0F) * 3);
-			double nextZPos = getZ() + (double) ((random.nextFloat() * 2.0F - 1.0F) * 48);
-			final BlockPos pos = new BlockPos(nextXPos, nextYPos, nextZPos);
-			if (level.isEmptyBlock(pos)) {
+			final BlockPos pos = BlockPos.containing(
+					getX() + (random.nextFloat() * 2.0F - 1.0F) * 48,
+					getY() + (random.nextFloat() * 2.0F - 1.0F) * 3,
+					getZ() + (random.nextFloat() * 2.0F - 1.0F) * 48
+			);
+			if (level().isEmptyBlock(pos)) {
 				return pos;
 			}
 		}
@@ -188,7 +189,7 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
 
 		Vec3 target = HoverRandomPos.getPos(FailgullEntity.this, 40, 3, direction.x, direction.z, maxAngle, 2, 1);
 		final Vec3 groundPos = AirAndWaterRandomPos.getPos(FailgullEntity.this, 40, 4, -2, direction.x, direction.z, maxAngle);
-		return target != null ? new BlockPos(target) : groundPos != null ? new BlockPos(groundPos) : null;
+		return target != null ? BlockPos.containing(target) : groundPos != null ? BlockPos.containing(groundPos) : null;
 	}
 
 	@Override
@@ -198,7 +199,7 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
 
 	@Override
 	public boolean isFlying() {
-		return !this.onGround;
+		return !this.onGround();
 	}
 
 	class FollowLeaderGoal extends Goal {
@@ -302,7 +303,7 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
 
 		@Override
 		public void start() {
-			List<FailgullEntity> list = mob.level.getEntitiesOfClass(FailgullEntity.class, mob.getBoundingBox().inflate(10D, 10D, 10D));
+			List<FailgullEntity> list = mob.level().getEntitiesOfClass(FailgullEntity.class, mob.getBoundingBox().inflate(10D, 10D, 10D));
 			list.remove(mob);
 
 			final Optional<FailgullEntity> oldest = list.stream().min(Comparator.comparingInt(FailgullEntity::getId));

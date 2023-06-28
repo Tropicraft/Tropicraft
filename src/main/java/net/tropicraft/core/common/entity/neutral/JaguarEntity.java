@@ -57,7 +57,7 @@ public class JaguarEntity extends Animal {
 
     @Override
     public JaguarEntity getBreedOffspring(ServerLevel world, AgeableMob mate) {
-        return TropicraftEntities.JAGUAR.get().create(this.level);
+        return TropicraftEntities.JAGUAR.get().create(this.level());
     }
 
     @Override

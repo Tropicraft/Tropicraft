@@ -33,7 +33,7 @@ public class SwimToAvoidEntityGoal extends Goal {
     public void tick() {
         super.tick();
         
-        List<Entity> ents = entity.level.getEntities(entity, entity.getBoundingBox().inflate(this.distanceToAvoid));
+        List<Entity> ents = entity.level().getEntities(entity, entity.getBoundingBox().inflate(this.distanceToAvoid));
         List<Class<? extends Entity>> classes = Arrays.asList(entityClassToAvoid);
         for (int i = 0; i < ents.size(); i++) {
             if (classes.contains(ents.get(i).getClass())) {

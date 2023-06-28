@@ -1,5 +1,9 @@
 package net.tropicraft.core.common.dimension.feature;
 
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.block.Block;
@@ -15,7 +19,7 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import net.minecraft.world.level.levelgen.feature.stateproviders.RuleBasedBlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
-import net.minecraftforge.registries.RegistryObject;
+import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.block.TropicraftTrees;
 import net.tropicraft.core.common.dimension.feature.tree.*;
@@ -26,105 +30,35 @@ import java.util.OptionalInt;
 import java.util.function.Supplier;
 
 import static net.tropicraft.core.common.block.TropicraftTrees.BEEHIVE_002;
+import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.*;
 
 public final class TropicraftTreeFeatures {
-    public static final TropicraftFeatures.Register REGISTER = TropicraftFeatures.Register.create();
+    public static final ResourceKey<ConfiguredFeature<?, ?>> GRAPEFRUIT_TREE = createKey("grapefruit_tree");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> ORANGE_TREE = createKey("orange_tree");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> LEMON_TREE = createKey("lemon_tree");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> LIME_TREE = createKey("lime_tree");
 
-    public static final RegistryObject<ConfiguredFeature<?, ?>> GRAPEFRUIT_TREE = REGISTER.feature("grapefruit_tree", Feature.TREE, () -> fruitTree(TropicraftBlocks.GRAPEFRUIT_LEAVES));
-    public static final RegistryObject<ConfiguredFeature<?, ?>> ORANGE_TREE = REGISTER.feature("orange_tree", Feature.TREE, () -> fruitTree(TropicraftBlocks.ORANGE_LEAVES));
-    public static final RegistryObject<ConfiguredFeature<?, ?>> LEMON_TREE = REGISTER.feature("lemon_tree", Feature.TREE, () -> fruitTree(TropicraftBlocks.LEMON_LEAVES));
-    public static final RegistryObject<ConfiguredFeature<?, ?>> LIME_TREE = REGISTER.feature("lime_tree", Feature.TREE, () -> fruitTree(TropicraftBlocks.LIME_LEAVES));
+    public static final ResourceKey<ConfiguredFeature<?, ?>> NORMAL_PALM_TREE = createKey("normal_palm_tree");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> CURVED_PALM_TREE = createKey("curved_palm_tree");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> LARGE_PALM_TREE = createKey("large_palm_tree");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> PALM_TREE = createKey("palm_trees");
 
-    public static final RegistryObject<ConfiguredFeature<?, ?>> NORMAL_PALM_TREE = REGISTER.feature("normal_palm_tree", TropicraftFeatures.NORMAL_PALM_TREE);
-    public static final RegistryObject<ConfiguredFeature<?, ?>> CURVED_PALM_TREE = REGISTER.feature("curved_palm_tree", TropicraftFeatures.CURVED_PALM_TREE);
-    public static final RegistryObject<ConfiguredFeature<?, ?>> LARGE_PALM_TREE = REGISTER.feature("large_palm_tree", TropicraftFeatures.LARGE_PALM_TREE);
-    public static final RegistryObject<ConfiguredFeature<?, ?>> PALM_TREE = REGISTER.randomFeature("palm_trees", NORMAL_PALM_TREE, CURVED_PALM_TREE, LARGE_PALM_TREE);
+    public static final ResourceKey<ConfiguredFeature<?, ?>> RAINFOREST_UP_TREE = createKey("rainforest_up_tree");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> RAINFOREST_SMALL_TUALUNG = createKey("rainforest_small_tualung");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> RAINFOREST_LARGE_TUALUNG = createKey("rainforest_large_tualung");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> RAINFOREST_TALL_TREE = createKey("rainforest_tall_tree");
 
-    public static final RegistryObject<ConfiguredFeature<?, ?>> RAINFOREST_UP_TREE = REGISTER.feature("rainforest_up_tree", TropicraftFeatures.UP_TREE);
-    public static final RegistryObject<ConfiguredFeature<?, ?>> RAINFOREST_SMALL_TUALUNG = REGISTER.feature("rainforest_small_tualung", TropicraftFeatures.SMALL_TUALUNG);
-    public static final RegistryObject<ConfiguredFeature<?, ?>> RAINFOREST_LARGE_TUALUNG = REGISTER.feature("rainforest_large_tualung", TropicraftFeatures.LARGE_TUALUNG);
-    public static final RegistryObject<ConfiguredFeature<?, ?>> RAINFOREST_TALL_TREE = REGISTER.feature("rainforest_tall_tree", TropicraftFeatures.TALL_TREE);
+    public static final ResourceKey<ConfiguredFeature<?, ?>> PLEODENDRON = createKey("pleodendron");
 
-    public static final RegistryObject<ConfiguredFeature<?, ?>> PLEODENDRON = REGISTER.feature("pleodendron", Feature.TREE, () ->
-            new TreeConfiguration.TreeConfigurationBuilder(
-                    BlockStateProvider.simple(Blocks.JUNGLE_LOG.defaultBlockState()),
-                    new PleodendronTrunkPlacer(10, 8, 0),
-                    BlockStateProvider.simple(Blocks.JUNGLE_LEAVES.defaultBlockState()),
-                    new PleodendronFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 1),
-                    new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
-            ).build());
+    public static final ResourceKey<ConfiguredFeature<?, ?>> PAPAYA = createKey("papaya");
 
-    public static final RegistryObject<ConfiguredFeature<?, ?>> PAPAYA = REGISTER.feature("papaya", Feature.TREE, () ->
-            new TreeConfiguration.TreeConfigurationBuilder(
-                    BlockStateProvider.simple(TropicraftBlocks.PAPAYA_LOG.get().defaultBlockState()),
-                    new StraightTrunkPlacer(5, 2, 3),
-                    BlockStateProvider.simple(TropicraftBlocks.PAPAYA_LEAVES.get().defaultBlockState()),
-                    new PapayaFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0)),
-                    new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
-            )
-                    .decorators(List.of(TropicraftTrees.BEEHIVE_005, new PapayaTreeDecorator()))
-                    .build());
+    public static final ResourceKey<ConfiguredFeature<?, ?>> RED_MANGROVE_SHORT = createKey("red_mangrove_short");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> RED_MANGROVE_SMALL = createKey("red_mangrove_small");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> RED_MANGROVE = createKey("red_mangrove");
 
-    private static final Supplier<FoliagePlacer> MANGROVE_FOLIAGE = () -> new MangroveFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0));
-    private static final Supplier<MangroveTrunkPlacer> RED_MANGROVE_TRUNK = () -> new MangroveTrunkPlacer(3, 3, 0, REGISTER.stateProvider(TropicraftBlocks.RED_MANGROVE_ROOTS), true, false);
-
-    private static final TwoLayersFeatureSize MANGROVE_MINIMUM_SIZE = new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4));
-
-    public static final RegistryObject<ConfiguredFeature<?, ?>> RED_MANGROVE_SHORT = REGISTER.feature("red_mangrove_short", Feature.TREE, () ->
-            new TreeConfiguration.TreeConfigurationBuilder(
-                    REGISTER.stateProvider(TropicraftBlocks.RED_MANGROVE_LOG),
-                    RED_MANGROVE_TRUNK.get(),
-                    REGISTER.stateProvider(TropicraftBlocks.RED_MANGROVE_LEAVES),
-                    MANGROVE_FOLIAGE.get(),
-                    MANGROVE_MINIMUM_SIZE
-            )
-                    .decorators(List.of(BEEHIVE_002, addPianguasInMud(8, 4)))
-                    .build());
-
-    public static final RegistryObject<ConfiguredFeature<?, ?>> RED_MANGROVE_SMALL = REGISTER.feature("red_mangrove_small", Feature.TREE, () ->
-            new TreeConfiguration.TreeConfigurationBuilder(
-                    REGISTER.stateProvider(TropicraftBlocks.RED_MANGROVE_LOG),
-                    new SmallMangroveTrunkPlacer(2, 1, 0, TropicraftBlocks.RED_MANGROVE_ROOTS.get()),
-                    REGISTER.stateProvider(TropicraftBlocks.RED_MANGROVE_LEAVES),
-                    new SmallMangroveFoliagePlacer(ConstantInt.of(1), ConstantInt.of(0)),
-                    MANGROVE_MINIMUM_SIZE
-            )
-                    .decorators(List.of(BEEHIVE_002, addPianguasInMud(2, 2)))
-                    .build());
-    public static final RegistryObject<ConfiguredFeature<?, ?>> RED_MANGROVE = REGISTER.randomFeature("red_mangrove", RED_MANGROVE_SHORT, RED_MANGROVE_SMALL);
-
-    public static final RegistryObject<ConfiguredFeature<?, ?>> TALL_MANGROVE = REGISTER.feature("tall_mangrove", Feature.TREE, () ->
-            new TreeConfiguration.TreeConfigurationBuilder(
-                    REGISTER.stateProvider(TropicraftBlocks.LIGHT_MANGROVE_LOG),
-                    new MangroveTrunkPlacer(7, 4, 2, REGISTER.stateProvider(TropicraftBlocks.LIGHT_MANGROVE_ROOTS), false, false),
-                    REGISTER.stateProvider(TropicraftBlocks.TALL_MANGROVE_LEAVES),
-                    MANGROVE_FOLIAGE.get(),
-                    MANGROVE_MINIMUM_SIZE
-            )
-                    .decorators(List.of(BEEHIVE_002, addPianguasInMud(8, 4)))
-                    .build());
-
-    public static final RegistryObject<ConfiguredFeature<?, ?>> TEA_MANGROVE = REGISTER.feature("tea_mangrove", Feature.TREE, () ->
-            new TreeConfiguration.TreeConfigurationBuilder(
-                    REGISTER.stateProvider(TropicraftBlocks.LIGHT_MANGROVE_LOG),
-                    new MangroveTrunkPlacer(5, 3, 0, REGISTER.stateProvider(TropicraftBlocks.LIGHT_MANGROVE_ROOTS), false, true),
-                    REGISTER.stateProvider(TropicraftBlocks.TEA_MANGROVE_LEAVES),
-                    MANGROVE_FOLIAGE.get(),
-                    MANGROVE_MINIMUM_SIZE
-            )
-                    .decorators(List.of(BEEHIVE_002, addPianguasInMud(8, 4), new PneumatophoresTreeDecorator(REGISTER.stateProvider(TropicraftBlocks.LIGHT_MANGROVE_ROOTS), 2, 6, 4)))
-                    .build());
-
-    public static final RegistryObject<ConfiguredFeature<?, ?>> BLACK_MANGROVE = REGISTER.feature("black_mangrove", Feature.TREE, () ->
-            new TreeConfiguration.TreeConfigurationBuilder(
-                    REGISTER.stateProvider(TropicraftBlocks.BLACK_MANGROVE_LOG),
-                    new MangroveTrunkPlacer(4, 3, 0, REGISTER.stateProvider(TropicraftBlocks.BLACK_MANGROVE_ROOTS), true, false),
-                    REGISTER.stateProvider(TropicraftBlocks.BLACK_MANGROVE_LEAVES),
-                    MANGROVE_FOLIAGE.get(),
-                    MANGROVE_MINIMUM_SIZE
-            )
-                    .decorators(List.of(BEEHIVE_002, addPianguasInMud(8, 4), new PneumatophoresTreeDecorator(REGISTER.stateProvider(TropicraftBlocks.BLACK_MANGROVE_ROOTS), 8, 16, 6)))
-                    .build());
+    public static final ResourceKey<ConfiguredFeature<?, ?>> TALL_MANGROVE = createKey("tall_mangrove");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> TEA_MANGROVE = createKey("tea_mangrove");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> BLACK_MANGROVE = createKey("black_mangrove");
 
     private static TreeConfiguration fruitTree(Supplier<? extends Block> fruitLeaves) {
         return new TreeConfiguration.TreeConfigurationBuilder(
@@ -146,5 +80,103 @@ public final class TropicraftTreeFeatures {
                 RuleBasedBlockStateProvider.simple(TropicraftBlocks.MUD_WITH_PIANGUAS.get()),
                 BlockPredicate.matchesBlocks(TropicraftBlocks.MUD.get())
         );
+    }
+
+    private static final Supplier<FoliagePlacer> MANGROVE_FOLIAGE = () -> new MangroveFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0));
+    private static final Supplier<MangroveTrunkPlacer> RED_MANGROVE_TRUNK = () -> new MangroveTrunkPlacer(3, 3, 0, stateProvider(TropicraftBlocks.RED_MANGROVE_ROOTS), true, false);
+
+    private static final TwoLayersFeatureSize MANGROVE_MINIMUM_SIZE = new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4));
+
+    public static void bootstrap(final BootstapContext<ConfiguredFeature<?, ?>> context) {
+        register(context, GRAPEFRUIT_TREE, Feature.TREE, fruitTree(TropicraftBlocks.GRAPEFRUIT_LEAVES));
+        register(context, ORANGE_TREE, Feature.TREE, fruitTree(TropicraftBlocks.ORANGE_LEAVES));
+        register(context, LEMON_TREE, Feature.TREE, fruitTree(TropicraftBlocks.LEMON_LEAVES));
+        register(context, LIME_TREE, Feature.TREE, fruitTree(TropicraftBlocks.LIME_LEAVES));
+
+        register(context, NORMAL_PALM_TREE, TropicraftFeatures.NORMAL_PALM_TREE);
+        register(context, CURVED_PALM_TREE, TropicraftFeatures.CURVED_PALM_TREE);
+        register(context, LARGE_PALM_TREE, TropicraftFeatures.LARGE_PALM_TREE);
+        registerRandom(context, PALM_TREE, NORMAL_PALM_TREE, CURVED_PALM_TREE, LARGE_PALM_TREE);
+
+        register(context, RAINFOREST_UP_TREE, TropicraftFeatures.UP_TREE);
+        register(context, RAINFOREST_SMALL_TUALUNG, TropicraftFeatures.SMALL_TUALUNG);
+        register(context, RAINFOREST_LARGE_TUALUNG, TropicraftFeatures.LARGE_TUALUNG);
+        register(context, RAINFOREST_TALL_TREE, TropicraftFeatures.TALL_TREE);
+
+        register(context, PLEODENDRON, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
+                BlockStateProvider.simple(Blocks.JUNGLE_LOG.defaultBlockState()),
+                new PleodendronTrunkPlacer(10, 8, 0),
+                BlockStateProvider.simple(Blocks.JUNGLE_LEAVES.defaultBlockState()),
+                new PleodendronFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 1),
+                new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
+        ).build());
+
+        register(context, PAPAYA, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
+                BlockStateProvider.simple(TropicraftBlocks.PAPAYA_LOG.get().defaultBlockState()),
+                new StraightTrunkPlacer(5, 2, 3),
+                BlockStateProvider.simple(TropicraftBlocks.PAPAYA_LEAVES.get().defaultBlockState()),
+                new PapayaFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0)),
+                new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
+        )
+                .decorators(List.of(TropicraftTrees.BEEHIVE_005, new PapayaTreeDecorator()))
+                .build());
+
+        register(context, RED_MANGROVE_SHORT, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
+                stateProvider(TropicraftBlocks.RED_MANGROVE_LOG),
+                RED_MANGROVE_TRUNK.get(),
+                stateProvider(TropicraftBlocks.RED_MANGROVE_LEAVES),
+                MANGROVE_FOLIAGE.get(),
+                MANGROVE_MINIMUM_SIZE
+        )
+                .decorators(List.of(BEEHIVE_002, addPianguasInMud(8, 4)))
+                .build());
+
+        register(context, RED_MANGROVE_SMALL, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
+                stateProvider(TropicraftBlocks.RED_MANGROVE_LOG),
+                new SmallMangroveTrunkPlacer(2, 1, 0, TropicraftBlocks.RED_MANGROVE_ROOTS.get()),
+                stateProvider(TropicraftBlocks.RED_MANGROVE_LEAVES),
+                new SmallMangroveFoliagePlacer(ConstantInt.of(1), ConstantInt.of(0)),
+                MANGROVE_MINIMUM_SIZE
+        )
+                .decorators(List.of(BEEHIVE_002, addPianguasInMud(2, 2)))
+                .build());
+        registerRandom(context, RED_MANGROVE, RED_MANGROVE_SHORT, RED_MANGROVE_SMALL);
+
+        register(context, TALL_MANGROVE, Feature.TREE,
+                new TreeConfiguration.TreeConfigurationBuilder(
+                        stateProvider(TropicraftBlocks.LIGHT_MANGROVE_LOG),
+                        new MangroveTrunkPlacer(7, 4, 2, stateProvider(TropicraftBlocks.LIGHT_MANGROVE_ROOTS), false, false),
+                        stateProvider(TropicraftBlocks.TALL_MANGROVE_LEAVES),
+                        MANGROVE_FOLIAGE.get(),
+                        MANGROVE_MINIMUM_SIZE
+                )
+                        .decorators(List.of(BEEHIVE_002, addPianguasInMud(8, 4)))
+                        .build());
+
+        register(context, TEA_MANGROVE, Feature.TREE,
+                new TreeConfiguration.TreeConfigurationBuilder(
+                        stateProvider(TropicraftBlocks.LIGHT_MANGROVE_LOG),
+                        new MangroveTrunkPlacer(5, 3, 0, stateProvider(TropicraftBlocks.LIGHT_MANGROVE_ROOTS), false, true),
+                        stateProvider(TropicraftBlocks.TEA_MANGROVE_LEAVES),
+                        MANGROVE_FOLIAGE.get(),
+                        MANGROVE_MINIMUM_SIZE
+                )
+                        .decorators(List.of(BEEHIVE_002, addPianguasInMud(8, 4), new PneumatophoresTreeDecorator(stateProvider(TropicraftBlocks.LIGHT_MANGROVE_ROOTS), 2, 6, 4)))
+                        .build());
+
+        register(context, BLACK_MANGROVE, Feature.TREE,
+                new TreeConfiguration.TreeConfigurationBuilder(
+                        stateProvider(TropicraftBlocks.BLACK_MANGROVE_LOG),
+                        new MangroveTrunkPlacer(4, 3, 0, stateProvider(TropicraftBlocks.BLACK_MANGROVE_ROOTS), true, false),
+                        stateProvider(TropicraftBlocks.BLACK_MANGROVE_LEAVES),
+                        MANGROVE_FOLIAGE.get(),
+                        MANGROVE_MINIMUM_SIZE
+                )
+                        .decorators(List.of(BEEHIVE_002, addPianguasInMud(8, 4), new PneumatophoresTreeDecorator(stateProvider(TropicraftBlocks.BLACK_MANGROVE_ROOTS), 8, 16, 6)))
+                        .build());
+    }
+
+    private static ResourceKey<ConfiguredFeature<?, ?>> createKey(final String name) {
+        return ResourceKey.create(Registries.CONFIGURED_FEATURE, new ResourceLocation(Constants.MODID, name));
     }
 }

@@ -8,14 +8,15 @@ import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.util.DataIngredient;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
+import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.client.color.item.ItemColor;
+import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.animal.AbstractFish;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.food.FoodProperties;
@@ -62,41 +63,38 @@ public class TropicraftItems {
 
     static {
         REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, prov -> {
-            prov.tag(Tags.Items.GEMS).addTags(TropicraftTags.Items.AZURITE_GEM, TropicraftTags.Items.EUDIALYTE_GEM, TropicraftTags.Items.ZIRCON_GEM, TropicraftTags.Items.ZIRCONIUM_GEM);
-            prov.tag(Tags.Items.INGOTS).addTags(TropicraftTags.Items.MANGANESE_INGOT, TropicraftTags.Items.SHAKA_INGOT);
+            prov.addTag(Tags.Items.GEMS).addTags(TropicraftTags.Items.AZURITE_GEM, TropicraftTags.Items.EUDIALYTE_GEM, TropicraftTags.Items.ZIRCON_GEM, TropicraftTags.Items.ZIRCONIUM_GEM);
+            prov.addTag(Tags.Items.INGOTS).addTags(TropicraftTags.Items.MANGANESE_INGOT, TropicraftTags.Items.SHAKA_INGOT);
 
-            // TODO: Replace with Vanilla tag in 1.20+
-            prov.tag(TropicraftTags.Items.SWORDS).add(Items.WOODEN_SWORD, Items.STONE_SWORD, Items.IRON_SWORD, Items.GOLDEN_SWORD, Items.DIAMOND_SWORD, Items.NETHERITE_SWORD);
-
-            prov.tag(TropicraftTags.Items.FRUITS).add(Items.APPLE);
-            prov.tag(TropicraftTags.Items.MEATS).add(Items.BEEF, Items.PORKCHOP, Items.CHICKEN, Items.RABBIT, Items.MUTTON);
+            prov.addTag(TropicraftTags.Items.FRUITS).add(Items.APPLE);
+            prov.addTag(TropicraftTags.Items.MEATS).add(Items.BEEF, Items.PORKCHOP, Items.CHICKEN, Items.RABBIT, Items.MUTTON);
         });
     }
 
     public static final ItemEntry<Item> AZURITE = simpleItem("azurite_gem")
             .tag(TropicraftTags.Items.AZURITE_GEM)
-            .recipe((ctx, prov) -> prov.smeltingAndBlasting(DataIngredient.tag(TropicraftTags.Items.AZURITE_ORE), ctx, 0.3f))
+            .recipe((ctx, prov) -> prov.smeltingAndBlasting(DataIngredient.tag(TropicraftTags.Items.AZURITE_ORE), RecipeCategory.MISC, ctx, 0.3f))
             .register();
     public static final ItemEntry<Item> EUDIALYTE = simpleItem("eudialyte_gem")
             .tag(TropicraftTags.Items.EUDIALYTE_GEM)
-            .recipe((ctx, prov) -> prov.smeltingAndBlasting(DataIngredient.tag(TropicraftTags.Items.EUDIALYTE_ORE), ctx, 0.5f))
+            .recipe((ctx, prov) -> prov.smeltingAndBlasting(DataIngredient.tag(TropicraftTags.Items.EUDIALYTE_ORE), RecipeCategory.MISC, ctx, 0.5f))
             .register();
     public static final ItemEntry<Item> ZIRCON = simpleItem("zircon_gem")
             .tag(TropicraftTags.Items.ZIRCON_GEM)
-            .recipe((ctx, prov) -> prov.smeltingAndBlasting(DataIngredient.tag(TropicraftTags.Items.ZIRCON_ORE), ctx, 0.5f))
+            .recipe((ctx, prov) -> prov.smeltingAndBlasting(DataIngredient.tag(TropicraftTags.Items.ZIRCON_ORE), RecipeCategory.MISC, ctx, 0.5f))
             .register();
     public static final ItemEntry<Item> SHAKA = simpleItem("shaka_ingot")
             .tag(TropicraftTags.Items.SHAKA_INGOT)
-            .recipe((ctx, prov) -> prov.smeltingAndBlasting(DataIngredient.tag(TropicraftTags.Items.SHAKA_ORE), ctx, 0.5f))
+            .recipe((ctx, prov) -> prov.smeltingAndBlasting(DataIngredient.tag(TropicraftTags.Items.SHAKA_ORE), RecipeCategory.MISC, ctx, 0.5f))
             .register();
     public static final ItemEntry<Item> MANGANESE = simpleItem("manganese_ingot")
             .tag(TropicraftTags.Items.MANGANESE_INGOT)
-            .recipe((ctx, prov) -> prov.smeltingAndBlasting(DataIngredient.tag(TropicraftTags.Items.MANGANESE_ORE), ctx, 0.5f))
+            .recipe((ctx, prov) -> prov.smeltingAndBlasting(DataIngredient.tag(TropicraftTags.Items.MANGANESE_ORE), RecipeCategory.MISC, ctx, 0.5f))
             .register();
     public static final ItemEntry<Item> ZIRCONIUM = simpleItem("zirconium_gem")
             .tag(TropicraftTags.Items.ZIRCONIUM_GEM)
             .lang("Zirconium")
-            .recipe((ctx, prov) -> ShapelessRecipeBuilder.shapeless(ctx.get())
+            .recipe((ctx, prov) -> ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ctx.get())
                     .requires(AZURITE.get(), 2)
                     .requires(ZIRCON.get(), 2)
                     .unlockedBy("has_zircon", has(ZIRCON.get()))
@@ -109,7 +107,7 @@ public class TropicraftItems {
                     furniture(color.getSerializedName() + "_umbrella", TropicraftEntities.UMBRELLA, color)
                             .recipe((ctx, prov) -> {
                                 ItemLike wool = Sheep.ITEM_BY_DYE.get(color);
-                                ShapedRecipeBuilder.shaped(ctx.get())
+                                ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get())
                                         .pattern("WWW").pattern(" B ").pattern(" B ")
                                         .group(Constants.MODID + ":umbrellas")
                                         .define('W', wool)
@@ -125,7 +123,7 @@ public class TropicraftItems {
                     furniture(color.getSerializedName() + "_chair", TropicraftEntities.CHAIR, color)
                             .recipe((ctx, prov) -> {
                                 ItemLike wool = Sheep.ITEM_BY_DYE.get(color);
-                                ShapedRecipeBuilder.shaped(ctx.get())
+                                ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get())
                                         .pattern("BWB").pattern("BWB").pattern("BWB")
                                         .group(Constants.MODID + ":chairs")
                                         .define('W', wool)
@@ -141,7 +139,7 @@ public class TropicraftItems {
                     furniture(color.getSerializedName() + "_beach_float", TropicraftEntities.BEACH_FLOAT, color)
                             .recipe((ctx, prov) -> {
                                 ItemLike wool = Sheep.ITEM_BY_DYE.get(color);
-                                ShapedRecipeBuilder.shaped(ctx.get())
+                                ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get())
                                         .pattern("WWW").pattern("BBB")
                                         .group(Constants.MODID + ":beach_floats")
                                         .define('W', wool)
@@ -162,7 +160,7 @@ public class TropicraftItems {
             .tag(Tags.Items.RODS_WOODEN)
             .recipe((ctx, prov) -> {
                 // Override the vanilla recipe to output ours, it's tagged so it will behave the same
-                ShapedRecipeBuilder.shaped(ctx.get())
+                ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get())
                         .pattern("X").pattern("X")
                         .define('X', Items.BAMBOO)
                         .unlockedBy("has_bamboo", has(Items.BAMBOO))
@@ -172,7 +170,7 @@ public class TropicraftItems {
             .register();
 
     public static final ItemEntry<SpearItem> BAMBOO_SPEAR = REGISTRATE.item("bamboo_spear", p -> new SpearItem(TropicraftToolTiers.BAMBOO, 3, -2.4F, p))
-            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get())
+            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ctx.get())
                     .pattern("X ").pattern(" X")
                     .define('X', BAMBOO_STICK.get())
                     .unlockedBy("has_bamboo_stick", has(BAMBOO_STICK.get()))
@@ -225,17 +223,17 @@ public class TropicraftItems {
     public static final ItemEntry<Item> COCONUT_CHUNK = food("coconut_chunk", Foods.COCONUT_CHUNK).register();
 
     public static final ItemEntry<ItemNameBlockItem> RAW_COFFEE_BEAN = REGISTRATE.item("raw_coffee_bean", p -> new ItemNameBlockItem(TropicraftBlocks.COFFEE_BUSH.get(), p))
-            .recipe((ctx, prov) -> ShapelessRecipeBuilder.shapeless(ctx.get())
+            .recipe((ctx, prov) -> ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, ctx.get())
                     .requires(TropicraftItems.COFFEE_BERRY.get())
                     .unlockedBy("has_coffee_bean", has(TropicraftItems.COFFEE_BERRY.get()))
                     .save(prov))
             .register();
     public static final ItemEntry<Item> ROASTED_COFFEE_BEAN = simpleItem("roasted_coffee_bean")
-            .recipe((ctx, prov) -> prov.food(DataIngredient.items(RAW_COFFEE_BEAN), ctx, 0.1f))
+            .recipe((ctx, prov) -> prov.food(ingredient(RAW_COFFEE_BEAN), RecipeCategory.FOOD, ctx, 0.1f))
             .register();
     public static final ItemEntry<Item> COFFEE_BERRY = simpleItem("coffee_berry").register();
     public static final ItemEntry<Item> BAMBOO_MUG = simpleItem("bamboo_mug")
-            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get())
+            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get())
                     .pattern("X X").pattern("X X").pattern("XXX")
                     .define('X', Items.BAMBOO)
                     .unlockedBy("has_bamboo", has(Items.BAMBOO))
@@ -259,7 +257,7 @@ public class TropicraftItems {
 
     static {
         REGISTRATE.addDataGenerator(ProviderType.RECIPE, prov -> {
-            ShapelessRecipeBuilder.shapeless(COCKTAILS.get(Drink.PINA_COLADA).get())
+            ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, COCKTAILS.get(Drink.PINA_COLADA).get())
                     .requires(BAMBOO_MUG.get())
                     .requires(COCONUT_CHUNK.get())
                     .requires(PINEAPPLE_CUBES.get())
@@ -277,19 +275,20 @@ public class TropicraftItems {
 
     public static final ItemEntry<Item> FRESH_MARLIN = food("fresh_marlin", Foods.FRESH_MARLIN).register();
     public static final ItemEntry<Item> SEARED_MARLIN = food("seared_marlin", Foods.SEARED_MARLIN)
-            .recipe((ctx, prov) -> prov.food(DataIngredient.items(FRESH_MARLIN), ctx, 0.15f))
+            .recipe((ctx, prov) -> prov.food(ingredient(FRESH_MARLIN), RecipeCategory.FOOD, ctx, 0.15f))
             .register();
+
     public static final ItemEntry<Item> RAW_RAY = food("raw_ray", Foods.RAW_RAY).register();
     public static final ItemEntry<Item> COOKED_RAY = food("cooked_ray", Foods.COOKED_RAY)
-            .recipe((ctx, prov) -> prov.food(DataIngredient.items(RAW_RAY), ctx, 0.15f))
+            .recipe((ctx, prov) -> prov.food(ingredient(RAW_RAY), RecipeCategory.FOOD, ctx, 0.15f))
             .register();
     public static final ItemEntry<Item> FROG_LEG = food("frog_leg", Foods.RAW_FROG_LEG).register();
     public static final ItemEntry<Item> COOKED_FROG_LEG = food("cooked_frog_leg", Foods.COOKED_FROG_LEG)
-            .recipe((ctx, prov) -> prov.food(DataIngredient.items(FROG_LEG), ctx, 0.1f))
+            .recipe((ctx, prov) -> prov.food(ingredient(FROG_LEG), RecipeCategory.FOOD, ctx, 0.1f))
             .register();
     public static final ItemEntry<Item> SEA_URCHIN_ROE = food("sea_urchin_roe", Foods.SEA_URCHIN_ROE).register();
     public static final ItemEntry<Item> TOASTED_NORI = food("toasted_nori", Foods.TOASTED_NORI)
-            .recipe((ctx, prov) -> prov.food(DataIngredient.items(Items.SEAGRASS), ctx, 0.1f))
+            .recipe((ctx, prov) -> prov.food(DataIngredient.items(Items.SEAGRASS), RecipeCategory.FOOD, ctx, 0.1f))
             .register();
     public static final ItemEntry<Item> RAW_FISH = food("raw_fish", Foods.RAW_FISH)
             .tag(ItemTags.FISHES)
@@ -297,7 +296,7 @@ public class TropicraftItems {
             .register();
     public static final ItemEntry<Item> COOKED_FISH = food("cooked_fish", Foods.COOKED_FISH)
             .tag(ItemTags.FISHES)
-            .recipe((ctx, prov) -> prov.food(DataIngredient.items(RAW_FISH), ctx, 0.1f))
+            .recipe((ctx, prov) -> prov.food(ingredient(RAW_FISH), RecipeCategory.FOOD, ctx, 0.1f))
             .model((ctx, prov) -> prov.generated(ctx, prov.modLoc("item/cooked_smolfish")))
             .register();
     public static final ItemEntry<Item> POISON_FROG_SKIN = simpleItem("poison_frog_skin").register();
@@ -306,7 +305,7 @@ public class TropicraftItems {
             .tag(Tags.Items.LEATHER)
             .register();
     public static final ItemEntry<TropicalFertilizerItem> TROPICAL_FERTILIZER = REGISTRATE.item("tropical_fertilizer", TropicalFertilizerItem::new)
-            .recipe((ctx, prov) -> ShapelessRecipeBuilder.shapeless(ctx.get())
+            .recipe((ctx, prov) -> ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ctx.get())
                     .requires(TropicraftFlower.MAGIC_MUSHROOM.get())
                     .requires(TropicraftFlower.CROTON.get())
                     .unlockedBy("has_magic_mushroom", has(TropicraftFlower.MAGIC_MUSHROOM.get()))
@@ -314,7 +313,7 @@ public class TropicraftItems {
             .register();
 
     public static final ItemEntry<BambooItemFrameItem> BAMBOO_ITEM_FRAME = REGISTRATE.item("bamboo_item_frame", BambooItemFrameItem::new)
-            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get(), 1)
+            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ctx.get(), 1)
                     .pattern("XXX")
                     .pattern("XYX")
                     .pattern("XXX")
@@ -390,7 +389,7 @@ public class TropicraftItems {
 
     public static final ItemEntry<DaggerItem> DAGGER = REGISTRATE.item("dagger", p -> new DaggerItem(TropicraftToolTiers.ZIRCON, p))
             .properties(p -> p.stacksTo(1))
-            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get())
+            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ctx.get())
                     .pattern("X")
                     .pattern("I")
                     .define('X', CHUNK.get())
@@ -402,7 +401,7 @@ public class TropicraftItems {
 
     public static final ItemEntry<BlowGunItem> BLOW_GUN = REGISTRATE.item("blow_gun", BlowGunItem::new)
             .properties(p -> p.stacksTo(1))
-            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get())
+            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ctx.get())
                     .pattern("X  ")
                     .pattern(" I ")
                     .pattern("  X")
@@ -437,8 +436,9 @@ public class TropicraftItems {
 
     private static ItemBuilder<Item, Registrate> hoe(final String name, final TropicraftToolTiers tier, final Supplier<? extends Item> input) {
         return REGISTRATE.item(name, p -> (Item) new HoeItem(tier, 0, -2.0f, p))
+                .tag(ItemTags.HOES)
                 .model((ctx, prov) -> prov.handheld(ctx))
-                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get())
+                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ctx.get())
                         .pattern("XX")
                         .pattern(" B")
                         .pattern(" B")
@@ -452,8 +452,9 @@ public class TropicraftItems {
 
     private static ItemBuilder<Item, Registrate> shovel(final String name, final Tier tier, final Supplier<? extends Item> input) {
         return REGISTRATE.item(name, p -> (Item) new ShovelItem(tier, 2.0f, -3.0f, p))
+                .tag(ItemTags.SHOVELS)
                 .model((ctx, prov) -> prov.handheld(ctx))
-                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get())
+                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ctx.get())
                         .pattern("X")
                         .pattern("B")
                         .pattern("B")
@@ -467,8 +468,9 @@ public class TropicraftItems {
 
     private static ItemBuilder<Item, Registrate> pickaxe(final String name, final Tier tier, final Supplier<? extends Item> input) {
         return REGISTRATE.item(name, p -> (Item) new PickaxeItem(tier, 2, -2.0f, p))
+                .tag(ItemTags.PICKAXES)
                 .model((ctx, prov) -> prov.handheld(ctx))
-                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get())
+                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ctx.get())
                         .pattern("XXX")
                         .pattern(" B ")
                         .pattern(" B ")
@@ -482,8 +484,9 @@ public class TropicraftItems {
 
     private static ItemBuilder<Item, Registrate> axe(final String name, final Tier tier, final Supplier<? extends Item> input) {
         return REGISTRATE.item(name, p -> (Item) new AxeItem(tier, 5.0f, -2.0f, p))
+                .tag(ItemTags.AXES)
                 .model((ctx, prov) -> prov.handheld(ctx))
-                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get())
+                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ctx.get())
                         .pattern("XX")
                         .pattern("XB")
                         .pattern(" B")
@@ -497,9 +500,9 @@ public class TropicraftItems {
 
     private static ItemBuilder<Item, Registrate> sword(final String name, final Tier tier, final Supplier<? extends Item> input) {
         return REGISTRATE.item(name, p -> (Item) new SwordItem(tier, 3, -3.0f, p))
-                .tag(TropicraftTags.Items.SWORDS)
+                .tag(ItemTags.SWORDS)
                 .model((ctx, prov) -> prov.handheld(ctx))
-                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get())
+                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ctx.get())
                         .pattern("X")
                         .pattern("X")
                         .pattern("B")
@@ -511,21 +514,21 @@ public class TropicraftItems {
                 );
     }
 
-    public static final ItemEntry<Item> FIRE_BOOTS = fireArmor("fire_boots", EquipmentSlot.FEET).register();
-    public static final ItemEntry<Item> FIRE_LEGGINGS = fireArmor("fire_leggings", EquipmentSlot.LEGS).register();
-    public static final ItemEntry<Item> FIRE_CHESTPLATE = fireArmor("fire_chestplate", EquipmentSlot.CHEST).register();
-    public static final ItemEntry<Item> FIRE_HELMET = fireArmor("fire_helmet", EquipmentSlot.HEAD).register();
+    public static final ItemEntry<Item> FIRE_BOOTS = fireArmor("fire_boots", ArmorItem.Type.BOOTS).register();
+    public static final ItemEntry<Item> FIRE_LEGGINGS = fireArmor("fire_leggings", ArmorItem.Type.LEGGINGS).register();
+    public static final ItemEntry<Item> FIRE_CHESTPLATE = fireArmor("fire_chestplate", ArmorItem.Type.CHESTPLATE).register();
+    public static final ItemEntry<Item> FIRE_HELMET = fireArmor("fire_helmet", ArmorItem.Type.HELMET).register();
 
-    public static final ItemEntry<Item> SCALE_BOOTS = scaleArmor("scale_boots", EquipmentSlot.FEET)
-            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get())
+    public static final ItemEntry<Item> SCALE_BOOTS = scaleArmor("scale_boots", ArmorItem.Type.BOOTS)
+            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get())
                     .pattern("X X")
                     .pattern("X X")
                     .define('X', SCALE.get())
                     .unlockedBy("has_" + prov.safeName(SCALE.get()), has(SCALE.get()))
                     .save(prov))
             .register();
-    public static final ItemEntry<Item> SCALE_LEGGINGS = scaleArmor("scale_leggings", EquipmentSlot.LEGS)
-            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get())
+    public static final ItemEntry<Item> SCALE_LEGGINGS = scaleArmor("scale_leggings", ArmorItem.Type.LEGGINGS)
+            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get())
                     .pattern("XXX")
                     .pattern("X X")
                     .pattern("X X")
@@ -533,8 +536,8 @@ public class TropicraftItems {
                     .unlockedBy("has_" + prov.safeName(SCALE.get()), has(SCALE.get()))
                     .save(prov))
             .register();
-    public static final ItemEntry<Item> SCALE_CHESTPLATE = scaleArmor("scale_chestplate", EquipmentSlot.CHEST)
-            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get())
+    public static final ItemEntry<Item> SCALE_CHESTPLATE = scaleArmor("scale_chestplate", ArmorItem.Type.CHESTPLATE)
+            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get())
                     .pattern("X X")
                     .pattern("XXX")
                     .pattern("XXX")
@@ -542,8 +545,8 @@ public class TropicraftItems {
                     .unlockedBy("has_" + prov.safeName(SCALE.get()), has(SCALE.get()))
                     .save(prov))
             .register();
-    public static final ItemEntry<Item> SCALE_HELMET = scaleArmor("scale_helmet", EquipmentSlot.HEAD)
-            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get())
+    public static final ItemEntry<Item> SCALE_HELMET = scaleArmor("scale_helmet", ArmorItem.Type.HELMET)
+            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get())
                     .pattern("XXX")
                     .pattern("X X")
                     .define('X', SCALE.get())
@@ -558,19 +561,19 @@ public class TropicraftItems {
     public static final ItemEntry<ScubaHarnessItem> PINK_SCUBA_HARNESS = scubaHarness("pink_scuba_harness", ScubaType.PINK, () -> Items.PINK_DYE).register();
     public static final ItemEntry<ScubaFlippersItem> PINK_SCUBA_FLIPPERS = scubaFlippers("pink_scuba_flippers", ScubaType.PINK, () -> Items.PINK_DYE).register();
 
-    private static ItemBuilder<Item, Registrate> fireArmor(final String name, final EquipmentSlot slotType) {
+    private static ItemBuilder<Item, Registrate> fireArmor(final String name, final ArmorItem.Type slotType) {
         return REGISTRATE.item(name, p -> (Item) new FireArmorItem(slotType, p))
                 .properties(p -> p.stacksTo(1).durability(300));
     }
 
-    private static ItemBuilder<Item, Registrate> scaleArmor(final String name, final EquipmentSlot slotType) {
+    private static ItemBuilder<Item, Registrate> scaleArmor(final String name, final ArmorItem.Type slotType) {
         return REGISTRATE.item(name, p -> (Item) new ScaleArmorItem(slotType, p))
                 .properties(p -> p.stacksTo(1));
     }
 
     private static ItemBuilder<ScubaGogglesItem, Registrate> scubaGoggles(final String name, final ScubaType type, Supplier<? extends Item> source) {
         return REGISTRATE.item(name, p -> new ScubaGogglesItem(type, p))
-                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get(), 1)
+                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get(), 1)
                         .pattern("YYY")
                         .pattern("X X")
                         .pattern(" Z ")
@@ -584,7 +587,7 @@ public class TropicraftItems {
 
     private static ItemBuilder<ScubaHarnessItem, Registrate> scubaHarness(final String name, final ScubaType type, Supplier<? extends Item> source) {
         return REGISTRATE.item(name, p -> new ScubaHarnessItem(type, p))
-                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get(), 1)
+                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get(), 1)
                         .pattern("Y Y")
                         .pattern("YXY")
                         .pattern("YZY")
@@ -597,7 +600,7 @@ public class TropicraftItems {
 
     private static ItemBuilder<ScubaFlippersItem, Registrate> scubaFlippers(final String name, final ScubaType type, Supplier<? extends Item> source) {
         return REGISTRATE.item(name, p -> new ScubaFlippersItem(type, p))
-                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get(), 1)
+                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get(), 1)
                         .pattern("XX")
                         .pattern("YY")
                         .pattern("XX")
@@ -614,7 +617,7 @@ public class TropicraftItems {
     private static ItemEntry<PonyBottleItem> ponyBottle(String name, Block glassPane) {
         return REGISTRATE.item(name, PonyBottleItem::new)
                 .properties(p -> p.stacksTo(1).durability(32))
-                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get(), 1)
+                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get(), 1)
                         .pattern("Y")
                         .pattern("X")
                         .define('X', glassPane)
@@ -626,7 +629,7 @@ public class TropicraftItems {
 
     public static final ItemEntry<WaterWandItem> WATER_WAND = REGISTRATE.item("water_wand", WaterWandItem::new)
             .properties(p -> p.stacksTo(1).durability(2000))
-            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get(), 1)
+            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ctx.get(), 1)
                     .pattern("  X")
                     .pattern(" Y ")
                     .pattern("Y  ")
@@ -664,7 +667,7 @@ public class TropicraftItems {
         return REGISTRATE.item(woodName + "_sign", p -> new SignItem(p, standingSign.get(), wallSign.get()))
                 .properties(p -> p.stacksTo(16))
                 .tag(ItemTags.SIGNS)
-                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(ctx.get())
+                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ctx.get())
                         .pattern("###")
                         .pattern("###")
                         .pattern(" | ")
@@ -695,5 +698,9 @@ public class TropicraftItems {
 
     private static void addPlant(FlowerPotBlock empty, FlowerPotBlock full) {
         empty.addPlant(full.getContent().builtInRegistryHolder().key().location(), full.builtInRegistryHolder());
+    }
+
+    private static DataIngredient ingredient(NonNullSupplier<? extends ItemLike> item) {
+        return DataIngredient.items(item);
     }
 }

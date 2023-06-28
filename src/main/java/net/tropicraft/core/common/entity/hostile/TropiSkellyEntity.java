@@ -52,7 +52,7 @@ public class TropiSkellyEntity extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (!this.level.isClientSide && this.level.getDifficulty() == Difficulty.PEACEFUL) {
+        if (!this.level().isClientSide && this.level().getDifficulty() == Difficulty.PEACEFUL) {
             this.remove(RemovalReason.KILLED);
         }
     }
@@ -73,11 +73,11 @@ public class TropiSkellyEntity extends Monster {
     }
 
     private boolean isValidLightLevel() {
-        BlockPos blockpos = new BlockPos(getX(), getBoundingBox().minY, getZ());
-        if (level.getBrightness(LightLayer.SKY, blockpos) > random.nextInt(32)) {
+        BlockPos blockpos = blockPosition();
+        if (level().getBrightness(LightLayer.SKY, blockpos) > random.nextInt(32)) {
             return false;
         } else {
-            int i = level.isThundering() ? level.getMaxLocalRawBrightness(blockpos, 10) : level.getMaxLocalRawBrightness(blockpos);
+            int i = level().isThundering() ? level().getMaxLocalRawBrightness(blockpos, 10) : level().getMaxLocalRawBrightness(blockpos);
             return i <= random.nextInt(8);
         }
     }

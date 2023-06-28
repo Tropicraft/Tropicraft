@@ -44,7 +44,7 @@ public class ScubaGogglesItem extends ScubaArmorItem {
     private final Supplier<Multimap<Attribute, AttributeModifier>> boostedModifiers;
 
     public ScubaGogglesItem(ScubaType type, Properties builder) {
-        super(type, EquipmentSlot.HEAD, builder);
+        super(type, Type.HELMET, builder);
 
         // lazily initialize because attributes are registered after items
         this.boostedModifiers = Suppliers.memoize(() ->

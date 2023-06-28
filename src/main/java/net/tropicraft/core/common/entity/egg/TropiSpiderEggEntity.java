@@ -76,14 +76,14 @@ public class TropiSpiderEggEntity extends EggEntity {
 
 	@Override
 	public Entity onHatch() {
-		if (level instanceof final ServerLevel serverWorld && getMotherId() != null) {
+		if (level() instanceof final ServerLevel serverWorld && getMotherId() != null) {
 			final Entity e = serverWorld.getEntity(getMotherId());
 
 			if (e instanceof TropiSpiderEntity) {
 				return TropiSpiderEntity.haveBaby((TropiSpiderEntity) e);
 			}
 		}
-		return TropicraftEntities.TROPI_SPIDER.get().create(level);
+		return TropicraftEntities.TROPI_SPIDER.get().create(level());
 	}
 
 	@Override

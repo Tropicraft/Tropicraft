@@ -92,7 +92,7 @@ public class ManOWarEntity extends WaterAnimal {
         this.lastTentacleAngle = this.tentacleAngle;
         this.squidRotation += this.rotationVelocity;
         if ((double)this.squidRotation > 6.283185307179586D) {
-            if (this.level.isClientSide) {
+            if (this.level().isClientSide) {
                 this.squidRotation = 6.2831855F;
             } else {
                 this.squidRotation = (float)((double)this.squidRotation - 6.283185307179586D);
@@ -100,7 +100,7 @@ public class ManOWarEntity extends WaterAnimal {
                     this.rotationVelocity = 1.0F / (this.random.nextFloat() + 1.0F) * 0.2F;
                 }
 
-                this.level.broadcastEntityEvent(this, (byte)19);
+                this.level().broadcastEntityEvent(this, (byte)19);
             }
         }
 
@@ -110,11 +110,11 @@ public class ManOWarEntity extends WaterAnimal {
 
         if (isInWaterOrBubble()) {
             if (random.nextInt(5) == 0 && attackTimer <= 0) {
-                List<LivingEntity> list = level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(2D, 4D, 2D).move(0.0D, -2.0D, 0.0D), EntitySelector.NO_CREATIVE_OR_SPECTATOR);
+                List<LivingEntity> list = level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(2D, 4D, 2D).move(0.0D, -2.0D, 0.0D), EntitySelector.NO_CREATIVE_OR_SPECTATOR);
                 for (LivingEntity ent : list) {
                     if (ent.getType() != TropicraftEntities.MAN_O_WAR.get()) {
                         if (ent.isInWater()) {
-                            ent.hurt(DamageSource.mobAttack(this), (float) getAttribute(Attributes.ATTACK_DAMAGE).getValue());
+                            ent.hurt(damageSources().mobAttack(this), (float) getAttribute(Attributes.ATTACK_DAMAGE).getValue());
                             attackTimer = 20;
                         }
                     }
@@ -136,7 +136,7 @@ public class ManOWarEntity extends WaterAnimal {
                 this.rotateSpeed *= 0.99F;
             }
 
-            if (!this.level.isClientSide) {
+            if (!this.level().isClientSide) {
                 this.setDeltaMovement(this.randomMotionVecX * this.randomMotionSpeed, this.randomMotionVecY * this.randomMotionSpeed, this.randomMotionVecZ * this.randomMotionSpeed);
             }
 
@@ -148,7 +148,7 @@ public class ManOWarEntity extends WaterAnimal {
             this.squidPitch += (-((float)Mth.atan2(horizontalDistance, motion.y)) * 57.295776F - this.squidPitch) * 0.1F;
         } else {
             this.tentacleAngle = Mth.abs(Mth.sin(this.squidRotation)) * 3.1415927F * 0.25F;
-            if (!this.level.isClientSide) {
+            if (!this.level().isClientSide) {
                 double lvt_1_3_ = this.getDeltaMovement().y;
                 if (this.hasEffect(MobEffects.LEVITATION)) {
                     lvt_1_3_ = 0.05D * (double)(this.getEffect(MobEffects.LEVITATION).getAmplifier() + 1);
@@ -167,7 +167,7 @@ public class ManOWarEntity extends WaterAnimal {
     @Override
     public void die(DamageSource d) {
         super.die(d);
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             int numDrops = 3 + this.random.nextInt(1);
 
             for (int i = 0; i < numDrops; i++) {
@@ -253,8 +253,8 @@ public class ManOWarEntity extends WaterAnimal {
             LivingEntity target = ManOWarEntity.this.getLastHurtByMob();
             if (target != null) {
                 Vec3 lvt_2_1_ = new Vec3(ManOWarEntity.this.getX() - target.getX(), ManOWarEntity.this.getY() - target.getY(), ManOWarEntity.this.getZ() - target.getZ());
-                BlockState block = ManOWarEntity.this.level.getBlockState(new BlockPos(ManOWarEntity.this.getX() + lvt_2_1_.x, ManOWarEntity.this.getY() + lvt_2_1_.y, ManOWarEntity.this.getZ() + lvt_2_1_.z));
-                FluidState fluid = ManOWarEntity.this.level.getFluidState(new BlockPos(ManOWarEntity.this.getX() + lvt_2_1_.x, ManOWarEntity.this.getY() + lvt_2_1_.y, ManOWarEntity.this.getZ() + lvt_2_1_.z));
+                BlockState block = ManOWarEntity.this.level().getBlockState(BlockPos.containing(ManOWarEntity.this.getX() + lvt_2_1_.x, ManOWarEntity.this.getY() + lvt_2_1_.y, ManOWarEntity.this.getZ() + lvt_2_1_.z));
+                FluidState fluid = ManOWarEntity.this.level().getFluidState(BlockPos.containing(ManOWarEntity.this.getX() + lvt_2_1_.x, ManOWarEntity.this.getY() + lvt_2_1_.y, ManOWarEntity.this.getZ() + lvt_2_1_.z));
                 if (fluid.is(FluidTags.WATER) || block.isAir()) {
                     double lvt_5_1_ = lvt_2_1_.length();
                     if (lvt_5_1_ > 0.0D) {
@@ -277,7 +277,7 @@ public class ManOWarEntity extends WaterAnimal {
                 }
 
                 if (this.tickCounter % 10 == 5) {
-                    ManOWarEntity.this.level.addParticle(ParticleTypes.BUBBLE, ManOWarEntity.this.getX(), ManOWarEntity.this.getY(), ManOWarEntity.this.getZ(), 0.0D, 0.0D, 0.0D);
+                    ManOWarEntity.this.level().addParticle(ParticleTypes.BUBBLE, ManOWarEntity.this.getX(), ManOWarEntity.this.getY(), ManOWarEntity.this.getZ(), 0.0D, 0.0D, 0.0D);
                 }
 
             }

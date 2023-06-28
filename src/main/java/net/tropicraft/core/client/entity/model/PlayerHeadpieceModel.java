@@ -2,7 +2,7 @@ package net.tropicraft.core.client.entity.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.*;
 import net.minecraft.client.model.geom.builders.*;
@@ -58,11 +58,11 @@ public class PlayerHeadpieceModel extends HumanoidModel<LivingEntity> {
 		}
 
 		// Set head rotation to mask
-		stack.mulPose(Vector3f.YP.rotation(head.yRot));
-		stack.mulPose(Vector3f.XP.rotation(head.xRot));
+		stack.mulPose(Axis.YP.rotation(head.yRot));
+		stack.mulPose(Axis.XP.rotation(head.xRot));
 
 		// Flip mask to face away from the player
-		stack.mulPose(Vector3f.YP.rotationDegrees(180));
+		stack.mulPose(Axis.YP.rotationDegrees(180));
 
 		// put it in the middle in front of the face
 		stack.translate(0.0F - xOffset, 0.112f + 0.0625f - yOffset, 0.2501F);

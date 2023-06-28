@@ -36,7 +36,7 @@ public class AIAshenChaseAndPickupLostMask extends Goal {
         if (panicTime > 0) {
             panicTime--;
 
-            if (ashen.level.getGameTime() % 10 == 0) {
+            if (ashen.level().getGameTime() % 10 == 0) {
                 Vec3 vec3 = DefaultRandomPos.getPos(ashen, 10, 7);
 
                 if (vec3 != null) {
@@ -51,7 +51,7 @@ public class AIAshenChaseAndPickupLostMask extends Goal {
                     ashen.maskToTrack = null;
                 }
             } else {
-                if (ashen.level.getGameTime() % 40 == 0) {
+                if (ashen.level().getGameTime() % 40 == 0) {
                     ashen.getNavigation().moveTo(ashen.maskToTrack.getX(), ashen.maskToTrack.getY(), ashen.maskToTrack.getZ(), speed);
                 }
             }

@@ -114,7 +114,7 @@ public abstract class EchinodermEntity extends WaterAnimal {
         double closestSqDist = -1f;
 
         AABB aabb = getBoundingBox().inflate(NEIGHBORHOOD_SIZE, NEIGHBORHOOD_SIZE, NEIGHBORHOOD_SIZE);
-        for (Object obj : level.getEntitiesOfClass(getClass(), aabb)) {
+        for (Object obj : level().getEntitiesOfClass(getClass(), aabb)) {
             // don't masturbate
             if (obj == this) {
                 continue;

@@ -330,7 +330,7 @@ public class TropicraftDolphinModel extends HierarchicalModel<TropicraftDolphinE
 				tailHorzSpeed = 0.25f;
 			}
 		} else {
-			if (dolphin.isOnGround()) {
+			if (dolphin.onGround()) {
 				tailVertSpeed = 0.0f;
 				tailHorzSpeed = 0.05f;
 			} else {

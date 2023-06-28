@@ -17,12 +17,10 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 
 public class SmoothingGravityProcessor extends PathStructureProcessor {
 
-    public static final Codec<SmoothingGravityProcessor> CODEC = RecordCodecBuilder.create(instance -> {
-        return instance.group(
-                Heightmap.Types.CODEC.fieldOf("heightmap").forGetter(p -> p.heightmap),
-                Codec.INT.fieldOf("offset").forGetter(p -> p.offset)
-        ).apply(instance, SmoothingGravityProcessor::new);
-    });
+    public static final Codec<SmoothingGravityProcessor> CODEC = RecordCodecBuilder.create(i -> i.group(
+            Types.CODEC.fieldOf("heightmap").forGetter(p -> p.heightmap),
+            Codec.INT.fieldOf("offset").forGetter(p -> p.offset)
+    ).apply(i, SmoothingGravityProcessor::new));
 
     private final Heightmap.Types heightmap;
     private final int offset;
@@ -41,14 +39,14 @@ public class SmoothingGravityProcessor extends PathStructureProcessor {
         if (pathDir == null) {
             pathDir = Axis.X; // Better than nothing
         }
-        BlockPos pos = blockInfo.pos;
+        BlockPos pos = blockInfo.pos();
         BlockPos posForward = pos.relative(Direction.get(AxisDirection.POSITIVE, pathDir));
         BlockPos posBackward = pos.relative(Direction.get(AxisDirection.NEGATIVE, pathDir));
         int heightForward = level.getHeight(heightmap, posForward.getX(), posForward.getZ()) + offset;
         int heightBackward = level.getHeight(heightmap, posBackward.getX(), posBackward.getZ()) + offset;
         int height = level.getHeight(heightmap, pos.getX(), pos.getZ()) + offset;
         if (heightForward > height && heightBackward > height) {
-            return new StructureBlockInfo(new BlockPos(pos.getX(), Math.min(heightForward, heightBackward), pos.getZ()), blockInfo.state, blockInfo.nbt);
+            return new StructureBlockInfo(new BlockPos(pos.getX(), Math.min(heightForward, heightBackward), pos.getZ()), blockInfo.state(), blockInfo.nbt());
         }
         return baseline.process(level, seedPos, pos2, originalBlockInfo, blockInfo, placementSettingsIn, template);
     }

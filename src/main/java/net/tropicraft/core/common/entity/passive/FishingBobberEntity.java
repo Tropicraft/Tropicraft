@@ -5,6 +5,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -23,7 +24,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
@@ -105,7 +105,7 @@ public class FishingBobberEntity extends Entity implements IEntityAdditionalSpaw
    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
       if (DATA_HOOKED_ENTITY.equals(key)) {
          int i = this.getEntityData().get(DATA_HOOKED_ENTITY);
-         this.caughtEntity = i > 0 ? this.level.getEntity(i - 1) : null;
+         this.caughtEntity = i > 0 ? this.level().getEntity(i - 1) : null;
       }
 
       super.onSyncedDataUpdated(key);
@@ -145,7 +145,7 @@ public class FishingBobberEntity extends Entity implements IEntityAdditionalSpaw
 
       if (this.angler == null) {
          remove(RemovalReason.DISCARDED);
-      } else if (this.level.isClientSide || !this.shouldStopFishing()) {
+      } else if (this.level().isClientSide || !this.shouldStopFishing()) {
          if (this.inGround) {
             ++this.ticksInGround;
             if (this.ticksInGround >= 1200) {
@@ -156,9 +156,9 @@ public class FishingBobberEntity extends Entity implements IEntityAdditionalSpaw
 
          float f = 0.0F;
          BlockPos blockpos = this.blockPosition();
-         FluidState ifluidstate = this.level.getFluidState(blockpos);
+         FluidState ifluidstate = this.level().getFluidState(blockpos);
          if (ifluidstate.is(FluidTags.WATER)) {
-            f = ifluidstate.getHeight(this.level, blockpos);
+            f = ifluidstate.getHeight(this.level(), blockpos);
          }
 
          if (this.currentState == FishingBobberEntity.State.FLYING) {
@@ -174,11 +174,11 @@ public class FishingBobberEntity extends Entity implements IEntityAdditionalSpaw
                return;
             }
 
-            if (!this.level.isClientSide) {
+            if (!this.level().isClientSide) {
                this.checkCollision();
             }
 
-            if (!this.inGround && !this.onGround && !this.horizontalCollision) {
+            if (!this.inGround && !this.onGround() && !this.horizontalCollision) {
                ++this.ticksInAir;
             } else {
                this.ticksInAir = 0;
@@ -207,7 +207,7 @@ public class FishingBobberEntity extends Entity implements IEntityAdditionalSpaw
                }
 
                this.setDeltaMovement(Vector3d.x * 0.9D, Vector3d.y - d0 * (double)this.random.nextFloat() * 0.2D, Vector3d.z * 0.9D);
-               if (!this.level.isClientSide && f > 0.0F) {
+               if (!this.level().isClientSide && f > 0.0F) {
                   this.catchingFish(blockpos);
                }
             }
@@ -243,7 +243,7 @@ public class FishingBobberEntity extends Entity implements IEntityAdditionalSpaw
       float f = Mth.sqrt((float) distanceToSqr(Vector3d));
       this.setYRot((float)(Mth.atan2(Vector3d.x, Vector3d.z) * (double)(180F / (float)Math.PI)));
 
-      for(this.setXRot((float)(Mth.atan2(Vector3d.y, (double)f) * (double)(180F / (float)Math.PI))); this.getXRot() - this.xRotO < -180.0F; this.xRotO -= 360.0F) {
+      for(this.setXRot((float)(Mth.atan2(Vector3d.y, f) * (double)(180F / (float)Math.PI))); this.getXRot() - this.xRotO < -180.0F; this.xRotO -= 360.0F) {
       }
 
       while(this.getXRot() - this.xRotO >= 180.0F) {
@@ -263,7 +263,7 @@ public class FishingBobberEntity extends Entity implements IEntityAdditionalSpaw
    }
 
    private void checkCollision() {
-      HitResult result = ProjectileUtil.getHitResult(this, entity -> {
+      HitResult result = ProjectileUtil.getHitResultOnMoveVector(this, entity -> {
          return !entity.isSpectator() && (entity.isPickable() || entity instanceof ItemEntity) && (entity != this.angler || this.ticksInAir >= 5);
       });
       if (result.getType() != HitResult.Type.MISS) {
@@ -282,14 +282,14 @@ public class FishingBobberEntity extends Entity implements IEntityAdditionalSpaw
    }
 
    private void catchingFish(BlockPos p_190621_1_) {
-      ServerLevel serverworld = (ServerLevel)this.level;
+      ServerLevel level = (ServerLevel) this.level();
       int i = 1;
       BlockPos blockpos = p_190621_1_.above();
-      if (this.random.nextFloat() < 0.25F && this.level.isRainingAt(blockpos)) {
+      if (this.random.nextFloat() < 0.25F && this.level().isRainingAt(blockpos)) {
          ++i;
       }
 
-      if (this.random.nextFloat() < 0.5F && !this.level.canSeeSkyFromBelowWater(blockpos)) {
+      if (this.random.nextFloat() < 0.5F && !this.level().canSeeSkyFromBelowWater(blockpos)) {
          --i;
       }
 
@@ -311,24 +311,23 @@ public class FishingBobberEntity extends Entity implements IEntityAdditionalSpaw
             double d0 = this.getX() + (double)(f1 * (float)this.ticksCatchableDelay * 0.1F);
             double d1 = (float)Mth.floor(this.getBoundingBox().minY) + 1.0F;
             double d2 = this.getX() + (double)(f2 * (float)this.ticksCatchableDelay * 0.1F);
-            Block block = serverworld.getBlockState(new BlockPos(d0, d1 - 1.0D, d2)).getBlock();
-            if (serverworld.getBlockState(new BlockPos((int)d0, (int)d1 - 1, (int)d2)).getMaterial() == net.minecraft.world.level.material.Material.WATER) {
+            if (level.getFluidState(BlockPos.containing(d0, d1 - 1, d2)).is(FluidTags.WATER)) {
                if (this.random.nextFloat() < 0.15F) {
-                  serverworld.sendParticles(ParticleTypes.BUBBLE, d0, d1 - (double)0.1F, d2, 1, f1, 0.1D, f2, 0.0D);
+                  level.sendParticles(ParticleTypes.BUBBLE, d0, d1 - (double)0.1F, d2, 1, f1, 0.1D, f2, 0.0D);
                }
 
                float f3 = f1 * 0.04F;
                float f4 = f2 * 0.04F;
-               serverworld.sendParticles(ParticleTypes.FISHING, d0, d1, d2, 0, f4, 0.01D, -f3, 1.0D);
-               serverworld.sendParticles(ParticleTypes.FISHING, d0, d1, d2, 0, -f4, 0.01D, f3, 1.0D);
+               level.sendParticles(ParticleTypes.FISHING, d0, d1, d2, 0, f4, 0.01D, -f3, 1.0D);
+               level.sendParticles(ParticleTypes.FISHING, d0, d1, d2, 0, -f4, 0.01D, f3, 1.0D);
             }
          } else {
             Vec3 Vector3d = this.getDeltaMovement();
-            this.setDeltaMovement(Vector3d.x, (double)(-0.4F * Mth.nextFloat(this.random, 0.6F, 1.0F)), Vector3d.z);
+            this.setDeltaMovement(Vector3d.x, -0.4F * Mth.nextFloat(this.random, 0.6F, 1.0F), Vector3d.z);
             this.playSound(SoundEvents.FISHING_BOBBER_SPLASH, 0.25F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.4F);
             double d3 = this.getBoundingBox().minY + 0.5D;
-            serverworld.sendParticles(ParticleTypes.BUBBLE, getX(), d3, getZ(), (int)(1.0F + this.getBbWidth() * 20.0F), this.getBbWidth(), 0.0D, this.getBbWidth(), 0.2F);
-            serverworld.sendParticles(ParticleTypes.FISHING, getX(), d3, getZ(), (int)(1.0F + this.getBbWidth() * 20.0F), this.getBbWidth(), 0.0D, this.getBbWidth(), 0.2F);
+            level.sendParticles(ParticleTypes.BUBBLE, getX(), d3, getZ(), (int)(1.0F + this.getBbWidth() * 20.0F), this.getBbWidth(), 0.0D, this.getBbWidth(), 0.2F);
+            level.sendParticles(ParticleTypes.FISHING, getX(), d3, getZ(), (int)(1.0F + this.getBbWidth() * 20.0F), this.getBbWidth(), 0.0D, this.getBbWidth(), 0.2F);
             this.ticksCatchable = Mth.nextInt(this.random, 20, 40);
          }
       } else if (this.ticksCaughtDelay > 0) {
@@ -348,9 +347,8 @@ public class FishingBobberEntity extends Entity implements IEntityAdditionalSpaw
             double d4 = getX() + (double)(Mth.sin(f6) * f7 * 0.1F);
             double d5 = (float)Mth.floor(this.getBoundingBox().minY) + 1.0F;
             double d6 = getZ() + (double)(Mth.cos(f6) * f7 * 0.1F);
-            Block block1 = serverworld.getBlockState(new BlockPos(d4, d5 - 1.0D, d6)).getBlock();
-            if (serverworld.getBlockState(new BlockPos(d4, d5 - 1.0D, d6)).getMaterial() == net.minecraft.world.level.material.Material.WATER) {
-               serverworld.sendParticles(ParticleTypes.SPLASH, d4, d5, d6, 2 + this.random.nextInt(2), 0.1F, 0.0D, 0.1F, 0.0D);
+            if (level.getFluidState(BlockPos.containing(d4, d5 - 1.0D, d6)).is(FluidTags.WATER)) {
+               level.sendParticles(ParticleTypes.SPLASH, d4, d5, d6, 2 + this.random.nextInt(2), 0.1F, 0.0D, 0.1F, 0.0D);
             }
          }
 
@@ -379,7 +377,7 @@ public class FishingBobberEntity extends Entity implements IEntityAdditionalSpaw
    @Override
    @OnlyIn(Dist.CLIENT)
    public void handleEntityEvent(byte id) {
-      if (id == 31 && this.level.isClientSide && this.caughtEntity instanceof Player && ((Player)this.caughtEntity).isLocalPlayer()) {
+      if (id == 31 && this.level().isClientSide && this.caughtEntity instanceof Player && ((Player)this.caughtEntity).isLocalPlayer()) {
          this.bringInHookedEntity();
       }
 
@@ -437,7 +435,7 @@ public class FishingBobberEntity extends Entity implements IEntityAdditionalSpaw
    public void readSpawnData(FriendlyByteBuf data) {
       int anglerID = data.readInt();
       if (anglerID != -1) {
-         Entity entity = level.getEntity(anglerID);
+         Entity entity = level().getEntity(anglerID);
          if (entity instanceof EntityKoaBase) {
             angler = (EntityKoaBase) entity;
          }
@@ -445,7 +443,7 @@ public class FishingBobberEntity extends Entity implements IEntityAdditionalSpaw
    }
 
    @Override
-   public Packet<?> getAddEntityPacket() {
+   public Packet<ClientGamePacketListener> getAddEntityPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
    }
 

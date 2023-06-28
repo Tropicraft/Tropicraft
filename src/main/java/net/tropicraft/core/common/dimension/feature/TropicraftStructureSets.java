@@ -1,39 +1,47 @@
 package net.tropicraft.core.common.dimension.feature;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
-import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import net.tropicraft.Constants;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.function.Supplier;
 
 public final class TropicraftStructureSets {
-    public static final DeferredRegister<StructureSet> REGISTER = DeferredRegister.create(Registry.STRUCTURE_SET_REGISTRY, Constants.MODID);
+    public static final ResourceKey<StructureSet> HOME_TREES = createKey("home_trees");
+    public static final ResourceKey<StructureSet> KOA_VILLAGES = createKey("koa_village");
+    public static final ResourceKey<StructureSet> VOLCANOES = createKey("volcanoes");
 
-    public static final RegistryObject<StructureSet> HOME_TREES = register("home_trees", TropicraftStructures.HOME_TREE, new RandomSpreadStructurePlacement(24, 8, RandomSpreadType.LINEAR, 1010101010));
-    public static final RegistryObject<StructureSet> KOA_VILLAGES = register("koa_village", TropicraftStructures.KOA_VILLAGE, new RandomSpreadStructurePlacement(24, 8, RandomSpreadType.LINEAR, 1010101011));
+    public static void bootstrap(final BootstapContext<StructureSet> context) {
+        final HolderGetter<Structure> structures = context.lookup(Registries.STRUCTURE);
+        context.register(HOME_TREES, new StructureSet(
+                structures.getOrThrow(TropicraftStructures.HOME_TREE),
+                new RandomSpreadStructurePlacement(24, 8, RandomSpreadType.LINEAR, 1010101010)
+        ));
+        context.register(KOA_VILLAGES, new StructureSet(
+                structures.getOrThrow(TropicraftStructures.KOA_VILLAGE),
+                new RandomSpreadStructurePlacement(24, 8, RandomSpreadType.LINEAR, 1010101011)
+        ));
 
-    public static final RegistryObject<StructureSet> VOLCANOES = register("volcanoes",
-            () -> List.of(entry(TropicraftStructures.OCEAN_VOLCANO), entry(TropicraftStructures.LAND_VOLCANO)),
-            new RandomSpreadStructurePlacement(64, 16, RandomSpreadType.LINEAR, 916865926)
-    );
-
-    private static RegistryObject<StructureSet> register(String id, RegistryObject<Structure> structure, StructurePlacement placement) {
-        return register(id, () -> List.of(entry(structure)), placement);
+        context.register(VOLCANOES, new StructureSet(
+                List.of(
+                        StructureSet.entry(structures.getOrThrow(TropicraftStructures.OCEAN_VOLCANO)),
+                        StructureSet.entry(structures.getOrThrow(TropicraftStructures.LAND_VOLCANO))
+                ),
+                new RandomSpreadStructurePlacement(64, 16, RandomSpreadType.LINEAR, 916865926)
+        ));
     }
 
-    private static RegistryObject<StructureSet> register(String id, Supplier<List<StructureSet.StructureSelectionEntry>> entries, StructurePlacement placement) {
-        return REGISTER.register(id, () -> new StructureSet(entries.get(), placement));
-    }
-
-    private static StructureSet.StructureSelectionEntry entry(RegistryObject<Structure> oceanVolcano) {
-        return StructureSet.entry(oceanVolcano.getHolder().orElseThrow(), 1);
+    private static ResourceKey<StructureSet> createKey(final String name) {
+        return ResourceKey.create(Registries.STRUCTURE_SET, new ResourceLocation(Constants.MODID, name));
     }
 }

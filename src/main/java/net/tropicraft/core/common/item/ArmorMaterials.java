@@ -1,14 +1,16 @@
 package net.tropicraft.core.common.item;
 
+import net.minecraft.Util;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.tropicraft.core.common.TropicraftTags;
 
 import javax.annotation.Nullable;
+import java.util.EnumMap;
 import java.util.stream.Stream;
 
 public class ArmorMaterials {
@@ -23,7 +25,12 @@ public class ArmorMaterials {
     public static final ArmorMaterial NIGEL_STACHE = new NigelStache();
     public static final ArmorMaterial SCALE_ARMOR = createArmorMaterial(
             18,
-            new int[] {2, 5, 6, 2},
+            Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
+                map.put(ArmorItem.Type.BOOTS, 2);
+                map.put(ArmorItem.Type.LEGGINGS, 5);
+                map.put(ArmorItem.Type.CHESTPLATE, 6);
+                map.put(ArmorItem.Type.HELMET, 2);
+            }),
             9,
             SoundEvents.ARMOR_EQUIP_CHAIN,
             Ingredient.of(TropicraftItems.SCALE.get()),
@@ -33,7 +40,12 @@ public class ArmorMaterials {
     );
     public static final ArmorMaterial FIRE_ARMOR = createArmorMaterial(
             12,
-            new int[] {2, 4, 5, 2},
+            Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
+                map.put(ArmorItem.Type.BOOTS, 2);
+                map.put(ArmorItem.Type.LEGGINGS, 4);
+                map.put(ArmorItem.Type.CHESTPLATE, 5);
+                map.put(ArmorItem.Type.HELMET, 2);
+            }),
             9,
             SoundEvents.ARMOR_EQUIP_IRON,
             NO_INGREDIENT,
@@ -42,8 +54,13 @@ public class ArmorMaterials {
             0.0F
     );
     public static final ArmorMaterial SCUBA = createArmorMaterial(
-            10, 
-            new int[] {0, 0, 0, 0},
+            10,
+            Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
+                map.put(ArmorItem.Type.BOOTS, 0);
+                map.put(ArmorItem.Type.LEGGINGS, 0);
+                map.put(ArmorItem.Type.CHESTPLATE, 0);
+                map.put(ArmorItem.Type.HELMET, 0);
+            }),
             0,
             SoundEvents.ARMOR_EQUIP_GENERIC,
             NO_INGREDIENT,
@@ -54,13 +71,13 @@ public class ArmorMaterials {
 
     private static class AshenMask implements ArmorMaterial {
         @Override
-        public int getDurabilityForSlot(EquipmentSlot slotIn) {
+        public int getDurabilityForType(ArmorItem.Type slotIn) {
             return 10;
         }
 
         @Override
-        public int getDefenseForSlot(EquipmentSlot slotIn) {
-            return slotIn == EquipmentSlot.HEAD ? 1 : 0;
+        public int getDefenseForType(ArmorItem.Type slotIn) {
+            return slotIn == ArmorItem.Type.HELMET ? 1 : 0;
         }
 
         @Override
@@ -97,13 +114,13 @@ public class ArmorMaterials {
     private static class NigelStache implements ArmorMaterial {
 
         @Override
-        public int getDurabilityForSlot(EquipmentSlot slotIn) {
+        public int getDurabilityForType(ArmorItem.Type slotIn) {
             return 10;
         }
 
         @Override
-        public int getDefenseForSlot(EquipmentSlot slotIn) {
-            return slotIn == EquipmentSlot.HEAD ? 1 : 0;
+        public int getDefenseForType(ArmorItem.Type slotIn) {
+            return slotIn == ArmorItem.Type.HELMET ? 1 : 0;
         }
 
         @Override
@@ -137,17 +154,17 @@ public class ArmorMaterials {
         }
     }
 
-    public static ArmorMaterial createArmorMaterial(final int durability, final int[] dmgReduction, final int enchantability, final SoundEvent soundEvent,
-                                                     final Ingredient repairMaterial, final String name, final float toughness, float knockbackResistance) {
+    public static ArmorMaterial createArmorMaterial(final int durability, final EnumMap<ArmorItem.Type, Integer> dmgReduction, final int enchantability, final SoundEvent soundEvent,
+                                                    final Ingredient repairMaterial, final String name, final float toughness, float knockbackResistance) {
         return new ArmorMaterial() {
             @Override
-            public int getDurabilityForSlot(EquipmentSlot equipmentSlotType) {
+            public int getDurabilityForType(ArmorItem.Type slotIn) {
                 return durability;
             }
 
             @Override
-            public int getDefenseForSlot(EquipmentSlot equipmentSlotType) {
-                return dmgReduction[equipmentSlotType.getIndex()];
+            public int getDefenseForType(ArmorItem.Type slotIn) {
+                return dmgReduction.get(slotIn);
             }
 
             @Override

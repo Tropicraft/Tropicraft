@@ -1,8 +1,6 @@
 package net.tropicraft.core.common.item;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -20,7 +18,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
+import org.joml.Vector3f;
 
 import java.util.function.Predicate;
 
@@ -86,12 +84,8 @@ public class BlowGunItem extends ProjectileWeaponItem {
                 arrowEntity.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
             }
 
-            Vec3 lookVec = shooter.getLookAngle();
-            Quaternion quaternion = new Quaternion(new Vector3f(lookVec), 0, true);
-            Vec3 look = shooter.getViewVector(1.0F);
-            Vector3f look3f = new Vector3f(look);
-            look3f.transform(quaternion);
-            arrowEntity.shoot(look3f.x(), look3f.y(), look3f.z(), dmg, pitch);
+            Vector3f look = shooter.getViewVector(1.0F).toVector3f();
+            arrowEntity.shoot(look.x(), look.y(), look.z(), dmg, pitch);
 
             heldItem.hurtAndBreak(1, shooter, (i) -> {
                 i.broadcastBreakEvent(hand);

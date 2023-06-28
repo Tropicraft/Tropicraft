@@ -34,6 +34,6 @@ public class Sounds {
     public static final RegistryObject<SoundEvent> FROG_SPIT = register("frogspit");
 
     private static RegistryObject<SoundEvent> register(String name) {
-        return REGISTER.register(name, () -> new SoundEvent(new ResourceLocation(Constants.MODID, name)));
+        return REGISTER.register(name, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Constants.MODID, name)));
     }
 }

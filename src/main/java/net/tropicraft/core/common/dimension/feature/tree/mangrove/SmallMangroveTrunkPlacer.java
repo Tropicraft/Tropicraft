@@ -5,7 +5,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelSimulatedRW;
 import net.minecraft.world.level.LevelSimulatedReader;
@@ -25,7 +25,7 @@ import java.util.function.BiConsumer;
 public class SmallMangroveTrunkPlacer extends TrunkPlacer {
     public static final Codec<SmallMangroveTrunkPlacer> CODEC = RecordCodecBuilder.create(instance -> {
         return trunkPlacerParts(instance)
-                .and(Registry.BLOCK.byNameCodec().fieldOf("roots_block").forGetter(c -> c.rootsBlock))
+                .and(BuiltInRegistries.BLOCK.byNameCodec().fieldOf("roots_block").forGetter(c -> c.rootsBlock))
                 .apply(instance, SmallMangroveTrunkPlacer::new);
     });
 
@@ -61,7 +61,7 @@ public class SmallMangroveTrunkPlacer extends TrunkPlacer {
             BlockPos offset = origin.relative(direction);
 
             if (world.isStateAtPosition(offset, BlockBehaviour.BlockStateBase::isAir)) {
-                if (world.isStateAtPosition(offset.below(), state -> state.getMaterial().isSolidBlocking())) {
+                if (world.isStateAtPosition(offset.below(), BlockBehaviour.BlockStateBase::isSolid)) {
                     world.setBlock(offset, this.rootsBlock.defaultBlockState(), 19);
 
                     if (depth < 2 && random.nextInt(depth + 2) == 0) {

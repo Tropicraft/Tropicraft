@@ -13,7 +13,7 @@ public class SeaTurtleEggEntity extends EggEntity {
 
     @Override
     public Entity onHatch() {
-        return TropicraftEntities.SEA_TURTLE.get().create(level);
+        return TropicraftEntities.SEA_TURTLE.get().create(level());
     }
 
     @Override

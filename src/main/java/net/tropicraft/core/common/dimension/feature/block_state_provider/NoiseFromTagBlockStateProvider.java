@@ -2,7 +2,12 @@ package net.tropicraft.core.common.dimension.feature.block_state_provider;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.RegistryCodecs;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -14,7 +19,7 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 
 public final class NoiseFromTagBlockStateProvider extends BlockStateProvider {
     public static final Codec<NoiseFromTagBlockStateProvider> CODEC = RecordCodecBuilder.create(i -> i.group(
-            RegistryCodecs.homogeneousList(Registry.BLOCK_REGISTRY).fieldOf("blocks").forGetter(o -> o.blocks)
+            RegistryCodecs.homogeneousList(Registries.BLOCK).fieldOf("blocks").forGetter(o -> o.blocks)
     ).apply(i, NoiseFromTagBlockStateProvider::new));
 
     public final HolderSet<Block> blocks;
@@ -24,7 +29,7 @@ public final class NoiseFromTagBlockStateProvider extends BlockStateProvider {
     }
 
     public NoiseFromTagBlockStateProvider(TagKey<Block> blocks) {
-        this(Registry.BLOCK.getOrCreateTag(blocks));
+        this(BuiltInRegistries.BLOCK.getOrCreateTag(blocks));
     }
 
     @Override

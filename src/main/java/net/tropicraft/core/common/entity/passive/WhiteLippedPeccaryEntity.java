@@ -52,7 +52,7 @@ public class WhiteLippedPeccaryEntity extends Animal {
 
     @Override
     public WhiteLippedPeccaryEntity getBreedOffspring(ServerLevel world, AgeableMob mate) {
-        return TropicraftEntities.WHITE_LIPPED_PECCARY.get().create(this.level);
+        return TropicraftEntities.WHITE_LIPPED_PECCARY.get().create(this.level());
     }
 
     @Override

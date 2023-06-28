@@ -2,16 +2,12 @@ package net.tropicraft.core.common.dimension.feature.tree;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.level.LevelSimulatedReader;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
-
-import java.util.function.BiConsumer;
 
 public class PleodendronFoliagePlacer extends FoliagePlacer {
    public static final Codec<PleodendronFoliagePlacer> CODEC = RecordCodecBuilder.create((instance) -> {
@@ -33,12 +29,12 @@ public class PleodendronFoliagePlacer extends FoliagePlacer {
    }
 
    @Override
-   protected void createFoliage(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> acceptor, RandomSource random, TreeConfiguration config, int offset, FoliageAttachment foliage, int y, int radius, int start) {
+   protected void createFoliage(LevelSimulatedReader world, FoliageSetter setter, RandomSource random, TreeConfiguration config, int offset, FoliageAttachment foliage, int y, int radius, int start) {
       int i = foliage.doubleTrunk() ? offset : 2;
 
       for(int j = start; j >= start - i; --j) {
          int k = y + foliage.radiusOffset() + 1 - j;
-         this.placeLeavesRow(world, acceptor, random, config, foliage.pos(), k, j, foliage.doubleTrunk());
+         this.placeLeavesRow(world, setter, random, config, foliage.pos(), k, j, foliage.doubleTrunk());
       }
    }
 

@@ -2,7 +2,7 @@ package net.tropicraft.core.client.tileentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -43,7 +43,7 @@ public class AirCompressorRenderer extends MachineRenderer<AirCompressorBlockEnt
         stack.translate(0, -1.5f, 0);
         if (progress < Math.PI) {
             float shake = Mth.sin(te.getBreatheProgress(partialTicks) * 10) * 8f;
-            stack.mulPose(Vector3f.YP.rotationDegrees(shake));
+            stack.mulPose(Axis.YP.rotationDegrees(shake));
         }
     }
 
@@ -52,9 +52,9 @@ public class AirCompressorRenderer extends MachineRenderer<AirCompressorBlockEnt
         if (te.isActive()) {
             stack.pushPose();
             stack.translate(-0.5f, 0.5f, 0);
-            stack.mulPose(Vector3f.YP.rotationDegrees(90));
+            stack.mulPose(Axis.YP.rotationDegrees(90));
             // TODO this is likely wrong
-            VertexConsumer builder = ItemRenderer.getFoilBuffer(buffer, RenderType.entityCutoutNoCull(ScubaArmorItem.getArmorTexture(te.getTank().getType())), true, false);
+            VertexConsumer builder = ItemRenderer.getFoilBuffer(buffer, RenderType.entityCutoutNoCull(ScubaArmorItem.getArmorTexture(te.getTank().getScubaType())), true, false);
             tankModel.showChest = true;
             // TODO 1.17
             tankModel.renderScubaGear(stack, builder, combinedLightIn, combinedOverlayIn, false);

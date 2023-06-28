@@ -5,6 +5,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -131,7 +132,7 @@ public class EIHEntity extends TropicraftCreatureEntity {
         if (tickCount % 20 == 0) {
             final LivingEntity attackTarget = getTarget();
             if (attackTarget == null) {
-                final Player closestPlayer = level.getNearestPlayer(this, 10);
+                final Player closestPlayer = level().getNearestPlayer(this, 10);
                 if (closestPlayer != null && !closestPlayer.getAbilities().instabuild && !closestPlayer.isSpectator()) {
                     setTarget(closestPlayer);
                 }
@@ -159,7 +160,7 @@ public class EIHEntity extends TropicraftCreatureEntity {
                             }
                         }
 
-                        if (distanceTo(player) < 3 && level.getDifficulty() != Difficulty.PEACEFUL) {
+                        if (distanceTo(player) < 3 && level().getDifficulty() != Difficulty.PEACEFUL) {
                             setAwake(false);
                             setImmobile(false);
                             setAngry(true);
@@ -246,7 +247,7 @@ public class EIHEntity extends TropicraftCreatureEntity {
 
     @Override
     public boolean hurt(final DamageSource source, final float amount) {
-        if (source.equals(DamageSource.OUT_OF_WORLD)) {
+        if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             return super.hurt(source, amount);
         }
 

@@ -39,7 +39,7 @@ public class EntityAIPlayKoa extends Goal
         }
         else
         {
-            List<EntityKoaBase> list = this.villagerObj.level.getEntitiesOfClass(EntityKoaBase.class, this.villagerObj.getBoundingBox().inflate(6.0D, 3.0D, 6.0D));
+            List<EntityKoaBase> list = this.villagerObj.level().getEntitiesOfClass(EntityKoaBase.class, this.villagerObj.getBoundingBox().inflate(6.0D, 3.0D, 6.0D));
             double d0 = Double.MAX_VALUE;
 
             for (EntityKoaBase entityvillager : list)
@@ -107,7 +107,7 @@ public class EntityAIPlayKoa extends Goal
     {
         --this.playTime;
 
-        if (villagerObj.isOnGround() && villagerObj.level.random.nextInt(30) == 0) {
+        if (villagerObj.onGround() && villagerObj.level().random.nextInt(30) == 0) {
             this.villagerObj.getJumpControl().jump();
         }
 

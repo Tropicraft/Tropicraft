@@ -25,11 +25,9 @@ public class SpawnerProcessor extends StructureProcessor {
     public static final SpawnerProcessor EIH = new SpawnerProcessor(ImmutableList.of(TropicraftEntities.EIH.getId()));
     public static final SpawnerProcessor IGUANA_AND_ASHEN = new SpawnerProcessor(ImmutableList.of(TropicraftEntities.ASHEN.getId(), TropicraftEntities.IGUANA.getId()));
 
-    public static final Codec<SpawnerProcessor> CODEC = RecordCodecBuilder.create(instance -> {
-        return instance.group(
-                ResourceLocation.CODEC.listOf().fieldOf("entity_types").forGetter(p -> p.entityTypes)
-        ).apply(instance, SpawnerProcessor::new);
-    });
+    public static final Codec<SpawnerProcessor> CODEC = RecordCodecBuilder.create(i -> i.group(
+            ResourceLocation.CODEC.listOf().fieldOf("entity_types").forGetter(p -> p.entityTypes)
+    ).apply(i, SpawnerProcessor::new));
 
     private final List<ResourceLocation> entityTypes;
 
@@ -45,7 +43,7 @@ public class SpawnerProcessor extends StructureProcessor {
     @Override
     @Nullable
     public StructureTemplate.StructureBlockInfo process(LevelReader world, BlockPos pos, BlockPos pos2, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo blockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
-        final Block block = blockInfo.state.getBlock();
+        final Block block = blockInfo.state().getBlock();
 
         if (block != Blocks.SPAWNER) {
             return blockInfo;
@@ -55,9 +53,9 @@ public class SpawnerProcessor extends StructureProcessor {
             String typeName = entityTypes.get(0).toString();
             tag.putString("id", typeName);
 
-            blockInfo.nbt.getCompound("SpawnData").putString("id", typeName);
+            blockInfo.nbt().getCompound("SpawnData").putString("id", typeName);
             // TODO not working
-            final ListTag list = blockInfo.nbt.getList("SpawnPotentials", 9);
+            final ListTag list = blockInfo.nbt().getList("SpawnPotentials", 9);
             for (int i = 0; i < list.size(); i++) {
                 final CompoundTag nbt = list.getCompound(i);
                 nbt.getCompound("Entity").putString("id", typeName);

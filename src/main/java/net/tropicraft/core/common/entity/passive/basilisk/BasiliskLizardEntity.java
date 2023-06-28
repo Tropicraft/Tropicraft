@@ -101,7 +101,7 @@ public final class BasiliskLizardEntity extends Animal {
     public void tick() {
         super.tick();
 
-        if (!this.level.isClientSide()) {
+        if (!this.level().isClientSide()) {
             this.tickMovementTimer();
             this.tickSwimming();
 
@@ -135,7 +135,7 @@ public final class BasiliskLizardEntity extends Animal {
             double dx = (random.nextDouble() * 2.0 - 1.0) * 0.25;
             double dz = (random.nextDouble() * 2.0 - 1.0) * 0.25;
 
-            level.addParticle(
+            level().addParticle(
                 random.nextBoolean() ? ParticleTypes.BUBBLE : ParticleTypes.SPLASH,
                 getX() + dx, surfaceY, getZ() + dz,
                 motion.x, motion.y - random.nextDouble() * 0.2F, motion.z
@@ -177,7 +177,7 @@ public final class BasiliskLizardEntity extends Animal {
     @Override
     protected Vec3 maybeBackOffFromEdge(Vec3 offset, MoverType mover) {
         if (this.shouldWaterWalk()) {
-            Vec3 result = WaterWalking.collide(this.level, this.getBoundingBox(), offset);
+            Vec3 result = WaterWalking.collide(this.level(), this.getBoundingBox(), offset);
             this.onWaterSurface = offset.y < 0.0 && result.y != offset.y;
             return result;
         } else {
@@ -188,8 +188,8 @@ public final class BasiliskLizardEntity extends Animal {
 
     @Override
     protected void checkFallDamage(double y, boolean onGround, BlockState state, BlockPos pos) {
-        this.onGround |= this.onWaterSurface;
-        super.checkFallDamage(y, this.onGround, state, pos);
+        setOnGround(onGround() || onWaterSurface);
+        super.checkFallDamage(y, onGround(), state, pos);
     }
 
     @Override

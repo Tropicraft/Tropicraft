@@ -77,11 +77,12 @@ public class ChairEntity extends FurnitureEntity {
                     particleX = getX() + forwardX + forwardZ * d5 * 0.7D;
                     particleZ = getZ() + forwardZ - forwardX * d5 * 0.7D;
                 }
-                level.addParticle(ParticleTypes.SPLASH, particleX, getY() - 0.125D, particleZ, getDeltaMovement().x, getDeltaMovement().y, getDeltaMovement().z);
+                level().addParticle(ParticleTypes.SPLASH, particleX, getY() - 0.125D, particleZ, getDeltaMovement().x, getDeltaMovement().y, getDeltaMovement().z);
             }
         }
 
-        if (!this.level.isClientSide || this.getComeSailAway()) {
+        LivingEntity passenger = this.getControllingPassenger();
+        if (!this.level().isClientSide || this.getComeSailAway()) {
             if (waterHeight < 1.0D) {
                 double d2 = waterHeight * 2.0 - 1.0;
                 setDeltaMovement(getDeltaMovement().add(0, 0.04 * d2, 0));
@@ -93,7 +94,7 @@ public class ChairEntity extends FurnitureEntity {
                 setDeltaMovement(getDeltaMovement().add(0, 0.007, 0));
             }
 
-            if (this.getComeSailAway() && this.getControllingPassenger() instanceof LivingEntity passenger) {
+            if (this.getComeSailAway() && passenger != null) {
                 float yRot = passenger.getYRot() + -passenger.xxa * 90.0F;
                 double moveX = -Math.sin(yRot * Mth.DEG_TO_RAD) * this.speedMultiplier * passenger.zza * 0.05;
                 double moveZ = Math.cos(yRot * Mth.DEG_TO_RAD) * this.speedMultiplier * passenger.zza * 0.05;
@@ -128,18 +129,18 @@ public class ChairEntity extends FurnitureEntity {
                     for (int j1 = 0; j1 < 2; ++j1) {
                         int k = Mth.floor(this.getY()) + j1;
                         BlockPos pos = new BlockPos(x, k, z);
-                        Block block = this.level.getBlockState(pos).getBlock();
+                        Block block = this.level().getBlockState(pos).getBlock();
                         if (block == Blocks.SNOW) {
-                            this.level.destroyBlock(pos, true);
+                            this.level().destroyBlock(pos, true);
                             this.horizontalCollision = false;
                         } else if (block == Blocks.LILY_PAD) {
-                            this.level.destroyBlock(pos, true);
+                            this.level().destroyBlock(pos, true);
                             this.horizontalCollision = false;
                         }
                     }
                 }
 
-            if (this.onGround) {
+            if (this.onGround()) {
                 setDeltaMovement(getDeltaMovement().multiply(0.5, 1.0, 0.5));
             }
 
@@ -166,15 +167,15 @@ public class ChairEntity extends FurnitureEntity {
             this.setYRot((float) (this.getYRot() + yRotStep));
             this.setRot(this.getYRot(), this.getXRot());
 
-            if (!this.level.isClientSide) {
-                List<Entity> entities = this.level.getEntities(this, this.getBoundingBox().inflate(0.2, 0.0, 0.2));
+            if (!this.level().isClientSide) {
+                List<Entity> entities = this.level().getEntities(this, this.getBoundingBox().inflate(0.2, 0.0, 0.2));
                 for (Entity entity : entities) {
-                    if (entity != this.getControllingPassenger() && entity.isPushable() && entity instanceof ChairEntity) {
+                    if (entity != passenger && entity.isPushable() && entity instanceof ChairEntity) {
                         entity.push(this);
                     }
                 }
 
-                if (this.getControllingPassenger() != null && !this.getControllingPassenger().isAlive()) {
+                if (passenger != null && !passenger.isAlive()) {
                     this.ejectPassengers();
                 }
             }
@@ -184,7 +185,7 @@ public class ChairEntity extends FurnitureEntity {
 
         this.rotationDelta *= FRICTION;
 
-        if (level.isClientSide && getControllingPassenger() instanceof Player controller) {
+        if (level().isClientSide && passenger instanceof Player controller) {
             this.rotationDelta += -controller.xxa * ROTATION_SPEED;
             setYRot(getYRot() + rotationDelta);
         }
@@ -197,7 +198,7 @@ public class ChairEntity extends FurnitureEntity {
             double start = Mth.lerp((double) i / steps, bounds.minY, bounds.maxY) - 0.125;
             double end = Mth.lerp((double) (i + 1) / steps, bounds.minY, bounds.maxY) - 0.125;
             AABB testBounds = new AABB(bounds.minX, start, bounds.minZ, bounds.maxX, end, bounds.maxZ);
-            if (level.containsAnyLiquid(testBounds)) {
+            if (level().containsAnyLiquid(testBounds)) {
                 waterHeight += 1.0 / (double) steps;
             }
         }
@@ -231,7 +232,7 @@ public class ChairEntity extends FurnitureEntity {
     public InteractionResult interact(Player player, InteractionHand hand) {
         if(invulnerablityCheck(player, hand) == InteractionResult.SUCCESS) {
             return InteractionResult.SUCCESS;
-        } else if (!level.isClientSide && !player.isShiftKeyDown()) {
+        } else if (!level().isClientSide && !player.isShiftKeyDown()) {
             player.startRiding(this);
             return InteractionResult.SUCCESS;
         }
@@ -249,9 +250,8 @@ public class ChairEntity extends FurnitureEntity {
 
     @Override
     @Nullable
-    public Entity getControllingPassenger() {
-        List<Entity> list = this.getPassengers();
-        return list.isEmpty() ? null : list.get(0);
+    public LivingEntity getControllingPassenger() {
+        return getFirstPassenger() instanceof LivingEntity passenger ? passenger : null;
     }
 
     @Override
@@ -260,10 +260,10 @@ public class ChairEntity extends FurnitureEntity {
     }
 
     @Override
-    public void positionRider(Entity passenger) {
+    public void positionRider(Entity passenger, MoveFunction function) {
         if (this.hasPassenger(passenger)) {
             Vec3 xzOffset = new Vec3(0, 0, -0.125).yRot((float) Math.toRadians(-getYRot()));
-            passenger.setPos(getX() + xzOffset.x, getY() + getPassengersRidingOffset() + passenger.getMyRidingOffset(), getZ() + xzOffset.z);
+            function.accept(passenger, getX() + xzOffset.x, getY() + getPassengersRidingOffset() + passenger.getMyRidingOffset(), getZ() + xzOffset.z);
             passenger.setYRot(passenger.getYRot() + rotationDelta);
             passenger.setYBodyRot(passenger.getYRot() + rotationDelta);
         }

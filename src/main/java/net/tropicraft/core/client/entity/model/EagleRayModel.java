@@ -2,9 +2,7 @@ package net.tropicraft.core.client.entity.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -13,6 +11,8 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.tropicraft.core.common.entity.underdasea.EagleRayEntity;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
 
 public class EagleRayModel extends HierarchicalModel<EagleRayEntity> {
 	/**
@@ -59,7 +59,7 @@ public class EagleRayModel extends HierarchicalModel<EagleRayEntity> {
 
 		stack.pushPose();
 		stack.translate(0.55f, 0f, 1.5f);
-		stack.mulPose(Vector3f.YP.rotationDegrees(-90f));
+		stack.mulPose(Axis.YP.rotationDegrees(-90f));
 		stack.scale(1.5f, 1f, 1f);
 		vertex(buffer, stack.last().pose(), stack.last().normal(), 0, 0, 0, red, green, blue, alpha, minU, minV, packedLightIn, packedOverlayIn);
 		vertex(buffer, stack.last().pose(), stack.last().normal(), 0, 0, 1, red, green, blue, alpha, minU, maxV, packedLightIn, packedOverlayIn);
@@ -81,7 +81,7 @@ public class EagleRayModel extends HierarchicalModel<EagleRayEntity> {
 
 		// Rotate around center
 		matrixStackIn.translate(0, 0, 0.5f);
-		matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180f));
+		matrixStackIn.mulPose(Axis.YP.rotationDegrees(180f));
 		matrixStackIn.translate(0, 0, -0.5f);
 
 		renderWing(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha, true);

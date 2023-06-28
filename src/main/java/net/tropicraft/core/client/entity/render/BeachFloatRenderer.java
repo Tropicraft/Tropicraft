@@ -1,7 +1,7 @@
 package net.tropicraft.core.client.entity.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.entity.model.BeachFloatModel;
@@ -21,12 +21,12 @@ public class BeachFloatRenderer extends FurnitureRenderer<BeachFloatEntity> {
     
     @Override
     protected void setupTransforms(PoseStack stack) {
-        stack.mulPose(Vector3f.YP.rotationDegrees(-180));
+        stack.mulPose(Axis.YP.rotationDegrees(-180));
     }
 
     @Override
-    protected Vector3f getRockingAxis() {
-        return Vector3f.XP;
+    protected Axis getRockingAxis() {
+        return Axis.XP;
     }
 
     @Override

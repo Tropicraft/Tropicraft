@@ -55,7 +55,7 @@ public class SeaUrchinEntity extends EchinodermEntity {
                 Player player = (Player) ent;
 
                 if (player.getMainHandItem().isEmpty()) {
-                    player.hurt(DamageSource.mobAttack(this), 2);
+                    player.hurt(damageSources().mobAttack(this), 2);
                 }
             }
         }
@@ -67,16 +67,16 @@ public class SeaUrchinEntity extends EchinodermEntity {
     public void push(Entity ent) {
         super.push(ent);
 
-        if (!level.isClientSide) {
+        if (!level().isClientSide) {
             if (ent instanceof LivingEntity && !(ent instanceof SeaUrchinEntity) && !(ent instanceof SeaUrchinEggEntity)) {
-                ent.hurt(DamageSource.mobAttack(this), 2);
+                ent.hurt(damageSources().mobAttack(this), 2);
             }
         }
     }
 
     @Override
     public EggEntity createEgg() {
-        return new SeaUrchinEggEntity(TropicraftEntities.SEA_URCHIN_EGG_ENTITY.get(), level);
+        return new SeaUrchinEggEntity(TropicraftEntities.SEA_URCHIN_EGG_ENTITY.get(), level());
     }
 
     @Override
