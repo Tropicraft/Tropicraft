@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tropicraft:palm_pressure_plate"
+    ]
+  },
+  "criteria": {
+    "has_palm_planks": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tropicraft:palm_planks"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tropicraft:palm_pressure_plate"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_palm_planks",
+      "has_the_recipe"
+    ]
+  ]
+}

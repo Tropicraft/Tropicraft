@@ -534,6 +534,12 @@ public class TropicraftBlocks {
     public static final BlockEntry<WoodButtonBlock> BAMBOO_BUTTON = woodButton("bamboo_button", BAMBOO_BUNDLE, "bamboo_end").register();
     public static final BlockEntry<WoodButtonBlock> THATCH_BUTTON = woodButton("thatch_button", THATCH_BUNDLE, "thatch_end").register();
 
+    public static final BlockEntry<PressurePlateBlock> MANGROVE_PRESSURE_PLATE = pressurePlate("mangrove_pressure_plate", MANGROVE_PLANKS, "mangrove_planks").register();
+    public static final BlockEntry<PressurePlateBlock> MAHOGANY_PRESSURE_PLATE = pressurePlate("mahogany_pressure_plate", MAHOGANY_PLANKS, "mahogany_planks").register();
+    public static final BlockEntry<PressurePlateBlock> PALM_PRESSURE_PLATE = pressurePlate("palm_pressure_plate", PALM_PLANKS, "palm_planks").register();
+    public static final BlockEntry<PressurePlateBlock> BAMBOO_PRESSURE_PLATE = pressurePlate("bamboo_pressure_plate", BAMBOO_BUNDLE, "bamboo_end").register();
+    public static final BlockEntry<PressurePlateBlock> THATCH_PRESSURE_PLATE = pressurePlate("thatch_pressure_plate", THATCH_BUNDLE, "thatch_end").register();
+
     public static final BlockEntry<ReedsBlock> REEDS = REGISTRATE.block("reeds", ReedsBlock::new)
             .initialProperties(() -> Blocks.SUGAR_CANE)
             .addLayer(() -> RenderType::cutout)
@@ -1164,6 +1170,20 @@ public class TropicraftBlocks {
             .item()
             .model((ctx, prov) -> prov.buttonInventory(ctx.getName(), prov.modLoc("block/" + texture)))
                 .tag(ItemTags.WOODEN_BUTTONS)
+                .build();
+    }
+
+    private static BlockBuilder<PressurePlateBlock, Registrate> pressurePlate(String name, BlockEntry<? extends Block> block, String texture) {
+        return REGISTRATE.block(name, p -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, p))
+            .initialProperties(block)
+            .tag(BlockTags.WOODEN_PRESSURE_PLATES, BlockTags.MINEABLE_WITH_AXE)
+            .recipe((ctx, prov) -> RegistrateRecipeProvider.pressurePlateBuilder(ctx.get(), DataIngredient.items(block.get()))
+                    .unlockedBy("has_" + prov.safeName(block.get()), has(block.get()))
+                    .group("wooden_pressure_plate")
+                    .save(prov))
+            .blockstate((ctx, prov) -> prov.pressurePlateBlock(ctx.get(), prov.modLoc("block/" + texture)))
+            .item()
+                .model((ctx, prov) -> prov.pressurePlate(ctx.getName(), prov.modLoc("block/" + texture)))
                 .build();
     }
 
