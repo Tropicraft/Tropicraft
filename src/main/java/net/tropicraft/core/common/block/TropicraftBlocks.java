@@ -371,11 +371,10 @@ public class TropicraftBlocks {
             .simpleItem()
             .register();
 
-    // TODO: Recipe conflict?
     public static final BlockEntry<RotatedPillarBlock> BAMBOO_BUNDLE = REGISTRATE.block("bamboo_bundle", RotatedPillarBlock::new)
             .properties(p -> p.mapColor(MapColor.PLANT).sound(SoundType.BAMBOO).strength(0.2F, 5.0F))
             .blockstate((ctx, prov) -> prov.axisBlock(ctx.get(), prov.modLoc("block/bamboo")))
-            .recipe((ctx, prov) -> prov.singleItem(DataIngredient.items(Items.BAMBOO), RecipeCategory.BUILDING_BLOCKS, ctx, 9, 1))
+            .recipe((ctx, prov) -> prov.singleItem(DataIngredient.items((NonNullSupplier<? extends ItemLike>) BAMBOO_STICK), RecipeCategory.BUILDING_BLOCKS, ctx, 9, 2))
             .simpleItem()
             .register();
 

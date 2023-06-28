@@ -3,34 +3,35 @@
   "category": "building",
   "ingredients": [
     {
-      "item": "minecraft:bamboo"
+      "item": "tropicraft:bamboo_stick"
     },
     {
-      "item": "minecraft:bamboo"
+      "item": "tropicraft:bamboo_stick"
     },
     {
-      "item": "minecraft:bamboo"
+      "item": "tropicraft:bamboo_stick"
     },
     {
-      "item": "minecraft:bamboo"
+      "item": "tropicraft:bamboo_stick"
     },
     {
-      "item": "minecraft:bamboo"
+      "item": "tropicraft:bamboo_stick"
     },
     {
-      "item": "minecraft:bamboo"
+      "item": "tropicraft:bamboo_stick"
     },
     {
-      "item": "minecraft:bamboo"
+      "item": "tropicraft:bamboo_stick"
     },
     {
-      "item": "minecraft:bamboo"
+      "item": "tropicraft:bamboo_stick"
     },
     {
-      "item": "minecraft:bamboo"
+      "item": "tropicraft:bamboo_stick"
     }
   ],
   "result": {
+    "count": 2,
     "item": "tropicraft:bamboo_bundle"
   }
 }
