@@ -4,6 +4,9 @@
   <a href="https://github.com/Tropicraft/Tropicraft/actions/workflows/gradle.yml">
       <img src="https://img.shields.io/github/actions/workflow/status/Tropicraft/Tropicraft/gradle.yml?branch=1.18.2&style=square" alt="Build Status">
   </a>
+  <a title="Crowdin" target="_blank" href="https://crowdin.com/project/tropicraftdev">
+    <img src="https://badges.crowdin.net/tropicraftdev/localized.svg">
+  </a>
   <a href="https://discord.gg/Q24TRnx">
       <img src="https://img.shields.io/discord/285234569375121409.svg?colorB=7289DA&label=Discord&style=square" alt="Discord">
   </a>
