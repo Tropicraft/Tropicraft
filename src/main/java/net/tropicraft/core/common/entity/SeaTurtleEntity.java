@@ -389,11 +389,6 @@ public class SeaTurtleEntity extends Turtle {
         return 1.0f;
     }
 
-    @Override
-    public ItemStack getPickedResult(HitResult target) {
-        return new ItemStack(TropicraftItems.SEA_TURTLE_SPAWN_EGG.get());
-    }
-
     static class BetterLayEggGoal extends MoveToBlockGoal {
         private final SeaTurtleEntity turtle;
 

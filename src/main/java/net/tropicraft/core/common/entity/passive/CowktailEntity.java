@@ -167,11 +167,6 @@ public class CowktailEntity extends Cow implements IForgeShearable {
 		return super.finalizeSpawn(world, difficultyInstance, spawnReason, data, nbt);
 	}
 
-	@Override
-	public ItemStack getPickedResult(HitResult target) {
-		return new ItemStack(TropicraftItems.COWKTAIL_SPAWN_EGG.get());
-	}
-
 	public enum Type {
 		IRIS("iris", TropicraftBlocks.IRIS.get().defaultBlockState().setValue(DoublePlantBlock.HALF, DoubleBlockHalf.UPPER)),
 		ANEMONE("anemone", TropicraftBlocks.FLOWERS.get(TropicraftFlower.ANEMONE).get().defaultBlockState());

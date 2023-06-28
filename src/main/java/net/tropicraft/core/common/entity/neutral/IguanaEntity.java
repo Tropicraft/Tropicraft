@@ -36,11 +36,6 @@ public class IguanaEntity extends TropicraftCreatureEntity {
     }
 
     @Override
-    public ItemStack getPickedResult(HitResult target) {
-        return new ItemStack(TropicraftItems.IGUANA_SPAWN_EGG.get());
-    }
-
-    @Override
     public void setLastHurtByMob(@Nullable LivingEntity entity) {
         super.setLastHurtByMob(entity);
         if (entity != null) {

@@ -59,9 +59,4 @@ public class JaguarEntity extends Animal {
     public JaguarEntity getBreedOffspring(ServerLevel world, AgeableMob mate) {
         return TropicraftEntities.JAGUAR.get().create(this.level());
     }
-
-    @Override
-    public ItemStack getPickedResult(HitResult target) {
-        return new ItemStack(TropicraftItems.JAGUAR_SPAWN_EGG.get());
-    }
 }

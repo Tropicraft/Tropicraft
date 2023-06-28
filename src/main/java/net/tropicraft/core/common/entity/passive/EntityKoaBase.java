@@ -55,7 +55,6 @@ import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.core.common.TropicraftTags;
@@ -1661,10 +1660,5 @@ public class EntityKoaBase extends Villager {
     public boolean isPlaying()
     {
         return this.isPlaying;
-    }
-
-    @Override
-    public ItemStack getPickedResult(HitResult target) {
-        return new ItemStack(TropicraftItems.KOA_SPAWN_EGG.get());
     }
 }

@@ -166,10 +166,4 @@ public class TreeFrogEntity extends TropicraftCreatureEntity implements Enemy, R
             setYRot((float) ((Math.atan2(d1, d) * 180D) / 3.1415927410125732D) - 90F);
         }
     }
-
-    @Override
-    public ItemStack getPickedResult(HitResult target) {
-        // TODO - add one egg per type
-        return new ItemStack(TropicraftItems.TREE_FROG_SPAWN_EGG.get());
-    }
 }

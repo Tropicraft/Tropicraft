@@ -97,9 +97,4 @@ public class TropicraftDolphinEntity extends Dolphin {
     protected SoundEvent getAmbientSound() {
         return Sounds.DOLPHIN.get();
     }
-
-    @Override
-    public ItemStack getPickedResult(HitResult target) {
-        return new ItemStack(TropicraftItems.DOLPHIN_SPAWN_EGG.get());
-    }
 }

@@ -234,11 +234,6 @@ public class VMonkeyEntity extends TamableAnimal {
         }
     }
 
-    @Override
-    public ItemStack getPickedResult(HitResult target) {
-        return new ItemStack(TropicraftItems.V_MONKEY_SPAWN_EGG.get());
-    }
-
     public boolean isMadAboutStolenAlcohol() {
         return madAboutStolenAlcohol;
     }

@@ -115,11 +115,6 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
         return null;
     }
 
-    @Override
-    public ItemStack getPickedResult(HitResult target) {
-        return new ItemStack(TropicraftItems.HUMMINGBIRD_SPAWN_EGG.get());
-    }
-
     private void tryPollinatePlant(BlockPos pos) {
         if (++pollenCollected >= POLLINATE_THRESHOLD) {
             pollenCollected = 0;

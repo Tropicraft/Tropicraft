@@ -66,9 +66,4 @@ public class SardineEntity extends AbstractSchoolingFish implements IAtlasFish {
     public int getAtlasSlot() {
         return 8;
     }
-
-    @Override
-    public ItemStack getPickedResult(HitResult target) {
-        return new ItemStack(TropicraftItems.SARDINE_SPAWN_EGG.get());
-    }
 }

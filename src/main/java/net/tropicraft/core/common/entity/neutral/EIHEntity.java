@@ -43,11 +43,6 @@ public class EIHEntity extends TropicraftCreatureEntity {
     }
 
     @Override
-    public ItemStack getPickedResult(HitResult target) {
-        return new ItemStack(TropicraftItems.EIH_SPAWN_EGG.get());
-    }
-
-    @Override
     public void defineSynchedData() {
         super.defineSynchedData();
         getEntityData().define(STATE, (byte) 0);

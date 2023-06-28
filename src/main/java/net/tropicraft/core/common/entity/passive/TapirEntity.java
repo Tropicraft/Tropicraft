@@ -54,9 +54,4 @@ public class TapirEntity extends Animal {
     public TapirEntity getBreedOffspring(ServerLevel world, AgeableMob mate) {
         return TropicraftEntities.TAPIR.get().create(this.level());
     }
-
-    @Override
-    public ItemStack getPickedResult(HitResult target) {
-        return new ItemStack(TropicraftItems.TAPIR_SPAWN_EGG.get());
-    }
 }

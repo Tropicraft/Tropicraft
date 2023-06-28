@@ -252,9 +252,4 @@ public class TropiSpiderEntity extends Spider {
         getEntityData().set(TYPE, b);
         refreshDimensions();
     }
-
-    @Override
-    public ItemStack getPickedResult(HitResult target) {
-        return new ItemStack(TropicraftItems.TROPI_SPIDER_SPAWN_EGG.get());
-    }
 }

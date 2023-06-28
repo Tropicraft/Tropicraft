@@ -15,8 +15,8 @@ import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.animal.AbstractFish;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.food.FoodProperties;
@@ -26,6 +26,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -375,8 +376,8 @@ public class TropicraftItems {
     public static final ItemEntry<Item> WHITE_LIPPED_PECCARY_SPAWN_EGG = spawnEgg("white_lipped_peccary_spawn_egg", TropicraftEntities.WHITE_LIPPED_PECCARY).register();
     public static final ItemEntry<Item> CUBERA_SPAWN_EGG = spawnEgg("cubera_spawn_egg", TropicraftEntities.CUBERA).register();
 
-    private static <T extends Entity> ItemBuilder<Item, Registrate> spawnEgg(final String name, final RegistryEntry<EntityType<T>> entity) {
-        return REGISTRATE.item(name, p -> new TropicraftSpawnEgg<>(entity, p));
+    private static <T extends Mob> ItemBuilder<Item, Registrate> spawnEgg(final String name, final RegistryEntry<EntityType<T>> entity) {
+        return REGISTRATE.item(name, p -> new ForgeSpawnEggItem(entity, 0xffffff, 0xffffff, p));
     }
 
     public static final ImmutableMap<AshenMasks, ItemEntry<AshenMaskItem>> ASHEN_MASKS = Arrays.stream(AshenMasks.values())
