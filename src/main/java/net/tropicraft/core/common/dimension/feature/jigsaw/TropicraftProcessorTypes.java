@@ -2,6 +2,7 @@ package net.tropicraft.core.common.dimension.feature.jigsaw;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -9,7 +10,7 @@ import net.minecraftforge.registries.RegistryObject;
 import net.tropicraft.Constants;
 
 public final class TropicraftProcessorTypes {
-    public static final DeferredRegister<StructureProcessorType<?>> REGISTER = DeferredRegister.create(Registry.STRUCTURE_PROCESSOR_REGISTRY, Constants.MODID);
+    public static final DeferredRegister<StructureProcessorType<?>> REGISTER = DeferredRegister.create(Registries.STRUCTURE_PROCESSOR, Constants.MODID);
 
     public static final RegistryObject<StructureProcessorType<?>> ADJUST_BUILDING_HEIGHT = register("adjust_building_height", AdjustBuildingHeightProcessor.CODEC);
     public static final RegistryObject<StructureProcessorType<?>> AIR_TO_CAVE_AIR = register("air_to_cave_air", AirToCaveAirProcessor.CODEC);

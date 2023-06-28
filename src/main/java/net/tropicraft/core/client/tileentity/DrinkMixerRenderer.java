@@ -2,12 +2,11 @@ package net.tropicraft.core.client.tileentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
@@ -16,6 +15,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.tropicraft.core.client.TropicraftRenderLayers;
@@ -95,16 +95,16 @@ public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerBlockEntity> {
 
     private void renderIngredient(final PoseStack stack, final MultiBufferSource buffer, final int combinedOverlayIn, final int combinedLight, final ItemStack ingredient, final int ingredientIndex) {
         stack.pushPose();
-        stack.mulPose(Vector3f.XP.rotationDegrees(90));
-        stack.mulPose(Vector3f.YP.rotationDegrees(90));
-        stack.mulPose(Vector3f.ZP.rotationDegrees(90));
+        stack.mulPose(Axis.XP.rotationDegrees(90));
+        stack.mulPose(Axis.YP.rotationDegrees(90));
+        stack.mulPose(Axis.ZP.rotationDegrees(90));
         final float[] offsets = INGREDIENT_OFFSETS[ingredientIndex];
         final float[] scales = INGREDIENT_SCALES[ingredientIndex];
         stack.translate(offsets[0], offsets[1], offsets[2]);
         stack.scale(scales[0], scales[1], scales[2]);
         dummyEntityItem.setItem(ingredient);
         final BakedModel bakedModel = TropicraftRenderUtils.getBakedModel(renderItem, ingredient);
-        renderItem.render(ingredient, ItemTransforms.TransformType.FIXED, false, stack, buffer, combinedLight, combinedOverlayIn, bakedModel);
+        renderItem.render(ingredient, ItemDisplayContext.FIXED, false, stack, buffer, combinedLight, combinedOverlayIn, bakedModel);
         stack.popPose();
     }
 }

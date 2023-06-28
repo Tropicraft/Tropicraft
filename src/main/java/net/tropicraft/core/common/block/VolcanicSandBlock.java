@@ -1,7 +1,6 @@
 package net.tropicraft.core.common.block;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -30,16 +29,15 @@ public class VolcanicSandBlock extends BlockTropicraftSand {
 	@Override
 	public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity) {
 		if (state.getValue(HOT)) {
-			if (entity instanceof LivingEntity) {
-				final LivingEntity living = (LivingEntity) entity;
+			if (entity instanceof LivingEntity living) {
 				final ItemStack stack = living.getItemBySlot(EquipmentSlot.FEET);
 
 				// If entity isn't wearing anything on their feetsies
 				if (stack.isEmpty()) {
-					living.hurt(DamageSource.LAVA, 0.5F);
+					living.hurt(entity.damageSources().lava(), 0.5F);
 				}
 			} else {
-				entity.hurt(DamageSource.LAVA, 0.5F);
+				entity.hurt(entity.damageSources().lava(), 0.5F);
 			}
 		}
 	}

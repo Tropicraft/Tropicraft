@@ -58,7 +58,7 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal {
 
         if (this.theEntity.getHealth() > healthToAvoid) return false;
 
-        List<T> list = this.theEntity.level.getEntitiesOfClass(this.classToAvoid,
+        List<T> list = this.theEntity.level().getEntitiesOfClass(this.classToAvoid,
                 this.theEntity.getBoundingBox().expandTowards((double)this.avoidDistance, 3.0D, (double)this.avoidDistance),
                 EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(this.canBeSeenSelector).and(this.avoidTargetSelector)
         );

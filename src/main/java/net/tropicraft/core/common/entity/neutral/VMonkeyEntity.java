@@ -157,7 +157,7 @@ public class VMonkeyEntity extends TamableAnimal {
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (isTame()) {
-            if (isOwnedBy(player) && !level.isClientSide) {
+            if (isOwnedBy(player) && !level().isClientSide) {
                 this.setOrderedToSit(!isOrderedToSit());
                 jumping = false;
                 navigation.stop();
@@ -169,7 +169,7 @@ public class VMonkeyEntity extends TamableAnimal {
                 stack.shrink(1);
             }
 
-            if (!level.isClientSide) {
+            if (!level().isClientSide) {
                 if (random.nextInt(3) == 0) {
                     setTame(true);
                     navigation.stop();
@@ -177,9 +177,9 @@ public class VMonkeyEntity extends TamableAnimal {
                     this.setOrderedToSit(true);
                     setHealth(20.0F);
                     setOwnerUUID(player.getUUID());
-                    level.broadcastEntityEvent(this, (byte) 7);
+                    level().broadcastEntityEvent(this, (byte) 7);
                 } else {
-                    level.broadcastEntityEvent(this, (byte) 6);
+                    level().broadcastEntityEvent(this, (byte) 6);
                 }
             }
 
@@ -209,7 +209,7 @@ public class VMonkeyEntity extends TamableAnimal {
 
     @Override
     public boolean doHurtTarget(Entity entity) {
-        boolean damaged = entity.hurt(DamageSource.mobAttack(this), (float) getAttribute(Attributes.ATTACK_DAMAGE).getValue());
+        boolean damaged = entity.hurt(damageSources().mobAttack(this), (float) getAttribute(Attributes.ATTACK_DAMAGE).getValue());
 
         if (damaged) {
             doEnchantDamageEffects(this, entity);

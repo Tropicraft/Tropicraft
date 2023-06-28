@@ -19,9 +19,9 @@ public class SteepPathProcessor extends PathStructureProcessor {
 
     @Override
     public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos seedPos, BlockPos pos2, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo blockInfo, StructurePlaceSettings placementSettingsIn, StructureTemplate template) {
-        BlockPos pos = blockInfo.pos;
+        BlockPos pos = blockInfo.pos();
 
-        if (originalBlockInfo.pos.getY() != 1 || originalBlockInfo.state.getBlock() == TropicraftBlocks.BAMBOO_STAIRS.get() || originalBlockInfo.state.isAir()) {
+        if (originalBlockInfo.pos().getY() != 1 || originalBlockInfo.state().getBlock() == TropicraftBlocks.BAMBOO_STAIRS.get() || originalBlockInfo.state().isAir()) {
             return blockInfo;
         }
 

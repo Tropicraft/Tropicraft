@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.tropicraft.core.client.ParticleEffects;
@@ -107,7 +107,7 @@ public final class HugePlantBlock extends BushBlock {
 
     private boolean isValidPositionToPlace(LevelReader world, BlockPos pos) {
         for (BlockPos plantPos : Shape.fromSeed(this, pos)) {
-            if (!world.getBlockState(plantPos).getMaterial().isReplaceable()) {
+            if (!world.getBlockState(plantPos).canBeReplaced()) {
                 return false;
             }
         }
@@ -153,9 +153,9 @@ public final class HugePlantBlock extends BushBlock {
     }
 
     @Override
-    public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+    public List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
         if (state.getValue(TYPE) == Type.SEED) {
-            return super.getDrops(state, builder);
+            return super.getDrops(state, params);
         } else {
             return Collections.emptyList();
         }

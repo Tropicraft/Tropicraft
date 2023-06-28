@@ -5,7 +5,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.ints.IntArrayFIFOQueue;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -20,7 +19,6 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import net.minecraft.world.level.levelgen.feature.trunkplacers.FancyTrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.block.MangroveRootsBlock;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftTrunkPlacers;
@@ -247,15 +245,7 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
     }
 
     public static boolean isReplaceableAt(LevelSimulatedReader world, BlockPos pos) {
-        return world.isStateAtPosition(pos, state -> {
-            return state.isAir()
-                    || state.is(BlockTags.LEAVES)
-                    || state.getMaterial() == Material.REPLACEABLE_PLANT
-                    || state.getMaterial() == Material.REPLACEABLE_WATER_PLANT
-                    || state.getMaterial() == Material.PLANT
-                    || state.is(Blocks.WATER)
-                    || state.is(TropicraftTags.Blocks.ROOTS);
-        });
+        return world.isStateAtPosition(pos, state -> state.isAir() || state.is(BlockTags.REPLACEABLE_BY_TREES) || state.is(TropicraftTags.Blocks.ROOTS));
     }
 
     public static boolean isWaterAt(LevelSimulatedReader world, BlockPos pos) {

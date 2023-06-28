@@ -52,7 +52,7 @@ public class TapirEntity extends Animal {
 
     @Override
     public TapirEntity getBreedOffspring(ServerLevel world, AgeableMob mate) {
-        return TropicraftEntities.TAPIR.get().create(this.level);
+        return TropicraftEntities.TAPIR.get().create(this.level());
     }
 
     @Override

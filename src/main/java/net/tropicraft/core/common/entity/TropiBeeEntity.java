@@ -16,7 +16,7 @@ public class TropiBeeEntity extends Bee {
 
     @Override
     public Bee getBreedOffspring(ServerLevel world, AgeableMob partner) {
-        return TropicraftEntities.TROPI_BEE.get().create(this.level);
+        return TropicraftEntities.TROPI_BEE.get().create(this.level());
     }
 
     @Override

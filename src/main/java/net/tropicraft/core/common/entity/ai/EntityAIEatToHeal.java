@@ -65,7 +65,7 @@ public class EntityAIEatToHeal extends Goal
         if (hasFoodSource(entityObj.inventory)) {
             consumeOneStackSizeOfFood(entityObj.inventory);
             entityObj.heal(5);
-            entityObj.level.playSound(null, entityObj.blockPosition(), SoundEvents.PLAYER_BURP, SoundSource.NEUTRAL, 1F, 1F);
+            entityObj.level().playSound(null, entityObj.blockPosition(), SoundEvents.PLAYER_BURP, SoundSource.NEUTRAL, 1F, 1F);
             return;
         }
 
@@ -83,7 +83,7 @@ public class EntityAIEatToHeal extends Goal
             if (dist < 5D) {
                 consumeOneStackSizeOfFoodAtHome();
                 entityObj.heal(5);
-                entityObj.level.playSound(null, entityObj.blockPosition(), SoundEvents.PLAYER_BURP, SoundSource.NEUTRAL, 1F, 1F);
+                entityObj.level().playSound(null, entityObj.blockPosition(), SoundEvents.PLAYER_BURP, SoundSource.NEUTRAL, 1F, 1F);
                 return;
             }
 
@@ -189,7 +189,7 @@ public class EntityAIEatToHeal extends Goal
     public boolean hasFoodAtHome() {
         BlockPos blockposGoal = this.entityObj.getRestrictCenter();
         if (!blockposGoal.equals(BlockPos.ZERO)) {
-            BlockEntity tile = entityObj.level.getBlockEntity(blockposGoal);
+            BlockEntity tile = entityObj.level().getBlockEntity(blockposGoal);
             if (tile instanceof ChestBlockEntity) {
                 ChestBlockEntity chest = (ChestBlockEntity) tile;
 
@@ -212,7 +212,7 @@ public class EntityAIEatToHeal extends Goal
     public ItemStack consumeOneStackSizeOfFoodAtHome() {
         BlockPos blockposGoal = this.entityObj.getRestrictCenter();
         if (!blockposGoal.equals(BlockPos.ZERO)) {
-            BlockEntity tile = entityObj.level.getBlockEntity(blockposGoal);
+            BlockEntity tile = entityObj.level().getBlockEntity(blockposGoal);
             if (tile instanceof ChestBlockEntity) {
                 ChestBlockEntity chest = (ChestBlockEntity) tile;
 

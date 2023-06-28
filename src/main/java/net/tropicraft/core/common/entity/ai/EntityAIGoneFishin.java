@@ -93,12 +93,12 @@ public class EntityAIGoneFishin extends Goal {
 
         BlockPos blockpos = this.entity.blockPosition();
 
-        if ((!this.entity.level.isDay() || this.entity.level.isRaining() && this.entity.level.getBiome(blockpos).value().getPrecipitation() == Biome.Precipitation.RAIN)) {
+        if ((!this.entity.level().isDay() || this.entity.level().isRaining() && this.entity.level().getBiome(blockpos).value().getPrecipitationAt(blockpos) == Biome.Precipitation.RAIN)) {
             return false;
         }
 
         boolean result = false;//state != FISHING_STATE.IDLE || (entity.ticksExisted % 100 == 0 && findWater() != null);
-        if (entity.lastTimeFished < entity.level.getGameTime() && entity.level.random.nextInt(3) == 0) {
+        if (entity.lastTimeFished < entity.level().getGameTime() && entity.level().random.nextInt(3) == 0) {
             BlockPos posWater = findWater();
 
             //find close if failed
@@ -110,7 +110,7 @@ public class EntityAIGoneFishin extends Goal {
                 if (Util.tryMoveToXYZLongDist(entity, posWater, moveSpeedAmp)) {
                     posLastWaterFound = posWater;
                     result = true;
-                    entity.lastTimeFished = entity.level.getGameTime() + timeBetweenFishing + timeBetweenFishingRandom;
+                    entity.lastTimeFished = entity.level().getGameTime() + timeBetweenFishing + timeBetweenFishingRandom;
                     setState(FISHING_STATE.WALKING_TO_WATER);
                     debug("found water, start executing");
                 } else {
@@ -236,7 +236,7 @@ public class EntityAIGoneFishin extends Goal {
                     }
                 }
 
-                if (entity.getLure() != null && (entity.getLure().isOnGround() || entity.getLure().caughtEntity != null)) {
+                if (entity.getLure() != null && (entity.getLure().onGround() || entity.getLure().caughtEntity != null)) {
                     stop();
                 }
 
@@ -303,7 +303,7 @@ public class EntityAIGoneFishin extends Goal {
                     stop();
                 }
 
-                if (walkingTimeout <= 0 || (entity.getNavigation().isDone() && entity.level.getGameTime() % 20 == 0)) {
+                if (walkingTimeout <= 0 || (entity.getNavigation().isDone() && entity.level().getGameTime() % 20 == 0)) {
                     if (!retryPathOrAbort(homePosition)) return;
                 }
 
@@ -313,7 +313,7 @@ public class EntityAIGoneFishin extends Goal {
                 }
             } else if (state == FISHING_STATE.WALKING_TO_LAND) {
 
-                if (Util.getDistance(entity, posLastLandFound.getX(), posLastLandFound.getY(), posLastLandFound.getZ()) < 5D || entity.isOnGround()) {
+                if (Util.getDistance(entity, posLastLandFound.getX(), posLastLandFound.getY(), posLastLandFound.getZ()) < 5D || entity.onGround()) {
                     posLastLandFound = new BlockPos(entity.blockPosition());
                     entity.getNavigation().stop();
                     setState(FISHING_STATE.FISHING);
@@ -421,8 +421,8 @@ public class EntityAIGoneFishin extends Goal {
         fishingTimeout = fishingTimeoutMax;
         retractLine();
         entity.swing(InteractionHand.MAIN_HAND);
-        FishingBobberEntity lure = new FishingBobberEntity(entity, entity.level, 0, 0);
-        entity.level.addFreshEntity(lure);
+        FishingBobberEntity lure = new FishingBobberEntity(entity, entity.level(), 0, 0);
+        entity.level().addFreshEntity(lure);
     }
 
     private void retractLine() {

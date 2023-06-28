@@ -9,16 +9,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.HitResult;
 import net.tropicraft.core.common.block.huge_plant.HugePlantBlock;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -37,7 +37,7 @@ public final class GrowableDoublePlantBlock extends DoublePlantBlock implements 
     }
 
     @Override
-    public boolean isValidBonemealTarget(BlockGetter world, BlockPos pos, BlockState state, boolean isClient) {
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, boolean isClient) {
         return true;
     }
 
@@ -58,11 +58,11 @@ public final class GrowableDoublePlantBlock extends DoublePlantBlock implements 
     }
 
     @Override
-    public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+    public List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
         if (state.getValue(HALF) == DoubleBlockHalf.LOWER) {
-            return super.getDrops(state, builder);
+            return super.getDrops(state, params);
         } else {
-            return Collections.emptyList();
+            return List.of();
         }
     }
 

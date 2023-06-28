@@ -35,7 +35,7 @@ public class EntityAIKoaMate extends Goal
     public EntityAIKoaMate(EntityKoaBase villagerIn)
     {
         this.villagerObj = villagerIn;
-        this.world = villagerIn.level;
+        this.world = villagerIn.level();
         this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
 
@@ -206,7 +206,7 @@ public class EntityAIKoaMate extends Goal
 
             ((EntityKoaBase) entityvillager).updateUniqueEntityAI();
 
-            entityvillager.level.playSound(null, entityvillager.blockPosition(), SoundEvents.CHICKEN_EGG, SoundSource.AMBIENT, 1, 1);
+            entityvillager.level().playSound(null, entityvillager.blockPosition(), SoundEvents.CHICKEN_EGG, SoundSource.AMBIENT, 1, 1);
         }
 
 

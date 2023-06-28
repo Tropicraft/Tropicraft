@@ -1,7 +1,7 @@
 package net.tropicraft.core.common.dimension.feature.tree;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -11,7 +11,7 @@ import net.tropicraft.core.common.dimension.feature.tree.mangrove.MangroveTrunkP
 import net.tropicraft.core.common.dimension.feature.tree.mangrove.SmallMangroveTrunkPlacer;
 
 public final class TropicraftTrunkPlacers {
-    public static final DeferredRegister<TrunkPlacerType<?>> REGISTER = DeferredRegister.create(Registry.TRUNK_PLACER_TYPE_REGISTRY, Constants.MODID);
+    public static final DeferredRegister<TrunkPlacerType<?>> REGISTER = DeferredRegister.create(Registries.TRUNK_PLACER_TYPE, Constants.MODID);
 
     public static final RegistryObject<TrunkPlacerType<?>> MANGROVE = register("mangrove", MangroveTrunkPlacer.CODEC);
     public static final RegistryObject<TrunkPlacerType<?>> SMALL_MANGROVE = register("small_mangrove", SmallMangroveTrunkPlacer.CODEC);

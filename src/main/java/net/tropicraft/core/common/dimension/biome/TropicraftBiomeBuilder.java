@@ -1,12 +1,33 @@
 package net.tropicraft.core.common.dimension.biome;
 
+import com.google.common.collect.ImmutableList;
+import com.mojang.datafixers.util.Pair;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.world.level.biome.MultiNoiseBiomeSourceParameterList;
+import net.tropicraft.core.common.dimension.TropicraftDimension;
 
+import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 public class TropicraftBiomeBuilder {
+    private static final MultiNoiseBiomeSourceParameterList.Preset PRESET = registerMultiNoisePreset(TropicraftDimension.ID, new MultiNoiseBiomeSourceParameterList.Preset.SourceProvider() {
+        @Override
+        public <T> Climate.ParameterList<T> apply(Function<ResourceKey<Biome>, T> function) {
+            ImmutableList.Builder<Pair<Climate.ParameterPoint, T>> points = ImmutableList.builder();
+            new TropicraftBiomeBuilder().addBiomes((point, key) -> points.add(Pair.of(point, function.apply(key))));
+            return new Climate.ParameterList<>(points.build());
+        }
+    });
+
+    public static final ResourceKey<MultiNoiseBiomeSourceParameterList> PARAMETER_LIST = ResourceKey.create(Registries.MULTI_NOISE_BIOME_SOURCE_PARAMETER_LIST, TropicraftDimension.ID);
+
     private final Climate.Parameter islandContinentalness = Climate.Parameter.span(-1.1F, -0.92F);
     private final Climate.Parameter oceanContinentalness = Climate.Parameter.span(-0.92F, -0.19F);
     private final Climate.Parameter landContinentalness = Climate.Parameter.span(-0.1F, 1.0F);
@@ -18,7 +39,7 @@ public class TropicraftBiomeBuilder {
     private final Climate.Parameter fullRange = Climate.Parameter.span(-1.0F, 1.0F);
 
     // 0 is the coldest, 4 is the hottest
-    private final Climate.Parameter[] temperatures = new Climate.Parameter[] {
+    private final Climate.Parameter[] temperatures = new Climate.Parameter[]{
             Climate.Parameter.span(-1.0F, -0.45F),
             Climate.Parameter.span(-0.45F, -0.15F),
             Climate.Parameter.span(-0.15F, 0.2F),
@@ -36,7 +57,7 @@ public class TropicraftBiomeBuilder {
     };
 
     // 0 is the most shattered, 6 is the most flat
-    private final Climate.Parameter[] erosions = new Climate.Parameter[] {
+    private final Climate.Parameter[] erosions = new Climate.Parameter[]{
             Climate.Parameter.span(-1.0F, -0.78F),
             Climate.Parameter.span(-0.78F, -0.375F),
             Climate.Parameter.span(-0.375F, -0.2225F),
@@ -50,7 +71,19 @@ public class TropicraftBiomeBuilder {
     private final Climate.Parameter lessWet = Climate.Parameter.span(humidities[0], humidities[1]);
     private final Climate.Parameter mostWet = Climate.Parameter.span(humidities[3], humidities[4]);
 
-    public void addBiomes(BiConsumer<Climate.ParameterPoint, RegistryObject<Biome>> consumer) {
+    private static MultiNoiseBiomeSourceParameterList.Preset registerMultiNoisePreset(ResourceLocation id, MultiNoiseBiomeSourceParameterList.Preset.SourceProvider sourceProvider) {
+        MultiNoiseBiomeSourceParameterList.Preset preset = new MultiNoiseBiomeSourceParameterList.Preset(id, sourceProvider);
+        Map<ResourceLocation, MultiNoiseBiomeSourceParameterList.Preset> byName = new Object2ObjectOpenHashMap<>(MultiNoiseBiomeSourceParameterList.Preset.BY_NAME);
+        byName.put(id, preset);
+        MultiNoiseBiomeSourceParameterList.Preset.BY_NAME = Map.copyOf(byName);
+        return preset;
+    }
+
+    public static void bootstrap(final BootstapContext<MultiNoiseBiomeSourceParameterList> context) {
+        context.register(PARAMETER_LIST, new MultiNoiseBiomeSourceParameterList(PRESET, context.lookup(Registries.BIOME)));
+    }
+
+    public void addBiomes(BiConsumer<Climate.ParameterPoint, ResourceKey<Biome>> consumer) {
         addInlandBiomes(consumer);
 
         addSurfaceBiome(consumer, fullRange, Climate.Parameter.span(lessWet, humidities[2]), oceanContinentalness, fullRange, fullRange, 0.0F, TropicraftBiomes.OCEAN);
@@ -59,7 +92,7 @@ public class TropicraftBiomeBuilder {
         addSurfaceBiome(consumer, fullRange, fullRange, islandContinentalness, fullRange, fullRange, 0.0F, TropicraftBiomes.RAINFOREST);
     }
 
-    private void addInlandBiomes(BiConsumer<Climate.ParameterPoint, RegistryObject<Biome>> consumer) {
+    private void addInlandBiomes(BiConsumer<Climate.ParameterPoint, ResourceKey<Biome>> consumer) {
         addMidSlice(consumer, Climate.Parameter.span(-1.0F, -0.93333334F));
         addHighSlice(consumer, Climate.Parameter.span(-0.93333334F, -0.7666667F));
         addPeaks(consumer, Climate.Parameter.span(-0.7666667F, -0.56666666F));
@@ -75,7 +108,7 @@ public class TropicraftBiomeBuilder {
         addMidSlice(consumer, Climate.Parameter.span(0.93333334F, 1.0F));
     }
 
-    private void addValleys(BiConsumer<Climate.ParameterPoint, RegistryObject<Biome>> consumer, Climate.Parameter weirdness) {
+    private void addValleys(BiConsumer<Climate.ParameterPoint, ResourceKey<Biome>> consumer, Climate.Parameter weirdness) {
         addSurfaceBiome(consumer, fullRange, fullRange, nearInlandContinentalness, Climate.Parameter.span(erosions[0], erosions[1]), weirdness, 0.0F, TropicraftBiomes.RIVER);
         addSurfaceBiome(consumer, fullRange, Climate.Parameter.span(humidities[3], humidities[4]), landContinentalness, erosions[6], weirdness, 0.0F, TropicraftBiomes.MANGROVES);
         addSurfaceBiome(consumer, fullRange, Climate.Parameter.span(humidities[3], humidities[4]), landContinentalness, erosions[4], weirdness, 0.0F, TropicraftBiomes.MANGROVES);
@@ -88,7 +121,7 @@ public class TropicraftBiomeBuilder {
         addSurfaceBiome(consumer, fullRange, lessWet, farInlandContinentalness, Climate.Parameter.span(erosions[0], erosions[1]), weirdness, 0.0F, TropicraftBiomes.TROPICS);
     }
 
-    private void addLowSlice(BiConsumer<Climate.ParameterPoint, RegistryObject<Biome>> consumer, Climate.Parameter weirdness) {
+    private void addLowSlice(BiConsumer<Climate.ParameterPoint, ResourceKey<Biome>> consumer, Climate.Parameter weirdness) {
         addSurfaceBiome(consumer, fullRange, fullRange, coastContinentalness, Climate.Parameter.span(erosions[4], erosions[6]), weirdness, 0.0F, TropicraftBiomes.BEACH);
 
         if (weirdness.max() < 0) {
@@ -117,7 +150,7 @@ public class TropicraftBiomeBuilder {
         }
     }
 
-    private void addMidSlice(BiConsumer<Climate.ParameterPoint, RegistryObject<Biome>> consumer, Climate.Parameter weirdness) {
+    private void addMidSlice(BiConsumer<Climate.ParameterPoint, ResourceKey<Biome>> consumer, Climate.Parameter weirdness) {
         addSurfaceBiome(consumer, fullRange, fullRange, coastContinentalness, Climate.Parameter.span(erosions[4], erosions[6]), weirdness, 0.0F, TropicraftBiomes.BEACH);
 
         addSurfaceBiome(consumer, fullRange, fullRange, landContinentalness, erosions[5], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
@@ -130,7 +163,7 @@ public class TropicraftBiomeBuilder {
         addSurfaceBiome(consumer, fullRange, fullRange, landContinentalness, erosions[0], weirdness, 0.0F, TropicraftBiomes.RAINFOREST);
     }
 
-    private void addHighSlice(BiConsumer<Climate.ParameterPoint, RegistryObject<Biome>> consumer, Climate.Parameter weirdness) {
+    private void addHighSlice(BiConsumer<Climate.ParameterPoint, ResourceKey<Biome>> consumer, Climate.Parameter weirdness) {
         Climate.Parameter coastInwards = Climate.Parameter.span(coastContinentalness, farInlandContinentalness);
         Climate.Parameter midInwards = Climate.Parameter.span(coastContinentalness, farInlandContinentalness);
 
@@ -159,7 +192,7 @@ public class TropicraftBiomeBuilder {
         }
     }
 
-    private void addPeaks(BiConsumer<Climate.ParameterPoint, RegistryObject<Biome>> consumer, Climate.Parameter weirdness) {
+    private void addPeaks(BiConsumer<Climate.ParameterPoint, ResourceKey<Biome>> consumer, Climate.Parameter weirdness) {
         Climate.Parameter coastInwards = Climate.Parameter.span(coastContinentalness, farInlandContinentalness);
         Climate.Parameter midInwards = Climate.Parameter.span(coastContinentalness, farInlandContinentalness);
 
@@ -187,7 +220,7 @@ public class TropicraftBiomeBuilder {
         addSurfaceBiome(consumer, fullRange, fullRange, Climate.Parameter.span(midInlandContinentalness, farInlandContinentalness), erosions[1], weirdness, 0.0F, TropicraftBiomes.TROPICAL_PEAKS);
     }
 
-    private void addSurfaceBiome(BiConsumer<Climate.ParameterPoint, RegistryObject<Biome>> consumer, Climate.Parameter temperature, Climate.Parameter humidity, Climate.Parameter continentalness, Climate.Parameter erosion, Climate.Parameter weirdness, float offset, RegistryObject<Biome> biomeRegistry) {
+    private void addSurfaceBiome(BiConsumer<Climate.ParameterPoint, ResourceKey<Biome>> consumer, Climate.Parameter temperature, Climate.Parameter humidity, Climate.Parameter continentalness, Climate.Parameter erosion, Climate.Parameter weirdness, float offset, ResourceKey<Biome> biome) {
         // Depth 0
         consumer.accept(Climate.parameters(
                 temperature,
@@ -197,7 +230,7 @@ public class TropicraftBiomeBuilder {
                 Climate.Parameter.point(0.0F),
                 weirdness,
                 offset),
-                biomeRegistry
+                biome
         );
 
         // Depth 1
@@ -209,7 +242,7 @@ public class TropicraftBiomeBuilder {
                 Climate.Parameter.point(1.0F),
                 weirdness,
                 offset),
-                biomeRegistry
+                biome
         );
     }
 

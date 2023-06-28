@@ -170,7 +170,7 @@ public final class HomeTreeBranchPiece extends StructurePoolElement implements I
         double stepZ = (double) getCoordinateAlong(delta, Direction.Axis.Z) / maxLength;
 
         for (int length = 0; length <= maxLength; length++) {
-            BlockPos pos = new BlockPos(
+            BlockPos pos = BlockPos.containing(
                     from.getX() + length * stepX + 0.5,
                     from.getY() + length * stepY + 0.5,
                     from.getZ() + length * stepZ + 0.5

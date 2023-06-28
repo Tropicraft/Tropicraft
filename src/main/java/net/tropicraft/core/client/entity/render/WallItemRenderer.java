@@ -1,7 +1,7 @@
 package net.tropicraft.core.client.entity.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -23,10 +23,10 @@ public class WallItemRenderer extends EntityRenderer<WallItemEntity> {
     @Override
     public void render(final WallItemEntity entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource bufferIn, int packedLightIn) {
         stack.pushPose();
-        stack.mulPose(Vector3f.XP.rotationDegrees(entity.getXRot()));
-        stack.mulPose(Vector3f.YP.rotationDegrees(180.0F - entity.getYRot()));
-        stack.mulPose(Vector3f.ZP.rotationDegrees(entity.getRotation() * 360 / 8F));        
-        TropicraftRenderUtils.renderItem(entity.getItem(), 1, false, stack, bufferIn, packedLightIn, OverlayTexture.NO_OVERLAY, null, entity.getId());
+        stack.mulPose(Axis.XP.rotationDegrees(entity.getXRot()));
+        stack.mulPose(Axis.YP.rotationDegrees(180.0F - entity.getYRot()));
+        stack.mulPose(Axis.ZP.rotationDegrees(entity.getRotation() * 360 / 8F));        
+        TropicraftRenderUtils.renderItem(entity.getItem(), 1, false, stack, bufferIn, packedLightIn, OverlayTexture.NO_OVERLAY, null, entity.getId(), entity.level());
         stack.popPose();
         super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
     }

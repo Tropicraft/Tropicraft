@@ -21,7 +21,7 @@ public class SeaUrchinEggEntity extends EchinodermEggEntity {
 
 	@Override
 	public Entity onHatch() {
-		return new SeaUrchinEntity(TropicraftEntities.SEA_URCHIN.get(), level);
+		return new SeaUrchinEntity(TropicraftEntities.SEA_URCHIN.get(), level());
 	}
 
 	@Override

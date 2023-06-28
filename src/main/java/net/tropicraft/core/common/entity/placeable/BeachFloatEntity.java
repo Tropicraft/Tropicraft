@@ -70,8 +70,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
     @Override
     public void tick() {
         Entity rider = getControllingPassenger();
-        if (level.isClientSide && rider instanceof Player) {
-            Player controller = (Player) rider;
+        if (level().isClientSide && rider instanceof Player controller) {
             float move = controller.zza;
             float rot = -controller.xxa;
             rotationSpeed += rot * 0.25f;
@@ -122,8 +121,8 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
         setDeltaMovement(getDeltaMovement().multiply(0.9, 0.9, 0.9));
         rotationSpeed *= 0.9f;
 
-        if (!this.level.isClientSide) {
-            List<Entity> list = this.level.getEntities(this, this.getBoundingBox().inflate(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+        if (!this.level().isClientSide) {
+            List<Entity> list = this.level().getEntities(this, this.getBoundingBox().inflate(0.20000000298023224D, 0.0D, 0.20000000298023224D));
             for (Entity entity : list) {
                 if (entity != this.getControllingPassenger() && entity.isPushable()) {
                     entity.push(this);
@@ -156,7 +155,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
     protected boolean updateInWaterStateAndDoFluidPushing() {
         this.fluidHeight.clear();
         this.updateWaterState();
-        boolean lava = this.updateFluidHeightAndDoFluidPushing(FluidTags.LAVA, this.level.dimensionType().ultraWarm() ? 0.007 : 0.0023333333333333335D);
+        boolean lava = this.updateFluidHeightAndDoFluidPushing(FluidTags.LAVA, this.level().dimensionType().ultraWarm() ? 0.007 : 0.0023333333333333335D);
         return this.isInWater() || lava;
     }
 
@@ -185,7 +184,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
     public InteractionResult interact(Player player, InteractionHand hand) {
         if(invulnerablityCheck(player, hand) == InteractionResult.SUCCESS) {
             return InteractionResult.SUCCESS;
-        } else if (!this.level.isClientSide && !player.isShiftKeyDown()) {
+        } else if (!this.level().isClientSide && !player.isShiftKeyDown()) {
             player.startRiding(this);
             return InteractionResult.SUCCESS;
         }
@@ -196,46 +195,29 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
     /* Following three methods copied from EntityBoat for passenger updates */
 
     @Override
-    public void positionRider(@Nonnull Entity passenger) {
-        if (this.hasPassenger(passenger)) {
-            // float yaw = this.rotationYaw;
+    protected void positionRider(Entity passenger, MoveFunction function) {
+        if (!this.hasPassenger(passenger)) {
+            return;
+        }
 
-            // passenger.setPosition(x, this.posY + this.getMountedYOffset() + passenger.getYOffset(), z);
+        float offset = (float) ((!isAlive() ? 0.001 : this.getPassengersRidingOffset()) + passenger.getMyRidingOffset());
 
-            float f = 0.0F;
-            float f1 = (float) ((!isAlive() ? 0.001 : this.getPassengersRidingOffset()) + passenger.getMyRidingOffset());
+        float len = 0.6f;
+        double x = this.getX() + (-Mth.sin(-this.getYRot() * Mth.DEG_TO_RAD) * len);
+        double z = this.getZ() + (-Mth.cos(this.getYRot() * Mth.DEG_TO_RAD) * len);
+        function.accept(passenger, x, this.getY() + offset, z);
+        passenger.setYRot(passenger.getYRot() + this.rotationSpeed);
+        passenger.setYHeadRot(passenger.getYHeadRot() + this.rotationSpeed);
+        this.applyYawToEntity(passenger);
 
-            if (this.getPassengers().size() > 1) {
-                int i = this.getPassengers().indexOf(passenger);
+        if (passenger instanceof LivingEntity && this.getPassengers().size() > 1) {
+            int j = passenger.getId() % 2 == 0 ? 90 : 270;
+            passenger.setYBodyRot(((LivingEntity) passenger).yBodyRot + (float) j);
+            passenger.setYHeadRot(passenger.getYHeadRot() + (float) j);
+        }
 
-                if (i == 0) {
-                    f = 0.2F;
-                } else {
-                    f = -0.6F;
-                }
-
-                if (passenger instanceof LivingEntity) {
-                    f = (float) ((double) f + 0.2D);
-                }
-            }
-
-            float len = 0.6f;
-            double x = this.getX() + (-Mth.sin(-this.getYRot() * 0.017453292F) * len);
-            double z = this.getZ() + (-Mth.cos(this.getYRot() * 0.017453292F) * len);
-            passenger.setPos(x, this.getY() + (double) f1, z);
-            passenger.setYRot(passenger.getYRot() + this.rotationSpeed);
-            passenger.setYHeadRot(passenger.getYHeadRot() + this.rotationSpeed);
-            this.applyYawToEntity(passenger);
-
-            if (passenger instanceof LivingEntity && this.getPassengers().size() > 1) {
-                int j = passenger.getId() % 2 == 0 ? 90 : 270;
-                passenger.setYBodyRot(((LivingEntity) passenger).yBodyRot + (float) j);
-                passenger.setYHeadRot(passenger.getYHeadRot() + (float) j);
-            }
-
-            if (passenger instanceof Player) {
-                ((Player) passenger).setBoundingBox(getBoundingBox().expandTowards(0, 0.3, 0).contract(0, -0.1875, 0));
-            }
+        if (passenger instanceof Player) {
+            passenger.setBoundingBox(getBoundingBox().expandTowards(0, 0.3, 0).contract(0, -0.1875, 0));
         }
     }
     
@@ -248,7 +230,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
     }
 
     protected void applyYawToEntity(Entity entityToUpdate) {
-        if (!entityToUpdate.level.isClientSide || isClientFirstPerson(entityToUpdate)) {
+        if (!entityToUpdate.level().isClientSide || isClientFirstPerson(entityToUpdate)) {
             entityToUpdate.setYBodyRot(this.getYRot());
             float yaw = Mth.wrapDegrees(entityToUpdate.getYRot() - this.getYRot());
             float pitch = Mth.wrapDegrees(entityToUpdate.getXRot() - this.getXRot());
@@ -292,10 +274,10 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
             for (int x = minX; x < maxX; x++) {
                 for (int z = minZ; z < maxZ; ++z) {
                     pos.set(x, y, z);
-                    FluidState fluidstate = this.level.getFluidState(pos);
+                    FluidState fluidstate = this.level().getFluidState(pos);
 
                     if (fluidstate.getType().isSame(Fluids.WATER)) {
-                        waterHeight = Math.max(waterHeight, pos.getY() + fluidstate.getHeight(this.level, pos));
+                        waterHeight = Math.max(waterHeight, pos.getY() + fluidstate.getHeight(this.level(), pos));
                     }
                     if (waterHeight >= maxY) {
                         return waterHeight;
@@ -320,27 +302,17 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
         return 0;
     }
 
-    /**
-     * Returns the Y offset from the entity's position for any entity riding this one.
-     */
     @Override
     public double getPassengersRidingOffset() {
         return getBbHeight() - 1.1;
     }
 
-    /**
-     * For vehicles, the first passenger is generally considered the controller and "drives" the vehicle. For example, Pigs, Horses, and Boats are generally "steered" by the controlling passenger.
-     */
     @Override
     @Nullable
-    public Entity getControllingPassenger() {
-        List<Entity> list = this.getPassengers();
-        return list.isEmpty() ? null : list.get(0);
+    public LivingEntity getControllingPassenger() {
+        return getFirstPassenger() instanceof LivingEntity living ? living : null;
     }
 
-    /**
-     * Gets the horizontal facing direction of this Entity, adjusted to take specially-treated entity types into account.
-     */
     @Override
     public Direction getMotionDirection() {
         return this.getDirection().getClockWise();

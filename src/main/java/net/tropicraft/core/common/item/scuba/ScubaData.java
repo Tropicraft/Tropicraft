@@ -103,7 +103,7 @@ public class ScubaData implements INBTSerializable<CompoundTag> {
     
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent event) {
-        Level world = event.player.level;
+        Level world = event.player.level();
         if (event.phase == Phase.END) {
             // TODO support more than chest slot?
             ItemStack chestStack = event.player.getItemBySlot(EquipmentSlot.CHEST);
@@ -163,7 +163,7 @@ public class ScubaData implements INBTSerializable<CompoundTag> {
     }
     
     private static void updateClient(PlayerEvent event) {
-        if (!event.getEntity().level.isClientSide) {
+        if (!event.getEntity().level().isClientSide) {
             event.getEntity().getCapability(CAPABILITY).ifPresent(d -> d.updateClient((ServerPlayer) event.getEntity(), true));
         }
     }
@@ -174,13 +174,13 @@ public class ScubaData implements INBTSerializable<CompoundTag> {
     private boolean dirty;
     
     public static boolean isUnderWater(Player player) {
-        BlockPos headPos = new BlockPos(player.getEyePosition(0));
-        return player.level.getFluidState(headPos).is(FluidTags.WATER);
+        BlockPos headPos = BlockPos.containing(player.getEyePosition(0));
+        return player.level().getFluidState(headPos).is(FluidTags.WATER);
     }
     
     public static double getDepth(Player player) {
         if (isUnderWater(player)) {
-            int surface = TropicraftDimension.getSeaLevel(player.level);
+            int surface = TropicraftDimension.getSeaLevel(player.level());
             double depth = surface - (player.getEyePosition(0).y());
             return depth;
         }
@@ -189,7 +189,7 @@ public class ScubaData implements INBTSerializable<CompoundTag> {
     
     void tick(Player player) {
         this.diveTime++;
-        if (player.level.getGameTime() % 100 == 0) {
+        if (player.level().getGameTime() % 100 == 0) {
             dirty = true;
         }
         updateMaxDepth(getDepth(player));

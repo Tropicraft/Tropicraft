@@ -65,7 +65,7 @@ public class EagleRayEntity extends AbstractFish {
 		super.tick();
 		//this.setSwimSpeeds(1f, 0.2f, 0.2f);
 
-		if (level.isClientSide) {
+		if (level().isClientSide) {
 			if (animationTicks < WING_CYCLE_TICKS) {
 				animationTicks++;
 			} else {

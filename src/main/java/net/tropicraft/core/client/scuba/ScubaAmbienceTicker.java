@@ -24,8 +24,8 @@ import net.tropicraft.core.common.item.scuba.ScubaData;
 @EventBusSubscriber(value = Dist.CLIENT, modid = Constants.MODID, bus = Bus.FORGE)
 public class ScubaAmbienceTicker {
     
-    public static final SoundEvent SHALLOW_SCUBA = new SoundEvent(new ResourceLocation(Constants.MODID, "scuba.shallow"));
-    public static final SoundEvent DEEP_SCUBA = new SoundEvent(new ResourceLocation(Constants.MODID, "scuba.deep"));
+    public static final SoundEvent SHALLOW_SCUBA = SoundEvent.createVariableRangeEvent(new ResourceLocation(Constants.MODID, "scuba.shallow"));
+    public static final SoundEvent DEEP_SCUBA = SoundEvent.createVariableRangeEvent(new ResourceLocation(Constants.MODID, "scuba.deep"));
 
     private static SoundEvent currentSound;
 

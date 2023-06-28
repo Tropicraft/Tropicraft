@@ -1,7 +1,7 @@
 package net.tropicraft.core.client.tileentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -36,9 +36,9 @@ public class SifterRenderer implements BlockEntityRenderer<SifterBlockEntity> {
 			}
 
 			matrixStackIn.translate(0.0D, 0.4F, 0.0D);
-			matrixStackIn.mulPose(Vector3f.YP.rotationDegrees((float)(sifter.yaw2 + (sifter.yaw - sifter.yaw2) * (double)partialTicks) * 10.0F));
+			matrixStackIn.mulPose(Axis.YP.rotationDegrees((float)(sifter.yaw2 + (sifter.yaw - sifter.yaw2) * (double)partialTicks) * 10.0F));
 			matrixStackIn.translate(0.0D, -0.4F, 0.0D);
-			matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-20.0F));
+			matrixStackIn.mulPose(Axis.XP.rotationDegrees(-20.0F));
 			matrixStackIn.scale(itemRenderSize * 3, itemRenderSize * 3, itemRenderSize * 3);
 			final int light = LevelRenderer.getLightColor(level, sifter.getBlockPos().above());
 			Minecraft.getInstance().getEntityRenderDispatcher().render(item, 0.0D, 0.0D, 0.0D, 0.0F, partialTicks, matrixStackIn, bufferIn, light);

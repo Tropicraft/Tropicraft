@@ -4,13 +4,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -70,8 +70,8 @@ public class LavaBallEntity extends Entity {
         float y = (float) getY();
         float z = (float) getZ();
 
-        if (level.isClientSide) {
-            level.addParticle(ParticleTypes.LAVA, x, y, z, this.getDeltaMovement().x, -1.5F, this.getDeltaMovement().z);
+        if (level().isClientSide) {
+            level().addParticle(ParticleTypes.LAVA, x, y, z, this.getDeltaMovement().x, -1.5F, this.getDeltaMovement().z);
         }
     }
 
@@ -98,16 +98,16 @@ public class LavaBallEntity extends Entity {
             size += .025;
         }
 
-        if (onGround) {
+        if (onGround()) {
             motionZ *= .95;
             motionX *= .95;
         }
 
         motionY *= .99;
 
-        if (!onGround) {
+        if (!onGround()) {
             motionY -=.05F;
-            if (level.isClientSide) {
+            if (level().isClientSide) {
                 for (int i = 0; i < 5 + random.nextInt(3); i++){
                     supahDrip();
                 }
@@ -126,32 +126,32 @@ public class LavaBallEntity extends Entity {
 
         BlockPos posCurrent = new BlockPos(thisX, thisY, thisZ);
         BlockPos posBelow = posCurrent.below();
-        BlockState stateBelow = level.getBlockState(posBelow);
+        BlockState stateBelow = level().getBlockState(posBelow);
 
-        if (!level.isEmptyBlock(posBelow) && stateBelow.getMaterial() != Material.LAVA && !held) {
+        if (!stateBelow.isAir() && !stateBelow.is(Blocks.LAVA) && !held) {
             if (setFire) {
-                level.setBlock(posCurrent, Blocks.LAVA.defaultBlockState(), 3);
+                level().setBlock(posCurrent, Blocks.LAVA.defaultBlockState(), 3);
                 this.remove(RemovalReason.DISCARDED);
             }
 
             if (!setFire) {
-                if (level.isEmptyBlock(posCurrent.west())) {
-                    level.setBlock(posCurrent.west(), Blocks.LAVA.defaultBlockState(), 2);
+                if (level().isEmptyBlock(posCurrent.west())) {
+                    level().setBlock(posCurrent.west(), Blocks.LAVA.defaultBlockState(), 2);
                 }
 
-                if (level.isEmptyBlock(posCurrent.east())) {
-                    level.setBlock(posCurrent.east(), Blocks.LAVA.defaultBlockState(), 2);
+                if (level().isEmptyBlock(posCurrent.east())) {
+                    level().setBlock(posCurrent.east(), Blocks.LAVA.defaultBlockState(), 2);
                 }
 
-                if (level.isEmptyBlock(posCurrent.south())) {
-                    level.setBlock(posCurrent.south(), Blocks.LAVA.defaultBlockState(), 2);
+                if (level().isEmptyBlock(posCurrent.south())) {
+                    level().setBlock(posCurrent.south(), Blocks.LAVA.defaultBlockState(), 2);
                 }
 
-                if (level.isEmptyBlock(posCurrent.north())) {
-                    level.setBlock(posCurrent.north(), Blocks.LAVA.defaultBlockState(), 2);
+                if (level().isEmptyBlock(posCurrent.north())) {
+                    level().setBlock(posCurrent.north(), Blocks.LAVA.defaultBlockState(), 2);
                 }
 
-                level.setBlock(posCurrent, Blocks.LAVA.defaultBlockState(), 3);
+                level().setBlock(posCurrent, Blocks.LAVA.defaultBlockState(), 3);
                 setFire = true;
             }
         }
@@ -179,7 +179,7 @@ public class LavaBallEntity extends Entity {
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 

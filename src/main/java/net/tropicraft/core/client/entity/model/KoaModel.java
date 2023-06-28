@@ -169,7 +169,7 @@ public class KoaModel extends HumanoidModel<EntityKoaBase> {
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
         if (isDancing) {
-            head.xRot += Mth.sin((entity.level.getGameTime() % 360) * 35F * Mth.DEG_TO_RAD) * 0.05F;
+            head.xRot += Mth.sin((entity.level().getGameTime() % 360) * 35F * Mth.DEG_TO_RAD) * 0.05F;
 
             float amp = 0.5F;
             float x = Mth.PI + Mth.PI / 4 + headRot * amp;

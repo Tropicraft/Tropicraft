@@ -129,7 +129,7 @@ public class AIAshenShootDart extends Goal {
 
                     if (i >= 20) {
                         entity.stopUsingItem();
-                        entity.performRangedAttack(target, (float) (14 - entity.level.getDifficulty().getId() * 4));
+                        entity.performRangedAttack(target, (float) (14 - entity.level().getDifficulty().getId() * 4));
                         attackTime = attackCooldown;
                     }
                 }

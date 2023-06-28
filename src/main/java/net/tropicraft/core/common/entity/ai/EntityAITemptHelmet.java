@@ -75,7 +75,7 @@ public class EntityAITemptHelmet extends Goal
         }
         else
         {
-            this.temptingPlayer = this.temptedEntity.level.getNearestPlayer(this.temptedEntity, 10.0D);
+            this.temptingPlayer = this.temptedEntity.level().getNearestPlayer(this.temptedEntity, 10.0D);
 
             if (this.temptingPlayer == null)
             {

@@ -113,7 +113,7 @@ public class CowktailEntity extends Cow implements IForgeShearable {
 
 	@Override
 	public CowktailEntity getBreedOffspring(ServerLevel world, AgeableMob ageable) {
-		CowktailEntity child = TropicraftEntities.COWKTAIL.get().create(this.level);
+		CowktailEntity child = TropicraftEntities.COWKTAIL.get().create(this.level());
 		child.setCowktailType(getOffspringType((CowktailEntity)ageable));
 		return child;
 	}
@@ -140,10 +140,10 @@ public class CowktailEntity extends Cow implements IForgeShearable {
 	@Override
 	public List<ItemStack> onSheared(@Nullable Player player, @Nonnull ItemStack item, Level world, BlockPos pos, int fortune) {
 		java.util.List<ItemStack> ret = new java.util.ArrayList<>();
-		this.level.addParticle(ParticleTypes.EXPLOSION, this.getX(), this.getY(0.5D), this.getZ(), 0.0D, 0.0D, 0.0D);
-		if (!this.level.isClientSide) {
+        this.level().addParticle(ParticleTypes.EXPLOSION, this.getX(), this.getY(0.5D), this.getZ(), 0.0D, 0.0D, 0.0D);
+		if (!this.level().isClientSide) {
 			this.remove(RemovalReason.DISCARDED);
-			Cow cowentity = EntityType.COW.create(this.level);
+			Cow cowentity = EntityType.COW.create(this.level());
 			cowentity.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
 			cowentity.setHealth(this.getHealth());
 			cowentity.yBodyRot = this.yBodyRot;
@@ -151,7 +151,7 @@ public class CowktailEntity extends Cow implements IForgeShearable {
 				cowentity.setCustomName(this.getCustomName());
 				cowentity.setCustomNameVisible(this.isCustomNameVisible());
 			}
-			this.level.addFreshEntity(cowentity);
+            this.level().addFreshEntity(cowentity);
 			for(int i = 0; i < 5; ++i) {
 				ret.add(new ItemStack(this.getCowktailType().renderState.getBlock()));
 			}

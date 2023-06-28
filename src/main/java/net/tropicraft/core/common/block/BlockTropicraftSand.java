@@ -24,7 +24,7 @@ public class BlockTropicraftSand extends FallingBlock {
     public BlockTropicraftSand(final Properties properties) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState().setValue(UNDERWATER, false));
-        this.dustColor = this.defaultMaterialColor().col | 0xFF000000;
+        this.dustColor = this.defaultMapColor().col | 0xFF000000;
     }
 
     @Override
@@ -61,11 +61,7 @@ public class BlockTropicraftSand extends FallingBlock {
     @Override
     public BlockState getStateForPlacement(final BlockPlaceContext context) {
         final FluidState upState = context.getLevel().getFluidState(context.getClickedPos().above());
-        boolean waterAbove = false;
-        if (!upState.isEmpty()) {
-            waterAbove = true;
-        }
-        return this.defaultBlockState().setValue(UNDERWATER, waterAbove);
+        return this.defaultBlockState().setValue(UNDERWATER, !upState.isEmpty());
     }
 
     @Override

@@ -2,7 +2,7 @@ package net.tropicraft.core.client.entity.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -45,7 +45,7 @@ public class StarfishRenderer extends EntityRenderer<StarfishEntity> {
 
 		stack.pushPose();
 		stack.translate(-0.5, 0, -0.5);
-		stack.mulPose(Vector3f.XP.rotationDegrees(90));
+		stack.mulPose(Axis.XP.rotationDegrees(90));
 
 		final float scale = BABY_RENDER_SCALE + starfish.getGrowthProgress() * (ADULT_RENDER_SCALE - BABY_RENDER_SCALE);
 		stack.scale(scale, scale, scale);

@@ -2,6 +2,7 @@ package net.tropicraft.core.common.item;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -17,6 +18,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConf
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 import java.util.List;
+import java.util.Optional;
 
 public class TropicalFertilizerItem extends BoneMealItem {
 
@@ -34,6 +36,7 @@ public class TropicalFertilizerItem extends BoneMealItem {
                 BlockState blockstate = Blocks.GRASS.defaultBlockState();
                 Level level = context.getLevel();
                 RandomSource rand = level.getRandom();
+                Optional<Holder.Reference<PlacedFeature>> grassBonemeal = level.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolder(VegetationPlacements.GRASS_BONEMEAL);
                 for (int i = 0; i < 128; ++i) {
                     BlockPos blockpos1 = blockpos;
                     int j = 0;
@@ -57,10 +60,12 @@ public class TropicalFertilizerItem extends BoneMealItem {
                                 if (list.isEmpty()) {
                                     break;
                                 }
-
                                 holder = ((RandomPatchConfiguration)list.get(0).config()).feature();
                             } else {
-                                holder = VegetationPlacements.GRASS_BONEMEAL;
+                                if (grassBonemeal.isEmpty()) {
+                                    continue;
+                                }
+                                holder = grassBonemeal.get();
                             }
 
                             if (level instanceof ServerLevel serverLevel) {

@@ -8,9 +8,10 @@ import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateTagsProvider;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.data.BuiltinRegistries;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
@@ -19,11 +20,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
 import net.minecraftforge.common.util.NonNullLazy;
+import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
@@ -31,31 +33,24 @@ import net.minecraftforge.fml.IExtensionPoint;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
-import net.tropicraft.core.client.ClientSetup;
 import net.tropicraft.core.client.data.TropicraftLangKeys;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.command.TropicraftCommands;
 import net.tropicraft.core.common.command.debug.MapBiomesCommand;
-import net.tropicraft.core.common.data.loot.TropicraftLootConditions;
-import net.tropicraft.core.common.dimension.TropicraftDimension;
-import net.tropicraft.core.common.dimension.biome.TropicraftBiomeSource;
-import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
+import net.tropicraft.core.common.dimension.TropicraftWorldgenRegistries;
+import net.tropicraft.core.common.dimension.biome.TropicraftBiomeBuilder;
 import net.tropicraft.core.common.dimension.carver.TropicraftCarvers;
-import net.tropicraft.core.common.dimension.carver.TropicraftConfiguredCarvers;
-import net.tropicraft.core.common.dimension.feature.*;
+import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
+import net.tropicraft.core.common.dimension.feature.TropicraftStructureTypes;
 import net.tropicraft.core.common.dimension.feature.block_state_provider.TropicraftBlockStateProviders;
 import net.tropicraft.core.common.dimension.feature.jigsaw.*;
 import net.tropicraft.core.common.dimension.feature.jigsaw.piece.*;
-import net.tropicraft.core.common.dimension.feature.pools.TropicraftTemplatePools;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftFoliagePlacers;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftTreeDecorators;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftTrunkPlacers;
-import net.tropicraft.core.common.dimension.noise.TropicraftNoiseGenSettings;
-import net.tropicraft.core.common.dimension.noise.TropicraftNoiseRouterData;
 import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.item.scuba.ScubaData;
@@ -63,21 +58,21 @@ import net.tropicraft.core.common.item.scuba.ScubaGogglesItem;
 import net.tropicraft.core.common.network.TropicraftPackets;
 import net.tropicraft.core.common.sound.Sounds;
 
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.regex.Pattern;
 
 @Mod(Constants.MODID)
 public class Tropicraft {
-    public static final CreativeModeTab TROPICRAFT_ITEM_GROUP = (new CreativeModeTab("tropicraft") {
-        @Override
-        public ItemStack makeIcon() {
-            return new ItemStack(TropicraftBlocks.PALM_SAPLING.get());
-        }
+    public static final ProviderType<RegistrateTagsProvider.Impl<Biome>> BIOME_TAGS = ProviderType.register("tags/biome", type -> (p, e) -> {
+        // We don't dump from registries through Registrate, so there's some duplicate work building these registries to inject as context
+        PackOutput output = e.getGenerator().getPackOutput();
+        CompletableFuture<HolderLookup.Provider> provider = e.getLookupProvider().thenApply(TropicraftWorldgenRegistries::createLookup);
+        return new RegistrateTagsProvider.Impl<>(p, type, "biome", output, Registries.BIOME, provider, e.getExistingFileHelper());
     });
 
-    public static final ProviderType<RegistrateTagsProvider<Biome>> BIOME_TAGS = ProviderType.register("tags/biome", type -> (p, e) -> new RegistrateTagsProvider<>(p, type, "biome", e.getGenerator(), BuiltinRegistries.BIOME, e.getExistingFileHelper()));
-
     private static final NonNullLazy<Registrate> REGISTRATE = NonNullLazy.of(() -> Registrate.create(Constants.MODID)
-            .creativeModeTab(() -> TROPICRAFT_ITEM_GROUP, "Tropicraft")
+            .defaultCreativeTab(Constants.MODID, builder -> builder.icon(() -> new ItemStack(TropicraftBlocks.PALM_SAPLING.get()))).build()
             .addDataGenerator(ProviderType.LANG, prov -> {
                 prov.add("attribute.name." + ForgeMod.SWIM_SPEED.getId().getPath(), "Swim Speed");
                 TropicraftLangKeys.generate(prov);
@@ -95,15 +90,9 @@ public class Tropicraft {
 
         // General mod setup
         modBus.addListener(this::setup);
-
-        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-            // Client setup
-            modBus.addListener(this::setupClient);
-        });
+        modBus.addListener(this::gatherData);
 
         MinecraftForge.EVENT_BUS.addListener(this::onServerStarting);
-
-        TropicraftDimension.addDefaultDimensionKey();
 
         // Registry objects
         Sounds.REGISTER.register(modBus);
@@ -117,23 +106,8 @@ public class Tropicraft {
         TropicraftBlockStateProviders.BLOCK_STATE_PROVIDERS.register(modBus);
         TropicraftStructurePoolElementTypes.REGISTER.register(modBus);
         TropicraftProcessorTypes.REGISTER.register(modBus);
-
-        TropicraftMiscFeatures.REGISTER.registerTo(modBus);
-        TropicraftMiscPlacements.REGISTER.registerTo(modBus);
-        TropicraftTreeFeatures.REGISTER.registerTo(modBus);
-        TropicraftTreePlacements.REGISTER.registerTo(modBus);
-        TropicraftVegetationFeatures.REGISTER.registerTo(modBus);
-        TropicraftVegetationPlacements.REGISTER.registerTo(modBus);
-        TropicraftProcessorLists.REGISTER.register(modBus);
-        TropicraftConfiguredCarvers.REGISTER.register(modBus);
-        TropicraftTemplatePools.REGISTER.register(modBus);
         TropicraftStructureTypes.REGISTER.register(modBus);
-        TropicraftStructures.REGISTER.register(modBus);
         TropicraftStructurePieceTypes.REGISTER.register(modBus);
-        TropicraftBiomes.REGISTER.register(modBus);
-        TropicraftStructureSets.REGISTER.register(modBus);
-        TropicraftNoiseRouterData.REGISTER.register(modBus);
-        TropicraftNoiseGenSettings.REGISTER.register(modBus);
 
         // Hack in our item frame models the way vanilla does
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
@@ -160,26 +134,24 @@ public class Tropicraft {
         return getCompatVersion().equals(getCompatVersion(version));
     }
 
-    @OnlyIn(Dist.CLIENT)
-    private void setupClient(final FMLClientSetupEvent event) {
-        ClientSetup.setupDimensionRenderInfo();
-    }
-
     private void setup(final FMLCommonSetupEvent event) {
         TropicraftPackets.init();
 
-        TropicraftBiomeSource.register();
-
         Reflection.initialize(
+                TropicraftBiomeBuilder.class,
                 SingleNoAirJigsawPiece.class, NoRotateSingleJigsawPiece.class, HomeTreeBranchPiece.class,
                 AdjustBuildingHeightProcessor.class, AirToCaveAirProcessor.class, SinkInGroundProcessor.class,
                 SmoothingGravityProcessor.class, SteepPathProcessor.class, StructureSupportsProcessor.class,
                 StructureVoidProcessor.class,
                 TropicraftTrunkPlacers.class,
                 TropicraftFoliagePlacers.class,
-                TropicraftTreeDecorators.class,
-                TropicraftLootConditions.class
+                TropicraftTreeDecorators.class
         );
+    }
+
+    private void gatherData(GatherDataEvent event) {
+        PackOutput output = event.getGenerator().getPackOutput();
+        event.getGenerator().addProvider(event.includeServer(), new DatapackBuiltinEntriesProvider(output, event.getLookupProvider(), TropicraftWorldgenRegistries.BUILDER, Set.of(Constants.MODID)));
     }
 
     private void registerCaps(RegisterCapabilitiesEvent event) {

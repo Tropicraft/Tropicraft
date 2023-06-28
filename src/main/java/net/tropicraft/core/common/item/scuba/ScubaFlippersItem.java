@@ -22,7 +22,7 @@ public class ScubaFlippersItem extends ScubaArmorItem {
     private final LazyLoadedValue<Multimap<Attribute, AttributeModifier>> boostedModifiers;
 
     public ScubaFlippersItem(ScubaType type, Properties properties) {
-        super(type, EquipmentSlot.FEET, properties);
+        super(type, Type.BOOTS, properties);
 
         this.boostedModifiers = new LazyLoadedValue<>(() ->
                 ImmutableMultimap.<Attribute, AttributeModifier>builder()

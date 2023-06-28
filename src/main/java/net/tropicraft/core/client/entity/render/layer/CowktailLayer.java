@@ -1,7 +1,7 @@
 package net.tropicraft.core.client.entity.render.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.CowModel;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -28,16 +28,16 @@ public class CowktailLayer<T extends CowktailEntity> extends RenderLayer<T, CowM
          int overlayCoords = LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F);
          stack.pushPose();
          stack.translate(0.2F, -0.35F, 0.5D);
-         stack.mulPose(Vector3f.YP.rotationDegrees(-48.0F));
+         stack.mulPose(Axis.YP.rotationDegrees(-48.0F));
          stack.scale(-1.0F, -1.0F, 1.0F);
          stack.translate(-0.5D, -0.5D, -0.5D);
          renderer.renderSingleBlock(blockState, stack, bufferIn, packedLightIn, overlayCoords);
          stack.popPose();
          stack.pushPose();
          stack.translate(0.2F, -0.35F, 0.5D);
-         stack.mulPose(Vector3f.YP.rotationDegrees(42.0F));
+         stack.mulPose(Axis.YP.rotationDegrees(42.0F));
          stack.translate(0.1F, 0.0D, -0.6F);
-         stack.mulPose(Vector3f.YP.rotationDegrees(-48.0F));
+         stack.mulPose(Axis.YP.rotationDegrees(-48.0F));
          stack.scale(-1.0F, -1.0F, 1.0F);
          stack.translate(-0.5D, -0.5D, -0.5D);
          renderer.renderSingleBlock(blockState, stack, bufferIn, packedLightIn, overlayCoords);
@@ -45,7 +45,7 @@ public class CowktailLayer<T extends CowktailEntity> extends RenderLayer<T, CowM
          stack.pushPose();
          this.getParentModel().getHead().translateAndRotate(stack);
          stack.translate(0.0D, -0.7F, -0.2F);
-         stack.mulPose(Vector3f.YP.rotationDegrees(-78.0F));
+         stack.mulPose(Axis.YP.rotationDegrees(-78.0F));
          stack.scale(-1.0F, -1.0F, 1.0F);
          stack.translate(-0.5D, -0.5D, -0.5D);
          renderer.renderSingleBlock(blockState, stack, bufferIn, packedLightIn, overlayCoords);

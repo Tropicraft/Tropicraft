@@ -1,3 +1,4 @@
+/*
 package net.tropicraft.core.common.dimension.biome.simulate;
 
 import net.minecraft.core.Registry;
@@ -67,3 +68,4 @@ public class NoiseSimulationHelper {
         return Integer.MAX_VALUE;
     }
 }
+*/

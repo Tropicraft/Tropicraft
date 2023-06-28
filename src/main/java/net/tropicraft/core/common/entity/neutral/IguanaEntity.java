@@ -88,7 +88,7 @@ public class IguanaEntity extends TropicraftCreatureEntity {
 
         if (!hurtBy.isEmpty()) {
             angerTargetUUID = UUID.fromString(hurtBy);
-            final Player entityplayer = level.getPlayerByUUID(angerTargetUUID);
+            final Player entityplayer = level().getPlayerByUUID(angerTargetUUID);
             setLastHurtByMob(entityplayer);
 
             if (entityplayer != null) {
@@ -113,7 +113,7 @@ public class IguanaEntity extends TropicraftCreatureEntity {
         }
 
         if (this.angerLevel > 0 && this.angerTargetUUID != null && this.getLastHurtByMob() == null) {
-            Player entityplayer = this.level.getPlayerByUUID(this.angerTargetUUID);
+            Player entityplayer = this.level().getPlayerByUUID(this.angerTargetUUID);
             this.setLastHurtByMob(entityplayer);
             this.lastHurtByPlayer = entityplayer;
             this.lastHurtByPlayerTime = this.getLastHurtByMobTimestamp();

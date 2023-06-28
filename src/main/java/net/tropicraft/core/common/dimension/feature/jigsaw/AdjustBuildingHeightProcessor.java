@@ -11,11 +11,9 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureEntityInfo;
 
 public class AdjustBuildingHeightProcessor extends CheatyStructureProcessor {
-    public static final Codec<AdjustBuildingHeightProcessor> CODEC = RecordCodecBuilder.create(instance -> {
-        return instance.group(
-                Codec.INT.optionalFieldOf("base", 126).forGetter(c -> c.base)
-        ).apply(instance, AdjustBuildingHeightProcessor::new);
-    });
+    public static final Codec<AdjustBuildingHeightProcessor> CODEC = RecordCodecBuilder.create(i -> i.group(
+            Codec.INT.optionalFieldOf("base", 126).forGetter(c -> c.base)
+    ).apply(i, AdjustBuildingHeightProcessor::new));
 
     private final int base;
 
@@ -26,7 +24,7 @@ public class AdjustBuildingHeightProcessor extends CheatyStructureProcessor {
     @Override
     public StructureBlockInfo process(LevelReader worldReaderIn, BlockPos seedPos, BlockPos p, StructureBlockInfo p_215194_3_, StructureBlockInfo blockInfo, StructurePlaceSettings placementSettingsIn, StructureTemplate template) {
         if (seedPos.getY() < base) {
-            return new StructureBlockInfo(blockInfo.pos.above(), blockInfo.state, blockInfo.nbt);
+            return new StructureBlockInfo(blockInfo.pos().above(), blockInfo.state(), blockInfo.nbt());
         }
         return blockInfo;
     }

@@ -4,7 +4,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.data.worldgen.Pools;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -55,7 +54,6 @@ public class KoaVillageStructure extends Structure {
         if (!isFeatureChunk(context, startPos)) {
             return Optional.empty();
         }
-        Pools.forceBootstrap();
         return JigsawPlacement.addPieces(context, startPool, Optional.empty(), maxDepth, startPos, true, Optional.of(Heightmap.Types.WORLD_SURFACE_WG), 80);
     }
 

@@ -1,6 +1,6 @@
 package net.tropicraft.core.common;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -24,7 +24,7 @@ public class TropicraftTags {
         public static final TagKey<Block> BONGOS = modTag("bongos");
 
         static TagKey<Block> tag(String modid, String name) {
-            return TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(modid, name));
+            return TagKey.create(Registries.BLOCK, new ResourceLocation(modid, name));
         }
 
         static TagKey<Block> modTag(String name) {
@@ -51,8 +51,6 @@ public class TropicraftTags {
         public static final TagKey<Item> ZIRCON_GEM = compatTag("gems/zircon");
         public static final TagKey<Item> ZIRCONIUM_GEM = compatTag("gems/zirconium");
         
-        public static final TagKey<Item> SWORDS = compatTag("swords");
-
         public static final TagKey<Item> MANGROVE_LOGS = modTag("mangrove_logs");
         
         public static final TagKey<Item> SHELLS = modTag("shells");
@@ -63,7 +61,7 @@ public class TropicraftTags {
         public static final TagKey<Item> MEATS = modTag("meats");
 
         static TagKey<Item> tag(String modid, String name) {
-            return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(modid, name));
+            return TagKey.create(Registries.ITEM, new ResourceLocation(modid, name));
         }
 
         static TagKey<Item> modTag(String name) {
@@ -82,7 +80,7 @@ public class TropicraftTags {
         public static final TagKey<Biome> HAS_OCEAN_VOLCANO = modTag("has_structure/ocean_volcano");
 
         static TagKey<Biome> tag(String modid, String name) {
-            return TagKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(modid, name));
+            return TagKey.create(Registries.BIOME, new ResourceLocation(modid, name));
         }
 
         static TagKey<Biome> modTag(String name) {

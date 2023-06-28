@@ -3,7 +3,6 @@ plugins {
     id 'idea'
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
-    id 'com.matthewprenger.cursegradle' version '1.4.0'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
     id 'org.spongepowered.mixin' version '0.7+'
 }
@@ -32,7 +31,7 @@ if (System.getenv('GHA_RELEASE_WORKFLOW')) {
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 minecraft {
-    mappings channel: 'parchment', version: "${parchment_version}-${minecraft_version}"
+    mappings channel: 'parchment', version: parchment_version
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -113,8 +112,8 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    jarJar(implementation(fg.deobf("com.tterrag.registrate:Registrate:MC1.19-${registrate_version}"))) {
-        jarJar.ranged(it, "[MC${minecraft_version}-${registrate_version},MC1.20)")
+    jarJar(implementation(fg.deobf("com.tterrag.registrate:Registrate:MC1.20-${registrate_version}"))) {
+        jarJar.ranged(it, "[MC${minecraft_version}-${registrate_version},MC1.21)")
     }
 
     if (System.getProperty("idea.sync.active") != "true") {
@@ -147,25 +146,6 @@ tasks.jarJar.configure {
 
 reobf {
     jarJar { }
-}
-
-tasks.curseforge.enabled = !dev && project.hasProperty('cojo_curseforge_key')
-
-curseforge {
-    if (project.hasProperty('cojo_curseforge_key')) {
-        apiKey = project.cojo_curseforge_key
-    }
-
-    project {
-        id = project.project_id
-        changelog = System.getenv('CHANGELOG') == null || System.getenv('CHANGELOG').equals('none') ? '' : System.getenv('CHANGELOG')
-        changelogType = 'html'
-        releaseType = project.release_type
-        addGameVersion project.minecraft_version
-        mainArtifact(jar) {
-            displayName = archivesBaseName + " - ${version}"
-        }
-    }
 }
 
 mixin {

@@ -73,7 +73,7 @@ public class TropicraftDolphinEntity extends Dolphin {
     @Override
     public void tick() {
         super.tick();
-        if (!level.isClientSide) {
+        if (!level().isClientSide) {
             if (ambientSoundTime < -(getAmbientSoundInterval() - 20)) {
                 if (tickCount % 3 > 1) {
                     if (!getMouthOpen()) {

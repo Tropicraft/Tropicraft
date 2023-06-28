@@ -67,12 +67,12 @@ public abstract class PathStructureProcessor extends CheatyStructureProcessor {
     	infiniteBounds.setBoundingBox(BoundingBox.infinite());
         return VECTOR_CACHE.computeIfAbsent(settings, s ->
                         template.filterBlocks(seedPos, infiniteBounds, Blocks.JIGSAW, true).stream() // Find all jigsaw blocks
-                                .filter(b -> b.nbt.getString("target").equals(Constants.MODID + ":path_center")) // Filter for vector markers
+                                .filter(b -> b.nbt().getString("target").equals(Constants.MODID + ":path_center")) // Filter for vector markers
 //                		.peek(bi -> setBlockState(world, world.getHeight(Type.WORLD_SURFACE_WG, bi.pos), bi.state))
-                                .map(bi -> new PathVector(level.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, bi.pos).subtract(seedPos), JigsawBlock.getFrontFacing(bi.state))) // Convert pos to structure local, extract facing
+                                .map(bi -> new PathVector(level.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, bi.pos()).subtract(seedPos), JigsawBlock.getFrontFacing(bi.state()))) // Convert pos to structure local, extract facing
                                 .collect(Collectors.toList()))
                 .stream()
-                .filter(pv -> pv.contains(current.pos.subtract(seedPos), settings)) // Find vectors that contain this block
+                .filter(pv -> pv.contains(current.pos().subtract(seedPos), settings)) // Find vectors that contain this block
                 .findFirst() // If there's more than one, we just choose the first, better some attempt than nothing
                 .map(pv -> pv.dir.getAxis())
                 .orElse(null);

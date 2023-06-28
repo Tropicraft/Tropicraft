@@ -66,7 +66,7 @@ public class SpiderMonkeyEntity extends Animal {
     public void tick() {
         super.tick();
 
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             this.tickStandingState();
         } else {
             this.tickStandingAnimation();
@@ -79,8 +79,8 @@ public class SpiderMonkeyEntity extends Animal {
             return;
         }
 
-        if (this.level.random.nextInt(200) == 0) {
-            boolean standing = this.level.random.nextInt(3) == 0;
+        if (this.level().random.nextInt(200) == 0) {
+            boolean standing = this.level().random.nextInt(3) == 0;
             this.setStanding(standing);
         }
     }

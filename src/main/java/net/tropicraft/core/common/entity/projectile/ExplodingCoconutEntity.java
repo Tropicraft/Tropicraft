@@ -3,12 +3,12 @@ package net.tropicraft.core.common.entity.projectile;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.network.NetworkHooks;
@@ -30,14 +30,14 @@ public class ExplodingCoconutEntity extends ThrowableItemProjectile {
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     @Override
     protected void onHit(HitResult result) {
-        if (!level.isClientSide) {
-            level.explode(this, getX(), getY(), getZ(), Mth.clamp(explosionRadius, 0.0f, 5.0f), Explosion.BlockInteraction.DESTROY);
+        if (!level().isClientSide) {
+            level().explode(this, getX(), getY(), getZ(), Mth.clamp(explosionRadius, 0.0f, 5.0f), Level.ExplosionInteraction.BLOCK);
             remove(RemovalReason.KILLED);
         }
     }

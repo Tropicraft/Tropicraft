@@ -29,6 +29,7 @@ import net.minecraft.world.phys.HitResult;
 
 import java.util.Objects;
 
+// TODO: Does this need to be custom?
 public class TropicraftSpawnEgg<T extends Entity> extends Item {
 
     private final RegistryEntry<EntityType<T>> typeIn;
@@ -54,7 +55,7 @@ public class TropicraftSpawnEgg<T extends Entity> extends Item {
                 if (te instanceof SpawnerBlockEntity) {
                     BaseSpawner spawner = ((SpawnerBlockEntity)te).getSpawner();
                     EntityType<?> spawnType = typeIn.get();
-                    spawner.setEntityId(spawnType);
+                    spawner.setEntityId(spawnType, world, world.random, pos);
                     te.setChanged();
                     world.sendBlockUpdated(pos, state, state, 3);
                     itemStack.shrink(1);

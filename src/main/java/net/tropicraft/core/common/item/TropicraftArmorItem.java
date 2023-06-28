@@ -8,7 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import net.tropicraft.Constants;
 
 public class TropicraftArmorItem extends ArmorItem {
-    public TropicraftArmorItem(ArmorMaterial armorMaterial, EquipmentSlot slotType, Properties properties) {
+    public TropicraftArmorItem(ArmorMaterial armorMaterial, ArmorItem.Type slotType, Properties properties) {
         super(armorMaterial, slotType, properties);
     }
 

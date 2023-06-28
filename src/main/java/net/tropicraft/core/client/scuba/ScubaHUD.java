@@ -1,12 +1,12 @@
 package net.tropicraft.core.client.scuba;
 
-import com.mojang.blaze3d.platform.Window;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.CommonColors;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -35,7 +35,7 @@ public class ScubaHUD {
         event.registerBelow(new ResourceLocation("debug_text"), "scuba_hud", ScubaHUD::draw);
     }
 
-    private static void draw(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    private static void draw(ForgeGui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
         Entity renderViewEntity = Minecraft.getInstance().cameraEntity;
         if (renderViewEntity instanceof Player player) {
             // TODO support other slots than chest?
@@ -43,7 +43,7 @@ public class ScubaHUD {
             if (chestStack.getItem() instanceof ScubaArmorItem scuba) {
                 LazyOptional<ScubaData> data = player.getCapability(ScubaData.CAPABILITY);
                 int airRemaining = scuba.getRemainingAir(chestStack);
-                ChatFormatting airColor = getAirTimeColor(airRemaining, player.level);
+                ChatFormatting airColor = getAirTimeColor(airRemaining, player.level());
                 double depth = ScubaData.getDepth(player);
                 Component depthStr;
                 if (depth > 0) {
@@ -51,7 +51,7 @@ public class ScubaHUD {
                 } else {
                     depthStr = TropicraftLangKeys.NA.component();
                 }
-                data.ifPresent(d -> drawHUDStrings(poseStack,
+                data.ifPresent(d -> drawHUDStrings(graphics,
                         TropicraftLangKeys.SCUBA_AIR_TIME.format(airColor + formatTime(airRemaining)),
                         TropicraftLangKeys.SCUBA_DIVE_TIME.format(formatTime(d.getDiveTime())),
                         TropicraftLangKeys.SCUBA_DEPTH.format(depthStr),
@@ -76,17 +76,14 @@ public class ScubaHUD {
         }
     }
 
-    private static void drawHUDStrings(PoseStack matrixStack, Component... components) {
-        Font fr = Minecraft.getInstance().font;
-        Window mw = Minecraft.getInstance().getWindow();
+    private static void drawHUDStrings(GuiGraphics graphics, Component... lines) {
+        Font font = Minecraft.getInstance().font;
 
-        int startY = mw.getGuiScaledHeight() - 5 - (fr.lineHeight * components.length);
-        int startX = mw.getGuiScaledWidth() - 5;
-
-        for (Component text : components) {
-            String s = text.getString();
-            fr.drawShadow(matrixStack, s, startX - fr.width(s), startY, -1);
-            startY += fr.lineHeight;
+        int x = graphics.guiWidth() - 5;
+        int y = graphics.guiHeight() - 5 - (font.lineHeight * lines.length);
+        for (Component line : lines) {
+            graphics.drawString(font, line, x - font.width(line), y, CommonColors.WHITE);
+            y += font.lineHeight;
         }
     }
 }

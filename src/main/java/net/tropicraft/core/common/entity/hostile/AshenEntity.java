@@ -5,6 +5,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
@@ -134,7 +135,7 @@ public class AshenEntity extends TropicraftCreatureEntity implements RangedAttac
             return;
         }
 
-        Arrow tippedArrow = BlowGunItem.createArrow(level, this, BlowGunItem.getProjectile());
+        Arrow tippedArrow = BlowGunItem.createArrow(level(), this, BlowGunItem.getProjectile());
         double d0 = target.getX() - getX();
         double d1 = target.getBoundingBox().minY + (double)(target.getBbHeight() / 3.0F) - tippedArrow.getY();
         double d2 = target.getZ() - getZ();
@@ -145,15 +146,15 @@ public class AshenEntity extends TropicraftCreatureEntity implements RangedAttac
         tippedArrow.setKnockback(0);
 
         playSound(SoundEvents.CROSSBOW_SHOOT, 1.0F, 1.0F / (getRandom().nextFloat() * 0.4F + 0.8F));
-        level.addFreshEntity(tippedArrow);
+        level().addFreshEntity(tippedArrow);
     }
 
     @Override
     public boolean hurt(DamageSource source, float amt) {
         boolean wasHit = super.hurt(source, amt);
 
-        if (!level.isClientSide) {
-            if (hasMask() && wasHit && !source.equals(DamageSource.OUT_OF_WORLD)) {
+        if (!level().isClientSide) {
+            if (hasMask() && wasHit && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
                 dropMask();
             }
         }
@@ -176,10 +177,10 @@ public class AshenEntity extends TropicraftCreatureEntity implements RangedAttac
 
     public void dropMask() {
         setActionState(AshenState.LOST_MASK);
-        maskToTrack = new AshenMaskEntity(TropicraftEntities.ASHEN_MASK.get(), level);
+        maskToTrack = new AshenMaskEntity(TropicraftEntities.ASHEN_MASK.get(), level());
         maskToTrack.setMaskType(getMaskType());
         maskToTrack.absMoveTo(getX(), getY(), getZ(), getYRot(), 0);
-        level.addFreshEntity(maskToTrack);
+        level().addFreshEntity(maskToTrack);
     }
 
     public void pickupMask(AshenMaskEntity mask) {

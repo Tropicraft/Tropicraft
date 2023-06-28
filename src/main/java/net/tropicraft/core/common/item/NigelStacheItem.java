@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 public class NigelStacheItem extends ArmorItem {
 
     public NigelStacheItem(final Properties properties) {
-        super(ArmorMaterials.NIGEL_STACHE, EquipmentSlot.HEAD, properties);
+        super(ArmorMaterials.NIGEL_STACHE, Type.HELMET, properties);
     }
 
     @Override
@@ -24,7 +24,7 @@ public class NigelStacheItem extends ArmorItem {
         consumer.accept(new IClientItemExtensions() {
             @Override
             public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlot slot, HumanoidModel<?> original) {
-                return NigelStacheItem.this.slot == EquipmentSlot.HEAD ? PlayerHeadpieceModel.createModel(TropicraftRenderLayers.STACHE_LAYER, null, 0, 0, 0) : null;
+                return NigelStacheItem.this.type == Type.HELMET ? PlayerHeadpieceModel.createModel(TropicraftRenderLayers.STACHE_LAYER, null, 0, 0, 0) : null;
             }
         });
     }

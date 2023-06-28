@@ -105,7 +105,7 @@ public class MonkeyAngryThrowGoal extends Goal {
   }
 
   private LivingEntity nearbyPlayer() {
-    List<Player> list = entity.level.getEntitiesOfClass(Player.class, entity.getBoundingBox().inflate(20.0D));
+    List<Player> list = entity.level().getEntitiesOfClass(Player.class, entity.getBoundingBox().inflate(20.0D));
 
     if (!list.isEmpty()) {
       for (Player entityliving : list) {
@@ -156,12 +156,12 @@ public class MonkeyAngryThrowGoal extends Goal {
   }
 
   private ItemEntity nearbyMug() {
-    List<ItemEntity> list = entity.level.getEntitiesOfClass(ItemEntity.class, entity.getBoundingBox().inflate(10.0D));
+    List<ItemEntity> list = entity.level().getEntitiesOfClass(ItemEntity.class, entity.getBoundingBox().inflate(10.0D));
 
     if (!list.isEmpty()) {
       for (ItemEntity item : list) {
         if (!item.isInvisible()) {
-          if (item.getItem().sameItem(new ItemStack(TropicraftItems.BAMBOO_MUG.get())) && item.isAlive()) {
+          if (item.getItem().is(TropicraftItems.BAMBOO_MUG.get()) && item.isAlive()) {
             return item;
           }
         }

@@ -38,7 +38,7 @@ public class MonkeyFollowNearestPinaColadaHolderGoal extends Goal {
         if (monkey.isTame()) return false;
         if (monkey.selfHoldingDrink(Drink.PINA_COLADA)) return false;
 
-        List<Player> list = monkey.level.getEntitiesOfClass(Player.class, monkey.getBoundingBox().inflate(areaSize), VMonkeyEntity.FOLLOW_PREDICATE);
+        List<Player> list = monkey.level().getEntitiesOfClass(Player.class, monkey.getBoundingBox().inflate(areaSize), VMonkeyEntity.FOLLOW_PREDICATE);
 
         if (!list.isEmpty()) {
             for (Player entityliving : list) {

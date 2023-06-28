@@ -1,7 +1,7 @@
 package net.tropicraft.core.client.entity.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -35,13 +35,13 @@ public class PlayerRotationHandler {
 
         if (riding instanceof BeachFloatEntity floaty) {
             stack.pushPose();
-            stack.mulPose(Vector3f.YP.rotationDegrees(-(floaty.yRotO + (partialTick * (floaty.getYRot() - floaty.yRotO)))));
+            stack.mulPose(Axis.YP.rotationDegrees(-(floaty.yRotO + (partialTick * (floaty.getYRot() - floaty.yRotO)))));
             stack.translate(0, 1.55, 1.55);
-            stack.mulPose(Vector3f.XN.rotationDegrees(90));
+            stack.mulPose(Axis.XN.rotationDegrees(90));
 
             // Cancel out player camera rotation
             float f = interpolateAndWrap(p.yBodyRot, p.yBodyRotO, partialTick);
-            stack.mulPose(Vector3f.YP.rotationDegrees(f));
+            stack.mulPose(Axis.YP.rotationDegrees(f));
 
             // Lock in head
             rotationYawHead = p.yHeadRot;
@@ -54,9 +54,8 @@ public class PlayerRotationHandler {
             p.xRotO = 10f;
             
             // Cancel limb swing
-            p.animationPosition = 0;
-            p.animationSpeed = 0;
-            p.animationSpeedOld = 0;
+            p.walkAnimation.setSpeed(0.0f);
+            p.walkAnimation.update(0.0f, 1.0f);
         }
         if (riding instanceof SeaTurtleEntity turtle) {
             stack.pushPose();
@@ -66,11 +65,11 @@ public class PlayerRotationHandler {
             float yaw = interpolateAndWrap(turtle.yHeadRot, turtle.yHeadRotO, partialTick);
 
             stack.translate(0, turtle.getPassengersRidingOffset() - p.getMyRidingOffset(), 0);
-            stack.mulPose(Vector3f.YN.rotationDegrees(yaw));
+            stack.mulPose(Axis.YN.rotationDegrees(yaw));
             stack.translate(0, -0.1, 0); // TODO figure out why this budging is needed
-            stack.mulPose(Vector3f.XP.rotationDegrees(pitch));
+            stack.mulPose(Axis.XP.rotationDegrees(pitch));
             stack.translate(0, 0.1, 0);
-            stack.mulPose(Vector3f.YP.rotationDegrees(yaw));
+            stack.mulPose(Axis.YP.rotationDegrees(yaw));
             stack.translate(0, -turtle.getPassengersRidingOffset() + p.getMyRidingOffset(), 0);
 
             Vec3 passengerOffset = (new Vec3(-0.25f, 0.0D, 0.0D)).yRot((float) (-Math.toRadians(yaw) - (Math.PI / 2)));

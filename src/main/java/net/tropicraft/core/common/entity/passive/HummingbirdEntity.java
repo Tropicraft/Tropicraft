@@ -93,7 +93,7 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
 
     @Override
     public boolean isFlying() {
-        return !this.onGround;
+        return !this.onGround();
     }
 
     @Override
@@ -128,14 +128,14 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
     }
 
     private void tryGrowPlant(BlockPos pos) {
-        BlockState state = level.getBlockState(pos);
+        BlockState state = level().getBlockState(pos);
         IntegerProperty age = getPlantAgeProperty(state);
 
         if (age != null) {
             int nextAge = state.getValue(age) + 1;
             if (age.getPossibleValues().contains(nextAge)) {
-                level.levelEvent(LevelEvent.PARTICLES_PLANT_GROWTH, pos, 0);
-                level.setBlockAndUpdate(pos, state.setValue(age, nextAge));
+                level().levelEvent(LevelEvent.PARTICLES_PLANT_GROWTH, pos, 0);
+                level().setBlockAndUpdate(pos, state.setValue(age, nextAge));
             }
         }
     }
@@ -214,7 +214,7 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
                 bird.lookControl.setLookAt(target);
 
                 if (--this.feedingTicks == 0) {
-                    bird.tryPollinatePlant(new BlockPos(target));
+                    bird.tryPollinatePlant(BlockPos.containing(target));
                 }
             }
         }
@@ -230,7 +230,7 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
         @Override
         Vec3 generateTarget() {
             HummingbirdEntity bird = HummingbirdEntity.this;
-            Level world = bird.level;
+            Level world = bird.level();
             RandomSource random = bird.random;
 
             BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
@@ -338,7 +338,7 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
         public void start() {
             this.target = this.generateTarget();
             if (this.target != null) {
-                Path path = HummingbirdEntity.this.navigation.createPath(new BlockPos(this.target), 1);
+                Path path = HummingbirdEntity.this.navigation.createPath(BlockPos.containing(this.target), 1);
                 HummingbirdEntity.this.navigation.moveTo(path, this.speed);
             }
         }

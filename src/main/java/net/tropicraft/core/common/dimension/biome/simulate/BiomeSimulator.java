@@ -1,3 +1,4 @@
+/*
 package net.tropicraft.core.common.dimension.biome.simulate;
 
 import com.google.common.collect.ImmutableList;
@@ -5,7 +6,7 @@ import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.Reference2IntMap;
 import it.unimi.dsi.fastutil.objects.Reference2IntOpenHashMap;
 import net.minecraft.SharedConstants;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.Bootstrap;
@@ -44,7 +45,7 @@ public class BiomeSimulator {
     }
 
     private static ResourceKey<Biome> biomeKey(String name) {
-        return ResourceKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(Constants.MODID, name));
+        return ResourceKey.create(Registries.BIOME, new ResourceLocation(Constants.MODID, name));
     }
 
     public static void main(String[] args) {
@@ -54,7 +55,7 @@ public class BiomeSimulator {
 
     public static void init(NoiseSimulationHelper sampler) {
         ImmutableList.Builder<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> builder = ImmutableList.builder();
-        new TropicraftBiomeBuilder().addBiomes((point, biome) -> builder.add(Pair.of(point, biome.getKey())));
+        new TropicraftBiomeBuilder().addBiomes((point, biome) -> builder.add(Pair.of(point, biome)));
 
         Climate.ParameterList<ResourceKey<Biome>> params = new Climate.ParameterList<>(builder.build());
 
@@ -145,3 +146,4 @@ public class BiomeSimulator {
         return 0xFF000000 | red | green | blue; // 0xFF000000 for 100% Alpha. Bitwise OR everything together.
     }
 }
+*/

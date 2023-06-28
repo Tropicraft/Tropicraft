@@ -46,9 +46,9 @@ public class EntityAIChillAtFire extends Goal
 
         BlockPos blockpos = this.entityObj.blockPosition();
 
-        if (!this.entityObj.level.isDay() || this.entityObj.level.isRaining() && this.entityObj.level.getBiome(blockpos).value().getPrecipitation() != Biome.Precipitation.RAIN) {
+        if (!this.entityObj.level().isDay() || this.entityObj.level().isRaining() && this.entityObj.level().getBiome(blockpos).value().getPrecipitationAt(blockpos) != Biome.Precipitation.RAIN) {
             if (!isTooClose()) {
-                return entityObj.level.random.nextInt(20) == 0;
+                return entityObj.level().random.nextInt(20) == 0;
             } else {
                 return false;
             }
@@ -72,12 +72,12 @@ public class EntityAIChillAtFire extends Goal
 
         BlockPos blockpos = this.entityObj.blockPosition();
         //return !this.entityObj.getNavigation().noPath();
-        if (!this.entityObj.level.isDay() || this.entityObj.level.isRaining() && this.entityObj.level.getBiome(blockpos).value().getPrecipitation() != Biome.Precipitation.RAIN)
+        if (!this.entityObj.level().isDay() || this.entityObj.level().isRaining() && this.entityObj.level().getBiome(blockpos).value().getPrecipitationAt(blockpos) != Biome.Precipitation.RAIN)
         {
             return !isTooClose();
 
         } else {
-            return entityObj.level.random.nextInt(60) != 0;
+            return entityObj.level().random.nextInt(60) != 0;
         }
     }
 
@@ -102,21 +102,21 @@ public class EntityAIChillAtFire extends Goal
 
         //prevent walking into the fire
         double dist = entityObj.position().distanceTo(new Vec3(blockposGoal.getX(), blockposGoal.getY(), blockposGoal.getZ()));
-        if (dist < 4D && entityObj.isOnGround()) {
+        if (dist < 4D && entityObj.onGround()) {
             entityObj.setSitting(true);
             entityObj.getNavigation().stop();
             isClose = true;
             if (lookUpdateTimer <= 0) {
-                lookUpdateTimer = 200 + entityObj.level.random.nextInt(100);
+                lookUpdateTimer = 200 + entityObj.level().random.nextInt(100);
                 int range = 2;
-                randXPos = entityObj.level.random.nextInt(range) - entityObj.level.random.nextInt(range);
+                randXPos = entityObj.level().random.nextInt(range) - entityObj.level().random.nextInt(range);
                 //stargaze
-                if (entityObj.level.random.nextInt(3) == 0) {
-                    randYPos = 5+entityObj.level.random.nextInt(5);
+                if (entityObj.level().random.nextInt(3) == 0) {
+                    randYPos = 5+ entityObj.level().random.nextInt(5);
                 } else {
                     randYPos = 0;
                 }
-                randZPos = entityObj.level.random.nextInt(range) - entityObj.level.random.nextInt(range);
+                randZPos = entityObj.level().random.nextInt(range) - entityObj.level().random.nextInt(range);
 
                 if (entityObj.getId() % 3 == 0) {
                     entityObj.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TropicraftItems.BAMBOO_MUG.get()));

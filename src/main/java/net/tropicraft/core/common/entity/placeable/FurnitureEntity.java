@@ -4,6 +4,7 @@ import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -69,7 +70,7 @@ public abstract class FurnitureEntity extends Entity {
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -110,7 +111,7 @@ public abstract class FurnitureEntity extends Entity {
         //updateRocking();
     
         this.checkInsideBlocks();
-        List<Entity> list = this.level.getEntities(this, this.getBoundingBox().inflate((double)0.2F, (double)-0.01F, (double)0.2F), EntitySelector.pushableBy(this));
+        List<Entity> list = this.level().getEntities(this, this.getBoundingBox().inflate((double)0.2F, (double)-0.01F, (double)0.2F), EntitySelector.pushableBy(this));
         if (!list.isEmpty()) {
             for (Entity entity : list) {
                 if (!entity.hasPassenger(this)) {
@@ -167,7 +168,7 @@ public abstract class FurnitureEntity extends Entity {
 
     public InteractionResult invulnerablityCheck(Player pPlayer, InteractionHand pHand){
         if(pPlayer.getItemInHand(pHand).is(Items.DEBUG_STICK)){
-            if(!this.level.isClientSide) {
+            if(!this.level().isClientSide) {
                 this.entityData.set(GLUED_DOWN, !this.entityData.get(GLUED_DOWN));
                 pPlayer.sendSystemMessage(Component.translatable("Invulnerability Mode: " + (this.entityData.get(GLUED_DOWN) ? "On" : "Off")));
             }
@@ -189,7 +190,7 @@ public abstract class FurnitureEntity extends Entity {
             return false;
         }
 
-        if (!this.level.isClientSide && isAlive()) {
+        if (!this.level().isClientSide && isAlive()) {
             this.setForwardDirection(-this.getForwardDirection());
             this.setTimeSinceHit(10);
             this.setDamage(this.getDamage() + amount * 10.0F);
@@ -223,7 +224,7 @@ public abstract class FurnitureEntity extends Entity {
     }
 
     @Override
-    public void animateHurt() {
+    public void animateHurt(float direction) {
         this.setForwardDirection(-1 * this.getForwardDirection());
         this.setTimeSinceHit(10);
         this.setDamage(this.getDamage() * 10.0F);

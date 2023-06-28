@@ -1,18 +1,18 @@
 package net.tropicraft.core.client.entity.render.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -44,7 +44,7 @@ public class AshenHeldItemLayer<T extends AshenEntity, M extends EntityModel<T> 
 
             if (model.young) {
                 stack.translate(0.0F, 0.625F, 0.0F);
-                stack.mulPose(Vector3f.XN.rotationDegrees(-20));
+                stack.mulPose(Axis.XN.rotationDegrees(-20));
                 stack.scale(0.5f, 0.5f, 0.5f);
             }
 
@@ -69,22 +69,22 @@ public class AshenHeldItemLayer<T extends AshenEntity, M extends EntityModel<T> 
                 model.leftArm.translateAndRotate(stack);
 
                 stack.translate(0.3F, -0.30F, -0.045F);
-                stack.mulPose(Vector3f.XP.rotationDegrees(180F));
-                stack.mulPose(Vector3f.YP.rotationDegrees(180F));
-                stack.mulPose(Vector3f.ZP.rotationDegrees(10F));
+                stack.mulPose(Axis.XP.rotationDegrees(180F));
+                stack.mulPose(Axis.YP.rotationDegrees(180F));
+                stack.mulPose(Axis.ZP.rotationDegrees(10F));
 
                 stack.scale(scale, scale, scale);
-                Minecraft.getInstance().getItemRenderer().renderStatic(entity, itemstack, ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, false, stack, buffer, entity.level, combinedLightIn, OverlayTexture.NO_OVERLAY, entity.getId());
+                Minecraft.getInstance().getItemRenderer().renderStatic(entity, itemstack, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, false, stack, buffer, entity.level(), combinedLightIn, OverlayTexture.NO_OVERLAY, entity.getId());
                 stack.popPose();
             } else {
                 stack.pushPose();
                 model.rightArm.translateAndRotate(stack);
                 
                 stack.translate(-0.375F, -0.35F, -0.125F);
-                stack.mulPose(Vector3f.YP.rotationDegrees(90F));
+                stack.mulPose(Axis.YP.rotationDegrees(90F));
                 stack.scale(scale, scale, scale);
                 
-                Minecraft.getInstance().getItemRenderer().renderStatic(entity, itemstack, ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND, false, stack, buffer, entity.level, combinedLightIn, OverlayTexture.NO_OVERLAY, entity.getId());
+                Minecraft.getInstance().getItemRenderer().renderStatic(entity, itemstack, ItemDisplayContext.THIRD_PERSON_LEFT_HAND, false, stack, buffer, entity.level(), combinedLightIn, OverlayTexture.NO_OVERLAY, entity.getId());
                 stack.popPose();
             }
         }

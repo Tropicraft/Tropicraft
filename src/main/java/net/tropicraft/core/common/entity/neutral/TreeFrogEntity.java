@@ -80,7 +80,7 @@ public class TreeFrogEntity extends TropicraftCreatureEntity implements Enemy, R
     protected void customServerAiStep() {
         super.customServerAiStep();
         if (!getNavigation().isDone() || this.getTarget() != null) {
-            if (onGround || isInWater()) {
+            if (onGround() || isInWater()) {
                 if (jumpDelay > 0)
                     jumpDelay--;
                 if (jumpDelay <= 0) {
@@ -151,16 +151,16 @@ public class TreeFrogEntity extends TropicraftCreatureEntity implements Enemy, R
 
     @Override
     public void performRangedAttack(final LivingEntity entity, float dist) {
-        if (dist < 4F && !level.isClientSide && attackTime == 0 && level.getDifficulty() != Difficulty.PEACEFUL) {
+        if (dist < 4F && !level().isClientSide && attackTime == 0 && level().getDifficulty() != Difficulty.PEACEFUL) {
             double d = entity.getX() - getX();
             double d1 = entity.getZ() - getZ();
 
-            final PoisonBlotEntity poison = new PoisonBlotEntity(TropicraftEntities.POISON_BLOT.get(), this, level);
+            final PoisonBlotEntity poison = new PoisonBlotEntity(TropicraftEntities.POISON_BLOT.get(), this, level());
             poison.setPos(poison.getX(), poison.getY() + 1.3999999761581421D, poison.getZ());
             final double shotHeight = (entity.getY() + (double) entity.getEyeHeight()) - 0.20000000298023224D - poison.getY();
             float f1 = Mth.sqrt((float) (d * d + d1 * d1)) * 0.2F;
             entity.getCommandSenderWorld().playSound(null, entity.blockPosition(), Sounds.FROG_SPIT.get(), SoundSource.HOSTILE, 1, 1);
-            level.addFreshEntity(poison);
+            level().addFreshEntity(poison);
             poison.shoot(d, shotHeight + (double) f1, d1, 0.6F, 12F);
             attackTime = 50;
             setYRot((float) ((Math.atan2(d1, d) * 180D) / 3.1415927410125732D) - 90F);

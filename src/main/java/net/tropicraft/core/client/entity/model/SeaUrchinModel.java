@@ -2,7 +2,7 @@ package net.tropicraft.core.client.entity.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.model.ListModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -140,8 +140,8 @@ public class SeaUrchinModel extends ListModel<SeaUrchinEntity> {
 			for (int h = 0; h < HORIZONTAL_SPINES; h++) {
 				poseStack.pushPose();
 				poseStack.translate(0f, 1.25f, 0f);
-				poseStack.mulPose(Vector3f.ZP.rotationDegrees(360 * ((float) v) / VERTICAL_SPINES));
-				poseStack.mulPose(Vector3f.XP.rotationDegrees(360 * ((float) h) / HORIZONTAL_SPINES));
+				poseStack.mulPose(Axis.ZP.rotationDegrees(360 * ((float) v) / VERTICAL_SPINES));
+				poseStack.mulPose(Axis.XP.rotationDegrees(360 * ((float) h) / HORIZONTAL_SPINES));
 				poseStack.translate(0f, -0.4f, 0f);
 				poseStack.scale(0.33f, 1f, 0.33f);
 				spine.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);

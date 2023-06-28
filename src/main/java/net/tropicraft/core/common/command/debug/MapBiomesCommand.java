@@ -4,6 +4,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
@@ -26,20 +27,20 @@ public class MapBiomesCommand {
     private static final Object2IntOpenHashMap<ResourceLocation> COLORS = new Object2IntOpenHashMap<>();
 
     static {
-        COLORS.put(TropicraftBiomes.TROPICS.getId(), 0x7cde73);
+        COLORS.put(TropicraftBiomes.TROPICS.location(), 0x7cde73);
 
-        COLORS.put(TropicraftBiomes.RAINFOREST.getId(), 0x3fb535);
-        COLORS.put(TropicraftBiomes.OSA_RAINFOREST.getId(), 0x58d14d);
-        COLORS.put(TropicraftBiomes.BAMBOO_RAINFOREST.getId(), 0x57c23c);
+        COLORS.put(TropicraftBiomes.RAINFOREST.location(), 0x3fb535);
+        COLORS.put(TropicraftBiomes.OSA_RAINFOREST.location(), 0x58d14d);
+        COLORS.put(TropicraftBiomes.BAMBOO_RAINFOREST.location(), 0x57c23c);
 
-        COLORS.put(TropicraftBiomes.MANGROVES.getId(), 0x448733);
-        COLORS.put(TropicraftBiomes.OVERGROWN_MANGROVES.getId(), 0x5d8733);
+        COLORS.put(TropicraftBiomes.MANGROVES.location(), 0x448733);
+        COLORS.put(TropicraftBiomes.OVERGROWN_MANGROVES.location(), 0x5d8733);
 
-        COLORS.put(TropicraftBiomes.OCEAN.getId(), 0x4fc1c9);
-        COLORS.put(TropicraftBiomes.RIVER.getId(), 0x4fc1c9);
-        COLORS.put(TropicraftBiomes.KELP_FOREST.getId(), 0x4fc9af);
+        COLORS.put(TropicraftBiomes.OCEAN.location(), 0x4fc1c9);
+        COLORS.put(TropicraftBiomes.RIVER.location(), 0x4fc1c9);
+        COLORS.put(TropicraftBiomes.KELP_FOREST.location(), 0x4fc9af);
 
-        COLORS.put(TropicraftBiomes.BEACH.getId(), 0xe8e397);
+        COLORS.put(TropicraftBiomes.BEACH.location(), 0xe8e397);
     }
 
     public static void register(final CommandDispatcher<CommandSourceStack> dispatcher) {
@@ -57,11 +58,12 @@ public class MapBiomesCommand {
 
         BufferedImage img = new BufferedImage(SIZE, SIZE, BufferedImage.TYPE_INT_RGB);
 
-        Optional<? extends Registry<Biome>> biomes = source.getLevel().registryAccess().registry(Registry.BIOME_REGISTRY);
+        Optional<? extends Registry<Biome>> biomes = source.getLevel().registryAccess().registry(Registries.BIOME);
         if (biomes.isPresent()) {
             for (int x = -SIZE2; x < SIZE2; x++) {
                 if (x % SIZE8 == 0) {
-                    source.sendSuccess(Component.literal(((x + SIZE2) / (double) SIZE) * 100 + "%"), false);
+                    double progress = (x + SIZE2) / (double) SIZE;
+                    source.sendSuccess(() -> Component.literal(progress * 100 + "%"), false);
                 }
 
                 for (int z = -SIZE2; z < SIZE2; z++) {
@@ -78,7 +80,7 @@ public class MapBiomesCommand {
         Path p = Paths.get("biome_colors.png");
         try {
             ImageIO.write(img, "png", p.toAbsolutePath().toFile());
-            source.sendSuccess(Component.literal("Mapped biome colors!"), false);
+            source.sendSuccess(() -> Component.literal("Mapped biome colors!"), false);
         } catch (IOException e) {
             source.sendFailure(Component.literal("Something went wrong, check the log!"));
             e.printStackTrace();

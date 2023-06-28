@@ -63,12 +63,12 @@ public class MonkeyPickUpPinaColadaGoal extends Goal {
     private boolean hasNearbyDrink(final Drink drink) {
         ItemStack stack = MixerRecipes.getItemStack(drink);
 
-        List<ItemEntity> list = entity.level.getEntitiesOfClass(ItemEntity.class, entity.getBoundingBox().inflate(10.0D));
+        List<ItemEntity> list = entity.level().getEntitiesOfClass(ItemEntity.class, entity.getBoundingBox().inflate(10.0D));
         
         if (!list.isEmpty()) {
             for (ItemEntity item : list) {
                 if (!item.isInvisible()) {
-                    if (item.getItem().sameItem(stack) && item.isAlive()) {
+                    if (ItemStack.isSameItemSameTags(item.getItem(), stack) && item.isAlive()) {
                         drinkEntity = item;
                         return true;
                     }

@@ -2,7 +2,7 @@ package net.tropicraft.core.client.entity.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -26,7 +26,7 @@ public class PoisonBlotRenderer extends EntityRenderer<PoisonBlotEntity> {
     public void render(final PoisonBlotEntity entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource bufferIn, int packedLightIn) {
         stack.pushPose();
         stack.mulPose(this.entityRenderDispatcher.cameraOrientation());
-        stack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
+        stack.mulPose(Axis.YP.rotationDegrees(180.0F));
         final VertexConsumer buffer = TropicraftRenderUtils.getEntityCutoutBuilder(bufferIn, getTextureLocation(entity));
         final PoseStack.Pose pose = stack.last();
         vertex(pose, buffer, -.5f, -.5f, 0, 1, packedLightIn);

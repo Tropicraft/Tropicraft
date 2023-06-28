@@ -2,17 +2,13 @@ package net.tropicraft.core.common.dimension.feature.tree.mangrove;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.level.LevelSimulatedReader;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftFoliagePlacers;
-
-import java.util.function.BiConsumer;
 
 public final class SmallMangroveFoliagePlacer extends FoliagePlacer {
     public static final Codec<SmallMangroveFoliagePlacer> CODEC = RecordCodecBuilder.create((instance) -> {
@@ -29,9 +25,9 @@ public final class SmallMangroveFoliagePlacer extends FoliagePlacer {
     }
 
     @Override
-    protected void createFoliage(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> blockSetter, RandomSource random, TreeConfiguration config, int maxFreeTreeHeight, FoliageAttachment attachment, int foliageHeight, int foliageRadius, int offset) {
-        this.placeLeavesRow(world, blockSetter, random, config, attachment.pos(), foliageRadius, 0, attachment.doubleTrunk());
-        this.placeLeavesRow(world, blockSetter, random, config, attachment.pos(), foliageRadius, 1, attachment.doubleTrunk());
+    protected void createFoliage(LevelSimulatedReader world, FoliageSetter setter, RandomSource random, TreeConfiguration config, int maxFreeTreeHeight, FoliageAttachment attachment, int foliageHeight, int foliageRadius, int offset) {
+        this.placeLeavesRow(world, setter, random, config, attachment.pos(), foliageRadius, 0, attachment.doubleTrunk());
+        this.placeLeavesRow(world, setter, random, config, attachment.pos(), foliageRadius, 1, attachment.doubleTrunk());
     }
 
     @Override

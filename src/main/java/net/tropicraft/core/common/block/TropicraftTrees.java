@@ -3,9 +3,9 @@ package net.tropicraft.core.common.block;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -110,13 +110,13 @@ public class TropicraftTrees {
 
     private static AbstractTreeGrower create(String id) {
         ResourceKey<ConfiguredFeature<?, ?>> key = ResourceKey.create(
-                Registry.CONFIGURED_FEATURE_REGISTRY,
+                Registries.CONFIGURED_FEATURE,
                 new ResourceLocation(net.tropicraft.Constants.MODID, id)
         );
 
         return create((server, random, beehive) -> {
             RegistryAccess registries = server.registryAccess();
-            Registry<ConfiguredFeature<?, ?>> features = registries.registryOrThrow(Registry.CONFIGURED_FEATURE_REGISTRY);
+            Registry<ConfiguredFeature<?, ?>> features = registries.registryOrThrow(Registries.CONFIGURED_FEATURE);
             return features.get(key);
         });
     }
@@ -125,7 +125,7 @@ public class TropicraftTrees {
         return new AbstractTreeGrower() {
             @Nullable
             @Override
-            protected Holder<? extends ConfiguredFeature<?, ?>> getConfiguredFeature(RandomSource random, boolean beehive) {
+            protected ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(RandomSource random, boolean beehive) {
                 return null;
             }
 

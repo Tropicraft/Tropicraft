@@ -90,14 +90,14 @@ public abstract class EggEntity extends LivingEntity {
         super.aiStep();
         
         if (isNearHatching()) {
-            rotationRand += 0.1707F * level.random.nextFloat();
+            rotationRand += 0.1707F * level().random.nextFloat();
             
             // Hatch time!
             if (tickCount >= this.getHatchTime()) {
-                if (!level.isClientSide) {
+                if (!level().isClientSide) {
                     final Entity ent = onHatch();
                     ent.moveTo(getX(), getY(), getZ(), 0.0F, 0.0F);
-                    level.addFreshEntity(ent);
+                    level().addFreshEntity(ent);
                     remove(RemovalReason.DISCARDED);
                 }
             }

@@ -13,6 +13,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -30,15 +31,14 @@ import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 import net.tropicraft.core.common.entity.egg.SeaTurtleEggEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.Set;
 
@@ -206,7 +206,7 @@ public class SeaTurtleEntity extends Turtle {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel world, AgeableMob partner) {
-        return TropicraftEntities.SEA_TURTLE.get().create(this.level)
+        return TropicraftEntities.SEA_TURTLE.get().create(level())
                 .setTurtleType(random.nextBoolean() && partner instanceof SeaTurtleEntity ? ((SeaTurtleEntity)partner).getTurtleType() : getTurtleType())
                 .setIsMature(false);
     }
@@ -219,7 +219,7 @@ public class SeaTurtleEntity extends Turtle {
             return result;
         }
 
-        if (!level.isClientSide && !player.isShiftKeyDown() && canAddPassenger(player) && isMature()) {
+        if (!level().isClientSide && !player.isShiftKeyDown() && canAddPassenger(player) && isMature()) {
             player.startRiding(this);
         }
 
@@ -246,12 +246,12 @@ public class SeaTurtleEntity extends Turtle {
         super.aiStep();
         if (this.isAlive() && this.isLayingEgg() && this.digCounter >= 1 && this.digCounter % 5 == 0) {
             BlockPos pos = this.blockPosition();
-            if (this.level.getBlockState(pos.below()).getMaterial() == Material.SAND) {
-                this.level.levelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK, pos, Block.getId(Blocks.SAND.defaultBlockState()));
+            if (this.level().getBlockState(pos.below()).is(BlockTags.SAND)) {
+                this.level().levelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK, pos, Block.getId(Blocks.SAND.defaultBlockState()));
             }
         }
 
-        if (this.level.isClientSide) {
+        if (this.level().isClientSide) {
             if (isVehicle() && hasControllingPassenger()) {
                 if (isInWater() || getCanFly()) {
                     Vec3 movement = new Vec3(getX(), getY(), getZ()).subtract(xo, yo, zo);
@@ -263,7 +263,7 @@ public class SeaTurtleEntity extends Turtle {
                         ParticleOptions particle = isInWater() ? ParticleTypes.BUBBLE : ParticleTypes.END_ROD;
                         for (int i = 0; i < particlesToSpawn; i++) {
                             Vec3 particleMotion = movement.scale(1);
-                            level.addParticle(particle, true,
+                            level().addParticle(particle, true,
                                     particleOffset.x() + getX() - 0.25 + random.nextDouble() * 0.5,
                                     particleOffset.y() + getY() + 0.1 + random.nextDouble() * 0.1,
                                     particleOffset.z() + getZ() - 0.25 + random.nextDouble() * 0.5, particleMotion.x, particleMotion.y, particleMotion.z);
@@ -281,11 +281,10 @@ public class SeaTurtleEntity extends Turtle {
     private float swimSpeedCurrent;
 
     @Override
-    public void positionRider(Entity passenger) {
-        super.positionRider(passenger);
+    public void positionRider(Entity passenger, MoveFunction function) {
+        super.positionRider(passenger, function);
         if (this.hasPassenger(passenger)) {
-            if(passenger instanceof Player) {
-                Player p = (Player)passenger;
+            if(passenger instanceof Player p) {
                 if(this.isInWater()) {
                     if(p.zza > 0f) {
                         this.setXRot(this.lerp(getXRot(), -(passenger.getXRot()*0.5f), 6f));
@@ -322,89 +321,77 @@ public class SeaTurtleEntity extends Turtle {
                 }
                 //p.rotationYaw = this.rotationYaw;
             } else
-            if (passenger instanceof Mob) {
-                Mob mobentity = (Mob)passenger;
+            if (passenger instanceof Mob mobentity) {
                 this.yBodyRot = mobentity.yBodyRot;
                 this.yHeadRotO = mobentity.yHeadRotO;
             }
         }
     }
-        
+
     @Override
-    public void setPos(double x, double y, double z) {
-        super.setPos(x, y, z);
+    protected void tickRidden(Player player, Vec3 input) {
+        super.tickRidden(player, input);
+        setRot(player.getYRot(), player.getXRot());
+        yRotO = yBodyRot = yHeadRot = getYRot();
+
+        if (!isInWater()) {
+            double gravity = getAttribute(ForgeMod.ENTITY_GRAVITY.get()).getValue();
+            if (getCanFly()) {
+                setDeltaMovement(getDeltaMovement().add(0, -gravity * 0.05, 0));
+            } else {
+                // Lower max speed when breaching, as a penalty to uncareful driving
+                setDeltaMovement(getDeltaMovement().multiply(0.9, 0.99, 0.9).add(0, -gravity, 0));
+            }
+        }
+
+        if (!isControlledByLocalInstance()) {
+            fallDistance = (float) Math.max(0, (getY() - lastPosY) * -8);
+        }
+    }
+
+    @Override
+    protected Vec3 getRiddenInput(Player player, Vec3 mobInput) {
+        double strafe = player.xxa;
+        double forward = getNoBrakes() ? 1.0 : player.zza;
+
+        double vertical = -Math.sin(Math.toRadians(getXRot())) * forward;
+        forward *= Mth.clamp(1.0 - Math.abs(getXRot()) / 90.0, 0.01, 1.0);
+
+        return new Vec3(strafe, vertical + player.yya, forward);
     }
 
     @Override
     public void travel(Vec3 input) {
-        if (isAlive()) {
-            final LivingEntity controllingPassenger = getControllingPassenger();
-            if (isVehicle() && controllingPassenger != null) {
-                this.setYRot(controllingPassenger.getYRot());
-                this.yRotO = this.getYRot();
-                this.setXRot(controllingPassenger.getXRot());
-                this.setRot(this.getYRot(), this.getXRot());
-                this.yBodyRot = this.getYRot();
-                this.yHeadRot = this.getYRot();
-                this.maxUpStep = 1.0F;
-                this.flyingSpeed = this.getSpeed() * 0.1F;
-
-                float strafe = controllingPassenger.xxa;
-                float forward = getNoBrakes() ? 1 : controllingPassenger.zza;
-                float vertical = controllingPassenger.yya; // Players never use this?
-
-                double verticalFromPitch = -Math.sin(Math.toRadians(getXRot())) * forward;
-                forward *= Mth.clamp(1 - (Math.abs(getXRot()) / 90), 0.01f, 1);
-
-                if (!isInWater()) {
-                    if (getCanFly()) {
-                        this.setDeltaMovement(this.getDeltaMovement().add(0, -this.getAttribute(ForgeMod.ENTITY_GRAVITY.get()).getValue() * 0.05, 0));
-                    } else {
-                        // Lower max speed when breaching, as a penalty to uncareful driving
-                        this.setDeltaMovement(this.getDeltaMovement().multiply(0.9, 0.99, 0.9).add(0, -this.getAttribute(ForgeMod.ENTITY_GRAVITY.get()).getValue(), 0));
-                    }
-                }
-
-                if (this.isControlledByLocalInstance()) {
-                    Vec3 travel = new Vec3(strafe, verticalFromPitch + vertical, forward)
-                            .scale(this.getAttribute(Attributes.MOVEMENT_SPEED).getValue())
-                            // This scale controls max speed. We reduce it significantly here so that the range of speed is higher
-                            // This is compensated for by the high value passed to moveRelative
-                            .scale(0.025F);
-                    // This is the effective speed modifier, controls the post-scaling of the movement vector
-                    moveRelative(1F, travel);
-                    move(MoverType.SELF, getDeltaMovement());
-                    // This value controls how much speed is "dampened" which effectively controls how much drift there is, and the max speed
-                    this.setDeltaMovement(this.getDeltaMovement().scale(forward > 0 || !isInWater() ? 0.975 : 0.9));
-                } else {
-                    this.fallDistance = (float) Math.max(0, (getY() - lastPosY) * -8);
-                    this.setDeltaMovement(Vec3.ZERO);
-                }
-                this.animationSpeedOld = this.animationSpeed;
-                double d1 = this.getX() - this.xo;
-                double d0 = this.getZ() - this.zo;
-                float swinger = Mth.sqrt((float) (d1 * d1 + d0 * d0)) * 4.0F;
-                if (swinger > 1.0F) {
-                    swinger = 1.0F;
-                }
-
-                this.animationSpeed += (swinger - this.animationSpeed) * 0.4F;
-                this.animationPosition += this.animationSpeed;
-            } else {
-                this.flyingSpeed = 0.02F;
-                super.travel(input);
-            }
+        if (hasControllingPassenger()) {
+            Vec3 travel = input.scale(getAttribute(Attributes.MOVEMENT_SPEED).getValue())
+                    // This scale controls max speed. We reduce it significantly here so that the range of speed is higher
+                    // This is compensated for by the high value passed to moveRelative
+                    .scale(0.025F);
+            // This is the effective speed modifier, controls the post-scaling of the movement vector
+            moveRelative(1F, travel);
+            move(MoverType.SELF, getDeltaMovement());
+            // This value controls how much speed is "dampened" which effectively controls how much drift there is, and the max speed
+            setDeltaMovement(getDeltaMovement().scale(input.z > 0 || !isInWater() ? 0.975 : 0.9));
+            calculateEntityAnimation(true);
+            return;
         }
+        super.travel(input);
+    }
+
+    @Override
+    protected float getFlyingSpeed() {
+        LivingEntity passenger = getControllingPassenger();
+        return passenger != null ? getSpeed() * 0.1f : 0.02f;
+    }
+
+    @Override
+    public float maxUpStep() {
+        return 1.0f;
     }
 
     @Override
     public ItemStack getPickedResult(HitResult target) {
         return new ItemStack(TropicraftItems.SEA_TURTLE_SPAWN_EGG.get());
-    }
-
-    @Override
-    public boolean rideableUnderWater() {
-        return true;
     }
 
     static class BetterLayEggGoal extends MoveToBlockGoal {
@@ -443,7 +430,7 @@ public class SeaTurtleEntity extends Turtle {
                 if (!this.turtle.isLayingEgg()) {
                     this.turtle.setDigging(true);
                 } else if (this.turtle.digCounter > 200) {
-                    Level world = this.turtle.level;
+                    Level world = this.turtle.level();
                     world.playSound(null, blockpos, SoundEvents.TURTLE_LAY_EGG, SoundSource.BLOCKS, 0.3F, 0.9F + world.random.nextFloat() * 0.2F);
                     //world.setBlockState(this.destinationBlock.up(), Blocks.TURTLE_EGG.defaultBlockState().with(TurtleEggBlock.EGGS, Integer.valueOf(this.turtle.rand.nextInt(4) + 1)), 3);
                     final SeaTurtleEggEntity egg = TropicraftEntities.SEA_TURTLE_EGG.get().create(world);
@@ -466,7 +453,7 @@ public class SeaTurtleEntity extends Turtle {
             if (!worldIn.isEmptyBlock(pos.above())) {
                 return false;
             } else {
-                return worldIn.getBlockState(pos).getMaterial() == Material.SAND;
+                return worldIn.getBlockState(pos).is(BlockTags.SAND);
             }
         }
     }

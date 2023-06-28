@@ -2,7 +2,7 @@ package net.tropicraft.core.client.entity.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -42,9 +42,9 @@ public class TropicraftFishRenderer<T extends AbstractFish> extends MobRenderer<
     protected void renderFishy(T entity, float partialTicks, PoseStack stack, VertexConsumer buffer, int light, int overlay) {
         stack.pushPose();
 
-        stack.mulPose(Vector3f.YP.rotationDegrees(-90));
-        stack.mulPose(Vector3f.YP.rotationDegrees(-(Mth.lerp(partialTicks, entity.yHeadRotO, entity.yHeadRot))));
-        stack.mulPose(Vector3f.XP.rotationDegrees(180));
+        stack.mulPose(Axis.YP.rotationDegrees(-90));
+        stack.mulPose(Axis.YP.rotationDegrees(-(Mth.lerp(partialTicks, entity.yHeadRotO, entity.yHeadRot))));
+        stack.mulPose(Axis.XP.rotationDegrees(180));
         stack.scale(0.3f, 0.3f, 0.5f);
         stack.translate(.85F, -0.3F, 0.0F);
 
@@ -57,7 +57,7 @@ public class TropicraftFishRenderer<T extends AbstractFish> extends MobRenderer<
 
         stack.translate(-1.7f, 0, 0);
         stack.translate(.85f, 0, 0.025f);
-        stack.mulPose(Vector3f.YP.rotation(model.tail.yRot));
+        stack.mulPose(Axis.YP.rotation(model.tail.yRot));
         stack.translate(-.85f, 0, -0.025f);
         renderHelper.renderFish(stack, buffer, fishTex + 1, light, overlay);
 
