@@ -29,7 +29,7 @@ public final class FiddlerCrabEntity extends Animal {
         this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
 
         this.moveControl = new CrabMoveController(this);
-        this.maxUpStep = 1.0F;
+        setMaxUpStep(1.0f);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
