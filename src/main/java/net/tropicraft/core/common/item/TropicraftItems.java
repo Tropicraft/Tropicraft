@@ -4,16 +4,20 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.builders.ItemBuilder;
+import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.ProviderType;
+import com.tterrag.registrate.providers.RegistrateItemModelProvider;
 import com.tterrag.registrate.util.DataIngredient;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.client.color.item.ItemColor;
+import net.minecraft.data.models.ItemModelGenerators;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -26,6 +30,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
+import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -50,6 +55,7 @@ import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
 import net.tropicraft.core.common.item.scuba.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.Function;
@@ -520,12 +526,12 @@ public class TropicraftItems {
                 );
     }
 
-    public static final ItemEntry<Item> FIRE_BOOTS = fireArmor("fire_boots", ArmorItem.Type.BOOTS).register();
-    public static final ItemEntry<Item> FIRE_LEGGINGS = fireArmor("fire_leggings", ArmorItem.Type.LEGGINGS).register();
-    public static final ItemEntry<Item> FIRE_CHESTPLATE = fireArmor("fire_chestplate", ArmorItem.Type.CHESTPLATE).register();
-    public static final ItemEntry<Item> FIRE_HELMET = fireArmor("fire_helmet", ArmorItem.Type.HELMET).register();
+    public static final ItemEntry<ArmorItem> FIRE_BOOTS = fireArmor("fire_boots", ArmorItem.Type.BOOTS).register();
+    public static final ItemEntry<ArmorItem> FIRE_LEGGINGS = fireArmor("fire_leggings", ArmorItem.Type.LEGGINGS).register();
+    public static final ItemEntry<ArmorItem> FIRE_CHESTPLATE = fireArmor("fire_chestplate", ArmorItem.Type.CHESTPLATE).register();
+    public static final ItemEntry<ArmorItem> FIRE_HELMET = fireArmor("fire_helmet", ArmorItem.Type.HELMET).register();
 
-    public static final ItemEntry<Item> SCALE_BOOTS = scaleArmor("scale_boots", ArmorItem.Type.BOOTS)
+    public static final ItemEntry<ArmorItem> SCALE_BOOTS = scaleArmor("scale_boots", ArmorItem.Type.BOOTS)
             .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get())
                     .pattern("X X")
                     .pattern("X X")
@@ -533,7 +539,7 @@ public class TropicraftItems {
                     .unlockedBy("has_" + prov.safeName(SCALE.get()), has(SCALE.get()))
                     .save(prov))
             .register();
-    public static final ItemEntry<Item> SCALE_LEGGINGS = scaleArmor("scale_leggings", ArmorItem.Type.LEGGINGS)
+    public static final ItemEntry<ArmorItem> SCALE_LEGGINGS = scaleArmor("scale_leggings", ArmorItem.Type.LEGGINGS)
             .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get())
                     .pattern("XXX")
                     .pattern("X X")
@@ -542,7 +548,7 @@ public class TropicraftItems {
                     .unlockedBy("has_" + prov.safeName(SCALE.get()), has(SCALE.get()))
                     .save(prov))
             .register();
-    public static final ItemEntry<Item> SCALE_CHESTPLATE = scaleArmor("scale_chestplate", ArmorItem.Type.CHESTPLATE)
+    public static final ItemEntry<ArmorItem> SCALE_CHESTPLATE = scaleArmor("scale_chestplate", ArmorItem.Type.CHESTPLATE)
             .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get())
                     .pattern("X X")
                     .pattern("XXX")
@@ -551,7 +557,7 @@ public class TropicraftItems {
                     .unlockedBy("has_" + prov.safeName(SCALE.get()), has(SCALE.get()))
                     .save(prov))
             .register();
-    public static final ItemEntry<Item> SCALE_HELMET = scaleArmor("scale_helmet", ArmorItem.Type.HELMET)
+    public static final ItemEntry<ArmorItem> SCALE_HELMET = scaleArmor("scale_helmet", ArmorItem.Type.HELMET)
             .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get())
                     .pattern("XXX")
                     .pattern("X X")
@@ -567,14 +573,18 @@ public class TropicraftItems {
     public static final ItemEntry<ScubaHarnessItem> PINK_SCUBA_HARNESS = scubaHarness("pink_scuba_harness", ScubaType.PINK, () -> Items.PINK_DYE).register();
     public static final ItemEntry<ScubaFlippersItem> PINK_SCUBA_FLIPPERS = scubaFlippers("pink_scuba_flippers", ScubaType.PINK, () -> Items.PINK_DYE).register();
 
-    private static ItemBuilder<Item, Registrate> fireArmor(final String name, final ArmorItem.Type slotType) {
-        return REGISTRATE.item(name, p -> (Item) new FireArmorItem(slotType, p))
-                .properties(p -> p.stacksTo(1).durability(300));
+    private static ItemBuilder<ArmorItem, Registrate> fireArmor(final String name, final ArmorItem.Type slotType) {
+        return REGISTRATE.item(name, p -> (ArmorItem) new FireArmorItem(slotType, p))
+                .properties(p -> p.stacksTo(1).durability(300))
+                .tag(ItemTags.TRIMMABLE_ARMOR)
+                .model(TropicraftItems::trimmableArmor);
     }
 
-    private static ItemBuilder<Item, Registrate> scaleArmor(final String name, final ArmorItem.Type slotType) {
-        return REGISTRATE.item(name, p -> (Item) new ScaleArmorItem(slotType, p))
-                .properties(p -> p.stacksTo(1));
+    private static ItemBuilder<ArmorItem, Registrate> scaleArmor(final String name, final ArmorItem.Type slotType) {
+        return REGISTRATE.item(name, p -> (ArmorItem) new ScaleArmorItem(slotType, p))
+                .properties(p -> p.stacksTo(1))
+                .tag(ItemTags.TRIMMABLE_ARMOR)
+                .model(TropicraftItems::trimmableArmor);
     }
 
     private static ItemBuilder<ScubaGogglesItem, Registrate> scubaGoggles(final String name, final ScubaType type, Supplier<? extends Item> source) {
@@ -708,5 +718,42 @@ public class TropicraftItems {
 
     private static DataIngredient ingredient(NonNullSupplier<? extends ItemLike> item) {
         return DataIngredient.items(item);
+    }
+
+    private static final List<TrimMaterial> GENERATED_TRIM_MATERIALS = List.of(
+            new TrimMaterial("quartz", 0.1F),
+            new TrimMaterial("iron", 0.2F),
+            new TrimMaterial("netherite", 0.3F),
+            new TrimMaterial("redstone", 0.4F),
+            new TrimMaterial("copper", 0.5F),
+            new TrimMaterial("gold", 0.6f),
+            new TrimMaterial("emerald", 0.7F),
+            new TrimMaterial("diamond", 0.8F),
+            new TrimMaterial("lapis", 0.9F),
+            new TrimMaterial("amethyst", 1.0F)
+    );
+
+    private static void trimmableArmor(DataGenContext<Item, ArmorItem> ctx, RegistrateItemModelProvider prov) {
+        ArmorItem.Type armorType = ctx.get().getType();
+        ResourceLocation texture = prov.itemTexture(ctx);
+
+        ItemModelBuilder builder = prov.generated(ctx, texture);
+        for (TrimMaterial trim : GENERATED_TRIM_MATERIALS) {
+            ResourceLocation materialOverlayTexture = new ResourceLocation("trims/items/" + armorType.getName() + "_trim_" + trim.name());
+            // Trim textures are generated at runtime during atlas stitching
+            prov.existingFileHelper.trackGenerated(materialOverlayTexture, PackType.CLIENT_RESOURCES, ".png", "textures");
+
+            ItemModelBuilder trimmedModel = prov.getBuilder(prov.name(ctx) + "_trim_" + trim.name())
+                    .parent(new ModelFile.UncheckedModelFile("item/generated"))
+                    .texture("layer0", texture)
+                    .texture("layer1", materialOverlayTexture);
+            builder = builder.override()
+                    .predicate(ItemModelGenerators.TRIM_TYPE_PREDICATE_ID, trim.itemModelIndex())
+                    .model(trimmedModel)
+                    .end();
+        }
+    }
+
+    private record TrimMaterial(String name, float itemModelIndex) {
     }
 }
