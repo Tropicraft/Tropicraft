@@ -26,17 +26,14 @@ import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.animal.Turtle;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 import net.tropicraft.core.common.entity.egg.SeaTurtleEggEntity;
-import net.tropicraft.core.common.item.TropicraftItems;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -58,6 +55,7 @@ public class SeaTurtleEntity extends Turtle {
 
     public SeaTurtleEntity(EntityType<? extends Turtle> type, Level world) {
         super(type, world);
+        setMaxUpStep(1.0f);
     }
 
     @Override
@@ -382,11 +380,6 @@ public class SeaTurtleEntity extends Turtle {
     protected float getFlyingSpeed() {
         LivingEntity passenger = getControllingPassenger();
         return passenger != null ? getSpeed() * 0.1f : 0.02f;
-    }
-
-    @Override
-    public float maxUpStep() {
-        return 1.0f;
     }
 
     static class BetterLayEggGoal extends MoveToBlockGoal {
