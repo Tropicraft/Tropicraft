@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
@@ -110,14 +111,13 @@ public class Tropicraft {
         TropicraftStructurePieceTypes.REGISTER.register(modBus);
 
         // Hack in our item frame models the way vanilla does
-        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> modBus.addListener((RegisterClientReloadListenersEvent event) -> {
             StateDefinition<Block, BlockState> frameState = new StateDefinition.Builder<Block, BlockState>(Blocks.AIR).add(BooleanProperty.create("map")).create(Block::defaultBlockState, BlockState::new);
-
             ModelBakery.STATIC_DEFINITIONS = ImmutableMap.<ResourceLocation, StateDefinition<Block, BlockState>>builder()
                     .putAll(ModelBakery.STATIC_DEFINITIONS)
                     .put(TropicraftItems.BAMBOO_ITEM_FRAME.getId(), frameState)
                     .build();
-        });
+        }));
     }
 
     private static final Pattern QUALIFIER = Pattern.compile("-\\w+\\+\\d+");
