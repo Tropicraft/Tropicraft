@@ -136,11 +136,8 @@ jar {
     }
 
     archiveClassifier = 'slim'
-    enabled = false
 }
 
-// This is pretty terrible, but the CI doesn't like it when we produce two jars so the slim jar is removed at the gradle stage.
-project.gradle.startParameter.excludedTaskNames.add('reobfJar')
 
 tasks.jarJar.configure {
     // remove '-all' from jarJar jar file
