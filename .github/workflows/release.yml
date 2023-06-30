@@ -38,7 +38,7 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         version-type: release
         files: |
-          build/libs/!(*-@(dev|slim|sources|javadoc)).jar
+          build/libs/!(*-dev|*-slim|*-sources|*-javadoc).jar
         game-versions: |
           ${{ steps.env-vars.outputs.mcversion }}
 
@@ -51,6 +51,6 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         version-type: beta
         files: |
-          build/libs/!(*-@(dev|slim|sources|javadoc)).jar
+          build/libs/!(*-dev|*-slim|*-sources|*-javadoc).jar
         game-versions: |
           ${{ steps.env-vars.outputs.mcversion }}
