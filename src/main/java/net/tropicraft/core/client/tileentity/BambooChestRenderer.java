@@ -8,13 +8,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.tileentity.BambooChestBlockEntity;
 
 @OnlyIn(Dist.CLIENT)
-@EventBusSubscriber(modid = Constants.MODID, bus = Bus.MOD, value = Dist.CLIENT)
 public class BambooChestRenderer extends ChestRenderer<BambooChestBlockEntity> {
 
     public static final Material BAMBOO_CHEST_MATERIAL = getChestMaterial("bamboo");
