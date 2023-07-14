@@ -36,9 +36,7 @@ minecraft {
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
-        client {
-        	taskName 'tropicraft_client'
-
+        configureEach {
             copyIdeResources = true
 
             workingDirectory project.file('run')
@@ -52,44 +50,19 @@ minecraft {
                     source sourceSets.main
                 }
             }
+        }
+
+        client {
+        	taskName 'tropicraft_client'
         }
 
         server {
         	taskName 'tropicraft_server'
-
-            copyIdeResources = true
-
-            workingDirectory project.file('run')
-
-            property 'forge.logging.markers', 'REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', 'debug'
-            arg "-mixin.config=tropicraft.mixins.json"
-
-            mods {
-                tropicraft {
-                    source sourceSets.main
-                }
-            }
         }
 
         data {
         	taskName 'tropicraft_data'
-
-            copyIdeResources = true
-
-            workingDirectory project.file('run')
-
             environment 'target', 'fmluserdevdata'
-
-            property 'forge.logging.markers', 'REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', 'debug'
-            arg "-mixin.config=tropicraft.mixins.json"
-
-            mods {
-                tropicraft {
-                    source sourceSets.main
-                }
-            }
 
 			args '--mod', 'tropicraft', '--all', '--output', '"' + rootProject.file('src/generated/resources/') + '"',
 				 '--existing', '"' + sourceSets.main.resources.srcDirs[0] + '"'
@@ -121,7 +94,7 @@ dependencies {
     }
 }
 
-jar {
+tasks.named('jar', Jar).configure {
     manifest {
         attributes([
             "Specification-Title": "tropicraftmod",
@@ -136,13 +109,12 @@ jar {
     }
 
     archiveClassifier = 'slim'
+    finalizedBy 'reobfJar'
 }
 
-
-tasks.jarJar.configure {
-    // remove '-all' from jarJar jar file
+tasks.named('jarJar').configure {
     archiveClassifier = ''
-    finalizedBy('reobfJarJar')
+    finalizedBy 'reobfJarJar'
 }
 
 reobf {
@@ -153,17 +125,14 @@ mixin {
     add sourceSets.main, "tropicraft.refmap.json"
 }
 
-def resourceTargets = ['META-INF/mods.toml', 'pack.mcmeta']
-def replaceProperties = [
-        mod_version: mod_version,
-]
-
-processResources {
+tasks.named('processResources', ProcessResources).configure {
+    var replaceProperties = [
+            mod_version: mod_version,
+    ]
     inputs.properties replaceProperties
-    replaceProperties.put 'project', project
 
-    filesMatching(resourceTargets) {
-        expand replaceProperties
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand replaceProperties + [project: project]
     }
 }
 
