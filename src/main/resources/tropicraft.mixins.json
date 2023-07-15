@@ -5,6 +5,8 @@
   "refmap": "tropicraft.refmap.json",
   "mixins": [
     "BlockEntityTypeAccessor",
+    "EntityMixin",
+    "MobMixin",
     "worldgen.JigsawPlacerMixin",
     "worldgen.WorldDimensionsMixin"
   ],

@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.entity.passive;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
@@ -19,10 +20,13 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraft.world.phys.HitResult;
-import net.tropicraft.core.common.item.TropicraftItems;
+import net.minecraft.world.phys.Vec3;
 
 public final class FiddlerCrabEntity extends Animal {
+    private boolean rollingDownTown;
+
+    private boolean travellingGolf;
+
     public FiddlerCrabEntity(EntityType<? extends FiddlerCrabEntity> type, Level world) {
         super(type, world);
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
@@ -86,6 +90,98 @@ public final class FiddlerCrabEntity extends Animal {
     @Override
     public int getMaxHeadYRot() {
         return 30;
+    }
+
+    @Override
+    public void travel(Vec3 input) {
+        if (rollingDownTown) {
+            travelGolf(input);
+        } else {
+            super.travel(input);
+        }
+    }
+
+    @Override
+    public void knockback(double strength, double x, double z) {
+        if (rollingDownTown) {
+            // Don't bounce up
+            boolean onGround = onGround();
+            setOnGround(false);
+            super.knockback(strength, x, z);
+            setOnGround(onGround);
+        } else {
+            super.knockback(strength, x, z);
+        }
+    }
+
+    private void travelGolf(Vec3 input) {
+        if (!isControlledByLocalInstance() || isFallFlying()) {
+            super.travel(input);
+            return;
+        }
+
+        FluidState fluid = level().getFluidState(blockPosition());
+        if (isAffectedByFluids() && !canStandOnFluid(fluid) && (isInWater() || isInLava() || isInFluidType(fluid))) {
+            super.travel(input);
+            return;
+        }
+
+        try {
+            setOnGround(false);
+            travellingGolf = true;
+            super.travel(input);
+        } finally {
+            travellingGolf = false;
+        }
+    }
+
+    @Override
+    protected BlockPos getBlockPosBelowThatAffectsMyMovement() {
+        if (travellingGolf) {
+            // Pretend to be walking in the air!
+            return blockPosition().atY(level().getMinBuildHeight() - 1);
+        }
+        return super.getBlockPosBelowThatAffectsMyMovement();
+    }
+
+    @Override
+    public boolean isPushable() {
+        return !rollingDownTown;
+    }
+
+    @Override
+    protected void checkFallDamage(double y, boolean ground, BlockState state, BlockPos pos) {
+        if (rollingDownTown) {
+            resetFallDistance();
+        }
+        super.checkFallDamage(y, ground, state, pos);
+    }
+
+    public boolean bounce() {
+        if (rollingDownTown) {
+            Vec3 deltaMovement = getDeltaMovement();
+            if (Math.abs(deltaMovement.y) > 0.1) {
+                setDeltaMovement(deltaMovement.x, -deltaMovement.y * 0.8, deltaMovement.z);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putBoolean("RollingDownTown", rollingDownTown);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        rollingDownTown = tag.getBoolean("RollingDownTown");
+    }
+
+    public boolean isRollingDownTown() {
+        return rollingDownTown;
     }
 
     public static boolean canCrabSpawn(EntityType<? extends FiddlerCrabEntity> type, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {
