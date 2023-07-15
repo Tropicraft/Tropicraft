@@ -18,7 +18,7 @@ public class Sounds {
     public static final RegistryObject<SoundEvent> TRADE_WINDS = register("trade_winds");
     public static final RegistryObject<SoundEvent> PAGE_FLIP = register("page_flip");
     public static final RegistryObject<SoundEvent> BONGO_LOW = register("bongo.low");
-    public static final RegistryObject<SoundEvent> BONGO_MED = register("bongo.med");
+    public static final RegistryObject<SoundEvent> BONGO_MED = register("bongo.medium");
     public static final RegistryObject<SoundEvent> BONGO_HIGH = register("bongo.high");
     public static final RegistryObject<SoundEvent> HEAD_LAUGHING = register("headlaughing");
     public static final RegistryObject<SoundEvent> HEAD_ATTACK = register("headattack");
