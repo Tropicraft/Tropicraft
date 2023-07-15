@@ -19,6 +19,7 @@ import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.fml.common.Mod;
 import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
@@ -72,12 +73,11 @@ public final class TropicraftBiomes {
         });
 
         REGISTRATE.addDataGenerator(Tropicraft.BIOME_TAGS, prov -> {
-            prov.addTag(BiomeTags.IS_OCEAN).add(OCEAN, KELP_FOREST);
-            prov.addTag(BiomeTags.IS_BEACH).add(BEACH);
-            prov.addTag(BiomeTags.IS_RIVER).add(RIVER);
-            prov.addTag(BiomeTags.IS_HILL).add(TROPICAL_PEAKS);
-            prov.addTag(BiomeTags.IS_JUNGLE).add(RAINFOREST, OSA_RAINFOREST, BAMBOO_RAINFOREST);
-            prov.addTag(BiomeTags.WATER_ON_MAP_OUTLINES).add(MANGROVES, OVERGROWN_MANGROVES);
+            prov.addTag(Tags.Biomes.IS_WATER).add(OCEAN, KELP_FOREST, RIVER);
+
+            prov.addTag(BiomeTags.PLAYS_UNDERWATER_MUSIC).add(OCEAN, KELP_FOREST, RIVER);
+            prov.addTag(BiomeTags.SPAWNS_WARM_VARIANT_FROGS).add(RAINFOREST, OSA_RAINFOREST, BAMBOO_RAINFOREST);
+            prov.addTag(BiomeTags.WATER_ON_MAP_OUTLINES).add(OCEAN, KELP_FOREST, RIVER, MANGROVES, OVERGROWN_MANGROVES);
 
             prov.addTag(TropicraftTags.Biomes.HAS_HOME_TREE).add(RAINFOREST, BAMBOO_RAINFOREST, OSA_RAINFOREST);
             prov.addTag(TropicraftTags.Biomes.HAS_KOA_VILLAGE).add(BEACH);
