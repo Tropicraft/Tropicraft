@@ -55,16 +55,20 @@ public class SeagrassFeature extends Feature<NoneFeatureConfiguration> {
             return false;
         }
 
+        int floorOrigin = level.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, pos.getX(), pos.getZ());
+        int surfaceOrigin = level.getHeight(Heightmap.Types.WORLD_SURFACE_WG, pos.getX(), pos.getZ());
+        int depth = surfaceOrigin - floorOrigin;
+        if (depth <= 0) {
+            return false;
+        }
+
         WorldgenRandom worldgenrandom = new WorldgenRandom(new LegacyRandomSource(level.getSeed()));
         NormalNoise seagrassSelector = NormalNoise.create(worldgenrandom, -6,  1.0D);
 
         int rad = random.nextInt(4) + 8;
 
-        int floorOrigin = level.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, pos.getX(), pos.getZ());
-        int surfaceOrigin = level.getHeight(Heightmap.Types.WORLD_SURFACE_WG, pos.getX(), pos.getZ());
-
         // Check which family of seagrass to use: deep or shallow
-        boolean deep = surfaceOrigin - floorOrigin >= 18;
+        boolean deep = depth >= 18;
 
         for (int x = -rad; x <= rad; x++) {
             for (int z = -rad; z <= rad; z++) {
@@ -74,13 +78,16 @@ public class SeagrassFeature extends Feature<NoneFeatureConfiguration> {
 
                 int floor = level.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, pos.getX() + x, pos.getZ() + z);
                 int surface = level.getHeight(Heightmap.Types.WORLD_SURFACE_WG, pos.getX() + x, pos.getZ() + z);
-
-                int diff = surface - floor;
-                if (diff <= 0) {
+                if (surface <= floor) {
                     continue;
                 }
 
-                boolean selection = seagrassSelector.getValue(pos.getX() + x, pos.getY(), pos.getZ() + z) > 0.0D;
+                BlockPos local = pos.offset(x, 0, z).atY(floor);
+                if (!level.getFluidState(local).is(FluidTags.WATER)) {
+                    continue;
+                }
+
+                boolean selection = seagrassSelector.getValue(local.getX(), pos.getY(), local.getZ()) > 0.0D;
 
                 SeagrassData data = SEAGRASS_DATA.apply(deep, selection);
                 Block matted = data.matted;
@@ -96,34 +103,30 @@ public class SeagrassFeature extends Feature<NoneFeatureConfiguration> {
 
                 // Place matted floor
                 if (random.nextInt(8) > 0) {
-                    level.setBlock(pos.offset(x, floor, z).atY(floor - 1), matted.defaultBlockState(), 2);
+                    level.setBlock(local.below(), matted.defaultBlockState(), 2);
                 }
 
-                BlockPos local = pos.offset(x, floor, z).atY(floor);
-
                 // Place seagrass
-                if (level.getBlockState(local).getFluidState().is(FluidTags.WATER)) {
-                    boolean placed = false;
+                boolean placed = false;
 
-                    // Attempt to place tall seagrass
-                    if (tall != null && random.nextInt(10) == 0 && level.getBlockState(local.above()).getFluidState().is(FluidTags.WATER)) {
-                        level.setBlock(local.above(), tall.defaultBlockState().setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER), 2);
-                        level.setBlock(local, tall.defaultBlockState().setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.LOWER), 2);
-                        placed = true;
-                    }
+                // Attempt to place tall seagrass
+                if (tall != null && random.nextInt(10) == 0 && level.getBlockState(local.above()).getFluidState().is(FluidTags.WATER)) {
+                    level.setBlock(local.above(), tall.defaultBlockState().setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER), 2);
+                    level.setBlock(local, tall.defaultBlockState().setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.LOWER), 2);
+                    placed = true;
+                }
 
-                    // Place regular seagrass
+                // Place regular seagrass
 
-                    // Noodle seagrass doesn't have a tall variety, so it should spawn more to compensate
-                    if (!placed && random.nextInt(tall == null ? 3 : 8) == 0) {
-                        level.setBlock(local, seagrass.defaultBlockState(), 2);
-                        placed = true;
-                    }
+                // Noodle seagrass doesn't have a tall variety, so it should spawn more to compensate
+                if (!placed && random.nextInt(tall == null ? 3 : 8) == 0) {
+                    level.setBlock(local, seagrass.defaultBlockState(), 2);
+                    placed = true;
+                }
 
-                    // If we've placed nothing so far, place some sea pickles to light up the area
-                    if (!placed && random.nextInt(80) == 0) {
-                        level.setBlock(local, Blocks.SEA_PICKLE.defaultBlockState().setValue(BlockStateProperties.PICKLES, random.nextInt(4) + 1), 2);
-                    }
+                // If we've placed nothing so far, place some sea pickles to light up the area
+                if (!placed && random.nextInt(80) == 0) {
+                    level.setBlock(local, Blocks.SEA_PICKLE.defaultBlockState().setValue(BlockStateProperties.PICKLES, random.nextInt(4) + 1), 2);
                 }
             }
         }
