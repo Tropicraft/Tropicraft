@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(HumanoidArmorLayer.class)
 public class HumanoidArmorLayerMixin {
-    @Inject(method = "renderModel(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/world/item/ArmorItem;Lnet/minecraft/client/model/Model;ZFFFLnet/minecraft/resources/ResourceLocation;)V", at = @At("HEAD"), remap = false, cancellable = true)
+    @Inject(method = "renderModel(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/world/item/ArmorItem;Lnet/minecraft/client/model/Model;ZFFFLnet/minecraft/resources/ResourceLocation;)V", at = @At("HEAD"), remap = false, cancellable = true, require = 0)
     private void renderModel(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, ArmorItem armor, Model model, boolean glint, float red, float green, float blue, ResourceLocation texture, CallbackInfo ci) {
         if (armor instanceof ScubaArmorItem) {
             VertexConsumer consumer = bufferSource.getBuffer(model.renderType(texture));
