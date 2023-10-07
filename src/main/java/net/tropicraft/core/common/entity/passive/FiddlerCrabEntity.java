@@ -184,6 +184,14 @@ public final class FiddlerCrabEntity extends Animal {
         return rollingDownTown;
     }
 
+    @Override
+    public float maxUpStep() {
+        if (rollingDownTown) {
+            return 0.0f;
+        }
+        return super.maxUpStep();
+    }
+
     public static boolean canCrabSpawn(EntityType<? extends FiddlerCrabEntity> type, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {
         BlockPos groundPos = pos.below();
         BlockState groundBlock = world.getBlockState(groundPos);
