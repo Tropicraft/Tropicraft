@@ -43,6 +43,19 @@ public final class ModelAnimator {
             return (Mth.sin(TAU * x) * scale + offset) * this.scale;
         }
 
+        public float twitch(float interval, float speed, float scale) {
+            if (time * speed % interval > 1.0f) {
+                return 0.0f;
+            }
+            float forward = Mth.square(eval(speed, 1.0f));
+            float backward = Mth.square(eval(speed * 0.5f, 1.0f, 0.5f, 0.0f));
+            return scale * (forward - 0.5f * backward);
+        }
+
+        public float time() {
+            return time;
+        }
+
         @Override
         public void close() {
             ModelAnimator.cycle = this;

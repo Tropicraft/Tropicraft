@@ -422,6 +422,7 @@ public class TropicraftItems {
     public static final ItemEntry<Item> SPIDER_MONKEY_SPAWN_EGG = spawnEgg("spider_monkey_spawn_egg", TropicraftEntities.SPIDER_MONKEY, 0xF28252, 0x754730).register();
     public static final ItemEntry<Item> WHITE_LIPPED_PECCARY_SPAWN_EGG = spawnEgg("white_lipped_peccary_spawn_egg", TropicraftEntities.WHITE_LIPPED_PECCARY, 0x665D54, 0x544D42).register();
     public static final ItemEntry<Item> CUBERA_SPAWN_EGG = spawnEgg("cubera_spawn_egg", TropicraftEntities.CUBERA, 0xF77631, 0x872C18).register();
+    public static final ItemEntry<Item> GIBNUT_SPAWN_EGG = spawnEgg("gibnut_spawn_egg", TropicraftEntities.GIBNUT, 0x482d1c, 0x83756e).register();
 
     private static <T extends Mob> ItemBuilder<Item, Registrate> spawnEgg(final String name, final RegistryEntry<EntityType<?>, EntityType<T>> entity, final int backgroundColor, final int highlightColor) {
         return REGISTRATE.item(name, p -> (Item) new DeferredSpawnEggItem(entity, backgroundColor, highlightColor, p))
