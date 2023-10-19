@@ -78,6 +78,7 @@ import net.tropicraft.core.client.entity.render.SeaTurtleRenderer;
 import net.tropicraft.core.client.entity.render.SeaUrchinRenderer;
 import net.tropicraft.core.client.entity.render.SeahorseRenderer;
 import net.tropicraft.core.client.entity.render.SharkRenderer;
+import net.tropicraft.core.client.entity.render.SlenderHarvestMouseRenderer;
 import net.tropicraft.core.client.entity.render.SpearRenderer;
 import net.tropicraft.core.client.entity.render.SpiderMonkeyRenderer;
 import net.tropicraft.core.client.entity.render.StarfishRenderer;
@@ -116,6 +117,7 @@ import net.tropicraft.core.common.entity.passive.FiddlerCrabEntity;
 import net.tropicraft.core.common.entity.passive.FishingBobberEntity;
 import net.tropicraft.core.common.entity.passive.GibnutEntity;
 import net.tropicraft.core.common.entity.passive.HummingbirdEntity;
+import net.tropicraft.core.common.entity.passive.SlenderHarvestMouseEntity;
 import net.tropicraft.core.common.entity.passive.TapirEntity;
 import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
 import net.tropicraft.core.common.entity.passive.WhiteLippedPeccaryEntity;
@@ -661,6 +663,17 @@ public class TropicraftEntities {
             .attributes(ManateeEntity::createAttributes)
             .loot(TropicraftEntities::noDrops)
             .renderer(() -> ManateeRenderer::new)
+            .register();
+
+    public static final RegistryEntry<EntityType<?>, EntityType<SlenderHarvestMouseEntity>> SLENDER_HARVEST_MOUSE = REGISTRATE.entity("slender_harvest_mouse", SlenderHarvestMouseEntity::new, MobCategory.MONSTER)
+            .properties(b -> b.sized(0.5F, 0.2F)
+                    .setTrackingRange(8)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canAnimalSpawn, SpawnPlacementRegisterEvent.Operation.REPLACE)
+            .attributes(SlenderHarvestMouseEntity::createAttributes)
+            .loot(TropicraftEntities::noDrops)
+            .renderer(() -> SlenderHarvestMouseRenderer::new)
             .register();
 
     public static boolean canAnimalSpawn(EntityType<? extends Mob> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
