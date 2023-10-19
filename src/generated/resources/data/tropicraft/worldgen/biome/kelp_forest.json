@@ -237,6 +237,12 @@
         "maxCount": 1,
         "minCount": 1,
         "weight": 2
+      },
+      {
+        "type": "tropicraft:manatee",
+        "maxCount": 3,
+        "minCount": 1,
+        "weight": 2
       }
     ]
   },
