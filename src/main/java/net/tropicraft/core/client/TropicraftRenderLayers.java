@@ -28,6 +28,7 @@ import net.tropicraft.core.client.entity.model.IguanaModel;
 import net.tropicraft.core.client.entity.model.JaguarModel;
 import net.tropicraft.core.client.entity.model.KoaModel;
 import net.tropicraft.core.client.entity.model.ManOWarModel;
+import net.tropicraft.core.client.entity.model.ManateeModel;
 import net.tropicraft.core.client.entity.model.MarlinModel;
 import net.tropicraft.core.client.entity.model.PlayerHeadpieceModel;
 import net.tropicraft.core.client.entity.model.SeaTurtleModel;
@@ -97,6 +98,9 @@ public class TropicraftRenderLayers {
     public static ModelLayerLocation SPIDER_MONKEY_LAYER;
     public static ModelLayerLocation WHITE_LIPPED_PECCARY_LAYER;
     public static ModelLayerLocation GIBNUT_LAYER;
+    public static ModelLayerLocation MANATEE_LAYER;
+
+    // Scuba
     public static ModelLayerLocation CHEST_SCUBA_LAYER;
     public static ModelLayerLocation FEET_SCUBA_LAYER;
     public static ModelLayerLocation HEAD_SCUBA_LAYER;
@@ -151,6 +155,7 @@ public class TropicraftRenderLayers {
         SPIDER_MONKEY_LAYER = registerMain("spider_monkey", SpiderMonkeyModel::create, event);
         WHITE_LIPPED_PECCARY_LAYER = registerMain("white_lipped_peccary", WhiteLippedPeccaryModel::create, event);
         GIBNUT_LAYER = registerMain("gibnut", GibnutModel::create, event);
+        MANATEE_LAYER = registerMain("manatee", ManateeModel::create, event);
 
         HEADPIECE_LAYER = registerMain("headpiece", PlayerHeadpieceModel::create, event);
         HEAD_SCUBA_LAYER = registerMain("scuba_goggles", ModelScubaGear::create, event);

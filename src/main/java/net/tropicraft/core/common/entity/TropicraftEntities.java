@@ -69,6 +69,7 @@ import net.tropicraft.core.client.entity.render.IguanaRenderer;
 import net.tropicraft.core.client.entity.render.JaguarRenderer;
 import net.tropicraft.core.client.entity.render.KoaRenderer;
 import net.tropicraft.core.client.entity.render.ManOWarRenderer;
+import net.tropicraft.core.client.entity.render.ManateeRenderer;
 import net.tropicraft.core.client.entity.render.MarlinRenderer;
 import net.tropicraft.core.client.entity.render.PiranhaRenderer;
 import net.tropicraft.core.client.entity.render.PoisonBlotRenderer;
@@ -132,6 +133,7 @@ import net.tropicraft.core.common.entity.projectile.SpearEntity;
 import net.tropicraft.core.common.entity.underdasea.CuberaEntity;
 import net.tropicraft.core.common.entity.underdasea.EagleRayEntity;
 import net.tropicraft.core.common.entity.underdasea.ManOWarEntity;
+import net.tropicraft.core.common.entity.underdasea.ManateeEntity;
 import net.tropicraft.core.common.entity.underdasea.MarlinEntity;
 import net.tropicraft.core.common.entity.underdasea.PiranhaEntity;
 import net.tropicraft.core.common.entity.underdasea.SardineEntity;
@@ -648,6 +650,17 @@ public class TropicraftEntities {
             .attributes(GibnutEntity::createAttributes)
             .loot(TropicraftEntities::noDrops)
             .renderer(() -> GibnutRenderer::new)
+            .register();
+
+    public static final RegistryEntry<EntityType<?>, EntityType<ManateeEntity>> MANATEE = REGISTRATE.entity("manatee", ManateeEntity::new, MobCategory.WATER_CREATURE)
+            .properties(b -> b.sized(2.0F, 1.3F)
+                    .setTrackingRange(5)
+                    .setUpdateInterval(2)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canSpawnOceanWaterMob, SpawnPlacementRegisterEvent.Operation.REPLACE)
+            .attributes(ManateeEntity::createAttributes)
+            .loot(TropicraftEntities::noDrops)
+            .renderer(() -> ManateeRenderer::new)
             .register();
 
     public static boolean canAnimalSpawn(EntityType<? extends Mob> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
