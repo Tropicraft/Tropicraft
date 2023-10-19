@@ -141,10 +141,10 @@
         "weight": 15
       },
       {
-        "type": "tropicraft:jaguar",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 5
+        "type": "tropicraft:gibnut",
+        "maxCount": 8,
+        "minCount": 3,
+        "weight": 10
       },
       {
         "type": "tropicraft:hummingbird",
@@ -218,6 +218,12 @@
       {
         "type": "minecraft:witch",
         "maxCount": 1,
+        "minCount": 1,
+        "weight": 5
+      },
+      {
+        "type": "tropicraft:jaguar",
+        "maxCount": 2,
         "minCount": 1,
         "weight": 5
       }

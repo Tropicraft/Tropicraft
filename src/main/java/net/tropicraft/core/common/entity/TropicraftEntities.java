@@ -63,6 +63,7 @@ import net.tropicraft.core.client.entity.render.EagleRayRenderer;
 import net.tropicraft.core.client.entity.render.FailgullRenderer;
 import net.tropicraft.core.client.entity.render.FiddlerCrabRenderer;
 import net.tropicraft.core.client.entity.render.FishingBobberEntityRenderer;
+import net.tropicraft.core.client.entity.render.GibnutRenderer;
 import net.tropicraft.core.client.entity.render.HummingbirdRenderer;
 import net.tropicraft.core.client.entity.render.IguanaRenderer;
 import net.tropicraft.core.client.entity.render.JaguarRenderer;
@@ -112,6 +113,7 @@ import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
 import net.tropicraft.core.common.entity.passive.FailgullEntity;
 import net.tropicraft.core.common.entity.passive.FiddlerCrabEntity;
 import net.tropicraft.core.common.entity.passive.FishingBobberEntity;
+import net.tropicraft.core.common.entity.passive.GibnutEntity;
 import net.tropicraft.core.common.entity.passive.HummingbirdEntity;
 import net.tropicraft.core.common.entity.passive.TapirEntity;
 import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
@@ -636,6 +638,17 @@ public class TropicraftEntities {
 //                .setUpdateInterval(3)
 //                .setShouldReceiveVelocityUpdates(true);
 //    }
+
+    public static final RegistryEntry<EntityType<?>, EntityType<GibnutEntity>> GIBNUT = REGISTRATE.entity("gibnut", GibnutEntity::new, MobCategory.MONSTER)
+            .properties(b -> b.sized(0.7F, 0.3F)
+                    .setTrackingRange(8)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canAnimalSpawn, SpawnPlacementRegisterEvent.Operation.REPLACE)
+            .attributes(GibnutEntity::createAttributes)
+            .loot(TropicraftEntities::noDrops)
+            .renderer(() -> GibnutRenderer::new)
+            .register();
 
     public static boolean canAnimalSpawn(EntityType<? extends Mob> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
         BlockState groundState = worldIn.getBlockState(pos.below());
