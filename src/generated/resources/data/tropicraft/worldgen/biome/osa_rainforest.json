@@ -175,6 +175,12 @@
         "maxCount": 8,
         "minCount": 6,
         "weight": 15
+      },
+      {
+        "type": "tropicraft:toucan",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 8
       }
     ],
     "misc": [],

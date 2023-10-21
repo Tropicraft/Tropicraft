@@ -147,6 +147,12 @@
         "weight": 10
       },
       {
+        "type": "tropicraft:jaguar",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 5
+      },
+      {
         "type": "tropicraft:hummingbird",
         "maxCount": 5,
         "minCount": 3,
@@ -157,6 +163,12 @@
         "maxCount": 8,
         "minCount": 5,
         "weight": 15
+      },
+      {
+        "type": "tropicraft:toucan",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 8
       }
     ],
     "misc": [],
@@ -218,12 +230,6 @@
       {
         "type": "minecraft:witch",
         "maxCount": 1,
-        "minCount": 1,
-        "weight": 5
-      },
-      {
-        "type": "tropicraft:jaguar",
-        "maxCount": 2,
         "minCount": 1,
         "weight": 5
       }

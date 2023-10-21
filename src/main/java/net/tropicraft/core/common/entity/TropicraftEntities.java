@@ -83,6 +83,7 @@ import net.tropicraft.core.client.entity.render.SpearRenderer;
 import net.tropicraft.core.client.entity.render.SpiderMonkeyRenderer;
 import net.tropicraft.core.client.entity.render.StarfishRenderer;
 import net.tropicraft.core.client.entity.render.TapirRenderer;
+import net.tropicraft.core.client.entity.render.ToucanRenderer;
 import net.tropicraft.core.client.entity.render.TreeFrogRenderer;
 import net.tropicraft.core.client.entity.render.TropiBeeRenderer;
 import net.tropicraft.core.client.entity.render.TropiCreeperRenderer;
@@ -119,6 +120,7 @@ import net.tropicraft.core.common.entity.passive.GibnutEntity;
 import net.tropicraft.core.common.entity.passive.HummingbirdEntity;
 import net.tropicraft.core.common.entity.passive.SlenderHarvestMouseEntity;
 import net.tropicraft.core.common.entity.passive.TapirEntity;
+import net.tropicraft.core.common.entity.passive.ToucanEntity;
 import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
 import net.tropicraft.core.common.entity.passive.WhiteLippedPeccaryEntity;
 import net.tropicraft.core.common.entity.passive.basilisk.BasiliskLizardEntity;
@@ -674,6 +676,18 @@ public class TropicraftEntities {
             .attributes(SlenderHarvestMouseEntity::createAttributes)
             .loot(TropicraftEntities::noDrops)
             .renderer(() -> SlenderHarvestMouseRenderer::new)
+            .register();
+
+    public static final RegistryEntry<EntityType<?>, EntityType<ToucanEntity>> TOUCAN = REGISTRATE.entity("toucan", ToucanEntity::new, MobCategory.MONSTER)
+            .properties(b -> b.sized(0.5F, 0.5F)
+                    .setTrackingRange(8)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ToucanEntity::canToucanSpawnOn, SpawnPlacementRegisterEvent.Operation.REPLACE)
+            .attributes(ToucanEntity::createAttributes)
+            .loot(TropicraftEntities::noDrops)
+            .renderer(() -> ToucanRenderer::new)
+            .tag(EntityTypeTags.FALL_DAMAGE_IMMUNE)
             .register();
 
     public static boolean canAnimalSpawn(EntityType<? extends Mob> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
