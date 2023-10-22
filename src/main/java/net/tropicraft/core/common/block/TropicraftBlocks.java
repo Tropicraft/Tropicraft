@@ -148,6 +148,7 @@ public class TropicraftBlocks {
             .initialProperties(() -> Blocks.STONE)
             .properties(p -> p.mapColor(MapColor.COLOR_BLACK).strength(6.0F).explosionResistance(30.0F))
             .blockstate(TropicraftBlocks::simpleBlockAllRotations)
+            .tag(BlockTags.MINEABLE_WITH_PICKAXE)
             .lang("Chunk O' Head")
             .simpleItem()
             .register();
@@ -1272,7 +1273,7 @@ public class TropicraftBlocks {
                         .add(loot.applyExplosionDecay(block, lootTableItem(Items.STICK)
                                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F))))
                                 .when(BonusLevelTableCondition.bonusLevelFlatChance(Enchantments.BLOCK_FORTUNE, 0.02F, 0.022222223F, 0.025F, 0.033333335F, 0.1F))))))
-                .tag(BlockTags.LEAVES)
+                .tag(BlockTags.LEAVES, BlockTags.MINEABLE_WITH_HOE)
                 .item()
                     .tag(ItemTags.LEAVES)
                     .build();
@@ -1286,7 +1287,7 @@ public class TropicraftBlocks {
                                 .when(HAS_NO_SHEARS_OR_SILK_TOUCH)
                                 .add(loot.applyExplosionDecay(block, lootTableItem(fruit.get()))))
                 ))
-                .tag(BlockTags.LEAVES)
+                .tag(BlockTags.LEAVES, BlockTags.MINEABLE_WITH_HOE)
                 .item()
                     .tag(ItemTags.LEAVES)
                     .build();

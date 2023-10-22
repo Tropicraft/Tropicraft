@@ -2,6 +2,17 @@
   "values": [
     "tropicraft:mahogany_leaves",
     "tropicraft:palm_leaves",
-    "tropicraft:papaya_leaves"
+    "tropicraft:kapok_leaves",
+    "tropicraft:fruit_leaves",
+    "tropicraft:grapefruit_leaves",
+    "tropicraft:lemon_leaves",
+    "tropicraft:lime_leaves",
+    "tropicraft:orange_leaves",
+    "tropicraft:papaya_leaves",
+    "tropicraft:white_flowering_leaves",
+    "tropicraft:red_flowering_leaves",
+    "tropicraft:blue_flowering_leaves",
+    "tropicraft:purple_flowering_leaves",
+    "tropicraft:yellow_flowering_leaves"
   ]
 }
