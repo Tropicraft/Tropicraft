@@ -44,6 +44,8 @@ public class Ingredient implements Comparable<Ingredient> {
     public static final Ingredient waterBucket = new Ingredient(15, Items.WATER_BUCKET.builtInRegistryHolder(), false, 0xffffff);
     public static final Ingredient milkBucket = new Ingredient(16, Items.MILK_BUCKET.builtInRegistryHolder(), false, 0xffffff, 0.1f).addAction(new DrinkActionFood(2, 0.2f));
     public static final Ingredient cocoaBean = new Ingredient(17, Items.COCOA_BEANS.builtInRegistryHolder(), false, 0x805A3E, 0.95f).addAction(new DrinkActionFood(4, 0.2f));
+    public static final Ingredient passionfruit = new Ingredient(18, TropicraftItems.PASSIONFRUIT, true, 0x690b2d).addAction(new DrinkActionFood(4, 0.2f));
+    public static final Ingredient jocote = new Ingredient(19, TropicraftItems.JOCOTE, true, 0xc1cd02).addAction(new DrinkActionFood(4, 0.2f));
 
     public static final Codec<Ingredient> CODEC = ExtraCodecs.idResolverCodec(value -> value.id, id -> ingredientsList[id], -1);
     public static final StreamCodec<ByteBuf, Ingredient> STREAM_CODEC = ByteBufCodecs.idMapper(id -> ingredientsList[id], value -> value.id);

@@ -545,7 +545,14 @@ public class TropicraftBlocks {
     public static final BlockEntry<SaplingBlock> MAHOGANY_SAPLING = sapling("mahogany_sapling", TropicraftTreeGrowers.RAINFOREST).register();
     public static final BlockEntry<SaplingBlock> PALM_SAPLING = sapling("palm_sapling", TropicraftTreeGrowers.PALM, () -> Blocks.SAND, CORAL_SAND, FOAMY_SAND, VOLCANIC_SAND, PURIFIED_SAND, MINERAL_SAND).register();
 
-    public static final BlockEntry<LeavesBlock> MAHOGANY_LEAVES = leaves("mahogany_leaves", MAHOGANY_SAPLING, RARE_SAPLING_RATES, false).register();
+    public static final BlockEntry<LeavesBlock> MAHOGANY_LEAVES = leaves("mahogany_leaves", MAHOGANY_SAPLING, RARE_SAPLING_RATES, false)
+            .loot((loot, block) -> loot.add(block, loot.createLeavesDrops(block, MAHOGANY_SAPLING.get(), RARE_SAPLING_RATES).withPool(LootPool.lootPool()
+                    .setRolls(ConstantValue.exactly(1.0f))
+                    .add(lootTableItem(TropicraftItems.MAHOGANY_NUT))
+                    .when(hasNoSilkTouch(loot))
+                    .when(BonusLevelTableCondition.bonusLevelFlatChance(fortune(loot), RARE_SAPLING_RATES))
+            )))
+            .register();
     public static final BlockEntry<LeavesBlock> PALM_LEAVES = leaves("palm_leaves", PALM_SAPLING, SAPLING_RATES, false).register();
     public static final BlockEntry<LeavesBlock> KAPOK_LEAVES = leaves("kapok_leaves", false).register();
     public static final BlockEntry<LeavesBlock> FRUIT_LEAVES = leaves("fruit_leaves", true).register();
@@ -567,6 +574,21 @@ public class TropicraftBlocks {
                     .save(prov, ResourceLocation.fromNamespaceAndPath(Constants.MODID, "papaya_log_to_jungle_log")))
             .register();
     public static final BlockEntry<RotatedPillarBlock> PAPAYA_WOOD = wood("papaya_wood", MapColor.COLOR_GRAY, PAPAYA_LOG).register();
+
+    public static final BlockEntry<RotatedPillarBlock> PLANTAIN_STEM = log("plantain_stem", MapColor.COLOR_LIGHT_GREEN, MapColor.COLOR_BROWN).register();
+    public static final BlockEntry<LeavesBlock> PLANTAIN_LEAVES = leaves("plantain_leaves", true).register();
+    public static final BlockEntry<Block> GREEN_PLANTAIN_BUNCH = plantainBunch("green_plantain_bunch", () -> TropicraftItems.GREEN_PLANTAIN);
+    public static final BlockEntry<Block> YELLOW_PLANTAIN_BUNCH = plantainBunch("yellow_plantain_bunch", () -> TropicraftItems.YELLOW_PLANTAIN);
+
+    private static BlockEntry<Block> plantainBunch(final String name, final Supplier<ItemEntry<Item>> item) {
+        return REGISTRATE.block(name, Block::new)
+                .initialProperties(() -> Blocks.MELON)
+                .properties(p -> p.sound(SoundType.WART_BLOCK).strength(0.5f))
+                .tag(BlockTags.MINEABLE_WITH_HOE)
+                .loot((tables, block) -> tables.add(block, tables.createSingleItemTableWithSilkTouch(block, item.get().get(), UniformGenerator.between(3, 5))))
+                .simpleItem()
+                .register();
+    }
 
     public static final BlockEntry<RotatedPillarBlock> RED_MANGROVE_LOG = log("red_mangrove_log", MapColor.COLOR_GRAY, MapColor.COLOR_BROWN, () -> TropicraftBlocks.STRIPPED_MANGROVE_LOG.get())
             .item().tag(TropicraftTags.Items.MANGROVE_LOGS).build()
