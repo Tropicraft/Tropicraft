@@ -258,6 +258,12 @@ public class TropicraftItems {
     public static final ItemEntry<Item> ORANGE = food("orange", Foods.ORANGE)
             .tag(TropicraftTags.Items.FRUITS)
             .register();
+    public static final ItemEntry<Item> PASSIONFRUIT = food("passionfruit", Foods.PASSIONFRUIT)
+            .tag(TropicraftTags.Items.FRUITS)
+            .register();
+    public static final ItemEntry<Item> JOCOTE = food("jocote", Foods.JOCOTE)
+            .tag(TropicraftTags.Items.FRUITS)
+            .register();
     public static final ItemEntry<Item> PINEAPPLE_CUBES = food("pineapple_cubes", Foods.PINEAPPLE_CUBES).register();
     public static final ItemEntry<Item> COCONUT_CHUNK = food("coconut_chunk", Foods.COCONUT_CHUNK).register();
 
@@ -278,6 +284,10 @@ public class TropicraftItems {
                     .unlockedBy("has_bamboo", has(Items.BAMBOO))
                     .save(prov))
             .register();
+
+    public static final ItemEntry<Item> GREEN_PLANTAIN = food("green_plantain", Foods.PLANTAIN).register();
+    public static final ItemEntry<Item> YELLOW_PLANTAIN = food("yellow_plantain", Foods.PLANTAIN).register();
+    public static final ItemEntry<Item> MAHOGANY_NUT = simpleItem("mahogany_nut").register();
 
     // Cocktails
     public static final ImmutableMap<Drink, ItemEntry<CocktailItem>> COCKTAILS = Drink.DRINKS.values().stream()
