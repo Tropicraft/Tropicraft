@@ -14,7 +14,7 @@ public class TropiBeeRenderer extends MobRenderer<TropiBeeEntity, TropiBeeModel>
     public TropiBeeRenderer(final EntityRendererProvider.Context context) {
         super(context, new TropiBeeModel(context.bakeLayer(TropicraftRenderLayers.TROPI_BEE_LAYER)), 0.4F);
 
-        addLayer(new SunglassesLayer<>(this, (poseStack, entity, model) -> {
+        addLayer(new SunglassesLayer<>(this, entity -> true, (poseStack, entity, model) -> {
             model.body().translateAndRotate(poseStack);
             if (!entity.isBaby()) {
                 poseStack.translate(0.03125F, 1.350F, -.313F);

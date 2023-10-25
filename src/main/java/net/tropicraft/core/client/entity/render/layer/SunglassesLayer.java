@@ -15,22 +15,30 @@ import net.minecraft.world.entity.Entity;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
 
+import java.util.function.Predicate;
+
 public class SunglassesLayer<T extends Entity, M extends EntityModel<T>> extends RenderLayer<T, M> {
     private static final ResourceLocation TEXTURE = TropicraftRenderUtils.getTextureEntity("sunglasses");
 
     private final TropicraftSpecialRenderHelper mask;
     private final M model;
+    private final Predicate<T> predicate;
     private final Transform<T, M> transform;
 
-    public SunglassesLayer(RenderLayerParent<T, M> parent, Transform<T, M> transform) {
+    public SunglassesLayer(RenderLayerParent<T, M> parent, Predicate<T> predicate, Transform<T, M> transform) {
         super(parent);
         model = parent.getModel();
         mask = new TropicraftSpecialRenderHelper();
+        this.predicate = predicate;
         this.transform = transform;
     }
 
     @Override
     public void render(PoseStack stack, MultiBufferSource bufferIn, int packedLightIn, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        if (!predicate.test(entity)) {
+            return;
+        }
+
         stack.pushPose();
         model.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         transform.apply(stack, entity, model);
