@@ -6,6 +6,7 @@ import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.dimension.feature.TropicraftTreeFeatures;
+import org.antlr.v4.runtime.tree.Tree;
 
 import java.util.Optional;
 
@@ -15,6 +16,7 @@ public final class TropicraftTreeGrowers {
     public static final TreeGrower LIME = create("lime", TropicraftTreeFeatures.LIME_TREE);
     public static final TreeGrower ORANGE = create("orange", TropicraftTreeFeatures.ORANGE_TREE);
     public static final TreeGrower PAPAYA = create("papaya", TropicraftTreeFeatures.PAPAYA);
+    public static final TreeGrower PLANTAIN = create("plantain", TropicraftTreeFeatures.PLANTAIN);
 
     public static final TreeGrower RAINFOREST = create("rainforest", TropicraftTreeFeatures.RAINFOREST_TREE);
     public static final TreeGrower PALM = create("palm", TropicraftTreeFeatures.PALM_TREE);

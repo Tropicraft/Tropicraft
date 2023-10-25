@@ -595,8 +595,9 @@ public class TropicraftBlocks {
             .register();
     public static final BlockEntry<RotatedPillarBlock> PAPAYA_WOOD = wood("papaya_wood", MapColor.COLOR_GRAY, PAPAYA_LOG).register();
 
+    public static final BlockEntry<SaplingBlock> PLANTAIN_SAPLING = sapling("plantain_sapling", TropicraftTreeGrowers.PLANTAIN).register();
     public static final BlockEntry<RotatedPillarBlock> PLANTAIN_STEM = log("plantain_stem", MapColor.COLOR_LIGHT_GREEN, MapColor.COLOR_BROWN).register();
-    public static final BlockEntry<LeavesBlock> PLANTAIN_LEAVES = leaves("plantain_leaves", true).register();
+    public static final BlockEntry<LeavesBlock> PLANTAIN_LEAVES = leaves("plantain_leaves", PLANTAIN_SAPLING, SAPLING_RATES, true).register();
     public static final BlockEntry<Block> GREEN_PLANTAIN_BUNCH = plantainBunch("green_plantain_bunch", () -> TropicraftItems.GREEN_PLANTAIN);
     public static final BlockEntry<Block> YELLOW_PLANTAIN_BUNCH = plantainBunch("yellow_plantain_bunch", () -> TropicraftItems.YELLOW_PLANTAIN);
 
