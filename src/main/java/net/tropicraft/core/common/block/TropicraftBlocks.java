@@ -99,10 +99,10 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.BonusLevelTableCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
@@ -148,12 +148,16 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static com.tterrag.registrate.providers.RegistrateRecipeProvider.has;
+import static com.tterrag.registrate.providers.loot.RegistrateBlockLootTables.*;
+import static net.minecraft.advancements.critereon.StatePropertiesPredicate.Builder.properties;
 import static net.minecraft.world.level.storage.loot.LootPool.lootPool;
 import static net.minecraft.world.level.storage.loot.LootTable.lootTable;
 import static net.minecraft.world.level.storage.loot.entries.LootItem.lootTableItem;
+import static net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition.hasBlockStateProperties;
 import static net.neoforged.neoforge.client.model.generators.ConfiguredModel.allRotations;
 import static net.neoforged.neoforge.client.model.generators.ConfiguredModel.allYRotations;
 import static net.tropicraft.core.common.item.TropicraftItems.*;
@@ -175,7 +179,7 @@ public class TropicraftBlocks {
                         )
         );
     }
-    
+
     private static LootItemCondition.Builder hasNoSilkTouch(RegistrateBlockLootTables loot) {
         return hasSilkTouch(loot).invert();
     }
@@ -592,6 +596,29 @@ public class TropicraftBlocks {
 
     public static final BlockEntry<RotatedPillarBlock> JOCOTE_LOG = log("jocote_log", MapColor.COLOR_GRAY, MapColor.COLOR_BROWN).register();
     public static final BlockEntry<LeavesBlock> JOCOTE_LEAVES = leaves("jocote_leaves", true).register();
+    public static final BlockEntry<FruitingBranchBlock> JOCOTE_BRANCH = REGISTRATE.block("jocote_branch", FruitingBranchBlock::new)
+            .properties(p -> p.sound(SoundType.AZALEA).noOcclusion().noCollission().instabreak().randomTicks())
+            .blockstate((ctx, prov) -> {
+                final ResourceLocation fruitingBranch = prov.modLoc("block/fruiting_branch");
+                final List<BlockModelBuilder> models = IntStream.rangeClosed(0, FruitingBranchBlock.MAX_AGE).mapToObj(age ->
+                        prov.models().withExistingParent(ctx.getName() + "_age" + age, fruitingBranch)
+                                .texture("horizontal", prov.modLoc("block/jocote_branch_horizontal_" + age))
+                                .texture("vertical", prov.modLoc("block/jocote_branch_vertical"))
+                ).toList();
+                prov.horizontalBlock(ctx.get(), state -> models.get(state.getValue(FruitingBranchBlock.AGE)));
+            })
+            .addLayer(() -> RenderType::cutoutMipped)
+            .loot((loot, block) -> loot.add(block, lootTable().withPool(loot.applyExplosionCondition(block, lootPool().setRolls(ConstantValue.exactly(1))
+                    .add(lootTableItem(block))
+                    .add(lootTableItem(JOCOTE)
+                            .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))
+                            .when(hasBlockStateProperties(block).setProperties(properties().hasProperty(FruitingBranchBlock.AGE, FruitingBranchBlock.MAX_AGE)))
+                    )
+            ))))
+            .item()
+            .model((ctx, prov) -> prov.blockSprite(ctx, prov.modLoc("block/jocote_branch_horizontal_0")))
+            .build()
+            .register();
 
     public static final BlockEntry<RotatedPillarBlock> RED_MANGROVE_LOG = log("red_mangrove_log", MapColor.COLOR_GRAY, MapColor.COLOR_BROWN, () -> TropicraftBlocks.STRIPPED_MANGROVE_LOG.get())
             .item().tag(TropicraftTags.Items.MANGROVE_LOGS).build()
@@ -678,7 +705,7 @@ public class TropicraftBlocks {
             .properties(p -> p.mapColor(MapColor.PLANT).randomTicks().strength(0.2F, 3.0F).sound(SoundType.WOOD).noOcclusion().pushReaction(PushReaction.DESTROY))
             .loot((loot, block) -> loot.add(block, LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
                     .add(loot.applyExplosionDecay(block, LootItem.lootTableItem(block.asItem()).apply(SetItemCountFunction.setCount(ConstantValue.exactly(2))
-                            .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(PapayaBlock.AGE, 1)))))))))
+                            .when(hasBlockStateProperties(block).setProperties(properties().hasProperty(PapayaBlock.AGE, 1)))))))))
             .addLayer(() -> RenderType::cutout)
             .blockstate((ctx, prov) -> {
                 prov.models().withExistingParent("papaya_stage0", "cocoa_stage2")
@@ -757,8 +784,8 @@ public class TropicraftBlocks {
     public static final BlockEntry<PineappleBlock> PINEAPPLE = REGISTRATE.block("pineapple", PineappleBlock::new)
             .properties(p -> p.mapColor(MapColor.PLANT).randomTicks().noCollission().instabreak().sound(SoundType.GRASS).replaceable().ignitedByLava().pushReaction(PushReaction.DESTROY))
             .loot((loot, block) -> loot.add(block, droppingChunks(loot, block, TropicraftItems.PINEAPPLE_CUBES,
-                    LootItemBlockStatePropertyCondition.hasBlockStateProperties(block).setProperties(
-                            StatePropertiesPredicate.Builder.properties().hasProperty(
+                    hasBlockStateProperties(block).setProperties(
+                            properties().hasProperty(
                                     DoublePlantBlock.HALF, DoubleBlockHalf.UPPER)))))
             .addLayer(() -> RenderType::cutout)
             .blockstate(TropicraftBlocks::doublePlant)
@@ -1663,7 +1690,7 @@ public class TropicraftBlocks {
     }
 
     protected static <T extends Comparable<T> & StringRepresentable> LootTable.Builder createSinglePropConditionTable(RegistrateBlockLootTables loot, Block block, Property<T> property, T value) {
-        return LootTable.lootTable().withPool(loot.applyExplosionCondition(block, LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(LootItem.lootTableItem(block).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(property, value))))));
+        return LootTable.lootTable().withPool(loot.applyExplosionCondition(block, LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(LootItem.lootTableItem(block).when(hasBlockStateProperties(block).setProperties(properties().hasProperty(property, value))))));
     }
 
     private static LootPool.Builder droppingChunksPool(RegistrateBlockLootTables loot, Block block, Supplier<? extends ItemLike> chunk) {

@@ -1,0 +1,7 @@
+{
+  "parent": "tropicraft:block/fruiting_branch",
+  "textures": {
+    "horizontal": "tropicraft:block/jocote_branch_horizontal_1",
+    "vertical": "tropicraft:block/jocote_branch_vertical"
+  }
+}
