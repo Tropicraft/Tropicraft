@@ -1,10 +1,12 @@
 package net.tropicraft.core.common.item;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -201,6 +203,10 @@ public class CocktailItem extends Item {
 
         if (drink != null) {
             drink.onDrink(player);
+        }
+
+        if (player instanceof ServerPlayer serverPlayer) {
+            CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, itemstack);
         }
 
         return new ItemStack(TropicraftItems.BAMBOO_MUG.get());
