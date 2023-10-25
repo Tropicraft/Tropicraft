@@ -1615,7 +1615,7 @@ public class EntityKoaBase extends Villager {
     }
 
     @Override
-    public Component getDisplayName() {
+    public Component getTypeName() {
         return Component.translatable("entity.tropicraft.koa." +
                 getGender().toString().toLowerCase(Locale.ROOT) + "." +
                 getRole().toString().toLowerCase(Locale.ROOT) + ".name"
