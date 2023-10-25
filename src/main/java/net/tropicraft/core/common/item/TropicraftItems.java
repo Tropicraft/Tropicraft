@@ -285,8 +285,12 @@ public class TropicraftItems {
                     .save(prov))
             .register();
 
-    public static final ItemEntry<Item> GREEN_PLANTAIN = food("green_plantain", Foods.PLANTAIN).register();
-    public static final ItemEntry<Item> YELLOW_PLANTAIN = food("yellow_plantain", Foods.PLANTAIN).register();
+    public static final ItemEntry<Item> GREEN_PLANTAIN = food("green_plantain", Foods.PLANTAIN).tag(TropicraftTags.Items.PLANTAIN).register();
+    public static final ItemEntry<Item> YELLOW_PLANTAIN = food("yellow_plantain", Foods.PLANTAIN).tag(TropicraftTags.Items.PLANTAIN).register();
+    public static final ItemEntry<Item> DRIED_PLANTAINS = food("dried_plantains", Foods.DRIED_PLANTAINS)
+            .recipe((ctx, prov) -> prov.food(DataIngredient.tag(TropicraftTags.Items.PLANTAIN), RecipeCategory.FOOD, ctx, 0.1f))
+            .register();
+
     public static final ItemEntry<Item> MAHOGANY_NUT = simpleItem("mahogany_nut").register();
 
     // Cocktails

@@ -60,6 +60,7 @@ public class TropicraftTags {
         public static final TagKey<Item> FRUITS = modTag("fruits");
         public static final TagKey<Item> MEATS = modTag("meats");
         public static final TagKey<Item> LIME = modTag("lime");
+        public static final TagKey<Item> PLANTAIN = modTag("plantain");
 
         public static final TagKey<Item> REPAIRS_FIRE_ARMOR = modTag("repairs_fire_armor");
         public static final TagKey<Item> REPAIRS_SCUBA_GEAR = modTag("repairs_scuba_gear");
