@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_plantain": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#tropicraft:plantain"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "tropicraft:dried_plantains_from_plantain_campfire"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_plantain"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "tropicraft:dried_plantains_from_plantain_campfire"
+    ]
+  }
+}
