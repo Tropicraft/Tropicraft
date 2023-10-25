@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "tropicraft:item/cool_shades"
+  },
+  "display": {
+    "head": {
+      "translation": [-0.75, 0.75, -6.75],
+      "scale": [1.5, 1.5, 1.0]
+    }
+  }
+}

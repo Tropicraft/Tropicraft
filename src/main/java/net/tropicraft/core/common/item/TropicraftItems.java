@@ -326,6 +326,10 @@ public class TropicraftItems {
     public static final ItemEntry<NigelStacheItem> NIGEL_STACHE = REGISTRATE.item("nigel_stache", NigelStacheItem::new)
             .lang("Nigel's Moustache")
             .register();
+    public static final ItemEntry<SunglassesItem> COOL_SHADES = REGISTRATE.item("cool_shades", SunglassesItem::new)
+            .properties(p -> p.stacksTo(1))
+            .model((ctx, prov) -> {})
+            .register();
 
     public static final ItemEntry<Item> FRESH_MARLIN = food("fresh_marlin", Foods.FRESH_MARLIN).register();
     public static final ItemEntry<Item> SEARED_MARLIN = food("seared_marlin", Foods.SEARED_MARLIN)
