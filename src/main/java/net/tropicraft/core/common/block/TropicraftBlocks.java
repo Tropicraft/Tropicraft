@@ -25,7 +25,6 @@ import net.minecraft.advancements.critereon.ItemEnchantmentsPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.ItemSubPredicates;
 import net.minecraft.advancements.critereon.MinMaxBounds;
-import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -99,7 +98,6 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.BonusLevelTableCondition;
@@ -563,6 +561,31 @@ public class TropicraftBlocks {
     public static final BlockEntry<LeavesBlock> BLUE_FLOWERING_LEAVES = leaves("blue_flowering_leaves", true).register();
     public static final BlockEntry<LeavesBlock> PURPLE_FLOWERING_LEAVES = leaves("purple_flowering_leaves", true).register();
     public static final BlockEntry<LeavesBlock> YELLOW_FLOWERING_LEAVES = leaves("yellow_flowering_leaves", true).register();
+
+    public static final BlockEntry<FruitingVineBlock> PASSIONFRUIT_VINE = REGISTRATE.block("passionfruit_vine", FruitingVineBlock::new)
+            .properties(p -> p.mapColor(MapColor.GRASS).replaceable().noCollission().strength(0.2f).sound(SoundType.VINE).ignitedByLava().pushReaction(PushReaction.DESTROY))
+            .blockstate((ctx, prov) -> {
+                final MultiPartBlockStateBuilder builder = prov.getMultipartBuilder(ctx.get());
+                for (final int age : FruitingVineBlock.AGE.getPossibleValues()) {
+                    final BlockModelBuilder model = prov.models().withExistingParent(ctx.getName() + "_" + age, prov.modLoc("block/vines"))
+                            .texture("texture", prov.modLoc("block/" + ctx.getName() + "_" + age));
+                    builder.part().modelFile(model).addModel().condition(FruitingVineBlock.AGE, age).condition(BlockStateProperties.NORTH, true);
+                    builder.part().modelFile(model).rotationY(270).addModel().condition(FruitingVineBlock.AGE, age).condition(BlockStateProperties.WEST, true);
+                    builder.part().modelFile(model).rotationY(90).addModel().condition(FruitingVineBlock.AGE, age).condition(BlockStateProperties.EAST, true);
+                    builder.part().modelFile(model).rotationY(180).addModel().condition(FruitingVineBlock.AGE, age).condition(BlockStateProperties.SOUTH, true);
+                    builder.part().modelFile(model).rotationX(90).addModel().condition(FruitingVineBlock.AGE, age).condition(BlockStateProperties.DOWN, true);
+                    builder.part().modelFile(model).rotationX(270).addModel().condition(FruitingVineBlock.AGE, age).condition(BlockStateProperties.UP, true);
+                }
+            })
+            .addLayer(() -> RenderType::cutoutMipped)
+            .loot((loot, block) -> loot.add(block, loot.createSilkTouchOrShearsDispatchTable(block, loot.applyExplosionCondition(block, lootTableItem(TropicraftItems.PASSIONFRUIT)
+                    .when(hasBlockStateProperties(block).setProperties(properties().hasProperty(FruitingVineBlock.AGE, FruitingVineBlock.MAX_AGE)))
+                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))
+            ))))
+            .item()
+            .model((ctx, prov) -> prov.blockSprite(ctx, prov.modLoc("block/passionfruit_vine_1")))
+            .build()
+            .register();
 
     public static final BlockEntry<RotatedPillarBlock> PAPAYA_LOG = log("papaya_log", MapColor.COLOR_GRAY, MapColor.COLOR_BROWN)
             .recipe((ctx, prov) -> ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, Blocks.JUNGLE_LOG)
