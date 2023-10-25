@@ -54,8 +54,7 @@ public class TropicraftRenderLayers {
     public static ModelLayerLocation MAN_O_WAR_OUTER_LAYER;
     public static ModelLayerLocation MAN_O_WAR_GEL_LAYER;
     public static ModelLayerLocation BAMBOO_MUG;
-    public static ArrayList<ModelLayerLocation> ASHEN_MASK_LAYERS = new ArrayList<>();//= registerMain("mask", PlayerHeadpieceModel::getTexturedModelData);
-    public static ModelLayerLocation STACHE_LAYER;
+    public static ModelLayerLocation HEADPIECE_LAYER;
     public static ModelLayerLocation BAMBOO_CHEST;
     public static ModelLayerLocation BAMBOO_DOUBLE_CHEST_LEFT;
     public static ModelLayerLocation BAMBOO_DOUBLE_CHEST_RIGHT;
@@ -123,16 +122,7 @@ public class TropicraftRenderLayers {
         SPIDER_MONKEY_LAYER = registerMain("spider_monkey", SpiderMonkeyModel::create, event);
         WHITE_LIPPED_PECCARY_LAYER = registerMain("white_lipped_peccary", WhiteLippedPeccaryModel::create, event);
 
-        //ArrayList<MaskArmorProvider> MASK_PROVIDER = new ArrayList<>();
-        final List<ItemEntry<AshenMaskItem>> masks = TropicraftItems.ASHEN_MASKS.values().asList();
-
-        for (ItemEntry<AshenMaskItem> maskItem : masks) {
-            ModelLayerLocation ashen_mask_layer = registerMain("ashen_mask_" + maskItem.get().getMaskType().name().toLowerCase(Locale.ROOT), PlayerHeadpieceModel::create, event);
-            ASHEN_MASK_LAYERS.add(ashen_mask_layer);
-        }
-
-        STACHE_LAYER = registerMain("nigel_stache", PlayerHeadpieceModel::create, event);
-
+        HEADPIECE_LAYER = registerMain("headpiece", PlayerHeadpieceModel::create, event);
         HEAD_SCUBA_LAYER = registerMain("scuba_goggles", ModelScubaGear::create, event);
         CHEST_SCUBA_LAYER = registerMain("scuba_harness", ModelScubaGear::create, event);
         FEET_SCUBA_LAYER = registerMain("scuba_flippers", ModelScubaGear::create, event);

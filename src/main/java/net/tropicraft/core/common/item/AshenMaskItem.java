@@ -72,7 +72,7 @@ public class AshenMaskItem extends ArmorItem {
         consumer.accept(new IClientItemExtensions() {
             @Override
             public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlot equipmentSlot, HumanoidModel<?> original) {
-                return type == Type.HELMET ? PlayerHeadpieceModel.createModel(TropicraftRenderLayers.ASHEN_MASK_LAYERS.get(maskType.ordinal()), null, maskType.ordinal(), maskType.getXOffset(), maskType.getYOffset()) : null;
+                return type == Type.HELMET ? PlayerHeadpieceModel.createModel(TropicraftRenderLayers.HEADPIECE_LAYER, null, maskType.ordinal(), maskType.getXOffset(), maskType.getYOffset()) : null;
             }
         });
     }

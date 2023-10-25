@@ -53,13 +53,7 @@ public class PlayerHeadpieceModel extends HumanoidModel<LivingEntity> {
 	public void renderToBuffer(PoseStack stack, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
 		stack.pushPose();
 
-		if (crouching) {
-			stack.translate(0, 0.25f, 0);
-		}
-
-		// Set head rotation to mask
-		stack.mulPose(Axis.YP.rotation(head.yRot));
-		stack.mulPose(Axis.XP.rotation(head.xRot));
+		head.translateAndRotate(stack);
 
 		// Flip mask to face away from the player
 		stack.mulPose(Axis.YP.rotationDegrees(180));

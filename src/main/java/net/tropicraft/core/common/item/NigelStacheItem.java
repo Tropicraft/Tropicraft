@@ -24,7 +24,7 @@ public class NigelStacheItem extends ArmorItem {
         consumer.accept(new IClientItemExtensions() {
             @Override
             public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlot slot, HumanoidModel<?> original) {
-                return NigelStacheItem.this.type == Type.HELMET ? PlayerHeadpieceModel.createModel(TropicraftRenderLayers.STACHE_LAYER, null, 0, 0, 0) : null;
+                return NigelStacheItem.this.type == Type.HELMET ? PlayerHeadpieceModel.createModel(TropicraftRenderLayers.HEADPIECE_LAYER, null, 0, 0, 0) : null;
             }
         });
     }
