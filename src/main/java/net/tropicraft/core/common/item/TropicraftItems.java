@@ -284,6 +284,13 @@ public class TropicraftItems {
                     .unlockedBy("has_bamboo", has(Items.BAMBOO))
                     .save(prov))
             .register();
+    public static final ItemEntry<Item> BAMBOO_BOWL = simpleItem("bamboo_bowl")
+            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get())
+                    .pattern("X X").pattern(" X ")
+                    .define('X', Items.BAMBOO)
+                    .unlockedBy("has_bamboo", has(Items.BAMBOO))
+                    .save(prov))
+            .register();
 
     public static final ItemEntry<Item> GREEN_PLANTAIN = food("green_plantain", Foods.PLANTAIN).tag(TropicraftTags.Items.PLANTAIN).register();
     public static final ItemEntry<Item> YELLOW_PLANTAIN = food("yellow_plantain", Foods.PLANTAIN).tag(TropicraftTags.Items.PLANTAIN).register();
