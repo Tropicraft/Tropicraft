@@ -590,6 +590,9 @@ public class TropicraftBlocks {
                 .register();
     }
 
+    public static final BlockEntry<RotatedPillarBlock> JOCOTE_LOG = log("jocote_log", MapColor.COLOR_GRAY, MapColor.COLOR_BROWN).register();
+    public static final BlockEntry<LeavesBlock> JOCOTE_LEAVES = leaves("jocote_leaves", true).register();
+
     public static final BlockEntry<RotatedPillarBlock> RED_MANGROVE_LOG = log("red_mangrove_log", MapColor.COLOR_GRAY, MapColor.COLOR_BROWN, () -> TropicraftBlocks.STRIPPED_MANGROVE_LOG.get())
             .item().tag(TropicraftTags.Items.MANGROVE_LOGS).build()
             .register();
