@@ -257,7 +257,12 @@ public class TropicraftItems {
                             })
                             .properties(p -> p.durability(0).stacksTo(1).craftRemainder(BAMBOO_MUG.get()))
                             .model((ctx, prov) -> prov.generated(ctx, prov.modLoc("item/cocktail"), prov.modLoc("item/cocktail_contents")))
-                            .color(() -> () -> (ItemColor) (stack, tintIndex) -> (tintIndex == 0 ? 0xffffff : drink.color))
+                            .color(() -> () -> (ItemColor) (stack, tintIndex) -> {
+                                if (tintIndex == 0) {
+                                    return 0xffffff;
+                                }
+                                return drink == Drink.COCKTAIL ? CocktailItem.getCocktailColor(stack) : drink.color;
+                            })
                             .lang(drink.getName())
                             .register()
             ));
