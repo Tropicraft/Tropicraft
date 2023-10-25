@@ -1,0 +1,6 @@
+{
+  "parent": "tropicraft:block/vines",
+  "textures": {
+    "texture": "tropicraft:block/passionfruit_vine_1"
+  }
+}
