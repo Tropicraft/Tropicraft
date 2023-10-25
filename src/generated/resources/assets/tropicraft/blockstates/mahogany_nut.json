@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "age=0": {
+      "model": "tropicraft:block/mahogany_nut_0"
+    },
+    "age=1": {
+      "model": "tropicraft:block/mahogany_nut_1"
+    },
+    "age=2": {
+      "model": "tropicraft:block/mahogany_nut_2"
+    }
+  }
+}
