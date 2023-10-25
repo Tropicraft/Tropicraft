@@ -298,6 +298,16 @@ public class TropicraftItems {
             .recipe((ctx, prov) -> prov.food(DataIngredient.tag(TropicraftTags.Items.PLANTAIN), RecipeCategory.FOOD, ctx, 0.1f))
             .register();
 
+    public static final ItemEntry<FoodDishItem> MOFONGO = REGISTRATE.item("mofongo", p -> new FoodDishItem(p, BAMBOO_BOWL))
+            .properties(p -> p.food(Foods.MOFONGO).craftRemainder(BAMBOO_BOWL.get()))
+            .recipe((ctx, prov) -> ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, ctx.get())
+                    .requires(DRIED_PLANTAINS, 2)
+                    .requires(BAMBOO_BOWL)
+                    .requires(Items.COOKED_PORKCHOP)
+                    .unlockedBy("has_plantains", has(DRIED_PLANTAINS))
+                    .save(prov))
+            .register();
+
     public static final ItemEntry<Item> MAHOGANY_NUT = simpleItem("mahogany_nut").register();
 
     // Cocktails
