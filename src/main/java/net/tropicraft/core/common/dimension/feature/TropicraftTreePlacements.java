@@ -34,6 +34,7 @@ public final class TropicraftTreePlacements {
 
     public static final ResourceKey<PlacedFeature> PLEODENDRON_CHECKED = createKey("pleodendron_checked");
     public static final ResourceKey<PlacedFeature> PAPAYA_CHECKED = createKey("papaya_checked");
+    public static final ResourceKey<PlacedFeature> PLANTAIN_CHECKED = createKey("plantain_checked");
 
     public static final ResourceKey<PlacedFeature> RED_MANGROVE_CHECKED = createKey("red_mangrove_checked");
     public static final ResourceKey<PlacedFeature> TALL_MANGROVE_CHECKED = createKey("tall_mangrove_checked");
@@ -56,6 +57,7 @@ public final class TropicraftTreePlacements {
 
         register(context, PLEODENDRON_CHECKED, TropicraftTreeFeatures.PLEODENDRON, checkTree(TropicraftBlocks.MAHOGANY_SAPLING));
         register(context, PAPAYA_CHECKED, TropicraftTreeFeatures.PAPAYA, checkTree(TropicraftBlocks.PAPAYA_SAPLING));
+        register(context, PLANTAIN_CHECKED, TropicraftTreeFeatures.PLANTAIN, checkTree(TropicraftBlocks.PLANTAIN_SAPLING));
 
         register(context, RED_MANGROVE_CHECKED, TropicraftTreeFeatures.RED_MANGROVE, checkMangrove(TropicraftBlocks.RED_MANGROVE_PROPAGULE, 2));
         Holder.Reference<PlacedFeature> tallMangrove = register(context, TALL_MANGROVE_CHECKED, TropicraftTreeFeatures.TALL_MANGROVE, checkMangrove(TropicraftBlocks.TALL_MANGROVE_PROPAGULE, 2));
