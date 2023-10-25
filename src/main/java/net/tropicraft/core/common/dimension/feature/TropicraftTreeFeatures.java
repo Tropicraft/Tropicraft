@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.dimension.feature;
 
+import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
@@ -18,6 +19,7 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.RuleBasedBlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
+import net.minecraft.world.level.levelgen.feature.treedecorators.AttachedToLeavesDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.BeehiveDecorator;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
 import net.tropicraft.Constants;
@@ -64,6 +66,7 @@ public final class TropicraftTreeFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> PLEODENDRON = createKey("pleodendron");
 
     public static final ResourceKey<ConfiguredFeature<?, ?>> PAPAYA = createKey("papaya");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> PLANTAIN = createKey("plantain");
 
     public static final ResourceKey<ConfiguredFeature<?, ?>> RED_MANGROVE_SHORT = createKey("red_mangrove_short");
     public static final ResourceKey<ConfiguredFeature<?, ?>> RED_MANGROVE_SMALL = createKey("red_mangrove_small");
@@ -133,6 +136,26 @@ public final class TropicraftTreeFeatures {
                 new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
         )
                 .decorators(List.of(BEEHIVE_005, new PapayaTreeDecorator()))
+                .build());
+
+        register(context, PLANTAIN, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
+                BlockStateProvider.simple(TropicraftBlocks.PLANTAIN_STEM.get().defaultBlockState()),
+                new StraightTrunkPlacer(3, 1, 1),
+                BlockStateProvider.simple(TropicraftBlocks.PLANTAIN_LEAVES.get().defaultBlockState()),
+                new SmallMangroveFoliagePlacer(ConstantInt.of(1), ConstantInt.of(0)),
+                new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
+        )
+                .decorators(List.of(new AttachedToLeavesDecorator(
+                        0.5f,
+                        1,
+                        0,
+                        new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder()
+                                .add(TropicraftBlocks.YELLOW_PLANTAIN_BUNCH.getDefaultState(), 1)
+                                .add(TropicraftBlocks.GREEN_PLANTAIN_BUNCH.getDefaultState(), 1)
+                                .build()),
+                        2,
+                        List.of(Direction.DOWN)
+                )))
                 .build());
 
         register(context, RED_MANGROVE_SHORT, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
