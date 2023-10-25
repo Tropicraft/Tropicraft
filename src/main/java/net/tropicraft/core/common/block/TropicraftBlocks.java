@@ -549,14 +549,7 @@ public class TropicraftBlocks {
     public static final BlockEntry<SaplingBlock> MAHOGANY_SAPLING = sapling("mahogany_sapling", TropicraftTreeGrowers.RAINFOREST).register();
     public static final BlockEntry<SaplingBlock> PALM_SAPLING = sapling("palm_sapling", TropicraftTreeGrowers.PALM, () -> Blocks.SAND, CORAL_SAND, FOAMY_SAND, VOLCANIC_SAND, PURIFIED_SAND, MINERAL_SAND).register();
 
-    public static final BlockEntry<LeavesBlock> MAHOGANY_LEAVES = leaves("mahogany_leaves", MAHOGANY_SAPLING, RARE_SAPLING_RATES, false)
-            .loot((loot, block) -> loot.add(block, loot.createLeavesDrops(block, MAHOGANY_SAPLING.get(), RARE_SAPLING_RATES).withPool(LootPool.lootPool()
-                    .setRolls(ConstantValue.exactly(1.0f))
-                    .add(lootTableItem(TropicraftItems.MAHOGANY_NUT))
-                    .when(hasNoSilkTouch(loot))
-                    .when(BonusLevelTableCondition.bonusLevelFlatChance(fortune(loot), RARE_SAPLING_RATES))
-            )))
-            .register();
+    public static final BlockEntry<LeavesBlock> MAHOGANY_LEAVES = leaves("mahogany_leaves", MAHOGANY_SAPLING, RARE_SAPLING_RATES, false).register();
     public static final BlockEntry<LeavesBlock> PALM_LEAVES = leaves("palm_leaves", PALM_SAPLING, SAPLING_RATES, false).register();
     public static final BlockEntry<LeavesBlock> KAPOK_LEAVES = leaves("kapok_leaves", false).register();
     public static final BlockEntry<LeavesBlock> FRUIT_LEAVES = leaves("fruit_leaves", true).register();
@@ -597,7 +590,7 @@ public class TropicraftBlocks {
     public static final BlockEntry<RotatedPillarBlock> JOCOTE_LOG = log("jocote_log", MapColor.COLOR_GRAY, MapColor.COLOR_BROWN).register();
     public static final BlockEntry<LeavesBlock> JOCOTE_LEAVES = leaves("jocote_leaves", true).register();
     public static final BlockEntry<FruitingBranchBlock> JOCOTE_BRANCH = REGISTRATE.block("jocote_branch", FruitingBranchBlock::new)
-            .properties(p -> p.sound(SoundType.AZALEA).noOcclusion().noCollission().instabreak().randomTicks())
+            .properties(p -> p.sound(SoundType.AZALEA).noOcclusion().noCollission().instabreak().randomTicks().pushReaction(PushReaction.DESTROY))
             .blockstate((ctx, prov) -> {
                 final ResourceLocation fruitingBranch = prov.modLoc("block/fruiting_branch");
                 final List<BlockModelBuilder> models = IntStream.rangeClosed(0, FruitingBranchBlock.MAX_AGE).mapToObj(age ->
@@ -617,6 +610,22 @@ public class TropicraftBlocks {
             ))))
             .item()
             .model((ctx, prov) -> prov.blockSprite(ctx, prov.modLoc("block/jocote_branch_horizontal_0")))
+            .build()
+            .register();
+
+    public static final BlockEntry<MahoganyNutBlock> MAHOGANY_NUT = REGISTRATE.block("mahogany_nut", MahoganyNutBlock::new)
+            .initialProperties(() -> Blocks.COCOA)
+            .blockstate((ctx, prov) -> prov.getVariantBuilder(ctx.get()).forAllStates(state ->
+                    ConfiguredModel.builder()
+                            .modelFile(prov.models().getExistingFile(prov.modLoc("block/mahogany_nut_" + state.getValue(MahoganyNutBlock.AGE))))
+                            .build()
+            ))
+            .loot((loot, block) -> loot.add(block, lootTable().withPool(loot.applyExplosionCondition(block, lootPool().setRolls(ConstantValue.exactly(1))
+                    .add(lootTableItem(block).when(hasBlockStateProperties(block).setProperties(properties().hasProperty(MahoganyNutBlock.AGE, MahoganyNutBlock.MAX_AGE))))
+            ))))
+            .addLayer(() -> RenderType::cutoutMipped)
+            .item()
+            .model((ctx, prov) -> prov.generated(ctx, prov.modLoc("item/mahogany_nut")))
             .build()
             .register();
 
