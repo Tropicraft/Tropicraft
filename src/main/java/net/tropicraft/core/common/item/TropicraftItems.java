@@ -308,8 +308,6 @@ public class TropicraftItems {
                     .save(prov))
             .register();
 
-    public static final ItemEntry<Item> MAHOGANY_NUT = simpleItem("mahogany_nut").register();
-
     // Cocktails
     public static final ImmutableMap<Drink, ItemEntry<CocktailItem>> COCKTAILS = Drink.DRINKS.values().stream()
             .collect(ImmutableMap.toImmutableMap(Function.identity(), drink ->
