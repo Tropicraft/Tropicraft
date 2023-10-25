@@ -1,6 +1,7 @@
 package net.tropicraft.core.client.entity.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -9,6 +10,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.tropicraft.Constants;
 import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.entity.model.TapirModel;
+import net.tropicraft.core.client.entity.render.layer.SunglassesLayer;
 import net.tropicraft.core.common.entity.passive.TapirEntity;
 
 @OnlyIn(Dist.CLIENT)
@@ -18,6 +20,13 @@ public class TapirRenderer extends MobRenderer<TapirEntity, TapirModel<TapirEnti
 
     public TapirRenderer(final EntityRendererProvider.Context context) {
         super(context, new TapirModel<>(context.bakeLayer(TropicraftRenderLayers.TAPIR_LAYER)), 0.6F);
+        addLayer(new SunglassesLayer<>(this, TapirEntity::isUndercover, (poseStack, entity, model) -> {
+            final ModelPart head = model.getHead();
+            head.translateAndRotate(poseStack);
+            poseStack.translate(0.5f / 16.0f, 2.0f / 16.0f, -10.0f / 16.0f);
+            final float scale = 20.0f / 16.0f;
+            poseStack.scale(scale, scale, scale);
+        }));
     }
 
     @Override

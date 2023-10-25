@@ -130,7 +130,7 @@ public class TapirModel<T extends Entity> extends TropicraftAgeableModel<T> {
     }
 
     @Override
-    protected ModelPart getHead() {
+    public ModelPart getHead() {
         return head_base;
     }
 
