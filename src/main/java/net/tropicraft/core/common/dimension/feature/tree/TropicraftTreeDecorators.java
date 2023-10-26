@@ -16,6 +16,7 @@ public final class TropicraftTreeDecorators {
     public static DeferredHolder<TreeDecoratorType<?>, TreeDecoratorType<?>> REPLACE_IN_SOIL = register("replace_in_soil", ReplaceInSoilDecorator.CODEC);
     public static DeferredHolder<TreeDecoratorType<?>, TreeDecoratorType<?>> PNEUMATOPHORES = register("pneumatophores", PneumatophoresTreeDecorator.CODEC);
     public static DeferredHolder<TreeDecoratorType<?>, TreeDecoratorType<?>> PAPAYA = register("papaya", PapayaTreeDecorator.CODEC);
+    public static DeferredHolder<TreeDecoratorType<?>, TreeDecoratorType<?>> BRANCH = register("branch", BranchTreeDecorator.CODEC);
 
     private static <T extends TreeDecorator> DeferredHolder<TreeDecoratorType<?>, TreeDecoratorType<?>> register(String name, MapCodec<T> codec) {
         return REGISTER.register(name, () -> new TreeDecoratorType<>(codec));
