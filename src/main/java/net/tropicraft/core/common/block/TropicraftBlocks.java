@@ -611,8 +611,9 @@ public class TropicraftBlocks {
                 .register();
     }
 
+    public static final BlockEntry<SaplingBlock> JOCOTE_SAPLING = sapling("jocote_sapling", TropicraftTreeGrowers.JOCOTE).register();
     public static final BlockEntry<RotatedPillarBlock> JOCOTE_LOG = log("jocote_log", MapColor.COLOR_GRAY, MapColor.COLOR_BROWN).register();
-    public static final BlockEntry<LeavesBlock> JOCOTE_LEAVES = leaves("jocote_leaves", true).register();
+    public static final BlockEntry<LeavesBlock> JOCOTE_LEAVES = leaves("jocote_leaves", JOCOTE_SAPLING, SAPLING_RATES, true).register();
     public static final BlockEntry<FruitingBranchBlock> JOCOTE_BRANCH = REGISTRATE.block("jocote_branch", FruitingBranchBlock::new)
             .properties(p -> p.sound(SoundType.AZALEA).noOcclusion().noCollission().instabreak().randomTicks().pushReaction(PushReaction.DESTROY))
             .blockstate((ctx, prov) -> {
