@@ -17,6 +17,7 @@ public final class TropicraftTreeGrowers {
     public static final TreeGrower ORANGE = create("orange", TropicraftTreeFeatures.ORANGE_TREE);
     public static final TreeGrower PAPAYA = create("papaya", TropicraftTreeFeatures.PAPAYA);
     public static final TreeGrower PLANTAIN = create("plantain", TropicraftTreeFeatures.PLANTAIN);
+    public static final TreeGrower JOCOTE = create("jocote", TropicraftTreeFeatures.JOCOTE);
 
     public static final TreeGrower RAINFOREST = create("rainforest", TropicraftTreeFeatures.RAINFOREST_TREE);
     public static final TreeGrower PALM = create("palm", TropicraftTreeFeatures.PALM_TREE);
