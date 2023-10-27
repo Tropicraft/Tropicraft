@@ -59,6 +59,7 @@ public class TropicraftTags {
 
         public static final TagKey<Item> FRUITS = modTag("fruits");
         public static final TagKey<Item> MEATS = modTag("meats");
+        public static final TagKey<Item> LIME = modTag("lime");
 
         static TagKey<Item> tag(String modid, String name) {
             return TagKey.create(Registries.ITEM, new ResourceLocation(modid, name));

@@ -219,6 +219,7 @@ public class TropicraftItems {
             .register();
     public static final ItemEntry<Item> LIME = food("lime", Foods.LIME)
             .tag(TropicraftTags.Items.FRUITS)
+            .tag(TropicraftTags.Items.LIME)
             .register();
     public static final ItemEntry<Item> GRAPEFRUIT = food("grapefruit", Foods.GRAPEFRUIT)
             .tag(TropicraftTags.Items.FRUITS)
