@@ -1226,22 +1226,20 @@ public class TropicraftBlocks {
                 .block(name, p -> (SaplingBlock) new SaplingBlock(tree, p) {
                     @Override
                     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-                        if (validPlantBlocks == null || validPlantBlocks.length == 0) {
-                            return super.canSurvive(state, level, pos);
-                        } else {
-                            BlockPos ground = pos.below();
-                            return this.mayPlaceOn(level.getBlockState(ground), level, ground);
+                        if (super.canSurvive(state, level, pos)) {
+                            return true;
                         }
+                        BlockPos ground = pos.below();
+                        return this.mayPlaceOn(level.getBlockState(ground), level, ground);
                     }
 
                     @Override
                     protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
                         final Block block = state.getBlock();
-                        if (validPlantBlocks == null || validPlantBlocks.length == 0) {
-                            return block == Blocks.GRASS_BLOCK || block == Blocks.DIRT || block == Blocks.COARSE_DIRT || block == Blocks.PODZOL || block == Blocks.FARMLAND;
-                        } else {
-                            return Arrays.stream(validPlantBlocks).map(Supplier::get).anyMatch(b -> b == block);
+                        if (super.mayPlaceOn(state, level, pos)) {
+                            return true;
                         }
+                        return Arrays.stream(validPlantBlocks).map(Supplier::get).anyMatch(b -> b == block);
                     }
                 })
                 .initialProperties(() -> Blocks.OAK_SAPLING)
