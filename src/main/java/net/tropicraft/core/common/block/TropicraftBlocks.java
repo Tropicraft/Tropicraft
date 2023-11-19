@@ -1299,7 +1299,7 @@ public class TropicraftBlocks {
 
     private static BlockBuilder<RotatedPillarBlock, Registrate> log(String name, MapColor topColor, MapColor sideColor, @Nullable Supplier<? extends RotatedPillarBlock> strippedLog) {
         return REGISTRATE.block(name, p -> strippedLog != null ? new TropicraftLogBlock(p, strippedLog) : new RotatedPillarBlock(p))
-                .properties(p -> rotatedPillarProperties(topColor, sideColor).strength(2.0F).ignitedByLava().instrument(NoteBlockInstrument.BASS))
+        		.initialProperties(() -> Blocks.OAK_LOG)
                 .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN, BlockTags.MINEABLE_WITH_AXE)
                 .blockstate((ctx, prov) -> prov.logBlock(ctx.get()))
                 .item()
