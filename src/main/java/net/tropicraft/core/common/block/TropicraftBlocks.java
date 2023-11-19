@@ -1297,7 +1297,8 @@ public class TropicraftBlocks {
 
     private static BlockBuilder<RotatedPillarBlock, Registrate> log(String name, MapColor topColor, MapColor sideColor, @Nullable Supplier<? extends RotatedPillarBlock> strippedLog) {
         return REGISTRATE.block(name, p -> strippedLog != null ? new TropicraftLogBlock(p, strippedLog) : new RotatedPillarBlock(p))
-                .properties(p -> rotatedPillarProperties(topColor, sideColor).sound(SoundType.WOOD).instrument(NoteBlockInstrument.BASS).strength(2.0F).ignitedByLava())
+                .initialProperties(() -> Blocks.OAK_LOG)
+                .properties(p -> rotatedPillarProperties(p, topColor, sideColor))
                 .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN, BlockTags.MINEABLE_WITH_AXE)
                 .blockstate((ctx, prov) -> prov.logBlock(ctx.get()))
                 .item()
@@ -1551,8 +1552,8 @@ public class TropicraftBlocks {
                     .build();
     }
 
-    private static Properties rotatedPillarProperties(MapColor topColor, MapColor sideColor) {
-        return Properties.of().mapColor(state -> state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? topColor : sideColor);
+    private static Properties rotatedPillarProperties(Properties properties, MapColor topColor, MapColor sideColor) {
+        return properties.mapColor(state -> state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? topColor : sideColor);
     }
 
     protected static <T extends Comparable<T> & StringRepresentable> LootTable.Builder createSinglePropConditionTable(RegistrateBlockLootTables loot, Block block, Property<T> property, T value) {
