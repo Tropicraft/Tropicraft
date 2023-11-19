@@ -382,7 +382,7 @@ public class TropicraftBlocks {
     public static final BlockEntry<RotatedPillarBlock> THATCH_BUNDLE = REGISTRATE.block("thatch_bundle", RotatedPillarBlock::new)
             .properties(p -> p.mapColor(MapColor.PLANT).sound(SoundType.BAMBOO).strength(0.2F, 5.0F).ignitedByLava().pushReaction(PushReaction.DESTROY))
             .blockstate((ctx, prov) -> prov.axisBlock(ctx.get(), prov.modLoc("block/thatch")))
-            .recipe((ctx, prov) -> prov.singleItem(DataIngredient.items(Items.SUGAR_CANE), RecipeCategory.BUILDING_BLOCKS, ctx, 9, 1))
+            .recipe((ctx, prov) -> prov.singleItem(DataIngredient.items(Items.SUGAR_CANE), RecipeCategory.BUILDING_BLOCKS, ctx, 4, 1))
             .simpleItem()
             .register();
 
