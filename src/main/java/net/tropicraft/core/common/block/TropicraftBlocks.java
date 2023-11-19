@@ -1297,7 +1297,7 @@ public class TropicraftBlocks {
 
     private static BlockBuilder<RotatedPillarBlock, Registrate> log(String name, MapColor topColor, MapColor sideColor, @Nullable Supplier<? extends RotatedPillarBlock> strippedLog) {
         return REGISTRATE.block(name, p -> strippedLog != null ? new TropicraftLogBlock(p, strippedLog) : new RotatedPillarBlock(p))
-        		.initialProperties(() -> Blocks.OAK_LOG)
+                .properties(p -> rotatedPillarProperties(topColor, sideColor).sound(SoundType.WOOD).instrument(NoteBlockInstrument.BASS).strength(2.0F).ignitedByLava())
                 .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN, BlockTags.MINEABLE_WITH_AXE)
                 .blockstate((ctx, prov) -> prov.logBlock(ctx.get()))
                 .item()
@@ -1311,7 +1311,7 @@ public class TropicraftBlocks {
 
     private static BlockBuilder<RotatedPillarBlock, Registrate> wood(String name, MapColor color, BlockEntry<? extends RotatedPillarBlock> bark, @Nullable Supplier<? extends RotatedPillarBlock> stripped) {
         return REGISTRATE.block(name, p -> stripped != null ? new TropicraftLogBlock(p, stripped) : new RotatedPillarBlock(p))
-                .properties(p -> p.mapColor(color).strength(2.0F).ignitedByLava().instrument(NoteBlockInstrument.BASS))
+                .properties(p -> p.sound(SoundType.WOOD).mapColor(color).strength(2.0F).ignitedByLava().instrument(NoteBlockInstrument.BASS))
                 .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN, BlockTags.MINEABLE_WITH_AXE)
                 .blockstate((ctx, prov) -> {
                     ResourceLocation barkTexture = prov.blockTexture(bark.get());
@@ -1332,6 +1332,7 @@ public class TropicraftBlocks {
         return REGISTRATE.block(name, MangroveRootsBlock::new)
                 .properties(p ->
                         p.mapColor(MapColor.WOOD)
+                                .sound(SoundType.WOOD)
                                 .ignitedByLava()
                                 .instrument(NoteBlockInstrument.BASS)
                                 .strength(2.0F)
