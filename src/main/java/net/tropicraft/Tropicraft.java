@@ -34,10 +34,13 @@ import net.minecraftforge.fml.IExtensionPoint;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraftforge.fml.loading.FMLPaths;
 import net.tropicraft.core.client.data.TropicraftLangKeys;
+import net.tropicraft.core.common.TropicsConfigs;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.command.TropicraftCommands;
 import net.tropicraft.core.common.command.debug.MapBiomesCommand;
@@ -59,6 +62,7 @@ import net.tropicraft.core.common.item.scuba.ScubaGogglesItem;
 import net.tropicraft.core.common.network.TropicraftPackets;
 import net.tropicraft.core.common.sound.Sounds;
 
+import java.nio.file.Path;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.regex.Pattern;
@@ -94,6 +98,7 @@ public class Tropicraft {
         modBus.addListener(this::gatherData);
 
         MinecraftForge.EVENT_BUS.addListener(this::onServerStarting);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, TropicsConfigs.COMMON_SPEC);
 
         // Registry objects
         Sounds.REGISTER.register(modBus);

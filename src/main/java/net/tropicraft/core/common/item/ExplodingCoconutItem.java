@@ -2,7 +2,6 @@ package net.tropicraft.core.common.item;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -13,8 +12,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.tropicraft.core.common.dimension.TropicraftDimension;
+import net.tropicraft.core.client.data.TropicraftLangKeys;
+import net.tropicraft.core.common.TropicsConfigs;
 import net.tropicraft.core.common.entity.projectile.ExplodingCoconutEntity;
+
 
 public class ExplodingCoconutItem extends Item {
 
@@ -24,14 +25,11 @@ public class ExplodingCoconutItem extends Item {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
-        // TODO config option
-        final boolean canPlayerThrow = player.isCreative() || player.canUseGameMasterBlocks();
-        //allow to use anywhere but in the main area of the server
-        final boolean ltOverride = world.dimension() != TropicraftDimension.WORLD;
+        final boolean canPlayerThrow = player.isCreative() || player.canUseGameMasterBlocks() || TropicsConfigs.COMMON.allowExplodingCoconutsByNonOPs.get();
         ItemStack item = player.getItemInHand(hand);
-        if (!canPlayerThrow && !ltOverride) {
+        if (!canPlayerThrow) {
             if (!world.isClientSide) {
-                player.displayClientMessage(Component.translatable("tropicraft.coconutBombWarning"), false);
+                player.displayClientMessage(TropicraftLangKeys.EXPLODING_COCONUT_WARNING.component(), false);
             }
             return new InteractionResultHolder<>(InteractionResult.PASS, item);
         }

@@ -13,7 +13,9 @@ public enum TropicraftLangKeys {
     SCUBA_DIVE_TIME("scuba", "dive_time", "Dive Time: %s"),
     SCUBA_DEPTH("scuba", "depth", "Current Depth: %s"),
     SCUBA_MAX_DEPTH("scuba", "max_depth", "Max Depth: %s"),
-    SCUBA_VISIBILITY_STAT("scuba", "scuba.visibility", "Underwater Fog Reduction");
+    SCUBA_VISIBILITY_STAT("scuba", "scuba.visibility", "Underwater Fog Reduction"),
+
+    EXPLODING_COCONUT_WARNING("item", "exploding_coconut_warning", "You do not have permission to throw this. Change the config option for exploding coconuts to allow this");
 
     private final String key;
     private final String value;
@@ -22,7 +24,7 @@ public enum TropicraftLangKeys {
     TropicraftLangKeys(String type, String key, String value) {
         this.key = Util.makeDescriptionId(type, new ResourceLocation(Constants.MODID, key));
         this.value = value;
-        this.component = Component.translatable(key);
+        this.component = Component.translatable(this.key);
     }
 
     public String key() {

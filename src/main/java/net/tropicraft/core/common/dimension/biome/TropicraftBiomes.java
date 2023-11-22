@@ -24,6 +24,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.TropicraftTags;
+import net.tropicraft.core.common.TropicsConfigs;
 import net.tropicraft.core.common.dimension.carver.TropicraftConfiguredCarvers;
 import net.tropicraft.core.common.dimension.feature.TropicraftMiscPlacements;
 import net.tropicraft.core.common.dimension.feature.TropicraftVegetationPlacements;

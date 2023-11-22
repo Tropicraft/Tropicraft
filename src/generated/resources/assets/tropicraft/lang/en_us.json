@@ -379,6 +379,7 @@
   "item.tropicraft.eudialyte_shovel": "Eudialyte Shovel",
   "item.tropicraft.eudialyte_sword": "Eudialyte Sword",
   "item.tropicraft.exploding_coconut": "Exploding Coconut",
+  "item.tropicraft.exploding_coconut_warning": "You do not have permission to throw this. Change the config option for exploding coconuts to allow this",
   "item.tropicraft.failgull_spawn_egg": "Failgull Spawn Egg",
   "item.tropicraft.fiddler_crab_spawn_egg": "Fiddler Crab Spawn Egg",
   "item.tropicraft.fire_boots": "Fire Boots",
