@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 1,
+  "ingredient": {
+    "item": "tropicraft:papaya_wood"
+  },
+  "result": "tropicraft:papaya_wood_wall"
+}

@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 1,
+  "ingredient": {
+    "item": "tropicraft:mangrove_planks"
+  },
+  "result": "tropicraft:mangrove_planks_wall"
+}

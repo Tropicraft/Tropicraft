@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_black_mangrove_wood": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tropicraft:black_mangrove_wood"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "tropicraft:black_mangrove_wood_wall_from_black_mangrove_wood_stonecutting"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_black_mangrove_wood",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "tropicraft:black_mangrove_wood_wall_from_black_mangrove_wood_stonecutting"
+    ]
+  },
+  "sends_telemetry_event": false
+}

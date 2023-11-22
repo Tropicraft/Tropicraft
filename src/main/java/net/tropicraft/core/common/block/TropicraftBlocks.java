@@ -85,6 +85,7 @@ import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.mixin.BlockEntityTypeAccessor;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -618,16 +619,35 @@ public class TropicraftBlocks {
     public static final BlockEntry<FenceGateBlock> PALM_FENCE_GATE = fenceGate("palm_fence_gate", PALM_PLANKS).register();
     public static final BlockEntry<FenceGateBlock> MAHOGANY_FENCE_GATE = fenceGate("mahogany_fence_gate", MAHOGANY_PLANKS).register();
 
-    public static final BlockEntry<WallBlock> CHUNK_WALL = REGISTRATE.block("chunk_wall", WallBlock::new)
-            .initialProperties(CHUNK)
-            .tag(BlockTags.WALLS)
-            .blockstate((ctx, prov) -> prov.wallBlock(ctx.get(), prov.blockTexture(CHUNK.get())))
-            .recipe((ctx, prov) -> prov.wall(DataIngredient.items(CHUNK.get()), RecipeCategory.DECORATIONS, ctx))
-            .item()
+    public static final BlockEntry<WallBlock> CHUNK_WALL = wall("chunk_wall", CHUNK);
+    public static final BlockEntry<WallBlock> PALM_PLANK_WALL = wall("palm_plank_wall", PALM_PLANKS);
+    public static final BlockEntry<WallBlock> MAHOGANY_PLANK_WALL = wall("mahogany_plank_wall", MAHOGANY_PLANKS);
+    public static final BlockEntry<WallBlock> PALM_WOOD_WALL = wall("palm_wood_wall", PALM_WOOD, PALM_LOG);
+    public static final BlockEntry<WallBlock> MAHOGANY_WOOD_WALL = wall("mahogany_wood_wall", MAHOGANY_WOOD, MAHOGANY_LOG);
+    public static final BlockEntry<WallBlock> PAPAYA_WOOD_WALL = wall("papaya_wood_wall", PAPAYA_WOOD, PAPAYA_LOG);
+    public static final BlockEntry<WallBlock> MANGROVE_PLANKS_WALL = wall("mangrove_planks_wall", MANGROVE_PLANKS);
+    public static final BlockEntry<WallBlock> BLACK_MANGROVE_WOOD_WALL = wall("black_mangrove_wood_wall", BLACK_MANGROVE_WOOD, BLACK_MANGROVE_LOG);
+    public static final BlockEntry<WallBlock> RED_MANGROVE_WOOD_WALL = wall("red_mangrove_wood_wall", RED_MANGROVE_WOOD, RED_MANGROVE_LOG);
+    public static final BlockEntry<WallBlock> LIGHT_MANGROVE_WOOD_WALL = wall("light_mangrove_wood_wall", LIGHT_MANGROVE_WOOD, LIGHT_MANGROVE_LOG);
+    public static final BlockEntry<WallBlock> STRIPPED_MANGROVE_WOOD_WALL = wall("stripped_mangrove_wood_wall", STRIPPED_MANGROVE_WOOD, STRIPPED_MANGROVE_LOG);
+
+    @NotNull
+    private static BlockEntry<WallBlock> wall(final String wallName, BlockEntry<? extends Block> baseBlock) {
+        return wall(wallName, baseBlock, baseBlock);
+    }
+
+    private static BlockEntry<WallBlock> wall(final String wallName, BlockEntry<? extends Block> baseBlock, BlockEntry<? extends Block> textureBlock) {
+        return REGISTRATE.block(wallName, WallBlock::new)
+                .initialProperties(baseBlock)
+                .tag(BlockTags.WALLS)
+                .blockstate((ctx, prov) -> prov.wallBlock(ctx.get(), prov.blockTexture(textureBlock.get())))
+                .recipe((ctx, prov) -> prov.wall(DataIngredient.items(baseBlock.get()), RecipeCategory.DECORATIONS, ctx))
+                .item()
                 .tag(ItemTags.WALLS)
-                .model((ctx, prov) -> prov.wallInventory(ctx.getName(), prov.modLoc("block/" + CHUNK.getId().getPath())))
+                .model((ctx, prov) -> prov.wallInventory(ctx.getName(), prov.modLoc("block/" + textureBlock.getId().getPath())))
                 .build()
-            .register();
+                .register();
+    }
 
     public static final BlockEntry<DoorBlock> BAMBOO_DOOR = woodenDoor("bamboo_door", BAMBOO_BUNDLE).register();
     public static final BlockEntry<DoorBlock> PALM_DOOR = woodenDoor("palm_door", PALM_PLANKS).register();

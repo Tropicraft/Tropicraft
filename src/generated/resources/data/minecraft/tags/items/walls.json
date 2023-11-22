@@ -1,5 +1,15 @@
 {
   "values": [
-    "tropicraft:chunk_wall"
+    "tropicraft:chunk_wall",
+    "tropicraft:palm_plank_wall",
+    "tropicraft:mahogany_plank_wall",
+    "tropicraft:palm_wood_wall",
+    "tropicraft:mahogany_wood_wall",
+    "tropicraft:papaya_wood_wall",
+    "tropicraft:mangrove_planks_wall",
+    "tropicraft:black_mangrove_wood_wall",
+    "tropicraft:red_mangrove_wood_wall",
+    "tropicraft:light_mangrove_wood_wall",
+    "tropicraft:stripped_mangrove_wood_wall"
   ]
 }

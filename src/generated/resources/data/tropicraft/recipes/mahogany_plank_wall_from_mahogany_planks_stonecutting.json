@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 1,
+  "ingredient": {
+    "item": "tropicraft:mahogany_planks"
+  },
+  "result": "tropicraft:mahogany_plank_wall"
+}

@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 1,
+  "ingredient": {
+    "item": "tropicraft:palm_planks"
+  },
+  "result": "tropicraft:palm_plank_wall"
+}

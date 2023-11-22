@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 1,
+  "ingredient": {
+    "item": "tropicraft:black_mangrove_wood"
+  },
+  "result": "tropicraft:black_mangrove_wood_wall"
+}
