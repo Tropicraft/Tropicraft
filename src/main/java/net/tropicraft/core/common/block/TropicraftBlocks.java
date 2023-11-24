@@ -279,6 +279,7 @@ public class TropicraftBlocks {
             .item()
                 .tag(ItemTags.SAND)
                 .build()
+            .recipe((ctx, prov) -> prov.smelting(DataIngredient.items(ctx), RecipeCategory.MISC, () -> Blocks.GLASS, 0.3f))
             .register();
 
     public static final BlockEntry<Block> PACKED_PURIFIED_SAND = REGISTRATE.block("packed_purified_sand", Block::new)
