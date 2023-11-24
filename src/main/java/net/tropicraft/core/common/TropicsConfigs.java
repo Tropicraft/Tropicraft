@@ -19,7 +19,7 @@ public class TropicsConfigs {
             allowExplodingCoconutsByNonOPs = builder
                     .comment("Should non OPs be allowed to throw exploding coconuts?")
                     .translation("config.tropicraft.common.items.allow_exploding_coconuts")
-                    .define("ALlow exploding coconuts to be used by non-ops/creative mode players?", false);
+                    .define("Allow exploding coconuts to be used by non-ops/creative mode players?", false);
             builder.pop();
         }
     }
