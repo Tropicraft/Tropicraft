@@ -676,6 +676,8 @@ public class TropicraftItems {
     public static final ItemEntry<SignItem> THATCH_SIGN = sign(TropicraftWoodTypes.THATCH, TropicraftBlocks.THATCH_BUNDLE, TropicraftBlocks.THATCH_SIGN, TropicraftBlocks.THATCH_WALL_SIGN).register();
     public static final ItemEntry<SignItem> MANGROVE_SIGN = sign(TropicraftWoodTypes.MANGROVE, TropicraftBlocks.MANGROVE_PLANKS, TropicraftBlocks.MANGROVE_SIGN, TropicraftBlocks.MANGROVE_WALL_SIGN).register();
 
+    public static final ItemEntry<HangingSignItem> MAHOGANY_HANGING_SIGN = hangingSign(TropicraftWoodTypes.MAHOGANY, TropicraftBlocks.STRIPPED_MANGROVE_LOG, TropicraftBlocks.MAHOGANY_HANGING_SIGN, TropicraftBlocks.MAHOGANY_WALL_HANGING_SIGN).register();
+
     private static ItemBuilder<Item, Registrate> simpleItem(String name) {
         return REGISTRATE.item(name, Item::new);
     }
@@ -697,6 +699,22 @@ public class TropicraftItems {
                         .define('|', Tags.Items.RODS_WOODEN)
                         .unlockedBy("has_" + woodName, has(planks.get()))
                         .group("wooden_sign")
+                        .save(prov));
+    }
+
+    private static ItemBuilder<HangingSignItem, Registrate> hangingSign(final WoodType woodType, final Supplier<? extends Block> strippedLog, final Supplier<? extends CeilingHangingSignBlock> hangingSign, final Supplier<? extends WallHangingSignBlock> wallHangingSign) {
+        String woodName = new ResourceLocation(woodType.name()).getPath();
+        return REGISTRATE.item(woodName + "_hanging_sign", p -> new HangingSignItem(hangingSign.get(), wallHangingSign.get(), p))
+                .properties(p -> p.stacksTo(16))
+                .tag(ItemTags.HANGING_SIGNS)
+                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ctx.get())
+                        .pattern("| |")
+                        .pattern("###")
+                        .pattern("###")
+                        .define('#', strippedLog.get())
+                        .define('|', Items.CHAIN)
+                        .unlockedBy("has_stripped_logs", has(strippedLog.get()))
+                        .group("hanging_sign")
                         .save(prov));
     }
 

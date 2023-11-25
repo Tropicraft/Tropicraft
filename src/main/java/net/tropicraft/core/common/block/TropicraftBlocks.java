@@ -541,17 +541,23 @@ public class TropicraftBlocks {
     public static final BlockEntry<PressurePlateBlock> BAMBOO_PRESSURE_PLATE = pressurePlate("bamboo_pressure_plate", BAMBOO_BUNDLE, "bamboo_end").register();
     public static final BlockEntry<PressurePlateBlock> THATCH_PRESSURE_PLATE = pressurePlate("thatch_pressure_plate", THATCH_BUNDLE, "thatch_end").register();
 
+    // Signs
     public static final BlockEntry<StandingSignBlock> MAHOGANY_SIGN = standingSign(TropicraftWoodTypes.MAHOGANY, () -> TropicraftItems.MAHOGANY_SIGN.get(), "mahogany_planks").register();
     public static final BlockEntry<StandingSignBlock> PALM_SIGN = standingSign(TropicraftWoodTypes.PALM, () -> TropicraftItems.PALM_SIGN.get(), "palm_planks").register();
     public static final BlockEntry<StandingSignBlock> BAMBOO_SIGN = standingSign(TropicraftWoodTypes.BAMBOO, () -> TropicraftItems.BAMBOO_SIGN.get(), "bamboo_end").register();
     public static final BlockEntry<StandingSignBlock> THATCH_SIGN = standingSign(TropicraftWoodTypes.THATCH, () -> TropicraftItems.THATCH_SIGN.get(), "thatch_end").register();
     public static final BlockEntry<StandingSignBlock> MANGROVE_SIGN = standingSign(TropicraftWoodTypes.MANGROVE, () -> TropicraftItems.MANGROVE_SIGN.get(), "mangrove_planks").register();
 
+    // Wall Signs
     public static final BlockEntry<WallSignBlock> MAHOGANY_WALL_SIGN = wallSign(TropicraftWoodTypes.MAHOGANY, () -> TropicraftItems.MAHOGANY_SIGN.get(), "mahogany_planks").register();
     public static final BlockEntry<WallSignBlock> PALM_WALL_SIGN = wallSign(TropicraftWoodTypes.PALM, () -> TropicraftItems.PALM_SIGN.get(), "palm_planks").register();
     public static final BlockEntry<WallSignBlock> BAMBOO_WALL_SIGN = wallSign(TropicraftWoodTypes.BAMBOO, () -> TropicraftItems.BAMBOO_SIGN.get(), "bamboo_end").register();
     public static final BlockEntry<WallSignBlock> THATCH_WALL_SIGN = wallSign(TropicraftWoodTypes.THATCH, () -> TropicraftItems.THATCH_SIGN.get(), "thatch_end").register();
     public static final BlockEntry<WallSignBlock> MANGROVE_WALL_SIGN = wallSign(TropicraftWoodTypes.MANGROVE, () -> TropicraftItems.MANGROVE_SIGN.get(), "mangrove_planks").register();
+
+    // Hanging Signs
+    public static final BlockEntry<CeilingHangingSignBlock> MAHOGANY_HANGING_SIGN = hangingSign(TropicraftWoodTypes.MAHOGANY, () -> TropicraftItems.MAHOGANY_HANGING_SIGN.get(), "mahogany_planks").register();
+    public static final BlockEntry<WallHangingSignBlock> MAHOGANY_WALL_HANGING_SIGN = wallHangingSign(TropicraftWoodTypes.MAHOGANY, () -> TropicraftItems.MAHOGANY_HANGING_SIGN.get(), "mahogany_planks").register();
 
     public static final BlockEntry<ReedsBlock> REEDS = REGISTRATE.block("reeds", ReedsBlock::new)
             .initialProperties(() -> Blocks.SUGAR_CANE)
@@ -1219,6 +1225,34 @@ public class TropicraftBlocks {
                 .loot((loot, b) -> loot.dropOther(b, item.get()))
                 .setData(ProviderType.LANG, NonNullBiConsumer.noop())
                 .onRegisterAfter(Registries.BLOCK_ENTITY_TYPE, b -> extendBlockEntity(BlockEntityType.SIGN, b));
+    }
+
+    private static BlockBuilder<CeilingHangingSignBlock, Registrate> hangingSign(WoodType woodType, Supplier<? extends Item> item, String texture) {
+        String woodName = new ResourceLocation(woodType.name()).getPath();
+        return REGISTRATE.block(woodName + "_hanging_sign", p -> new CeilingHangingSignBlock(p, woodType))
+                .initialProperties(() -> Blocks.OAK_HANGING_SIGN)
+                .tag(BlockTags.CEILING_HANGING_SIGNS, BlockTags.MINEABLE_WITH_AXE)
+                .blockstate((ctx, prov) -> {
+                    BlockModelBuilder model = prov.models().sign(woodType.name() + "_hanging_sign", prov.modLoc("block/" + texture));
+                    prov.simpleBlock(ctx.get(), model);
+                })
+                .loot((loot, b) -> loot.dropOther(b, item.get()))
+                .setData(ProviderType.LANG, NonNullBiConsumer.noop())
+                .onRegisterAfter(Registries.BLOCK_ENTITY_TYPE, b -> extendBlockEntity(BlockEntityType.HANGING_SIGN, b));
+    }
+
+    private static BlockBuilder<WallHangingSignBlock, Registrate> wallHangingSign(WoodType woodType, Supplier<? extends Item> item, String texture) {
+        String woodName = new ResourceLocation(woodType.name()).getPath();
+        return REGISTRATE.block(woodName + "_wall_hanging_sign", p -> new WallHangingSignBlock(p, woodType))
+                .initialProperties(() -> Blocks.OAK_WALL_HANGING_SIGN)
+                .tag(BlockTags.WALL_HANGING_SIGNS, BlockTags.MINEABLE_WITH_AXE)
+                .blockstate((ctx, prov) -> {
+                    BlockModelBuilder model = prov.models().sign(woodType.name() + "_wall_hanging_sign", prov.modLoc("block/" + texture));
+                    prov.simpleBlock(ctx.get(), model);
+                })
+                .loot((loot, b) -> loot.dropOther(b, item.get()))
+                .setData(ProviderType.LANG, NonNullBiConsumer.noop())
+                .onRegisterAfter(Registries.BLOCK_ENTITY_TYPE, b -> extendBlockEntity(BlockEntityType.HANGING_SIGN, b));
     }
 
     @SafeVarargs
