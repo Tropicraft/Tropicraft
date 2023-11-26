@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "food",
+  "cookingtime": 200,
+  "experience": 0.1,
+  "ingredient": {
+    "tag": "tropicraft:plantain"
+  },
+  "result": "tropicraft:dried_plantains"
+}

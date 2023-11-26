@@ -1,11 +1,13 @@
 package net.tropicraft.core.common.dimension.feature;
 
+import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -14,12 +16,16 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.BlobFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.feature.stateproviders.RandomizedIntStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.RuleBasedBlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
+import net.minecraft.world.level.levelgen.feature.treedecorators.AttachedToLeavesDecorator;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
 import net.tropicraft.Constants;
+import net.tropicraft.core.common.block.FruitingBranchBlock;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.block.TropicraftTrees;
 import net.tropicraft.core.common.dimension.feature.tree.*;
@@ -51,6 +57,8 @@ public final class TropicraftTreeFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> PLEODENDRON = createKey("pleodendron");
 
     public static final ResourceKey<ConfiguredFeature<?, ?>> PAPAYA = createKey("papaya");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> PLANTAIN = createKey("plantain");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> JOCOTE = createKey("jocote");
 
     public static final ResourceKey<ConfiguredFeature<?, ?>> RED_MANGROVE_SHORT = createKey("red_mangrove_short");
     public static final ResourceKey<ConfiguredFeature<?, ?>> RED_MANGROVE_SMALL = createKey("red_mangrove_small");
@@ -119,6 +127,44 @@ public final class TropicraftTreeFeatures {
                 new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
         )
                 .decorators(List.of(TropicraftTrees.BEEHIVE_005, new PapayaTreeDecorator()))
+                .build());
+
+        register(context, PLANTAIN, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
+                BlockStateProvider.simple(TropicraftBlocks.PLANTAIN_STEM.get().defaultBlockState()),
+                new StraightTrunkPlacer(3, 1, 1),
+                BlockStateProvider.simple(TropicraftBlocks.PLANTAIN_LEAVES.get().defaultBlockState()),
+                new SmallMangroveFoliagePlacer(ConstantInt.of(1), ConstantInt.of(0)),
+                new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
+        )
+                .decorators(List.of(new AttachedToLeavesDecorator(
+                        0.5f,
+                        1,
+                        0,
+                        new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder()
+                                .add(TropicraftBlocks.YELLOW_PLANTAIN_BUNCH.getDefaultState(), 1)
+                                .add(TropicraftBlocks.GREEN_PLANTAIN_BUNCH.getDefaultState(), 1)
+                                .build()),
+                        2,
+                        List.of(Direction.DOWN)
+                )))
+                .build());
+
+        register(context, JOCOTE, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
+                BlockStateProvider.simple(TropicraftBlocks.JOCOTE_LOG.get().defaultBlockState()),
+                new StraightTrunkPlacer(3, 1, 1),
+                BlockStateProvider.simple(TropicraftBlocks.JOCOTE_LEAVES.get().defaultBlockState()),
+                new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
+                new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
+        )
+                .decorators(List.of(new BranchTreeDecorator(
+                        0.1f,
+                        new RandomizedIntStateProvider(
+                                BlockStateProvider.simple(TropicraftBlocks.JOCOTE_BRANCH.getDefaultState()),
+                                FruitingBranchBlock.AGE,
+                                UniformInt.of(0, FruitingBranchBlock.MAX_AGE)
+                        ),
+                        2
+                )))
                 .build());
 
         register(context, RED_MANGROVE_SHORT, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(

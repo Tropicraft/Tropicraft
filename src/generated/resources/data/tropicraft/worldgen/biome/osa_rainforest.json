@@ -165,6 +165,12 @@
         "weight": 15
       },
       {
+        "type": "tropicraft:gibnut",
+        "maxCount": 8,
+        "minCount": 3,
+        "weight": 10
+      },
+      {
         "type": "tropicraft:jaguar",
         "maxCount": 2,
         "minCount": 1,
@@ -181,6 +187,12 @@
         "maxCount": 8,
         "minCount": 6,
         "weight": 15
+      },
+      {
+        "type": "tropicraft:toucan",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 8
       }
     ],
     "underground_water_creature": [],

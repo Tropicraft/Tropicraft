@@ -227,6 +227,12 @@ public class TropicraftItems {
     public static final ItemEntry<Item> ORANGE = food("orange", Foods.ORANGE)
             .tag(TropicraftTags.Items.FRUITS)
             .register();
+    public static final ItemEntry<Item> PASSIONFRUIT = food("passionfruit", Foods.PASSIONFRUIT)
+            .tag(TropicraftTags.Items.FRUITS)
+            .register();
+    public static final ItemEntry<Item> JOCOTE = food("jocote", Foods.JOCOTE)
+            .tag(TropicraftTags.Items.FRUITS)
+            .register();
     public static final ItemEntry<Item> PINEAPPLE_CUBES = food("pineapple_cubes", Foods.PINEAPPLE_CUBES).register();
     public static final ItemEntry<Item> COCONUT_CHUNK = food("coconut_chunk", Foods.COCONUT_CHUNK).register();
 
@@ -245,6 +251,29 @@ public class TropicraftItems {
                     .pattern("X X").pattern("X X").pattern("XXX")
                     .define('X', Items.BAMBOO)
                     .unlockedBy("has_bamboo", has(Items.BAMBOO))
+                    .save(prov))
+            .register();
+    public static final ItemEntry<Item> BAMBOO_BOWL = simpleItem("bamboo_bowl")
+            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get())
+                    .pattern("X X").pattern(" X ")
+                    .define('X', Items.BAMBOO)
+                    .unlockedBy("has_bamboo", has(Items.BAMBOO))
+                    .save(prov))
+            .register();
+
+    public static final ItemEntry<Item> GREEN_PLANTAIN = food("green_plantain", Foods.PLANTAIN).tag(TropicraftTags.Items.PLANTAIN).register();
+    public static final ItemEntry<Item> YELLOW_PLANTAIN = food("yellow_plantain", Foods.PLANTAIN).tag(TropicraftTags.Items.PLANTAIN).register();
+    public static final ItemEntry<Item> DRIED_PLANTAINS = food("dried_plantains", Foods.DRIED_PLANTAINS)
+            .recipe((ctx, prov) -> prov.food(DataIngredient.tag(TropicraftTags.Items.PLANTAIN), RecipeCategory.FOOD, ctx, 0.1f))
+            .register();
+
+    public static final ItemEntry<FoodDishItem> MOFONGO = REGISTRATE.item("mofongo", p -> new FoodDishItem(p, BAMBOO_BOWL))
+            .properties(p -> p.food(Foods.MOFONGO).craftRemainder(BAMBOO_BOWL.get()))
+            .recipe((ctx, prov) -> ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, ctx.get())
+                    .requires(DRIED_PLANTAINS, 2)
+                    .requires(BAMBOO_BOWL)
+                    .requires(Items.COOKED_PORKCHOP)
+                    .unlockedBy("has_plantains", has(DRIED_PLANTAINS))
                     .save(prov))
             .register();
 
@@ -284,6 +313,10 @@ public class TropicraftItems {
     public static final ItemEntry<Item> SCALE = simpleItem("scale").register();
     public static final ItemEntry<NigelStacheItem> NIGEL_STACHE = REGISTRATE.item("nigel_stache", NigelStacheItem::new)
             .lang("Nigel's Moustache")
+            .register();
+    public static final ItemEntry<SunglassesItem> COOL_SHADES = REGISTRATE.item("cool_shades", SunglassesItem::new)
+            .properties(p -> p.stacksTo(1))
+            .model((ctx, prov) -> {})
             .register();
 
     public static final ItemEntry<Item> FRESH_MARLIN = food("fresh_marlin", Foods.FRESH_MARLIN).register();
@@ -387,6 +420,10 @@ public class TropicraftItems {
     public static final ItemEntry<Item> SPIDER_MONKEY_SPAWN_EGG = spawnEgg("spider_monkey_spawn_egg", TropicraftEntities.SPIDER_MONKEY, 0xF28252, 0x754730).register();
     public static final ItemEntry<Item> WHITE_LIPPED_PECCARY_SPAWN_EGG = spawnEgg("white_lipped_peccary_spawn_egg", TropicraftEntities.WHITE_LIPPED_PECCARY, 0x665D54, 0x544D42).register();
     public static final ItemEntry<Item> CUBERA_SPAWN_EGG = spawnEgg("cubera_spawn_egg", TropicraftEntities.CUBERA, 0xF77631, 0x872C18).register();
+    public static final ItemEntry<Item> GIBNUT_SPAWN_EGG = spawnEgg("gibnut_spawn_egg", TropicraftEntities.GIBNUT, 0x482d1c, 0x83756e).register();
+    public static final ItemEntry<Item> MANATEE_SPAWN_EGG = spawnEgg("manatee_spawn_egg", TropicraftEntities.MANATEE, 0x696758, 0xbdb4aa).register();
+    public static final ItemEntry<Item> SLENDER_HARVEST_MOUSE_SPAWN_EGG = spawnEgg("slender_harvest_mouse_spawn_egg", TropicraftEntities.SLENDER_HARVEST_MOUSE, 0xaf7a41, 0xe6d7bf).register();
+    public static final ItemEntry<Item> TOUCAN_SPAWN_EGG = spawnEgg("toucan_spawn_egg", TropicraftEntities.TOUCAN, 0x08060d, 0xe5dc5b).register();
 
     private static <T extends Mob> ItemBuilder<Item, Registrate> spawnEgg(final String name, final RegistryEntry<EntityType<T>> entity, final int backgroundColor, final int highlightColor) {
         return REGISTRATE.item(name, p -> (Item) new ForgeSpawnEggItem(entity, backgroundColor, highlightColor, p))

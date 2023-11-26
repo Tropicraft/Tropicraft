@@ -7,8 +7,13 @@ public class Foods {
     public static final FoodProperties LIME = new FoodProperties.Builder().nutrition(2).saturationMod(0.2f).fast().build();
     public static final FoodProperties GRAPEFRUIT = new FoodProperties.Builder().nutrition(2).saturationMod(0.2f).fast().build();
     public static final FoodProperties ORANGE = new FoodProperties.Builder().nutrition(2).saturationMod(0.2f).fast().build();
+    public static final FoodProperties PASSIONFRUIT = new FoodProperties.Builder().nutrition(2).saturationMod(0.2f).fast().build();
+    public static final FoodProperties JOCOTE = new FoodProperties.Builder().nutrition(2).saturationMod(0.2f).fast().build();
     public static final FoodProperties PAPAYA = new FoodProperties.Builder().nutrition(6).saturationMod(0.5f).build();
     public static final FoodProperties PINEAPPLE_CUBES = new FoodProperties.Builder().nutrition(1).saturationMod(0.1f).fast().build();
+    public static final FoodProperties PLANTAIN = new FoodProperties.Builder().nutrition(3).saturationMod(0.2f).build();
+    public static final FoodProperties DRIED_PLANTAINS = new FoodProperties.Builder().nutrition(3).saturationMod(0.2f).fast().build();
+    public static final FoodProperties MOFONGO = new FoodProperties.Builder().nutrition(10).saturationMod(1.0f).build();
     public static final FoodProperties COCONUT_CHUNK = new FoodProperties.Builder().nutrition(1).saturationMod(0.1f).fast().build();
     public static final FoodProperties COOKED_RAY = new FoodProperties.Builder().nutrition(5).saturationMod(0.5f).build();
     public static final FoodProperties FRESH_MARLIN = new FoodProperties.Builder().nutrition(2).saturationMod(0.3f).build();

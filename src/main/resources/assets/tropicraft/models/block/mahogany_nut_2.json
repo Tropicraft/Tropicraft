@@ -1,0 +1,41 @@
+{
+  "ambientocclusion": false,
+  "textures": {
+    "side": "tropicraft:block/large_mahogany_nut_side",
+    "bottom": "tropicraft:block/large_mahogany_nut_bottom",
+    "top": "tropicraft:block/large_mahogany_nut_top",
+    "particle": "#side"
+  },
+  "elements": [
+    {
+      "from": [2.5, 1, 2.5],
+      "to": [13.5, 14, 13.5],
+      "faces": {
+        "north": {"uv": [0, 2, 11, 15], "texture": "#side"},
+        "east": {"uv": [0, 2, 11, 15], "texture": "#side"},
+        "south": {"uv": [0, 2, 11, 15], "texture": "#side"},
+        "west": {"uv": [0, 2, 11, 15], "texture": "#side"},
+        "up": {"uv": [0, 0, 11, 11], "texture": "#top"},
+        "down": {"uv": [0, 0, 11, 11], "texture": "#bottom"}
+      }
+    },
+    {
+      "from": [8, 14, 6.5],
+      "to": [8, 16, 9.5],
+      "rotation": {"angle": 45, "axis": "y", "origin": [8, 16, 8]},
+      "faces": {
+        "east": {"uv": [7, 0, 4, 2], "texture": "#side"},
+        "west": {"uv": [4, 0, 7, 2], "texture": "#side"}
+      }
+    },
+    {
+      "from": [8, 14, 6.5],
+      "to": [8, 16, 9.5],
+      "rotation": {"angle": -45, "axis": "y", "origin": [8, 16, 8]},
+      "faces": {
+        "east": {"uv": [7, 0, 4, 2], "texture": "#side"},
+        "west": {"uv": [4, 0, 7, 2], "texture": "#side"}
+      }
+    }
+  ]
+}

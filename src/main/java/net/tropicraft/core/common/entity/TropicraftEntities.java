@@ -544,6 +544,51 @@ public class TropicraftEntities {
 //                .setShouldReceiveVelocityUpdates(true);
 //    }
 
+    public static final RegistryEntry<EntityType<GibnutEntity>> GIBNUT = REGISTRATE.entity("gibnut", GibnutEntity::new, MobCategory.MONSTER)
+            .properties(b -> b.sized(0.7F, 0.3F)
+                    .setTrackingRange(8)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canAnimalSpawn)
+            .attributes(GibnutEntity::createAttributes)
+            .loot(TropicraftEntities::noDrops)
+            .renderer(() -> GibnutRenderer::new)
+            .register();
+
+    public static final RegistryEntry<EntityType<ManateeEntity>> MANATEE = REGISTRATE.entity("manatee", ManateeEntity::new, MobCategory.WATER_CREATURE)
+            .properties(b -> b.sized(2.0F, 1.3F)
+                    .setTrackingRange(5)
+                    .setUpdateInterval(2)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canSpawnOceanWaterMob)
+            .attributes(ManateeEntity::createAttributes)
+            .loot(TropicraftEntities::noDrops)
+            .renderer(() -> ManateeRenderer::new)
+            .register();
+
+    public static final RegistryEntry<EntityType<SlenderHarvestMouseEntity>> SLENDER_HARVEST_MOUSE = REGISTRATE.entity("slender_harvest_mouse", SlenderHarvestMouseEntity::new, MobCategory.MONSTER)
+            .properties(b -> b.sized(0.5F, 0.2F)
+                    .setTrackingRange(8)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canAnimalSpawn)
+            .attributes(SlenderHarvestMouseEntity::createAttributes)
+            .loot(TropicraftEntities::noDrops)
+            .renderer(() -> SlenderHarvestMouseRenderer::new)
+            .register();
+
+    public static final RegistryEntry<EntityType<ToucanEntity>> TOUCAN = REGISTRATE.entity("toucan", ToucanEntity::new, MobCategory.MONSTER)
+            .properties(b -> b.sized(0.5F, 0.5F)
+                    .setTrackingRange(8)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .spawnPlacement(SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ToucanEntity::canToucanSpawnOn)
+            .attributes(ToucanEntity::createAttributes)
+            .loot(TropicraftEntities::noDrops)
+            .renderer(() -> ToucanRenderer::new)
+            .tag(EntityTypeTags.FALL_DAMAGE_IMMUNE)
+            .register();
+
     public static boolean canAnimalSpawn(EntityType<? extends Mob> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
         BlockState groundState = worldIn.getBlockState(pos.below());
         return groundState.getBlock() == Blocks.GRASS_BLOCK

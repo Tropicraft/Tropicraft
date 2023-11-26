@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tropicraft:dried_plantains"
+    },
+    {
+      "item": "tropicraft:dried_plantains"
+    },
+    {
+      "item": "tropicraft:bamboo_bowl"
+    },
+    {
+      "item": "minecraft:cooked_porkchop"
+    }
+  ],
+  "result": {
+    "item": "tropicraft:mofongo"
+  }
+}

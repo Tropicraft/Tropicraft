@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "tropicraft:block/jocote_branch_horizontal_0"
+  }
+}

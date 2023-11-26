@@ -1,0 +1,181 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "tropicraft:block/passionfruit_vine_0"
+      },
+      "when": {
+        "age": "0",
+        "north": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "tropicraft:block/passionfruit_vine_0",
+        "y": 270
+      },
+      "when": {
+        "age": "0",
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "tropicraft:block/passionfruit_vine_0",
+        "y": 90
+      },
+      "when": {
+        "age": "0",
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "tropicraft:block/passionfruit_vine_0",
+        "y": 180
+      },
+      "when": {
+        "age": "0",
+        "south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "tropicraft:block/passionfruit_vine_0",
+        "x": 90
+      },
+      "when": {
+        "age": "0",
+        "down": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "tropicraft:block/passionfruit_vine_0",
+        "x": 270
+      },
+      "when": {
+        "age": "0",
+        "up": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "tropicraft:block/passionfruit_vine_1"
+      },
+      "when": {
+        "age": "1",
+        "north": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "tropicraft:block/passionfruit_vine_1",
+        "y": 270
+      },
+      "when": {
+        "age": "1",
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "tropicraft:block/passionfruit_vine_1",
+        "y": 90
+      },
+      "when": {
+        "age": "1",
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "tropicraft:block/passionfruit_vine_1",
+        "y": 180
+      },
+      "when": {
+        "age": "1",
+        "south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "tropicraft:block/passionfruit_vine_1",
+        "x": 90
+      },
+      "when": {
+        "age": "1",
+        "down": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "tropicraft:block/passionfruit_vine_1",
+        "x": 270
+      },
+      "when": {
+        "age": "1",
+        "up": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "tropicraft:block/passionfruit_vine_2"
+      },
+      "when": {
+        "age": "2",
+        "north": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "tropicraft:block/passionfruit_vine_2",
+        "y": 270
+      },
+      "when": {
+        "age": "2",
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "tropicraft:block/passionfruit_vine_2",
+        "y": 90
+      },
+      "when": {
+        "age": "2",
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "tropicraft:block/passionfruit_vine_2",
+        "y": 180
+      },
+      "when": {
+        "age": "2",
+        "south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "tropicraft:block/passionfruit_vine_2",
+        "x": 90
+      },
+      "when": {
+        "age": "2",
+        "down": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "tropicraft:block/passionfruit_vine_2",
+        "x": 270
+      },
+      "when": {
+        "age": "2",
+        "up": "true"
+      }
+    }
+  ]
+}

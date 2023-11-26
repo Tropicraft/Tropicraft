@@ -16,6 +16,7 @@ public final class TropicraftTreeDecorators {
     public static RegistryObject<TreeDecoratorType<?>> REPLACE_IN_SOIL = register("replace_in_soil", ReplaceInSoilDecorator.CODEC);
     public static RegistryObject<TreeDecoratorType<?>> PNEUMATOPHORES = register("pneumatophores", PneumatophoresTreeDecorator.CODEC);
     public static RegistryObject<TreeDecoratorType<?>> PAPAYA = register("papaya", PapayaTreeDecorator.CODEC);
+    public static RegistryObject<TreeDecoratorType<?>> BRANCH = register("branch", BranchTreeDecorator.CODEC);
 
     private static <T extends TreeDecorator> RegistryObject<TreeDecoratorType<?>> register(String name, Codec<T> codec) {
         return REGISTER.register(name, () -> new TreeDecoratorType<>(codec));
