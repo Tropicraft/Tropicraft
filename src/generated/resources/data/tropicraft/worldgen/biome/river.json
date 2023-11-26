@@ -61,11 +61,80 @@
   "has_precipitation": true,
   "spawn_costs": {},
   "spawners": {
-    "ambient": [],
+    "ambient": [
+      {
+        "type": "minecraft:bat",
+        "maxCount": 8,
+        "minCount": 8,
+        "weight": 10
+      }
+    ],
     "axolotls": [],
     "creature": [],
     "misc": [],
     "monster": [
+      {
+        "type": "tropicraft:tropiskelly",
+        "maxCount": 4,
+        "minCount": 2,
+        "weight": 8
+      },
+      {
+        "type": "tropicraft:tropi_spider",
+        "maxCount": 2,
+        "minCount": 2,
+        "weight": 8
+      },
+      {
+        "type": "minecraft:spider",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 100
+      },
+      {
+        "type": "minecraft:zombie",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 95
+      },
+      {
+        "type": "minecraft:zombie_villager",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 5
+      },
+      {
+        "type": "minecraft:skeleton",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 100
+      },
+      {
+        "type": "minecraft:creeper",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 100
+      },
+      {
+        "type": "minecraft:slime",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 100
+      },
+      {
+        "type": "minecraft:enderman",
+        "maxCount": 4,
+        "minCount": 1,
+        "weight": 10
+      },
+      {
+        "type": "minecraft:witch",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 5
+      }
+    ],
+    "tropics_creature": [
       {
         "type": "minecraft:parrot",
         "maxCount": 2,
@@ -97,25 +166,20 @@
         "weight": 5
       },
       {
-        "type": "tropicraft:tropiskelly",
-        "maxCount": 4,
-        "minCount": 2,
-        "weight": 8
-      },
-      {
-        "type": "tropicraft:tropi_spider",
-        "maxCount": 2,
-        "minCount": 2,
-        "weight": 8
-      },
-      {
         "type": "tropicraft:fiddler_crab",
         "maxCount": 6,
         "minCount": 2,
         "weight": 20
       }
     ],
-    "underground_water_creature": [],
+    "underground_water_creature": [
+      {
+        "type": "minecraft:glow_squid",
+        "maxCount": 6,
+        "minCount": 4,
+        "weight": 10
+      }
+    ],
     "water_ambient": [
       {
         "type": "tropicraft:sardine",

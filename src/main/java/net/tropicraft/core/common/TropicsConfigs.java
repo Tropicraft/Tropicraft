@@ -14,12 +14,19 @@ public class TropicsConfigs {
 
     public static class Common {
         public final ForgeConfigSpec.ConfigValue<Boolean> allowExplodingCoconutsByNonOPs;
+        public final ForgeConfigSpec.ConfigValue<Boolean> spawnHostileMobsInTropics;
         public Common(ForgeConfigSpec.Builder builder) {
             builder.push("Items");
             allowExplodingCoconutsByNonOPs = builder
                     .comment("Should non OPs be allowed to throw exploding coconuts?")
                     .translation("config.tropicraft.common.items.allow_exploding_coconuts")
                     .define("Allow exploding coconuts to be used by non-ops/creative mode players?", false);
+            builder.pop();
+            builder.push("Mobs");
+            spawnHostileMobsInTropics = builder
+                    .comment("Should hostile mobs spawn in the tropics?")
+                    .translation("config.tropicraft.common.mobs.allow_hostiles")
+                    .define("Should hostile mobs spawn in the Tropics dimension?", false);
             builder.pop();
         }
     }
