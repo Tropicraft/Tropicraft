@@ -84,13 +84,13 @@
         "type": "tropicraft:tropiskelly",
         "maxCount": 4,
         "minCount": 2,
-        "weight": 8
+        "weight": 50
       },
       {
         "type": "tropicraft:tropi_spider",
         "maxCount": 2,
         "minCount": 2,
-        "weight": 8
+        "weight": 20
       },
       {
         "type": "minecraft:spider",
@@ -141,36 +141,36 @@
         "weight": 5
       }
     ],
-    "tropics_creature": [
+    "tropicraft": [
       {
         "type": "minecraft:parrot",
         "maxCount": 2,
-        "minCount": 1,
-        "weight": 15
+        "minCount": 2,
+        "weight": 8
       },
       {
         "type": "tropicraft:v_monkey",
         "maxCount": 3,
-        "minCount": 1,
-        "weight": 15
+        "minCount": 2,
+        "weight": 10
       },
       {
         "type": "tropicraft:iguana",
         "maxCount": 4,
         "minCount": 4,
-        "weight": 15
+        "weight": 10
       },
       {
         "type": "tropicraft:tropicreeper",
         "maxCount": 2,
         "minCount": 1,
-        "weight": 4
+        "weight": 7
       },
       {
         "type": "tropicraft:eih",
         "maxCount": 1,
         "minCount": 1,
-        "weight": 5
+        "weight": 7
       }
     ],
     "underground_water_creature": [
