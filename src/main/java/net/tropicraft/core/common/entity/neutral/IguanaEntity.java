@@ -41,7 +41,11 @@ public class IguanaEntity extends TropicraftCreatureEntity {
         if (entity != null) {
             angerTargetUUID = entity.getUUID();
         }
+    }
 
+    @Override
+    public boolean removeWhenFarAway(double pDistanceToClosestPlayer) {
+        return false;
     }
 
     public static AttributeSupplier.Builder createAttributes() {

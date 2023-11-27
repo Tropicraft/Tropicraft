@@ -66,20 +66,57 @@
       }
     ],
     "axolotls": [],
-    "creature": [],
+    "creature": [
+      {
+        "type": "minecraft:parrot",
+        "maxCount": 2,
+        "minCount": 2,
+        "weight": 8
+      },
+      {
+        "type": "tropicraft:v_monkey",
+        "maxCount": 3,
+        "minCount": 2,
+        "weight": 10
+      },
+      {
+        "type": "tropicraft:iguana",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      },
+      {
+        "type": "tropicraft:tropicreeper",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 7
+      },
+      {
+        "type": "tropicraft:eih",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 7
+      },
+      {
+        "type": "tropicraft:fiddler_crab",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 10
+      }
+    ],
     "misc": [],
     "monster": [
       {
         "type": "tropicraft:tropiskelly",
         "maxCount": 4,
         "minCount": 2,
-        "weight": 50
+        "weight": 200
       },
       {
         "type": "tropicraft:tropi_spider",
         "maxCount": 2,
         "minCount": 2,
-        "weight": 20
+        "weight": 150
       },
       {
         "type": "minecraft:spider",
@@ -128,44 +165,6 @@
         "maxCount": 1,
         "minCount": 1,
         "weight": 5
-      }
-    ],
-    "tropicraft": [
-      {
-        "type": "minecraft:parrot",
-        "maxCount": 2,
-        "minCount": 2,
-        "weight": 8
-      },
-      {
-        "type": "tropicraft:v_monkey",
-        "maxCount": 3,
-        "minCount": 2,
-        "weight": 10
-      },
-      {
-        "type": "tropicraft:iguana",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 10
-      },
-      {
-        "type": "tropicraft:tropicreeper",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 7
-      },
-      {
-        "type": "tropicraft:eih",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 7
-      },
-      {
-        "type": "tropicraft:fiddler_crab",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 10
       }
     ],
     "underground_water_creature": [

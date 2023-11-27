@@ -52,6 +52,11 @@ public class TropiCreeperEntity extends PathfinderMob {
         super(entityType, worldIn);
     }
 
+    @Override
+    public boolean removeWhenFarAway(double pDistanceToClosestPlayer) {
+        return false;
+    }
+
     public static AttributeSupplier.Builder createAttributes() {
         return PathfinderMob.createMobAttributes()
                 .add(Attributes.MOVEMENT_SPEED, 0.25);

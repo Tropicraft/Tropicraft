@@ -43,6 +43,11 @@ public class EIHEntity extends TropicraftCreatureEntity {
     }
 
     @Override
+    public boolean removeWhenFarAway(double pDistanceToClosestPlayer) {
+        return false;
+    }
+
+    @Override
     public void defineSynchedData() {
         super.defineSynchedData();
         getEntityData().define(STATE, (byte) 0);

@@ -64,6 +64,11 @@ public class TreeFrogEntity extends TropicraftCreatureEntity implements Enemy, R
     }
 
     @Override
+    public boolean removeWhenFarAway(double pDistanceToClosestPlayer) {
+        return false;
+    }
+
+    @Override
     public void registerGoals() {
         goalSelector.addGoal(0, new FloatGoal(this));
         goalSelector.addGoal(1, new RangedAttackGoal(this, 1.0D, 60, 10.0F));
