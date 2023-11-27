@@ -145,9 +145,13 @@ public class EntityKoaBase extends Villager {
 
     public EntityKoaBase(EntityType<? extends EntityKoaBase> type, Level level) {
         super(type, level);
-        this.setPersistenceRequired();
 
         inventory = new SimpleContainer(9);
+    }
+
+    @Override
+    public boolean removeWhenFarAway(double pDistanceToClosestPlayer) {
+        return false;
     }
 
     @Override

@@ -11,12 +11,14 @@ import net.minecraft.client.renderer.entity.DolphinRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.WaterAnimal;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -34,12 +36,16 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyC
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraftforge.event.entity.living.MobSpawnEvent;
+import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.ClientSetup;
 import net.tropicraft.core.client.entity.render.*;
 import net.tropicraft.core.common.TropicraftTags;
+import net.tropicraft.core.common.TropicsConfigs;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 import net.tropicraft.core.common.entity.egg.SeaTurtleEggEntity;
@@ -63,7 +69,7 @@ import net.tropicraft.core.common.item.RecordMusic;
 import net.tropicraft.core.common.item.TropicalFertilizerItem;
 import net.tropicraft.core.common.item.TropicraftItems;
 
-@Mod.EventBusSubscriber(modid = Constants.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = Constants.MODID)
 public class TropicraftEntities {
     public static final Registrate REGISTRATE = Tropicraft.registrate();
 
@@ -82,7 +88,7 @@ public class TropicraftEntities {
             .spawnPlacement(SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canAnimalSpawn)
             .renderer(() -> KoaRenderer::new)
             .register();
-    public static final RegistryEntry<EntityType<TropiCreeperEntity>> TROPICREEPER = REGISTRATE.entity("tropicreeper", TropiCreeperEntity::new, MobCategory.MONSTER)
+    public static final RegistryEntry<EntityType<TropiCreeperEntity>> TROPICREEPER = REGISTRATE.entity("tropicreeper", TropiCreeperEntity::new, MobCategory.CREATURE)
             .properties(b -> b.sized(0.6F, 1.7F)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
@@ -95,7 +101,7 @@ public class TropicraftEntities {
                                     EntityPredicate.Builder.entity().of(EntityTypeTags.SKELETONS))))))
             .renderer(() -> TropiCreeperRenderer::new)
             .register();
-    public static final RegistryEntry<EntityType<IguanaEntity>> IGUANA = REGISTRATE.entity("iguana", IguanaEntity::new, MobCategory.MONSTER)
+    public static final RegistryEntry<EntityType<IguanaEntity>> IGUANA = REGISTRATE.entity("iguana", IguanaEntity::new, MobCategory.CREATURE)
             .properties(b -> b.sized(1.0F, 0.4F)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
@@ -137,7 +143,7 @@ public class TropicraftEntities {
             .loot(TropicraftEntities::noDrops)
             .renderer(() -> TropiSkellyRenderer::new)
             .register();
-    public static final RegistryEntry<EntityType<EIHEntity>> EIH = REGISTRATE.entity("eih", EIHEntity::new, MobCategory.MONSTER)
+    public static final RegistryEntry<EntityType<EIHEntity>> EIH = REGISTRATE.entity("eih", EIHEntity::new, MobCategory.CREATURE)
             .properties(b -> b.sized(1.2F, 3.25F)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
@@ -223,7 +229,7 @@ public class TropicraftEntities {
                     .setShouldReceiveVelocityUpdates(true))
             .renderer(() -> PoisonBlotRenderer::new)
             .register();
-    public static final RegistryEntry<EntityType<TreeFrogEntity>> TREE_FROG = REGISTRATE.entity("tree_frog", TreeFrogEntity::new, MobCategory.MONSTER)
+    public static final RegistryEntry<EntityType<TreeFrogEntity>> TREE_FROG = REGISTRATE.entity("tree_frog", TreeFrogEntity::new, MobCategory.CREATURE)
             .properties(b -> b.sized(0.6F, 0.4F)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
@@ -279,7 +285,7 @@ public class TropicraftEntities {
             .loot(TropicraftEntities::noDrops)
             .renderer(() -> ClientSetup::starfishEggRenderer)
             .register();
-    public static final RegistryEntry<EntityType<VMonkeyEntity>> V_MONKEY = REGISTRATE.entity("v_monkey", VMonkeyEntity::new, MobCategory.MONSTER)
+    public static final RegistryEntry<EntityType<VMonkeyEntity>> V_MONKEY = REGISTRATE.entity("v_monkey", VMonkeyEntity::new, MobCategory.CREATURE)
             .properties(b -> b.sized(0.8F, 0.8F)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
@@ -397,7 +403,7 @@ public class TropicraftEntities {
             .lang("Sea Turtle Egg")
             .renderer(() -> ClientSetup::seaTurtleEggRenderer)
             .register();
-    public static final RegistryEntry<EntityType<TropiBeeEntity>> TROPI_BEE = REGISTRATE.entity("tropibee", TropiBeeEntity::new, MobCategory.MONSTER)
+    public static final RegistryEntry<EntityType<TropiBeeEntity>> TROPI_BEE = REGISTRATE.entity("tropibee", TropiBeeEntity::new, MobCategory.CREATURE)
             .properties(b -> b.sized(0.4F, 0.6F)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
@@ -408,7 +414,7 @@ public class TropicraftEntities {
             .loot(TropicraftEntities::noDrops)
             .renderer(() -> TropiBeeRenderer::new)
             .register();
-    public static final RegistryEntry<EntityType<CowktailEntity>> COWKTAIL = REGISTRATE.entity("cowktail", CowktailEntity::new, MobCategory.MONSTER)
+    public static final RegistryEntry<EntityType<CowktailEntity>> COWKTAIL = REGISTRATE.entity("cowktail", CowktailEntity::new, MobCategory.CREATURE)
             .properties(b -> b.sized(0.9F, 1.4F)
                     .setTrackingRange(10)
                     .setUpdateInterval(3)
@@ -429,7 +435,7 @@ public class TropicraftEntities {
             .lang("Man o' War")
             .renderer(() -> ManOWarRenderer::new)
             .register();
-    public static final RegistryEntry<EntityType<TapirEntity>> TAPIR = REGISTRATE.entity("tapir", TapirEntity::new, MobCategory.MONSTER)
+    public static final RegistryEntry<EntityType<TapirEntity>> TAPIR = REGISTRATE.entity("tapir", TapirEntity::new, MobCategory.CREATURE)
             .properties(b -> b.sized(0.8F, 1.0F)
                     .setTrackingRange(10)
                     .setUpdateInterval(3)
@@ -439,7 +445,7 @@ public class TropicraftEntities {
             .loot(TropicraftEntities::noDrops)
             .renderer(() -> TapirRenderer::new)
             .register();
-    public static final RegistryEntry<EntityType<JaguarEntity>> JAGUAR = REGISTRATE.entity("jaguar", JaguarEntity::new, MobCategory.MONSTER)
+    public static final RegistryEntry<EntityType<JaguarEntity>> JAGUAR = REGISTRATE.entity("jaguar", JaguarEntity::new, MobCategory.CREATURE)
             .properties(b -> b.sized(0.9F, 1.0F)
                     .setTrackingRange(10)
                     .setUpdateInterval(3)
@@ -449,7 +455,7 @@ public class TropicraftEntities {
             .loot(TropicraftEntities::noDrops)
             .renderer(() -> JaguarRenderer::new)
             .register();
-    public static final RegistryEntry<EntityType<BasiliskLizardEntity>> BROWN_BASILISK_LIZARD = REGISTRATE.entity("brown_basilisk_lizard", BasiliskLizardEntity::new, MobCategory.MONSTER)
+    public static final RegistryEntry<EntityType<BasiliskLizardEntity>> BROWN_BASILISK_LIZARD = REGISTRATE.entity("brown_basilisk_lizard", BasiliskLizardEntity::new, MobCategory.CREATURE)
             .properties(b -> b.sized(0.7F, 0.4F)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
@@ -459,7 +465,7 @@ public class TropicraftEntities {
             .loot(TropicraftEntities::noDrops)
             .renderer(() -> BasiliskLizardRenderer::brown)
             .register();
-    public static final RegistryEntry<EntityType<BasiliskLizardEntity>> GREEN_BASILISK_LIZARD = REGISTRATE.entity("green_basilisk_lizard", BasiliskLizardEntity::new, MobCategory.MONSTER)
+    public static final RegistryEntry<EntityType<BasiliskLizardEntity>> GREEN_BASILISK_LIZARD = REGISTRATE.entity("green_basilisk_lizard", BasiliskLizardEntity::new, MobCategory.CREATURE)
             .properties(b -> b.sized(0.7F, 0.4F)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
@@ -469,7 +475,7 @@ public class TropicraftEntities {
             .loot(TropicraftEntities::noDrops)
             .renderer(() -> BasiliskLizardRenderer::green)
             .register();
-    public static final RegistryEntry<EntityType<HummingbirdEntity>> HUMMINGBIRD = REGISTRATE.entity("hummingbird", HummingbirdEntity::new, MobCategory.MONSTER)
+    public static final RegistryEntry<EntityType<HummingbirdEntity>> HUMMINGBIRD = REGISTRATE.entity("hummingbird", HummingbirdEntity::new, MobCategory.CREATURE)
             .properties(b -> b.sized(0.5F, 0.5F)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
@@ -479,7 +485,7 @@ public class TropicraftEntities {
             .loot(TropicraftEntities::noDrops)
             .renderer(() -> HummingbirdRenderer::new)
             .register();
-    public static final RegistryEntry<EntityType<FiddlerCrabEntity>> FIDDLER_CRAB = REGISTRATE.entity("fiddler_crab", FiddlerCrabEntity::new, MobCategory.MONSTER)
+    public static final RegistryEntry<EntityType<FiddlerCrabEntity>> FIDDLER_CRAB = REGISTRATE.entity("fiddler_crab", FiddlerCrabEntity::new, MobCategory.CREATURE)
             .properties(b -> b.sized(0.5F, 0.2F)
                     .setTrackingRange(10)
                     .setUpdateInterval(3)
@@ -489,7 +495,7 @@ public class TropicraftEntities {
             .loot(TropicraftEntities::noDrops)
             .renderer(() -> FiddlerCrabRenderer::new)
             .register();
-    public static final RegistryEntry<EntityType<SpiderMonkeyEntity>> SPIDER_MONKEY = REGISTRATE.entity("spider_monkey", SpiderMonkeyEntity::new, MobCategory.MONSTER)
+    public static final RegistryEntry<EntityType<SpiderMonkeyEntity>> SPIDER_MONKEY = REGISTRATE.entity("spider_monkey", SpiderMonkeyEntity::new, MobCategory.CREATURE)
             .properties(b -> b.sized(0.5F, 0.6F)
                     .setTrackingRange(10)
                     .setUpdateInterval(3)
@@ -499,7 +505,7 @@ public class TropicraftEntities {
             .loot(TropicraftEntities::noDrops)
             .renderer(() -> SpiderMonkeyRenderer::new)
             .register();
-    public static final RegistryEntry<EntityType<WhiteLippedPeccaryEntity>> WHITE_LIPPED_PECCARY = REGISTRATE.entity("white_lipped_peccary", WhiteLippedPeccaryEntity::new, MobCategory.MONSTER)
+    public static final RegistryEntry<EntityType<WhiteLippedPeccaryEntity>> WHITE_LIPPED_PECCARY = REGISTRATE.entity("white_lipped_peccary", WhiteLippedPeccaryEntity::new, MobCategory.CREATURE)
             .properties(b -> b.sized(0.7F, 0.8F)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
@@ -597,5 +603,20 @@ public class TropicraftEntities {
         lootTables.add(entity,
                 LootTable.lootTable().withPool(LootPool.lootPool().setRolls(range).add(LootItem.lootTableItem(loot)
                         .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0F, 1F / 3F))))));
+    }
+
+    @SubscribeEvent
+    public static void onMobSpawn(final MobSpawnEvent.PositionCheck event) {
+        final ServerLevel level = event.getLevel().getLevel();
+        if (level.dimension() == TropicraftDimension.WORLD) {
+            if (!TropicsConfigs.COMMON.spawnHostileMobsInTropics.get()) {
+                if (event.getSpawnType() == MobSpawnType.NATURAL || event.getSpawnType() == MobSpawnType.CHUNK_GENERATION) {
+                    final Mob mob = event.getEntity();
+                    if (mob.getType() != TropicraftEntities.ASHEN.get() && (mob.getType().getCategory() == MobCategory.MONSTER || mob instanceof Enemy)) {
+                        event.setResult(Event.Result.DENY);
+                    }
+                }
+            }
+        }
     }
 }
