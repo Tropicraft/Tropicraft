@@ -227,6 +227,11 @@ public class TropicraftItems {
     public static final ItemEntry<Item> ORANGE = food("orange", Foods.ORANGE)
             .tag(TropicraftTags.Items.FRUITS)
             .register();
+
+    public static final ItemEntry<Item> PAPAYA = food("papaya", Foods.PAPAYA)
+            .tag(TropicraftTags.Items.FRUITS)
+            .register();
+
     public static final ItemEntry<Item> PINEAPPLE_CUBES = food("pineapple_cubes", Foods.PINEAPPLE_CUBES).register();
     public static final ItemEntry<Item> COCONUT_CHUNK = food("coconut_chunk", Foods.COCONUT_CHUNK).register();
 

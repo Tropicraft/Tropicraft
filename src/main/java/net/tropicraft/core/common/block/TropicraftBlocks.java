@@ -475,7 +475,7 @@ public class TropicraftBlocks {
     public static final BlockEntry<LeavesBlock> LEMON_LEAVES = fruitLeaves("lemon_leaves", LEMON_SAPLING, TropicraftItems.LEMON).register();
     public static final BlockEntry<LeavesBlock> LIME_LEAVES = fruitLeaves("lime_leaves", LIME_SAPLING, TropicraftItems.LIME).register();
     public static final BlockEntry<LeavesBlock> ORANGE_LEAVES = fruitLeaves("orange_leaves", ORANGE_SAPLING, TropicraftItems.ORANGE).register();
-    public static final BlockEntry<LeavesBlock> PAPAYA_LEAVES = leaves("papaya_leaves", PAPAYA_SAPLING, SAPLING_RATES, false).register();
+    public static final BlockEntry<TropicraftLeavesBlock> PAPAYA_LEAVES = nonDecayingFruitLeaves("papaya_leaves", PAPAYA_SAPLING, TropicraftItems.PAPAYA).register();
     public static final BlockEntry<LeavesBlock> WHITE_FLOWERING_LEAVES = leaves("white_flowering_leaves", true).register();
     public static final BlockEntry<LeavesBlock> RED_FLOWERING_LEAVES = leaves("red_flowering_leaves", true).register();
     public static final BlockEntry<LeavesBlock> BLUE_FLOWERING_LEAVES = leaves("blue_flowering_leaves", true).register();
@@ -1280,6 +1280,20 @@ public class TropicraftBlocks {
 
     private static BlockBuilder<LeavesBlock, Registrate> fruitLeaves(String name, Supplier<SaplingBlock> sapling, Supplier<? extends Item> fruit) {
         return REGISTRATE.block(name, LeavesBlock::new)
+                .initialProperties(() -> Blocks.OAK_LEAVES)
+                .loot((loot, block) -> loot.add(block, loot.createLeavesDrops(block, sapling.get(), FRUIT_SAPLING_RATES)
+                        .withPool(lootPool().setRolls(ConstantValue.exactly(1))
+                                .when(HAS_NO_SHEARS_OR_SILK_TOUCH)
+                                .add(loot.applyExplosionDecay(block, lootTableItem(fruit.get()))))
+                ))
+                .tag(BlockTags.LEAVES, BlockTags.MINEABLE_WITH_HOE)
+                .item()
+                    .tag(ItemTags.LEAVES)
+                    .build();
+    }
+
+    private static BlockBuilder<TropicraftLeavesBlock, Registrate> nonDecayingFruitLeaves(String name, Supplier<SaplingBlock> sapling, Supplier<? extends Item> fruit) {
+        return REGISTRATE.block(name, TropicraftLeavesBlock::new)
                 .initialProperties(() -> Blocks.OAK_LEAVES)
                 .loot((loot, block) -> loot.add(block, loot.createLeavesDrops(block, sapling.get(), FRUIT_SAPLING_RATES)
                         .withPool(lootPool().setRolls(ConstantValue.exactly(1))
