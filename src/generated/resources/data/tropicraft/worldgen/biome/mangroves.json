@@ -5,6 +5,7 @@
       "tropicraft:canyon"
     ]
   },
+  "creature_spawn_probability": 0.3,
   "downfall": 1.5,
   "effects": {
     "fog_color": 12248771,

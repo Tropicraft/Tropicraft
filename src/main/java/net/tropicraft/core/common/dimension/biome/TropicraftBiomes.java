@@ -128,6 +128,8 @@ public final class TropicraftBiomes {
         spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(TropicraftEntities.COWKTAIL.get(), 10, 4, 4));
         spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(TropicraftEntities.TREE_FROG.get(), 4, 4, 4));
 
+        spawns.creatureGenerationProbability(0.2F);
+
         return new Biome.BiomeBuilder()
                 .hasPrecipitation(true)
                 .temperature(2.0F).downfall(1.5F)
@@ -190,6 +192,8 @@ public final class TropicraftBiomes {
         spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(TropicraftEntities.HUMMINGBIRD.get(), 10, 3, 5));
         spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(TropicraftEntities.SPIDER_MONKEY.get(), 15, 6, 8));
 
+        spawns.creatureGenerationProbability(0.3F);
+
         return new Biome.BiomeBuilder()
                 .hasPrecipitation(true)
                 .temperature(1.5F).downfall(2.0F)
@@ -229,6 +233,8 @@ public final class TropicraftBiomes {
         spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(TropicraftEntities.JAGUAR.get(), 5, 1, 2));
         spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(TropicraftEntities.HUMMINGBIRD.get(), 10, 3, 5));
         spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(TropicraftEntities.SPIDER_MONKEY.get(), 15, 5, 8));
+
+        spawns.creatureGenerationProbability(0.3F);
 
         return new Biome.BiomeBuilder()
                 .hasPrecipitation(true)
@@ -374,6 +380,8 @@ public final class TropicraftBiomes {
         BiomeSpecialEffects.Builder ambience = defaultAmbience(true);
         ambience.waterColor(0x66C197).waterFogColor(0x0C3522);
         ambience.grassColorOverride(0x6FB21C);
+
+        spawns.creatureGenerationProbability(0.3F);
 
         return new Biome.BiomeBuilder()
                 .hasPrecipitation(true)
