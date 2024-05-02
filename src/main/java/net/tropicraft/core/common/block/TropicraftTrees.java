@@ -43,10 +43,10 @@ public class TropicraftTrees {
     public static final BeehiveDecorator BEEHIVE_002 = new BeehiveDecorator(0.02F);
     public static final BeehiveDecorator BEEHIVE_005 = new BeehiveDecorator(0.05F);
 
-    public static final AbstractTreeGrower GRAPEFRUIT = createFruit(() => TropicraftBlocks.GRAPEFRUIT_LEAVES);
-    public static final AbstractTreeGrower LEMON = createFruit(() => TropicraftBlocks.LEMON_LEAVES);
-    public static final AbstractTreeGrower LIME = createFruit(() => TropicraftBlocks.LIME_LEAVES);
-    public static final AbstractTreeGrower ORANGE = createFruit(() => TropicraftBlocks.ORANGE_LEAVES);
+    public static final AbstractTreeGrower GRAPEFRUIT = createFruit(() -> TropicraftBlocks.GRAPEFRUIT_LEAVES);
+    public static final AbstractTreeGrower LEMON = createFruit(() -> TropicraftBlocks.LEMON_LEAVES);
+    public static final AbstractTreeGrower LIME = createFruit(() -> TropicraftBlocks.LIME_LEAVES);
+    public static final AbstractTreeGrower ORANGE = createFruit(() -> TropicraftBlocks.ORANGE_LEAVES);
     public static final AbstractTreeGrower PAPAYA = create((server, random, beehive) -> {
         TreeConfiguration config = new TreeConfiguration.TreeConfigurationBuilder(
                 BlockStateProvider.simple(TropicraftBlocks.PAPAYA_LOG.get()),
