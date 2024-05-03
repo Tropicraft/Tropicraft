@@ -42,6 +42,8 @@ jobs:
         files: build/libs/!(*-dev|*-slim|*-sources|*-javadoc).jar
         game-versions: |
           ${{ steps.env-vars.outputs.mcversion }}
+        loaders: |
+            forge
 
     - name: Publish to Services (Beta)
       uses: Kir-Antipov/mc-publish@v3
@@ -57,3 +59,5 @@ jobs:
           build/libs/!(*-dev|*-slim|*-sources|*-javadoc).jar
         game-versions: |
           ${{ steps.env-vars.outputs.mcversion }}
+        loaders: |
+            forge
