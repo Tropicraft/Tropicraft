@@ -33,7 +33,9 @@ jobs:
       uses: Kir-Antipov/mc-publish@v3
       if: "!github.event.release.prerelease"
       with:
+        modrinth-id: 20zpzIT1
         modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+        curseforge-id: 254794
         curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
         github-token: ${{ secrets.GITHUB_TOKEN }}
         version-type: release
@@ -45,7 +47,9 @@ jobs:
       uses: Kir-Antipov/mc-publish@v3
       if: "github.event.release.prerelease"
       with:
+        modrinth-id: 20zpzIT1
         modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+        curseforge-id: 254794
         curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
         github-token: ${{ secrets.GITHUB_TOKEN }}
         version-type: beta
