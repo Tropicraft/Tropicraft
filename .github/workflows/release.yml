@@ -10,16 +10,16 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Set up JDK 17
-      uses: actions/setup-java@v2
+      uses: actions/setup-java@v4
       with:
         java-version: '17'
         distribution: 'temurin'
 
     - name: Build with Gradle
-      uses: gradle/gradle-build-action@v2
+      uses: gradle/actions/setup-gradle@v3
       env:
         GHA_RELEASE_WORKFLOW: True
       with:
@@ -30,7 +30,7 @@ jobs:
       run: echo "##[set-output name=mcversion;]$(grep 'minecraft_version' gradle.properties | cut -f2- -d=)"
 
     - name: Publish to Services (Release)
-      uses: Kir-Antipov/mc-publish@v3.1
+      uses: Kir-Antipov/mc-publish@v3
       if: "!github.event.release.prerelease"
       with:
         modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
@@ -42,7 +42,7 @@ jobs:
           ${{ steps.env-vars.outputs.mcversion }}
 
     - name: Publish to Services (Beta)
-      uses: Kir-Antipov/mc-publish@v3.1
+      uses: Kir-Antipov/mc-publish@v3
       if: "github.event.release.prerelease"
       with:
         modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
