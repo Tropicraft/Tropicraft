@@ -27,8 +27,8 @@ public class EntityAIChillAtFire extends Goal {
     private int randZPos = 0;
 
     public EntityAIChillAtFire(EntityKoaBase entityObjIn) {
-        this.entityObj = entityObjIn;
-        this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+        entityObj = entityObjIn;
+        setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
 
     /**
@@ -37,13 +37,13 @@ public class EntityAIChillAtFire extends Goal {
     @Override
     public boolean canUse() {
 
-        if ((entityObj.getWantsToParty() || this.entityObj.druggedTime > 0) && !entityObj.listPosDrums.isEmpty()) {
+        if ((entityObj.getWantsToParty() || entityObj.druggedTime > 0) && !entityObj.listPosDrums.isEmpty()) {
             return false;
         }
 
-        BlockPos blockpos = this.entityObj.blockPosition();
+        BlockPos blockpos = entityObj.blockPosition();
 
-        if (!this.entityObj.level().isDay() || this.entityObj.level().isRaining() && this.entityObj.level().getBiome(blockpos).value().getPrecipitationAt(blockpos) != Biome.Precipitation.RAIN) {
+        if (!entityObj.level().isDay() || entityObj.level().isRaining() && entityObj.level().getBiome(blockpos).value().getPrecipitationAt(blockpos) != Biome.Precipitation.RAIN) {
             if (!isTooClose()) {
                 return entityObj.level().random.nextInt(20) == 0;
             } else {
@@ -60,13 +60,13 @@ public class EntityAIChillAtFire extends Goal {
     @Override
     public boolean canContinueToUse() {
 
-        if ((entityObj.getWantsToParty() || this.entityObj.druggedTime > 0) && !entityObj.listPosDrums.isEmpty()) {
+        if ((entityObj.getWantsToParty() || entityObj.druggedTime > 0) && !entityObj.listPosDrums.isEmpty()) {
             return false;
         }
 
-        BlockPos blockpos = this.entityObj.blockPosition();
+        BlockPos blockpos = entityObj.blockPosition();
         //return !this.entityObj.getNavigation().noPath();
-        if (!this.entityObj.level().isDay() || this.entityObj.level().isRaining() && this.entityObj.level().getBiome(blockpos).value().getPrecipitationAt(blockpos) != Biome.Precipitation.RAIN) {
+        if (!entityObj.level().isDay() || entityObj.level().isRaining() && entityObj.level().getBiome(blockpos).value().getPrecipitationAt(blockpos) != Biome.Precipitation.RAIN) {
             return !isTooClose();
         } else {
             return entityObj.level().random.nextInt(60) != 0;
@@ -80,11 +80,11 @@ public class EntityAIChillAtFire extends Goal {
         boolean isClose = false;
 
         BlockPos blockposGoal = null;
-        if (this.entityObj.posLastFireplaceFound != null) {
+        if (entityObj.posLastFireplaceFound != null) {
             //path to base of fire
-            blockposGoal = this.entityObj.posLastFireplaceFound.offset(0, -1, 0);
+            blockposGoal = entityObj.posLastFireplaceFound.offset(0, -1, 0);
         } else {
-            blockposGoal = this.entityObj.getRestrictCenter();
+            blockposGoal = entityObj.getRestrictCenter();
         }
 
         if (blockposGoal.equals(BlockPos.ZERO)) {
@@ -120,14 +120,14 @@ public class EntityAIChillAtFire extends Goal {
 
                 entityObj.heal(1);
             }
-            this.entityObj.getLookControl().setLookAt(blockposGoal.getX() + randXPos, blockposGoal.getY() + randYPos + 1D, blockposGoal.getZ() + randZPos,
+            entityObj.getLookControl().setLookAt(blockposGoal.getX() + randXPos, blockposGoal.getY() + randYPos + 1D, blockposGoal.getZ() + randZPos,
                     8F, 8F);
         } else {
             entityObj.setSitting(false);
         }
 
         if (!isClose) {
-            if ((this.entityObj.getNavigation().isDone() || walkingTimeout <= 0) && repathPentalty <= 0) {
+            if ((entityObj.getNavigation().isDone() || walkingTimeout <= 0) && repathPentalty <= 0) {
 
                 int i = blockposGoal.getX();
                 int j = blockposGoal.getY();
@@ -135,16 +135,16 @@ public class EntityAIChillAtFire extends Goal {
 
                 boolean success = false;
 
-                if (this.entityObj.distanceToSqr(Vec3.atCenterOf(blockposGoal)) > 256.0D) {
-                    Vec3 Vector3d = DefaultRandomPos.getPosTowards(this.entityObj, 14, 3, new Vec3((double) i + 0.5D, (double) j, (double) k + 0.5D), (float) Math.PI / 2F);
+                if (entityObj.distanceToSqr(Vec3.atCenterOf(blockposGoal)) > 256.0D) {
+                    Vec3 Vector3d = DefaultRandomPos.getPosTowards(entityObj, 14, 3, new Vec3((double) i + 0.5D, (double) j, (double) k + 0.5D), (float) Math.PI / 2F);
 
                     if (Vector3d != null) {
-                        success = this.entityObj.getNavigation().moveTo(Vector3d.x, Vector3d.y, Vector3d.z, 1.0D);
+                        success = entityObj.getNavigation().moveTo(Vector3d.x, Vector3d.y, Vector3d.z, 1.0D);
                     } else {
-                        success = Util.tryMoveToXYZLongDist(this.entityObj, new BlockPos(i, j, k), 1);
+                        success = Util.tryMoveToXYZLongDist(entityObj, new BlockPos(i, j, k), 1);
                     }
                 } else {
-                    success = this.entityObj.getNavigation().moveTo((double) i + 0.5D, (double) j, (double) k + 0.5D, 1.0D);
+                    success = entityObj.getNavigation().moveTo((double) i + 0.5D, (double) j, (double) k + 0.5D, 1.0D);
                 }
 
                 if (!success) {
@@ -178,7 +178,7 @@ public class EntityAIChillAtFire extends Goal {
         super.start();
         //this.insidePosX = -1;
         //reset any previous path so tick can start with a fresh path
-        this.entityObj.getNavigation().stop();
+        entityObj.getNavigation().stop();
     }
 
     /**
@@ -196,11 +196,11 @@ public class EntityAIChillAtFire extends Goal {
 
     public boolean isTooClose() {
         BlockPos blockposGoal = null;
-        if (this.entityObj.posLastFireplaceFound != null) {
+        if (entityObj.posLastFireplaceFound != null) {
             //path to base of fire
-            blockposGoal = this.entityObj.posLastFireplaceFound.offset(0, -1, 0);
+            blockposGoal = entityObj.posLastFireplaceFound.offset(0, -1, 0);
         } else {
-            blockposGoal = this.entityObj.getRestrictCenter();
+            blockposGoal = entityObj.getRestrictCenter();
         }
 
         if (blockposGoal.equals(BlockPos.ZERO)) {

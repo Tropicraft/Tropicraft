@@ -62,7 +62,7 @@ public enum TropicraftFlower implements Supplier<Block> {
         this.dye = dye;
         this.tags = tags;
         float halfW = w / 2f;
-        this.shape = Block.box(8 - halfW, 0, 8 - halfW, 8 + halfW, h, 8 + halfW);
+        shape = Block.box(8 - halfW, 0, 8 - halfW, 8 + halfW, h, 8 + halfW);
     }
 
     public Holder<MobEffect> getEffect() {

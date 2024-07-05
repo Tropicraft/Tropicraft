@@ -39,7 +39,7 @@ public abstract class PalmTreeFeature extends Feature<NoneFeatureConfiguration> 
     }
 
     protected void placeLeaf(LevelSimulatedRW world, int x, int y, int z) {
-        this.placeLeaf(world, new BlockPos(x, y, z));
+        placeLeaf(world, new BlockPos(x, y, z));
     }
 
     protected void placeLeaf(LevelSimulatedRW world, BlockPos pos) {
@@ -50,7 +50,7 @@ public abstract class PalmTreeFeature extends Feature<NoneFeatureConfiguration> 
     }
 
     protected void placeLog(LevelSimulatedRW world, int x, int y, int z) {
-        this.placeLog(world, new BlockPos(x, y, z));
+        placeLog(world, new BlockPos(x, y, z));
     }
 
     protected void placeLog(LevelSimulatedRW world, BlockPos pos) {

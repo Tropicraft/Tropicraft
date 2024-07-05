@@ -12,7 +12,7 @@ public class UmbrellaRenderer extends FurnitureRenderer<UmbrellaEntity> {
 
     public UmbrellaRenderer(EntityRendererProvider.Context context) {
         super(context, "umbrella", new UmbrellaModel(context.bakeLayer(TropicraftRenderLayers.UMBRELLA_LAYER)), 4);
-        this.shadowRadius = 2.5f;
+        shadowRadius = 2.5f;
     }
 
     //TODO

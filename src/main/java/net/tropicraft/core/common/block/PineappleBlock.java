@@ -31,7 +31,7 @@ public class PineappleBlock extends TallFlowerBlock implements BonemealableBlock
 
     public PineappleBlock(Properties properties) {
         super(properties);
-        this.registerDefaultState(super.defaultBlockState().setValue(STAGE, 0));
+        registerDefaultState(super.defaultBlockState().setValue(STAGE, 0));
     }
 
     @Override

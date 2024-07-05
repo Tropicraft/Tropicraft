@@ -50,7 +50,7 @@ public final class GrowableSinglePlantBlock extends BushBlock implements Bonemea
 
     @Override
     public void performBonemeal(ServerLevel world, RandomSource random, BlockPos pos, BlockState state) {
-        DoublePlantBlock growBlock = this.growInto.get().get();
+        DoublePlantBlock growBlock = growInto.get().get();
         BlockState growState = growBlock.defaultBlockState();
         if (growState.canSurvive(world, pos) && world.isEmptyBlock(pos.above())) {
             DoublePlantBlock.placeAt(world, growState, pos, Block.UPDATE_CLIENTS);

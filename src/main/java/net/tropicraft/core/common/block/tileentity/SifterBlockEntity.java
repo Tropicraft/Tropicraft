@@ -183,11 +183,11 @@ public class SifterBlockEntity extends BlockEntity {
     }
 
     public void setSifting(boolean flag) {
-        this.isSifting = flag;
+        isSifting = flag;
     }
 
     public boolean isSifting() {
-        return this.isSifting;
+        return isSifting;
     }
 
     @Override
@@ -236,7 +236,7 @@ public class SifterBlockEntity extends BlockEntity {
     }
 
     private CompoundTag writeItems(CompoundTag nbt, HolderLookup.Provider registries) {
-        this.saveAdditional(nbt, registries);
+        saveAdditional(nbt, registries);
         return nbt;
     }
 

@@ -64,7 +64,7 @@ public class CowktailEntity extends Cow implements IShearable {
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
-        if (itemstack.getItem() == TropicraftItems.BAMBOO_MUG.get() && !this.isBaby()) {
+        if (itemstack.getItem() == TropicraftItems.BAMBOO_MUG.get() && !isBaby()) {
             if (player.getAbilities().instabuild) {
                 itemstack.shrink(1);
             }
@@ -80,7 +80,7 @@ public class CowktailEntity extends Cow implements IShearable {
                 player.drop(cocktailItem, false);
             }
 
-            this.playSound(SoundEvents.MOOSHROOM_MILK_SUSPICIOUSLY, 1.0F, 1.0F);
+            playSound(SoundEvents.MOOSHROOM_MILK_SUSPICIOUSLY, 1.0F, 1.0F);
             return InteractionResult.SUCCESS;
         }
 
@@ -90,7 +90,7 @@ public class CowktailEntity extends Cow implements IShearable {
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        compound.putString("Type", this.getCowktailType().name);
+        compound.putString("Type", getCowktailType().name);
     }
 
     /**
@@ -99,32 +99,32 @@ public class CowktailEntity extends Cow implements IShearable {
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        this.setCowktailType(CowktailEntity.Type.getTypeByName(compound.getString("Type")));
+        setCowktailType(CowktailEntity.Type.getTypeByName(compound.getString("Type")));
     }
 
     private void setCowktailType(CowktailEntity.Type typeIn) {
-        this.entityData.set(COWKTAIL_TYPE, typeIn.name);
+        entityData.set(COWKTAIL_TYPE, typeIn.name);
     }
 
     public CowktailEntity.Type getCowktailType() {
-        return CowktailEntity.Type.getTypeByName(this.entityData.get(COWKTAIL_TYPE));
+        return CowktailEntity.Type.getTypeByName(entityData.get(COWKTAIL_TYPE));
     }
 
     @Override
     public CowktailEntity getBreedOffspring(ServerLevel world, AgeableMob ageable) {
-        CowktailEntity child = TropicraftEntities.COWKTAIL.get().create(this.level());
+        CowktailEntity child = TropicraftEntities.COWKTAIL.get().create(level());
         child.setCowktailType(getOffspringType((CowktailEntity) ageable));
         return child;
     }
 
     private CowktailEntity.Type getOffspringType(CowktailEntity cowktail) {
-        CowktailEntity.Type CowktailEntity$type = this.getCowktailType();
+        CowktailEntity.Type CowktailEntity$type = getCowktailType();
         CowktailEntity.Type CowktailEntity$type1 = cowktail.getCowktailType();
         CowktailEntity.Type CowktailEntity$type2;
-        if (CowktailEntity$type == CowktailEntity$type1 && this.random.nextInt(1024) == 0) {
+        if (CowktailEntity$type == CowktailEntity$type1 && random.nextInt(1024) == 0) {
             CowktailEntity$type2 = Type.getRandomType(random);
         } else {
-            CowktailEntity$type2 = this.random.nextBoolean() ? CowktailEntity$type : CowktailEntity$type1;
+            CowktailEntity$type2 = random.nextBoolean() ? CowktailEntity$type : CowktailEntity$type1;
         }
 
         return CowktailEntity$type2;
@@ -138,22 +138,22 @@ public class CowktailEntity extends Cow implements IShearable {
     @Override
     public List<ItemStack> onSheared(@Nullable Player player, ItemStack item, Level level, BlockPos pos) {
         java.util.List<ItemStack> ret = new java.util.ArrayList<>();
-        this.level().addParticle(ParticleTypes.EXPLOSION, this.getX(), this.getY(0.5D), this.getZ(), 0.0D, 0.0D, 0.0D);
-        if (!this.level().isClientSide) {
-            this.remove(RemovalReason.DISCARDED);
-            Cow cowentity = EntityType.COW.create(this.level());
-            cowentity.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
-            cowentity.setHealth(this.getHealth());
-            cowentity.yBodyRot = this.yBodyRot;
-            if (this.hasCustomName()) {
-                cowentity.setCustomName(this.getCustomName());
-                cowentity.setCustomNameVisible(this.isCustomNameVisible());
+        level().addParticle(ParticleTypes.EXPLOSION, getX(), getY(0.5D), getZ(), 0.0D, 0.0D, 0.0D);
+        if (!level().isClientSide) {
+            remove(RemovalReason.DISCARDED);
+            Cow cowentity = EntityType.COW.create(level());
+            cowentity.moveTo(getX(), getY(), getZ(), getYRot(), getXRot());
+            cowentity.setHealth(getHealth());
+            cowentity.yBodyRot = yBodyRot;
+            if (hasCustomName()) {
+                cowentity.setCustomName(getCustomName());
+                cowentity.setCustomNameVisible(isCustomNameVisible());
             }
-            this.level().addFreshEntity(cowentity);
+            level().addFreshEntity(cowentity);
             for (int i = 0; i < 5; ++i) {
-                ret.add(new ItemStack(this.getCowktailType().renderState.getBlock()));
+                ret.add(new ItemStack(getCowktailType().renderState.getBlock()));
             }
-            this.playSound(SoundEvents.MOOSHROOM_SHEAR, 1.0F, 1.0F);
+            playSound(SoundEvents.MOOSHROOM_SHEAR, 1.0F, 1.0F);
         }
         return ret;
     }
@@ -173,8 +173,8 @@ public class CowktailEntity extends Cow implements IShearable {
         private final BlockState renderState;
 
         Type(String nameIn, BlockState renderStateIn) {
-            this.name = nameIn;
-            this.renderState = renderStateIn;
+            name = nameIn;
+            renderState = renderStateIn;
         }
 
         public static CowktailEntity.Type getRandomType(RandomSource rand) {
@@ -186,7 +186,7 @@ public class CowktailEntity extends Cow implements IShearable {
          */
         @OnlyIn(Dist.CLIENT)
         public BlockState getRenderState() {
-            return this.renderState;
+            return renderState;
         }
 
         private static CowktailEntity.Type getTypeByName(String nameIn) {

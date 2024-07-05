@@ -36,7 +36,7 @@ public abstract class MachineRenderer<T extends BlockEntity & IMachineBlock> imp
         } else {
             BlockState state = te.getLevel().getBlockState(te.getBlockPos());
             Direction facing;
-            if (state.getBlock() != this.block) {
+            if (state.getBlock() != block) {
                 facing = Direction.NORTH;
             } else {
                 facing = te.getDirection(state);

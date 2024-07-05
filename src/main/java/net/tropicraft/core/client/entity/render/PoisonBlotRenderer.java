@@ -26,7 +26,7 @@ public class PoisonBlotRenderer extends EntityRenderer<PoisonBlotEntity> {
     @Override
     public void render(PoisonBlotEntity entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource bufferIn, int packedLightIn) {
         stack.pushPose();
-        stack.mulPose(this.entityRenderDispatcher.cameraOrientation());
+        stack.mulPose(entityRenderDispatcher.cameraOrientation());
         stack.mulPose(Axis.YP.rotationDegrees(180.0F));
         VertexConsumer buffer = TropicraftRenderUtils.getEntityCutoutBuilder(bufferIn, getTextureLocation(entity));
         PoseStack.Pose pose = stack.last();

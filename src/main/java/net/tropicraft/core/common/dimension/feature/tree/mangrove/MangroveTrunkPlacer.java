@@ -62,7 +62,7 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         int rootLength = Mth.clamp(height - 5, MIN_LENGTH, MAX_LENGTH);
 
         boolean placeDirtOnOrigin = world.isStateAtPosition(origin.below(), b -> b.is(Blocks.GRASS_BLOCK));
-        if (this.canGenerateRaised) {
+        if (canGenerateRaised) {
             int waterDepth = getWaterDepthAbove(world, origin, 3);
 
             // If we're in 1 or 2 deep water or land, we have a 1/2 chance of making the mangrove raised from the surface of the water
@@ -74,13 +74,13 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         }
 
         RootSystem roots = new RootSystem();
-        if (this.teaMangrove) {
-            this.growTeaRoots(roots, rootLength);
+        if (teaMangrove) {
+            growTeaRoots(roots, rootLength);
         } else {
-            this.growRoots(roots, random, rootLength);
+            growRoots(roots, random, rootLength);
         }
 
-        this.placeRoots((LevelSimulatedRW) world, origin, rootLength, roots, random);
+        placeRoots((LevelSimulatedRW) world, origin, rootLength, roots, random);
 
         if (placeDirtOnOrigin) {
             // Set ground to dirt
@@ -94,7 +94,7 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         List<FoliagePlacer.FoliageAttachment> leafNodes = new ArrayList<>();
         leafNodes.add(new FoliagePlacer.FoliageAttachment(origin.above(height), 1, false));
 
-        this.growBranches((LevelSimulatedRW) world, acceptor, random, height, origin, config, leafNodes);
+        growBranches((LevelSimulatedRW) world, acceptor, random, height, origin, config, leafNodes);
 
         return leafNodes;
     }
@@ -222,7 +222,7 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
                 int y = maxY;
                 while (y >= minY) {
                     mutablePos.setY(y--);
-                    if (!this.setRootsAt(world, mutablePos, random)) {
+                    if (!setRootsAt(world, mutablePos, random)) {
                         break;
                     }
                 }
@@ -231,7 +231,7 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
     }
 
     private boolean setRootsAt(LevelSimulatedRW world, BlockPos pos, RandomSource random) {
-        return setRootsAt(world, pos, this.rootsBlock.getState(random, pos));
+        return setRootsAt(world, pos, rootsBlock.getState(random, pos));
     }
 
     public static boolean setRootsAt(LevelSimulatedRW world, BlockPos pos, BlockState rootsBlock) {
@@ -261,21 +261,21 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         }
 
         boolean hasNext() {
-            return !this.queue.isEmpty();
+            return !queue.isEmpty();
         }
 
         int nextPos() {
-            return this.queue.dequeueInt();
+            return queue.dequeueInt();
         }
 
         void growOut(int pos, int distance, Direction side, Direction flow) {
             int growPos = RootSystem.offsetPos(pos, flow.getStepX(), flow.getStepZ());
-            this.growAt(growPos, RootSystem.root(distance + 1, side, flow));
+            growAt(growPos, RootSystem.root(distance + 1, side, flow));
         }
 
         void growAt(int pos, int root) {
-            if (this.roots.set(pos, root)) {
-                this.queue.enqueue(pos);
+            if (roots.set(pos, root)) {
+                queue.enqueue(pos);
             }
         }
     }
@@ -286,8 +286,8 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         private final int[] map = new int[MAX_SIZE * MAX_SIZE];
 
         boolean set(int pos, int root) {
-            if (!this.contains(pos)) {
-                this.map[pos] = root;
+            if (!contains(pos)) {
+                map[pos] = root;
                 return true;
             } else {
                 return false;
@@ -295,11 +295,11 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         }
 
         int get(int pos) {
-            return this.map[pos];
+            return map[pos];
         }
 
         boolean contains(int pos) {
-            return this.get(pos) != NULL;
+            return get(pos) != NULL;
         }
 
         static int pos(int x, int z) {

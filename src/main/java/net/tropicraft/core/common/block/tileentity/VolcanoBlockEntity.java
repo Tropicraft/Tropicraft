@@ -90,13 +90,13 @@ public class VolcanoBlockEntity extends BlockEntity {
                 if (!getLevel().isClientSide) {
                     //	if ((ticksUntilRetreating % (getWorld().rand.nextInt(40) + 10) == 0)/* && time > 800 && !falling*/) {
                     if (getLevel().random.nextInt(15) == 0) {
-                        throwLavaFromCaldera(0.05 + Math.abs(getLevel().random.nextGaussian()) * (lavaLevel > 90 ? LAVA_ERUPT_LEVEL + this.heightOffset : 0.75));
+                        throwLavaFromCaldera(0.05 + Math.abs(getLevel().random.nextGaussian()) * (lavaLevel > 90 ? LAVA_ERUPT_LEVEL + heightOffset : 0.75));
                     }
                     //	}
 
                     //	if ((ticksUntilRetreating % (getWorld().rand.nextInt(40) + 10) == 0) && lavaLevel > 90) {
                     if (getLevel().random.nextInt(15) == 0) {
-                        throwLavaFromCaldera(0.05 + Math.abs(getLevel().random.nextGaussian()) * (lavaLevel > LAVA_ERUPT_LEVEL + this.heightOffset ? 1 : 0.75));
+                        throwLavaFromCaldera(0.05 + Math.abs(getLevel().random.nextGaussian()) * (lavaLevel > LAVA_ERUPT_LEVEL + heightOffset ? 1 : 0.75));
                     }
                     //	}
                 }
@@ -112,11 +112,11 @@ public class VolcanoBlockEntity extends BlockEntity {
                 }
 
                 if (ticksUntilEruption % 20 == 0) {
-                    if (lavaLevel < MAX_LAVA_LEVEL_DURING_ERUPTION + this.heightOffset) {
+                    if (lavaLevel < MAX_LAVA_LEVEL_DURING_ERUPTION + heightOffset) {
                         raiseLavaLevels();
                     } else {
                         ticksUntilEruption = 0;
-                        getLevel().playLocalSound(this.worldPosition.getX(), 73, this.worldPosition.getY(), SoundEvents.GENERIC_EXPLODE.value(), SoundSource.NEUTRAL, 1.0F, getLevel().random.nextFloat() / 4 + 0.825F, false);
+                        getLevel().playLocalSound(worldPosition.getX(), 73, worldPosition.getY(), SoundEvents.GENERIC_EXPLODE.value(), SoundSource.NEUTRAL, 1.0F, getLevel().random.nextFloat() / 4 + 0.825F, false);
                         int balls = getLevel().random.nextInt(25) + 15;
 
                         for (int i = 0; i < balls; i++) {
@@ -141,12 +141,12 @@ public class VolcanoBlockEntity extends BlockEntity {
     }
 
     public void cleanUpFromEruption() {
-        int xPos = this.worldPosition.getX();
-        int zPos = this.worldPosition.getZ();
+        int xPos = worldPosition.getX();
+        int zPos = worldPosition.getZ();
 
         for (int x = xPos - (radius * 2); x < xPos + (radius * 2); x++) {
             for (int z = zPos - (radius * 2); z < zPos + (radius * 2); z++) {
-                for (int y = LAVA_BASE_LEVEL + this.heightOffset; y < 140; y++) {
+                for (int y = LAVA_BASE_LEVEL + heightOffset; y < 140; y++) {
                     BlockPos outBlockPos = new BlockPos(x, y, z);
                     if (getLevel().getBlockState(outBlockPos).getBlock() == Blocks.LAVA) {
                         getLevel().setBlockAndUpdate(outBlockPos, Blocks.AIR.defaultBlockState());
@@ -176,22 +176,22 @@ public class VolcanoBlockEntity extends BlockEntity {
     }
 
     private void raiseLavaLevels() {
-        if (lavaLevel < MAX_LAVA_LEVEL_DURING_ERUPTION + this.heightOffset) {
+        if (lavaLevel < MAX_LAVA_LEVEL_DURING_ERUPTION + heightOffset) {
             lavaLevel++;
             setBlocksOnLavaLevel(Blocks.LAVA.defaultBlockState(), 3);
         }
     }
 
     private void lowerLavaLevels() {
-        if (lavaLevel > LAVA_BASE_LEVEL + this.heightOffset) {
+        if (lavaLevel > LAVA_BASE_LEVEL + heightOffset) {
             setBlocksOnLavaLevel(Blocks.AIR.defaultBlockState(), 3);
             lavaLevel--;
         }
     }
 
     private void setBlocksOnLavaLevel(BlockState state, int updateFlag) {
-        int xPos = this.worldPosition.getX();
-        int zPos = this.worldPosition.getZ();
+        int xPos = worldPosition.getX();
+        int zPos = worldPosition.getZ();
 
         for (int x = xPos - radius; x < xPos + radius; x++) {
             for (int z = zPos - radius; z < zPos + radius; z++) {
@@ -200,7 +200,7 @@ public class VolcanoBlockEntity extends BlockEntity {
                     if (getLevel().getBlockState(botPos).getBlock() == Blocks.LAVA) {
                         BlockPos pos2 = new BlockPos(x, lavaLevel, z);
 
-                        if (lavaLevel >= MAX_LAVA_LEVEL_DURING_RISE + this.heightOffset && lavaLevel < MAX_LAVA_LEVEL_DURING_ERUPTION + this.heightOffset) {
+                        if (lavaLevel >= MAX_LAVA_LEVEL_DURING_RISE + heightOffset && lavaLevel < MAX_LAVA_LEVEL_DURING_ERUPTION + heightOffset) {
                             if (getLevel().getBlockState(pos2).getBlock() != TropicraftBlocks.CHUNK.get()) {
                                 getLevel().setBlock(pos2, state, updateFlag);
                             }
@@ -224,9 +224,9 @@ public class VolcanoBlockEntity extends BlockEntity {
         int n = getLevel().random.nextInt(100) + 4;
         for (int i = 0; i < n; i++) {
             // getWorld().spawnEntity(new EntitySmoke(getWorld(), xPos + rand.nextInt(10) - 5, lavaLevel + rand.nextInt(4), zPos + rand.nextInt(10) - 5));
-            double x = this.worldPosition.getX() + getLevel().random.nextInt(radius) * (getLevel().random.nextBoolean() ? -1 : 1);
-            double y = this.lavaLevel + getLevel().random.nextInt(6);
-            double z = this.worldPosition.getZ() + getLevel().random.nextInt(radius) * (getLevel().random.nextBoolean() ? -1 : 1);
+            double x = worldPosition.getX() + getLevel().random.nextInt(radius) * (getLevel().random.nextBoolean() ? -1 : 1);
+            double y = lavaLevel + getLevel().random.nextInt(6);
+            double z = worldPosition.getZ() + getLevel().random.nextInt(radius) * (getLevel().random.nextBoolean() ? -1 : 1);
             getLevel().addParticle(ParticleTypes.LARGE_SMOKE, true, x, y, z, 0.0D, 0.7, 0.0D);
             //System.out.println("Spewing smoke " + x + " " + z);
         }
@@ -361,7 +361,7 @@ public class VolcanoBlockEntity extends BlockEntity {
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
         CompoundTag nbt = new CompoundTag();
-        this.saveAdditional(nbt, registries);
+        saveAdditional(nbt, registries);
         return nbt;
     }
 

@@ -53,12 +53,12 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
     public HummingbirdEntity(EntityType<? extends HummingbirdEntity> type, Level world) {
         super(type, world);
 
-        this.moveControl = new FlyingMoveControl(this, 20, true);
-        this.setPathfindingMalus(PathType.DANGER_FIRE, -1.0F);
-        this.setPathfindingMalus(PathType.DAMAGE_FIRE, -1.0F);
-        this.setPathfindingMalus(PathType.COCOA, -1.0F);
-        this.setPathfindingMalus(PathType.WATER, -1.0F);
-        this.setPathfindingMalus(PathType.FENCE, -1.0F);
+        moveControl = new FlyingMoveControl(this, 20, true);
+        setPathfindingMalus(PathType.DANGER_FIRE, -1.0F);
+        setPathfindingMalus(PathType.DAMAGE_FIRE, -1.0F);
+        setPathfindingMalus(PathType.COCOA, -1.0F);
+        setPathfindingMalus(PathType.WATER, -1.0F);
+        setPathfindingMalus(PathType.FENCE, -1.0F);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -79,12 +79,12 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new FlyAwayInPanicGoal());
-        this.goalSelector.addGoal(2, new TemptGoal(this, 1.25, Ingredient.of(Items.SUGAR), false));
-        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(4, new FeedFromPlantsGoal());
-        this.goalSelector.addGoal(5, new FlyAroundRandomlyGoal());
+        goalSelector.addGoal(0, new FloatGoal(this));
+        goalSelector.addGoal(1, new FlyAwayInPanicGoal());
+        goalSelector.addGoal(2, new TemptGoal(this, 1.25, Ingredient.of(Items.SUGAR), false));
+        goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        goalSelector.addGoal(4, new FeedFromPlantsGoal());
+        goalSelector.addGoal(5, new FlyAroundRandomlyGoal());
     }
 
     public static boolean canHummingbirdSpawnOn(EntityType<HummingbirdEntity> type, LevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {
@@ -95,7 +95,7 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
 
     @Override
     public boolean isFlying() {
-        return !this.onGround();
+        return !onGround();
     }
 
     @Override
@@ -181,14 +181,14 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
 
         @Override
         public boolean canContinueToUse() {
-            return this.feedingTicks > 0 || HummingbirdEntity.this.isPathFinding();
+            return feedingTicks > 0 || isPathFinding();
         }
 
         @Override
         public void stop() {
             super.stop();
-            this.feedingTicks = 0;
-            this.foundFood = false;
+            feedingTicks = 0;
+            foundFood = false;
         }
 
         @Override
@@ -197,29 +197,29 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
 
             Vec3 target = this.target;
             if (target != null) {
-                if (this.foundFood) {
-                    this.tickFoundFood(target);
+                if (foundFood) {
+                    tickFoundFood(target);
                 } else {
-                    this.tickFindingFood(target);
+                    tickFindingFood(target);
                 }
             }
         }
 
         private void tickFoundFood(Vec3 target) {
-            if (this.feedingTicks > 0) {
+            if (feedingTicks > 0) {
                 HummingbirdEntity bird = HummingbirdEntity.this;
                 bird.lookControl.setLookAt(target);
 
-                if (--this.feedingTicks == 0) {
+                if (--feedingTicks == 0) {
                     bird.tryPollinatePlant(BlockPos.containing(target));
                 }
             }
         }
 
         private void tickFindingFood(Vec3 target) {
-            if (HummingbirdEntity.this.distanceToSqr(target) <= 1.5 * 1.5) {
-                this.feedingTicks = FEEDING_TICKS;
-                this.foundFood = true;
+            if (distanceToSqr(target) <= 1.5 * 1.5) {
+                feedingTicks = FEEDING_TICKS;
+                foundFood = true;
             }
         }
 
@@ -240,7 +240,7 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
                 );
 
                 BlockState state = world.getBlockState(mutablePos);
-                if (this.canFeedFrom(world, mutablePos, state)) {
+                if (canFeedFrom(world, mutablePos, state)) {
                     return Vec3.atCenterOf(mutablePos);
                 }
             }
@@ -249,7 +249,7 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
         }
 
         private boolean canFeedFrom(Level world, BlockPos pos, BlockState state) {
-            if (this.canFeedFrom(state)) {
+            if (canFeedFrom(state)) {
                 BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
                 for (Direction direction : HORIZONTALS) {
                     mutablePos.setWithOffset(pos, direction);
@@ -276,20 +276,20 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
 
         @Override
         public boolean canUse() {
-            return HummingbirdEntity.this.getLastHurtByMob() != null;
+            return getLastHurtByMob() != null;
         }
 
         @Nullable
         @Override
         Vec3 generateTarget() {
-            LivingEntity target = HummingbirdEntity.this.getLastHurtByMob();
+            LivingEntity target = getLastHurtByMob();
             if (target == null) {
                 return null;
             }
 
-            Vec3 direction = HummingbirdEntity.this.position().subtract(target.position())
+            Vec3 direction = position().subtract(target.position())
                     .normalize();
-            return this.generateTargetInDirection(direction, Math.PI / 2.0);
+            return generateTargetInDirection(direction, Math.PI / 2.0);
         }
     }
 
@@ -307,8 +307,8 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
         @Nullable
         @Override
         Vec3 generateTarget() {
-            Vec3 direction = HummingbirdEntity.this.getViewVector(1.0F);
-            return this.generateTargetInDirection(direction, Math.PI / 2.0);
+            Vec3 direction = getViewVector(1.0F);
+            return generateTargetInDirection(direction, Math.PI / 2.0);
         }
     }
 
@@ -318,31 +318,31 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
 
         FlyingGoal(float speed) {
             this.speed = speed;
-            this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+            setFlags(EnumSet.of(Goal.Flag.MOVE));
         }
 
         @Override
         public boolean canUse() {
-            return HummingbirdEntity.this.navigation.isDone();
+            return navigation.isDone();
         }
 
         @Override
         public boolean canContinueToUse() {
-            return HummingbirdEntity.this.navigation.isInProgress();
+            return navigation.isInProgress();
         }
 
         @Override
         public void start() {
-            this.target = this.generateTarget();
-            if (this.target != null) {
-                Path path = HummingbirdEntity.this.navigation.createPath(BlockPos.containing(this.target), 1);
-                HummingbirdEntity.this.navigation.moveTo(path, this.speed);
+            target = generateTarget();
+            if (target != null) {
+                Path path = navigation.createPath(BlockPos.containing(target), 1);
+                navigation.moveTo(path, speed);
             }
         }
 
         @Override
         public void stop() {
-            this.target = null;
+            target = null;
         }
 
         @Nullable

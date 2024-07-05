@@ -48,7 +48,7 @@ public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerBlockEntity> {
 
     public DrinkMixerRenderer(BlockEntityRendererProvider.Context context) {
         super(context, TropicraftBlocks.DRINK_MIXER.get(), new EIHMachineModel<>(context.getModelSet().bakeLayer(TropicraftRenderLayers.EIHMACHINE_LAYER)));
-        this.renderItem = context.getItemRenderer();
+        renderItem = context.getItemRenderer();
         ModelPart mugLayer = context.getModelSet().bakeLayer(TropicraftRenderLayers.BAMBOO_MUG);
         emptyMugModel = new BambooMugModel(mugLayer, RenderType::entityCutout, false);
         filledMugModel = new BambooMugModel(mugLayer, RenderType::entityCutout, true);

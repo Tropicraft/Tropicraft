@@ -60,7 +60,7 @@ public class EntityAIGoneFishin extends Goal {
 
     public EntityAIGoneFishin(EntityKoaBase entity) {
         this.entity = entity;
-        this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+        setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
         rand = RandomSource.create();
 
         walkingTimeout = walkingTimeoutMax;
@@ -91,9 +91,9 @@ public class EntityAIGoneFishin extends Goal {
         entity.lastTimeFished = 0;
         debugTask = false;
 
-        BlockPos blockpos = this.entity.blockPosition();
+        BlockPos blockpos = entity.blockPosition();
 
-        if ((!this.entity.level().isDay() || this.entity.level().isRaining() && this.entity.level().getBiome(blockpos).value().getPrecipitationAt(blockpos) == Biome.Precipitation.RAIN)) {
+        if ((!entity.level().isDay() || entity.level().isRaining() && entity.level().getBiome(blockpos).value().getPrecipitationAt(blockpos) == Biome.Precipitation.RAIN)) {
             return false;
         }
 
@@ -343,7 +343,7 @@ public class EntityAIGoneFishin extends Goal {
     }
 
     private void setState(FISHING_STATE state) {
-        debug("setting state from " + this.state + " to " + state + " - " + this.entity.blockPosition());
+        debug("setting state from " + this.state + " to " + state + " - " + entity.blockPosition());
         if (state != FISHING_STATE.FISHING) {
             retractLine();
         }
@@ -367,7 +367,7 @@ public class EntityAIGoneFishin extends Goal {
         repathAttempts = 0;
         retractLine();
 
-        this.state = FISHING_STATE.IDLE;
+        state = FISHING_STATE.IDLE;
     }
 
     private void maintainPathToBlock(BlockPos pos) {
@@ -375,7 +375,7 @@ public class EntityAIGoneFishin extends Goal {
             walkingTimeout = walkingTimeoutMax;
             boolean success = Util.tryMoveToXYZLongDist(entity, pos, moveSpeedAmp);
             if (!success) {
-                debug("repathing failed - " + this.entity.getId() + " - " + this.state + " - " + pos);
+                debug("repathing failed - " + entity.getId() + " - " + state + " - " + pos);
                 repathPenalty = repathPenaltyMax;
             }
         }
@@ -384,10 +384,10 @@ public class EntityAIGoneFishin extends Goal {
     private boolean retryPathOrAbort(BlockPos pos) {
         boolean success = Util.tryMoveToXYZLongDist(entity, pos, moveSpeedAmp);
         if (!success) {
-            debug("repathing failed, resetting - " + this.entity.getId() + " - " + this.state + " - " + pos);
+            debug("repathing failed, resetting - " + entity.getId() + " - " + state + " - " + pos);
             stop();
         } else {
-            debug("repathing success - " + this.entity.getId() + " - " + this.state + " - " + pos);
+            debug("repathing success - " + entity.getId() + " - " + state + " - " + pos);
             walkingTimeout = walkingTimeoutMax;
         }
         return success;

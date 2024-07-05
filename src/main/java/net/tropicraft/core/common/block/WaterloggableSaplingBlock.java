@@ -22,7 +22,7 @@ public abstract class WaterloggableSaplingBlock extends SaplingBlock implements 
 
     public WaterloggableSaplingBlock(TreeGrower tree, Properties properties) {
         super(tree, properties);
-        this.registerDefaultState(this.stateDefinition.any().setValue(STAGE, 0).setValue(WATERLOGGED, false));
+        registerDefaultState(stateDefinition.any().setValue(STAGE, 0).setValue(WATERLOGGED, false));
     }
 
     @Override
@@ -38,7 +38,7 @@ public abstract class WaterloggableSaplingBlock extends SaplingBlock implements 
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState()
+        return defaultBlockState()
                 .setValue(WATERLOGGED, context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER);
     }
 

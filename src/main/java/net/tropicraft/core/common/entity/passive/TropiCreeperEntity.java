@@ -68,16 +68,16 @@ public class TropiCreeperEntity extends PathfinderMob {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(2, new TropiCreeperSwellGoal(this));
-        this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Ocelot.class, 6.0F, 1.0D, 1.2D));
-        this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Cat.class, 6.0F, 1.0D, 1.2D));
-        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));
-        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.8D));
-        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
-        this.targetSelector.addGoal(2, new HurtByTargetGoal(this));
+        goalSelector.addGoal(1, new FloatGoal(this));
+        goalSelector.addGoal(2, new TropiCreeperSwellGoal(this));
+        goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Ocelot.class, 6.0F, 1.0D, 1.2D));
+        goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Cat.class, 6.0F, 1.0D, 1.2D));
+        goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));
+        goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.8D));
+        goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        targetSelector.addGoal(2, new HurtByTargetGoal(this));
     }
 
     @Override
@@ -92,15 +92,15 @@ public class TropiCreeperEntity extends PathfinderMob {
      */
     @Override
     public int getMaxFallDistance() {
-        return this.getTarget() == null ? 3 : 3 + (int) (this.getHealth() - 1.0F);
+        return getTarget() == null ? 3 : 3 + (int) (getHealth() - 1.0F);
     }
 
     @Override
     public boolean causeFallDamage(float distance, float pMultiplier, DamageSource pSource) {
         boolean fall = super.causeFallDamage(distance, pMultiplier, pSource);
-        this.timeSinceIgnited = (int) ((float) this.timeSinceIgnited + distance * 1.5F);
-        if (this.timeSinceIgnited > this.fuseTime - 5) {
-            this.timeSinceIgnited = this.fuseTime - 5;
+        timeSinceIgnited = (int) ((float) timeSinceIgnited + distance * 1.5F);
+        if (timeSinceIgnited > fuseTime - 5) {
+            timeSinceIgnited = fuseTime - 5;
         }
 
         return fall;
@@ -109,9 +109,9 @@ public class TropiCreeperEntity extends PathfinderMob {
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        compound.putShort("Fuse", (short) this.fuseTime);
-        compound.putByte("ExplosionRadius", (byte) this.explosionRadius);
-        compound.putBoolean("ignited", this.hasIgnited());
+        compound.putShort("Fuse", (short) fuseTime);
+        compound.putByte("ExplosionRadius", (byte) explosionRadius);
+        compound.putBoolean("ignited", hasIgnited());
     }
 
     /**
@@ -121,15 +121,15 @@ public class TropiCreeperEntity extends PathfinderMob {
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         if (compound.contains("Fuse", 99)) {
-            this.fuseTime = compound.getShort("Fuse");
+            fuseTime = compound.getShort("Fuse");
         }
 
         if (compound.contains("ExplosionRadius", 99)) {
-            this.explosionRadius = compound.getByte("ExplosionRadius");
+            explosionRadius = compound.getByte("ExplosionRadius");
         }
 
         if (compound.getBoolean("ignited")) {
-            this.ignite();
+            ignite();
         }
     }
 
@@ -138,25 +138,25 @@ public class TropiCreeperEntity extends PathfinderMob {
      */
     @Override
     public void tick() {
-        if (this.isAlive()) {
-            this.prevTimeSinceIgnited = this.timeSinceIgnited;
-            if (this.hasIgnited()) {
-                this.setCreeperState(1);
+        if (isAlive()) {
+            prevTimeSinceIgnited = timeSinceIgnited;
+            if (hasIgnited()) {
+                setCreeperState(1);
             }
 
-            int i = this.getCreeperState();
-            if (i > 0 && this.timeSinceIgnited == 0) {
-                this.playSound(SoundEvents.CREEPER_PRIMED, 1.0F, 0.5F);
+            int i = getCreeperState();
+            if (i > 0 && timeSinceIgnited == 0) {
+                playSound(SoundEvents.CREEPER_PRIMED, 1.0F, 0.5F);
             }
 
-            this.timeSinceIgnited += i;
-            if (this.timeSinceIgnited < 0) {
-                this.timeSinceIgnited = 0;
+            timeSinceIgnited += i;
+            if (timeSinceIgnited < 0) {
+                timeSinceIgnited = 0;
             }
 
-            if (this.timeSinceIgnited >= this.fuseTime) {
-                this.timeSinceIgnited = this.fuseTime;
-                this.explode();
+            if (timeSinceIgnited >= fuseTime) {
+                timeSinceIgnited = fuseTime;
+                explode();
             }
         }
 
@@ -177,24 +177,24 @@ public class TropiCreeperEntity extends PathfinderMob {
      * Returns the current state of creeper, -1 is idle, 1 is 'in fuse'
      */
     public int getCreeperState() {
-        return this.entityData.get(STATE);
+        return entityData.get(STATE);
     }
 
     /**
      * Sets the state of creeper, -1 to idle and 1 to be 'in fuse'
      */
     public void setCreeperState(int state) {
-        this.entityData.set(STATE, state);
+        entityData.set(STATE, state);
     }
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         if (itemstack.getItem() == Items.FLINT_AND_STEEL) {
-            this.level().playSound(player, getX(), getY(), getZ(), SoundEvents.FLINTANDSTEEL_USE, this.getSoundSource(), 1.0F, this.random.nextFloat() * 0.4F + 0.8F);
+            level().playSound(player, getX(), getY(), getZ(), SoundEvents.FLINTANDSTEEL_USE, getSoundSource(), 1.0F, random.nextFloat() * 0.4F + 0.8F);
             player.swing(hand);
-            if (!this.level().isClientSide) {
-                this.ignite();
+            if (!level().isClientSide) {
+                ignite();
                 itemstack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
                 return InteractionResult.SUCCESS;
             }
@@ -207,8 +207,8 @@ public class TropiCreeperEntity extends PathfinderMob {
      * Creates an explosion as determined by this creeper's power and explosion radius.
      */
     private void explode() {
-        if (!this.level().isClientSide) {
-            this.dead = true;
+        if (!level().isClientSide) {
+            dead = true;
             //this.world.createExplosion(this, this.posX, this.posY, this.posZ, (float)this.explosionRadius, Explosion.Mode.NONE);
             //TODO: readd coconut bomb drop for creeper
             // this.dropItem(TCItemRegistry.coconutBomb.itemID, rand.nextInt(3) + 1);
@@ -230,15 +230,15 @@ public class TropiCreeperEntity extends PathfinderMob {
                     }
                 }
             }
-            this.remove(RemovalReason.KILLED);
-            this.spawnLingeringCloud();
+            remove(RemovalReason.KILLED);
+            spawnLingeringCloud();
         } else {
             level().addParticle(ParticleTypes.EXPLOSION_EMITTER, getX(), getY() + 1F, getZ(), 1.0D, 0.0D, 0.0D);
         }
     }
 
     private void spawnLingeringCloud() {
-        Collection<MobEffectInstance> collection = this.getActiveEffects();
+        Collection<MobEffectInstance> collection = getActiveEffects();
         if (!collection.isEmpty()) {
             AreaEffectCloud areaeffectcloudentity = new AreaEffectCloud(level(), getX(), getY(), getZ());
             areaeffectcloudentity.setRadius(2.5F);
@@ -251,19 +251,19 @@ public class TropiCreeperEntity extends PathfinderMob {
                 areaeffectcloudentity.addEffect(new MobEffectInstance(effectinstance));
             }
 
-            this.level().addFreshEntity(areaeffectcloudentity);
+            level().addFreshEntity(areaeffectcloudentity);
         }
     }
 
     public boolean hasIgnited() {
-        return this.entityData.get(IGNITED);
+        return entityData.get(IGNITED);
     }
 
     public void ignite() {
-        this.entityData.set(IGNITED, true);
+        entityData.set(IGNITED, true);
     }
 
     public float getCreeperFlashIntensity(float partialTicks) {
-        return Mth.lerp(partialTicks, (float) this.prevTimeSinceIgnited, (float) this.timeSinceIgnited) / (float) (this.fuseTime - 2);
+        return Mth.lerp(partialTicks, (float) prevTimeSinceIgnited, (float) timeSinceIgnited) / (float) (fuseTime - 2);
     }
 }

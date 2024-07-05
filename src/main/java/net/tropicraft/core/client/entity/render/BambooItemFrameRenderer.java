@@ -42,13 +42,13 @@ public class BambooItemFrameRenderer extends EntityRenderer<BambooItemFrame> {
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
         matrixStackIn.pushPose();
         Direction direction = entityIn.getDirection();
-        Vec3 Vector3d = this.getRenderOffset(entityIn, partialTicks);
+        Vec3 Vector3d = getRenderOffset(entityIn, partialTicks);
         matrixStackIn.translate(-Vector3d.x, -Vector3d.y, -Vector3d.z);
         double d0 = 0.46875D;
         matrixStackIn.translate((double) direction.getStepX() * 0.46875D, (double) direction.getStepY() * 0.46875D, (double) direction.getStepZ() * 0.46875D);
         matrixStackIn.mulPose(Axis.XP.rotationDegrees(entityIn.getXRot()));
         matrixStackIn.mulPose(Axis.YP.rotationDegrees(180.0F - entityIn.getYRot()));
-        BlockRenderDispatcher blockrendererdispatcher = this.mc.getBlockRenderer();
+        BlockRenderDispatcher blockrendererdispatcher = mc.getBlockRenderer();
         ModelManager modelmanager = blockrendererdispatcher.getBlockModelShaper().getModelManager();
         ModelResourceLocation modelresourcelocation = entityIn.getItem().getItem() instanceof MapItem ? LOCATION_MODEL_MAP : LOCATION_MODEL;
         matrixStackIn.pushPose();
@@ -69,11 +69,11 @@ public class BambooItemFrameRenderer extends EntityRenderer<BambooItemFrame> {
                 matrixStackIn.translate(0.0D, 0.0D, -1.0D);
                 MapId id = itemstack.get(DataComponents.MAP_ID);
                 if (mapdata != null && id != null) {
-                    this.mc.gameRenderer.getMapRenderer().render(matrixStackIn, bufferIn, id, mapdata, true, packedLightIn);
+                    mc.gameRenderer.getMapRenderer().render(matrixStackIn, bufferIn, id, mapdata, true, packedLightIn);
                 }
             } else {
                 matrixStackIn.scale(0.5F, 0.5F, 0.5F);
-                this.itemRenderer.renderStatic(itemstack, ItemDisplayContext.FIXED, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, entityIn.level(), entityIn.getId());
+                itemRenderer.renderStatic(itemstack, ItemDisplayContext.FIXED, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, entityIn.level(), entityIn.getId());
             }
         }
 

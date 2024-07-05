@@ -22,10 +22,10 @@ public class EntityAIWanderNotLazy extends Goal {
     }
 
     public EntityAIWanderNotLazy(PathfinderMob creatureIn, double speedIn, int chance) {
-        this.entity = creatureIn;
-        this.speed = speedIn;
-        this.executionChance = chance;
-        this.setFlags(EnumSet.of(Flag.MOVE));
+        entity = creatureIn;
+        speed = speedIn;
+        executionChance = chance;
+        setFlags(EnumSet.of(Flag.MOVE));
     }
 
     /**
@@ -33,25 +33,25 @@ public class EntityAIWanderNotLazy extends Goal {
      */
     @Override
     public boolean canUse() {
-        if (!this.mustUpdate) {
+        if (!mustUpdate) {
             /*if (this.entity.getAge() >= 100)
             {
                 return false;
             }*/
 
-            if (this.entity.getRandom().nextInt(this.executionChance) != 0) {
+            if (entity.getRandom().nextInt(executionChance) != 0) {
                 return false;
             }
         }
 
-        Vec3 vec = DefaultRandomPos.getPos(this.entity, 10, 7);
+        Vec3 vec = DefaultRandomPos.getPos(entity, 10, 7);
         if (vec == null) {
             return false;
         } else {
-            this.xPosition = vec.x;
-            this.yPosition = vec.y;
-            this.zPosition = vec.z;
-            this.mustUpdate = false;
+            xPosition = vec.x;
+            yPosition = vec.y;
+            zPosition = vec.z;
+            mustUpdate = false;
             return true;
         }
     }
@@ -61,7 +61,7 @@ public class EntityAIWanderNotLazy extends Goal {
      */
     @Override
     public boolean canContinueToUse() {
-        return !this.entity.getNavigation().isDone();
+        return !entity.getNavigation().isDone();
     }
 
     /**
@@ -69,21 +69,21 @@ public class EntityAIWanderNotLazy extends Goal {
      */
     @Override
     public void start() {
-        this.entity.getNavigation().moveTo(this.xPosition, this.yPosition, this.zPosition, this.speed);
+        entity.getNavigation().moveTo(xPosition, yPosition, zPosition, speed);
     }
 
     /**
      * Makes task to bypass chance
      */
     public void makeUpdate() {
-        this.mustUpdate = true;
+        mustUpdate = true;
     }
 
     /**
      * Changes task random possibility for execution
      */
     public void setExecutionChance(int newchance) {
-        this.executionChance = newchance;
+        executionChance = newchance;
     }
 }
 

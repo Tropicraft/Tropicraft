@@ -49,7 +49,7 @@ public class PneumatophoresTreeDecorator extends TreeDecorator {
         LevelSimulatedReader level = context.level();
         RandomSource random = context.random();
         int spread = this.spread;
-        int count = random.nextInt(this.maxCount - this.minCount + 1) + this.minCount;
+        int count = random.nextInt(maxCount - minCount + 1) + minCount;
         int maxTopY = origin.getY() + 3;
         int minBottomY = origin.getY() - 6;
 
@@ -86,7 +86,7 @@ public class PneumatophoresTreeDecorator extends TreeDecorator {
             int y = topY;
             while (y >= minY) {
                 mutablePos.setY(y--);
-                MangroveTrunkPlacer.setRootsAt((LevelSimulatedRW) level, mutablePos, this.rootsBlock.getState(random, mutablePos));
+                MangroveTrunkPlacer.setRootsAt((LevelSimulatedRW) level, mutablePos, rootsBlock.getState(random, mutablePos));
             }
         }
     }

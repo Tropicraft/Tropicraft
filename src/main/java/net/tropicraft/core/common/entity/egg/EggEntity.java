@@ -80,15 +80,15 @@ public abstract class EggEntity extends LivingEntity {
     public abstract int getPreHatchMovement();
 
     public int getRandomHatchDelay() {
-        return this.getEntityData().get(HATCH_DELAY);
+        return getEntityData().get(HATCH_DELAY);
     }
 
     public boolean isHatching() {
-        return this.tickCount > (getHatchTime() + getRandomHatchDelay());
+        return tickCount > (getHatchTime() + getRandomHatchDelay());
     }
 
     public boolean isNearHatching() {
-        return this.tickCount > (getHatchTime() + getRandomHatchDelay()) - getPreHatchMovement();
+        return tickCount > (getHatchTime() + getRandomHatchDelay()) - getPreHatchMovement();
     }
 
     @Override
@@ -99,7 +99,7 @@ public abstract class EggEntity extends LivingEntity {
             rotationRand += 0.1707F * level().random.nextFloat();
 
             // Hatch time!
-            if (tickCount >= this.getHatchTime()) {
+            if (tickCount >= getHatchTime()) {
                 if (!level().isClientSide) {
                     Entity ent = onHatch();
                     ent.moveTo(getX(), getY(), getZ(), 0.0F, 0.0F);
@@ -111,11 +111,11 @@ public abstract class EggEntity extends LivingEntity {
     }
 
     public void setHatchDelay(int i) {
-        this.getEntityData().set(HATCH_DELAY, -60 + random.nextInt(120));
+        getEntityData().set(HATCH_DELAY, -60 + random.nextInt(120));
     }
 
     public int getHatchDelay() {
-        return this.getEntityData().get(HATCH_DELAY);
+        return getEntityData().get(HATCH_DELAY);
     }
 
     @Override

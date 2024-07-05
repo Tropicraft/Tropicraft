@@ -18,7 +18,7 @@ public class AIAshenChaseAndPickupLostMask extends Goal {
     public AIAshenChaseAndPickupLostMask(AshenEntity ashen, double speed) {
         this.ashen = ashen;
         this.speed = speed;
-        this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+        setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
 
     @Override
@@ -66,6 +66,6 @@ public class AIAshenChaseAndPickupLostMask extends Goal {
 
     @Override
     public void stop() {
-        this.target = null;
+        target = null;
     }
 }

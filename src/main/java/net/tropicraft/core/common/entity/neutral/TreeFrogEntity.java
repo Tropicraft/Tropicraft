@@ -45,7 +45,7 @@ public class TreeFrogEntity extends TropicraftCreatureEntity implements Enemy, R
         final String color;
 
         Type(String s) {
-            this.color = s;
+            color = s;
         }
 
         public String getColor() {
@@ -85,7 +85,7 @@ public class TreeFrogEntity extends TropicraftCreatureEntity implements Enemy, R
     @Override
     protected void customServerAiStep() {
         super.customServerAiStep();
-        if (!getNavigation().isDone() || this.getTarget() != null) {
+        if (!getNavigation().isDone() || getTarget() != null) {
             if (onGround() || isInWater()) {
                 if (jumpDelay > 0)
                     jumpDelay--;

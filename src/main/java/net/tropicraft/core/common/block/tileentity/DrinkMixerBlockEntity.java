@@ -110,7 +110,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
     }
 
     public NonNullList<ItemStack> getIngredients() {
-        return this.ingredients;
+        return ingredients;
     }
 
     public static List<Ingredient> listIngredients(@Nonnull ItemStack stack) {
@@ -129,8 +129,8 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
     }
 
     public void startMixing() {
-        this.ticks = 0;
-        this.mixing = true;
+        ticks = 0;
+        mixing = true;
         if (level instanceof ServerLevel serverLevel) {
             PacketDistributor.sendToPlayersTrackingChunk(serverLevel, new ChunkPos(getBlockPos()), new ClientboundMixerStartPacket(getBlockPos()));
         }
@@ -298,7 +298,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
     }
 
     private CompoundTag writeItems(CompoundTag nbt, HolderLookup.Provider registries) {
-        this.saveAdditional(nbt, registries);
+        saveAdditional(nbt, registries);
         return nbt;
     }
 

@@ -31,7 +31,7 @@ public final class PapayaFoliagePlacer extends FoliagePlacer {
     @Override
     protected void createFoliage(LevelSimulatedReader world, FoliageSetter setter, RandomSource random, TreeConfiguration config, int pMaxFreeTreeHeight, FoliageAttachment node, int pFoliageHeight, int radius, int pOffset) {
         // Top + shape
-        this.placeLeavesRow(world, setter, random, config, node.pos(), 1, 1, node.doubleTrunk());
+        placeLeavesRow(world, setter, random, config, node.pos(), 1, 1, node.doubleTrunk());
 
         BlockPos origin = node.pos();
         // Center leaves

@@ -83,7 +83,7 @@ public class Ingredient implements Comparable<Ingredient> {
     private final List<DrinkAction> actions = new LinkedList<>();
 
     public Ingredient() {
-        this.item = Items.AIR.builtInRegistryHolder();
+        item = Items.AIR.builtInRegistryHolder();
     }
 
     public Ingredient(int id, @Nonnull Holder<? extends ItemLike> ingredientItem, boolean primary, int color) {
@@ -92,7 +92,7 @@ public class Ingredient implements Comparable<Ingredient> {
         }
 
         this.id = id;
-        this.item = ingredientItem;
+        item = ingredientItem;
         this.primary = primary;
         this.color = color;
         ingredientsList[id] = this;
@@ -110,7 +110,7 @@ public class Ingredient implements Comparable<Ingredient> {
      * @return this Ingredient object
      */
     public Ingredient addAction(DrinkAction action) {
-        this.actions.add(action);
+        actions.add(action);
         return this;
     }
 
@@ -120,7 +120,7 @@ public class Ingredient implements Comparable<Ingredient> {
      * @return ingredient Item
      */
     public Item getIngredientItem() {
-        return this.item.value().asItem();
+        return item.value().asItem();
     }
 
     /**
@@ -129,7 +129,7 @@ public class Ingredient implements Comparable<Ingredient> {
      * @return render color in mug
      */
     public int getColor() {
-        return this.color;
+        return color;
     }
 
     public boolean isPrimary() {

@@ -208,14 +208,14 @@ public class EIHEntity extends TropicraftCreatureEntity {
 
     public void setEIHFlag(int id, boolean flag) {
         if (flag) {
-            this.entityData.set(STATE, (byte) (this.entityData.get(STATE) | id));
+            entityData.set(STATE, (byte) (entityData.get(STATE) | id));
         } else {
-            this.entityData.set(STATE, (byte) (this.entityData.get(STATE) & ~id));
+            entityData.set(STATE, (byte) (entityData.get(STATE) & ~id));
         }
     }
 
     private boolean getEIHFlag(int id) {
-        return (this.entityData.get(STATE) & id) != 0;
+        return (entityData.get(STATE) & id) != 0;
     }
 
     @Override

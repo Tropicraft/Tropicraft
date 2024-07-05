@@ -51,7 +51,7 @@ public abstract class FurnitureEntity extends Entity {
     protected FurnitureEntity(EntityType<?> entityTypeIn, Level worldIn, Function<DyeColor, Item> itemLookup) {
         super(entityTypeIn, worldIn);
         this.itemLookup = itemLookup;
-        this.blocksBuilding = true;
+        blocksBuilding = true;
         //TODO this will result in pushing acting weird - but the variable is gone in 1.17 (apparently)
         // this.pushthrough = .95F;
     }
@@ -62,8 +62,8 @@ public abstract class FurnitureEntity extends Entity {
     }
 
     public void setRotation(float yaw) {
-        this.lerpYaw = Mth.wrapDegrees(yaw);
-        this.setYRot((float) this.lerpYaw);
+        lerpYaw = Mth.wrapDegrees(yaw);
+        setYRot((float) lerpYaw);
     }
 
     @Override
@@ -102,12 +102,12 @@ public abstract class FurnitureEntity extends Entity {
 
         //updateRocking();
 
-        this.checkInsideBlocks();
-        List<Entity> list = this.level().getEntities(this, this.getBoundingBox().inflate((double) 0.2F, (double) -0.01F, (double) 0.2F), EntitySelector.pushableBy(this));
+        checkInsideBlocks();
+        List<Entity> list = level().getEntities(this, getBoundingBox().inflate((double) 0.2F, (double) -0.01F, (double) 0.2F), EntitySelector.pushableBy(this));
         if (!list.isEmpty()) {
             for (Entity entity : list) {
                 if (!entity.hasPassenger(this)) {
-                    this.push(entity);
+                    push(entity);
                 }
             }
         }
@@ -120,28 +120,28 @@ public abstract class FurnitureEntity extends Entity {
     /* Following two methods mostly copied from EntityBoat interpolation code */
     @Override
     public void lerpTo(double x, double y, double z, float yaw, float pitch, int posRotationIncrements) {
-        this.lerpX = x;
-        this.lerpY = y;
-        this.lerpZ = z;
+        lerpX = x;
+        lerpY = y;
+        lerpZ = z;
         // Avoid "jumping" back to the client's rotation due to vanilla's dumb incomplete packets
         if (yaw != getYRot() || Double.isNaN(lerpYaw)) {
-            this.lerpYaw = Mth.wrapDegrees((double) yaw);
+            lerpYaw = Mth.wrapDegrees((double) yaw);
         }
-        this.lerpSteps = 10;
-        this.setXRot(pitch);
+        lerpSteps = 10;
+        setXRot(pitch);
     }
 
     private void tickLerp() {
-        if (this.lerpSteps > 0) {
-            double d0 = this.getX() + (this.lerpX - this.getX()) / (double) this.lerpSteps;
-            double d1 = this.getY() + (this.lerpY - this.getY()) / (double) this.lerpSteps;
-            double d2 = this.getZ() + (this.lerpZ - this.getZ()) / (double) this.lerpSteps;
-            double d3 = Mth.wrapDegrees(this.lerpYaw - (double) this.getYRot());
-            this.setYRot((float) ((double) this.getYRot() + d3 / (double) this.lerpSteps));
-            this.setXRot((float) ((double) this.getXRot() + (this.lerpPitch - (double) this.getXRot()) / (double) this.lerpSteps));
-            --this.lerpSteps;
-            this.setPos(d0, d1, d2);
-            this.setRot(this.getYRot(), this.getXRot());
+        if (lerpSteps > 0) {
+            double d0 = getX() + (lerpX - getX()) / (double) lerpSteps;
+            double d1 = getY() + (lerpY - getY()) / (double) lerpSteps;
+            double d2 = getZ() + (lerpZ - getZ()) / (double) lerpSteps;
+            double d3 = Mth.wrapDegrees(lerpYaw - (double) getYRot());
+            setYRot((float) ((double) getYRot() + d3 / (double) lerpSteps));
+            setXRot((float) ((double) getXRot() + (lerpPitch - (double) getXRot()) / (double) lerpSteps));
+            --lerpSteps;
+            setPos(d0, d1, d2);
+            setRot(getYRot(), getXRot());
         }
     }
 
@@ -156,9 +156,9 @@ public abstract class FurnitureEntity extends Entity {
 
     public InteractionResult invulnerablityCheck(Player pPlayer, InteractionHand pHand) {
         if (pPlayer.getItemInHand(pHand).is(Items.DEBUG_STICK)) {
-            if (!this.level().isClientSide) {
-                this.entityData.set(GLUED_DOWN, !this.entityData.get(GLUED_DOWN));
-                pPlayer.sendSystemMessage(Component.translatable("Invulnerability Mode: " + (this.entityData.get(GLUED_DOWN) ? "On" : "Off")));
+            if (!level().isClientSide) {
+                entityData.set(GLUED_DOWN, !entityData.get(GLUED_DOWN));
+                pPlayer.sendSystemMessage(Component.translatable("Invulnerability Mode: " + (entityData.get(GLUED_DOWN) ? "On" : "Off")));
             }
 
             return InteractionResult.SUCCESS;
@@ -169,7 +169,7 @@ public abstract class FurnitureEntity extends Entity {
 
     @Override
     public boolean hurt(DamageSource damageSource, float amount) {
-        if (this.isInvulnerableTo(damageSource)) {
+        if (isInvulnerableTo(damageSource)) {
             if (damageSource.getEntity() instanceof Player player) {
                 return player.getMainHandItem().is(Items.DEBUG_STICK);
             }
@@ -177,24 +177,24 @@ public abstract class FurnitureEntity extends Entity {
             return false;
         }
 
-        if (!this.level().isClientSide && isAlive()) {
-            this.setForwardDirection(-this.getForwardDirection());
-            this.setTimeSinceHit(10);
-            this.setDamage(this.getDamage() + amount * 10.0F);
-            this.markHurt();
+        if (!level().isClientSide && isAlive()) {
+            setForwardDirection(-getForwardDirection());
+            setTimeSinceHit(10);
+            setDamage(getDamage() + amount * 10.0F);
+            markHurt();
             boolean flag = damageSource.getEntity() instanceof Player && ((Player) damageSource.getEntity()).getAbilities().instabuild;
 
-            if (flag || this.getDamage() > DAMAGE_THRESHOLD) {
-                Entity rider = this.getControllingPassenger();
+            if (flag || getDamage() > DAMAGE_THRESHOLD) {
+                Entity rider = getControllingPassenger();
                 if (rider != null) {
                     rider.startRiding(this);
                 }
 
                 if (!flag) {
-                    this.spawnAtLocation(getItemStack(), 0.0F);
+                    spawnAtLocation(getItemStack(), 0.0F);
                 }
 
-                this.remove(RemovalReason.KILLED);
+                remove(RemovalReason.KILLED);
             }
         }
 
@@ -207,9 +207,9 @@ public abstract class FurnitureEntity extends Entity {
 
     @Override
     public void animateHurt(float direction) {
-        this.setForwardDirection(-1 * this.getForwardDirection());
-        this.setTimeSinceHit(10);
-        this.setDamage(this.getDamage() * 10.0F);
+        setForwardDirection(-1 * getForwardDirection());
+        setTimeSinceHit(10);
+        setDamage(getDamage() * 10.0F);
     }
 
     @Override

@@ -11,8 +11,8 @@ public class RandomSwimGoal extends Goal {
     public final RandomSource rand;
 
     public RandomSwimGoal(EnumSet<Flag> flags, TropicraftFishEntity entityObjIn) {
-        this.entity = entityObjIn;
-        rand = this.entity.getRandom();
+        entity = entityObjIn;
+        rand = entity.getRandom();
         setFlags(flags);
     }
 

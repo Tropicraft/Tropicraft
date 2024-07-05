@@ -40,7 +40,7 @@ public class CowktailLayer<T extends CowktailEntity> extends RenderLayer<T, CowM
             renderer.renderSingleBlock(blockState, stack, bufferIn, packedLightIn, overlayCoords);
             stack.popPose();
             stack.pushPose();
-            this.getParentModel().getHead().translateAndRotate(stack);
+            getParentModel().getHead().translateAndRotate(stack);
             stack.translate(0.0D, -0.7F, -0.2F);
             stack.mulPose(Axis.YP.rotationDegrees(-78.0F));
             stack.scale(-1.0F, -1.0F, 1.0F);

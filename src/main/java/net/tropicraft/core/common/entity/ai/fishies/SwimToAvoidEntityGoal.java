@@ -17,8 +17,8 @@ public class SwimToAvoidEntityGoal extends Goal {
     public final double distanceToAvoid;
 
     public SwimToAvoidEntityGoal(EnumSet<Flag> flags, TropicraftFishEntity entityObjIn, double dist, Class<? extends Entity>[] classes) {
-        this.entity = entityObjIn;
-        rand = this.entity.getRandom();
+        entity = entityObjIn;
+        rand = entity.getRandom();
         entityClassToAvoid = classes;
         distanceToAvoid = dist;
         setFlags(flags);
@@ -33,7 +33,7 @@ public class SwimToAvoidEntityGoal extends Goal {
     public void tick() {
         super.tick();
 
-        List<Entity> ents = entity.level().getEntities(entity, entity.getBoundingBox().inflate(this.distanceToAvoid));
+        List<Entity> ents = entity.level().getEntities(entity, entity.getBoundingBox().inflate(distanceToAvoid));
         List<Class<? extends Entity>> classes = Arrays.asList(entityClassToAvoid);
         for (int i = 0; i < ents.size(); i++) {
             if (classes.contains(ents.get(i).getClass())) {

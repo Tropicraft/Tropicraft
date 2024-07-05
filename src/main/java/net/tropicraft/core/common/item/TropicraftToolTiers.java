@@ -25,40 +25,40 @@ public enum TropicraftToolTiers implements Tier {
 
     TropicraftToolTiers(TagKey<Block> incorrectBlockDrops, int maxUsesIn, float efficiencyIn, float attackDamageIn, int enchantabilityIn, Supplier<Ingredient> repairMaterialIn) {
         this.incorrectBlockDrops = incorrectBlockDrops;
-        this.maxUses = maxUsesIn;
-        this.efficiency = efficiencyIn;
-        this.attackDamage = attackDamageIn;
-        this.enchantability = enchantabilityIn;
-        this.repairMaterial = Suppliers.memoize(repairMaterialIn::get);
+        maxUses = maxUsesIn;
+        efficiency = efficiencyIn;
+        attackDamage = attackDamageIn;
+        enchantability = enchantabilityIn;
+        repairMaterial = Suppliers.memoize(repairMaterialIn::get);
     }
 
     @Override
     public int getUses() {
-        return this.maxUses;
+        return maxUses;
     }
 
     @Override
     public float getSpeed() {
-        return this.efficiency;
+        return efficiency;
     }
 
     @Override
     public float getAttackDamageBonus() {
-        return this.attackDamage;
+        return attackDamage;
     }
 
     @Override
     public TagKey<Block> getIncorrectBlocksForDrops() {
-        return this.incorrectBlockDrops;
+        return incorrectBlockDrops;
     }
 
     @Override
     public int getEnchantmentValue() {
-        return this.enchantability;
+        return enchantability;
     }
 
     @Override
     public Ingredient getRepairIngredient() {
-        return this.repairMaterial.get();
+        return repairMaterial.get();
     }
 }

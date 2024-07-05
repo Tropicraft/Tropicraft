@@ -45,7 +45,7 @@ public class AshenMaskItem extends ArmorItem {
         BlockPos offsetPos = pos.relative(direction);
         Player player = context.getPlayer();
         ItemStack itemStack = context.getItemInHand();
-        if (player != null && !this.canPlace(player, direction, itemStack, offsetPos)) {
+        if (player != null && !canPlace(player, direction, itemStack, offsetPos)) {
             return InteractionResult.FAIL;
         } else {
             Level world = context.getLevel();

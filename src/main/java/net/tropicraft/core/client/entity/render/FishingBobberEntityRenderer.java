@@ -36,7 +36,7 @@ public class FishingBobberEntityRenderer extends EntityRenderer<FishingBobberEnt
 
         poseStack.pushPose();
         poseStack.scale(0.5F, 0.5F, 0.5F);
-        poseStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
+        poseStack.mulPose(entityRenderDispatcher.cameraOrientation());
         poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
         PoseStack.Pose pose = poseStack.last();
         VertexConsumer consumer = bufferSource.getBuffer(RENDER_TYPE);

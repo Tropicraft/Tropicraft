@@ -17,7 +17,7 @@ public class MonkeyStealDrinkGoal extends Goal {
     private final VMonkeyEntity entity;
 
     public MonkeyStealDrinkGoal(VMonkeyEntity monkey) {
-        this.entity = monkey;
+        entity = monkey;
         setFlags(EnumSet.of(Flag.LOOK, Flag.MOVE));
     }
 

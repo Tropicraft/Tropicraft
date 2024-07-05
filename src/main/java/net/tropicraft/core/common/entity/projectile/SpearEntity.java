@@ -38,12 +38,12 @@ public class SpearEntity extends AbstractArrow {
 
     public SpearEntity(Level pLevel, LivingEntity pShooter, ItemStack pPickupItemStack) {
         super(TropicraftEntities.SPEAR.get(), pShooter, pLevel, pPickupItemStack, null);
-        this.entityData.set(ID_LOYALTY, this.getLoyaltyFromItem(pPickupItemStack));
-        this.entityData.set(ID_FOIL, pPickupItemStack.hasFoil());
+        entityData.set(ID_LOYALTY, getLoyaltyFromItem(pPickupItemStack));
+        entityData.set(ID_FOIL, pPickupItemStack.hasFoil());
     }
 
     private byte getLoyaltyFromItem(ItemStack pStack) {
-        return this.level() instanceof ServerLevel serverlevel
+        return level() instanceof ServerLevel serverlevel
                 ? (byte) Mth.clamp(EnchantmentHelper.getTridentReturnToOwnerAcceleration(serverlevel, pStack, this), 0, 127)
                 : 0;
     }
@@ -60,34 +60,34 @@ public class SpearEntity extends AbstractArrow {
      */
     @Override
     public void tick() {
-        if (this.inGroundTime > 4) {
-            this.dealtDamage = true;
+        if (inGroundTime > 4) {
+            dealtDamage = true;
         }
 
-        Entity entity = this.getOwner();
-        int i = this.entityData.get(ID_LOYALTY);
-        if (i > 0 && (this.dealtDamage || this.isNoPhysics()) && entity != null) {
-            if (!this.isAcceptibleReturnOwner()) {
-                if (!this.level().isClientSide && this.pickup == AbstractArrow.Pickup.ALLOWED) {
-                    this.spawnAtLocation(this.getPickupItem(), 0.1F);
+        Entity entity = getOwner();
+        int i = entityData.get(ID_LOYALTY);
+        if (i > 0 && (dealtDamage || isNoPhysics()) && entity != null) {
+            if (!isAcceptibleReturnOwner()) {
+                if (!level().isClientSide && pickup == AbstractArrow.Pickup.ALLOWED) {
+                    spawnAtLocation(getPickupItem(), 0.1F);
                 }
 
-                this.discard();
+                discard();
             } else {
-                this.setNoPhysics(true);
-                Vec3 vec3 = entity.getEyePosition().subtract(this.position());
-                this.setPosRaw(this.getX(), this.getY() + vec3.y * 0.015D * (double) i, this.getZ());
-                if (this.level().isClientSide) {
-                    this.yOld = this.getY();
+                setNoPhysics(true);
+                Vec3 vec3 = entity.getEyePosition().subtract(position());
+                setPosRaw(getX(), getY() + vec3.y * 0.015D * (double) i, getZ());
+                if (level().isClientSide) {
+                    yOld = getY();
                 }
 
                 double d0 = 0.05D * (double) i;
-                this.setDeltaMovement(this.getDeltaMovement().scale(0.95D).add(vec3.normalize().scale(d0)));
-                if (this.clientSideReturnSpearTickCount == 0) {
-                    this.playSound(SoundEvents.TRIDENT_RETURN, 10.0F, 1.0F);
+                setDeltaMovement(getDeltaMovement().scale(0.95D).add(vec3.normalize().scale(d0)));
+                if (clientSideReturnSpearTickCount == 0) {
+                    playSound(SoundEvents.TRIDENT_RETURN, 10.0F, 1.0F);
                 }
 
-                ++this.clientSideReturnSpearTickCount;
+                ++clientSideReturnSpearTickCount;
             }
         }
 
@@ -95,7 +95,7 @@ public class SpearEntity extends AbstractArrow {
     }
 
     private boolean isAcceptibleReturnOwner() {
-        Entity entity = this.getOwner();
+        Entity entity = getOwner();
         if (entity != null && entity.isAlive()) {
             return !(entity instanceof ServerPlayer) || !entity.isSpectator();
         } else {
@@ -104,13 +104,13 @@ public class SpearEntity extends AbstractArrow {
     }
 
     public boolean isFoil() {
-        return this.entityData.get(ID_FOIL);
+        return entityData.get(ID_FOIL);
     }
 
     @Override
     @Nullable
     protected EntityHitResult findHitEntity(Vec3 pStartVec, Vec3 pEndVec) {
-        return this.dealtDamage ? null : super.findHitEntity(pStartVec, pEndVec);
+        return dealtDamage ? null : super.findHitEntity(pStartVec, pEndVec);
     }
 
     /**
@@ -120,30 +120,30 @@ public class SpearEntity extends AbstractArrow {
     protected void onHitEntity(EntityHitResult pResult) {
         Entity entity = pResult.getEntity();
         float f = 8.0F;
-        Entity entity1 = this.getOwner();
-        DamageSource damagesource = this.damageSources().trident(this, (Entity) (entity1 == null ? this : entity1));
-        if (this.level() instanceof ServerLevel serverlevel) {
-            f = EnchantmentHelper.modifyDamage(serverlevel, this.getWeaponItem(), entity, damagesource, f);
+        Entity entity1 = getOwner();
+        DamageSource damagesource = damageSources().trident(this, (Entity) (entity1 == null ? this : entity1));
+        if (level() instanceof ServerLevel serverlevel) {
+            f = EnchantmentHelper.modifyDamage(serverlevel, getWeaponItem(), entity, damagesource, f);
         }
 
-        this.dealtDamage = true;
+        dealtDamage = true;
         if (entity.hurt(damagesource, f)) {
             if (entity.getType() == EntityType.ENDERMAN) {
                 return;
             }
 
-            if (this.level() instanceof ServerLevel serverlevel1) {
-                EnchantmentHelper.doPostAttackEffectsWithItemSource(serverlevel1, entity, damagesource, this.getWeaponItem());
+            if (level() instanceof ServerLevel serverlevel1) {
+                EnchantmentHelper.doPostAttackEffectsWithItemSource(serverlevel1, entity, damagesource, getWeaponItem());
             }
 
             if (entity instanceof LivingEntity livingentity) {
-                this.doKnockback(livingentity, damagesource);
-                this.doPostHurtEffects(livingentity);
+                doKnockback(livingentity, damagesource);
+                doPostHurtEffects(livingentity);
             }
         }
 
-        this.setDeltaMovement(this.getDeltaMovement().multiply(-0.01, -0.1, -0.01));
-        this.playSound(SoundEvents.TRIDENT_HIT, 1.0F, 1.0F);
+        setDeltaMovement(getDeltaMovement().multiply(-0.01, -0.1, -0.01));
+        playSound(SoundEvents.TRIDENT_HIT, 1.0F, 1.0F);
     }
 
     @Override
@@ -152,23 +152,23 @@ public class SpearEntity extends AbstractArrow {
         EnchantmentHelper.onHitBlock(
                 pLevel,
                 pStack,
-                this.getOwner() instanceof LivingEntity livingentity ? livingentity : null,
+                getOwner() instanceof LivingEntity livingentity ? livingentity : null,
                 this,
                 null,
                 vec3,
                 pLevel.getBlockState(pHitResult.getBlockPos()),
-                p_348680_ -> this.kill()
+                p_348680_ -> kill()
         );
     }
 
     @Override
     public ItemStack getWeaponItem() {
-        return this.getPickupItemStackOrigin();
+        return getPickupItemStackOrigin();
     }
 
     @Override
     protected boolean tryPickup(Player player) {
-        return super.tryPickup(player) || this.isNoPhysics() && this.ownedBy(player) && player.getInventory().add(this.getPickupItem());
+        return super.tryPickup(player) || isNoPhysics() && ownedBy(player) && player.getInventory().add(getPickupItem());
     }
 
     @Override
@@ -189,7 +189,7 @@ public class SpearEntity extends AbstractArrow {
      */
     @Override
     public void playerTouch(Player pEntity) {
-        if (this.ownedBy(pEntity) || this.getOwner() == null) {
+        if (ownedBy(pEntity) || getOwner() == null) {
             super.playerTouch(pEntity);
         }
     }
@@ -200,20 +200,20 @@ public class SpearEntity extends AbstractArrow {
     @Override
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
-        this.dealtDamage = pCompound.getBoolean("DealtDamage");
-        this.entityData.set(ID_LOYALTY, getLoyaltyFromItem(getPickupItemStackOrigin()));
+        dealtDamage = pCompound.getBoolean("DealtDamage");
+        entityData.set(ID_LOYALTY, getLoyaltyFromItem(getPickupItemStackOrigin()));
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
-        pCompound.putBoolean("DealtDamage", this.dealtDamage);
+        pCompound.putBoolean("DealtDamage", dealtDamage);
     }
 
     @Override
     public void tickDespawn() {
-        int i = this.entityData.get(ID_LOYALTY);
-        if (this.pickup != AbstractArrow.Pickup.ALLOWED || i <= 0) {
+        int i = entityData.get(ID_LOYALTY);
+        if (pickup != AbstractArrow.Pickup.ALLOWED || i <= 0) {
             super.tickDespawn();
         }
     }

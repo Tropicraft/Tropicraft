@@ -13,7 +13,7 @@ public class MonkeySitInChairGoal extends Goal {
     private final VMonkeyEntity entity;
 
     public MonkeySitInChairGoal(VMonkeyEntity monkey) {
-        this.entity = monkey;
+        entity = monkey;
         setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK, Flag.JUMP));
     }
 

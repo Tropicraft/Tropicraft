@@ -16,9 +16,9 @@ public class EntityAIPlayKoa extends Goal {
     private int playTime;
 
     public EntityAIPlayKoa(EntityKoaBase villagerObjIn, double speedIn) {
-        this.villagerObj = villagerObjIn;
-        this.speed = speedIn;
-        this.setFlags(EnumSet.of(Flag.MOVE));
+        villagerObj = villagerObjIn;
+        speed = speedIn;
+        setFlags(EnumSet.of(Flag.MOVE));
     }
 
     /**
@@ -26,27 +26,27 @@ public class EntityAIPlayKoa extends Goal {
      */
     @Override
     public boolean canUse() {
-        if (this.villagerObj.getAge() >= 0) {
+        if (villagerObj.getAge() >= 0) {
             return false;
-        } else if (this.villagerObj.getRandom().nextInt(200) != 0) {
+        } else if (villagerObj.getRandom().nextInt(200) != 0) {
             return false;
         } else {
-            List<EntityKoaBase> list = this.villagerObj.level().getEntitiesOfClass(EntityKoaBase.class, this.villagerObj.getBoundingBox().inflate(6.0D, 3.0D, 6.0D));
+            List<EntityKoaBase> list = villagerObj.level().getEntitiesOfClass(EntityKoaBase.class, villagerObj.getBoundingBox().inflate(6.0D, 3.0D, 6.0D));
             double d0 = Double.MAX_VALUE;
 
             for (EntityKoaBase entityvillager : list) {
-                if (entityvillager != this.villagerObj && !entityvillager.isPlaying() && entityvillager.getAge() < 0) {
-                    double d1 = entityvillager.distanceToSqr(this.villagerObj);
+                if (entityvillager != villagerObj && !entityvillager.isPlaying() && entityvillager.getAge() < 0) {
+                    double d1 = entityvillager.distanceToSqr(villagerObj);
 
                     if (d1 <= d0) {
                         d0 = d1;
-                        this.targetVillager = entityvillager;
+                        targetVillager = entityvillager;
                     }
                 }
             }
 
-            if (this.targetVillager == null) {
-                Vec3 vec = DefaultRandomPos.getPos(this.villagerObj, 16, 3);
+            if (targetVillager == null) {
+                Vec3 vec = DefaultRandomPos.getPos(villagerObj, 16, 3);
                 return vec != null;
             }
 
@@ -59,7 +59,7 @@ public class EntityAIPlayKoa extends Goal {
      */
     @Override
     public boolean canContinueToUse() {
-        return this.playTime > 0;
+        return playTime > 0;
     }
 
     /**
@@ -67,11 +67,11 @@ public class EntityAIPlayKoa extends Goal {
      */
     @Override
     public void start() {
-        if (this.targetVillager != null) {
-            this.villagerObj.setPlaying(true);
+        if (targetVillager != null) {
+            villagerObj.setPlaying(true);
         }
 
-        this.playTime = 1000;
+        playTime = 1000;
     }
 
     /**
@@ -79,8 +79,8 @@ public class EntityAIPlayKoa extends Goal {
      */
     @Override
     public void stop() {
-        this.villagerObj.setPlaying(false);
-        this.targetVillager = null;
+        villagerObj.setPlaying(false);
+        targetVillager = null;
     }
 
     /**
@@ -88,23 +88,23 @@ public class EntityAIPlayKoa extends Goal {
      */
     @Override
     public void tick() {
-        --this.playTime;
+        --playTime;
 
         if (villagerObj.onGround() && villagerObj.level().random.nextInt(30) == 0) {
-            this.villagerObj.getJumpControl().jump();
+            villagerObj.getJumpControl().jump();
         }
 
-        if (this.targetVillager != null) {
-            if (this.villagerObj.distanceToSqr(this.targetVillager) > 4.0D) {
-                this.villagerObj.getNavigation().moveTo(this.targetVillager, this.speed);
+        if (targetVillager != null) {
+            if (villagerObj.distanceToSqr(targetVillager) > 4.0D) {
+                villagerObj.getNavigation().moveTo(targetVillager, speed);
             }
-        } else if (this.villagerObj.getNavigation().isDone()) {
-            Vec3 vec = DefaultRandomPos.getPos(this.villagerObj, 16, 3);
+        } else if (villagerObj.getNavigation().isDone()) {
+            Vec3 vec = DefaultRandomPos.getPos(villagerObj, 16, 3);
             if (vec == null) {
                 return;
             }
 
-            this.villagerObj.getNavigation().moveTo(vec.x, vec.y, vec.z, this.speed);
+            villagerObj.getNavigation().moveTo(vec.x, vec.y, vec.z, speed);
         }
     }
 }

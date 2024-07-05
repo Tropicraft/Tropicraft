@@ -56,16 +56,16 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityWithComp
 
     public BeachFloatEntity(EntityType<BeachFloatEntity> type, Level worldIn) {
         super(type, worldIn, TropicraftItems.BEACH_FLOATS);
-        this.isEmpty = true;
-        this.blocksBuilding = true;
-        setId(this.getId());
+        isEmpty = true;
+        blocksBuilding = true;
+        setId(getId());
     }
 
     @Override
     public void setId(int id) {
         super.setId(id);
         rand.setSeed(id);
-        this.windModifier = (1 + (rand.nextGaussian() * 0.1)) - 0.05;
+        windModifier = (1 + (rand.nextGaussian() * 0.1)) - 0.05;
     }
 
     @Override
@@ -82,7 +82,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityWithComp
             setDeltaMovement(getDeltaMovement().add(moveX, 0, moveZ));
         }
 
-        if (this.wasTouchingWater) {
+        if (wasTouchingWater) {
             double windAng = (windNoise.getValue(getX() / 1000, getZ() / 1000, false) + 1) * Math.PI;
             double windX = Math.sin(windAng) * 0.0005 * windModifier;
             double windZ = Math.cos(windAng) * 0.0005 * windModifier;
@@ -92,9 +92,9 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityWithComp
             double yaw = (Mth.wrapDegrees(getYRot()) + 180 - 35) % 360;
             double angleDiff = targetYaw - yaw;
             if (angleDiff > 0) {
-                this.rotationSpeed += Math.min(0.005 * windModifier, angleDiff);
+                rotationSpeed += Math.min(0.005 * windModifier, angleDiff);
             } else {
-                this.rotationSpeed += Math.max(-0.005 * windModifier, angleDiff);
+                rotationSpeed += Math.max(-0.005 * windModifier, angleDiff);
             }
         }
 
@@ -122,16 +122,16 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityWithComp
         setDeltaMovement(getDeltaMovement().multiply(0.9, 0.9, 0.9));
         rotationSpeed *= 0.9f;
 
-        if (!this.level().isClientSide) {
-            List<Entity> list = this.level().getEntities(this, this.getBoundingBox().inflate(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+        if (!level().isClientSide) {
+            List<Entity> list = level().getEntities(this, getBoundingBox().inflate(0.20000000298023224D, 0.0D, 0.20000000298023224D));
             for (Entity entity : list) {
-                if (entity != this.getControllingPassenger() && entity.isPushable()) {
+                if (entity != getControllingPassenger() && entity.isPushable()) {
                     entity.push(this);
                 }
             }
 
-            if (this.getControllingPassenger() != null && !this.getControllingPassenger().isAlive()) {
-                this.ejectPassengers();
+            if (getControllingPassenger() != null && !getControllingPassenger().isAlive()) {
+                ejectPassengers();
             }
         }
     }
@@ -148,16 +148,16 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityWithComp
 
     @Override
     protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
-        this.prevMotionY = this.getDeltaMovement().y;
+        prevMotionY = getDeltaMovement().y;
         super.checkFallDamage(y, onGroundIn, state, pos);
     }
 
     @Override
     protected boolean updateInWaterStateAndDoFluidPushing() {
-        this.fluidHeight.clear();
-        this.updateWaterState();
-        boolean lava = this.updateFluidHeightAndDoFluidPushing(FluidTags.LAVA, this.level().dimensionType().ultraWarm() ? 0.007 : 0.0023333333333333335D);
-        return this.isInWater() || lava;
+        fluidHeight.clear();
+        updateWaterState();
+        boolean lava = updateFluidHeightAndDoFluidPushing(FluidTags.LAVA, level().dimensionType().ultraWarm() ? 0.007 : 0.0023333333333333335D);
+        return isInWater() || lava;
     }
 
     void updateWaterState() {
@@ -165,16 +165,16 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityWithComp
         setBoundingBox(temp.contract(1, 0, 1).contract(-1, 0.125, -1));
 
         try {
-            if (this.updateFluidHeightAndDoFluidPushing(FluidTags.WATER, 0.014D)) {
-                if (!this.wasTouchingWater && !this.firstTick) {
-                    this.doWaterSplashEffect();
+            if (updateFluidHeightAndDoFluidPushing(FluidTags.WATER, 0.014D)) {
+                if (!wasTouchingWater && !firstTick) {
+                    doWaterSplashEffect();
                 }
 
-                this.fallDistance = 0.0F;
-                this.wasTouchingWater = true;
-                this.clearFire();
+                fallDistance = 0.0F;
+                wasTouchingWater = true;
+                clearFire();
             } else {
-                this.wasTouchingWater = false;
+                wasTouchingWater = false;
             }
         } finally {
             setBoundingBox(temp);
@@ -185,7 +185,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityWithComp
     public InteractionResult interact(Player player, InteractionHand hand) {
         if (invulnerablityCheck(player, hand) == InteractionResult.SUCCESS) {
             return InteractionResult.SUCCESS;
-        } else if (!this.level().isClientSide && !player.isShiftKeyDown()) {
+        } else if (!level().isClientSide && !player.isShiftKeyDown()) {
             player.startRiding(this);
             return InteractionResult.SUCCESS;
         }
@@ -199,9 +199,9 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityWithComp
     protected void positionRider(Entity passenger, Entity.MoveFunction move) {
         super.positionRider(passenger, move);
         if (!passenger.getType().is(EntityTypeTags.CAN_TURN_IN_BOATS)) {
-            passenger.setYRot(passenger.getYRot() + this.rotationSpeed);
-            passenger.setYHeadRot(passenger.getYHeadRot() + this.rotationSpeed);
-            this.applyYawToEntity(passenger);
+            passenger.setYRot(passenger.getYRot() + rotationSpeed);
+            passenger.setYHeadRot(passenger.getYHeadRot() + rotationSpeed);
+            applyYawToEntity(passenger);
         }
     }
 
@@ -215,9 +215,9 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityWithComp
 
     protected void applyYawToEntity(Entity entityToUpdate) {
         if (!entityToUpdate.level().isClientSide || isClientFirstPerson(entityToUpdate)) {
-            entityToUpdate.setYBodyRot(this.getYRot());
-            float yaw = Mth.wrapDegrees(entityToUpdate.getYRot() - this.getYRot());
-            float pitch = Mth.wrapDegrees(entityToUpdate.getXRot() - this.getXRot());
+            entityToUpdate.setYBodyRot(getYRot());
+            float yaw = Mth.wrapDegrees(entityToUpdate.getYRot() - getYRot());
+            float pitch = Mth.wrapDegrees(entityToUpdate.getXRot() - getXRot());
             float clampedYaw = Mth.clamp(yaw, -105.0F, 105.0F);
             float clampedPitch = Mth.clamp(pitch, -100F, 0F);
             float yawClampDelta = clampedYaw - yaw;
@@ -232,7 +232,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityWithComp
 
     @Override
     public void onPassengerTurned(@Nonnull Entity entityToUpdate) {
-        this.applyYawToEntity(entityToUpdate);
+        applyYawToEntity(entityToUpdate);
     }
 
     private static boolean isClientFirstPerson(Entity entity) {
@@ -243,7 +243,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityWithComp
     /* Again, from entity boat, for water checks */
 
     private float getWaterLevel() {
-        AABB axisalignedbb = this.getBoundingBox();
+        AABB axisalignedbb = getBoundingBox();
         int minX = Mth.floor(axisalignedbb.minX);
         int maxX = Mth.ceil(axisalignedbb.maxX);
         int minY = Mth.floor(axisalignedbb.minY - prevMotionY);
@@ -258,10 +258,10 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityWithComp
             for (int x = minX; x < maxX; x++) {
                 for (int z = minZ; z < maxZ; ++z) {
                     pos.set(x, y, z);
-                    FluidState fluidstate = this.level().getFluidState(pos);
+                    FluidState fluidstate = level().getFluidState(pos);
 
                     if (fluidstate.getType().isSame(Fluids.WATER)) {
-                        waterHeight = Math.max(waterHeight, pos.getY() + fluidstate.getHeight(this.level(), pos));
+                        waterHeight = Math.max(waterHeight, pos.getY() + fluidstate.getHeight(level(), pos));
                     }
                     if (waterHeight >= maxY) {
                         return waterHeight;
@@ -289,7 +289,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityWithComp
 
     @Override
     public Direction getMotionDirection() {
-        return this.getDirection().getClockWise();
+        return getDirection().getClockWise();
     }
 
     @Override
@@ -299,12 +299,12 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityWithComp
 
     @Override
     public void writeSpawnData(RegistryFriendlyByteBuf buffer) {
-        buffer.writeDouble(this.lerpYaw);
+        buffer.writeDouble(lerpYaw);
     }
 
     @Override
     public void readSpawnData(RegistryFriendlyByteBuf additionalData) {
-        this.lerpYaw = Mth.wrapDegrees(additionalData.readDouble());
+        lerpYaw = Mth.wrapDegrees(additionalData.readDouble());
     }
 
     @Override

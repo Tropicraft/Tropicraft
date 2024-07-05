@@ -37,7 +37,7 @@ public class SingleNoAirJigsawPiece extends SinglePoolElement {
 
     public SingleNoAirJigsawPiece(Either<ResourceLocation, StructureTemplate> template, Holder<StructureProcessorList> processors, StructureTemplatePool.Projection placementBehaviour, Optional<LiquidSettings> overrideLiquidSettings, boolean unproject) {
         super(template, processors, placementBehaviour, overrideLiquidSettings);
-        this.unprojected = unproject;
+        unprojected = unproject;
     }
 
     public static Function<StructureTemplatePool.Projection, SingleNoAirJigsawPiece> create(ResourceLocation id, Holder<StructureProcessorList> processors, boolean unprojected) {

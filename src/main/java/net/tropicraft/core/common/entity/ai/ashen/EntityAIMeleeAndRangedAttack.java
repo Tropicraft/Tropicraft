@@ -43,16 +43,16 @@ public class EntityAIMeleeAndRangedAttack extends Goal {
     }
 
     public EntityAIMeleeAndRangedAttack(AshenEntity attacker, double movespeed, int maxMeleeAttackTime, int maxRangedAttackTime, float maxAttackDistanceIn, float meleeHitRange) {
-        this.rangedAttackTime = -1;
-        this.rangedAttackEntityHost = attacker;
-        this.entityHost = attacker;
-        this.entityMoveSpeed = movespeed;
+        rangedAttackTime = -1;
+        rangedAttackEntityHost = attacker;
+        entityHost = attacker;
+        entityMoveSpeed = movespeed;
         this.maxMeleeAttackTime = maxMeleeAttackTime;
         this.maxRangedAttackTime = maxRangedAttackTime;
-        this.shootCutoffRange = maxAttackDistanceIn;
-        this.shootCutoffRangeSqr = maxAttackDistanceIn * maxAttackDistanceIn;
+        shootCutoffRange = maxAttackDistanceIn;
+        shootCutoffRangeSqr = maxAttackDistanceIn * maxAttackDistanceIn;
         this.meleeHitRange = meleeHitRange;
-        this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+        setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
 
     /**

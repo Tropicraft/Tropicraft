@@ -30,7 +30,7 @@ public class TropicraftFishRenderer<T extends AbstractFish> extends MobRenderer<
      */
     @Override
     public void render(T entity, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
-        boolean isVisible = this.isBodyVisible(entity);
+        boolean isVisible = isBodyVisible(entity);
         boolean shouldRender = !isVisible && !entity.isInvisibleTo(Minecraft.getInstance().player);
         if (isVisible || shouldRender) {
             boolean glowing = Minecraft.getInstance().shouldEntityAppearGlowing(entity);

@@ -74,6 +74,6 @@ public final class CoconutBlock extends DirectionalBlock {
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState().setValue(FACING, context.getClickedFace().getOpposite());
+        return defaultBlockState().setValue(FACING, context.getClickedFace().getOpposite());
     }
 }

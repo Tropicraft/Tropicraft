@@ -12,36 +12,36 @@ public class TropiCreeperSwellGoal extends Goal {
 
     public TropiCreeperSwellGoal(TropiCreeperEntity creeper) {
         this.creeper = creeper;
-        this.setFlags(EnumSet.of(Flag.MOVE));
+        setFlags(EnumSet.of(Flag.MOVE));
     }
 
     @Override
     public boolean canUse() {
-        LivingEntity lvt_1_1_ = this.creeper.getTarget();
-        return this.creeper.getCreeperState() > 0 || lvt_1_1_ != null && this.creeper.distanceToSqr(lvt_1_1_) < 9.0D;
+        LivingEntity lvt_1_1_ = creeper.getTarget();
+        return creeper.getCreeperState() > 0 || lvt_1_1_ != null && creeper.distanceToSqr(lvt_1_1_) < 9.0D;
     }
 
     @Override
     public void start() {
-        this.creeper.getNavigation().stop();
-        this.target = this.creeper.getTarget();
+        creeper.getNavigation().stop();
+        target = creeper.getTarget();
     }
 
     @Override
     public void stop() {
-        this.target = null;
+        target = null;
     }
 
     @Override
     public void tick() {
-        if (this.target == null) {
-            this.creeper.setCreeperState(-1);
-        } else if (this.creeper.distanceToSqr(this.target) > 49.0D) {
-            this.creeper.setCreeperState(-1);
-        } else if (!this.creeper.getSensing().hasLineOfSight(this.target)) {
-            this.creeper.setCreeperState(-1);
+        if (target == null) {
+            creeper.setCreeperState(-1);
+        } else if (creeper.distanceToSqr(target) > 49.0D) {
+            creeper.setCreeperState(-1);
+        } else if (!creeper.getSensing().hasLineOfSight(target)) {
+            creeper.setCreeperState(-1);
         } else {
-            this.creeper.setCreeperState(1);
+            creeper.setCreeperState(1);
         }
     }
 }

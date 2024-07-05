@@ -36,10 +36,10 @@ public final class FiddlerCrabEntity extends Animal {
 
     public FiddlerCrabEntity(EntityType<? extends FiddlerCrabEntity> type, Level world) {
         super(type, world);
-        this.setPathfindingMalus(PathType.WATER, 0.0F);
-        this.setPathfindingMalus(PathType.WATER_BORDER, 0.0F);
+        setPathfindingMalus(PathType.WATER, 0.0F);
+        setPathfindingMalus(PathType.WATER_BORDER, 0.0F);
 
-        this.moveControl = new CrabMoveController(this);
+        moveControl = new CrabMoveController(this);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -51,11 +51,11 @@ public final class FiddlerCrabEntity extends Animal {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new PanicGoal(this, 1.25));
-        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Player.class, 6.0F, 1.0, 1.2));
-        this.goalSelector.addGoal(2, new RandomStrollGoal(this, 1.0));
-        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+        goalSelector.addGoal(0, new PanicGoal(this, 1.25));
+        goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Player.class, 6.0F, 1.0, 1.2));
+        goalSelector.addGoal(2, new RandomStrollGoal(this, 1.0));
+        goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        goalSelector.addGoal(4, new RandomLookAroundGoal(this));
     }
 
     @Override
@@ -220,23 +220,23 @@ public final class FiddlerCrabEntity extends Animal {
 
         @Override
         public void tick() {
-            if (this.operation == MoveControl.Operation.MOVE_TO) {
-                this.operation = MoveControl.Operation.WAIT;
-                this.tickMoveTo();
-            } else if (this.operation == Operation.WAIT) {
-                this.mob.setZza(0.0F);
-                this.mob.setXxa(0.0F);
+            if (operation == MoveControl.Operation.MOVE_TO) {
+                operation = MoveControl.Operation.WAIT;
+                tickMoveTo();
+            } else if (operation == Operation.WAIT) {
+                mob.setZza(0.0F);
+                mob.setXxa(0.0F);
             }
         }
 
         private void tickMoveTo() {
-            double dx = this.wantedX - this.mob.getX();
-            double dz = this.wantedZ - this.mob.getZ();
-            double dy = this.wantedY - this.mob.getY();
+            double dx = wantedX - mob.getX();
+            double dz = wantedZ - mob.getZ();
+            double dy = wantedY - mob.getY();
             double distance2 = dx * dx + dy * dy + dz * dz;
             if (distance2 < 5e-4 * 5e-4) {
-                this.mob.setZza(0.0F);
-                this.mob.setXxa(0.0F);
+                mob.setZza(0.0F);
+                mob.setXxa(0.0F);
                 return;
             }
 
@@ -244,17 +244,17 @@ public final class FiddlerCrabEntity extends Animal {
             float leftTarget = forward - 90.0F;
             float rightTarget = forward + 90.0F;
 
-            float yaw = this.mob.getYRot();
+            float yaw = mob.getYRot();
             float targetYaw = closerAngle(yaw, leftTarget, rightTarget);
 
-            float speed = (float) (this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED));
+            float speed = (float) (speedModifier * mob.getAttributeValue(Attributes.MOVEMENT_SPEED));
             float strafe = targetYaw < forward ? -1.0F : 1.0F;
 
-            this.mob.setYRot(this.rotlerp(yaw, targetYaw, 10.0F));
+            mob.setYRot(rotlerp(yaw, targetYaw, 10.0F));
 
-            this.mob.setSpeed(speed);
-            this.mob.setZza(0.0F);
-            this.mob.setXxa(strafe * speed);
+            mob.setSpeed(speed);
+            mob.setZza(0.0F);
+            mob.setXxa(strafe * speed);
         }
 
         private static float closerAngle(float reference, float left, float right) {

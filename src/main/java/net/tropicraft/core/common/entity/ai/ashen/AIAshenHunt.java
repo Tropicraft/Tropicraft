@@ -35,18 +35,18 @@ public class AIAshenHunt extends Goal {
         if (entitylivingbase == null) {
             return false;
         } else {
-            this.target = entitylivingbase;
+            target = entitylivingbase;
             return true;
         }
     }
 
     @Override
     public boolean canContinueToUse() {
-        return this.canUse() || !this.ashen.getNavigation().isDone();
+        return canUse() || !ashen.getNavigation().isDone();
     }
 
     @Override
     public void stop() {
-        this.target = null;
+        target = null;
     }
 }

@@ -51,13 +51,13 @@ public class AirCompressorBlockEntity extends BlockEntity implements IMachineBlo
 
     public AirCompressorBlockEntity(BlockEntityType<AirCompressorBlockEntity> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
-        this.stack = ItemStack.EMPTY;
+        stack = ItemStack.EMPTY;
     }
 
     @Override
     public void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
         super.loadAdditional(nbt, registries);
-        this.compressing = nbt.getBoolean("Compressing");
+        compressing = nbt.getBoolean("Compressing");
 
         if (nbt.contains("Tank")) {
             setTank(ItemStack.parse(registries, nbt.getCompound("Tank")).orElse(ItemStack.EMPTY));
@@ -77,8 +77,8 @@ public class AirCompressorBlockEntity extends BlockEntity implements IMachineBlo
     }
 
     public void setTank(@Nonnull ItemStack tankItemStack) {
-        this.stack = tankItemStack;
-        this.tank = !(stack.getItem() instanceof ScubaArmorItem) ? null : (ScubaArmorItem) stack.getItem();
+        stack = tankItemStack;
+        tank = !(stack.getItem() instanceof ScubaArmorItem) ? null : (ScubaArmorItem) stack.getItem();
     }
 
     @Nonnull
@@ -114,7 +114,7 @@ public class AirCompressorBlockEntity extends BlockEntity implements IMachineBlo
     public boolean addTank(ItemStack stack) {
         if (tank == null && stack.getItem() instanceof ScubaArmorItem && ((ScubaArmorItem) stack.getItem()).providesAir()) {
             setTank(stack);
-            this.compressing = true;
+            compressing = true;
             syncInventory();
             return true;
         }
@@ -125,40 +125,40 @@ public class AirCompressorBlockEntity extends BlockEntity implements IMachineBlo
     public void ejectTank() {
         if (!stack.isEmpty()) {
             if (!level.isClientSide) {
-                ItemEntity tankItem = new ItemEntity(level, this.getBlockPos().getX(), this.getBlockPos().getY(), this.getBlockPos().getZ(), stack);
+                ItemEntity tankItem = new ItemEntity(level, getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), stack);
                 level.addFreshEntity(tankItem);
             }
         }
 
         setTank(ItemStack.EMPTY);
         syncInventory();
-        this.ticks = 0;
-        this.compressing = false;
+        ticks = 0;
+        compressing = false;
     }
 
     public boolean isDoneCompressing() {
-        return this.ticks > 0 && !this.compressing;
+        return ticks > 0 && !compressing;
     }
 
     public float getTickRatio(float partialTicks) {
         if (tank != null) {
-            return (this.ticks + partialTicks) / (tank.getMaxAir(getTankStack()) * fillRate);
+            return (ticks + partialTicks) / (tank.getMaxAir(getTankStack()) * fillRate);
         }
         return 0;
     }
 
     public boolean isCompressing() {
-        return this.compressing;
+        return compressing;
     }
 
     public void startCompressing() {
-        this.compressing = true;
+        compressing = true;
         syncInventory();
     }
 
     public void finishCompressing() {
-        this.compressing = false;
-        this.ticks = 0;
+        compressing = false;
+        ticks = 0;
         syncInventory();
     }
 
@@ -188,7 +188,7 @@ public class AirCompressorBlockEntity extends BlockEntity implements IMachineBlo
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider registries) {
-        this.loadAdditional(pkt.getTag(), registries);
+        loadAdditional(pkt.getTag(), registries);
     }
 
     protected void syncInventory() {
@@ -206,7 +206,7 @@ public class AirCompressorBlockEntity extends BlockEntity implements IMachineBlo
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
         CompoundTag nbt = new CompoundTag();
-        this.saveAdditional(nbt, registries);
+        saveAdditional(nbt, registries);
         return nbt;
     }
 }

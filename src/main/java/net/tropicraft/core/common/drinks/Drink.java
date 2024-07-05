@@ -60,25 +60,25 @@ public class Drink {
 
     public Drink(int id, int color, String name, ChatFormatting textFormatting) {
         DRINKS.put(id, this);
-        this.drinkId = id;
+        drinkId = id;
         this.color = color;
         this.name = name;
         this.textFormatting = textFormatting;
-        this.alwaysEdible = true; // Set all of them always edible for now
+        alwaysEdible = true; // Set all of them always edible for now
     }
 
     public Drink setHasUmbrella(boolean has) {
-        this.hasUmbrella = has;
+        hasUmbrella = has;
         return this;
     }
 
     public Drink setAlwaysEdible(boolean edible) {
-        this.alwaysEdible = edible;
+        alwaysEdible = edible;
         return this;
     }
 
     public Drink addAction(DrinkAction action) {
-        this.actions.add(action);
+        actions.add(action);
         return this;
     }
 

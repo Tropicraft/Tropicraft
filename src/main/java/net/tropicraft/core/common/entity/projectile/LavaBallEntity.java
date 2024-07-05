@@ -69,7 +69,7 @@ public class LavaBallEntity extends Entity {
         float z = (float) getZ();
 
         if (level().isClientSide) {
-            level().addParticle(ParticleTypes.LAVA, x, y, z, this.getDeltaMovement().x, -1.5F, this.getDeltaMovement().z);
+            level().addParticle(ParticleTypes.LAVA, x, y, z, getDeltaMovement().x, -1.5F, getDeltaMovement().z);
         }
     }
 
@@ -85,12 +85,12 @@ public class LavaBallEntity extends Entity {
         if (lifeTimer < 500) {
             lifeTimer++;
         } else {
-            this.remove(RemovalReason.DISCARDED);
+            remove(RemovalReason.DISCARDED);
         }
 
-        double motionX = this.getDeltaMovement().x;
-        double motionY = this.getDeltaMovement().y;
-        double motionZ = this.getDeltaMovement().z;
+        double motionX = getDeltaMovement().x;
+        double motionY = getDeltaMovement().y;
+        double motionZ = getDeltaMovement().z;
 
         if (size < 1) {
             size += .025;
@@ -129,7 +129,7 @@ public class LavaBallEntity extends Entity {
         if (!stateBelow.isAir() && !stateBelow.is(Blocks.LAVA) && !held) {
             if (setFire) {
                 level().setBlock(posCurrent, Blocks.LAVA.defaultBlockState(), 3);
-                this.remove(RemovalReason.DISCARDED);
+                remove(RemovalReason.DISCARDED);
             }
 
             if (!setFire) {
@@ -154,19 +154,19 @@ public class LavaBallEntity extends Entity {
             }
         }
 
-        Vec3 motion = new Vec3(motionX + this.accelerationX, motionY + this.accelerationY, motionZ + this.accelerationZ);
-        this.setDeltaMovement(motion);
+        Vec3 motion = new Vec3(motionX + accelerationX, motionY + accelerationY, motionZ + accelerationZ);
+        setDeltaMovement(motion);
 
-        this.move(MoverType.SELF, motion);
+        move(MoverType.SELF, motion);
     }
 
     @Override
     protected void readAdditionalSaveData(CompoundTag nbt) {
-        this.lifeTimer = nbt.getInt("lifeTimer");
+        lifeTimer = nbt.getInt("lifeTimer");
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag nbt) {
-        nbt.putInt("lifeTimer", this.lifeTimer);
+        nbt.putInt("lifeTimer", lifeTimer);
     }
 }

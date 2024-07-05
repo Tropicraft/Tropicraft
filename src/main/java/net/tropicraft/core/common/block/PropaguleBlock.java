@@ -40,7 +40,7 @@ public final class PropaguleBlock extends WaterloggableSaplingBlock {
 
     public PropaguleBlock(TreeGrower tree, Properties properties) {
         super(tree, properties);
-        this.registerDefaultState(this.stateDefinition.any().setValue(STAGE, 0).setValue(WATERLOGGED, false).setValue(PLANTED, true));
+        registerDefaultState(stateDefinition.any().setValue(STAGE, 0).setValue(WATERLOGGED, false).setValue(PLANTED, true));
     }
 
     @Override
@@ -62,7 +62,7 @@ public final class PropaguleBlock extends WaterloggableSaplingBlock {
     public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
         if (state.getValue(PLANTED)) {
             BlockPos groundPos = pos.below();
-            return this.mayPlaceOn(world.getBlockState(groundPos), world, groundPos);
+            return mayPlaceOn(world.getBlockState(groundPos), world, groundPos);
         } else {
             BlockPos topPos = pos.above();
             return world.getBlockState(topPos).is(BlockTags.LEAVES);
@@ -85,7 +85,7 @@ public final class PropaguleBlock extends WaterloggableSaplingBlock {
         if (!world.isAreaLoaded(pos, 1)) return;
 
         if (world.getMaxLocalRawBrightness(pos.above()) >= 9 && random.nextInt(GROW_CHANCE) == 0) {
-            this.advanceTree(world, pos, state, random);
+            advanceTree(world, pos, state, random);
         }
     }
 

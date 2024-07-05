@@ -26,18 +26,18 @@ public class ManateeEntity extends WaterAnimal {
 
     public ManateeEntity(EntityType<? extends ManateeEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
-        this.moveControl = new SmoothSwimmingMoveControl(this, 85, 1, 0.025f, 0.1F, false);
-        this.lookControl = new SmoothSwimmingLookControl(this, 5);
+        moveControl = new SmoothSwimmingMoveControl(this, 85, 1, 0.025f, 0.1F, false);
+        lookControl = new SmoothSwimmingLookControl(this, 5);
     }
 
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(0, new BreathAirGoal(this));
-        this.goalSelector.addGoal(0, new TryFindWaterGoal(this));
-        this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, 1.0D, 10));
-        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
-        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        goalSelector.addGoal(0, new BreathAirGoal(this));
+        goalSelector.addGoal(0, new TryFindWaterGoal(this));
+        goalSelector.addGoal(4, new RandomSwimmingGoal(this, 1.0D, 10));
+        goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+        goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0F));
     }
 
     @Override

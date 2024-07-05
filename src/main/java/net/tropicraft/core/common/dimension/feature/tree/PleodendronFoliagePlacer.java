@@ -35,7 +35,7 @@ public class PleodendronFoliagePlacer extends FoliagePlacer {
 
         for (int j = start; j >= start - i; --j) {
             int k = y + foliage.radiusOffset() + 1 - j;
-            this.placeLeavesRow(world, setter, random, config, foliage.pos(), k, j, foliage.doubleTrunk());
+            placeLeavesRow(world, setter, random, config, foliage.pos(), k, j, foliage.doubleTrunk());
         }
     }
 

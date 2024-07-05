@@ -28,7 +28,7 @@ public class BambooItemFrameItem extends HangingEntityItem {
         BlockPos relativePos = pos.relative(clickedFace);
         Player player = context.getPlayer();
         ItemStack itemStack = context.getItemInHand();
-        if (player != null && !this.mayPlace(player, clickedFace, itemStack, relativePos)) {
+        if (player != null && !mayPlace(player, clickedFace, itemStack, relativePos)) {
             return InteractionResult.FAIL;
         }
 

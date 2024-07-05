@@ -58,9 +58,9 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
 
         int x = pos.getX(), y = pos.getY(), z = pos.getZ();
 
-        int dir = this.pickDirection(world, random, x, z);
-        this.setDir(dir);
-        this.setOrigin(x, z);
+        int dir = pickDirection(world, random, x, z);
+        setDir(dir);
+        setOrigin(x, z);
 
         // x bb check
         for (int xx = 0; xx < 4; xx++) {
@@ -101,9 +101,9 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
         // inner leaf placement
         for (int yy = 1; yy < 5; yy++) {
             if (yy == 4) {
-                this.placeBlockWithDir(world, 1, yy + y + height - 1, 0, getLeaf());
+                placeBlockWithDir(world, 1, yy + y + height - 1, 0, getLeaf());
             } else {
-                this.placeBlockWithDir(world, 0, yy + y + height - 1, 0, getLeaf());
+                placeBlockWithDir(world, 0, yy + y + height - 1, 0, getLeaf());
             }
         }
 
@@ -231,15 +231,15 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
         int i = unRotatedPos.getX();
         int j = unRotatedPos.getY();
         int k = unRotatedPos.getZ();
-        switch (this.dir) {
+        switch (dir) {
             case 2:
-                return pos(this.originX + i, j, this.originZ + k);
+                return pos(originX + i, j, originZ + k);
             case 0:
-                return pos(this.originX + k, j, this.originZ - i);
+                return pos(originX + k, j, originZ - i);
             case 3:
-                return pos(this.originX - i, j, this.originZ - k);
+                return pos(originX - i, j, originZ - k);
             case 1:
-                return pos(this.originX - k, j, this.originZ + i);
+                return pos(originX - k, j, originZ + i);
         }
         return BlockPos.ZERO;
     }
@@ -247,45 +247,45 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
     private void placeBlockWithDir(LevelWriter world, int x, int y, int z, BlockState state) {
         switch (dir) {
             case 2:
-                setBlock(world, pos(this.originX + x, y, this.originZ + z), state);
+                setBlock(world, pos(originX + x, y, originZ + z), state);
                 return;
             case 0:
-                setBlock(world, pos(this.originX + z, y, this.originZ - x), state);
+                setBlock(world, pos(originX + z, y, originZ - x), state);
                 return;
             case 3:
-                setBlock(world, pos(this.originX - x, y, this.originZ - z), state);
+                setBlock(world, pos(originX - x, y, originZ - z), state);
                 return;
             case 1:
-                setBlock(world, pos(this.originX - z, y, this.originZ + x), state);
+                setBlock(world, pos(originX - z, y, originZ + x), state);
         }
     }
 
     private int getActualXAt(int i, int k) {
-        switch (this.dir) {
+        switch (dir) {
             case 2:
-                return this.originX + i;
+                return originX + i;
             case 0:
-                return this.originX + k;
+                return originX + k;
             case 3:
-                return this.originX - i;
+                return originX - i;
             case 1:
-                return this.originX - k;
+                return originX - k;
         }
-        return this.originX;
+        return originX;
     }
 
     private int getActualZAt(int i, int k) {
-        switch (this.dir) {
+        switch (dir) {
             case 2:
-                return this.originZ + k;
+                return originZ + k;
             case 0:
-                return this.originZ - i;
+                return originZ - i;
             case 3:
-                return this.originZ - k;
+                return originZ - k;
             case 1:
-                return this.originZ + i;
+                return originZ + i;
         }
-        return this.originZ;
+        return originZ;
     }
 
     public BlockPos pos(int x, int y, int z) {

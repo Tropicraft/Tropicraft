@@ -18,7 +18,7 @@ public class MonkeySitAndDrinkGoal extends Goal {
     private int waitCounter;
 
     public MonkeySitAndDrinkGoal(VMonkeyEntity monkey) {
-        this.entity = monkey;
+        entity = monkey;
         waitCounter = DEFAULT_WAIT;
         setFlags(EnumSet.of(Goal.Flag.LOOK, Flag.MOVE));
     }

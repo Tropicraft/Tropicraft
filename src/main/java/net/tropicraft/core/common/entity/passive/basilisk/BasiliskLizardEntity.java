@@ -46,8 +46,8 @@ public final class BasiliskLizardEntity extends Animal {
 
     public BasiliskLizardEntity(EntityType<? extends BasiliskLizardEntity> type, Level world) {
         super(type, world);
-        this.setPathfindingMalus(PathType.WATER, 0.0F);
-        this.setPathfindingMalus(PathType.WATER_BORDER, 0.0F);
+        setPathfindingMalus(PathType.WATER, 0.0F);
+        setPathfindingMalus(PathType.WATER_BORDER, 0.0F);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -63,10 +63,10 @@ public final class BasiliskLizardEntity extends Animal {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new PanicGoal(this, 1.25));
-        this.goalSelector.addGoal(1, new RandomStrollGoal(this, 1.0));
-        this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
+        goalSelector.addGoal(0, new PanicGoal(this, 1.25));
+        goalSelector.addGoal(1, new RandomStrollGoal(this, 1.0));
+        goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        goalSelector.addGoal(3, new RandomLookAroundGoal(this));
     }
 
     @Override
@@ -89,28 +89,28 @@ public final class BasiliskLizardEntity extends Animal {
     public void tick() {
         super.tick();
 
-        if (!this.level().isClientSide()) {
-            this.tickMovementTimer();
-            this.tickSwimming();
+        if (!level().isClientSide()) {
+            tickMovementTimer();
+            tickSwimming();
 
-            this.entityData.set(RUNNING, this.onWaterSurface);
+            entityData.set(RUNNING, onWaterSurface);
         } else {
-            this.tickRunningAnimation();
+            tickRunningAnimation();
         }
     }
 
     private void tickRunningAnimation() {
-        this.prevRunningAnimation = this.runningAnimation;
+        prevRunningAnimation = runningAnimation;
 
-        if (this.entityData.get(RUNNING)) {
-            if (this.runningAnimation < RUNNING_ANIMATION_LENGTH) {
-                this.runningAnimation++;
+        if (entityData.get(RUNNING)) {
+            if (runningAnimation < RUNNING_ANIMATION_LENGTH) {
+                runningAnimation++;
             }
 
-            this.spawnRunningParticles();
+            spawnRunningParticles();
         } else {
-            if (this.runningAnimation > 0) {
-                this.runningAnimation = Math.max(this.runningAnimation - 2, 0);
+            if (runningAnimation > 0) {
+                runningAnimation = Math.max(runningAnimation - 2, 0);
             }
         }
     }
@@ -134,42 +134,42 @@ public final class BasiliskLizardEntity extends Animal {
     @Override
     protected void doWaterSplashEffect() {
         // duplicating vanilla logic to add splash sounds but disable the particles
-        float volume = (float) (this.getDeltaMovement().multiply(0.5, 1.0, 0.5).length() * 0.2F);
+        float volume = (float) (getDeltaMovement().multiply(0.5, 1.0, 0.5).length() * 0.2F);
         volume = Math.min(volume, 1.0F);
 
         float pitch = 1.0F + (random.nextFloat() - random.nextFloat()) * 0.4F;
 
-        SoundEvent sound = volume < 0.25 ? this.getSwimSplashSound() : this.getSwimHighSpeedSplashSound();
-        this.playSound(sound, volume, pitch);
+        SoundEvent sound = volume < 0.25 ? getSwimSplashSound() : getSwimHighSpeedSplashSound();
+        playSound(sound, volume, pitch);
     }
 
     private void tickMovementTimer() {
-        if (this.zza != 0.0F) {
-            this.movingTimer = WATER_WALK_TIME;
+        if (zza != 0.0F) {
+            movingTimer = WATER_WALK_TIME;
         } else {
-            if (this.movingTimer > 0) {
-                this.movingTimer--;
+            if (movingTimer > 0) {
+                movingTimer--;
             }
         }
     }
 
     private void tickSwimming() {
-        if (!this.onWaterSurface && this.isInWater() && this.getFluidHeight(FluidTags.WATER) > this.getFluidJumpThreshold()) {
-            boolean shouldWaterWalk = this.shouldWaterWalk();
-            if (shouldWaterWalk || this.random.nextFloat() < 0.8F) {
-                this.setDeltaMovement(this.getDeltaMovement().scale(0.5).add(0.0, 0.1, 0.0));
+        if (!onWaterSurface && isInWater() && getFluidHeight(FluidTags.WATER) > getFluidJumpThreshold()) {
+            boolean shouldWaterWalk = shouldWaterWalk();
+            if (shouldWaterWalk || random.nextFloat() < 0.8F) {
+                setDeltaMovement(getDeltaMovement().scale(0.5).add(0.0, 0.1, 0.0));
             }
         }
     }
 
     @Override
     protected Vec3 maybeBackOffFromEdge(Vec3 offset, MoverType mover) {
-        if (this.shouldWaterWalk()) {
-            Vec3 result = WaterWalking.collide(this.level(), this.getBoundingBox(), offset);
-            this.onWaterSurface = offset.y < 0.0 && result.y != offset.y;
+        if (shouldWaterWalk()) {
+            Vec3 result = WaterWalking.collide(level(), getBoundingBox(), offset);
+            onWaterSurface = offset.y < 0.0 && result.y != offset.y;
             return result;
         } else {
-            this.onWaterSurface = false;
+            onWaterSurface = false;
             return offset;
         }
     }
@@ -183,7 +183,7 @@ public final class BasiliskLizardEntity extends Animal {
     @Override
     public float getSpeed() {
         float speed = super.getSpeed();
-        return this.onWaterSurface ? speed * WATER_WALK_SPEED_BOOST : speed;
+        return onWaterSurface ? speed * WATER_WALK_SPEED_BOOST : speed;
     }
 
     @Override
@@ -192,7 +192,7 @@ public final class BasiliskLizardEntity extends Animal {
     }
 
     private boolean shouldWaterWalk() {
-        return this.movingTimer > 0;
+        return movingTimer > 0;
     }
 
     public float getRunningAnimation(float partialTicks) {

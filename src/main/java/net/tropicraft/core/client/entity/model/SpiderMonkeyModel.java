@@ -134,7 +134,7 @@ public class SpiderMonkeyModel<T extends SpiderMonkeyEntity> extends Hierarchica
 
     @Override
     public void prepareMobModel(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
-        this.setDefaultRotationAngles();
+        setDefaultRotationAngles();
 
         float standAnimation = entity.getStandAnimation(partialTicks);
         float standAngle = standAnimation * 70.0F * ModelAnimator.DEG_TO_RAD;

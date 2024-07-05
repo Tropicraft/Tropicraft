@@ -33,15 +33,15 @@ public enum StarfishType implements StringRepresentable {
         this.displayName = displayName;
 
         if (heights == null) {
-            this.layerHeights = new float[textures.length];
+            layerHeights = new float[textures.length];
             for (int i = 0; i < textures.length; i++) {
-                this.layerHeights[i] = 0.03125f;
+                layerHeights[i] = 0.03125f;
             }
         } else {
-            this.layerHeights = heights;
+            layerHeights = heights;
         }
 
-        this.texturePaths = new ArrayList<>(textures.length);
+        texturePaths = new ArrayList<>(textures.length);
 
         Collections.addAll(texturePaths, textures);
     }

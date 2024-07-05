@@ -32,23 +32,23 @@ public class EIHMachineModel<T extends BlockEntity & IMachineBlock> extends Mach
     public EIHMachineModel(ModelPart root) {
         super();
 
-        this.base = root.getChild("base");
-        this.back = root.getChild("back");
-        this.nose = root.getChild("nose");
-        this.forehead = root.getChild("forehead");
-        this.leftEye = root.getChild("leftEye");
-        this.rightEye = root.getChild("rightEye");
-        this.basinNearBack = root.getChild("basinNearBack");
-        this.basinSide1 = root.getChild("basinSide1");
-        this.basinSide2 = root.getChild("basinSide2");
-        this.basinNearFront = root.getChild("basinNearFront");
-        this.basinCorner1 = root.getChild("basinCorner1");
-        this.basinCorner2 = root.getChild("basinCorner2");
-        this.basinCorner3 = root.getChild("basinCorner3");
-        this.basinCorner4 = root.getChild("basinCorner4");
-        this.lidBase = root.getChild("lidBase");
-        this.lidTop = root.getChild("lidTop");
-        this.mouth = root.getChild("mouth");
+        base = root.getChild("base");
+        back = root.getChild("back");
+        nose = root.getChild("nose");
+        forehead = root.getChild("forehead");
+        leftEye = root.getChild("leftEye");
+        rightEye = root.getChild("rightEye");
+        basinNearBack = root.getChild("basinNearBack");
+        basinSide1 = root.getChild("basinSide1");
+        basinSide2 = root.getChild("basinSide2");
+        basinNearFront = root.getChild("basinNearFront");
+        basinCorner1 = root.getChild("basinCorner1");
+        basinCorner2 = root.getChild("basinCorner2");
+        basinCorner3 = root.getChild("basinCorner3");
+        basinCorner4 = root.getChild("basinCorner4");
+        lidBase = root.getChild("lidBase");
+        lidTop = root.getChild("lidTop");
+        mouth = root.getChild("mouth");
     }
 
     public static LayerDefinition create() {

@@ -19,7 +19,7 @@ public class VolcanicSandBlock extends BlockTropicraftSand {
 
     public VolcanicSandBlock(Block.Properties properties) {
         super(properties);
-        this.registerDefaultState(defaultBlockState().setValue(HOT, false));
+        registerDefaultState(defaultBlockState().setValue(HOT, false));
     }
 
     @Override

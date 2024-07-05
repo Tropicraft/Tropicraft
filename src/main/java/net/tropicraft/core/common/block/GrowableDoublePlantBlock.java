@@ -33,7 +33,7 @@ public final class GrowableDoublePlantBlock extends DoublePlantBlock implements 
     }
 
     public GrowableDoublePlantBlock setPickItem(Supplier<RegistryEntry<? extends ItemLike, ? extends ItemLike>> item) {
-        this.pickItem = item;
+        pickItem = item;
         return this;
     }
 
@@ -56,7 +56,7 @@ public final class GrowableDoublePlantBlock extends DoublePlantBlock implements 
     public void performBonemeal(ServerLevel world, RandomSource random, BlockPos pos, BlockState state) {
         BlockPos lowerPos = state.getValue(HALF) == DoubleBlockHalf.LOWER ? pos : pos.below();
 
-        HugePlantBlock growBlock = this.growInto.get().get();
+        HugePlantBlock growBlock = growInto.get().get();
         BlockState growState = growBlock.defaultBlockState();
         if (growState.canSurvive(world, lowerPos)) {
             growBlock.placeAt(world, lowerPos, Block.UPDATE_CLIENTS);
@@ -74,8 +74,8 @@ public final class GrowableDoublePlantBlock extends DoublePlantBlock implements 
 
     @Override
     public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
-        if (this.pickItem != null) {
-            return new ItemStack(this.pickItem.get().get());
+        if (pickItem != null) {
+            return new ItemStack(pickItem.get().get());
         }
         return super.getCloneItemStack(state, target, level, pos, player);
     }

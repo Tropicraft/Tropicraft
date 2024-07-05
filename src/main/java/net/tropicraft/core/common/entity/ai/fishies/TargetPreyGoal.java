@@ -105,6 +105,6 @@ public class TargetPreyGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        return this.canUse();
+        return canUse();
     }
 }

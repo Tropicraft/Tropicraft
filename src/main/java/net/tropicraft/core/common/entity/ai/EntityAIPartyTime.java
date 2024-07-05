@@ -40,8 +40,8 @@ public class EntityAIPartyTime extends Goal {
     private boolean bangDrum = false;
 
     public EntityAIPartyTime(EntityKoaBase entityObjIn) {
-        this.entityObj = entityObjIn;
-        this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+        entityObj = entityObjIn;
+        setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
 
     /**
@@ -50,13 +50,13 @@ public class EntityAIPartyTime extends Goal {
     @Override
     public boolean canUse() {
 
-        if ((!entityObj.getWantsToParty() && this.entityObj.druggedTime <= 0) || entityObj.listPosDrums.isEmpty()) {
+        if ((!entityObj.getWantsToParty() && entityObj.druggedTime <= 0) || entityObj.listPosDrums.isEmpty()) {
             return false;
         }
 
-        BlockPos blockpos = this.entityObj.blockPosition();
+        BlockPos blockpos = entityObj.blockPosition();
 
-        if ((this.entityObj.druggedTime > 0 || !this.entityObj.level().isDay() || this.entityObj.level().isRaining() && this.entityObj.level().getBiome(blockpos).value().getPrecipitationAt(blockpos) != Biome.Precipitation.RAIN)) {
+        if ((entityObj.druggedTime > 0 || !entityObj.level().isDay() || entityObj.level().isRaining() && entityObj.level().getBiome(blockpos).value().getPrecipitationAt(blockpos) != Biome.Precipitation.RAIN)) {
             if (!isTooClose()) {
                 if (entityObj.level().random.nextInt(20) == 0) {
                     return true;
@@ -76,9 +76,9 @@ public class EntityAIPartyTime extends Goal {
      */
     @Override
     public boolean canContinueToUse() {
-        BlockPos blockpos = this.entityObj.blockPosition();
+        BlockPos blockpos = entityObj.blockPosition();
         //return !this.entityObj.getNavigation().noPath();
-        if ((this.entityObj.druggedTime > 0 || !this.entityObj.level().isDay() || this.entityObj.level().isRaining() && this.entityObj.level().getBiome(blockpos).value().getPrecipitationAt(blockpos) != Biome.Precipitation.RAIN)) {
+        if ((entityObj.druggedTime > 0 || !entityObj.level().isDay() || entityObj.level().isRaining() && entityObj.level().getBiome(blockpos).value().getPrecipitationAt(blockpos) != Biome.Precipitation.RAIN)) {
             return !isTooClose();
         } else {
             return entityObj.level().random.nextInt(60) != 0;
@@ -92,12 +92,12 @@ public class EntityAIPartyTime extends Goal {
         boolean isClose = false;
 
         BlockPos blockposGoal = null;
-        if (this.entityObj.listPosDrums.size() > assignedDrumIndex) {
+        if (entityObj.listPosDrums.size() > assignedDrumIndex) {
             blockposGoal = entityObj.listPosDrums.get(assignedDrumIndex);
         }
 
         if (entityObj.level().getGameTime() % 200 == 0) {
-            if (!this.entityObj.listPosDrums.isEmpty()) {
+            if (!entityObj.listPosDrums.isEmpty()) {
                 assignedDrumIndex = entityObj.level().random.nextInt(entityObj.listPosDrums.size());
             }
             //if (wasClose) {
@@ -121,8 +121,8 @@ public class EntityAIPartyTime extends Goal {
             if (!bangDrum) {
                 //entityObj.setSitting(true);
                 entityObj.setDancing(true);
-                this.entityObj.getJumpControl().jump();
-                this.entityObj.setYRot(entityObj.level().random.nextInt(360));
+                entityObj.getJumpControl().jump();
+                entityObj.setYRot(entityObj.level().random.nextInt(360));
             } else {
                 entityObj.setDancing(false);
                 if (true || lookUpdateTimer <= 0) {
@@ -223,7 +223,7 @@ public class EntityAIPartyTime extends Goal {
                     entityObj.syncBPM();
                 }
 
-                this.entityObj.getLookControl().setLookAt(blockposGoal.getX() + randXPos, blockposGoal.getY() + randYPos + 1D, blockposGoal.getZ() + randZPos,
+                entityObj.getLookControl().setLookAt(blockposGoal.getX() + randXPos, blockposGoal.getY() + randYPos + 1D, blockposGoal.getZ() + randZPos,
                         8F, 8F);
             }
         } else {
@@ -233,7 +233,7 @@ public class EntityAIPartyTime extends Goal {
 
         if (!isClose) {
             entityObj.setDancing(true);
-            if ((this.entityObj.getNavigation().isDone() || walkingTimeout <= 0) && repathPentalty <= 0) {
+            if ((entityObj.getNavigation().isDone() || walkingTimeout <= 0) && repathPentalty <= 0) {
 
                 int i = blockposGoal.getX();
                 int j = blockposGoal.getY();
@@ -241,17 +241,17 @@ public class EntityAIPartyTime extends Goal {
 
                 boolean success = false;
 
-                if (this.entityObj.distanceToSqr(Vec3.atCenterOf(blockposGoal)) > 256.0) {
-                    Vec3 Vector3d = DefaultRandomPos.getPosTowards(this.entityObj, 14, 3, new Vec3((double) i + 0.5D, (double) j, (double) k + 0.5D), (float) Math.PI / 2F);
+                if (entityObj.distanceToSqr(Vec3.atCenterOf(blockposGoal)) > 256.0) {
+                    Vec3 Vector3d = DefaultRandomPos.getPosTowards(entityObj, 14, 3, new Vec3((double) i + 0.5D, (double) j, (double) k + 0.5D), (float) Math.PI / 2F);
 
                     if (Vector3d != null) {
-                        success = this.entityObj.getNavigation().moveTo(Vector3d.x, Vector3d.y, Vector3d.z, 1.0D);
+                        success = entityObj.getNavigation().moveTo(Vector3d.x, Vector3d.y, Vector3d.z, 1.0D);
                     } else {
-                        success = Util.tryMoveToXYZLongDist(this.entityObj, new BlockPos(i, j, k), 1);
+                        success = Util.tryMoveToXYZLongDist(entityObj, new BlockPos(i, j, k), 1);
                         //System.out.println("success? " + success);
                     }
                 } else {
-                    success = this.entityObj.getNavigation().moveTo((double) i + 0.5D, j, (double) k + 0.5D, 1.0D);
+                    success = entityObj.getNavigation().moveTo((double) i + 0.5D, j, (double) k + 0.5D, 1.0D);
                 }
 
                 if (!success) {
@@ -285,8 +285,8 @@ public class EntityAIPartyTime extends Goal {
         super.start();
         //this.insidePosX = -1;
         //reset any previous path so tick can start with a fresh path
-        this.entityObj.getNavigation().stop();
-        if (!this.entityObj.listPosDrums.isEmpty()) {
+        entityObj.getNavigation().stop();
+        if (!entityObj.listPosDrums.isEmpty()) {
             assignedDrumIndex = entityObj.level().random.nextInt(entityObj.listPosDrums.size());
         }
         //System.out.println("start party mode");
@@ -309,11 +309,11 @@ public class EntityAIPartyTime extends Goal {
 
     public boolean isTooClose() {
         BlockPos blockposGoal = null;
-        if (this.entityObj.posLastFireplaceFound != null) {
+        if (entityObj.posLastFireplaceFound != null) {
             //path to base of fire
-            blockposGoal = this.entityObj.posLastFireplaceFound.offset(0, -1, 0);
+            blockposGoal = entityObj.posLastFireplaceFound.offset(0, -1, 0);
         } else {
-            blockposGoal = this.entityObj.getRestrictCenter();
+            blockposGoal = entityObj.getRestrictCenter();
         }
 
         if (blockposGoal == null || blockposGoal == BlockPos.ZERO) {
