@@ -13,8 +13,8 @@ import java.util.Set;
 
 public final class MixerRecipes {
 
-    private static Map<Drink, Ingredient[]> drinkToIngredientsMap = new HashMap<>();
-    private static Map<Drink, Item> drinkToSpecialItemMap = new HashMap<>();
+    private static final Map<Drink, Ingredient[]> drinkToIngredientsMap = new HashMap<>();
+    private static final Map<Drink, Item> drinkToSpecialItemMap = new HashMap<>();
 
     private MixerRecipes() {
     }

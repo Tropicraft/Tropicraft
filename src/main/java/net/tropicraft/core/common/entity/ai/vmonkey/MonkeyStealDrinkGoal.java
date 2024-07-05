@@ -14,7 +14,7 @@ import net.tropicraft.core.common.item.CocktailItem;
 import java.util.EnumSet;
 
 public class MonkeyStealDrinkGoal extends Goal {
-    private VMonkeyEntity entity;
+    private final VMonkeyEntity entity;
 
     public MonkeyStealDrinkGoal(VMonkeyEntity monkey) {
         this.entity = monkey;

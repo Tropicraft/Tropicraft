@@ -15,7 +15,7 @@ import net.tropicraft.core.common.block.tileentity.SifterBlockEntity;
 public record ClientboundSifterInventoryPacket(BlockPos pos, ItemStack siftItem) implements CustomPacketPayload {
     public static final Type<ClientboundSifterInventoryPacket> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(Constants.MODID, "sifter_inventory"));
 
-    public static StreamCodec<RegistryFriendlyByteBuf, ClientboundSifterInventoryPacket> STREAM_CODEC = StreamCodec.composite(
+    public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundSifterInventoryPacket> STREAM_CODEC = StreamCodec.composite(
             BlockPos.STREAM_CODEC, ClientboundSifterInventoryPacket::pos,
             ItemStack.OPTIONAL_STREAM_CODEC, ClientboundSifterInventoryPacket::siftItem,
             ClientboundSifterInventoryPacket::new

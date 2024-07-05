@@ -56,10 +56,10 @@ public enum StarfishType implements StringRepresentable {
         return (byte) (type == RED ? 0 : 1);
     }
 
-    private String unlocalizedName;
-    private String displayName;
-    private List<String> texturePaths;
-    private float[] layerHeights;
+    private final String unlocalizedName;
+    private final String displayName;
+    private final List<String> texturePaths;
+    private final float[] layerHeights;
 
     public String getUnlocalizedName() {
         return unlocalizedName;

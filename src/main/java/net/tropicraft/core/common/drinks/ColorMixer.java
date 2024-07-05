@@ -1,7 +1,7 @@
 package net.tropicraft.core.common.drinks;
 
 public final class ColorMixer {
-    private static ColorMixer instance = new ColorMixer();
+    private static final ColorMixer instance = new ColorMixer();
 
     public ColorMixer() {
     }

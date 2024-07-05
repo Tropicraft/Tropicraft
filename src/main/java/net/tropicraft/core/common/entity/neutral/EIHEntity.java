@@ -33,9 +33,9 @@ import net.tropicraft.core.common.sound.Sounds;
 public class EIHEntity extends TropicraftCreatureEntity {
 
     private static final EntityDataAccessor<Byte> STATE = SynchedEntityData.defineId(EIHEntity.class, EntityDataSerializers.BYTE);
-    public int FLAG_SLEEP = 1 << 0;
-    public int FLAG_AWARE = 1 << 1;
-    public int FLAG_ANGRY = 1 << 2;
+    public final int FLAG_SLEEP = 1 << 0;
+    public final int FLAG_AWARE = 1 << 1;
+    public final int FLAG_ANGRY = 1 << 2;
 
     public EIHEntity(EntityType<? extends PathfinderMob> type, Level world) {
         super(type, world);

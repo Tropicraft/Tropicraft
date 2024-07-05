@@ -14,8 +14,8 @@ import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil
 // TODO use TualungConfig, but requires extending Feature instead, which is a pain
 public class TualungFeature extends RainforestTreeFeature {
 
-    private int baseHeight;
-    private int maxHeight;
+    private final int baseHeight;
+    private final int maxHeight;
 
     public TualungFeature(Codec<NoneFeatureConfiguration> codec, int maxHeight, int baseHeight) {
         super(codec);

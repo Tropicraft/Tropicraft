@@ -32,8 +32,8 @@ public abstract class TropicraftFishEntity extends WaterAnimal {
     protected float swimSpeedCurrent = 0f;
     private float swimSpeedPanic = 2f;
 
-    private float swimAccelRate = 0.02f;
-    private float swimDecelRate = 0.02f;
+    private final float swimAccelRate = 0.02f;
+    private final float swimDecelRate = 0.02f;
 
     private float swimSpeedTurn = 5f;
     public boolean isMovingAwayFromWall = false;
@@ -44,16 +44,16 @@ public abstract class TropicraftFishEntity extends WaterAnimal {
     public double fleeDistance = 2D;
 
     public boolean isAggressing = false;
-    public boolean canAggress = false;
+    public final boolean canAggress = false;
 
     public int eatenFishAmount = 0;
-    public int maximumEatAmount = 5;
+    public final int maximumEatAmount = 5;
     private float swimSpeedChasing = 2f;
     private float swimSpeedCharging = 2.5f;
 
     public Entity aggressTarget = null;
 
-    private boolean fishable = false;
+    private final boolean fishable = false;
 
     protected TropicraftFishEntity(EntityType<? extends WaterAnimal> type, Level world) {
         super(type, world);

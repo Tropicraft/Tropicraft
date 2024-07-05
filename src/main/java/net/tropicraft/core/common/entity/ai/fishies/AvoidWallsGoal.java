@@ -9,8 +9,8 @@ import net.tropicraft.core.common.entity.underdasea.TropicraftFishEntity;
 import java.util.EnumSet;
 
 public class AvoidWallsGoal extends Goal {
-    public TropicraftFishEntity entity;
-    public RandomSource rand;
+    public final TropicraftFishEntity entity;
+    public final RandomSource rand;
 
     public AvoidWallsGoal(EnumSet<Flag> flags, TropicraftFishEntity entityObjIn) {
         entity = entityObjIn;

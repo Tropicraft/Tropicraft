@@ -13,10 +13,10 @@ import net.tropicraft.core.common.dimension.feature.tree.mangrove.ReplaceInSoilD
 public final class TropicraftTreeDecorators {
     public static final DeferredRegister<TreeDecoratorType<?>> REGISTER = DeferredRegister.create(Registries.TREE_DECORATOR_TYPE, Constants.MODID);
 
-    public static DeferredHolder<TreeDecoratorType<?>, TreeDecoratorType<?>> REPLACE_IN_SOIL = register("replace_in_soil", ReplaceInSoilDecorator.CODEC);
-    public static DeferredHolder<TreeDecoratorType<?>, TreeDecoratorType<?>> PNEUMATOPHORES = register("pneumatophores", PneumatophoresTreeDecorator.CODEC);
-    public static DeferredHolder<TreeDecoratorType<?>, TreeDecoratorType<?>> PAPAYA = register("papaya", PapayaTreeDecorator.CODEC);
-    public static DeferredHolder<TreeDecoratorType<?>, TreeDecoratorType<?>> BRANCH = register("branch", BranchTreeDecorator.CODEC);
+    public static final DeferredHolder<TreeDecoratorType<?>, TreeDecoratorType<?>> REPLACE_IN_SOIL = register("replace_in_soil", ReplaceInSoilDecorator.CODEC);
+    public static final DeferredHolder<TreeDecoratorType<?>, TreeDecoratorType<?>> PNEUMATOPHORES = register("pneumatophores", PneumatophoresTreeDecorator.CODEC);
+    public static final DeferredHolder<TreeDecoratorType<?>, TreeDecoratorType<?>> PAPAYA = register("papaya", PapayaTreeDecorator.CODEC);
+    public static final DeferredHolder<TreeDecoratorType<?>, TreeDecoratorType<?>> BRANCH = register("branch", BranchTreeDecorator.CODEC);
 
     private static <T extends TreeDecorator> DeferredHolder<TreeDecoratorType<?>, TreeDecoratorType<?>> register(String name, MapCodec<T> codec) {
         return REGISTER.register(name, () -> new TreeDecoratorType<>(codec));

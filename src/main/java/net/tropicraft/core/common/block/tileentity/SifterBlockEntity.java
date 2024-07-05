@@ -46,7 +46,7 @@ public class SifterBlockEntity extends BlockEntity {
      */
     private int currentSiftTime;
 
-    private RandomSource rand;
+    private final RandomSource rand;
 
     public double yaw;
     public double yaw2 = 0.0D;

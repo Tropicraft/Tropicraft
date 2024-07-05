@@ -16,7 +16,7 @@ import java.util.EnumSet;
 public class EntityAIChillAtFire extends Goal {
     private final EntityKoaBase entityObj;
 
-    private int walkingTimeoutMax = 20 * 10;
+    private final int walkingTimeoutMax = 20 * 10;
 
     private int walkingTimeout;
     private int repathPentalty = 0;

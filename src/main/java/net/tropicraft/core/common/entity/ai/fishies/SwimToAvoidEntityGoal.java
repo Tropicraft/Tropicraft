@@ -11,10 +11,10 @@ import java.util.List;
 
 public class SwimToAvoidEntityGoal extends Goal {
 
-    public TropicraftFishEntity entity;
-    public RandomSource rand;
-    public Class<? extends Entity>[] entityClassToAvoid;
-    public double distanceToAvoid;
+    public final TropicraftFishEntity entity;
+    public final RandomSource rand;
+    public final Class<? extends Entity>[] entityClassToAvoid;
+    public final double distanceToAvoid;
 
     public SwimToAvoidEntityGoal(EnumSet<Flag> flags, TropicraftFishEntity entityObjIn, double dist, Class<? extends Entity>[] classes) {
         this.entity = entityObjIn;

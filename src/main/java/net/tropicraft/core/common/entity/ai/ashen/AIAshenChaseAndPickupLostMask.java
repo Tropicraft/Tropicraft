@@ -9,10 +9,10 @@ import net.tropicraft.core.common.entity.hostile.AshenEntity;
 import java.util.EnumSet;
 
 public class AIAshenChaseAndPickupLostMask extends Goal {
-    public AshenEntity ashen;
+    public final AshenEntity ashen;
     public LivingEntity target;
     public double speed = 1D;
-    public double maskGrabDistance = 3D;
+    public final double maskGrabDistance = 3D;
     public int panicTime = 0;
 
     public AIAshenChaseAndPickupLostMask(AshenEntity ashen, double speed) {

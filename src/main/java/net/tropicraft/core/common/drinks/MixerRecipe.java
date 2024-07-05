@@ -7,12 +7,12 @@ public class MixerRecipe implements IMixerRecipe {
     /**
      * Result possible when all ingredients are mixed together
      */
-    private Drink result;
+    private final Drink result;
 
     /**
      * All ingredients that go into creating the result
      */
-    private Ingredient[] ingredients;
+    private final Ingredient[] ingredients;
 
     public MixerRecipe(Drink result, Ingredient... ingredients) {
         this.result = result;

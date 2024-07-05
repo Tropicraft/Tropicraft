@@ -16,7 +16,7 @@ public class Drinks {
     /**
      * List of recipes for use in the mixer
      */
-    private static List<MixerRecipe> recipes = new LinkedList<>();
+    private static final List<MixerRecipe> recipes = new LinkedList<>();
 
     /**
      * Register a recipe with the mixer

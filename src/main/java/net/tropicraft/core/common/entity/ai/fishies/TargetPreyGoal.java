@@ -12,8 +12,8 @@ import java.util.EnumSet;
 import java.util.List;
 
 public class TargetPreyGoal extends Goal {
-    public TropicraftFishEntity entity;
-    public RandomSource rand;
+    public final TropicraftFishEntity entity;
+    public final RandomSource rand;
 
     public TargetPreyGoal(EnumSet<Flag> flags, TropicraftFishEntity entityObjIn) {
         entity = entityObjIn;
