@@ -3,9 +3,9 @@ package net.tropicraft.core.common.entity.ai;
 import net.minecraft.world.entity.LivingEntity;
 
 public interface IEntityFollower {
-    public LivingEntity getFollowingEntity();
+    LivingEntity getFollowingEntity();
 
-    public void setFollowingEntity(LivingEntity entity);
+    void setFollowingEntity(LivingEntity entity);
 }
 
 

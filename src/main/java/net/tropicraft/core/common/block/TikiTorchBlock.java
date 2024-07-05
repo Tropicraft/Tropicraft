@@ -39,7 +39,7 @@ public final class TikiTorchBlock extends Block {
 
         final int height;
 
-        private TorchSection(int height) {
+        TorchSection(int height) {
             this.height = height;
         }
 
