@@ -55,11 +55,11 @@ public class FurnitureItem<T extends FurnitureEntity> extends Item {
             if (rayTraceResult.getType() == net.minecraft.world.phys.HitResult.Type.BLOCK) {
                 Vec3 hitVec = rayTraceResult.getLocation();
 
-                T entity = this.entityType.get().create(world);
+                T entity = entityType.get().create(world);
                 entity.moveTo(BlockPos.containing(hitVec), 0, 0);
                 entity.setDeltaMovement(Vec3.ZERO);
                 entity.setRotation(placer.getYRot() + 180);
-                entity.setColor(this.color);
+                entity.setColor(color);
 
                 if (!world.noCollision(entity, entity.getBoundingBox().inflate(-0.1D))) {
                     return new InteractionResultHolder<>(InteractionResult.FAIL, heldItem);

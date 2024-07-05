@@ -45,10 +45,10 @@ public class ReplaceInSoilDecorator extends TreeDecorator {
 
         WorldGenLevel level = (WorldGenLevel) context.level();
         RandomSource random = context.random();
-        for (int i = 0; i < this.count; i++) {
-            int x = lowestLog.getX() + random.nextInt(this.spread) - random.nextInt(this.spread);
-            int z = lowestLog.getZ() + random.nextInt(this.spread) - random.nextInt(this.spread);
-            int y = lowestLog.getY() - random.nextInt(this.spread);
+        for (int i = 0; i < count; i++) {
+            int x = lowestLog.getX() + random.nextInt(spread) - random.nextInt(spread);
+            int z = lowestLog.getZ() + random.nextInt(spread) - random.nextInt(spread);
+            int y = lowestLog.getY() - random.nextInt(spread);
 
             BlockPos pos = new BlockPos(x, y, z);
             if (target.test(level, pos)) {

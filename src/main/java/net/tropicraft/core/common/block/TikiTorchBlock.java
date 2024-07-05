@@ -45,12 +45,12 @@ public final class TikiTorchBlock extends Block {
 
         @Override
         public String getSerializedName() {
-            return this.name().toLowerCase(Locale.ROOT);
+            return name().toLowerCase(Locale.ROOT);
         }
 
         @Override
         public String toString() {
-            return this.getSerializedName();
+            return getSerializedName();
         }
     }
 
@@ -61,7 +61,7 @@ public final class TikiTorchBlock extends Block {
 
     public TikiTorchBlock(Block.Properties properties) {
         super(properties);
-        this.registerDefaultState(defaultBlockState().setValue(SECTION, TorchSection.UPPER));
+        registerDefaultState(defaultBlockState().setValue(SECTION, TorchSection.UPPER));
     }
 
     @Override
@@ -112,7 +112,7 @@ public final class TikiTorchBlock extends Block {
     @Override
     @Deprecated
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
-        return facing.getAxis() == Axis.Y && !this.canSurvive(stateIn, worldIn, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+        return facing.getAxis() == Axis.Y && !canSurvive(stateIn, worldIn, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
     }
 
     @Override
@@ -121,8 +121,8 @@ public final class TikiTorchBlock extends Block {
 
         if (section == TorchSection.UPPER) return;
 
-        worldIn.setBlock(pos.above(), this.defaultBlockState().setValue(SECTION, TorchSection.MIDDLE), Block.UPDATE_ALL);
-        worldIn.setBlock(pos.above(2), this.defaultBlockState().setValue(SECTION, TorchSection.UPPER), Block.UPDATE_ALL);
+        worldIn.setBlock(pos.above(), defaultBlockState().setValue(SECTION, TorchSection.MIDDLE), Block.UPDATE_ALL);
+        worldIn.setBlock(pos.above(2), defaultBlockState().setValue(SECTION, TorchSection.UPPER), Block.UPDATE_ALL);
     }
 
     private boolean placeShortTorchOn(BlockState state) {
@@ -156,7 +156,7 @@ public final class TikiTorchBlock extends Block {
                 if (player.isCreative()) {
                     ret |= super.onDestroyedByPlayer(state2, world, pos2, player, willHarvest, fluid);
                 } else {
-                    this.playerWillDestroy(world, pos2, state2, player);
+                    playerWillDestroy(world, pos2, state2, player);
                     ret = true;
                 }
             }

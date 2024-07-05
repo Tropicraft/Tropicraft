@@ -50,7 +50,7 @@ public class MonkeyPickUpPinaColadaGoal extends Goal {
     @Override
     public void stop() {
         navigation.stop();
-        entity.setPathfindingMalus(PathType.WATER, this.oldWaterCost);
+        entity.setPathfindingMalus(PathType.WATER, oldWaterCost);
     }
 
     @Override

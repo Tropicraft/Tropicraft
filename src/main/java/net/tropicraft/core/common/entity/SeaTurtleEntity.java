@@ -75,14 +75,14 @@ public class SeaTurtleEntity extends Turtle {
 
     @Override
     protected float nextStep() {
-        return this.moveDist + 0.15F;
+        return moveDist + 0.15F;
     }
 
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
         setRandomTurtleType();
-        this.lastPosY = getY();
+        lastPosY = getY();
         return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
     }
 
@@ -91,18 +91,18 @@ public class SeaTurtleEntity extends Turtle {
         super.registerGoals();
 
         // goals
-        Set<WrappedGoal> goalSet = this.goalSelector.getAvailableGoals();
+        Set<WrappedGoal> goalSet = goalSelector.getAvailableGoals();
 
         Optional<WrappedGoal> eggGoal = goalSet.stream().filter(p -> p.getGoal().toString().contains("Egg")).findFirst();
         if (eggGoal.isPresent()) {
-            this.goalSelector.removeGoal(eggGoal.get().getGoal());
-            this.goalSelector.addGoal(1, new BetterLayEggGoal(this, 1.0));
+            goalSelector.removeGoal(eggGoal.get().getGoal());
+            goalSelector.addGoal(1, new BetterLayEggGoal(this, 1.0));
         }
 
         Optional<WrappedGoal> mateGoal = goalSet.stream().filter(p -> p.getGoal().toString().contains("Mate")).findFirst();
         if (mateGoal.isPresent()) {
-            this.goalSelector.removeGoal(mateGoal.get().getGoal());
-            this.goalSelector.addGoal(1, new BetterMateGoal(this, 1.0));
+            goalSelector.removeGoal(mateGoal.get().getGoal());
+            goalSelector.addGoal(1, new BetterMateGoal(this, 1.0));
         }
     }
 
@@ -143,7 +143,7 @@ public class SeaTurtleEntity extends Turtle {
         setNoBrakes(nbt.getBoolean("NoBrakesOnThisTrain"));
         setCanFly(nbt.getBoolean("LongsForTheSky"));
         setHasEgg(nbt.getBoolean("HasEgg"));
-        this.lastPosY = this.getY();
+        lastPosY = getY();
     }
 
     public boolean isMature() {
@@ -236,14 +236,14 @@ public class SeaTurtleEntity extends Turtle {
     @Override
     public void aiStep() {
         super.aiStep();
-        if (this.isAlive() && this.isLayingEgg() && this.digCounter >= 1 && this.digCounter % 5 == 0) {
-            BlockPos pos = this.blockPosition();
-            if (this.level().getBlockState(pos.below()).is(BlockTags.SAND)) {
-                this.level().levelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK, pos, Block.getId(Blocks.SAND.defaultBlockState()));
+        if (isAlive() && isLayingEgg() && digCounter >= 1 && digCounter % 5 == 0) {
+            BlockPos pos = blockPosition();
+            if (level().getBlockState(pos.below()).is(BlockTags.SAND)) {
+                level().levelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK, pos, Block.getId(Blocks.SAND.defaultBlockState()));
             }
         }
 
-        if (this.level().isClientSide) {
+        if (level().isClientSide) {
             if (isVehicle() && hasControllingPassenger()) {
                 if (isInWater() || getCanFly()) {
                     Vec3 movement = new Vec3(getX(), getY(), getZ()).subtract(xo, yo, zo);
@@ -275,36 +275,36 @@ public class SeaTurtleEntity extends Turtle {
     @Override
     public void positionRider(Entity passenger, MoveFunction function) {
         super.positionRider(passenger, function);
-        if (this.hasPassenger(passenger)) {
+        if (hasPassenger(passenger)) {
             if (passenger instanceof Player p) {
-                if (this.isInWater()) {
+                if (isInWater()) {
                     if (p.zza > 0f) {
-                        this.setXRot(this.lerp(getXRot(), -(passenger.getXRot() * 0.5f), 6f));
-                        this.setYRot(this.lerp(getYRot(), -passenger.getYRot(), 6f));
+                        setXRot(lerp(getXRot(), -(passenger.getXRot() * 0.5f), 6f));
+                        setYRot(lerp(getYRot(), -passenger.getYRot(), 6f));
 //                        this.targetVector = null;
 //                        this.targetVectorHeading = null;
-                        this.swimSpeedCurrent += 0.05f;
-                        if (this.swimSpeedCurrent > 4f) {
-                            this.swimSpeedCurrent = 4f;
+                        swimSpeedCurrent += 0.05f;
+                        if (swimSpeedCurrent > 4f) {
+                            swimSpeedCurrent = 4f;
                         }
                     }
                     if (p.zza < 0f) {
-                        this.swimSpeedCurrent *= 0.89f;
-                        if (this.swimSpeedCurrent < 0.1f) {
-                            this.swimSpeedCurrent = 0.1f;
+                        swimSpeedCurrent *= 0.89f;
+                        if (swimSpeedCurrent < 0.1f) {
+                            swimSpeedCurrent = 0.1f;
                         }
                     }
                     if (p.zza == 0f) {
-                        if (this.swimSpeedCurrent > 1f) {
-                            this.swimSpeedCurrent *= 0.94f;
-                            if (this.swimSpeedCurrent <= 1f) {
-                                this.swimSpeedCurrent = 1f;
+                        if (swimSpeedCurrent > 1f) {
+                            swimSpeedCurrent *= 0.94f;
+                            if (swimSpeedCurrent <= 1f) {
+                                swimSpeedCurrent = 1f;
                             }
                         }
-                        if (this.swimSpeedCurrent < 1f) {
-                            this.swimSpeedCurrent *= 1.06f;
-                            if (this.swimSpeedCurrent >= 1f) {
-                                this.swimSpeedCurrent = 1f;
+                        if (swimSpeedCurrent < 1f) {
+                            swimSpeedCurrent *= 1.06f;
+                            if (swimSpeedCurrent >= 1f) {
+                                swimSpeedCurrent = 1f;
                             }
                         }
                         //this.swimSpeedCurrent = 1f;
@@ -313,8 +313,8 @@ public class SeaTurtleEntity extends Turtle {
                 }
                 //p.rotationYaw = this.rotationYaw;
             } else if (passenger instanceof Mob mobentity) {
-                this.yBodyRot = mobentity.yBodyRot;
-                this.yHeadRotO = mobentity.yHeadRotO;
+                yBodyRot = mobentity.yBodyRot;
+                yHeadRotO = mobentity.yHeadRotO;
             }
         }
     }
@@ -406,25 +406,25 @@ public class SeaTurtleEntity extends Turtle {
         @Override
         public void tick() {
             super.tick();
-            BlockPos blockpos = this.turtle.blockPosition();
-            if (!this.turtle.isInWater() && this.isReachedTarget()) {
-                if (!this.turtle.isLayingEgg()) {
-                    this.turtle.setDigging(true);
-                } else if (this.turtle.digCounter > 200) {
-                    Level world = this.turtle.level();
+            BlockPos blockpos = turtle.blockPosition();
+            if (!turtle.isInWater() && isReachedTarget()) {
+                if (!turtle.isLayingEgg()) {
+                    turtle.setDigging(true);
+                } else if (turtle.digCounter > 200) {
+                    Level world = turtle.level();
                     world.playSound(null, blockpos, SoundEvents.TURTLE_LAY_EGG, SoundSource.BLOCKS, 0.3F, 0.9F + world.random.nextFloat() * 0.2F);
                     //world.setBlockState(this.destinationBlock.up(), Blocks.TURTLE_EGG.defaultBlockState().with(TurtleEggBlock.EGGS, Integer.valueOf(this.turtle.rand.nextInt(4) + 1)), 3);
                     SeaTurtleEggEntity egg = TropicraftEntities.SEA_TURTLE_EGG.get().create(world);
                     BlockPos spawnPos = blockPos.above();
                     egg.setPos(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
                     world.addFreshEntity(egg);
-                    this.turtle.setHasEgg(false);
-                    this.turtle.setDigging(false);
-                    this.turtle.setInLoveTime(600);
+                    turtle.setHasEgg(false);
+                    turtle.setDigging(false);
+                    turtle.setInLoveTime(600);
                 }
 
-                if (this.turtle.isLayingEgg()) {
-                    this.turtle.digCounter++;
+                if (turtle.isLayingEgg()) {
+                    turtle.digCounter++;
                 }
             }
         }
@@ -453,7 +453,7 @@ public class SeaTurtleEntity extends Turtle {
          */
         @Override
         public boolean canUse() {
-            return super.canUse() && !this.turtle.hasEgg();
+            return super.canUse() && !turtle.hasEgg();
         }
 
         /**
@@ -461,29 +461,29 @@ public class SeaTurtleEntity extends Turtle {
          */
         @Override
         protected void breed() {
-            ServerPlayer serverplayerentity = this.animal.getLoveCause();
-            if (serverplayerentity == null && this.partner.getLoveCause() != null) {
-                serverplayerentity = this.partner.getLoveCause();
+            ServerPlayer serverplayerentity = animal.getLoveCause();
+            if (serverplayerentity == null && partner.getLoveCause() != null) {
+                serverplayerentity = partner.getLoveCause();
             }
 
             if (serverplayerentity != null) {
                 serverplayerentity.awardStat(Stats.ANIMALS_BRED);
-                CriteriaTriggers.BRED_ANIMALS.trigger(serverplayerentity, this.animal, this.partner, null);
+                CriteriaTriggers.BRED_ANIMALS.trigger(serverplayerentity, animal, partner, null);
             }
 
-            this.turtle.setHasEgg(true);
-            this.animal.resetLove();
-            this.partner.resetLove();
-            RandomSource random = this.animal.getRandom();
-            if (this.level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
-                this.level.addFreshEntity(new ExperienceOrb(this.level, this.animal.getX(), this.animal.getY(), this.animal.getZ(), random.nextInt(7) + 1));
+            turtle.setHasEgg(true);
+            animal.resetLove();
+            partner.resetLove();
+            RandomSource random = animal.getRandom();
+            if (level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
+                level.addFreshEntity(new ExperienceOrb(level, animal.getX(), animal.getY(), animal.getZ(), random.nextInt(7) + 1));
             }
         }
     }
 
     private void setDigging(boolean digging) {
-        this.digCounter = digging ? 1 : 0;
-        this.entityData.set(IS_DIGGING, digging);
+        digCounter = digging ? 1 : 0;
+        entityData.set(IS_DIGGING, digging);
     }
 
     @Override
@@ -492,7 +492,7 @@ public class SeaTurtleEntity extends Turtle {
     }
 
     private void setHasEgg(boolean hasEgg) {
-        this.entityData.set(HAS_EGG, hasEgg);
+        entityData.set(HAS_EGG, hasEgg);
     }
 
     @Override

@@ -54,7 +54,7 @@ public final class MangroveRootsBlock extends Block implements SimpleWaterlogged
 
     public MangroveRootsBlock(Block.Properties properties) {
         super(properties);
-        this.registerDefaultState(this.getStateDefinition().any()
+        registerDefaultState(getStateDefinition().any()
                 .setValue(TALL, true)
                 .setValue(GROUNDED, false)
                 .setValue(NORTH, Connection.NONE)
@@ -118,7 +118,7 @@ public final class MangroveRootsBlock extends Block implements SimpleWaterlogged
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.getConnectedState(context.getLevel(), context.getClickedPos());
+        return getConnectedState(context.getLevel(), context.getClickedPos());
     }
 
     @Override
@@ -127,21 +127,21 @@ public final class MangroveRootsBlock extends Block implements SimpleWaterlogged
             world.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
         }
 
-        return this.getConnectedState(world, currentPos);
+        return getConnectedState(world, currentPos);
     }
 
     private BlockState getConnectedState(LevelReader world, BlockPos pos) {
-        BlockState state = this.defaultBlockState()
+        BlockState state = defaultBlockState()
                 .setValue(WATERLOGGED, world.getFluidState(pos).is(FluidTags.WATER))
-                .setValue(GROUNDED, this.isGrounded(world, pos));
+                .setValue(GROUNDED, isGrounded(world, pos));
 
         state = state
-                .setValue(NORTH, this.getConnectionFor(world, pos, Direction.NORTH))
-                .setValue(EAST, this.getConnectionFor(world, pos, Direction.EAST))
-                .setValue(SOUTH, this.getConnectionFor(world, pos, Direction.SOUTH))
-                .setValue(WEST, this.getConnectionFor(world, pos, Direction.WEST));
+                .setValue(NORTH, getConnectionFor(world, pos, Direction.NORTH))
+                .setValue(EAST, getConnectionFor(world, pos, Direction.EAST))
+                .setValue(SOUTH, getConnectionFor(world, pos, Direction.SOUTH))
+                .setValue(WEST, getConnectionFor(world, pos, Direction.WEST));
 
-        if (!this.isTall(state) && !this.canConnectUp(world, pos.above())) {
+        if (!isTall(state) && !canConnectUp(world, pos.above())) {
             state = state.setValue(TALL, false)
                     .setValue(NORTH, state.getValue(NORTH).shorten())
                     .setValue(EAST, state.getValue(EAST).shorten())
@@ -156,14 +156,14 @@ public final class MangroveRootsBlock extends Block implements SimpleWaterlogged
         BlockPos adjacentPos = pos.relative(direction);
         BlockState adjacentState = world.getBlockState(adjacentPos);
 
-        if (this.canConnectTo(adjacentState, world, adjacentPos, direction)) {
+        if (canConnectTo(adjacentState, world, adjacentPos, direction)) {
             // don't add a connection if the block above us has that connection too
-            if (world.getBlockState(pos.above()).is(this) && this.canConnectTo(world, adjacentPos.above(), direction)) {
+            if (world.getBlockState(pos.above()).is(this) && canConnectTo(world, adjacentPos.above(), direction)) {
                 return Connection.NONE;
             }
 
             if (adjacentState.is(this)) {
-                boolean tall = this.isAdjacentTall(world, adjacentPos, direction.getOpposite());
+                boolean tall = isAdjacentTall(world, adjacentPos, direction.getOpposite());
                 return tall ? Connection.HIGH : Connection.LOW;
             } else {
                 return Connection.HIGH;
@@ -174,12 +174,12 @@ public final class MangroveRootsBlock extends Block implements SimpleWaterlogged
     }
 
     private boolean isAdjacentTall(LevelReader world, BlockPos pos, Direction sourceDirection) {
-        if (this.canConnectUp(world, pos.above())) {
+        if (canConnectUp(world, pos.above())) {
             return true;
         }
 
         for (Direction direction : DIRECTIONS) {
-            if (direction != sourceDirection && this.canConnectTo(world, pos.relative(direction), direction)) {
+            if (direction != sourceDirection && canConnectTo(world, pos.relative(direction), direction)) {
                 return true;
             }
         }
@@ -197,7 +197,7 @@ public final class MangroveRootsBlock extends Block implements SimpleWaterlogged
     }
 
     private boolean canConnectTo(BlockGetter world, BlockPos pos, Direction direction) {
-        return this.canConnectTo(world.getBlockState(pos), world, pos, direction);
+        return canConnectTo(world.getBlockState(pos), world, pos, direction);
     }
 
     // TODO: make method for exceptions
@@ -281,7 +281,7 @@ public final class MangroveRootsBlock extends Block implements SimpleWaterlogged
     @Override
     public void randomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
         if (random.nextInt(PIANGUA_GROW_CHANCE) == 0) {
-            this.tryGrowPianguas(world, pos, random);
+            tryGrowPianguas(world, pos, random);
         }
     }
 
@@ -299,7 +299,7 @@ public final class MangroveRootsBlock extends Block implements SimpleWaterlogged
 
         BlockState growIn = world.getBlockState(growPos);
         if (growIn.is(TropicraftBlocks.MUD.get()) && !world.getBlockState(growPos.above()).canOcclude()) {
-            if (!this.hasNearPianguas(world, growPos)) {
+            if (!hasNearPianguas(world, growPos)) {
                 world.setBlockAndUpdate(growPos, TropicraftBlocks.MUD_WITH_PIANGUAS.get().defaultBlockState());
             }
         }
@@ -336,7 +336,7 @@ public final class MangroveRootsBlock extends Block implements SimpleWaterlogged
 
         @Override
         public String getSerializedName() {
-            return this.key;
+            return key;
         }
 
         public Connection shorten() {

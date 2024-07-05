@@ -19,13 +19,13 @@ public class TropicraftFishBucketItem<T extends AbstractFish> extends MobBucketI
 
     public TropicraftFishBucketItem(EntityType<T> type, Fluid fluid, Properties props) {
         super(type, fluid, SoundEvents.BUCKET_FILL_FISH, props);
-        this.fishType = type;
+        fishType = type;
     }
 
     @Override
     public void checkExtraContent(@Nullable Player player, Level level, ItemStack stack, BlockPos pos) {
         if (!level.isClientSide) {
-            this.placeFish((ServerLevel) level, stack, pos);
+            placeFish((ServerLevel) level, stack, pos);
         }
     }
 

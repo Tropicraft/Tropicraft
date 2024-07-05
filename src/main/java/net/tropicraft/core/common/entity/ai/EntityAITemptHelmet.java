@@ -62,11 +62,11 @@ public class EntityAITemptHelmet extends Goal {
     }
 
     public EntityAITemptHelmet(PathfinderMob temptedEntityIn, double speedIn, boolean scaredByPlayerMovementIn, Set<ItemEntry<? extends Item>> temptItemIn) {
-        this.temptedEntity = temptedEntityIn;
-        this.speed = speedIn;
-        this.temptItem = temptItemIn;
-        this.scaredByPlayerMovement = scaredByPlayerMovementIn;
-        this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+        temptedEntity = temptedEntityIn;
+        speed = speedIn;
+        temptItem = temptItemIn;
+        scaredByPlayerMovement = scaredByPlayerMovementIn;
+        setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
 
         if (!(temptedEntityIn.getNavigation() instanceof GroundPathNavigation)) {
             throw new IllegalArgumentException("Unsupported mob type for TemptGoal");
@@ -83,16 +83,16 @@ public class EntityAITemptHelmet extends Goal {
             return false;
         }
 
-        if (this.delayTemptCounter > 0) {
-            --this.delayTemptCounter;
+        if (delayTemptCounter > 0) {
+            --delayTemptCounter;
             return false;
         } else {
-            this.temptingPlayer = this.temptedEntity.level().getNearestPlayer(this.temptedEntity, 10.0D);
+            temptingPlayer = temptedEntity.level().getNearestPlayer(temptedEntity, 10.0D);
 
-            if (this.temptingPlayer == null) {
+            if (temptingPlayer == null) {
                 return false;
             } else {
-                return isTempting(this.temptingPlayer.getInventory().armor.get(3));
+                return isTempting(temptingPlayer.getInventory().armor.get(3));
                 //return this.isTempting(this.temptingPlayer.getHeldItemMainhand()) || this.isTempting(this.temptingPlayer.getHeldItemOffhand());
             }
         }
@@ -112,26 +112,26 @@ public class EntityAITemptHelmet extends Goal {
      */
     @Override
     public boolean canContinueToUse() {
-        if (this.scaredByPlayerMovement) {
-            if (this.temptedEntity.distanceToSqr(this.temptingPlayer) < 36.0D) {
-                if (this.temptingPlayer.distanceToSqr(this.targetX, this.targetY, this.targetZ) > 0.010000000000000002D) {
+        if (scaredByPlayerMovement) {
+            if (temptedEntity.distanceToSqr(temptingPlayer) < 36.0D) {
+                if (temptingPlayer.distanceToSqr(targetX, targetY, targetZ) > 0.010000000000000002D) {
                     return false;
                 }
 
-                if (Math.abs((double) this.temptingPlayer.getXRot() - this.pitch) > 5.0D || Math.abs((double) this.temptingPlayer.getYRot() - this.yaw) > 5.0D) {
+                if (Math.abs((double) temptingPlayer.getXRot() - pitch) > 5.0D || Math.abs((double) temptingPlayer.getYRot() - yaw) > 5.0D) {
                     return false;
                 }
             } else {
-                this.targetX = this.temptingPlayer.getX();
-                this.targetY = this.temptingPlayer.getY();
-                this.targetZ = this.temptingPlayer.getZ();
+                targetX = temptingPlayer.getX();
+                targetY = temptingPlayer.getY();
+                targetZ = temptingPlayer.getZ();
             }
 
             pitch = temptingPlayer.getXRot();
             yaw = temptingPlayer.getYRot();
         }
 
-        return this.canUse();
+        return canUse();
     }
 
     /**
@@ -139,10 +139,10 @@ public class EntityAITemptHelmet extends Goal {
      */
     @Override
     public void start() {
-        this.targetX = this.temptingPlayer.getX();
-        this.targetY = this.temptingPlayer.getY();
-        this.targetZ = this.temptingPlayer.getZ();
-        this.isRunning = true;
+        targetX = temptingPlayer.getX();
+        targetY = temptingPlayer.getY();
+        targetZ = temptingPlayer.getZ();
+        isRunning = true;
     }
 
     /**
@@ -150,10 +150,10 @@ public class EntityAITemptHelmet extends Goal {
      */
     @Override
     public void stop() {
-        this.temptingPlayer = null;
-        this.temptedEntity.getNavigation().stop();
-        this.delayTemptCounter = 100;
-        this.isRunning = false;
+        temptingPlayer = null;
+        temptedEntity.getNavigation().stop();
+        delayTemptCounter = 100;
+        isRunning = false;
     }
 
     /**
@@ -161,12 +161,12 @@ public class EntityAITemptHelmet extends Goal {
      */
     @Override
     public void tick() {
-        this.temptedEntity.getLookControl().setLookAt(this.temptingPlayer, (float) (this.temptedEntity.getMaxHeadYRot() + 20), (float) this.temptedEntity.getMaxHeadXRot());
+        temptedEntity.getLookControl().setLookAt(temptingPlayer, (float) (temptedEntity.getMaxHeadYRot() + 20), (float) temptedEntity.getMaxHeadXRot());
 
-        if (this.temptedEntity.distanceToSqr(this.temptingPlayer) < 6.25D) {
-            this.temptedEntity.getNavigation().stop();
+        if (temptedEntity.distanceToSqr(temptingPlayer) < 6.25D) {
+            temptedEntity.getNavigation().stop();
         } else {
-            this.temptedEntity.getNavigation().moveTo(this.temptingPlayer, this.speed);
+            temptedEntity.getNavigation().moveTo(temptingPlayer, speed);
         }
     }
 
@@ -174,7 +174,7 @@ public class EntityAITemptHelmet extends Goal {
      * @see #isRunning
      */
     public boolean isRunning() {
-        return this.isRunning;
+        return isRunning;
     }
 }
 

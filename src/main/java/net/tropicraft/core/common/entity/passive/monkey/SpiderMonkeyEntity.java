@@ -45,14 +45,14 @@ public class SpiderMonkeyEntity extends Animal {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new PanicGoal(this, 2.0));
-        this.goalSelector.addGoal(2, new BreedGoal(this, 1.0));
-        this.goalSelector.addGoal(3, new TemptGoal(this, 1.25, BREEDING_ITEMS.get(), false));
-        this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25));
-        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0));
-        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
-        this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+        goalSelector.addGoal(0, new FloatGoal(this));
+        goalSelector.addGoal(1, new PanicGoal(this, 2.0));
+        goalSelector.addGoal(2, new BreedGoal(this, 1.0));
+        goalSelector.addGoal(3, new TemptGoal(this, 1.25, BREEDING_ITEMS.get(), false));
+        goalSelector.addGoal(4, new FollowParentGoal(this, 1.25));
+        goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0));
+        goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        goalSelector.addGoal(7, new RandomLookAroundGoal(this));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -71,61 +71,61 @@ public class SpiderMonkeyEntity extends Animal {
     public void tick() {
         super.tick();
 
-        if (!this.level().isClientSide) {
-            this.tickStandingState();
+        if (!level().isClientSide) {
+            tickStandingState();
         } else {
-            this.tickStandingAnimation();
+            tickStandingAnimation();
         }
     }
 
     private void tickStandingState() {
-        if (this.getLastHurtByMob() != null) {
-            this.setStanding(false);
+        if (getLastHurtByMob() != null) {
+            setStanding(false);
             return;
         }
 
-        if (this.level().random.nextInt(200) == 0) {
-            boolean standing = this.level().random.nextInt(3) == 0;
-            this.setStanding(standing);
+        if (level().random.nextInt(200) == 0) {
+            boolean standing = level().random.nextInt(3) == 0;
+            setStanding(standing);
         }
     }
 
     private void tickStandingAnimation() {
-        if (this.isStanding()) {
-            if (this.standAnimation < STAND_ANIMATION_LENGTH) {
-                this.standAnimation++;
+        if (isStanding()) {
+            if (standAnimation < STAND_ANIMATION_LENGTH) {
+                standAnimation++;
             }
         } else {
-            if (this.standAnimation > 0) {
-                this.standAnimation--;
+            if (standAnimation > 0) {
+                standAnimation--;
             }
         }
     }
 
     public void setStanding(boolean standing) {
-        this.entityData.set(STANDING, standing);
-        this.standAnimation = standing ? STAND_ANIMATION_LENGTH : 0;
+        entityData.set(STANDING, standing);
+        standAnimation = standing ? STAND_ANIMATION_LENGTH : 0;
     }
 
     public boolean isStanding() {
-        return this.entityData.get(STANDING);
+        return entityData.get(STANDING);
     }
 
     public float getStandAnimation(float partialTicks) {
-        float animation = (this.standAnimation + (this.isStanding() ? partialTicks : -partialTicks)) / STAND_ANIMATION_LENGTH;
+        float animation = (standAnimation + (isStanding() ? partialTicks : -partialTicks)) / STAND_ANIMATION_LENGTH;
         return Easings.inOutSine(Mth.clamp(animation, 0.0F, 1.0F));
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag nbt) {
         super.readAdditionalSaveData(nbt);
-        this.setStanding(nbt.getBoolean("standing"));
+        setStanding(nbt.getBoolean("standing"));
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag nbt) {
         super.addAdditionalSaveData(nbt);
-        nbt.putBoolean("standing", this.isStanding());
+        nbt.putBoolean("standing", isStanding());
     }
 
     @Override

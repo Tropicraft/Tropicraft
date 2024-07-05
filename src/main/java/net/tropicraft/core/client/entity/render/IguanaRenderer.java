@@ -16,7 +16,7 @@ public class IguanaRenderer extends MobRenderer<IguanaEntity, IguanaModel> {
 
     public IguanaRenderer(EntityRendererProvider.Context context) {
         super(context, new IguanaModel(context.bakeLayer(TropicraftRenderLayers.IGUANA_LAYER)), 0.5F);
-        this.shadowStrength = 0.5f;
+        shadowStrength = 0.5f;
     }
 
     @Override

@@ -25,12 +25,12 @@ public final class CitrusFoliagePlacer extends FoliagePlacer {
 
     @Override
     protected void createFoliage(LevelSimulatedReader level, FoliageSetter setter, RandomSource random, TreeConfiguration config, int p_230372_4_, FoliageAttachment node, int p_230372_6_, int radius, int offset) {
-        this.placeLeavesRow(level, setter, random, config, node.pos(), 1, 1, node.doubleTrunk());
-        this.placeLeavesRow(level, setter, random, config, node.pos(), 2, 0, node.doubleTrunk());
+        placeLeavesRow(level, setter, random, config, node.pos(), 1, 1, node.doubleTrunk());
+        placeLeavesRow(level, setter, random, config, node.pos(), 2, 0, node.doubleTrunk());
 
         if (node.radiusOffset() == 1) {
             // Center leaf cluster, add another layer at the bottom
-            this.placeLeavesRow(level, setter, random, config, node.pos(), 3, -1, node.doubleTrunk());
+            placeLeavesRow(level, setter, random, config, node.pos(), 3, -1, node.doubleTrunk());
         }
     }
 

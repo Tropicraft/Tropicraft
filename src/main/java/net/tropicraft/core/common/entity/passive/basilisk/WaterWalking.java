@@ -58,7 +58,7 @@ public final class WaterWalking {
         CollisionIterator(BlockGetter world, AABB box) {
             this.world = world;
             this.box = box;
-            this.iterator = new Cursor3D(
+            iterator = new Cursor3D(
                     Mth.floor(box.minX), Mth.floor(box.minY), Mth.floor(box.minZ),
                     Mth.floor(box.maxX), Mth.floor(box.maxY), Mth.floor(box.maxZ)
             );
@@ -76,26 +76,26 @@ public final class WaterWalking {
                 int z = iterator.nextZ();
 
                 if (canWalkOn(world.getFluidState(mutablePos.set(x, y, z)))) {
-                    if (this.box.intersects(x, y, z, x + 1.0, y + HEIGHT, z + 1.0)) {
+                    if (box.intersects(x, y, z, x + 1.0, y + HEIGHT, z + 1.0)) {
                         return COLLIDER.move(x, y, z);
                     }
                 }
             }
 
-            return this.endOfData();
+            return endOfData();
         }
     }
 
     public static final class Navigator extends GroundPathNavigation {
         public Navigator(Mob entity, Level world) {
             super(entity, world);
-            this.setCanFloat(true);
+            setCanFloat(true);
         }
 
         @Override
         protected PathFinder createPathFinder(int depth) {
-            this.nodeEvaluator = new WalkNodeEvaluator();
-            return new PathFinder(this.nodeEvaluator, depth);
+            nodeEvaluator = new WalkNodeEvaluator();
+            return new PathFinder(nodeEvaluator, depth);
         }
 
         @Override
@@ -105,7 +105,7 @@ public final class WaterWalking {
 
         @Override
         public boolean isStableDestination(BlockPos pos) {
-            return canWalkOn(this.level.getFluidState(pos)) || super.isStableDestination(pos);
+            return canWalkOn(level.getFluidState(pos)) || super.isStableDestination(pos);
         }
     }
 }

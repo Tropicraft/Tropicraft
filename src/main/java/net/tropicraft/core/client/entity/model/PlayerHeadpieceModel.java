@@ -71,7 +71,7 @@ public class PlayerHeadpieceModel extends HumanoidModel<LivingEntity> {
 
         // renderMask handles the rendering of the mask model, but it doesn't set the texture.
         // Setting the texture is handled in the item class.
-        renderer.renderMask(stack, bufferIn, this.textureIndex, packedLightIn, packedOverlayIn);
+        renderer.renderMask(stack, bufferIn, textureIndex, packedLightIn, packedOverlayIn);
 
         stack.popPose();
     }

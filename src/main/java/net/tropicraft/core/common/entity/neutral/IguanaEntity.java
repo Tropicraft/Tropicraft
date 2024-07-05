@@ -108,23 +108,23 @@ public class IguanaEntity extends TropicraftCreatureEntity {
 
     @Override
     protected void customServerAiStep() {
-        AttributeInstance attribute = this.getAttribute(Attributes.MOVEMENT_SPEED);
+        AttributeInstance attribute = getAttribute(Attributes.MOVEMENT_SPEED);
 
-        if (this.isAngry()) {
-            if (!this.isBaby() && !attribute.hasModifier(ATTACK_SPEED_BOOST_MODIFIER.id())) {
+        if (isAngry()) {
+            if (!isBaby() && !attribute.hasModifier(ATTACK_SPEED_BOOST_MODIFIER.id())) {
                 attribute.addTransientModifier(ATTACK_SPEED_BOOST_MODIFIER);
             }
 
-            --this.angerLevel;
+            --angerLevel;
         } else if (attribute.hasModifier(ATTACK_SPEED_BOOST_MODIFIER.id())) {
             attribute.removeModifier(ATTACK_SPEED_BOOST_MODIFIER);
         }
 
-        if (this.angerLevel > 0 && this.angerTargetUUID != null && this.getLastHurtByMob() == null) {
-            Player entityplayer = this.level().getPlayerByUUID(this.angerTargetUUID);
-            this.setLastHurtByMob(entityplayer);
-            this.lastHurtByPlayer = entityplayer;
-            this.lastHurtByPlayerTime = this.getLastHurtByMobTimestamp();
+        if (angerLevel > 0 && angerTargetUUID != null && getLastHurtByMob() == null) {
+            Player entityplayer = level().getPlayerByUUID(angerTargetUUID);
+            setLastHurtByMob(entityplayer);
+            lastHurtByPlayer = entityplayer;
+            lastHurtByPlayerTime = getLastHurtByMobTimestamp();
         }
 
         super.customServerAiStep();
@@ -154,7 +154,7 @@ public class IguanaEntity extends TropicraftCreatureEntity {
     }
 
     public boolean isAngry() {
-        return this.angerLevel > 0;
+        return angerLevel > 0;
     }
 
     @Override
@@ -179,14 +179,14 @@ public class IguanaEntity extends TropicraftCreatureEntity {
 
         @Override
         public boolean canUse() {
-            return ((IguanaEntity) this.mob).isAngry() && super.canUse();
+            return ((IguanaEntity) mob).isAngry() && super.canUse();
         }
     }
 
     static class HurtByAggressorGoal extends HurtByTargetGoal {
         public HurtByAggressorGoal(IguanaEntity iguana) {
             super(iguana);
-            this.setAlertOthers(IguanaEntity.class);
+            setAlertOthers(IguanaEntity.class);
         }
 
         @Override

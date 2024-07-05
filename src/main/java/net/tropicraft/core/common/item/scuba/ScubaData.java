@@ -138,7 +138,7 @@ public class ScubaData {
     }
 
     void tick(Player player) {
-        this.diveTime++;
+        diveTime++;
         if (player.level().getGameTime() % 100 == 0) {
             dirty = true;
         }
@@ -151,7 +151,7 @@ public class ScubaData {
 
     void updateMaxDepth(double depth) {
         if (depth > maxDepth) {
-            this.maxDepth = depth;
+            maxDepth = depth;
         }
     }
 
@@ -166,7 +166,7 @@ public class ScubaData {
     }
 
     public void copyFrom(ScubaData data) {
-        this.diveTime = data.getDiveTime();
-        this.maxDepth = data.getMaxDepth();
+        diveTime = data.getDiveTime();
+        maxDepth = data.getMaxDepth();
     }
 }

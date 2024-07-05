@@ -31,19 +31,19 @@ public class KoaModel extends HumanoidModel<EntityKoaBase> {
 
     public KoaModel(ModelPart root) {
         super(root);
-        headband = this.head.getChild("headband");
-        armbandR = this.rightArm.getChild("armbandR");
-        armbandL = this.leftArm.getChild("armbandL");
-        leaf1 = this.headband.getChild("leaf1");
-        leaf3 = this.headband.getChild("leaf3");
-        leaf2 = this.headband.getChild("leaf2");
-        leaf4 = this.headband.getChild("leaf4");
-        leaf5 = this.headband.getChild("leaf5");
-        leaf6 = this.headband.getChild("leaf6");
-        leaf7 = this.headband.getChild("leaf7");
-        leaf8 = this.headband.getChild("leaf8");
-        leaf9 = this.headband.getChild("leaf9");
-        leaf10 = this.headband.getChild("leaf10");
+        headband = head.getChild("headband");
+        armbandR = rightArm.getChild("armbandR");
+        armbandL = leftArm.getChild("armbandL");
+        leaf1 = headband.getChild("leaf1");
+        leaf3 = headband.getChild("leaf3");
+        leaf2 = headband.getChild("leaf2");
+        leaf4 = headband.getChild("leaf4");
+        leaf5 = headband.getChild("leaf5");
+        leaf6 = headband.getChild("leaf6");
+        leaf7 = headband.getChild("leaf7");
+        leaf8 = headband.getChild("leaf8");
+        leaf9 = headband.getChild("leaf9");
+        leaf10 = headband.getChild("leaf10");
 
         hat.visible = false;
     }

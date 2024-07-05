@@ -24,9 +24,9 @@ public final class MangroveFoliagePlacer extends FoliagePlacer {
 
     @Override
     protected void createFoliage(LevelSimulatedReader level, FoliageSetter setter, RandomSource random, TreeConfiguration config, int p_225617_, FoliageAttachment node, int p_225619_, int p_225620_, int p_225621_) {
-        this.placeLeavesRow(level, setter, random, config, node.pos(), node.radiusOffset(), 1, node.doubleTrunk());
-        this.placeLeavesRow(level, setter, random, config, node.pos(), node.radiusOffset() + 1, 0, node.doubleTrunk());
-        this.placeLeavesRow(level, setter, random, config, node.pos(), node.radiusOffset(), -1, node.doubleTrunk());
+        placeLeavesRow(level, setter, random, config, node.pos(), node.radiusOffset(), 1, node.doubleTrunk());
+        placeLeavesRow(level, setter, random, config, node.pos(), node.radiusOffset() + 1, 0, node.doubleTrunk());
+        placeLeavesRow(level, setter, random, config, node.pos(), node.radiusOffset(), -1, node.doubleTrunk());
     }
 
     @Override

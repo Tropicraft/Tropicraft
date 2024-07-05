@@ -40,7 +40,7 @@ public class SpearItem extends TridentItem {
     @Override
     public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft) {
         if (entity instanceof Player player) {
-            int i = this.getUseDuration(stack, entity) - timeLeft;
+            int i = getUseDuration(stack, entity) - timeLeft;
             if (i >= 10) {
                 if (!level.isClientSide) {
                     stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(entity.getUsedItemHand()));
@@ -73,11 +73,11 @@ public class SpearItem extends TridentItem {
 
     @Override
     public int getEnchantmentValue(ItemStack stack) {
-        return this.tier.getEnchantmentValue();
+        return tier.getEnchantmentValue();
     }
 
     @Override
     public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair) {
-        return this.tier.getRepairIngredient().test(repair) || super.isValidRepairItem(toRepair, repair);
+        return tier.getRepairIngredient().test(repair) || super.isValidRepairItem(toRepair, repair);
     }
 }

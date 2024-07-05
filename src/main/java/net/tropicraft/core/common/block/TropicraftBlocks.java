@@ -1396,7 +1396,7 @@ public class TropicraftBlocks {
                             return true;
                         }
                         BlockPos ground = pos.below();
-                        return this.mayPlaceOn(level.getBlockState(ground), level, ground);
+                        return mayPlaceOn(level.getBlockState(ground), level, ground);
                     }
 
                     @Override

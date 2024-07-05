@@ -144,9 +144,9 @@ public class TropiSpiderEntity extends Spider {
                         setTarget(null);
                     }
                     // issues much?
-                    setTarget(this.mother);
+                    setTarget(mother);
                 }
-                if (random.nextInt(SPIDER_EGG_CHANCE) == 0 && this.ticksSinceLastEgg > SPIDER_MIN_EGG_DELAY && this.tickCount % 80 == 0) {
+                if (random.nextInt(SPIDER_EGG_CHANCE) == 0 && ticksSinceLastEgg > SPIDER_MIN_EGG_DELAY && tickCount % 80 == 0) {
                     buildNest();
                 }
             }

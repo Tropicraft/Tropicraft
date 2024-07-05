@@ -13,22 +13,22 @@ public abstract class TropicraftAgeableModel<T extends Entity> extends EntityMod
 
     @Override
     public void renderToBuffer(PoseStack matrixStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
-        if (!this.young) {
-            this.renderAdult(matrixStack, buffer, packedLight, packedOverlay, color);
+        if (!young) {
+            renderAdult(matrixStack, buffer, packedLight, packedOverlay, color);
         } else {
-            this.renderChild(matrixStack, buffer, packedLight, packedOverlay, color);
+            renderChild(matrixStack, buffer, packedLight, packedOverlay, color);
         }
     }
 
     protected void renderAdult(PoseStack matrixStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
-        this.getBody().render(matrixStack, buffer, packedLight, packedOverlay, color);
-        this.getHead().render(matrixStack, buffer, packedLight, packedOverlay, color);
+        getBody().render(matrixStack, buffer, packedLight, packedOverlay, color);
+        getHead().render(matrixStack, buffer, packedLight, packedOverlay, color);
     }
 
     protected void renderChild(PoseStack matrixStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
         float reciprocalScale = 1.0F - CHILD_SCALE;
 
-        ModelPart head = this.getHead();
+        ModelPart head = getHead();
         matrixStack.pushPose();
         matrixStack.translate(0.0, MODEL_OFFSET * reciprocalScale, 0.0);
         matrixStack.translate(
@@ -42,7 +42,7 @@ public abstract class TropicraftAgeableModel<T extends Entity> extends EntityMod
         matrixStack.pushPose();
         matrixStack.translate(0.0, MODEL_OFFSET * reciprocalScale, 0.0);
         matrixStack.scale(CHILD_SCALE, CHILD_SCALE, CHILD_SCALE);
-        this.getBody().render(matrixStack, buffer, packedLight, packedOverlay, color);
+        getBody().render(matrixStack, buffer, packedLight, packedOverlay, color);
         matrixStack.popPose();
     }
 

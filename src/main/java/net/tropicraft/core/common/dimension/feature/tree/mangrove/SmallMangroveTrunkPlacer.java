@@ -62,7 +62,7 @@ public class SmallMangroveTrunkPlacer extends TrunkPlacer {
 
             if (world.isStateAtPosition(offset, BlockBehaviour.BlockStateBase::isAir)) {
                 if (world.isStateAtPosition(offset.below(), BlockBehaviour.BlockStateBase::isSolid)) {
-                    world.setBlock(offset, this.rootsBlock.defaultBlockState(), 19);
+                    world.setBlock(offset, rootsBlock.defaultBlockState(), 19);
 
                     if (depth < 2 && random.nextInt(depth + 2) == 0) {
                         generateRoots(world, random, offset, depth + 1);

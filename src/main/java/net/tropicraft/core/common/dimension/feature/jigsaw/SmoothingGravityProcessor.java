@@ -31,7 +31,7 @@ public class SmoothingGravityProcessor extends PathStructureProcessor {
         super();
         this.heightmap = heightmap;
         this.offset = offset;
-        this.baseline = new GravityProcessor(heightmap, offset);
+        baseline = new GravityProcessor(heightmap, offset);
     }
 
     @Override

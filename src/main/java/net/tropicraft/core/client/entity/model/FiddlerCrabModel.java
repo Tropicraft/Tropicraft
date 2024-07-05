@@ -211,7 +211,7 @@ public class FiddlerCrabModel<T extends Entity> extends HierarchicalModel<T> {
 
     @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float age, float headYaw, float headPitch) {
-        this.setDefaultRotationAngles();
+        setDefaultRotationAngles();
 
         try (ModelAnimator.Cycle walk = ModelAnimator.cycle(limbSwing * 0.6F, limbSwingAmount)) {
             leg_right_fra.zRot += walk.eval(1.0F, 1.5F, 0.0F, 1.5F);

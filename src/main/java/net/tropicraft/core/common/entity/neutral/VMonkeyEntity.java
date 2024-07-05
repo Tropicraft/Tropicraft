@@ -174,7 +174,7 @@ public class VMonkeyEntity extends TamableAnimal {
         ItemStack stack = player.getItemInHand(hand);
         if (isTame()) {
             if (isOwnedBy(player) && !level().isClientSide) {
-                this.setOrderedToSit(!isOrderedToSit());
+                setOrderedToSit(!isOrderedToSit());
                 jumping = false;
                 navigation.stop();
                 setTarget(null);
@@ -190,7 +190,7 @@ public class VMonkeyEntity extends TamableAnimal {
                     setTame(true, true);
                     navigation.stop();
                     setTarget(null);
-                    this.setOrderedToSit(true);
+                    setOrderedToSit(true);
                     setHealth(20.0F);
                     setOwnerUUID(player.getUUID());
                     level().broadcastEntityEvent(this, (byte) 7);
@@ -229,7 +229,7 @@ public class VMonkeyEntity extends TamableAnimal {
             return false;
         } else {
             Entity entity = source.getEntity();
-            this.setOrderedToSit(false);
+            setOrderedToSit(false);
 
             if (entity != null && entity.getType() != EntityType.PLAYER && !(entity instanceof Arrow)) {
                 amount = (amount + 1.0F) / 2.0F;

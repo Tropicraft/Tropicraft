@@ -21,7 +21,7 @@ public class KoaRenderer extends HumanoidMobRenderer<EntityKoaBase, KoaModel> {
 
     public KoaRenderer(EntityRendererProvider.Context context) {
         super(context, new KoaModel(context.bakeLayer(TropicraftRenderLayers.KOA_HUNTER_LAYER)), 0.5F);
-        this.shadowStrength = 0.5f;
+        shadowStrength = 0.5f;
     }
 
     /**

@@ -55,8 +55,8 @@ public class TropiSkellyEntity extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (!this.level().isClientSide && this.level().getDifficulty() == Difficulty.PEACEFUL) {
-            this.remove(RemovalReason.KILLED);
+        if (!level().isClientSide && level().getDifficulty() == Difficulty.PEACEFUL) {
+            remove(RemovalReason.KILLED);
         }
     }
 
@@ -71,7 +71,7 @@ public class TropiSkellyEntity extends Monster {
     @Override
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
-        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(TropicraftItems.BAMBOO_SPEAR.get()));
+        setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(TropicraftItems.BAMBOO_SPEAR.get()));
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
     }
 
@@ -102,6 +102,6 @@ public class TropiSkellyEntity extends Monster {
 
     @Override
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
-        return worldIn.getDifficulty() != Difficulty.PEACEFUL && this.isValidLightLevel() && super.checkSpawnRules(worldIn, spawnReasonIn);
+        return worldIn.getDifficulty() != Difficulty.PEACEFUL && isValidLightLevel() && super.checkSpawnRules(worldIn, spawnReasonIn);
     }
 }

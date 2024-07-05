@@ -157,11 +157,11 @@ public abstract class EchinodermEntity extends WaterAnimal {
      * @return the number of ticks.
      */
     public int getGrowingAge() {
-        return this.entityData.get(GROWING_AGE);
+        return entityData.get(GROWING_AGE);
     }
 
     public void setGrowingAge(int age) {
-        this.entityData.set(GROWING_AGE, age);
+        entityData.set(GROWING_AGE, age);
     }
 
     /**

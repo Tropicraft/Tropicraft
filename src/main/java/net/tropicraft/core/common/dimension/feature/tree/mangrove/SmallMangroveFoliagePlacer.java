@@ -26,8 +26,8 @@ public final class SmallMangroveFoliagePlacer extends FoliagePlacer {
 
     @Override
     protected void createFoliage(LevelSimulatedReader world, FoliageSetter setter, RandomSource random, TreeConfiguration config, int maxFreeTreeHeight, FoliageAttachment attachment, int foliageHeight, int foliageRadius, int offset) {
-        this.placeLeavesRow(world, setter, random, config, attachment.pos(), foliageRadius, 0, attachment.doubleTrunk());
-        this.placeLeavesRow(world, setter, random, config, attachment.pos(), foliageRadius, 1, attachment.doubleTrunk());
+        placeLeavesRow(world, setter, random, config, attachment.pos(), foliageRadius, 0, attachment.doubleTrunk());
+        placeLeavesRow(world, setter, random, config, attachment.pos(), foliageRadius, 1, attachment.doubleTrunk());
     }
 
     @Override

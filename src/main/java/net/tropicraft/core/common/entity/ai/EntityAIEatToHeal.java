@@ -31,8 +31,8 @@ public class EntityAIEatToHeal extends Goal {
     private final float missingHealthToHeal = 5;
 
     public EntityAIEatToHeal(EntityKoaBase entityObjIn) {
-        this.entityObj = entityObjIn;
-        this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+        entityObj = entityObjIn;
+        setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
 
     /**
@@ -68,7 +68,7 @@ public class EntityAIEatToHeal extends Goal {
 
         if (hasFoodAtHome()) {
             boolean isClose = false;
-            BlockPos blockposGoal = this.entityObj.getRestrictCenter();
+            BlockPos blockposGoal = entityObj.getRestrictCenter();
 
             if (blockposGoal.equals(BlockPos.ZERO)) {
                 stop();
@@ -85,7 +85,7 @@ public class EntityAIEatToHeal extends Goal {
             }
 
             if (!isClose) {
-                if ((this.entityObj.getNavigation().isDone() || walkingTimeout <= 0) && repathPentalty <= 0) {
+                if ((entityObj.getNavigation().isDone() || walkingTimeout <= 0) && repathPentalty <= 0) {
 
                     int i = blockposGoal.getX();
                     int j = blockposGoal.getY();
@@ -93,14 +93,14 @@ public class EntityAIEatToHeal extends Goal {
 
                     boolean success = false;
 
-                    if (this.entityObj.distanceToSqr(Vec3.atCenterOf(blockposGoal)) > 256.0D) {
-                        Vec3 Vector3d = DefaultRandomPos.getPosTowards(this.entityObj, 14, 3, new Vec3((double) i + 0.5D, j, (double) k + 0.5D), (float) Math.PI / 2F);
+                    if (entityObj.distanceToSqr(Vec3.atCenterOf(blockposGoal)) > 256.0D) {
+                        Vec3 Vector3d = DefaultRandomPos.getPosTowards(entityObj, 14, 3, new Vec3((double) i + 0.5D, j, (double) k + 0.5D), (float) Math.PI / 2F);
 
                         if (Vector3d != null) {
-                            success = this.entityObj.getNavigation().moveTo(Vector3d.x, Vector3d.y, Vector3d.z, 1.0D);
+                            success = entityObj.getNavigation().moveTo(Vector3d.x, Vector3d.y, Vector3d.z, 1.0D);
                         }
                     } else {
-                        success = this.entityObj.getNavigation().moveTo((double) i + 0.5D, (double) j, (double) k + 0.5D, 1.0D);
+                        success = entityObj.getNavigation().moveTo((double) i + 0.5D, (double) j, (double) k + 0.5D, 1.0D);
                     }
 
                     if (!success) {
@@ -135,7 +135,7 @@ public class EntityAIEatToHeal extends Goal {
         super.start();
         //this.insidePosX = -1;
         //reset any previous path so tick can start with a fresh path
-        this.entityObj.getNavigation().stop();
+        entityObj.getNavigation().stop();
     }
 
     /**
@@ -153,11 +153,11 @@ public class EntityAIEatToHeal extends Goal {
 
     public boolean isTooClose() {
         BlockPos blockposGoal = null;
-        if (this.entityObj.posLastFireplaceFound != null) {
+        if (entityObj.posLastFireplaceFound != null) {
             //path to base of fire
-            blockposGoal = this.entityObj.posLastFireplaceFound.offset(0, -1, 0);
+            blockposGoal = entityObj.posLastFireplaceFound.offset(0, -1, 0);
         } else {
-            blockposGoal = this.entityObj.getRestrictCenter();
+            blockposGoal = entityObj.getRestrictCenter();
         }
 
         if (blockposGoal.equals(BlockPos.ZERO)) {
@@ -180,7 +180,7 @@ public class EntityAIEatToHeal extends Goal {
     }
 
     public boolean hasFoodAtHome() {
-        BlockPos blockposGoal = this.entityObj.getRestrictCenter();
+        BlockPos blockposGoal = entityObj.getRestrictCenter();
         if (!blockposGoal.equals(BlockPos.ZERO)) {
             BlockEntity tile = entityObj.level().getBlockEntity(blockposGoal);
             if (tile instanceof ChestBlockEntity) {
@@ -202,7 +202,7 @@ public class EntityAIEatToHeal extends Goal {
     }
 
     public ItemStack consumeOneStackSizeOfFoodAtHome() {
-        BlockPos blockposGoal = this.entityObj.getRestrictCenter();
+        BlockPos blockposGoal = entityObj.getRestrictCenter();
         if (!blockposGoal.equals(BlockPos.ZERO)) {
             BlockEntity tile = entityObj.level().getBlockEntity(blockposGoal);
             if (tile instanceof ChestBlockEntity) {

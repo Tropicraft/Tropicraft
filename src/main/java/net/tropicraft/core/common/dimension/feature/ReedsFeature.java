@@ -48,27 +48,27 @@ public final class ReedsFeature extends Feature<NoneFeatureConfiguration> {
             int y = world.getHeight(Heightmap.Types.OCEAN_FLOOR, x, z);
 
             bottomPos.set(x, y, z);
-            generated |= this.generateOne(world, bottomPos, random, mutablePos);
+            generated |= generateOne(world, bottomPos, random, mutablePos);
         }
 
         return generated;
     }
 
     private boolean generateOne(WorldGenLevel world, BlockPos pos, RandomSource random, BlockPos.MutableBlockPos mutablePos) {
-        if (!REEDS.canSurvive(world, pos) || !this.canReplace(world.getBlockState(pos))) {
+        if (!REEDS.canSurvive(world, pos) || !canReplace(world.getBlockState(pos))) {
             return false;
         }
 
-        int waterDepth = this.getWaterDepthAt(world, pos, mutablePos);
+        int waterDepth = getWaterDepthAt(world, pos, mutablePos);
         int height = waterDepth + random.nextInt(HEIGHT_ABOVE_WATER) + 1;
-        if (!this.validateHeight(world, pos, height, mutablePos)) {
+        if (!validateHeight(world, pos, height, mutablePos)) {
             return false;
         }
 
         if (height == 1) {
-            this.generateShort(world, pos);
+            generateShort(world, pos);
         } else {
-            this.generateTall(world, pos, height, mutablePos);
+            generateTall(world, pos, height, mutablePos);
         }
 
         return true;
@@ -82,7 +82,7 @@ public final class ReedsFeature extends Feature<NoneFeatureConfiguration> {
         mutablePos.set(pos);
         for (int y = height; y >= 0; y--) {
             mutablePos.setY(pos.getY() + height);
-            if (!this.canReplace(world.getBlockState(mutablePos))) {
+            if (!canReplace(world.getBlockState(mutablePos))) {
                 return false;
             }
         }

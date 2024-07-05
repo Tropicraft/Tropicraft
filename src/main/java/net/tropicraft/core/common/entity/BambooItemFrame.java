@@ -25,7 +25,7 @@ public class BambooItemFrame extends ItemFrame implements IEntityWithComplexSpaw
                               Direction direction) {
         super(type, world);
         this.pos = pos;
-        this.setDirection(direction);
+        setDirection(direction);
     }
 
     @Override
@@ -35,13 +35,13 @@ public class BambooItemFrame extends ItemFrame implements IEntityWithComplexSpaw
 
     @Override
     public void writeSpawnData(RegistryFriendlyByteBuf buffer) {
-        buffer.writeBlockPos(this.pos);
+        buffer.writeBlockPos(pos);
         buffer.writeByte(direction.get3DDataValue());
     }
 
     @Override
     public void readSpawnData(RegistryFriendlyByteBuf additionalData) {
-        this.pos = additionalData.readBlockPos();
+        pos = additionalData.readBlockPos();
         setDirection(Direction.from3DDataValue(additionalData.readByte()));
     }
 

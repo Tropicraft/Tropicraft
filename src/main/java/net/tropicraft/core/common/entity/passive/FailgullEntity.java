@@ -47,9 +47,9 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
         super(type, world);
         xpReward = 1;
         moveControl = new FlyingMoveControl(this, 5, true);
-        this.setPathfindingMalus(PathType.WATER, -1.0F);
-        this.setPathfindingMalus(PathType.COCOA, -1.0F);
-        this.setPathfindingMalus(PathType.FENCE, -1.0F);
+        setPathfindingMalus(PathType.WATER, -1.0F);
+        setPathfindingMalus(PathType.COCOA, -1.0F);
+        setPathfindingMalus(PathType.FENCE, -1.0F);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -191,19 +191,19 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
         Vec3 direction = getViewVector(0.0F);
         final float maxAngle = ((float) Math.PI / 2F);
 
-        Vec3 target = HoverRandomPos.getPos(FailgullEntity.this, 40, 3, direction.x, direction.z, maxAngle, 2, 1);
-        Vec3 groundPos = AirAndWaterRandomPos.getPos(FailgullEntity.this, 40, 4, -2, direction.x, direction.z, maxAngle);
+        Vec3 target = HoverRandomPos.getPos(this, 40, 3, direction.x, direction.z, maxAngle, 2, 1);
+        Vec3 groundPos = AirAndWaterRandomPos.getPos(this, 40, 4, -2, direction.x, direction.z, maxAngle);
         return target != null ? BlockPos.containing(target) : groundPos != null ? BlockPos.containing(groundPos) : null;
     }
 
     @Override
     public boolean isFlying() {
-        return !this.onGround();
+        return !onGround();
     }
 
     class FollowLeaderGoal extends Goal {
         FollowLeaderGoal() {
-            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Flag.LOOK));
+            setFlags(EnumSet.of(Goal.Flag.MOVE, Flag.LOOK));
         }
 
         private boolean canFollow() {
@@ -212,7 +212,7 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
 
         @Override
         public boolean canUse() {
-            return canFollow() && getNavigation().isDone() && FailgullEntity.this.random.nextInt(10) == 0;
+            return canFollow() && getNavigation().isDone() && random.nextInt(10) == 0;
         }
 
         @Override

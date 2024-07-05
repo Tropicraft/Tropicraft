@@ -39,7 +39,7 @@ public class EggRenderer extends LivingEntityRenderer<EggEntity, EggModel> {
     public void drawFlatEgg(EggEntity ent, float partialTicks, PoseStack stack, MultiBufferSource bufferIn, int packedLightIn) {
         stack.pushPose();
 
-        stack.mulPose(this.entityRenderDispatcher.cameraOrientation());
+        stack.mulPose(entityRenderDispatcher.cameraOrientation());
         stack.mulPose(Axis.YP.rotationDegrees(180.0F));
 
         stack.scale(0.25f, 0.25f, 0.25f);

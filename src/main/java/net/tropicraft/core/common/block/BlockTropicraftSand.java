@@ -24,8 +24,8 @@ public class BlockTropicraftSand extends FallingBlock {
 
     public BlockTropicraftSand(Properties properties) {
         super(properties);
-        this.registerDefaultState(this.defaultBlockState().setValue(UNDERWATER, false));
-        this.dustColor = this.defaultMapColor().col | 0xFF000000;
+        registerDefaultState(defaultBlockState().setValue(UNDERWATER, false));
+        dustColor = defaultMapColor().col | 0xFF000000;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class BlockTropicraftSand extends FallingBlock {
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         FluidState upState = context.getLevel().getFluidState(context.getClickedPos().above());
-        return this.defaultBlockState().setValue(UNDERWATER, !upState.isEmpty());
+        return defaultBlockState().setValue(UNDERWATER, !upState.isEmpty());
     }
 
     @Override
@@ -58,6 +58,6 @@ public class BlockTropicraftSand extends FallingBlock {
     @Override
     @OnlyIn(Dist.CLIENT)
     public int getDustColor(BlockState state, BlockGetter reader, BlockPos pos) {
-        return this.dustColor;
+        return dustColor;
     }
 }

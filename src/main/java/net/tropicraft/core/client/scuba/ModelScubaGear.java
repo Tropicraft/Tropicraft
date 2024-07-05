@@ -923,9 +923,9 @@ public class ModelScubaGear extends HumanoidModel<LivingEntity> {
 
     @Override
     public void prepareMobModel(LivingEntity entity, float limbSwing, float limbSwingAmount, float partialTick) {
-        showHead = !entity.getItemBySlot(EquipmentSlot.HEAD).isEmpty() && this.slot == EquipmentSlot.HEAD;
-        showChest = !entity.getItemBySlot(EquipmentSlot.CHEST).isEmpty() && this.slot == EquipmentSlot.CHEST;
-        showLegs = !entity.getItemBySlot(EquipmentSlot.FEET).isEmpty() && this.slot == EquipmentSlot.FEET;
+        showHead = !entity.getItemBySlot(EquipmentSlot.HEAD).isEmpty() && slot == EquipmentSlot.HEAD;
+        showChest = !entity.getItemBySlot(EquipmentSlot.CHEST).isEmpty() && slot == EquipmentSlot.CHEST;
+        showLegs = !entity.getItemBySlot(EquipmentSlot.FEET).isEmpty() && slot == EquipmentSlot.FEET;
         isSneaking = entity.getPose() == Pose.CROUCHING;
     }
 
@@ -1074,9 +1074,9 @@ public class ModelScubaGear extends HumanoidModel<LivingEntity> {
 
             //TODO   this.Fin1m3.offsetY = 0f;
 
-            this.Fin2m3.xRot = 0f;
+            Fin2m3.xRot = 0f;
 
-            this.Fin1m3.xRot = 0f;
+            Fin1m3.xRot = 0f;
 
             leftLeg.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 

@@ -43,16 +43,16 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal {
     }
 
     public EntityAIAvoidEntityOnLowHealth(PathfinderMob theEntityIn, Class<T> classToAvoidIn, Predicate<Entity> avoidTargetSelectorIn, float avoidDistanceIn, double farSpeedIn, double nearSpeedIn, float healthToAvoid) {
-        this.canBeSeenSelector = entity -> entity.isAlive() && theEntity.getSensing().hasLineOfSight(entity);
-        this.theEntity = theEntityIn;
-        this.classToAvoid = classToAvoidIn;
-        this.avoidTargetSelector = avoidTargetSelectorIn;
-        this.avoidDistance = avoidDistanceIn;
-        this.farSpeed = farSpeedIn;
-        this.nearSpeed = nearSpeedIn;
-        this.entityPathNavigate = theEntityIn.getNavigation();
+        canBeSeenSelector = entity -> entity.isAlive() && theEntity.getSensing().hasLineOfSight(entity);
+        theEntity = theEntityIn;
+        classToAvoid = classToAvoidIn;
+        avoidTargetSelector = avoidTargetSelectorIn;
+        avoidDistance = avoidDistanceIn;
+        farSpeed = farSpeedIn;
+        nearSpeed = nearSpeedIn;
+        entityPathNavigate = theEntityIn.getNavigation();
         this.healthToAvoid = healthToAvoid;
-        this.setFlags(EnumSet.of(Flag.MOVE));
+        setFlags(EnumSet.of(Flag.MOVE));
     }
 
     /**
@@ -61,26 +61,26 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal {
     @Override
     public boolean canUse() {
 
-        if (this.theEntity.getHealth() > healthToAvoid) return false;
+        if (theEntity.getHealth() > healthToAvoid) return false;
 
-        List<T> list = this.theEntity.level().getEntitiesOfClass(this.classToAvoid,
-                this.theEntity.getBoundingBox().expandTowards((double) this.avoidDistance, 3.0D, (double) this.avoidDistance),
-                EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(this.canBeSeenSelector).and(this.avoidTargetSelector)
+        List<T> list = theEntity.level().getEntitiesOfClass(classToAvoid,
+                theEntity.getBoundingBox().expandTowards((double) avoidDistance, 3.0D, (double) avoidDistance),
+                EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(canBeSeenSelector).and(avoidTargetSelector)
         );
 
         if (list.isEmpty()) {
             return false;
         } else {
-            this.closestLivingEntity = list.get(0);
-            Vec3 Vector3d = DefaultRandomPos.getPosAway(this.theEntity, 16, 7, new Vec3(this.closestLivingEntity.getX(), this.closestLivingEntity.getY(), this.closestLivingEntity.getZ()));
+            closestLivingEntity = list.get(0);
+            Vec3 Vector3d = DefaultRandomPos.getPosAway(theEntity, 16, 7, new Vec3(closestLivingEntity.getX(), closestLivingEntity.getY(), closestLivingEntity.getZ()));
 
             if (Vector3d == null) {
                 return false;
-            } else if (this.closestLivingEntity.distanceToSqr(Vector3d.x, Vector3d.y, Vector3d.z) < this.closestLivingEntity.distanceToSqr(this.theEntity)) {
+            } else if (closestLivingEntity.distanceToSqr(Vector3d.x, Vector3d.y, Vector3d.z) < closestLivingEntity.distanceToSqr(theEntity)) {
                 return false;
             } else {
-                this.entityPathEntity = this.entityPathNavigate.createPath(Vector3d.x, Vector3d.y, Vector3d.z, 0);
-                return this.entityPathEntity != null;
+                entityPathEntity = entityPathNavigate.createPath(Vector3d.x, Vector3d.y, Vector3d.z, 0);
+                return entityPathEntity != null;
             }
         }
     }
@@ -90,7 +90,7 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal {
      */
     @Override
     public boolean canContinueToUse() {
-        return this.entityPathNavigate.isInProgress();
+        return entityPathNavigate.isInProgress();
     }
 
     /**
@@ -98,7 +98,7 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal {
      */
     @Override
     public void start() {
-        this.entityPathNavigate.moveTo(this.entityPathEntity, this.farSpeed);
+        entityPathNavigate.moveTo(entityPathEntity, farSpeed);
     }
 
     /**
@@ -106,7 +106,7 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal {
      */
     @Override
     public void stop() {
-        this.closestLivingEntity = null;
+        closestLivingEntity = null;
     }
 
     /**
@@ -114,10 +114,10 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal {
      */
     @Override
     public void tick() {
-        if (this.theEntity.distanceToSqr(this.closestLivingEntity) < 49.0D) {
-            this.theEntity.getNavigation().setSpeedModifier(this.nearSpeed);
+        if (theEntity.distanceToSqr(closestLivingEntity) < 49.0D) {
+            theEntity.getNavigation().setSpeedModifier(nearSpeed);
         } else {
-            this.theEntity.getNavigation().setSpeedModifier(this.farSpeed);
+            theEntity.getNavigation().setSpeedModifier(farSpeed);
         }
     }
 }

@@ -36,7 +36,7 @@ public final class AirCompressorBlock extends BaseEntityBlock {
 
     public AirCompressorBlock(Block.Properties properties) {
         super(properties);
-        this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH));
+        registerDefaultState(getStateDefinition().any().setValue(FACING, Direction.NORTH));
     }
 
     @Override

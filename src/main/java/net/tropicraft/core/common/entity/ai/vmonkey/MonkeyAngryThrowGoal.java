@@ -29,79 +29,79 @@ public class MonkeyAngryThrowGoal extends Goal {
     private LivingEntity trackedPlayer;
 
     public MonkeyAngryThrowGoal(VMonkeyEntity monkeyEntity) {
-        this.entity = monkeyEntity;
+        entity = monkeyEntity;
         setFlags(EnumSet.of(Flag.LOOK, Flag.MOVE));
-        this.speedModifier = 1.2F;
-        this.stopDistance = 1.0F;
-        this.navigation = monkeyEntity.getNavigation();
+        speedModifier = 1.2F;
+        stopDistance = 1.0F;
+        navigation = monkeyEntity.getNavigation();
     }
 
     @Override
     public void stop() {
         navigation.stop();
-        this.madMeter = 0;
-        entity.setPathfindingMalus(PathType.WATER, this.oldWaterCost);
-        this.trackedMug = null;
-        this.trackedPlayer = null;
+        madMeter = 0;
+        entity.setPathfindingMalus(PathType.WATER, oldWaterCost);
+        trackedMug = null;
+        trackedPlayer = null;
     }
 
     @Override
     public void start() {
-        this.timeToRecalcPath = 0;
-        this.madMeter = 100;
-        this.oldWaterCost = entity.getPathfindingMalus(PathType.WATER);
+        timeToRecalcPath = 0;
+        madMeter = 100;
+        oldWaterCost = entity.getPathfindingMalus(PathType.WATER);
         entity.setPathfindingMalus(PathType.WATER, 0.0F);
-        this.trackedMug = null;
-        this.trackedPlayer = null;
+        trackedMug = null;
+        trackedPlayer = null;
     }
 
     @Override
     public boolean canUse() {
-        return !entity.isTame() && !entity.isLeashed() && this.entity.isMadAboutStolenAlcohol();
+        return !entity.isTame() && !entity.isLeashed() && entity.isMadAboutStolenAlcohol();
     }
 
     @Override
     public boolean canContinueToUse() {
-        return !entity.isTame() && !entity.isLeashed() && this.entity.isMadAboutStolenAlcohol();
+        return !entity.isTame() && !entity.isLeashed() && entity.isMadAboutStolenAlcohol();
     }
 
     @Override
     public void tick() {
-        if (this.trackedMug != null && this.entity.getMainHandItem().getItem() == TropicraftItems.BAMBOO_MUG.get().asItem()) {
-            this.trackedPlayer = nearbyPlayer();
+        if (trackedMug != null && entity.getMainHandItem().getItem() == TropicraftItems.BAMBOO_MUG.get().asItem()) {
+            trackedPlayer = nearbyPlayer();
 
-            if (this.trackedPlayer != null) {
-                this.entity.getLookControl().setLookAt(this.trackedPlayer, 10.0F, (float) entity.getMaxHeadXRot());
+            if (trackedPlayer != null) {
+                entity.getLookControl().setLookAt(trackedPlayer, 10.0F, (float) entity.getMaxHeadXRot());
 
-                if (entity.distanceToSqr(this.trackedPlayer) < 4) {
-                    leapTowardTarget(this.trackedPlayer);
-                    entity.spawnAtLocation(this.entity.getMainHandItem());
+                if (entity.distanceToSqr(trackedPlayer) < 4) {
+                    leapTowardTarget(trackedPlayer);
+                    entity.spawnAtLocation(entity.getMainHandItem());
                     entity.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
                     entity.setMadAboutStolenAlcohol(false);
                 } else {
-                    moveTowardsEntity(this.trackedPlayer);
+                    moveTowardsEntity(trackedPlayer);
                 }
             }
             return;
         }
 
-        if (this.trackedMug != null && this.trackedMug.isAlive()) {
-            this.entity.getLookControl().setLookAt(this.trackedMug, 10.0F, (float) entity.getMaxHeadXRot());
+        if (trackedMug != null && trackedMug.isAlive()) {
+            entity.getLookControl().setLookAt(trackedMug, 10.0F, (float) entity.getMaxHeadXRot());
 
-            if (entity.distanceToSqr(this.trackedMug) > (double) (stopDistance * stopDistance)) {
-                moveTowardsEntity(this.trackedMug);
+            if (entity.distanceToSqr(trackedMug) > (double) (stopDistance * stopDistance)) {
+                moveTowardsEntity(trackedMug);
             } else {
-                entity.setItemInHand(InteractionHand.MAIN_HAND, this.trackedMug.getItem());
-                this.trackedMug.remove(Entity.RemovalReason.DISCARDED);
+                entity.setItemInHand(InteractionHand.MAIN_HAND, trackedMug.getItem());
+                trackedMug.remove(Entity.RemovalReason.DISCARDED);
             }
             return;
         }
 
-        if (--this.madMeter <= 0) {
-            this.entity.setMadAboutStolenAlcohol(false);
+        if (--madMeter <= 0) {
+            entity.setMadAboutStolenAlcohol(false);
             return;
         }
-        this.trackedMug = nearbyMug();
+        trackedMug = nearbyMug();
     }
 
     private LivingEntity nearbyPlayer() {

@@ -38,7 +38,7 @@ public final class BoardwalkBlock extends Block implements SimpleWaterloggedBloc
 
     public BoardwalkBlock(Properties properties) {
         super(properties);
-        this.registerDefaultState(this.stateDefinition.any().setValue(AXIS, Direction.Axis.X).setValue(TYPE, Type.SHORT).setValue(WATERLOGGED, false));
+        registerDefaultState(stateDefinition.any().setValue(AXIS, Direction.Axis.X).setValue(TYPE, Type.SHORT).setValue(WATERLOGGED, false));
     }
 
     @Override
@@ -62,11 +62,11 @@ public final class BoardwalkBlock extends Block implements SimpleWaterloggedBloc
         BlockPos pos = context.getClickedPos();
         boolean tall = context.getClickLocation().y - pos.getY() > 0.5;
 
-        BlockState state = this.defaultBlockState()
+        BlockState state = defaultBlockState()
                 .setValue(AXIS, context.getHorizontalDirection().getAxis())
                 .setValue(TYPE, tall ? Type.TALL : Type.SHORT)
                 .setValue(WATERLOGGED, world.getFluidState(pos).getType() == Fluids.WATER);
-        state = this.applyConnections(state, world, pos);
+        state = applyConnections(state, world, pos);
 
         return state;
     }
@@ -78,7 +78,7 @@ public final class BoardwalkBlock extends Block implements SimpleWaterloggedBloc
         }
 
         if (facing != Direction.UP) {
-            return this.applyConnections(state, world, currentPos);
+            return applyConnections(state, world, currentPos);
         } else {
             return state;
         }
@@ -92,8 +92,8 @@ public final class BoardwalkBlock extends Block implements SimpleWaterloggedBloc
         boolean posted = canSupportCenter(world, downPos, Direction.UP);
 
         if (tall) {
-            boolean front = this.connectsTo(world, pos, axis, Direction.AxisDirection.POSITIVE);
-            boolean back = this.connectsTo(world, pos, axis, Direction.AxisDirection.NEGATIVE);
+            boolean front = connectsTo(world, pos, axis, Direction.AxisDirection.POSITIVE);
+            boolean back = connectsTo(world, pos, axis, Direction.AxisDirection.NEGATIVE);
             if (front || back) posted = true;
 
             Type type = Type.tall(posted, front, back);
@@ -191,7 +191,7 @@ public final class BoardwalkBlock extends Block implements SimpleWaterloggedBloc
         }
 
         public boolean isTall() {
-            return !this.isShort();
+            return !isShort();
         }
 
         public boolean hasPost() {
@@ -200,7 +200,7 @@ public final class BoardwalkBlock extends Block implements SimpleWaterloggedBloc
 
         @Override
         public String getSerializedName() {
-            return this.name;
+            return name;
         }
     }
 }

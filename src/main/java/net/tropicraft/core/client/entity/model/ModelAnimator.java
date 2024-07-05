@@ -35,11 +35,11 @@ public final class ModelAnimator {
         }
 
         public float eval(float speed, float scale) {
-            return this.eval(speed, scale, 0.0F, 0.0F);
+            return eval(speed, scale, 0.0F, 0.0F);
         }
 
         public float eval(float speed, float scale, float delay, float offset) {
-            float x = this.time * speed - delay;
+            float x = time * speed - delay;
             return (Mth.sin(TAU * x) * scale + offset) * this.scale;
         }
 

@@ -42,8 +42,8 @@ public class SharkEntity extends WaterAnimal {
     public SharkEntity(EntityType<? extends WaterAnimal> type, Level world) {
         super(type, world);
         xpReward = 20;
-        this.moveControl = new SmoothSwimmingMoveControl(this, 85, 10, 0.02F, 0.1F, true);
-        this.lookControl = new SmoothSwimmingLookControl(this, 10);
+        moveControl = new SmoothSwimmingMoveControl(this, 85, 10, 0.02F, 0.1F, true);
+        lookControl = new SmoothSwimmingLookControl(this, 10);
 //        this.setApproachesPlayers(true);
         // TODO - this.setDropStack(ItemRegistry.fertilizer, 3);
     }
@@ -53,11 +53,11 @@ public class SharkEntity extends WaterAnimal {
         super.registerGoals();
         //goalSelector.addGoal(0, new EntityAISwimAvoidPredator(0, this, 2D));
 //        goalSelector.addGoal(0, new AvoidWallsGoal(EnumSet.of(Goal.Flag.MOVE), this));
-        this.goalSelector.addGoal(0, new BreathAirGoal(this));
-        this.goalSelector.addGoal(0, new TryFindWaterGoal(this));
-        this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, 1.0D, 10));
-        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
-        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        goalSelector.addGoal(0, new BreathAirGoal(this));
+        goalSelector.addGoal(0, new TryFindWaterGoal(this));
+        goalSelector.addGoal(4, new RandomSwimmingGoal(this, 1.0D, 10));
+        goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+        goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0F));
 
 //        if (fleeFromPlayers) {
 //            goalSelector.addGoal(0, new SwimToAvoidEntityGoal(EnumSet.of(Goal.Flag.MOVE), this, 5F, new Class[] {Player.class}));
@@ -69,7 +69,7 @@ public class SharkEntity extends WaterAnimal {
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData) {
-        this.setAirSupply(this.getMaxAirSupply());
+        setAirSupply(getMaxAirSupply());
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData);
     }
 
@@ -91,7 +91,7 @@ public class SharkEntity extends WaterAnimal {
     }
 
     public boolean isBoss() {
-        return this.getEntityData().get(IS_BOSS);
+        return getEntityData().get(IS_BOSS);
     }
 
     private void setBossTraits() {

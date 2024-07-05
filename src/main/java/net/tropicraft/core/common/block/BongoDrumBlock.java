@@ -54,7 +54,7 @@ public final class BongoDrumBlock extends Block {
             this.name = name;
             this.recipeColumns = recipeColumns;
             double offset = (16 - size) / 2;
-            this.shape = box(offset, 0, offset, 16 - offset, 16, 16 - offset);
+            shape = box(offset, 0, offset, 16 - offset, 16, 16 - offset);
             this.soundEvent = soundEvent;
         }
 

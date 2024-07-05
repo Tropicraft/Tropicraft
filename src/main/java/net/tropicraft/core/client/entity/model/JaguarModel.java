@@ -151,11 +151,11 @@ public class JaguarModel<T extends Entity> extends TropicraftAgeableModel<T> {
 
     @Override
     protected ModelPart getHead() {
-        return this.head_base;
+        return head_base;
     }
 
     @Override
     protected ModelPart getBody() {
-        return this.body_base;
+        return body_base;
     }
 }

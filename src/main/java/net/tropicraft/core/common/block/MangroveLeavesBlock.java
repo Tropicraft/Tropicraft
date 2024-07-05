@@ -27,22 +27,22 @@ public class MangroveLeavesBlock extends LeavesBlock {
 
     @Override
     public boolean isRandomlyTicking(BlockState state) {
-        return this.canGrowPropagules(state) || super.isRandomlyTicking(state);
+        return canGrowPropagules(state) || super.isRandomlyTicking(state);
     }
 
     @Override
     public void randomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
         super.randomTick(state, world, pos, random);
 
-        if (this.canGrowPropagules(state) && random.nextInt(PROPAGULE_GROW_CHANCE) == 0) {
-            this.tryGrowPropagule(world, pos);
+        if (canGrowPropagules(state) && random.nextInt(PROPAGULE_GROW_CHANCE) == 0) {
+            tryGrowPropagule(world, pos);
         }
     }
 
     private void tryGrowPropagule(ServerLevel world, BlockPos pos) {
         BlockPos growPos = pos.below();
-        if (world.isEmptyBlock(growPos) && world.isEmptyBlock(growPos.below()) && !this.hasNearPropagule(world, pos)) {
-            BlockState propagule = this.propaguleBlock.get().defaultBlockState().setValue(PropaguleBlock.PLANTED, false);
+        if (world.isEmptyBlock(growPos) && world.isEmptyBlock(growPos.below()) && !hasNearPropagule(world, pos)) {
+            BlockState propagule = propaguleBlock.get().defaultBlockState().setValue(PropaguleBlock.PLANTED, false);
             world.setBlockAndUpdate(growPos, propagule);
         }
     }
@@ -52,7 +52,7 @@ public class MangroveLeavesBlock extends LeavesBlock {
     }
 
     private boolean hasNearPropagule(ServerLevel world, BlockPos source) {
-        PropaguleBlock propagule = this.propaguleBlock.get();
+        PropaguleBlock propagule = propaguleBlock.get();
         for (BlockPos pos : BlockPos.betweenClosed(source.offset(-SPACING, -SPACING, -SPACING), source.offset(SPACING, 0, SPACING))) {
             if (world.getBlockState(pos).is(propagule)) {
                 return true;

@@ -40,7 +40,7 @@ public final class HugePlantBlock extends BushBlock {
 
     public HugePlantBlock(Properties properties) {
         super(properties);
-        this.registerDefaultState(this.stateDefinition.any().setValue(TYPE, Type.SEED));
+        registerDefaultState(stateDefinition.any().setValue(TYPE, Type.SEED));
     }
 
     @Override
@@ -49,7 +49,7 @@ public final class HugePlantBlock extends BushBlock {
     }
 
     public HugePlantBlock setPickItem(Supplier<RegistryEntry<? extends ItemLike, ? extends ItemLike>> item) {
-        this.pickItem = item;
+        pickItem = item;
         return this;
     }
 
@@ -67,7 +67,7 @@ public final class HugePlantBlock extends BushBlock {
             }
         }
 
-        return this.defaultBlockState().setValue(TYPE, Type.SEED);
+        return defaultBlockState().setValue(TYPE, Type.SEED);
     }
 
     @Override
@@ -88,7 +88,7 @@ public final class HugePlantBlock extends BushBlock {
             return Blocks.AIR.defaultBlockState();
         }
 
-        if (this.isValidPosition(world, shape)) {
+        if (isValidPosition(world, shape)) {
             return state;
         } else {
             return Blocks.AIR.defaultBlockState();
@@ -105,7 +105,7 @@ public final class HugePlantBlock extends BushBlock {
     public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
         if (isSeedBlock(this, state)) {
             BlockState worldState = world.getBlockState(pos);
-            if (worldState != state && !this.isValidPositionToPlace(world, pos)) {
+            if (worldState != state && !isValidPositionToPlace(world, pos)) {
                 return false;
             }
 
@@ -174,8 +174,8 @@ public final class HugePlantBlock extends BushBlock {
 
     @Override
     public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
-        if (this.pickItem != null) {
-            return new ItemStack(this.pickItem.get().get());
+        if (pickItem != null) {
+            return new ItemStack(pickItem.get().get());
         }
         return super.getCloneItemStack(state, target, level, pos, player);
     }
@@ -202,7 +202,7 @@ public final class HugePlantBlock extends BushBlock {
 
         @Override
         public String getSerializedName() {
-            return this.key;
+            return key;
         }
     }
 
@@ -252,7 +252,7 @@ public final class HugePlantBlock extends BushBlock {
 
         public boolean validate(BlockGetter world) {
             for (BlockPos pos : this) {
-                if (!world.getBlockState(pos).is(this.block)) {
+                if (!world.getBlockState(pos).is(block)) {
                     return false;
                 }
             }
@@ -261,21 +261,21 @@ public final class HugePlantBlock extends BushBlock {
 
         public BlockState blockAt(BlockPos pos) {
             Type type = Type.OUTER;
-            if (pos.equals(this.seed())) {
+            if (pos.equals(seed())) {
                 type = Type.SEED;
-            } else if (pos.equals(this.center())) {
+            } else if (pos.equals(center())) {
                 type = Type.CENTER;
             }
 
-            return this.block.defaultBlockState().setValue(TYPE, type);
+            return block.defaultBlockState().setValue(TYPE, type);
         }
 
         public BlockPos seed() {
-            return this.seed;
+            return seed;
         }
 
         public BlockPos center() {
-            return this.seed.offset(0, RADIUS, 0);
+            return seed.offset(0, RADIUS, 0);
         }
 
         public AABB asAabb() {
@@ -292,7 +292,7 @@ public final class HugePlantBlock extends BushBlock {
 
         @Override
         public Iterator<BlockPos> iterator() {
-            BlockPos center = this.center();
+            BlockPos center = center();
             return BlockPos.betweenClosed(
                     center.offset(-RADIUS, -RADIUS, -RADIUS),
                     center.offset(RADIUS, RADIUS, RADIUS)

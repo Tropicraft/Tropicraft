@@ -30,23 +30,23 @@ public class CuberaModel<T extends CuberaEntity> extends HierarchicalModel<T> {
     private final ModelPart fin_tail;
 
     public CuberaModel(ModelPart root) {
-        this.body_base = root;
-        this.fin_anal = root.getChild("fin_anal");
-        this.fin_pelvic_right = root.getChild("fin_pelvic_right");
-        this.fin_pelvic_right_r1 = this.fin_pelvic_right.getChild("fin_pelvic_right_r1");
-        this.fin_pelvic_left = root.getChild("fin_pelvic_left");
-        this.fin_pelvic_left_r1 = this.fin_pelvic_left.getChild("fin_pelvic_left_r1");
-        this.fin_pectoral_left = root.getChild("fin_pectoral_left");
-        this.fin_pectoral_right = root.getChild("fin_pectoral_right");
-        this.fin_dorsal = root.getChild("fin_dorsal");
-        this.body_connection = root.getChild("body_connection");
-        this.jaw_lower = this.body_connection.getChild("jaw_lower");
-        this.head_base = root.getChild("head_base");
-        this.head_snout = this.head_base.getChild("head_snout");
-        this.head_snout_r1 = this.head_snout.getChild("head_snout_r1");
-        this.tail_base = root.getChild("tail_base");
-        this.tail_main = this.tail_base.getChild("tail_main");
-        this.fin_tail = this.tail_main.getChild("fin_tail");
+        body_base = root;
+        fin_anal = root.getChild("fin_anal");
+        fin_pelvic_right = root.getChild("fin_pelvic_right");
+        fin_pelvic_right_r1 = fin_pelvic_right.getChild("fin_pelvic_right_r1");
+        fin_pelvic_left = root.getChild("fin_pelvic_left");
+        fin_pelvic_left_r1 = fin_pelvic_left.getChild("fin_pelvic_left_r1");
+        fin_pectoral_left = root.getChild("fin_pectoral_left");
+        fin_pectoral_right = root.getChild("fin_pectoral_right");
+        fin_dorsal = root.getChild("fin_dorsal");
+        body_connection = root.getChild("body_connection");
+        jaw_lower = body_connection.getChild("jaw_lower");
+        head_base = root.getChild("head_base");
+        head_snout = head_base.getChild("head_snout");
+        head_snout_r1 = head_snout.getChild("head_snout_r1");
+        tail_base = root.getChild("tail_base");
+        tail_main = tail_base.getChild("tail_main");
+        fin_tail = tail_main.getChild("fin_tail");
     }
 
     public static LayerDefinition create() {

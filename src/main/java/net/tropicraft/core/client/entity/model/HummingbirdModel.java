@@ -20,11 +20,11 @@ public class HummingbirdModel<T extends HummingbirdEntity> extends HierarchicalM
 
     public HummingbirdModel(ModelPart root) {
         this.root = root;
-        this.tail_base = root.getChild("tail_base");
-        this.wing_left = root.getChild("wing_left");
-        this.head_base = root.getChild("head_base");
-        this.beak_base = this.head_base.getChild("beak_base");
-        this.wing_right = root.getChild("wing_right");
+        tail_base = root.getChild("tail_base");
+        wing_left = root.getChild("wing_left");
+        head_base = root.getChild("head_base");
+        beak_base = head_base.getChild("beak_base");
+        wing_right = root.getChild("wing_right");
     }
 
     public static LayerDefinition create() {
