@@ -54,7 +54,7 @@ public class Ingredient implements Comparable<Ingredient> {
      * An ItemStack representing the item this ingredient is
      */
     @Nonnull
-    private Holder<? extends ItemLike> item;
+    private final Holder<? extends ItemLike> item;
 
     /**
      * Render color of this Ingredient in a mug
@@ -80,7 +80,7 @@ public class Ingredient implements Comparable<Ingredient> {
     /**
      * DrinkActions to trigger when a cocktail containing this ingredient is ingested.
      */
-    private List<DrinkAction> actions = new LinkedList<>();
+    private final List<DrinkAction> actions = new LinkedList<>();
 
     public Ingredient() {
         this.item = Items.AIR.builtInRegistryHolder();

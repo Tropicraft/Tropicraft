@@ -40,7 +40,7 @@ public class TropiSpiderEntity extends Spider {
     private BlockPos nestSite;
     private TropiSpiderEntity mother = null;
     private long ticksSinceLastEgg = 0L;
-    public byte initialType = 0;
+    public final byte initialType = 0;
 
     private boolean jumping;
 

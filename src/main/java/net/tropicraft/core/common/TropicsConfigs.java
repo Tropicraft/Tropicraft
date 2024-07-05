@@ -4,7 +4,7 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 
 public class TropicsConfigs {
-    public static boolean allowVolcanoEruption = false;
+    public static final boolean allowVolcanoEruption = false;
 
     public static final ModConfigSpec COMMON_SPEC;
     public static final Common COMMON;

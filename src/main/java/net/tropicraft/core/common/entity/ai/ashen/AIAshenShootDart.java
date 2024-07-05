@@ -18,7 +18,7 @@ public class AIAshenShootDart extends Goal {
     private boolean strafingClockwise;
     private boolean strafingBackwards;
     private int strafingTime = -1;
-    private float moveSpeedAmplifier;
+    private final float moveSpeedAmplifier;
 
     public AIAshenShootDart(AshenEntity entity) {
         this.entity = entity;

@@ -14,7 +14,7 @@ import java.util.EnumSet;
 public class MonkeySitAndDrinkGoal extends Goal {
     private static final int DEFAULT_WAIT = 40;
 
-    private VMonkeyEntity entity;
+    private final VMonkeyEntity entity;
     private int waitCounter;
 
     public MonkeySitAndDrinkGoal(VMonkeyEntity monkey) {

@@ -28,8 +28,8 @@ public class TropicraftRenderUtils {
     /**
      * Cache of ResourceLocations for texture binding
      */
-    private static Map<String, ResourceLocation> resLocMap = Maps.newHashMap();
-    private static Map<String, Material> materialMap = Maps.newHashMap();
+    private static final Map<String, ResourceLocation> resLocMap = Maps.newHashMap();
+    private static final Map<String, Material> materialMap = Maps.newHashMap();
 
     public static VertexConsumer getEntityCutoutBuilder(MultiBufferSource buffer, ResourceLocation resourceLocation) {
         return buffer.getBuffer(RenderType.entityCutout(resourceLocation));

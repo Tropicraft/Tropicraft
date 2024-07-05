@@ -17,7 +17,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 public class LavaBallEntity extends Entity {
     public boolean setFire;
     public float size;
-    public boolean held;
+    public final boolean held;
     public int lifeTimer;
 
     public double accelerationX;

@@ -18,17 +18,17 @@ import java.util.EnumSet;
 public class EntityAIEatToHeal extends Goal {
     private final EntityKoaBase entityObj;
 
-    private int walkingTimeoutMax = 20 * 10;
+    private final int walkingTimeoutMax = 20 * 10;
 
     private int walkingTimeout;
     private int repathPentalty = 0;
 
     private int lookUpdateTimer = 0;
-    private int randXPos = 0;
-    private int randYPos = 0;
-    private int randZPos = 0;
+    private final int randXPos = 0;
+    private final int randYPos = 0;
+    private final int randZPos = 0;
 
-    private float missingHealthToHeal = 5;
+    private final float missingHealthToHeal = 5;
 
     public EntityAIEatToHeal(EntityKoaBase entityObjIn) {
         this.entityObj = entityObjIn;

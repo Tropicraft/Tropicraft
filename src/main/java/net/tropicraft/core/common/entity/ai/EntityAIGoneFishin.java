@@ -32,31 +32,31 @@ public class EntityAIGoneFishin extends Goal {
 
     private boolean debugTask = false;
 
-    private EntityKoaBase entity;
-    private RandomSource rand;
+    private final EntityKoaBase entity;
+    private final RandomSource rand;
 
     private BlockPos posLastWaterFound;
     private BlockPos posLastLandFound;
 
-    private int walkingTimeoutMax = 20 * 30;
-    private int fishingTimeoutMax = 20 * 30;
+    private final int walkingTimeoutMax = 20 * 30;
+    private final int fishingTimeoutMax = 20 * 30;
 
     private int walkingTimeout;
     private int fishingTimeout;
 
-    private float moveSpeedAmp = 1F;
+    private final float moveSpeedAmp = 1F;
 
     //inventory placeholder
     private int fishCaught = 0;
 
     private int repathPenalty = 0;
-    private int repathPenaltyMax = 60;
+    private final int repathPenaltyMax = 60;
 
     private int repathAttempts = 0;
-    public long timeBetweenFishing = 20 * 60 * 1;
-    public long timeBetweenFishingRandom = 30;
+    public final long timeBetweenFishing = 20 * 60 * 1;
+    public final long timeBetweenFishingRandom = 30;
 
-    public List<ItemStack> listFishables = new ArrayList<>();
+    public final List<ItemStack> listFishables = new ArrayList<>();
 
     public EntityAIGoneFishin(EntityKoaBase entity) {
         this.entity = entity;

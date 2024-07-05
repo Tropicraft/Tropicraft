@@ -102,10 +102,10 @@ public class EntityKoaBase extends Villager {
     public long lastTimeFished = 0;
 
     public BlockPos posLastFireplaceFound = null;
-    public List<BlockPos> listPosDrums = new ArrayList<>();
-    public static int MAX_DRUMS = 12;
+    public final List<BlockPos> listPosDrums = new ArrayList<>();
+    public static final int MAX_DRUMS = 12;
 
-    public SimpleContainer inventory;
+    public final SimpleContainer inventory;
 
     private static final EntityDataAccessor<Integer> ROLE = SynchedEntityData.defineId(EntityKoaBase.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> GENDER = SynchedEntityData.defineId(EntityKoaBase.class, EntityDataSerializers.INT);
@@ -115,7 +115,7 @@ public class EntityKoaBase extends Villager {
 
     private float clientHealthLastTracked = 0;
 
-    public static int MAX_HOME_DISTANCE = 128;
+    public static final int MAX_HOME_DISTANCE = 128;
 
     private int villageID = -1;
 
@@ -137,7 +137,7 @@ public class EntityKoaBase extends Villager {
     private static final int TRADE_COOLDOWN = 24000 * 3;
     private static final int DIVE_TIME_NEEDED = 60 * 60;
 
-    public boolean debug = false;
+    public final boolean debug = false;
 
     public int druggedTime = 0;
 
@@ -151,7 +151,7 @@ public class EntityKoaBase extends Villager {
     private int updateMerchantTimer;
     private boolean increaseProfessionLevelOnUpdate;
 
-    public static Predicate<Entity> ENEMY_PREDICATE =
+    public static final Predicate<Entity> ENEMY_PREDICATE =
             //TODO: 1.14 fix
             input -> (input instanceof Monster/* && !(input instanceof CreeperEntity)) || input instanceof EntityTropiSkeleton || input instanceof EntityIguana || input instanceof EntityAshen*/);
 

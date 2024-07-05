@@ -18,7 +18,7 @@ public enum AshenMasks {
     private final String name;
     private final double xOffset, yOffset;
 
-    public static AshenMasks[] VALUES = values();
+    public static final AshenMasks[] VALUES = values();
 
     AshenMasks(String name) {
         this(name, 0.5, 1);

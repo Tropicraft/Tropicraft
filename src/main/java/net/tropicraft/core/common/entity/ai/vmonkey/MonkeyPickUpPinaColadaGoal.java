@@ -16,7 +16,7 @@ import java.util.List;
 
 public class MonkeyPickUpPinaColadaGoal extends Goal {
 
-    private VMonkeyEntity entity;
+    private final VMonkeyEntity entity;
     private ItemEntity drinkEntity;
     private final double speedModifier;
     private final PathNavigation navigation;

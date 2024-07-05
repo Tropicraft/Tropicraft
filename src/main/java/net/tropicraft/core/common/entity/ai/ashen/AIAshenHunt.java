@@ -7,7 +7,7 @@ import net.tropicraft.core.common.entity.hostile.AshenEntity;
 
 public class AIAshenHunt extends Goal {
 
-    public AshenEntity ashen;
+    public final AshenEntity ashen;
     public long huntRange = 24;
     public long keepDistantRange = 14;
 

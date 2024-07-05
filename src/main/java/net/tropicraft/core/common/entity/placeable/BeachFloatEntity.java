@@ -46,7 +46,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityWithComp
     private double windModifier = 0;
 
     /* Is any entity laying on the float? */
-    public boolean isEmpty;
+    public final boolean isEmpty;
 
     /* Acceleration */
     public float rotationSpeed;

@@ -14,8 +14,8 @@ import net.tropicraft.core.common.entity.hostile.AshenEntity;
 
 public class AshenMaskLayer extends RenderLayer<AshenEntity, AshenModel> {
 
-    private TropicraftSpecialRenderHelper mask;
-    private AshenModel modelAshen;
+    private final TropicraftSpecialRenderHelper mask;
+    private final AshenModel modelAshen;
 
     public AshenMaskLayer(AshenRenderer renderer, AshenModel model) {
         super(renderer);

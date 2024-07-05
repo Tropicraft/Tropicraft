@@ -50,13 +50,13 @@ public class Drink {
     public static final Codec<Drink> CODEC = ExtraCodecs.idResolverCodec(value -> value.drinkId, DRINKS::get, -1);
     public static final StreamCodec<ByteBuf, Drink> STREAM_CODEC = ByteBufCodecs.idMapper(DRINKS::get, value -> value.drinkId);
 
-    public int drinkId;
-    public int color;
-    public String name;
+    public final int drinkId;
+    public final int color;
+    public final String name;
     public boolean alwaysEdible;
     public boolean hasUmbrella;
-    public ChatFormatting textFormatting;
-    public List<DrinkAction> actions = new ArrayList<>();
+    public final ChatFormatting textFormatting;
+    public final List<DrinkAction> actions = new ArrayList<>();
 
     public Drink(int id, int color, String name, ChatFormatting textFormatting) {
         DRINKS.put(id, this);

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class MonkeySitInChairGoal extends Goal {
-    private VMonkeyEntity entity;
+    private final VMonkeyEntity entity;
 
     public MonkeySitInChairGoal(VMonkeyEntity monkey) {
         this.entity = monkey;
