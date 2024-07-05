@@ -1,12 +1,10 @@
 package net.tropicraft.core.common.block;
 
-
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.dimension.feature.TropicraftTreeFeatures;
-import org.antlr.v4.runtime.tree.Tree;
 
 import java.util.Optional;
 

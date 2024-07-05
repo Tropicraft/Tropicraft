@@ -12,8 +12,6 @@ import net.minecraft.world.entity.animal.AbstractFish;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.HitResult;
-import net.tropicraft.core.common.item.TropicraftItems;
 
 import static java.lang.Math.PI;
 
