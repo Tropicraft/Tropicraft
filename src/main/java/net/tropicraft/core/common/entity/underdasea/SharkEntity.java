@@ -155,7 +155,7 @@ public class SharkEntity extends WaterAnimal {
     }
 
     private void clearBossTargets() {
-        if (bossTargets.size() > 0) {
+        if (!bossTargets.isEmpty()) {
             for (ServerPlayer p : bossTargets) {
                 bossInfo.removePlayer(p);
             }
