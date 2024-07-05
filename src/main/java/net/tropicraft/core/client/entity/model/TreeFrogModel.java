@@ -48,7 +48,7 @@ public class TreeFrogModel extends HierarchicalModel<TreeFrogEntity> {
         root.addOrReplaceChild("body",
                 CubeListBuilder.create().texOffs(28, 8)
                         .addBox(-2.0f, -5.0f, -2.0f, 4, 9, 4),
-                PartPose.offsetAndRotation(0.0f, 21.0f, 1.0f, 1.570796f, 0.0f, 0.0f));
+                PartPose.offsetAndRotation(0.0f, 21.0f, 1.0f, Mth.HALF_PI, 0.0f, 0.0f));
 
         root.addOrReplaceChild("rearRightLeg",
                 CubeListBuilder.create().texOffs(0, 16)
@@ -76,8 +76,8 @@ public class TreeFrogModel extends HierarchicalModel<TreeFrogEntity> {
     @Override
     public void setupAnim(TreeFrogEntity froog, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         frontLeftLeg.xRot = Mth.cos(limbSwing * 0.6662f) * 1.4f * limbSwingAmount;
-        rearLeftLeg.xRot = Mth.cos(limbSwing * 0.6662f + 3.141593f) * 1.4f * limbSwingAmount;
-        rearRightLeg.xRot = Mth.cos(limbSwing * 0.6662f + 3.141593f) * 1.4f * limbSwingAmount;
+        rearLeftLeg.xRot = Mth.cos(limbSwing * 0.6662f + Mth.PI) * 1.4f * limbSwingAmount;
+        rearRightLeg.xRot = Mth.cos(limbSwing * 0.6662f + Mth.PI) * 1.4f * limbSwingAmount;
         frontRightLeg.xRot = Mth.cos(limbSwing * 0.6662f) * 1.4f * limbSwingAmount;
     }
 

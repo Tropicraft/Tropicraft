@@ -81,11 +81,11 @@ public class ManOWarEntity extends WaterAnimal {
         prevSquidRotation = squidRotation;
         lastTentacleAngle = tentacleAngle;
         squidRotation += rotationVelocity;
-        if ((double) squidRotation > 6.283185307179586) {
+        if ((double) squidRotation > Mth.TWO_PI) {
             if (level().isClientSide) {
-                squidRotation = 6.2831855f;
+                squidRotation = Mth.TWO_PI;
             } else {
-                squidRotation = (float) ((double) squidRotation - 6.283185307179586);
+                squidRotation = (float) ((double) squidRotation - Mth.TWO_PI);
                 if (random.nextInt(10) == 0) {
                     rotationVelocity = 1.0f / (random.nextFloat() + 1.0f) * 0.2f;
                 }
@@ -111,9 +111,9 @@ public class ManOWarEntity extends WaterAnimal {
                 }
             }
 
-            if (squidRotation < 3.1415927f) {
-                float lvt_1_1_ = squidRotation / 3.1415927f;
-                tentacleAngle = Mth.sin(lvt_1_1_ * lvt_1_1_ * 3.1415927f) * 3.1415927f * 0.25f;
+            if (squidRotation < Mth.PI) {
+                float lvt_1_1_ = squidRotation / Mth.PI;
+                tentacleAngle = Mth.sin(lvt_1_1_ * lvt_1_1_ * Mth.PI) * Mth.PI * 0.25f;
                 if ((double) lvt_1_1_ > 0.75) {
                     randomMotionSpeed = 1.0f;
                     rotateSpeed = 1.0f;
@@ -132,12 +132,12 @@ public class ManOWarEntity extends WaterAnimal {
 
             Vec3 motion = getDeltaMovement();
             double horizontalDistance = motion.horizontalDistance();
-            yBodyRot += (-((float) Mth.atan2(motion.x, motion.z)) * 57.295776f - yBodyRot) * 0.1f;
+            yBodyRot += (-((float) Mth.atan2(motion.x, motion.z)) * Mth.RAD_TO_DEG - yBodyRot) * 0.1f;
             setYRot(yBodyRot);
-            squidYaw = (float) ((double) squidYaw + 3.141592653589793 * (double) rotateSpeed * 1.5);
-            squidPitch += (-((float) Mth.atan2(horizontalDistance, motion.y)) * 57.295776f - squidPitch) * 0.1f;
+            squidYaw = (float) ((double) squidYaw + Math.PI * (double) rotateSpeed * 1.5);
+            squidPitch += (-((float) Mth.atan2(horizontalDistance, motion.y)) * Mth.RAD_TO_DEG - squidPitch) * 0.1f;
         } else {
-            tentacleAngle = Mth.abs(Mth.sin(squidRotation)) * 3.1415927f * 0.25f;
+            tentacleAngle = Mth.abs(Mth.sin(squidRotation)) * Mth.PI * 0.25f;
             if (!level().isClientSide) {
                 double lvt_1_3_ = getDeltaMovement().y;
                 if (hasEffect(MobEffects.LEVITATION)) {
@@ -280,7 +280,7 @@ public class ManOWarEntity extends WaterAnimal {
             if (lvt_1_1_ > 100) {
                 manOWarEntity.setMovementVector(0.0f, 0.0f, 0.0f);
             } else if (manOWarEntity.getRandom().nextInt(50) == 0 || !manOWarEntity.isInWater() || !manOWarEntity.hasMovementVector()) {
-                float lvt_2_1_ = manOWarEntity.getRandom().nextFloat() * 6.2831855f;
+                float lvt_2_1_ = manOWarEntity.getRandom().nextFloat() * Mth.TWO_PI;
                 float lvt_3_1_ = Mth.cos(lvt_2_1_) * 0.2f;
                 float lvt_4_1_ = -0.1f + manOWarEntity.getRandom().nextFloat() * 0.2f;
                 float lvt_5_1_ = Mth.sin(lvt_2_1_) * 0.2f;

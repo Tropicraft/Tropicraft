@@ -101,7 +101,7 @@ public class FailgullModel extends HierarchicalModel<FailgullEntity> {
     @Override
     public void setupAnim(FailgullEntity failgull, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         lowerLeg1.xRot = Mth.cos(limbSwing * 0.6662f) * 1.4f * limbSwingAmount;
-        lowerLeg2.xRot = Mth.cos(limbSwing * 0.6662f + 3.141593f) * 1.4f * limbSwingAmount;
+        lowerLeg2.xRot = Mth.cos(limbSwing * 0.6662f + Mth.PI) * 1.4f * limbSwingAmount;
         rightWing.zRot = ageInTicks;
         leftWing.zRot = -ageInTicks;
     }

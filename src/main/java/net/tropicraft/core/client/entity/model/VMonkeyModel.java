@@ -58,7 +58,7 @@ public class VMonkeyModel extends HierarchicalModel<VMonkeyEntity> implements Ar
         root.addOrReplaceChild("body",
                 CubeListBuilder.create().texOffs(0, 8)
                         .addBox(-1.0f, -2.0f, -4.0f, 2, 4, 9),
-                PartPose.offsetAndRotation(0.0f, 16.0f, 0.0f, 0.0f, 3.141593f, 0.0f));
+                PartPose.offsetAndRotation(0.0f, 16.0f, 0.0f, 0.0f, Mth.PI, 0.0f));
 
         root.addOrReplaceChild("lLegUpper",
                 CubeListBuilder.create().texOffs(7, 0)
@@ -83,17 +83,17 @@ public class VMonkeyModel extends HierarchicalModel<VMonkeyEntity> implements Ar
         root.addOrReplaceChild("tailBase",
                 CubeListBuilder.create().texOffs(20, 27)
                         .addBox(-0.5f, -4.0f, -0.5f, 1, 3, 1),
-                PartPose.offsetAndRotation(0.0f, 15.0f, 3.5f, 0.0f, 3.141593f, 0.0f));
+                PartPose.offsetAndRotation(0.0f, 15.0f, 3.5f, 0.0f, Mth.PI, 0.0f));
 
         root.addOrReplaceChild("tailMid",
                 CubeListBuilder.create().texOffs(20, 24)
                         .addBox(-0.5f, -2.0f, -0.5f, 1, 2, 1),
-                PartPose.offsetAndRotation(0.0f, 11.0f, 3.5f, 0.0f, 3.141593f, 0.0f));
+                PartPose.offsetAndRotation(0.0f, 11.0f, 3.5f, 0.0f, Mth.PI, 0.0f));
 
         root.addOrReplaceChild("tailTop",
                 CubeListBuilder.create().texOffs(20, 21)
                         .addBox(-0.5f, -2.0f, -0.5f, 1, 2, 1),
-                PartPose.offsetAndRotation(0.0f, 9.0f, 3.5f, 0.0f, 3.141593f, 0.0f));
+                PartPose.offsetAndRotation(0.0f, 9.0f, 3.5f, 0.0f, Mth.PI, 0.0f));
 
         root.addOrReplaceChild("rArmLower",
                 CubeListBuilder.create().texOffs(0, 7)
@@ -118,12 +118,12 @@ public class VMonkeyModel extends HierarchicalModel<VMonkeyEntity> implements Ar
         root.addOrReplaceChild("face",
                 CubeListBuilder.create().texOffs(0, 25)
                         .addBox(-2.0f, -1.0f, 0.0f, 4, 4, 3),
-                PartPose.offsetAndRotation(0.0f, 15.0f, -5.0f, 0.0f, 3.141593f, 0.0f));
+                PartPose.offsetAndRotation(0.0f, 15.0f, -5.0f, 0.0f, Mth.PI, 0.0f));
 
         root.addOrReplaceChild("head",
                 CubeListBuilder.create().texOffs(25, 25)
                         .addBox(-3.0f, -2.0f, 0.0f, 6, 5, 2),
-                PartPose.offsetAndRotation(0.0f, 15.0f, -5.0f, 0.0f, 3.141593f, 0.0f));
+                PartPose.offsetAndRotation(0.0f, 15.0f, -5.0f, 0.0f, Mth.PI, 0.0f));
 
         return LayerDefinition.create(mesh, 64, 32);
     }
@@ -146,7 +146,7 @@ public class VMonkeyModel extends HierarchicalModel<VMonkeyEntity> implements Ar
         if (entity.isOrderedToSit()) {
             body.setPos(0.0f, 20.0f, 0.0f);
             body.xRot = 0.9320058f;
-            body.yRot = 3.141593f;
+            body.yRot = Mth.PI;
             lLegUpper.setPos(-1.0f, 16.0f, -1.5f);
             lLegUpper.xRot = -0.2792527f;
             rLegUpper.setPos(1.0f, 16.0f, -1.5f);
@@ -158,15 +158,15 @@ public class VMonkeyModel extends HierarchicalModel<VMonkeyEntity> implements Ar
             lArmUpper.xRot = -2.142043f;
             tailBase.setPos(0.0f, 22.0f, 2.466667f);
             tailBase.xRot = 1.902409f;
-            tailBase.yRot = 3.141593f;
+            tailBase.yRot = Mth.PI;
             tailMid.setPos(0.0f, 23.3f, 5.966667f);
-            tailMid.xRot = 1.570796f;
+            tailMid.xRot = Mth.HALF_PI;
             tailMid.yRot = 2.111848f;
             tailMid.zRot = -0.2617994f;
             tailTop.setPos(-1.0f, 23.2f, 7.0f);
-            tailTop.xRot = 1.570796f;
+            tailTop.xRot = Mth.HALF_PI;
             tailTop.yRot = 0.8377581f;
-            tailTop.zRot = 0.01745329f;
+            tailTop.zRot = Mth.DEG_TO_RAD;
             rArmLower.setPos(1.0f, 19.0f, -0.5f);
             rArmLower.xRot = -0.1489348f;
             lArmLower.setPos(-1.0f, 19.0f, -0.3f);
@@ -179,7 +179,7 @@ public class VMonkeyModel extends HierarchicalModel<VMonkeyEntity> implements Ar
             head.setPos(0.0f, 15.0f, -3.0f);
             herps = 0;
         } else if (entity.isClimbing()) {
-            body.xRot = 1.570796f;
+            body.xRot = Mth.HALF_PI;
             body.setPos(0.0f, 16.0f, 0.0f);
             lLegUpper.setPos(-1.0f, 12.0f, 2.0f);
             //lLegUpper.rotateAngleX = -1.570796f;
@@ -190,15 +190,15 @@ public class VMonkeyModel extends HierarchicalModel<VMonkeyEntity> implements Ar
             lArmUpper.setPos(-1.0f, 19.5f, 2.0f);
             //lArmUpper.rotateAngleX = -1.570796f;
             tailBase.setPos(0.0f, 19.5f, 0.5f);
-            tailBase.xRot = 1.570796f;
-            tailBase.yRot = 3.141593f;
+            tailBase.xRot = Mth.HALF_PI;
+            tailBase.yRot = Mth.PI;
             tailMid.setPos(0.0f, 19.5f, 4.5f);
 
-            tailMid.xRot = 1.570796f;
-            tailMid.yRot = 3.141593f;
+            tailMid.xRot = Mth.HALF_PI;
+            tailMid.yRot = Mth.PI;
             tailTop.setPos(0.0f, 19.5f, 6.5f);
-            tailTop.xRot = 1.570796f;
-            tailTop.yRot = 3.141593f;
+            tailTop.xRot = Mth.HALF_PI;
+            tailTop.yRot = Mth.PI;
             rArmLower.setPos(1.0f, 19.5f, -3.0f);
             //rArmLower.rotateAngleX = -0.6981317f;
             lArmLower.setPos(-1.0f, 19.5f, -3.0f);
@@ -208,14 +208,14 @@ public class VMonkeyModel extends HierarchicalModel<VMonkeyEntity> implements Ar
             rLegLower.setPos(1.0f, 12.0f, -3.0f);
             //rLegLower.rotateAngleX = -2.443461f;
             face.setPos(0.0f, 11.0f, 1.0f);
-            herps = 1.570796f;
+            herps = Mth.HALF_PI;
             head.setPos(0.0f, 11.0f, 1.0f);
-            head.xRot = 1.570796f;
+            head.xRot = Mth.HALF_PI;
 
-            rLegUpper.xRot = Mth.cos(f * 0.5f) * 0.75f * f2 - 1.570796f;
-            rArmUpper.xRot = Mth.cos(f * 0.5f) * 0.75f * f2 - 1.570796f;
-            lArmUpper.xRot = Mth.cos(f * 0.5f) * 0.75f * f2 - 1.570796f;
-            lLegUpper.xRot = Mth.cos(f * 0.5f) * 0.75f * f2 - 1.570796f;
+            rLegUpper.xRot = Mth.cos(f * 0.5f) * 0.75f * f2 - Mth.HALF_PI;
+            rArmUpper.xRot = Mth.cos(f * 0.5f) * 0.75f * f2 - Mth.HALF_PI;
+            lArmUpper.xRot = Mth.cos(f * 0.5f) * 0.75f * f2 - Mth.HALF_PI;
+            lLegUpper.xRot = Mth.cos(f * 0.5f) * 0.75f * f2 - Mth.HALF_PI;
             rLegLower.setPos(1.0f, 12.0f + (Mth.cos(rLegUpper.xRot) * 5), -3.0f - (5 + Mth.sin(rLegUpper.xRot) * 5));
             rArmLower.setPos(1.0f, 19.5f + (Mth.cos(rArmUpper.xRot) * 5), -3.0f - (5 + Mth.sin(rArmUpper.xRot) * 5));
             lArmLower.setPos(-1.0f, 19.5f + (Mth.cos(lArmUpper.xRot) * 5), -3.0f - (5 + Mth.sin(lArmUpper.xRot) * 5));
@@ -226,7 +226,7 @@ public class VMonkeyModel extends HierarchicalModel<VMonkeyEntity> implements Ar
             lArmLower.xRot = lArmUpper.xRot + 0.6981317f;
         } else {
             body.setPos(0.0f, 16.0f, 0.0f);
-            body.yRot = 3.141593f;
+            body.yRot = Mth.PI;
             body.xRot = 0.0f;
             lLegUpper.setPos(-1.0f, 14.0f, -3.5f);
             rLegUpper.setPos(1.0f, 14.0f, -3.5f);
@@ -234,22 +234,22 @@ public class VMonkeyModel extends HierarchicalModel<VMonkeyEntity> implements Ar
             lArmUpper.setPos(-1.0f, 14.0f, 3.5f);
             tailBase.setPos(0.0f, 15.0f, 3.5f);
             tailBase.xRot = 0.0f;
-            tailBase.yRot = 3.141593f;
+            tailBase.yRot = Mth.PI;
             tailBase.zRot = 0.0f;
             tailMid.setPos(0.0f, 11.0f, 3.5f);
             tailMid.xRot = 0.0f;
-            tailMid.yRot = 3.141593f;
+            tailMid.yRot = Mth.PI;
             tailMid.zRot = 0.0f;
             tailTop.setPos(0.0f, 9.0f, 3.5f);
             tailTop.xRot = 0.0f;
-            tailTop.yRot = 3.141593f;
+            tailTop.yRot = Mth.PI;
             tailTop.zRot = 0.0f;
             face.setPos(0.0f, 15.0f, -5.0f);
             head.setPos(0.0f, 15.0f, -5.0f);
 
             rLegUpper.xRot = Mth.cos(f * 0.6662f) * 0.75f * f1;
-            rArmUpper.xRot = Mth.cos(f * 0.6662f + 3.141593f) * 0.75f * f1;
-            lLegUpper.xRot = Mth.cos(f * 0.6662f + 3.141593f) * 0.75f * f1;
+            rArmUpper.xRot = Mth.cos(f * 0.6662f + Mth.PI) * 0.75f * f1;
+            lLegUpper.xRot = Mth.cos(f * 0.6662f + Mth.PI) * 0.75f * f1;
             lArmUpper.xRot = Mth.cos(f * 0.6662f) * 0.75f * f1;
             rLegLower.setPos(1.0f, 19.0f - (5 - Mth.sin(rLegUpper.xRot + 1.570796327f) * 5), -3.5f - (Mth.cos(rLegUpper.xRot + 1.570796327f) * 5));
             rArmLower.setPos(1.0f, 19.0f - (5 - Mth.sin(rArmUpper.xRot + 1.570796327f) * 5), 3.5f - (Mth.cos(rArmUpper.xRot + 1.570796327f) * 5));
