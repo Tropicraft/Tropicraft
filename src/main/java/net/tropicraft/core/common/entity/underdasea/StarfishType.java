@@ -50,7 +50,7 @@ public enum StarfishType implements StringRepresentable {
         this(unlocalizedName, displayName, textures, null);
     }
 
-    public static final StarfishType VALUES[] = values();
+    public static final StarfishType[] VALUES = values();
 
     public static byte getMetaFromType(StarfishType type) {
         return (byte) (type == RED ? 0 : 1);
