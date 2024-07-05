@@ -210,7 +210,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
                 return false;
             }
 
-            Ingredient ing0 = Ingredient.findMatchingIngredient(ingredients.get(0));
+            Ingredient ing0 = Ingredient.findMatchingIngredient(ingredients.getFirst());
             Ingredient i = Ingredient.findMatchingIngredient(ingredient);
 
             // See above comment about isPrimary()

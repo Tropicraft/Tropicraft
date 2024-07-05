@@ -48,8 +48,7 @@ public class SeaUrchinEntity extends EchinodermEntity {
         if (source.getMsgId().equals("player")) {
             Entity ent = source.getEntity();
 
-            if (ent instanceof Player) {
-                Player player = (Player) ent;
+            if (ent instanceof Player player) {
 
                 if (player.getMainHandItem().isEmpty()) {
                     player.hurt(damageSources().mobAttack(this), 2);

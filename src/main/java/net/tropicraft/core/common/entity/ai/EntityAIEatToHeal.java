@@ -183,9 +183,7 @@ public class EntityAIEatToHeal extends Goal {
         BlockPos blockposGoal = entityObj.getRestrictCenter();
         if (!blockposGoal.equals(BlockPos.ZERO)) {
             BlockEntity tile = entityObj.level().getBlockEntity(blockposGoal);
-            if (tile instanceof ChestBlockEntity) {
-                ChestBlockEntity chest = (ChestBlockEntity) tile;
-
+            if (tile instanceof ChestBlockEntity chest) {
                 if (hasFoodSource(chest)) return true;
             }
         }
@@ -205,8 +203,7 @@ public class EntityAIEatToHeal extends Goal {
         BlockPos blockposGoal = entityObj.getRestrictCenter();
         if (!blockposGoal.equals(BlockPos.ZERO)) {
             BlockEntity tile = entityObj.level().getBlockEntity(blockposGoal);
-            if (tile instanceof ChestBlockEntity) {
-                ChestBlockEntity chest = (ChestBlockEntity) tile;
+            if (tile instanceof ChestBlockEntity chest) {
 
                 return consumeOneStackSizeOfFood(chest);
             }

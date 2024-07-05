@@ -247,7 +247,7 @@ public class Util {
     public static BlockPos findLowestBlock(List<BlockPos> blocks) {
         if (blocks.isEmpty()) return null;
 
-        BlockPos lowest = blocks.get(0);
+        BlockPos lowest = blocks.getFirst();
         for (int i = 1; i < blocks.size(); i++) {
             BlockPos block = blocks.get(i);
             if (lowest.getY() > block.getY()) {

@@ -40,7 +40,7 @@ public class BranchTreeDecorator extends TreeDecorator {
     public void place(TreeDecorator.Context context) {
         RandomSource random = context.random();
         List<BlockPos> logs = context.logs();
-        int bottomLogY = logs.get(0).getY();
+        int bottomLogY = logs.getFirst().getY();
         for (BlockPos log : logs) {
             if (log.getY() - bottomLogY < minHeight) {
                 continue;

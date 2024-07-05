@@ -248,37 +248,18 @@ public class EIHFeature extends Feature<NoneFeatureConfiguration> {
             eyeRand = world.getRandom().nextInt(9);
         }
 
-        BlockState blockState;
-        switch (eyeRand) {
-            case 0:
-            case 5:
-                blockState = Blocks.GLOWSTONE.defaultBlockState();
-                break;
-            case 1:
-                blockState = Blocks.OBSIDIAN.defaultBlockState();
-                break;
-            case 2:
-                blockState = Blocks.DIAMOND_BLOCK.defaultBlockState();
-                break;
-            case 3:
-                blockState = Blocks.IRON_BLOCK.defaultBlockState();
-                break;
-            case 4:
-                blockState = Blocks.GOLD_BLOCK.defaultBlockState();
-                break;
-            case 6:
-                blockState = TropicraftBlocks.AZURITE_BLOCK.get().defaultBlockState();
-                break;
-            case 7:
-                blockState = TropicraftBlocks.EUDIALYTE_BLOCK.get().defaultBlockState();
-                break;
-            case 8:
-                blockState = TropicraftBlocks.ZIRCON_BLOCK.get().defaultBlockState();
-                break;
-            default:    // Should never get called, if so, redstone in tropics :o
-                blockState = Blocks.REDSTONE_BLOCK.defaultBlockState();
-                break;
-        }
+        BlockState blockState = switch (eyeRand) {
+            case 0, 5 -> Blocks.GLOWSTONE.defaultBlockState();
+            case 1 -> Blocks.OBSIDIAN.defaultBlockState();
+            case 2 -> Blocks.DIAMOND_BLOCK.defaultBlockState();
+            case 3 -> Blocks.IRON_BLOCK.defaultBlockState();
+            case 4 -> Blocks.GOLD_BLOCK.defaultBlockState();
+            case 6 -> TropicraftBlocks.AZURITE_BLOCK.get().defaultBlockState();
+            case 7 -> TropicraftBlocks.EUDIALYTE_BLOCK.get().defaultBlockState();
+            case 8 -> TropicraftBlocks.ZIRCON_BLOCK.get().defaultBlockState();
+            default ->    // Should never get called, if so, redstone in tropics :o
+                    Blocks.REDSTONE_BLOCK.defaultBlockState();
+        };
 
         setBlock(world, new BlockPos(x, y, z), blockState);
     }

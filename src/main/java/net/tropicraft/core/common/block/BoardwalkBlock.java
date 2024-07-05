@@ -116,20 +116,14 @@ public final class BoardwalkBlock extends Block implements SimpleWaterloggedBloc
 
     @Override
     public BlockState rotate(BlockState state, Rotation rotation) {
-        switch (rotation) {
-            case COUNTERCLOCKWISE_90:
-            case CLOCKWISE_90:
-                switch (state.getValue(AXIS)) {
-                    case Z:
-                        return state.setValue(AXIS, Direction.Axis.X);
-                    case X:
-                        return state.setValue(AXIS, Direction.Axis.Z);
-                    default:
-                        return state;
-                }
-            default:
-                return state;
-        }
+        return switch (rotation) {
+            case COUNTERCLOCKWISE_90, CLOCKWISE_90 -> switch (state.getValue(AXIS)) {
+                case Z -> state.setValue(AXIS, Direction.Axis.X);
+                case X -> state.setValue(AXIS, Direction.Axis.Z);
+                default -> state;
+            };
+            default -> state;
+        };
     }
 
     @Override

@@ -71,7 +71,7 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal {
         if (list.isEmpty()) {
             return false;
         } else {
-            closestLivingEntity = list.get(0);
+            closestLivingEntity = list.getFirst();
             Vec3 Vector3d = DefaultRandomPos.getPosAway(theEntity, 16, 7, new Vec3(closestLivingEntity.getX(), closestLivingEntity.getY(), closestLivingEntity.getZ()));
 
             if (Vector3d == null) {

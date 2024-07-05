@@ -49,9 +49,8 @@ public class VMonkeyEntity extends TamableAnimal {
 
     public static final Predicate<LivingEntity> FOLLOW_PREDICATE = ent -> {
         if (ent == null) return false;
-        if (!(ent instanceof Player)) return false;
+        if (!(ent instanceof Player player)) return false;
 
-        Player player = (Player) ent;
         ItemStack heldMain = player.getMainHandItem();
         ItemStack heldOff = player.getOffhandItem();
 

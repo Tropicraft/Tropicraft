@@ -143,8 +143,7 @@ public class EIHEntity extends TropicraftCreatureEntity {
             }
 
             if (attackTarget != null && !isPathFinding() && !isAngry()) {
-                if (attackTarget instanceof Player) {
-                    Player player = (Player) attackTarget;
+                if (attackTarget instanceof Player player) {
                     if (!player.getAbilities().instabuild && !player.isSpectator()) {
                         float distance = distanceTo(player);
                         if (distance < 10F) {
