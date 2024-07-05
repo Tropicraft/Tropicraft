@@ -10,7 +10,7 @@ import javax.annotation.Nullable;
 
 public class UmbrellaRenderer extends FurnitureRenderer<UmbrellaEntity> {
 
-    public UmbrellaRenderer(final EntityRendererProvider.Context context) {
+    public UmbrellaRenderer(EntityRendererProvider.Context context) {
         super(context, "umbrella", new UmbrellaModel(context.bakeLayer(TropicraftRenderLayers.UMBRELLA_LAYER)), 4);
         this.shadowRadius = 2.5f;
     }
@@ -50,7 +50,7 @@ public class UmbrellaRenderer extends FurnitureRenderer<UmbrellaEntity> {
 
     @Nullable
     @Override
-    public ResourceLocation getTextureLocation(final UmbrellaEntity umbrella) {
+    public ResourceLocation getTextureLocation(UmbrellaEntity umbrella) {
         return null;
     }
 }

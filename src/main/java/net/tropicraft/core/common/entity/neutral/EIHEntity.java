@@ -57,7 +57,7 @@ public class EIHEntity extends TropicraftCreatureEntity {
         return getEntityData().get(STATE);
     }
 
-    private void setState(final byte state) {
+    private void setState(byte state) {
         getEntityData().set(STATE, state);
     }
 
@@ -99,13 +99,13 @@ public class EIHEntity extends TropicraftCreatureEntity {
     }
 
     @Override
-    public void addAdditionalSaveData(final CompoundTag compound) {
+    public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putByte("State", getState());
     }
 
     @Override
-    public void readAdditionalSaveData(final CompoundTag compound) {
+    public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         setState(compound.getByte("State"));
     }
@@ -129,9 +129,9 @@ public class EIHEntity extends TropicraftCreatureEntity {
         }
 
         if (tickCount % 20 == 0) {
-            final LivingEntity attackTarget = getTarget();
+            LivingEntity attackTarget = getTarget();
             if (attackTarget == null) {
-                final Player closestPlayer = level().getNearestPlayer(this, 10);
+                Player closestPlayer = level().getNearestPlayer(this, 10);
                 if (closestPlayer != null && !closestPlayer.getAbilities().instabuild && !closestPlayer.isSpectator()) {
                     setTarget(closestPlayer);
                 }
@@ -144,12 +144,12 @@ public class EIHEntity extends TropicraftCreatureEntity {
 
             if (attackTarget != null && !isPathFinding() && !isAngry()) {
                 if (attackTarget instanceof Player) {
-                    final Player player = (Player) attackTarget;
+                    Player player = (Player) attackTarget;
                     if (!player.getAbilities().instabuild && !player.isSpectator()) {
-                        final float distance = distanceTo(player);
+                        float distance = distanceTo(player);
                         if (distance < 10F) {
                             setAwake(true);
-                            final ItemStack itemstack = player.getInventory().getSelected();
+                            ItemStack itemstack = player.getInventory().getSelected();
 
                             if (!itemstack.isEmpty()) {
                                 if (isAware() && itemstack.getItem() == TropicraftBlocks.CHUNK.get().asItem()) {
@@ -186,7 +186,7 @@ public class EIHEntity extends TropicraftCreatureEntity {
         return getEIHFlag(FLAG_ANGRY);
     }
 
-    public void setAngry(final boolean angry) {
+    public void setAngry(boolean angry) {
         setEIHFlag(FLAG_ANGRY, angry);
     }
 
@@ -194,7 +194,7 @@ public class EIHEntity extends TropicraftCreatureEntity {
         return getEIHFlag(FLAG_AWARE);
     }
 
-    public void setAwake(final boolean aware) {
+    public void setAwake(boolean aware) {
         setEIHFlag(FLAG_AWARE, aware);
     }
 
@@ -202,7 +202,7 @@ public class EIHEntity extends TropicraftCreatureEntity {
         return getEIHFlag(FLAG_SLEEP);
     }
 
-    public void setImmobile(final boolean asleep) {
+    public void setImmobile(boolean asleep) {
         setEIHFlag(FLAG_SLEEP, asleep);
     }
 
@@ -245,7 +245,7 @@ public class EIHEntity extends TropicraftCreatureEntity {
     }
 
     @Override
-    public boolean hurt(final DamageSource source, final float amount) {
+    public boolean hurt(DamageSource source, float amount) {
         if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             return super.hurt(source, amount);
         }

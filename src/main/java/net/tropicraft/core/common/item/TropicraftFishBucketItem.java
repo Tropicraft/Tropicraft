@@ -17,7 +17,7 @@ import javax.annotation.Nullable;
 public class TropicraftFishBucketItem<T extends AbstractFish> extends MobBucketItem {
     private final EntityType<T> fishType;
 
-    public TropicraftFishBucketItem(final EntityType<T> type, Fluid fluid, Properties props) {
+    public TropicraftFishBucketItem(EntityType<T> type, Fluid fluid, Properties props) {
         super(type, fluid, SoundEvents.BUCKET_FILL_FISH, props);
         this.fishType = type;
     }

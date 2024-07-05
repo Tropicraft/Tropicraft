@@ -43,7 +43,7 @@ public final class TropicraftTreePlacements {
 
     public static final ResourceKey<PlacedFeature> LIGHT_MANGROVES_CHECKED = createKey("light_mangroves");
 
-    public static void boostrap(final BootstrapContext<PlacedFeature> context) {
+    public static void boostrap(BootstrapContext<PlacedFeature> context) {
         register(context, GRAPEFRUIT_TREE_CHECKED, TropicraftTreeFeatures.GRAPEFRUIT_TREE, checkTree(TropicraftBlocks.GRAPEFRUIT_SAPLING));
         register(context, ORANGE_TREE_CHECKED, TropicraftTreeFeatures.ORANGE_TREE, checkTree(TropicraftBlocks.ORANGE_SAPLING));
         register(context, LEMON_TREE_CHECKED, TropicraftTreeFeatures.LEMON_TREE, checkTree(TropicraftBlocks.LEMON_SAPLING));
@@ -67,7 +67,7 @@ public final class TropicraftTreePlacements {
         registerRandomChecked(context, LIGHT_MANGROVES_CHECKED, tallMangrove, teaMangrove, blackMangrove);
     }
 
-    private static ResourceKey<PlacedFeature> createKey(final String name) {
+    private static ResourceKey<PlacedFeature> createKey(String name) {
         return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
     }
 

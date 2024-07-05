@@ -36,7 +36,7 @@ public class TallRainforestTreeFeature extends RainforestTreeFeature {
         int i = pos.getX();
         int j = pos.getY();
         int k = pos.getZ();
-        final int height = rand.nextInt(15) + 15;
+        int height = rand.nextInt(15) + 15;
 
         if (goesBeyondWorldSize(world, pos.getY(), height)) {
             return false;

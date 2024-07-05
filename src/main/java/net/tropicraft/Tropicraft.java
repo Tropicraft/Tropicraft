@@ -131,7 +131,7 @@ public class Tropicraft {
         return QUALIFIER.matcher(fullVersion).replaceAll("");
     }
 
-    private void setup(final FMLCommonSetupEvent event) {
+    private void setup(FMLCommonSetupEvent event) {
         Reflection.initialize(
                 TropicraftBiomeBuilder.class,
                 SingleNoAirJigsawPiece.class, NoRotateSingleJigsawPiece.class, HomeTreeBranchPiece.class,
@@ -149,7 +149,7 @@ public class Tropicraft {
         event.getGenerator().addProvider(event.includeServer(), new DatapackBuiltinEntriesProvider(output, event.getLookupProvider(), TropicraftPackRegistries.BUILDER, Set.of(Constants.MODID)));
     }
 
-    private void registerCommands(final RegisterCommandsEvent event) {
+    private void registerCommands(RegisterCommandsEvent event) {
         CommandDispatcher<CommandSourceStack> dispatcher = event.getDispatcher();
         TropicraftCommands.register(dispatcher);
 

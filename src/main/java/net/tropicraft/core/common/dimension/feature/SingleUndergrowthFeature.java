@@ -52,7 +52,7 @@ public class SingleUndergrowthFeature extends Feature<SimpleTreeFeatureConfig> {
                     int xVariance = x - pos.getX();
                     for (int z = pos.getZ() - bushWidth; z < pos.getZ() + bushWidth; z++) {
                         int zVariance = z - pos.getZ();
-                        final BlockPos newPos = new BlockPos(x, y, z);
+                        BlockPos newPos = new BlockPos(x, y, z);
                         if ((Math.abs(xVariance) != bushWidth || Math.abs(zVariance) != bushWidth || rand.nextInt(2) != 0) && isValidPosition(level, newPos)) {
                             setBlock(level, newPos, config.leaves().get());
                         }

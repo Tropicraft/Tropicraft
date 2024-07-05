@@ -22,7 +22,7 @@ public class CowktailRenderer extends MobRenderer<CowktailEntity, CowModel<Cowkt
         map.put(CowktailEntity.Type.ANEMONE, ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/cowktail/anemone_cowktail.png"));
     });
 
-    public CowktailRenderer(final EntityRendererProvider.Context context) {
+    public CowktailRenderer(EntityRendererProvider.Context context) {
         super(context, new CowModel<>(context.bakeLayer(TropicraftRenderLayers.COWKTAIL_LAYER)), 0.7F);
         this.addLayer(new CowktailLayer<>(this));
     }

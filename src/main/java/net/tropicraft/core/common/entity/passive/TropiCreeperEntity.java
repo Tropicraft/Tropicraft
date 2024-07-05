@@ -52,7 +52,7 @@ public class TropiCreeperEntity extends PathfinderMob {
     private int fuseTime = 30;
     private int explosionRadius = 3;
 
-    public TropiCreeperEntity(final EntityType<? extends PathfinderMob> entityType, final Level worldIn) {
+    public TropiCreeperEntity(EntityType<? extends PathfinderMob> entityType, Level worldIn) {
         super(entityType, worldIn);
     }
 
@@ -215,7 +215,7 @@ public class TropiCreeperEntity extends PathfinderMob {
             int radius = 5;
             int radiusSq = radius * radius;
             BlockPos center = blockPosition();
-            final HolderSet<Block> flowers = level().registryAccess().registryOrThrow(Registries.BLOCK).getOrCreateTag(TropicraftTags.Blocks.TROPICS_FLOWERS);
+            HolderSet<Block> flowers = level().registryAccess().registryOrThrow(Registries.BLOCK).getOrCreateTag(TropicraftTags.Blocks.TROPICS_FLOWERS);
             for (int i = 0; i < 3 * radiusSq; i++) {
                 BlockPos attempt = center.offset(random.nextInt((radius * 2) + 1) - radius, 0, random.nextInt((radius * 2) + 1) - radius);
                 if (attempt.distSqr(center) < radiusSq) {
@@ -224,7 +224,7 @@ public class TropiCreeperEntity extends PathfinderMob {
                         attempt = attempt.below();
                     }
                     attempt = attempt.above();
-                    final BlockState state = flowers.getRandomElement(random).map(Holder::value).orElse(Blocks.AIR).defaultBlockState();
+                    BlockState state = flowers.getRandomElement(random).map(Holder::value).orElse(Blocks.AIR).defaultBlockState();
                     if (state.canSurvive(level(), attempt)) {
                         level().setBlockAndUpdate(attempt, state);
                     }

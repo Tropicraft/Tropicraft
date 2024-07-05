@@ -1130,7 +1130,7 @@ public class EntityKoaBase extends Villager {
     }
 
     public boolean isInstrument(BlockPos pos) {
-        final BlockState state = level().getBlockState(pos);
+        BlockState state = level().getBlockState(pos);
         return state.is(TropicraftTags.Blocks.BONGOS) || state.is(Blocks.NOTE_BLOCK);
     }
 

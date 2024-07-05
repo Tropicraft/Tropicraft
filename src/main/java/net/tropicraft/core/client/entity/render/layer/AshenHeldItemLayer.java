@@ -33,8 +33,8 @@ public class AshenHeldItemLayer<T extends AshenEntity, M extends EntityModel<T> 
 
     @Override
     public void render(PoseStack stack, MultiBufferSource buffer, int packedLightIn, T ashen, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        final ItemStack blowGunHand = ashen.getMainHandItem();
-        final ItemStack daggerHand = ashen.getOffhandItem();
+        ItemStack blowGunHand = ashen.getMainHandItem();
+        ItemStack daggerHand = ashen.getOffhandItem();
 
         if (!blowGunHand.isEmpty() || !daggerHand.isEmpty()) {
             stack.pushPose();

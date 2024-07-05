@@ -42,7 +42,7 @@ public final class NoiseFromTagBlockStateProvider extends BlockStateProvider {
         double noise = Biome.BIOME_INFO_NOISE.getValue(pos.getX() / 48.0, pos.getZ() / 48.0, false);
         noise = Mth.clamp((1.0 + noise) / 2.0, 0.0, 0.9999);
 
-        final Holder<Block> block = blocks.get(Mth.floor(noise * blocks.size()));
+        Holder<Block> block = blocks.get(Mth.floor(noise * blocks.size()));
         return block.value().defaultBlockState();
     }
 }

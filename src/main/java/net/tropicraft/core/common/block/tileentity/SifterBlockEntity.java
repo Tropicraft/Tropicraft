@@ -54,7 +54,7 @@ public class SifterBlockEntity extends BlockEntity {
     @Nonnull
     private ItemStack siftItem = ItemStack.EMPTY;
 
-    public SifterBlockEntity(final BlockEntityType<SifterBlockEntity> type, final BlockPos pos, final BlockState state) {
+    public SifterBlockEntity(BlockEntityType<SifterBlockEntity> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         rand = RandomSource.create();
         currentSiftTime = SIFT_TIME;
@@ -87,14 +87,14 @@ public class SifterBlockEntity extends BlockEntity {
         }
     }
 
-    public void dumpResults(final BlockPos pos) {
+    public void dumpResults(BlockPos pos) {
         // NOTE: Removed check and drop for heated sifter in 1.12
         dumpBeachResults(pos);
         syncInventory();
     }
 
     // TODO replace with loot table
-    private void dumpBeachResults(final BlockPos pos) {
+    private void dumpBeachResults(BlockPos pos) {
         int dumpCount = rand.nextInt(3) + 1;
         ItemStack stack;
 
@@ -125,7 +125,7 @@ public class SifterBlockEntity extends BlockEntity {
             return;
         }
 
-        final ItemEntity itemEntity = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), stack);
+        ItemEntity itemEntity = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), stack);
         level.addFreshEntity(itemEntity);
     }
 
@@ -134,7 +134,7 @@ public class SifterBlockEntity extends BlockEntity {
 
         HolderSet.Named<Item> tag = level.registryAccess().registryOrThrow(Registries.ITEM).getOrCreateTag(TropicraftTags.Items.SHELLS);
 
-        final int shellIndex = rand.nextInt(tag.size() + 1) - 1;
+        int shellIndex = rand.nextInt(tag.size() + 1) - 1;
         if (shellIndex < 0) {
             return getRareItem();
         }
@@ -169,9 +169,9 @@ public class SifterBlockEntity extends BlockEntity {
     }
 
     private void stopSifting() {
-        final double x = worldPosition.getX() + level.random.nextDouble() * 1.4;
-        final double y = worldPosition.getY() + level.random.nextDouble() * 1.4;
-        final double z = worldPosition.getZ() + level.random.nextDouble() * 1.4;
+        double x = worldPosition.getX() + level.random.nextDouble() * 1.4;
+        double y = worldPosition.getY() + level.random.nextDouble() * 1.4;
+        double z = worldPosition.getZ() + level.random.nextDouble() * 1.4;
 
         if (!level.isClientSide) {
             dumpResults(BlockPos.containing(x, y, z));
@@ -231,16 +231,16 @@ public class SifterBlockEntity extends BlockEntity {
     }
 
     @Override
-    public CompoundTag getUpdateTag(final HolderLookup.Provider registries) {
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
         return writeItems(new CompoundTag(), registries);
     }
 
-    private CompoundTag writeItems(final CompoundTag nbt, final HolderLookup.Provider registries) {
+    private CompoundTag writeItems(CompoundTag nbt, HolderLookup.Provider registries) {
         this.saveAdditional(nbt, registries);
         return nbt;
     }
 
-    public void setSiftItem(final ItemStack siftItem) {
+    public void setSiftItem(ItemStack siftItem) {
         this.siftItem = siftItem.copy().split(1);
     }
 }

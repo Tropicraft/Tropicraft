@@ -15,7 +15,7 @@ import javax.annotation.Nullable;
 @OnlyIn(Dist.CLIENT)
 public class TropicraftDolphinRenderer extends MobRenderer<TropicraftDolphinEntity, TropicraftDolphinModel> {
 
-    public TropicraftDolphinRenderer(final EntityRendererProvider.Context context) {
+    public TropicraftDolphinRenderer(EntityRendererProvider.Context context) {
         super(context, new TropicraftDolphinModel(context.bakeLayer(TropicraftRenderLayers.DOLPHIN_LAYER)), 0.5F);
         shadowStrength = 0.5f;
     }

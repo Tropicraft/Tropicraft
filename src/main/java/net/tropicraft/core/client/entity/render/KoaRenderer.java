@@ -19,7 +19,7 @@ public class KoaRenderer extends HumanoidMobRenderer<EntityKoaBase, KoaModel> {
     private static final ResourceLocation MALE_HUNTER = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/koa/koa_man_hunter.png");
     private static final ResourceLocation FEMALE_HUNTER = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/koa/koa_woman_hunter.png");
 
-    public KoaRenderer(final EntityRendererProvider.Context context) {
+    public KoaRenderer(EntityRendererProvider.Context context) {
         super(context, new KoaModel(context.bakeLayer(TropicraftRenderLayers.KOA_HUNTER_LAYER)), 0.5F);
         this.shadowStrength = 0.5f;
     }

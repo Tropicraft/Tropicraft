@@ -39,7 +39,7 @@ public class TropicraftDolphinEntity extends Dolphin {
         return super.finalizeSpawn(world, difficultyInstance, spawnReason, entityData);
     }
 
-    public void setTexture(final String textureName) {
+    public void setTexture(String textureName) {
         getEntityData().set(TEXTURE_NAME, textureName);
     }
 

@@ -14,7 +14,7 @@ import net.tropicraft.core.common.entity.neutral.JaguarEntity;
 public class JaguarRenderer extends MobRenderer<JaguarEntity, JaguarModel<JaguarEntity>> {
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/jaguar.png");
 
-    public JaguarRenderer(final EntityRendererProvider.Context context) {
+    public JaguarRenderer(EntityRendererProvider.Context context) {
         super(context, new JaguarModel<>(context.bakeLayer(TropicraftRenderLayers.JAGUAR_LAYER)), 0.7F);
     }
 

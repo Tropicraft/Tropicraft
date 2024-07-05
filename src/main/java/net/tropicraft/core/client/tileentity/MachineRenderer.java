@@ -19,7 +19,7 @@ public abstract class MachineRenderer<T extends BlockEntity & IMachineBlock> imp
     private final Block block;
     protected final MachineModel<T> model;
 
-    public MachineRenderer(BlockEntityRendererProvider.Context context, final Block block, final MachineModel<T> model) {
+    public MachineRenderer(BlockEntityRendererProvider.Context context, Block block, MachineModel<T> model) {
         this.block = block;
         this.model = model;
     }
@@ -69,5 +69,5 @@ public abstract class MachineRenderer<T extends BlockEntity & IMachineBlock> imp
         stack.mulPose(Axis.YP.rotationDegrees(angle));
     }
 
-    protected abstract void renderIngredients(final T te, final PoseStack stack, final MultiBufferSource buffer, int packedLightIn, int combinedOverlayIn);
+    protected abstract void renderIngredients(T te, PoseStack stack, MultiBufferSource buffer, int packedLightIn, int combinedOverlayIn);
 }

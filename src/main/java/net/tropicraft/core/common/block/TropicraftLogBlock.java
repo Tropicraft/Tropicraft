@@ -25,7 +25,7 @@ public final class TropicraftLogBlock extends RotatedPillarBlock {
 
     @Nullable
     @Override
-    public BlockState getToolModifiedState(final BlockState state, final UseOnContext context, final ItemAbility itemAbility, final boolean simulate) {
+    public BlockState getToolModifiedState(BlockState state, UseOnContext context, ItemAbility itemAbility, boolean simulate) {
         if (itemAbility == ItemAbilities.AXE_STRIP) {
             return this.strippedBlock.get().defaultBlockState().setValue(AXIS, state.getValue(AXIS));
         }

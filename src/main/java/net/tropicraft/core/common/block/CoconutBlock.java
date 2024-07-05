@@ -21,7 +21,7 @@ public final class CoconutBlock extends DirectionalBlock {
 
     private static final VoxelShape COCONUT_AABB = Block.box(4, 0.0D, 4, 12, 10, 12);
 
-    public CoconutBlock(final Properties properties) {
+    public CoconutBlock(Properties properties) {
         super(properties);
     }
 
@@ -53,12 +53,12 @@ public final class CoconutBlock extends DirectionalBlock {
     }
 
     @Override
-    public VoxelShape getShape(final BlockState state, final BlockGetter worldIn, final BlockPos pos, final CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
         return COCONUT_AABB;
     }
 
     @Override
-    public VoxelShape getCollisionShape(final BlockState state, final BlockGetter worldIn, final BlockPos pos, final CollisionContext context) {
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
         return COCONUT_AABB;
     }
 

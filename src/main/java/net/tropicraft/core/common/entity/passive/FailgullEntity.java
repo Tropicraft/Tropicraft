@@ -78,19 +78,19 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
     }
 
     @Override
-    public boolean isFood(final ItemStack stack) {
+    public boolean isFood(ItemStack stack) {
         return false;
     }
 
     @Override
-    public void addAdditionalSaveData(final CompoundTag nbt) {
+    public void addAdditionalSaveData(CompoundTag nbt) {
         super.addAdditionalSaveData(nbt);
         nbt.putBoolean("IsFlockLeader", isFlockLeader);
         entityData.get(FLOCK_LEADER_UUID).ifPresent(uuid -> nbt.putUUID("FlockLeader", uuid));
     }
 
     @Override
-    public float getWalkTargetValue(final BlockPos pos, final LevelReader worldIn) {
+    public float getWalkTargetValue(BlockPos pos, LevelReader worldIn) {
         return worldIn.getBlockState(pos).isAir() ? 10.0F : 0.0F;
     }
 
@@ -149,11 +149,11 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
         return null;
     }
 
-    private void setIsFlockLeader(final boolean isFlockLeader) {
+    private void setIsFlockLeader(boolean isFlockLeader) {
         this.isFlockLeader = isFlockLeader;
     }
 
-    private void setFlockLeader(final Optional<UUID> flockLeaderUUID) {
+    private void setFlockLeader(Optional<UUID> flockLeaderUUID) {
         entityData.set(FLOCK_LEADER_UUID, flockLeaderUUID);
     }
 
@@ -176,9 +176,9 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
 
     @Nullable
     private BlockPos getRandomLocation() {
-        final RandomSource random = getRandom();
+        RandomSource random = getRandom();
         for (int i = 0; i < 20; i++) {
-            final BlockPos pos = BlockPos.containing(
+            BlockPos pos = BlockPos.containing(
                     getX() + (random.nextFloat() * 2.0F - 1.0F) * 48,
                     getY() + (random.nextFloat() * 2.0F - 1.0F) * 3,
                     getZ() + (random.nextFloat() * 2.0F - 1.0F) * 48
@@ -192,7 +192,7 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
         final float maxAngle = ((float) Math.PI / 2F);
 
         Vec3 target = HoverRandomPos.getPos(FailgullEntity.this, 40, 3, direction.x, direction.z, maxAngle, 2, 1);
-        final Vec3 groundPos = AirAndWaterRandomPos.getPos(FailgullEntity.this, 40, 4, -2, direction.x, direction.z, maxAngle);
+        Vec3 groundPos = AirAndWaterRandomPos.getPos(FailgullEntity.this, 40, 4, -2, direction.x, direction.z, maxAngle);
         return target != null ? BlockPos.containing(target) : groundPos != null ? BlockPos.containing(groundPos) : null;
     }
 
@@ -222,8 +222,8 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
 
         @Override
         public void start() {
-            final Entity flockLeader = getFlockLeader();
-            final PathNavigation navigator = getNavigation();
+            Entity flockLeader = getFlockLeader();
+            PathNavigation navigator = getNavigation();
             if (flockLeader != null && flockLeader.getType() == TropicraftEntities.FAILGULL.get()) {
                 navigator.moveTo(navigator.createPath(flockLeader.blockPosition(), 1), 1.0D);
                 return;
@@ -258,7 +258,7 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
         public void start() {
             BlockPos Vector3d = getRandomLocation();
             if (Vector3d != null) {
-                final PathNavigation navigator = getNavigation();
+                PathNavigation navigator = getNavigation();
                 navigator.moveTo(navigator.createPath(Vector3d, 1), 1.0D);
             }
         }
@@ -277,7 +277,7 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
                 return false;
             }
 
-            final Entity flockLeader = mob.getFlockLeader();
+            Entity flockLeader = mob.getFlockLeader();
             return flockLeader == null || !flockLeader.isAlive();
         }
 
@@ -304,10 +304,10 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
             List<FailgullEntity> list = mob.level().getEntitiesOfClass(FailgullEntity.class, mob.getBoundingBox().inflate(10D, 10D, 10D));
             list.remove(mob);
 
-            final Optional<FailgullEntity> oldest = list.stream().min(Comparator.comparingInt(FailgullEntity::getId));
+            Optional<FailgullEntity> oldest = list.stream().min(Comparator.comparingInt(FailgullEntity::getId));
             // Found an older one nearby, set it as the flock leader
             if (oldest.isPresent() && !oldest.get().uuid.equals(mob.getUUID())) {
-                final FailgullEntity oldestFailgull = oldest.get();
+                FailgullEntity oldestFailgull = oldest.get();
                 oldestFailgull.setIsFlockLeader(true);
                 oldestFailgull.setFlockLeader(Optional.empty());
                 mob.setIsFlockLeader(false);

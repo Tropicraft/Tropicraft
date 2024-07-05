@@ -7,7 +7,7 @@ import net.tropicraft.core.common.entity.TropicraftEntities;
 
 public class SeaTurtleEggEntity extends EggEntity {
 
-    public SeaTurtleEggEntity(final EntityType<? extends SeaTurtleEggEntity> type, Level world) {
+    public SeaTurtleEggEntity(EntityType<? extends SeaTurtleEggEntity> type, Level world) {
         super(type, world);
     }
 

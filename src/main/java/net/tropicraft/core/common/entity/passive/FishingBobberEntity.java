@@ -412,7 +412,7 @@ public class FishingBobberEntity extends Entity implements IEntityWithComplexSpa
     }
 
     @Override
-    public boolean canChangeDimensions(final Level oldLevel, final Level newLevel) {
+    public boolean canChangeDimensions(Level oldLevel, Level newLevel) {
         return false;
     }
 

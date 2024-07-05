@@ -50,8 +50,8 @@ public class TropicraftTropicalFishEntity extends AbstractSchoolingFish implemen
             this.id = id;
         }
 
-        private static FishType getById(final int id) {
-            for (final FishType type : VALUES) {
+        private static FishType getById(int id) {
+            for (FishType type : VALUES) {
                 if (type.id == id) {
                     return type;
                 }
@@ -59,7 +59,7 @@ public class TropicraftTropicalFishEntity extends AbstractSchoolingFish implemen
             return CLOWNFISH;
         }
 
-        private static FishType getRandomType(final RandomSource rand) {
+        private static FishType getRandomType(RandomSource rand) {
             return Util.getRandom(VALUES, rand);
         }
     }
@@ -93,7 +93,7 @@ public class TropicraftTropicalFishEntity extends AbstractSchoolingFish implemen
         return FishType.VALUES[entityData.get(DATA_FISH_TYPE)];
     }
 
-    public void setFishType(final FishType type) {
+    public void setFishType(FishType type) {
         entityData.set(DATA_FISH_TYPE, (byte) type.ordinal());
     }
 
@@ -168,13 +168,13 @@ public class TropicraftTropicalFishEntity extends AbstractSchoolingFish implemen
     }
 
     @Override
-    public void addAdditionalSaveData(final CompoundTag compound) {
+    public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt("FishType", getFishType().id);
     }
 
     @Override
-    public void readAdditionalSaveData(final CompoundTag compound) {
+    public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         setFishType(FishType.getById(compound.getInt("FishType")));
     }
@@ -188,7 +188,7 @@ public class TropicraftTropicalFishEntity extends AbstractSchoolingFish implemen
     }
 
     @Override
-    public void saveToBucketTag(final ItemStack bucket) {
+    public void saveToBucketTag(ItemStack bucket) {
         super.saveToBucketTag(bucket);
         CustomData.update(DataComponents.BUCKET_ENTITY_DATA, bucket, nbt -> nbt.putInt("BucketVariantTag", getFishType().id));
     }

@@ -35,7 +35,7 @@ public interface TropicraftJukeboxSongs {
         context.register(key, new JukeboxSong(sound, description, lengthInSeconds, 13));
     }
 
-    private static ResourceKey<JukeboxSong> createKey(final String name) {
+    private static ResourceKey<JukeboxSong> createKey(String name) {
         return ResourceKey.create(Registries.JUKEBOX_SONG, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
     }
 }

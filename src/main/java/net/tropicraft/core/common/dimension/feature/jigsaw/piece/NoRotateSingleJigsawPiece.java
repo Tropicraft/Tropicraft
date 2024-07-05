@@ -48,7 +48,7 @@ public class NoRotateSingleJigsawPiece extends SinglePoolElement {
     }
 
     @Override
-    protected StructurePlaceSettings getSettings(final Rotation rotation, final BoundingBox box, final LiquidSettings liquidSettings, final boolean offset) {
+    protected StructurePlaceSettings getSettings(Rotation rotation, BoundingBox box, LiquidSettings liquidSettings, boolean offset) {
         return super.getSettings(Rotation.NONE, box, liquidSettings, offset);
     }
 

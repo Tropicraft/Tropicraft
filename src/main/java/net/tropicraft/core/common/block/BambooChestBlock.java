@@ -29,8 +29,8 @@ public final class BambooChestBlock extends ChestBlock {
 
     public static final DoubleBlockCombiner.Combiner<ChestBlockEntity, Optional<MenuProvider>> MENU_PROVIDER_COMBINER = new DoubleBlockCombiner.Combiner<ChestBlockEntity, Optional<MenuProvider>>() {
         @Override
-        public Optional<MenuProvider> acceptDouble(final ChestBlockEntity left, final ChestBlockEntity right) {
-            final Container inventory = new CompoundContainer(left, right);
+        public Optional<MenuProvider> acceptDouble(ChestBlockEntity left, ChestBlockEntity right) {
+            Container inventory = new CompoundContainer(left, right);
             return Optional.of(new MenuProvider() {
                 @Override
                 @Nullable
@@ -76,7 +76,7 @@ public final class BambooChestBlock extends ChestBlock {
     }
 
     @Override
-    public BlockEntity newBlockEntity(final BlockPos pos, final BlockState state) {
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new BambooChestBlockEntity(TropicraftBlocks.BAMBOO_CHEST_ENTITY.get(), pos, state);
     }
 
@@ -89,7 +89,7 @@ public final class BambooChestBlock extends ChestBlock {
     @Override
     @Deprecated
     public float getDestroyProgress(BlockState state, Player player, BlockGetter world, BlockPos pos) {
-        final BambooChestBlockEntity tileEntity = (BambooChestBlockEntity) world.getBlockEntity(pos);
+        BambooChestBlockEntity tileEntity = (BambooChestBlockEntity) world.getBlockEntity(pos);
         if (tileEntity != null && tileEntity.isUnbreakable()) {
             return 0.0f;
         }

@@ -28,7 +28,7 @@ public class StarfishRenderer extends EntityRenderer<StarfishEntity> {
      */
     public static final float ADULT_RENDER_SCALE = 1f;
 
-    public StarfishRenderer(final EntityRendererProvider.Context context) {
+    public StarfishRenderer(EntityRendererProvider.Context context) {
         super(context);
     }
 
@@ -47,16 +47,16 @@ public class StarfishRenderer extends EntityRenderer<StarfishEntity> {
         stack.translate(-0.5, 0, -0.5);
         stack.mulPose(Axis.XP.rotationDegrees(90));
 
-        final float scale = BABY_RENDER_SCALE + starfish.getGrowthProgress() * (ADULT_RENDER_SCALE - BABY_RENDER_SCALE);
+        float scale = BABY_RENDER_SCALE + starfish.getGrowthProgress() * (ADULT_RENDER_SCALE - BABY_RENDER_SCALE);
         stack.scale(scale, scale, scale);
 
         for (int i = 0; i < type.getLayerCount(); i++) {
-            final VertexConsumer ivertexbuilder = buffer.getBuffer(RenderType.entityCutout(TropicraftRenderUtils.getTextureEntity(type.getTexturePaths().get(i))));
+            VertexConsumer ivertexbuilder = buffer.getBuffer(RenderType.entityCutout(TropicraftRenderUtils.getTextureEntity(type.getTexturePaths().get(i))));
             final float red = 1;
-            final float green = starfish.hurtTime > 0 ? 0 : 1;
-            final float blue = starfish.hurtTime > 0 ? 0 : 1;
+            float green = starfish.hurtTime > 0 ? 0 : 1;
+            float blue = starfish.hurtTime > 0 ? 0 : 1;
             final float alpha = 1;
-            final float layerHeight = type.getLayerHeights()[i];
+            float layerHeight = type.getLayerHeights()[i];
             TropicraftSpecialRenderHelper.popper(f1, f2, f, f3, f1shifted, f3shifted, layerHeight, stack, ivertexbuilder, packedLightIn, LivingEntityRenderer.getOverlayCoords(starfish, 0), red, green, blue, alpha);
             stack.translate(0f, 0f, -layerHeight);
         }

@@ -16,7 +16,7 @@ public class EagleRayRenderer extends MobRenderer<EagleRayEntity, EagleRayModel>
 
     public static final ResourceLocation RAY_TEXTURE_LOC = TropicraftRenderUtils.bindTextureEntity("ray/eagleray");
 
-    public EagleRayRenderer(final EntityRendererProvider.Context context) {
+    public EagleRayRenderer(EntityRendererProvider.Context context) {
         super(context, new EagleRayModel(context.bakeLayer(TropicraftRenderLayers.EAGLE_RAY_LAYER)), 0.8f);
     }
 

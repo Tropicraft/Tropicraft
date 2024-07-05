@@ -31,31 +31,31 @@ public class TropicraftRenderUtils {
     private static Map<String, ResourceLocation> resLocMap = Maps.newHashMap();
     private static Map<String, Material> materialMap = Maps.newHashMap();
 
-    public static VertexConsumer getEntityCutoutBuilder(final MultiBufferSource buffer, final ResourceLocation resourceLocation) {
+    public static VertexConsumer getEntityCutoutBuilder(MultiBufferSource buffer, ResourceLocation resourceLocation) {
         return buffer.getBuffer(RenderType.entityCutout(resourceLocation));
     }
 
-    public static BakedModel getBakedModel(final ItemRenderer itemRenderer, final ItemStack itemStack) {
+    public static BakedModel getBakedModel(ItemRenderer itemRenderer, ItemStack itemStack) {
         return itemRenderer.getItemModelShaper().getItemModel(itemStack);
     }
 
-    public static void renderModel(final Material material, final Model model, PoseStack stack, MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn) {
+    public static void renderModel(Material material, Model model, PoseStack stack, MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn) {
         model.renderToBuffer(stack, buffer.getBuffer(model.renderType(material.texture())), combinedLightIn, combinedOverlayIn, CommonColors.WHITE);
     }
 
-    public static Material getBlockMaterial(final String path) {
+    public static Material getBlockMaterial(String path) {
         return materialMap.computeIfAbsent(path, m -> createBlockMaterial(path));
     }
 
-    private static Material createBlockMaterial(final String path) {
+    private static Material createBlockMaterial(String path) {
         return new Material(TextureAtlas.LOCATION_BLOCKS, getTextureBlock(path));
     }
 
-    public static Material getTEMaterial(final String path) {
+    public static Material getTEMaterial(String path) {
         return materialMap.computeIfAbsent(path, m -> createTEMaterial(path));
     }
 
-    private static Material createTEMaterial(final String path) {
+    private static Material createTEMaterial(String path) {
         return new Material(TextureAtlas.LOCATION_BLOCKS, getTextureTE(path));
     }
 
@@ -112,7 +112,7 @@ public class TropicraftRenderUtils {
         return resource;
     }
 
-    public static void renderItem(ItemStack itemStack, final float scale, boolean leftHand, PoseStack stack, MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn, BakedModel modelIn, final int seed, Level level) {
+    public static void renderItem(ItemStack itemStack, float scale, boolean leftHand, PoseStack stack, MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn, BakedModel modelIn, int seed, Level level) {
         if (!itemStack.isEmpty()) {
             stack.pushPose();
             stack.scale(scale, scale, scale);

@@ -44,14 +44,14 @@ public class TropiSpiderEntity extends Spider {
 
     private boolean jumping;
 
-    public TropiSpiderEntity(final EntityType<? extends Spider> type, Level world) {
+    public TropiSpiderEntity(EntityType<? extends Spider> type, Level world) {
         super(type, world);
         tickCount = SPIDER_MATURE_AGE;
         ticksSinceLastEgg = tickCount;
     }
 
-    public static TropiSpiderEntity haveBaby(final TropiSpiderEntity mother) {
-        final TropiSpiderEntity baby = new TropiSpiderEntity(TropicraftEntities.TROPI_SPIDER.get(), mother.level());
+    public static TropiSpiderEntity haveBaby(TropiSpiderEntity mother) {
+        TropiSpiderEntity baby = new TropiSpiderEntity(TropicraftEntities.TROPI_SPIDER.get(), mother.level());
         baby.setSpiderType(Type.CHILD);
         baby.tickCount = 0;
         baby.mother = mother;

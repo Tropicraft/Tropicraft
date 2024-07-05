@@ -29,7 +29,7 @@ public class CoffeePlantFeature extends Feature<NoneFeatureConfiguration> {
         RandomSource random = context.random();
         BlockPos pos = context.origin();
 
-        final BlockPos genPos = new BlockPos(
+        BlockPos genPos = new BlockPos(
                 (pos.getX() + random.nextInt(8)) - random.nextInt(8),
                 pos.getY(),
                 (pos.getZ() + random.nextInt(8)) - random.nextInt(8)
@@ -43,9 +43,9 @@ public class CoffeePlantFeature extends Feature<NoneFeatureConfiguration> {
         Direction viableDirection = null;
 
         // Scan for potential water spot
-        for (final Direction dir : Direction.Plane.HORIZONTAL) {
-            final int neighborx = genPos.getX() + dir.getStepX();
-            final int neighborz = genPos.getZ() + dir.getStepZ();
+        for (Direction dir : Direction.Plane.HORIZONTAL) {
+            int neighborx = genPos.getX() + dir.getStepX();
+            int neighborz = genPos.getZ() + dir.getStepZ();
 
             if (!world.isEmptyBlock(new BlockPos(neighborx, pos.getY() - 1, neighborz))) {
                 viableDirection = dir;
@@ -57,16 +57,16 @@ public class CoffeePlantFeature extends Feature<NoneFeatureConfiguration> {
             return false;
         }
 
-        final BlockPos waterPos = new BlockPos(genPos.getX() + viableDirection.getStepX(), pos.getY() - 1, genPos.getZ() + viableDirection.getStepZ());
+        BlockPos waterPos = new BlockPos(genPos.getX() + viableDirection.getStepX(), pos.getY() - 1, genPos.getZ() + viableDirection.getStepZ());
         world.setBlock(waterPos, WATER, Block.UPDATE_ALL);
         world.setBlock(genPos.below(), FARMLAND, Block.UPDATE_ALL);
 
-        for (final Direction dir : Direction.Plane.HORIZONTAL) {
+        for (Direction dir : Direction.Plane.HORIZONTAL) {
             world.setBlock(waterPos.relative(dir), GRASS_BLOCK, Block.UPDATE_ALL);
         }
 
         for (int i = 0; i < 3; ++i) {
-            final BlockPos upPos = genPos.above(i);
+            BlockPos upPos = genPos.above(i);
             if (world.isEmptyBlock(upPos)) {
                 world.setBlock(upPos, COFE, Block.UPDATE_ALL);
             } else {

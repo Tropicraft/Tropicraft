@@ -70,7 +70,7 @@ public class AshenMaskEntity extends Entity {
             }
         }
 
-        final Vec3 motion = getDeltaMovement();
+        Vec3 motion = getDeltaMovement();
 
         if (onGround()) {
             setDeltaMovement(motion.multiply(0.5, 0, 0.5));

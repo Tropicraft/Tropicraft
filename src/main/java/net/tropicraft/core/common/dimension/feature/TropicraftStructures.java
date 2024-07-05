@@ -26,9 +26,9 @@ public final class TropicraftStructures {
     public static final ResourceKey<Structure> OCEAN_VOLCANO = createKey("ocean_volcano");
     public static final ResourceKey<Structure> LAND_VOLCANO = createKey("land_volcano");
 
-    public static void bootstrap(final BootstrapContext<Structure> context) {
-        final HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
-        final HolderGetter<StructureTemplatePool> pools = context.lookup(Registries.TEMPLATE_POOL);
+    public static void bootstrap(BootstrapContext<Structure> context) {
+        HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
+        HolderGetter<StructureTemplatePool> pools = context.lookup(Registries.TEMPLATE_POOL);
 
         context.register(HOME_TREE, new HomeTreeStructure(
                 new Structure.StructureSettings(
@@ -75,7 +75,7 @@ public final class TropicraftStructures {
         ));
     }
 
-    private static ResourceKey<Structure> createKey(final String name) {
+    private static ResourceKey<Structure> createKey(String name) {
         return ResourceKey.create(Registries.STRUCTURE, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
     }
 }

@@ -9,7 +9,7 @@ import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
 
 public class BeachFloatRenderer extends FurnitureRenderer<BeachFloatEntity> {
 
-    public BeachFloatRenderer(final EntityRendererProvider.Context context) {
+    public BeachFloatRenderer(EntityRendererProvider.Context context) {
         super(context, "beach_float", new BeachFloatModel(context.bakeLayer(TropicraftRenderLayers.BEACH_FLOAT_LAYER)));
         shadowRadius = .5F;
     }

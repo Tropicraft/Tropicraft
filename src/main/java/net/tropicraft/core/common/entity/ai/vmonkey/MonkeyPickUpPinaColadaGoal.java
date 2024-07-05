@@ -60,7 +60,7 @@ public class MonkeyPickUpPinaColadaGoal extends Goal {
         entity.setPathfindingMalus(PathType.WATER, 0.0F);
     }
 
-    private boolean hasNearbyDrink(final Drink drink) {
+    private boolean hasNearbyDrink(Drink drink) {
         ItemStack stack = MixerRecipes.getItemStack(drink);
 
         List<ItemEntity> list = entity.level().getEntitiesOfClass(ItemEntity.class, entity.getBoundingBox().inflate(10.0D));

@@ -43,7 +43,7 @@ public class MapBiomesCommand {
         COLORS.put(TropicraftBiomes.BEACH.location(), 0xe8e397);
     }
 
-    public static void register(final CommandDispatcher<CommandSourceStack> dispatcher) {
+    public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(
                 literal("mapbiomes")
                         .requires(s -> s.hasPermission(2))

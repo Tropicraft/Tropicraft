@@ -63,7 +63,7 @@ public class SlenderHarvestMouseEntity extends Animal {
     }
 
     @Override
-    protected int calculateFallDamage(final float fallDistance, final float damageMultiplier) {
+    protected int calculateFallDamage(float fallDistance, float damageMultiplier) {
         return super.calculateFallDamage(fallDistance, damageMultiplier) / 4;
     }
 }

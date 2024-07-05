@@ -92,8 +92,8 @@ public final class TropicraftVegetationPlacements {
         return List.of(RarityFilter.onAverageOnceEvery(onceEvery), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome());
     }
 
-    private static List<PlacementModifier> seagrassPlacement(final Supplier<? extends Block> belowBlock) {
-        final BlockPredicateFilter seagrassPredicate = BlockPredicateFilter.forPredicate(BlockPredicate.allOf(
+    private static List<PlacementModifier> seagrassPlacement(Supplier<? extends Block> belowBlock) {
+        BlockPredicateFilter seagrassPredicate = BlockPredicateFilter.forPredicate(BlockPredicate.allOf(
                 BlockPredicate.matchesBlocks(new BlockPos(0, -1, 0), belowBlock.get()),
                 BlockPredicate.matchesBlocks(BlockPos.ZERO, Blocks.WATER),
                 BlockPredicate.matchesBlocks(new BlockPos(0, 1, 0), Blocks.WATER)));
@@ -104,7 +104,7 @@ public final class TropicraftVegetationPlacements {
                 BiomeFilter.biome());
     }
 
-    public static void bootstrap(final BootstrapContext<PlacedFeature> context) {
+    public static void bootstrap(BootstrapContext<PlacedFeature> context) {
         register(context, RAINFOREST_VINES, TropicraftVegetationFeatures.RAINFOREST_VINES, List.of(
                 CountPlacement.of(50),
                 InSquarePlacement.spread(),
@@ -254,7 +254,7 @@ public final class TropicraftVegetationPlacements {
         ));
     }
 
-    private static ResourceKey<PlacedFeature> createKey(final String name) {
+    private static ResourceKey<PlacedFeature> createKey(String name) {
         return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
     }
 

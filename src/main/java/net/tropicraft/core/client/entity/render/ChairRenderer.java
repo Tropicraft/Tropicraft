@@ -8,7 +8,7 @@ import net.tropicraft.core.common.entity.placeable.ChairEntity;
 
 public class ChairRenderer extends FurnitureRenderer<ChairEntity> {
 
-    public ChairRenderer(final EntityRendererProvider.Context context) {
+    public ChairRenderer(EntityRendererProvider.Context context) {
         super(context, "chair", new ChairModel(context.bakeLayer(TropicraftRenderLayers.CHAIR_LAYER)));
         shadowRadius = 0.65f;
     }

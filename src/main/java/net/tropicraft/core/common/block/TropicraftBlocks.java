@@ -564,9 +564,9 @@ public class TropicraftBlocks {
     public static final BlockEntry<FruitingVineBlock> PASSIONFRUIT_VINE = REGISTRATE.block("passionfruit_vine", FruitingVineBlock::new)
             .properties(p -> p.mapColor(MapColor.GRASS).replaceable().noCollission().strength(0.2f).sound(SoundType.VINE).ignitedByLava().pushReaction(PushReaction.DESTROY))
             .blockstate((ctx, prov) -> {
-                final MultiPartBlockStateBuilder builder = prov.getMultipartBuilder(ctx.get());
-                for (final int age : FruitingVineBlock.AGE.getPossibleValues()) {
-                    final BlockModelBuilder model = prov.models().withExistingParent(ctx.getName() + "_" + age, prov.modLoc("block/vines"))
+                MultiPartBlockStateBuilder builder = prov.getMultipartBuilder(ctx.get());
+                for (int age : FruitingVineBlock.AGE.getPossibleValues()) {
+                    BlockModelBuilder model = prov.models().withExistingParent(ctx.getName() + "_" + age, prov.modLoc("block/vines"))
                             .texture("texture", prov.modLoc("block/" + ctx.getName() + "_" + age));
                     builder.part().modelFile(model).addModel().condition(FruitingVineBlock.AGE, age).condition(BlockStateProperties.NORTH, true);
                     builder.part().modelFile(model).rotationY(270).addModel().condition(FruitingVineBlock.AGE, age).condition(BlockStateProperties.WEST, true);
@@ -600,7 +600,7 @@ public class TropicraftBlocks {
     public static final BlockEntry<Block> GREEN_PLANTAIN_BUNCH = plantainBunch("green_plantain_bunch", () -> TropicraftItems.GREEN_PLANTAIN);
     public static final BlockEntry<Block> YELLOW_PLANTAIN_BUNCH = plantainBunch("yellow_plantain_bunch", () -> TropicraftItems.YELLOW_PLANTAIN);
 
-    private static BlockEntry<Block> plantainBunch(final String name, final Supplier<ItemEntry<Item>> item) {
+    private static BlockEntry<Block> plantainBunch(String name, Supplier<ItemEntry<Item>> item) {
         return REGISTRATE.block(name, Block::new)
                 .initialProperties(() -> Blocks.MELON)
                 .properties(p -> p.sound(SoundType.WART_BLOCK).strength(0.5f))
@@ -616,8 +616,8 @@ public class TropicraftBlocks {
     public static final BlockEntry<FruitingBranchBlock> JOCOTE_BRANCH = REGISTRATE.block("jocote_branch", FruitingBranchBlock::new)
             .properties(p -> p.sound(SoundType.AZALEA).noOcclusion().noCollission().instabreak().randomTicks().pushReaction(PushReaction.DESTROY))
             .blockstate((ctx, prov) -> {
-                final ResourceLocation fruitingBranch = prov.modLoc("block/fruiting_branch");
-                final List<BlockModelBuilder> models = IntStream.rangeClosed(0, FruitingBranchBlock.MAX_AGE).mapToObj(age ->
+                ResourceLocation fruitingBranch = prov.modLoc("block/fruiting_branch");
+                List<BlockModelBuilder> models = IntStream.rangeClosed(0, FruitingBranchBlock.MAX_AGE).mapToObj(age ->
                         prov.models().withExistingParent(ctx.getName() + "_age" + age, fruitingBranch)
                                 .texture("horizontal", prov.modLoc("block/jocote_branch_horizontal_" + age))
                                 .texture("vertical", prov.modLoc("block/jocote_branch_vertical"))
@@ -1226,7 +1226,7 @@ public class TropicraftBlocks {
         prov.simpleBlock(ctx.get(), model);
     }
 
-    private static LootTable.Builder pottedPlantLoot(final RegistrateBlockLootTables loot, final FlowerPotBlock fullPot) {
+    private static LootTable.Builder pottedPlantLoot(RegistrateBlockLootTables loot, FlowerPotBlock fullPot) {
         return lootTable().withPool(loot.applyExplosionCondition(fullPot.getEmptyPot(), LootPool.lootPool()
                         .setRolls(ConstantValue.exactly(1))
                         .add(LootItem.lootTableItem(fullPot.getEmptyPot()))))
@@ -1401,7 +1401,7 @@ public class TropicraftBlocks {
 
                     @Override
                     protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
-                        final Block block = state.getBlock();
+                        Block block = state.getBlock();
                         if (super.mayPlaceOn(state, level, pos)) {
                             return true;
                         }
@@ -1776,7 +1776,7 @@ public class TropicraftBlocks {
     }
 
     private static void doublePlant(DataGenContext<Block, ? extends DoublePlantBlock> ctx, RegistrateBlockstateProvider prov) {
-        final BlockModelProvider models = prov.models();
+        BlockModelProvider models = prov.models();
         prov.getVariantBuilder(ctx.get())
                 .partialState().with(DoublePlantBlock.HALF, DoubleBlockHalf.LOWER).addModels(new ConfiguredModel(models.cross(ctx.getName() + "_bottom", prov.modLoc("block/" + ctx.getName() + "_bottom"))))
                 .partialState().with(DoublePlantBlock.HALF, DoubleBlockHalf.UPPER).addModels(new ConfiguredModel(models.cross(ctx.getName() + "_top", prov.modLoc("block/" + ctx.getName() + "_top"))));
@@ -1794,10 +1794,10 @@ public class TropicraftBlocks {
         return prov.blockSprite(ctx);
     }
 
-    private static NonNullBiFunction<Block, Item.Properties, BlockItem> itemWithRenderer(final Supplier<IClientItemExtensions> properties) {
+    private static NonNullBiFunction<Block, Item.Properties, BlockItem> itemWithRenderer(Supplier<IClientItemExtensions> properties) {
         return (b, p) -> new BlockItem(b, p) {
             @Override
-            public void initializeClient(final Consumer<IClientItemExtensions> consumer) {
+            public void initializeClient(Consumer<IClientItemExtensions> consumer) {
                 consumer.accept(properties.get());
             }
         };
@@ -1807,7 +1807,7 @@ public class TropicraftBlocks {
         return item.asItem().builtInRegistryHolder().key().location().getPath();
     }
 
-    private static void extendBlockEntity(final BlockEntityType<?> type, final Block block) {
+    private static void extendBlockEntity(BlockEntityType<?> type, Block block) {
         ((BlockEntityTypeAccessor) type).tropicraft$setValidBlocks(ImmutableSet.<Block>builder()
                 .addAll(((BlockEntityTypeAccessor) type).tropicraft$getValidBlocks())
                 .add(block)

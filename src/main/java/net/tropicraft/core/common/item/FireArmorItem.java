@@ -30,16 +30,16 @@ public class FireArmorItem extends ArmorItem {
 
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
-        final Player player = event.getEntity();
+        Player player = event.getEntity();
         tickArmor(player, EquipmentSlot.HEAD);
         tickArmor(player, EquipmentSlot.CHEST);
         tickArmor(player, EquipmentSlot.LEGS);
         tickArmor(player, EquipmentSlot.FEET);
     }
 
-    private static void tickArmor(final Player player, final EquipmentSlot slot) {
-        final ItemStack itemStack = player.getItemBySlot(slot);
-        if (itemStack.getItem() instanceof final FireArmorItem item) {
+    private static void tickArmor(Player player, EquipmentSlot slot) {
+        ItemStack itemStack = player.getItemBySlot(slot);
+        if (itemStack.getItem() instanceof FireArmorItem item) {
             item.onArmorTick(itemStack, player.level(), player, slot);
         }
     }
@@ -80,7 +80,7 @@ public class FireArmorItem extends ArmorItem {
 
         int extraRand = 0;
 
-        final Vec3 motion = player.getDeltaMovement();
+        Vec3 motion = player.getDeltaMovement();
         double plSpeed = Math.sqrt(motion.x * motion.x + motion.z * motion.z);
 
         if (plSpeed < 0.1F) {
@@ -130,7 +130,7 @@ public class FireArmorItem extends ArmorItem {
             double motionX = ((rand.nextFloat() * speed) - (speed / 2));
             double motionZ = ((rand.nextFloat() * speed) - (speed / 2));
 
-            final int numFeetParticles = particles == ParticleStatus.DECREASED ? 2 : 11;
+            int numFeetParticles = particles == ParticleStatus.DECREASED ? 2 : 11;
 
             for (int i = 0; i < numFeetParticles + (onLava ? 5 : 0); i++) {
                 motionX = (-Math.sin((look) / 180.0F * 3.1415927F) * Math.cos(0 / 180.0F * 3.1415927F) * (speed + (0.1 * rand.nextDouble())));

@@ -22,7 +22,7 @@ public class TropiSpiderEggEntity extends EggEntity {
 
     protected static final EntityDataAccessor<Optional<UUID>> MOTHER_UNIQUE_ID = SynchedEntityData.defineId(TropiSpiderEggEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 
-    public TropiSpiderEggEntity(final EntityType<? extends EggEntity> type, Level world) {
+    public TropiSpiderEggEntity(EntityType<? extends EggEntity> type, Level world) {
         super(type, world);
     }
 
@@ -76,8 +76,8 @@ public class TropiSpiderEggEntity extends EggEntity {
 
     @Override
     public Entity onHatch() {
-        if (level() instanceof final ServerLevel serverWorld && getMotherId() != null) {
-            final Entity e = serverWorld.getEntity(getMotherId());
+        if (level() instanceof ServerLevel serverWorld && getMotherId() != null) {
+            Entity e = serverWorld.getEntity(getMotherId());
 
             if (e instanceof TropiSpiderEntity) {
                 return TropiSpiderEntity.haveBaby((TropiSpiderEntity) e);

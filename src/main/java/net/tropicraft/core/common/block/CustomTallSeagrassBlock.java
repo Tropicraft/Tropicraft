@@ -31,12 +31,12 @@ public class CustomTallSeagrassBlock extends TallSeagrassBlock {
     }
 
     @Override
-    public void appendHoverText(final ItemStack itemStack, final Item.TooltipContext context, final List<Component> tooltip, final TooltipFlag flag) {
+    public void appendHoverText(ItemStack itemStack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.literal(scientificName).withStyle(ChatFormatting.AQUA, ChatFormatting.ITALIC));
     }
 
     @Override
-    public ItemStack getCloneItemStack(final LevelReader level, final BlockPos pos, final BlockState state) {
+    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
         return new ItemStack(drop.get());
     }
 }

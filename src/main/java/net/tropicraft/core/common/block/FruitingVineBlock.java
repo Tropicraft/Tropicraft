@@ -27,7 +27,7 @@ public final class FruitingVineBlock extends MultifaceBlock implements Bonemeala
 
     private final MultifaceSpreader spreader = new MultifaceSpreader(this);
 
-    public FruitingVineBlock(final Properties properties) {
+    public FruitingVineBlock(Properties properties) {
         super(properties);
         registerDefaultState(defaultBlockState().setValue(AGE, 0));
     }
@@ -38,12 +38,12 @@ public final class FruitingVineBlock extends MultifaceBlock implements Bonemeala
     }
 
     @Override
-    public boolean isRandomlyTicking(final BlockState state) {
+    public boolean isRandomlyTicking(BlockState state) {
         return state.getValue(AGE) < MAX_AGE;
     }
 
     @Override
-    public void randomTick(final BlockState state, final ServerLevel level, final BlockPos pos, final RandomSource random) {
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (random.nextInt(GROW_CHANCE) == 0) {
             level.setBlockAndUpdate(pos, state.cycle(AGE));
         }
@@ -55,16 +55,16 @@ public final class FruitingVineBlock extends MultifaceBlock implements Bonemeala
     }
 
     @Override
-    public boolean canBeReplaced(final BlockState state, final BlockPlaceContext context) {
+    public boolean canBeReplaced(BlockState state, BlockPlaceContext context) {
         return !context.getItemInHand().is(asItem()) || super.canBeReplaced(state, context);
     }
 
     @Override
-    public boolean isValidBonemealTarget(final LevelReader level, final BlockPos pos, final BlockState state) {
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
         if (state.getValue(AGE) < MAX_AGE) {
             return true;
         }
-        for (final Direction direction : Direction.values()) {
+        for (Direction direction : Direction.values()) {
             if (spreader.canSpreadInAnyDirection(state, level, pos, direction.getOpposite())) {
                 return true;
             }
@@ -73,12 +73,12 @@ public final class FruitingVineBlock extends MultifaceBlock implements Bonemeala
     }
 
     @Override
-    public boolean isBonemealSuccess(final Level level, final RandomSource random, final BlockPos pos, final BlockState state) {
+    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
         return true;
     }
 
     @Override
-    public void performBonemeal(final ServerLevel level, final RandomSource random, final BlockPos pos, final BlockState state) {
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
         if (random.nextInt(2) == 0) {
             spreader.spreadFromRandomFaceTowardRandomDirection(state, level, pos, random);
         }
@@ -88,7 +88,7 @@ public final class FruitingVineBlock extends MultifaceBlock implements Bonemeala
     }
 
     @Override
-    protected void createBlockStateDefinition(final StateDefinition.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(AGE);
     }

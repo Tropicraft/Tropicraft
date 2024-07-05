@@ -35,7 +35,7 @@ public final class TropicraftMiscPlacements {
 
     public static final ResourceKey<PlacedFeature> SHAKA = createKey("shaka");
 
-    public static void boostrap(final BootstrapContext<PlacedFeature> context) {
+    public static void boostrap(BootstrapContext<PlacedFeature> context) {
         register(context, MUD_DISK, TropicraftMiscFeatures.MUD_DISK, List.of(
                 CountPlacement.of(3),
                 InSquarePlacement.spread(),
@@ -76,7 +76,7 @@ public final class TropicraftMiscPlacements {
         ));
     }
 
-    private static ResourceKey<PlacedFeature> createKey(final String name) {
+    private static ResourceKey<PlacedFeature> createKey(String name) {
         return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
     }
 

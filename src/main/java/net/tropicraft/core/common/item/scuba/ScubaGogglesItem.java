@@ -46,7 +46,7 @@ public class ScubaGogglesItem extends ScubaArmorItem {
 
         // lazily initialize because attributes are registered after items
         this.boostedModifiers = Suppliers.memoize(() -> {
-            final ItemAttributeModifiers inheritedModifiers = super.getDefaultAttributeModifiers();
+            ItemAttributeModifiers inheritedModifiers = super.getDefaultAttributeModifiers();
             return inheritedModifiers.withModifierAdded(
                     UNDERWATER_VISIBILITY, VISIBILITY_BOOST, EquipmentSlotGroup.HEAD
             );

@@ -215,7 +215,7 @@ public class EntityAIGoneFishin extends Goal {
                 //debug("walkingTimeout: " + walkingTimeout--);
             }
         } else {
-            final BlockPos homePosition = entity.getRestrictCenter();
+            BlockPos homePosition = entity.getRestrictCenter();
             if (state == FISHING_STATE.FISHING) {
                 //temp visual to replace casting line
                 //entity.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 40));

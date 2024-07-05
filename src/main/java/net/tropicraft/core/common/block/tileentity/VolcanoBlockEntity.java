@@ -50,7 +50,7 @@ public class VolcanoBlockEntity extends BlockEntity {
     private VolcanoState state = VolcanoState.DORMANT;
     private int heightOffset = Integer.MIN_VALUE;
 
-    public VolcanoBlockEntity(final BlockEntityType<VolcanoBlockEntity> type, final BlockPos pos, final BlockState state) {
+    public VolcanoBlockEntity(BlockEntityType<VolcanoBlockEntity> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
 

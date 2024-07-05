@@ -80,7 +80,7 @@ public final class CoffeeBushBlock extends CropBlock {
             BlockPos ground = pos;
             for (height = 1; worldIn.getBlockState(ground = ground.below()).getBlock() == this; ++height) ;
 
-            final BlockState blockState = worldIn.getBlockState(ground);
+            BlockState blockState = worldIn.getBlockState(ground);
             if (height < MAX_HEIGHT && worldIn.random.nextInt(blockState.getBlock().isFertile(blockState, worldIn, ground) ? GROWTH_RATE_FERTILE : GROWTH_RATE_INFERTILE) == 0) {
                 worldIn.setBlockAndUpdate(pos.above(), defaultBlockState());
             }
@@ -93,7 +93,7 @@ public final class CoffeeBushBlock extends CropBlock {
     protected InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult result) {
         if (state.getValue(AGE) == getMaxAge()) {
             world.setBlockAndUpdate(pos, state.setValue(AGE, 0));
-            final int count = 1 + player.getRandom().nextInt(3);
+            int count = 1 + player.getRandom().nextInt(3);
             ItemStack stack = new ItemStack(TropicraftItems.RAW_COFFEE_BEAN.get(), count);
             popResource(world, pos, stack);
             return world.isClientSide ? InteractionResult.SUCCESS : InteractionResult.CONSUME;

@@ -37,7 +37,7 @@ public class ScubaHarnessItem extends ScubaArmorItem {
     @Override
     public void tickAir(Player player, EquipmentSlot slot, ItemStack stack) {
         if (player.level().isClientSide || player.getAbilities().instabuild) return;
-        final int remainingAir = getRemainingAir(stack);
+        int remainingAir = getRemainingAir(stack);
         if (remainingAir > 0) {
             stack.set(TropicraftDataComponents.SCUBA_AIR, remainingAir - 1);
             player.setAirSupply(player.getMaxAirSupply());

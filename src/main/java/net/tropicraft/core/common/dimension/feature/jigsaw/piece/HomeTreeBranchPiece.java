@@ -93,21 +93,21 @@ public final class HomeTreeBranchPiece extends StructurePoolElement implements I
         WorldgenRandom rand = new WorldgenRandom(new LegacyRandomSource(level.getSeed()));
         rand.setDecorationSeed(level.getSeed(), origin.getX(), origin.getZ());
 
-        final int branchLength = rand.nextInt(10) + 15;
+        int branchLength = rand.nextInt(10) + 15;
         // TODO make configurable
         int branchX1 = origin.getX();
         int branchZ1 = origin.getZ();
-        final double minAngle = Math.toRadians(this.minAngle);
-        final double maxAngle = Math.toRadians(this.maxAngle);
-        final double angle = minAngle + rand.nextFloat() * (maxAngle - minAngle);
+        double minAngle = Math.toRadians(this.minAngle);
+        double maxAngle = Math.toRadians(this.maxAngle);
+        double angle = minAngle + rand.nextFloat() * (maxAngle - minAngle);
         int branchX2 = (int) ((branchLength * Math.sin(angle)) + branchX1);
         int branchZ2 = (int) ((branchLength * Math.cos(angle)) + branchZ1);
         int branchY2 = rand.nextInt(4) + 4;
 
         BlockState wood = TropicraftBlocks.MAHOGANY_LOG.get().defaultBlockState();
-        final BlockState leaf = TropicraftBlocks.MAHOGANY_LEAVES.get().defaultBlockState();
+        BlockState leaf = TropicraftBlocks.MAHOGANY_LEAVES.get().defaultBlockState();
         final int leafCircleSizeConstant = 3;
-        final int y2 = origin.getY() + branchY2;
+        int y2 = origin.getY() + branchY2;
 
         placeBlockLine(level, new BlockPos(branchX1, origin.getY(), branchZ1), new BlockPos(branchX2, y2, branchZ2), wood, chunkBounds);
         placeBlockLine(level, new BlockPos(branchX1 + 1, origin.getY(), branchZ1), new BlockPos(branchX2 + 1, y2, branchZ2), wood, chunkBounds);
@@ -124,7 +124,7 @@ public final class HomeTreeBranchPiece extends StructurePoolElement implements I
         return true;
     }
 
-    public void genLeafCircle(final WorldGenLevel world, final int x, final int y, final int z, int outerRadius, int innerRadius, BlockState state, BoundingBox chunkBounds) {
+    public void genLeafCircle(WorldGenLevel world, int x, int y, int z, int outerRadius, int innerRadius, BlockState state, BoundingBox chunkBounds) {
         int outerRadiusSquared = outerRadius * outerRadius;
         int innerRadiusSquared = innerRadius * innerRadius;
 
@@ -150,7 +150,7 @@ public final class HomeTreeBranchPiece extends StructurePoolElement implements I
         }
     }
 
-    private void placeBlockLine(final WorldGenLevel world, BlockPos from, BlockPos to, BlockState state, BoundingBox chunkBounds) {
+    private void placeBlockLine(WorldGenLevel world, BlockPos from, BlockPos to, BlockState state, BoundingBox chunkBounds) {
         BoundingBox lineBounds = BoundingBox.fromCorners(from, to);
         if (!chunkBounds.intersects(lineBounds)) {
             return;

@@ -114,13 +114,13 @@ public class VMonkeyEntity extends TamableAnimal {
     }
 
     @Override
-    public void addAdditionalSaveData(final CompoundTag compound) {
+    public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putByte("MonkeyFlags", getMonkeyFlags());
     }
 
     @Override
-    public void readAdditionalSaveData(final CompoundTag compound) {
+    public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         setMonkeyFlags(compound.getByte("MonkeyFlags"));
     }
@@ -129,7 +129,7 @@ public class VMonkeyEntity extends TamableAnimal {
         return following;
     }
 
-    public void setFollowing(@Nullable final LivingEntity following) {
+    public void setFollowing(@Nullable LivingEntity following) {
         this.following = following;
     }
 
@@ -141,7 +141,7 @@ public class VMonkeyEntity extends TamableAnimal {
         return false;
     }
 
-    private void setMonkeyFlags(final byte flags) {
+    private void setMonkeyFlags(byte flags) {
         getEntityData().set(DATA_FLAGS, flags);
     }
 

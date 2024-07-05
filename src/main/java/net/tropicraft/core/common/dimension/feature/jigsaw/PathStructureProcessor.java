@@ -64,7 +64,7 @@ public abstract class PathStructureProcessor extends CheatyStructureProcessor {
          *  the jigsaw block to the end of the structure in that direction, and 1 block to
          *  either side.
          */
-        final StructurePlaceSettings infiniteBounds = settings.copy();
+        StructurePlaceSettings infiniteBounds = settings.copy();
         infiniteBounds.setBoundingBox(BoundingBox.infinite());
         return VECTOR_CACHE.computeIfAbsent(settings, s ->
                         template.filterBlocks(seedPos, infiniteBounds, Blocks.JIGSAW, true).stream() // Find all jigsaw blocks

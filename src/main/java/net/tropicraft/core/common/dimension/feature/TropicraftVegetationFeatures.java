@@ -72,7 +72,7 @@ public final class TropicraftVegetationFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> MANGROVE_REEDS = createKey("mangrove_reeds");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TROPI_SEAGRASS = createKey("tropi_seagrass");
 
-    public static void bootstrap(final BootstrapContext<ConfiguredFeature<?, ?>> context) {
+    public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
         register(context, RAINFOREST_VINES, TropicraftFeatures.VINES, new RainforestVinesConfig());
 
         register(context, SMALL_GOLDEN_LEATHER_FERN, Feature.RANDOM_PATCH, randomPatch(TropicraftBlocks.GOLDEN_LEATHER_FERN));
@@ -131,7 +131,7 @@ public final class TropicraftVegetationFeatures {
         register(context, TROPI_SEAGRASS, TropicraftFeatures.SEAGRASS);
     }
 
-    private static ResourceKey<ConfiguredFeature<?, ?>> createKey(final String name) {
+    private static ResourceKey<ConfiguredFeature<?, ?>> createKey(String name) {
         return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
     }
 }

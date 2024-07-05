@@ -27,7 +27,7 @@ public class SifterRenderer implements BlockEntityRenderer<SifterBlockEntity> {
         if (!sifter.isSifting()) {
             item = null;
         } else if (!sifter.getSiftItem().isEmpty()) {
-            final Level level = sifter.getLevel();
+            Level level = sifter.getLevel();
             final float itemRenderSize = 0.4375F;
 
             if (item == null) {
@@ -40,7 +40,7 @@ public class SifterRenderer implements BlockEntityRenderer<SifterBlockEntity> {
             matrixStackIn.translate(0.0D, -0.4F, 0.0D);
             matrixStackIn.mulPose(Axis.XP.rotationDegrees(-20.0F));
             matrixStackIn.scale(itemRenderSize * 3, itemRenderSize * 3, itemRenderSize * 3);
-            final int light = LevelRenderer.getLightColor(level, sifter.getBlockPos().above());
+            int light = LevelRenderer.getLightColor(level, sifter.getBlockPos().above());
             Minecraft.getInstance().getEntityRenderDispatcher().render(item, 0.0D, 0.0D, 0.0D, 0.0F, partialTicks, matrixStackIn, bufferIn, light);
         }
 

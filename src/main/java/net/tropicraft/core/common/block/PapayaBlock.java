@@ -52,7 +52,7 @@ public final class PapayaBlock extends HorizontalDirectionalBlock implements Bon
 
     @Override
     public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource random) {
-        final int i = state.getValue(AGE);
+        int i = state.getValue(AGE);
         if (i < 1 && worldIn.random.nextInt(5) == 0) {
             worldIn.setBlock(pos, state.setValue(AGE, i + 1), 2);
         }

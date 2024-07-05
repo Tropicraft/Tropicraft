@@ -27,7 +27,7 @@ public class FurnitureItem<T extends FurnitureEntity> extends Item {
     private final Supplier<? extends EntityType<T>> entityType;
     private final DyeColor color;
 
-    public FurnitureItem(final Properties properties, final Supplier<? extends EntityType<T>> entityType, final DyeColor color) {
+    public FurnitureItem(Properties properties, Supplier<? extends EntityType<T>> entityType, DyeColor color) {
         super(properties);
         this.entityType = entityType;
         this.color = color;
@@ -55,7 +55,7 @@ public class FurnitureItem<T extends FurnitureEntity> extends Item {
             if (rayTraceResult.getType() == net.minecraft.world.phys.HitResult.Type.BLOCK) {
                 Vec3 hitVec = rayTraceResult.getLocation();
 
-                final T entity = this.entityType.get().create(world);
+                T entity = this.entityType.get().create(world);
                 entity.moveTo(BlockPos.containing(hitVec), 0, 0);
                 entity.setDeltaMovement(Vec3.ZERO);
                 entity.setRotation(placer.getYRot() + 180);

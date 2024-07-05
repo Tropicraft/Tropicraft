@@ -34,7 +34,7 @@ public class StarfishEntity extends EchinodermEntity implements IEntityWithCompl
 
     private static final EntityDataAccessor<Byte> DATA_STARFISH_TYPE = SynchedEntityData.defineId(StarfishEntity.class, EntityDataSerializers.BYTE);
 
-    public StarfishEntity(final EntityType<? extends StarfishEntity> type, Level world) {
+    public StarfishEntity(EntityType<? extends StarfishEntity> type, Level world) {
         super(type, world);
         xpReward = 5;
     }

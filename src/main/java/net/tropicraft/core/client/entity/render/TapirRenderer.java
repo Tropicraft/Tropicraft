@@ -18,10 +18,10 @@ public class TapirRenderer extends MobRenderer<TapirEntity, TapirModel<TapirEnti
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/tapir.png");
     private static final ResourceLocation BABY_TEXTURE = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/tapir_baby.png");
 
-    public TapirRenderer(final EntityRendererProvider.Context context) {
+    public TapirRenderer(EntityRendererProvider.Context context) {
         super(context, new TapirModel<>(context.bakeLayer(TropicraftRenderLayers.TAPIR_LAYER)), 0.6F);
         addLayer(new SunglassesLayer<>(this, TapirEntity::isUndercover, (poseStack, entity, model) -> {
-            final ModelPart head = model.getHead();
+            ModelPart head = model.getHead();
             head.translateAndRotate(poseStack);
             poseStack.translate(0.5f / 16.0f, 2.0f / 16.0f, -10.0f / 16.0f);
             final float scale = 20.0f / 16.0f;

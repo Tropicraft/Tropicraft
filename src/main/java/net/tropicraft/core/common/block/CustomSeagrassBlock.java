@@ -38,7 +38,7 @@ public final class CustomSeagrassBlock extends SeagrassBlock {
     }
 
     @Override
-    public void appendHoverText(final ItemStack itemStack, final Item.TooltipContext context, final List<Component> tooltip, final TooltipFlag flag) {
+    public void appendHoverText(ItemStack itemStack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.literal(scientificName).withStyle(ChatFormatting.AQUA, ChatFormatting.ITALIC));
     }
 

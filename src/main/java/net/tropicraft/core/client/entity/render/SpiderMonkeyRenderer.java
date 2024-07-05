@@ -12,7 +12,7 @@ import net.tropicraft.core.common.entity.passive.monkey.SpiderMonkeyEntity;
 public class SpiderMonkeyRenderer extends MobRenderer<SpiderMonkeyEntity, SpiderMonkeyModel<SpiderMonkeyEntity>> {
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/spider_monkey.png");
 
-    public SpiderMonkeyRenderer(final EntityRendererProvider.Context context) {
+    public SpiderMonkeyRenderer(EntityRendererProvider.Context context) {
         super(context, new SpiderMonkeyModel<>(context.bakeLayer(TropicraftRenderLayers.SPIDER_MONKEY_LAYER)), 0.4F);
     }
 

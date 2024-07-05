@@ -23,7 +23,7 @@ public class PlayerHeadpieceModel extends HumanoidModel<LivingEntity> {
     private final double xOffset, yOffset;
     private final TropicraftSpecialRenderHelper renderer;
 
-    public PlayerHeadpieceModel(ModelPart modelPart, final int textureIndex, final double xOffset, final double yOffset) {
+    public PlayerHeadpieceModel(ModelPart modelPart, int textureIndex, double xOffset, double yOffset) {
         super(modelPart, RenderType::entityCutoutNoCull);
         this.textureIndex = textureIndex;
         this.xOffset = xOffset;
@@ -51,7 +51,7 @@ public class PlayerHeadpieceModel extends HumanoidModel<LivingEntity> {
         return LayerDefinition.create(mesh, 64, 32);
     }
 
-    public static PlayerHeadpieceModel createModel(ModelLayerLocation entityModelLayer, EntityModelSet entityModelLoader, final int textureIndex, final double xOffset, final double yOffset) {
+    public static PlayerHeadpieceModel createModel(ModelLayerLocation entityModelLayer, EntityModelSet entityModelLoader, int textureIndex, double xOffset, double yOffset) {
         return new PlayerHeadpieceModel(entityModelLoader == null ?
                 create().bakeRoot() :
                 entityModelLoader.bakeLayer(entityModelLayer), textureIndex, xOffset, yOffset);

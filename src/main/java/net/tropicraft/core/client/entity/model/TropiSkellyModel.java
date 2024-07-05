@@ -54,7 +54,7 @@ public class TropiSkellyModel extends AbstractZombieModel<TropiSkellyEntity> imp
     }
 
     @Override
-    public void translateToHand(HumanoidArm side, final PoseStack stack) {
+    public void translateToHand(HumanoidArm side, PoseStack stack) {
         super.translateToHand(side, stack);
         stack.translate((side == HumanoidArm.LEFT ? -1 : 1) * 0.1f, 0, 0.0F);
     }

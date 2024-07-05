@@ -17,7 +17,7 @@ public class AshenMaskLayer extends RenderLayer<AshenEntity, AshenModel> {
     private TropicraftSpecialRenderHelper mask;
     private AshenModel modelAshen;
 
-    public AshenMaskLayer(AshenRenderer renderer, final AshenModel model) {
+    public AshenMaskLayer(AshenRenderer renderer, AshenModel model) {
         super(renderer);
         modelAshen = model;
         mask = new TropicraftSpecialRenderHelper();

@@ -11,7 +11,7 @@ import net.tropicraft.core.common.entity.TropiBeeEntity;
 
 public class TropiBeeRenderer extends MobRenderer<TropiBeeEntity, TropiBeeModel> {
 
-    public TropiBeeRenderer(final EntityRendererProvider.Context context) {
+    public TropiBeeRenderer(EntityRendererProvider.Context context) {
         super(context, new TropiBeeModel(context.bakeLayer(TropicraftRenderLayers.TROPI_BEE_LAYER)), 0.4F);
 
         addLayer(new SunglassesLayer<>(this, entity -> true, (poseStack, entity, model) -> {

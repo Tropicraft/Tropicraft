@@ -12,7 +12,7 @@ public class ManateeRenderer extends MobRenderer<ManateeEntity, ManateeModel> {
 
     public static final ResourceLocation TEXTURE = TropicraftRenderUtils.getTextureEntity("manatee");
 
-    public ManateeRenderer(final EntityRendererProvider.Context context) {
+    public ManateeRenderer(EntityRendererProvider.Context context) {
         super(context, new ManateeModel(context.bakeLayer(TropicraftRenderLayers.MANATEE_LAYER)), 1.5f);
     }
 

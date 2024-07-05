@@ -112,7 +112,7 @@ public class AshenModel extends ListModel<AshenEntity> implements ArmedModel {
     }
 
     @Override
-    public void prepareMobModel(final AshenEntity entity, float limbSwing, float limbSwingAmount, float partialTick) {
+    public void prepareMobModel(AshenEntity entity, float limbSwing, float limbSwingAmount, float partialTick) {
         rightLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.25F * limbSwingAmount;
         leftLeg.xRot = Mth.cos(limbSwing * 0.6662F + 3.141593F) * 1.25F * limbSwingAmount;
     }

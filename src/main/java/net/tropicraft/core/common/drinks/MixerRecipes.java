@@ -92,10 +92,10 @@ public final class MixerRecipes {
     }
 
     public static Drink getDrink(NonNullList<ItemStack> ingredientStacks) {
-        final Set<Ingredient> ingredients = new HashSet<>();
+        Set<Ingredient> ingredients = new HashSet<>();
 
         for (ItemStack stack : ingredientStacks) {
-            final Ingredient ingredient = Ingredient.findMatchingIngredient(stack);
+            Ingredient ingredient = Ingredient.findMatchingIngredient(stack);
             if (ingredient == null) {
                 return null;
             }
@@ -103,7 +103,7 @@ public final class MixerRecipes {
             ingredients.add(ingredient);
 
             for (MixerRecipe recipe : Drinks.getRecipes()) {
-                final HashSet recipeIngredientSet = new HashSet<>(Arrays.asList(recipe.getIngredients()));
+                HashSet recipeIngredientSet = new HashSet<>(Arrays.asList(recipe.getIngredients()));
 
                 if (ingredients.equals(recipeIngredientSet)) {
                     return recipe.getCraftingResult();

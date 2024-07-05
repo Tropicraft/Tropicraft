@@ -48,7 +48,7 @@ public final class TropicraftTemplatePools {
     public static final ResourceKey<StructureTemplatePool> HOME_TREE_BRANCHES_WEST = createKey("home_tree/branches/west");
     public static final ResourceKey<StructureTemplatePool> HOME_TREE_BRANCHES_SOUTH_WEST = createKey("home_tree/branches/southwest");
 
-    public static void bootstrap(final BootstrapContext<StructureTemplatePool> context) {
+    public static void bootstrap(BootstrapContext<StructureTemplatePool> context) {
         HolderGetter<StructureProcessorList> processorLists = context.lookup(Registries.PROCESSOR_LIST);
 
         Holder.Reference<StructureProcessorList> koaTownCenterProcessors = processorLists.getOrThrow(TropicraftProcessorLists.KOA_TOWN_CENTERS);
@@ -234,7 +234,7 @@ public final class TropicraftTemplatePools {
         return context.register(key, new StructureTemplatePool(fallback, Arrays.stream(pieces).map(WeightedPiece::resolve).toList(), placementBehaviour));
     }
 
-    private static ResourceKey<StructureTemplatePool> createKey(final String name) {
+    private static ResourceKey<StructureTemplatePool> createKey(String name) {
         return ResourceKey.create(Registries.TEMPLATE_POOL, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
     }
 

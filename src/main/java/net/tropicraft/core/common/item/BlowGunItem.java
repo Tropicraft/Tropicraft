@@ -31,7 +31,7 @@ public class BlowGunItem extends ProjectileWeaponItem {
             new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 3 * 20, 20)
     ));
 
-    public BlowGunItem(final Properties properties) {
+    public BlowGunItem(Properties properties) {
         super(properties);
     }
 
@@ -39,8 +39,8 @@ public class BlowGunItem extends ProjectileWeaponItem {
     public Predicate<ItemStack> getAllSupportedProjectiles() {
         return (itemStack) -> {
             if (itemStack.getItem() == Items.TIPPED_ARROW) {
-                final PotionContents contents = itemStack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY);
-                for (final MobEffectInstance effectInstance : contents.getAllEffects()) {
+                PotionContents contents = itemStack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY);
+                for (MobEffectInstance effectInstance : contents.getAllEffects()) {
                     if (effectInstance.getEffect() == MobEffects.MOVEMENT_SLOWDOWN) {
                         return true;
                     }
@@ -56,7 +56,7 @@ public class BlowGunItem extends ProjectileWeaponItem {
     }
 
     @Override
-    protected void shootProjectile(final LivingEntity pShooter, final Projectile pProjectile, final int pIndex, final float pVelocity, final float pInaccuracy, final float pAngle, @Nullable final LivingEntity pTarget) {
+    protected void shootProjectile(LivingEntity pShooter, Projectile pProjectile, int pIndex, float pVelocity, float pInaccuracy, float pAngle, @Nullable LivingEntity pTarget) {
     }
 
     @Override
@@ -72,8 +72,8 @@ public class BlowGunItem extends ProjectileWeaponItem {
     }
 
     private static ItemStack getAmmo(LivingEntity entityIn, ItemStack stack) {
-        final boolean isCreativeMode = entityIn instanceof Player && ((Player) entityIn).getAbilities().instabuild;
-        final ItemStack ammo = entityIn.getProjectile(stack);
+        boolean isCreativeMode = entityIn instanceof Player && ((Player) entityIn).getAbilities().instabuild;
+        ItemStack ammo = entityIn.getProjectile(stack);
         if (isCreativeMode) {
             return getProjectile();
         }
@@ -112,7 +112,7 @@ public class BlowGunItem extends ProjectileWeaponItem {
     }
 
     public static Arrow createArrow(Level world, LivingEntity shooter, ItemStack projectile, ItemStack weapon) {
-        final ItemStack projectileWithEffects = projectile.copy();
+        ItemStack projectileWithEffects = projectile.copy();
         projectileWithEffects.set(DataComponents.POTION_CONTENTS, POTION_CONTENTS);
         ArrowItem arrowItem = (ArrowItem) (projectile.getItem() instanceof ArrowItem ? projectile.getItem() : Items.ARROW);
         Arrow arrowEntity = (Arrow) arrowItem.createArrow(world, projectileWithEffects, shooter, weapon);

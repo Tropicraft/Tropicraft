@@ -181,7 +181,7 @@ public class IguanaModel extends HierarchicalModel<IguanaEntity> {
     }
 
     @Override
-    public void prepareMobModel(final IguanaEntity iggy, float limbSwing, float limbSwingAmount, float partialTicks) {
+    public void prepareMobModel(IguanaEntity iggy, float limbSwing, float limbSwingAmount, float partialTicks) {
         frontRightLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.75F * limbSwingAmount;
         frontLeftLeg.xRot = Mth.cos(limbSwing * 0.6662F + 3.141593F) * 1.75F * limbSwingAmount;
         rearRightLeg.xRot = Mth.cos(limbSwing * 0.6662F + 3.141593F) * 1.75F * limbSwingAmount;

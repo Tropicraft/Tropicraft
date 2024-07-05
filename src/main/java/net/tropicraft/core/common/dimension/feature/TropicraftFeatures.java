@@ -42,7 +42,7 @@ public class TropicraftFeatures {
     public static final DeferredHolder<Feature<?>, SeagrassFeature> SEAGRASS = register("seagrass", () -> new SeagrassFeature(NoneFeatureConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, HugePlantFeature> HUGE_PLANT = register("huge_plant", () -> new HugePlantFeature(SimpleBlockConfiguration.CODEC));
 
-    private static <T extends Feature<?>> DeferredHolder<Feature<?>, T> register(final String name, final Supplier<T> sup) {
+    private static <T extends Feature<?>> DeferredHolder<Feature<?>, T> register(String name, Supplier<T> sup) {
         return FEATURES.register(name, sup);
     }
 }

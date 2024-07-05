@@ -30,7 +30,7 @@ public class PlayerRotationHandler {
         PoseStack stack = event.getPoseStack();
         Player p = event.getEntity();
         Entity riding = p.getVehicle();
-        final float partialTick = event.getPartialTick();
+        float partialTick = event.getPartialTick();
 
         if (riding instanceof BeachFloatEntity floaty) {
             stack.pushPose();

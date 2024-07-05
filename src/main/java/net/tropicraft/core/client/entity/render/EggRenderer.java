@@ -16,7 +16,7 @@ import net.tropicraft.core.common.entity.egg.EggEntity;
 
 public class EggRenderer extends LivingEntityRenderer<EggEntity, EggModel> {
 
-    public EggRenderer(final EntityRendererProvider.Context context, final ModelLayerLocation modelLayerLocation) {
+    public EggRenderer(EntityRendererProvider.Context context, ModelLayerLocation modelLayerLocation) {
         super(context, new EggModel(context.bakeLayer(modelLayerLocation)), 1f);
         shadowStrength = 0.5f;
     }
@@ -44,7 +44,7 @@ public class EggRenderer extends LivingEntityRenderer<EggEntity, EggModel> {
 
         stack.scale(0.25f, 0.25f, 0.25f);
 
-        final VertexConsumer buffer = TropicraftRenderUtils.getEntityCutoutBuilder(bufferIn, getTextureLocation(ent));
+        VertexConsumer buffer = TropicraftRenderUtils.getEntityCutoutBuilder(bufferIn, getTextureLocation(ent));
         int overlay = getOverlayCoords(ent, getWhiteOverlayProgress(ent, partialTicks));
 
         PoseStack.Pose pose = stack.last();

@@ -21,7 +21,7 @@ public abstract class EggEntity extends LivingEntity {
 
     public double rotationRand;
 
-    public EggEntity(final EntityType<? extends EggEntity> type, Level w) {
+    public EggEntity(EntityType<? extends EggEntity> type, Level w) {
         super(type, w);
         rotationRand = 0;
         noCulling = true;
@@ -101,7 +101,7 @@ public abstract class EggEntity extends LivingEntity {
             // Hatch time!
             if (tickCount >= this.getHatchTime()) {
                 if (!level().isClientSide) {
-                    final Entity ent = onHatch();
+                    Entity ent = onHatch();
                     ent.moveTo(getX(), getY(), getZ(), 0.0F, 0.0F);
                     level().addFreshEntity(ent);
                     remove(RemovalReason.DISCARDED);

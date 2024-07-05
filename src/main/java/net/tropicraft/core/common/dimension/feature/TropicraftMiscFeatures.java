@@ -30,7 +30,7 @@ public final class TropicraftMiscFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> MANGANESE = createKey("manganese");
     public static final ResourceKey<ConfiguredFeature<?, ?>> SHAKA = createKey("shaka");
 
-    public static void bootstrap(final BootstrapContext<ConfiguredFeature<?, ?>> context) {
+    public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
         register(context, MUD_DISK, Feature.DISK, new DiskConfiguration(
                 RuleBasedBlockStateProvider.simple(TropicraftBlocks.MUD.get()),
                 BlockPredicate.matchesBlocks(Blocks.DIRT, Blocks.GRASS_BLOCK),
@@ -45,7 +45,7 @@ public final class TropicraftMiscFeatures {
         register(context, SHAKA, Feature.ORE, ore(8, TropicraftBlocks.SHAKA_ORE));
     }
 
-    private static ResourceKey<ConfiguredFeature<?, ?>> createKey(final String name) {
+    private static ResourceKey<ConfiguredFeature<?, ?>> createKey(String name) {
         return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
     }
 }

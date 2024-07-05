@@ -66,7 +66,7 @@ public abstract class EchinodermEntity extends WaterAnimal {
      */
     private double yOffset = -1;
 
-    public EchinodermEntity(final EntityType<? extends WaterAnimal> type, final Level world) {
+    public EchinodermEntity(EntityType<? extends WaterAnimal> type, Level world) {
         super(type, world);
         setEchinodermSize();
     }
@@ -145,7 +145,7 @@ public abstract class EchinodermEntity extends WaterAnimal {
         }
     }
 
-    public boolean isPotentialMate(final EchinodermEntity other) {
+    public boolean isPotentialMate(EchinodermEntity other) {
         // we are no pedophiles or rapists
         return !other.isBaby() && other.isHorny();
     }
@@ -191,7 +191,7 @@ public abstract class EchinodermEntity extends WaterAnimal {
 //    }
 
     @Override
-    public Vec3 getVehicleAttachmentPoint(final Entity entity) {
+    public Vec3 getVehicleAttachmentPoint(Entity entity) {
         if (yOffset < 0) {
             return super.getVehicleAttachmentPoint(entity);
         } else {

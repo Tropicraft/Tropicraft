@@ -30,7 +30,7 @@ public class SpearItem extends TridentItem {
         this.tier = tier;
     }
 
-    private static ItemAttributeModifiers createAttributes(final int attackDamage, final float attackSpeed) {
+    private static ItemAttributeModifiers createAttributes(int attackDamage, float attackSpeed) {
         return ItemAttributeModifiers.builder()
                 .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, attackDamage, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
                 .add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, attackSpeed, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
@@ -64,7 +64,7 @@ public class SpearItem extends TridentItem {
     }
 
     @Override
-    public boolean isPrimaryItemFor(final ItemStack stack, final Holder<Enchantment> enchantment) {
+    public boolean isPrimaryItemFor(ItemStack stack, Holder<Enchantment> enchantment) {
         if (enchantment.is(Enchantments.RIPTIDE)) {
             return false;
         }

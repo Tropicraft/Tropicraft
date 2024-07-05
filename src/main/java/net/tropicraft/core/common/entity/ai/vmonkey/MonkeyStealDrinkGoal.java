@@ -39,7 +39,7 @@ public class MonkeyStealDrinkGoal extends Goal {
         double d0 = leapTarget.getX() - entity.getX();
         double d1 = leapTarget.getZ() - entity.getZ();
         float f = Mth.sqrt((float) (d0 * d0 + d1 * d1));
-        final Vec3 motion = entity.getDeltaMovement();
+        Vec3 motion = entity.getDeltaMovement();
 
         if ((double) f >= 1.0E-4D) {
             entity.setDeltaMovement(motion.add(d0 / (double) f * 0.5D * 0.800000011920929D + motion.x * 0.20000000298023224D, 0, d1 / (double) f * 0.5D * 0.800000011920929D + motion.z * 0.20000000298023224D));
@@ -51,7 +51,7 @@ public class MonkeyStealDrinkGoal extends Goal {
     @Override
     public void tick() {
         if (entity.distanceToSqr(entity.getFollowing()) < 4.0F) {
-            for (final InteractionHand hand : InteractionHand.values()) {
+            for (InteractionHand hand : InteractionHand.values()) {
                 if (CocktailItem.getDrink(entity.getFollowing().getItemInHand(hand)) == Drink.PINA_COLADA) {
                     leapTowardTarget();
                     entity.getFollowing().setItemInHand(hand, ItemStack.EMPTY);

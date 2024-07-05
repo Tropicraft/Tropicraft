@@ -19,19 +19,19 @@ public class LoveTropicsShellItem extends ShellItem {
         private static final RandomSource rand = RandomSource.create();
 
         static {
-            for (final String name : ArrayUtils.addAll(Constants.LT17_NAMES, Constants.LT18_NAMES)) {
+            for (String name : ArrayUtils.addAll(Constants.LT17_NAMES, Constants.LT18_NAMES)) {
                 rand.setSeed(name.hashCode());
                 colors.put(name, FastColor.ARGB32.opaque(Color.HSBtoRGB(rand.nextFloat(), (rand.nextFloat() * 0.2f) + 0.7f, 1)));
             }
         }
     }
 
-    public LoveTropicsShellItem(final Properties properties) {
+    public LoveTropicsShellItem(Properties properties) {
         super(properties);
     }
 
     public static int getColor(ItemStack itemstack, int pass) {
-        final String name = itemstack.get(TropicraftDataComponents.SHELL_NAME);
+        String name = itemstack.get(TropicraftDataComponents.SHELL_NAME);
         if (name != null) {
             return pass == 0 ? CommonColors.WHITE : LTUtil.colors.get(name);
         }
@@ -39,12 +39,12 @@ public class LoveTropicsShellItem extends ShellItem {
     }
 
     @Override
-    public Component getName(final ItemStack stack) {
-        final String name = stack.get(TropicraftDataComponents.SHELL_NAME);
+    public Component getName(ItemStack stack) {
+        String name = stack.get(TropicraftDataComponents.SHELL_NAME);
         if (name == null) {
             return super.getName(stack);
         }
-        final String type = name.endsWith("s") ? "with_s" : "normal";
+        String type = name.endsWith("s") ? "with_s" : "normal";
         return Component.translatable("item.tropicraft.shell.owned." + type, name);
     }
 }
