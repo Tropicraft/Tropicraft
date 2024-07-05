@@ -13,8 +13,6 @@ import net.minecraft.world.entity.animal.AbstractSchoolingFish;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.HitResult;
-import net.tropicraft.core.common.item.TropicraftItems;
 
 public class PiranhaEntity extends AbstractSchoolingFish implements IAtlasFish {
 

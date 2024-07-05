@@ -150,7 +150,6 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static com.tterrag.registrate.providers.RegistrateRecipeProvider.has;
-import static com.tterrag.registrate.providers.loot.RegistrateBlockLootTables.*;
 import static net.minecraft.advancements.critereon.StatePropertiesPredicate.Builder.properties;
 import static net.minecraft.world.level.storage.loot.LootPool.lootPool;
 import static net.minecraft.world.level.storage.loot.LootTable.lootTable;
