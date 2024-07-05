@@ -54,8 +54,6 @@ public final class TikiTorchBlock extends Block {
         }
     }
 
-    ;
-
     public static final EnumProperty<TorchSection> SECTION = EnumProperty.create("section", TorchSection.class);
 
     protected static final VoxelShape BASE_SHAPE = Shapes.create(new AABB(0.4, 0.0D, 0.4, 0.6, 0.999999, 0.6));
