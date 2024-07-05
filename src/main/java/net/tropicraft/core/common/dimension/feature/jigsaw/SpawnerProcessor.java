@@ -31,7 +31,7 @@ public class SpawnerProcessor extends StructureProcessor {
 
     private final List<ResourceLocation> entityTypes;
 
-    public SpawnerProcessor(final List<ResourceLocation> entityTypes) {
+    public SpawnerProcessor(List<ResourceLocation> entityTypes) {
         this.entityTypes = entityTypes;
     }
 
@@ -43,21 +43,21 @@ public class SpawnerProcessor extends StructureProcessor {
     @Override
     @Nullable
     public StructureTemplate.StructureBlockInfo process(LevelReader world, BlockPos pos, BlockPos pos2, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo blockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
-        final Block block = blockInfo.state().getBlock();
+        Block block = blockInfo.state().getBlock();
 
         if (block != Blocks.SPAWNER) {
             return blockInfo;
         } else {
-            final CompoundTag tag = new CompoundTag();
+            CompoundTag tag = new CompoundTag();
 
             String typeName = entityTypes.get(0).toString();
             tag.putString("id", typeName);
 
             blockInfo.nbt().getCompound("SpawnData").putString("id", typeName);
             // TODO not working
-            final ListTag list = blockInfo.nbt().getList("SpawnPotentials", 9);
+            ListTag list = blockInfo.nbt().getList("SpawnPotentials", 9);
             for (int i = 0; i < list.size(); i++) {
-                final CompoundTag nbt = list.getCompound(i);
+                CompoundTag nbt = list.getCompound(i);
                 nbt.getCompound("Entity").putString("id", typeName);
             }
 

@@ -76,7 +76,7 @@ public class MarlinEntity extends AbstractFish {
         return SoundEvents.SALMON_FLOP;
     }
 
-    public void setTexture(final String textureName) {
+    public void setTexture(String textureName) {
         getEntityData().set(TEXTURE_NAME, textureName);
     }
 

@@ -37,7 +37,7 @@ public final class FruitingBranchBlock extends Block implements BonemealableBloc
     private static final VoxelShape WEST_SHAPE = Block.box(2.0, 4.0, 4.0, 16.0, 12.0, 12.0);
     private static final VoxelShape EAST_SHAPE = Block.box(0.0, 4.0, 4.0, 14.0, 12.0, 12.0);
 
-    public FruitingBranchBlock(final Properties properties) {
+    public FruitingBranchBlock(Properties properties) {
         super(properties);
         registerDefaultState(defaultBlockState().setValue(FACING, Direction.NORTH).setValue(AGE, 0));
     }
@@ -48,7 +48,7 @@ public final class FruitingBranchBlock extends Block implements BonemealableBloc
     }
 
     @Override
-    public VoxelShape getShape(final BlockState state, final BlockGetter level, final BlockPos pos, final CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return switch (state.getValue(FACING)) {
             case NORTH -> NORTH_SHAPE;
             case SOUTH -> SOUTH_SHAPE;
@@ -59,20 +59,20 @@ public final class FruitingBranchBlock extends Block implements BonemealableBloc
     }
 
     @Override
-    public void randomTick(final BlockState state, final ServerLevel level, final BlockPos pos, final RandomSource random) {
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (random.nextInt(GROW_CHANCE) == 0) {
             level.setBlockAndUpdate(pos, state.cycle(AGE));
         }
     }
 
     @Override
-    public boolean isRandomlyTicking(final BlockState state) {
+    public boolean isRandomlyTicking(BlockState state) {
         return state.getValue(AGE) < MAX_AGE;
     }
 
     @Override
-    public BlockState updateShape(final BlockState state, final Direction direction, final BlockState neighborState, final LevelAccessor level, final BlockPos pos, final BlockPos neighborPos) {
-        final Direction facing = state.getValue(FACING);
+    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+        Direction facing = state.getValue(FACING);
         if (direction == facing.getOpposite()) {
             return neighborState.isFaceSturdy(level, neighborPos, facing) ? state : Blocks.AIR.defaultBlockState();
         }
@@ -80,16 +80,16 @@ public final class FruitingBranchBlock extends Block implements BonemealableBloc
     }
 
     @Override
-    public boolean canSurvive(final BlockState state, final LevelReader level, final BlockPos pos) {
-        final Direction facing = state.getValue(FACING);
-        final BlockPos attachPos = pos.relative(facing.getOpposite());
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        Direction facing = state.getValue(FACING);
+        BlockPos attachPos = pos.relative(facing.getOpposite());
         return level.getBlockState(attachPos).isFaceSturdy(level, attachPos, facing);
     }
 
     @Nullable
     @Override
-    public BlockState getStateForPlacement(final BlockPlaceContext context) {
-        final Direction facing = context.getClickedFace();
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        Direction facing = context.getClickedFace();
         if (facing.getAxis() == Direction.Axis.Y) {
             return null;
         }
@@ -97,32 +97,32 @@ public final class FruitingBranchBlock extends Block implements BonemealableBloc
     }
 
     @Override
-    public BlockState rotate(final BlockState state, final Rotation rotation) {
+    public BlockState rotate(BlockState state, Rotation rotation) {
         return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
     }
 
     @Override
-    public BlockState mirror(final BlockState state, final Mirror mirror) {
+    public BlockState mirror(BlockState state, Mirror mirror) {
         return state.setValue(FACING, mirror.mirror(state.getValue(FACING)));
     }
 
     @Override
-    protected void createBlockStateDefinition(final StateDefinition.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING, AGE);
     }
 
     @Override
-    public boolean isValidBonemealTarget(final LevelReader level, final BlockPos pos, final BlockState state) {
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
         return state.getValue(AGE) < MAX_AGE;
     }
 
     @Override
-    public boolean isBonemealSuccess(final Level level, final RandomSource random, final BlockPos pos, final BlockState state) {
+    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
         return true;
     }
 
     @Override
-    public void performBonemeal(final ServerLevel level, final RandomSource random, final BlockPos pos, final BlockState state) {
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
         level.setBlock(pos, state.cycle(AGE), Block.UPDATE_CLIENTS);
     }
 }

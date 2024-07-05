@@ -26,11 +26,11 @@ public record Cocktail(
             Cocktail::new
     );
 
-    public Cocktail(final Drink drink, final List<Ingredient> ingredients) {
+    public Cocktail(Drink drink, List<Ingredient> ingredients) {
         this(drink, ingredients, computeColor(ingredients));
     }
 
-    public static int computeColor(final List<Ingredient> ingredients) {
+    public static int computeColor(List<Ingredient> ingredients) {
         Ingredient primary = ingredients.stream().filter(Ingredient::isPrimary).findAny().orElse(null);
         int color = primary == null ? DEFAULT_COLOR : primary.getColor();
 

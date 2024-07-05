@@ -17,13 +17,13 @@ import java.util.List;
 
 public class TropicraftPlacementUtil {
     @SafeVarargs
-    public static Holder.Reference<PlacedFeature> registerRandomChecked(final BootstrapContext<PlacedFeature> context, final ResourceKey<PlacedFeature> key, final Holder<PlacedFeature>... choices) {
+    public static Holder.Reference<PlacedFeature> registerRandomChecked(BootstrapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key, Holder<PlacedFeature>... choices) {
         Holder<ConfiguredFeature<?, ?>> randomConfigured = Holder.direct(TropicraftFeatureUtil.randomFeature(Arrays.asList(choices)));
         return context.register(key, new PlacedFeature(randomConfigured, List.of()));
     }
 
-    public static Holder.Reference<PlacedFeature> register(final BootstrapContext<PlacedFeature> context, final ResourceKey<PlacedFeature> key, final ResourceKey<ConfiguredFeature<?, ?>> featureKey, final List<PlacementModifier> placement) {
-        final Holder<ConfiguredFeature<?, ?>> feature = context.lookup(Registries.CONFIGURED_FEATURE).getOrThrow(featureKey);
+    public static Holder.Reference<PlacedFeature> register(BootstrapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key, ResourceKey<ConfiguredFeature<?, ?>> featureKey, List<PlacementModifier> placement) {
+        Holder<ConfiguredFeature<?, ?>> feature = context.lookup(Registries.CONFIGURED_FEATURE).getOrThrow(featureKey);
         return context.register(key, new PlacedFeature(feature, placement));
     }
 

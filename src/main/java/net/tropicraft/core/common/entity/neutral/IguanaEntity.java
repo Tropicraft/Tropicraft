@@ -77,7 +77,7 @@ public class IguanaEntity extends TropicraftCreatureEntity {
     }
 
     @Override
-    public void addAdditionalSaveData(final CompoundTag compound) {
+    public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putShort("Anger", (short) angerLevel);
 
@@ -89,14 +89,14 @@ public class IguanaEntity extends TropicraftCreatureEntity {
     }
 
     @Override
-    public void readAdditionalSaveData(final CompoundTag compound) {
+    public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         angerLevel = compound.getShort("Anger");
         String hurtBy = compound.getString("HurtBy");
 
         if (!hurtBy.isEmpty()) {
             angerTargetUUID = UUID.fromString(hurtBy);
-            final Player entityplayer = level().getPlayerByUUID(angerTargetUUID);
+            Player entityplayer = level().getPlayerByUUID(angerTargetUUID);
             setLastHurtByMob(entityplayer);
 
             if (entityplayer != null) {
@@ -163,7 +163,7 @@ public class IguanaEntity extends TropicraftCreatureEntity {
     }
 
     @Override
-    protected SoundEvent getHurtSound(final DamageSource damageSource) {
+    protected SoundEvent getHurtSound(DamageSource damageSource) {
         return Sounds.IGGY_ATTACK.get();
     }
 

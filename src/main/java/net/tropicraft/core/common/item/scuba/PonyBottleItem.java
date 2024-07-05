@@ -29,7 +29,7 @@ public class PonyBottleItem extends Item {
     }
 
     @Override
-    public int getUseDuration(final ItemStack stack, final LivingEntity entity) {
+    public int getUseDuration(ItemStack stack, LivingEntity entity) {
         return 32;
     }
 

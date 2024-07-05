@@ -33,7 +33,7 @@ public final class MahoganyNutBlock extends Block implements BonemealableBlock {
             Block.box(2.5, 1.0, 2.5, 13.5, 14.0, 13.5)
     };
 
-    public MahoganyNutBlock(final Properties properties) {
+    public MahoganyNutBlock(Properties properties) {
         super(properties);
         registerDefaultState(defaultBlockState().setValue(AGE, 0));
     }
@@ -44,24 +44,24 @@ public final class MahoganyNutBlock extends Block implements BonemealableBlock {
     }
 
     @Override
-    public VoxelShape getShape(final BlockState state, final BlockGetter level, final BlockPos pos, final CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPES[state.getValue(AGE)];
     }
 
     @Override
-    public void randomTick(final BlockState state, final ServerLevel level, final BlockPos pos, final RandomSource random) {
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (random.nextInt(GROW_CHANCE) == 0) {
             level.setBlockAndUpdate(pos, state.cycle(AGE));
         }
     }
 
     @Override
-    public boolean isRandomlyTicking(final BlockState state) {
+    public boolean isRandomlyTicking(BlockState state) {
         return state.getValue(AGE) < MAX_AGE;
     }
 
     @Override
-    public BlockState updateShape(final BlockState state, final Direction direction, final BlockState neighborState, final LevelAccessor level, final BlockPos pos, final BlockPos neighborPos) {
+    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
         if (direction == Direction.UP && !canAttachTo(level, neighborState, neighborPos)) {
             return Blocks.AIR.defaultBlockState();
         }
@@ -69,32 +69,32 @@ public final class MahoganyNutBlock extends Block implements BonemealableBlock {
     }
 
     @Override
-    public boolean canSurvive(final BlockState state, final LevelReader level, final BlockPos pos) {
-        final BlockPos attachPos = pos.above();
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        BlockPos attachPos = pos.above();
         return canAttachTo(level, level.getBlockState(attachPos), attachPos);
     }
 
-    private static boolean canAttachTo(final LevelReader level, final BlockState state, final BlockPos pos) {
+    private static boolean canAttachTo(LevelReader level, BlockState state, BlockPos pos) {
         return state.isFaceSturdy(level, pos, Direction.DOWN) || state.is(BlockTags.LEAVES);
     }
 
     @Override
-    protected void createBlockStateDefinition(final StateDefinition.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(AGE);
     }
 
     @Override
-    public boolean isValidBonemealTarget(final LevelReader level, final BlockPos pos, final BlockState state) {
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
         return state.getValue(AGE) < MAX_AGE;
     }
 
     @Override
-    public boolean isBonemealSuccess(final Level level, final RandomSource random, final BlockPos pos, final BlockState state) {
+    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
         return true;
     }
 
     @Override
-    public void performBonemeal(final ServerLevel level, final RandomSource random, final BlockPos pos, final BlockState state) {
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
         level.setBlock(pos, state.cycle(AGE), Block.UPDATE_CLIENTS);
     }
 }

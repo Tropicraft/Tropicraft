@@ -17,7 +17,7 @@ public class EIHRenderer extends MobRenderer<EIHEntity, EIHModel> {
     private static final ResourceLocation TEXTURE_AWARE = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/eih/headawaretext.png");
     private static final ResourceLocation TEXTURE_ANGRY = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/eih/headangrytext.png");
 
-    public EIHRenderer(final EntityRendererProvider.Context context) {
+    public EIHRenderer(EntityRendererProvider.Context context) {
         super(context, new EIHModel(context.bakeLayer(TropicraftRenderLayers.EIH_LAYER)), 1.2F);
     }
 
@@ -28,7 +28,7 @@ public class EIHRenderer extends MobRenderer<EIHEntity, EIHModel> {
 
     @Nullable
     @Override
-    public ResourceLocation getTextureLocation(final EIHEntity eih) {
+    public ResourceLocation getTextureLocation(EIHEntity eih) {
         if (eih.isAware()) {
             return TEXTURE_AWARE;
         } else if (eih.isAngry()) {

@@ -11,7 +11,7 @@ import net.tropicraft.core.common.dimension.TropicraftDimension;
 import static net.minecraft.commands.Commands.literal;
 
 public final class TropicraftCommands {
-    public static void register(final CommandDispatcher<CommandSourceStack> dispatcher) {
+    public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(
                 literal("tropics")
                         .requires(s -> s.hasPermission(2))
@@ -32,12 +32,12 @@ public final class TropicraftCommands {
         }
     }
 
-    private static int teleport(final CommandSourceStack source) throws CommandSyntaxException {
+    private static int teleport(CommandSourceStack source) throws CommandSyntaxException {
         TropicraftDimension.teleportPlayer(source.getPlayerOrException(), TropicraftDimension.WORLD);
         return Command.SINGLE_SUCCESS;
     }
 
-    private static int teleportWithPortal(final CommandSourceStack source) throws CommandSyntaxException {
+    private static int teleportWithPortal(CommandSourceStack source) throws CommandSyntaxException {
         TropicraftDimension.teleportPlayerWithPortal(source.getPlayerOrException(), TropicraftDimension.WORLD);
         return Command.SINGLE_SUCCESS;
     }

@@ -12,7 +12,7 @@ import net.tropicraft.core.common.entity.passive.WhiteLippedPeccaryEntity;
 public class WhiteLippedPeccaryRenderer extends MobRenderer<WhiteLippedPeccaryEntity, WhiteLippedPeccaryModel<WhiteLippedPeccaryEntity>> {
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/white_lipped_peccary.png");
 
-    public WhiteLippedPeccaryRenderer(final EntityRendererProvider.Context context) {
+    public WhiteLippedPeccaryRenderer(EntityRendererProvider.Context context) {
         super(context, new WhiteLippedPeccaryModel<>(context.bakeLayer(TropicraftRenderLayers.WHITE_LIPPED_PECCARY_LAYER)), 0.5F);
     }
 

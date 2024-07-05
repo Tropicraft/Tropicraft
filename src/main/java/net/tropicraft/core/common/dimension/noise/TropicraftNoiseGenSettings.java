@@ -21,7 +21,7 @@ import java.util.List;
 public final class TropicraftNoiseGenSettings {
     public static final ResourceKey<NoiseGeneratorSettings> TROPICS = createKey("tropics");
 
-    public static void bootstrap(final BootstrapContext<NoiseGeneratorSettings> context) {
+    public static void bootstrap(BootstrapContext<NoiseGeneratorSettings> context) {
         HolderGetter<DensityFunction> densityFunctions = context.lookup(Registries.DENSITY_FUNCTION);
         HolderGetter<NormalNoise.NoiseParameters> noiseParameters = context.lookup(Registries.NOISE);
         context.register(TROPICS, createNoise(densityFunctions, noiseParameters, true));
@@ -31,7 +31,7 @@ public final class TropicraftNoiseGenSettings {
         // Constant ternaries are amplified, keeping temporarily until we figure out good noise values
         NoiseSettings settings = NoiseSettings.create(-64, 384, 1, 2);
 
-        final SurfaceRules.RuleSource surface = tropisurface ? TropicraftSurfaces.tropics() : SurfaceRuleData.overworld();
+        SurfaceRules.RuleSource surface = tropisurface ? TropicraftSurfaces.tropics() : SurfaceRuleData.overworld();
         return new NoiseGeneratorSettings(
                 settings,
                 Blocks.STONE.defaultBlockState(),
@@ -47,7 +47,7 @@ public final class TropicraftNoiseGenSettings {
         );
     }
 
-    private static ResourceKey<NoiseGeneratorSettings> createKey(final String name) {
+    private static ResourceKey<NoiseGeneratorSettings> createKey(String name) {
         return ResourceKey.create(Registries.NOISE_SETTINGS, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
     }
 }

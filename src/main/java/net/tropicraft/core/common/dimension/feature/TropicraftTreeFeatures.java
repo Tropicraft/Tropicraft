@@ -109,7 +109,7 @@ public final class TropicraftTreeFeatures {
 
     private static final TwoLayersFeatureSize MANGROVE_MINIMUM_SIZE = new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4));
 
-    public static void bootstrap(final BootstrapContext<ConfiguredFeature<?, ?>> context) {
+    public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
         register(context, GRAPEFRUIT_TREE, Feature.TREE, fruitTree(TropicraftBlocks.GRAPEFRUIT_LEAVES));
         register(context, ORANGE_TREE, Feature.TREE, fruitTree(TropicraftBlocks.ORANGE_LEAVES));
         register(context, LEMON_TREE, Feature.TREE, fruitTree(TropicraftBlocks.LEMON_LEAVES));
@@ -237,7 +237,7 @@ public final class TropicraftTreeFeatures {
                         .build());
     }
 
-    private static ResourceKey<ConfiguredFeature<?, ?>> createKey(final String name) {
+    private static ResourceKey<ConfiguredFeature<?, ?>> createKey(String name) {
         return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
     }
 }

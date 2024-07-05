@@ -11,19 +11,19 @@ import net.tropicraft.core.common.entity.placeable.WallItemEntity;
 
 public class ShellItem extends Item {
 
-    public ShellItem(final Properties properties) {
+    public ShellItem(Properties properties) {
         super(properties);
     }
 
     @Override
-    public InteractionResult useOn(final UseOnContext context) {
-        final Direction facing = context.getClickedFace();
-        final ItemStack stack = context.getPlayer().getItemInHand(context.getHand());
-        final BlockPos pos = context.getClickedPos().relative(facing);
+    public InteractionResult useOn(UseOnContext context) {
+        Direction facing = context.getClickedFace();
+        ItemStack stack = context.getPlayer().getItemInHand(context.getHand());
+        BlockPos pos = context.getClickedPos().relative(facing);
 
         // Must set the world coordinates here, or onValidSurface will be false.
-        final Level world = context.getLevel();
-        final WallItemEntity hangingEntity = new WallItemEntity(world, pos, facing);
+        Level world = context.getLevel();
+        WallItemEntity hangingEntity = new WallItemEntity(world, pos, facing);
         hangingEntity.setItem(stack);
 
         if (!context.getPlayer().mayUseItemAt(pos, facing, stack)) {

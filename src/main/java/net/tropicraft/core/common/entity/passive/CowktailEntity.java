@@ -69,10 +69,10 @@ public class CowktailEntity extends Cow implements IShearable {
                 itemstack.shrink(1);
             }
 
-            final List<RegistryEntry<Item, CocktailItem>> cocktails = new ArrayList<>(TropicraftItems.COCKTAILS.values());
+            List<RegistryEntry<Item, CocktailItem>> cocktails = new ArrayList<>(TropicraftItems.COCKTAILS.values());
             // Remove generic cocktail from cowktail
             cocktails.removeIf(cocktail -> cocktail.isBound() && cocktail.get().getDrink() == Drink.COCKTAIL);
-            final ItemStack cocktailItem = new ItemStack(cocktails.get(random.nextInt(cocktails.size())).get());
+            ItemStack cocktailItem = new ItemStack(cocktails.get(random.nextInt(cocktails.size())).get());
 
             if (itemstack.isEmpty()) {
                 player.setItemInHand(hand, cocktailItem);
@@ -131,12 +131,12 @@ public class CowktailEntity extends Cow implements IShearable {
     }
 
     @Override
-    public boolean isShearable(@Nullable final Player player, final ItemStack item, final Level level, final BlockPos pos) {
+    public boolean isShearable(@Nullable Player player, ItemStack item, Level level, BlockPos pos) {
         return !isBaby();
     }
 
     @Override
-    public List<ItemStack> onSheared(@Nullable final Player player, final ItemStack item, final Level level, final BlockPos pos) {
+    public List<ItemStack> onSheared(@Nullable Player player, ItemStack item, Level level, BlockPos pos) {
         java.util.List<ItemStack> ret = new java.util.ArrayList<>();
         this.level().addParticle(ParticleTypes.EXPLOSION, this.getX(), this.getY(0.5D), this.getZ(), 0.0D, 0.0D, 0.0D);
         if (!this.level().isClientSide) {
@@ -177,7 +177,7 @@ public class CowktailEntity extends Cow implements IShearable {
             this.renderState = renderStateIn;
         }
 
-        public static CowktailEntity.Type getRandomType(final RandomSource rand) {
+        public static CowktailEntity.Type getRandomType(RandomSource rand) {
             return Util.getRandom(values(), rand);
         }
 

@@ -25,7 +25,7 @@ public class PoisonBlotEntity extends ThrowableProjectile {
     @Override
     protected void onHit(HitResult result) {
         if (result.getType() == HitResult.Type.ENTITY) {
-            final Entity entity = ((EntityHitResult) result).getEntity();
+            Entity entity = ((EntityHitResult) result).getEntity();
 
             if (entity instanceof Player) {
                 Player player = (Player) entity;

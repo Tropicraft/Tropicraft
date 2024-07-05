@@ -65,7 +65,7 @@ public class GibnutEntity extends Animal {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob otherParent) {
-        final GibnutEntity child = TropicraftEntities.GIBNUT.get().create(level);
+        GibnutEntity child = TropicraftEntities.GIBNUT.get().create(level);
         if (child != null) {
             if (isVibing() || (otherParent instanceof GibnutEntity partner && partner.isVibing())) {
                 child.setVibing(true);
@@ -81,18 +81,18 @@ public class GibnutEntity extends Animal {
     }
 
     @Override
-    public void readAdditionalSaveData(final CompoundTag tag) {
+    public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         setVibing(tag.getBoolean("vibing"));
     }
 
     @Override
-    public void addAdditionalSaveData(final CompoundTag tag) {
+    public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("vibing", isVibing());
     }
 
-    public void setVibing(final boolean vibing) {
+    public void setVibing(boolean vibing) {
         getEntityData().set(DATA_VIBING, vibing);
     }
 

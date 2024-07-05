@@ -93,7 +93,7 @@ public class ModelScubaGear extends HumanoidModel<LivingEntity> {
 //        this( 0.0f, null );
 //    }
 
-    public ModelScubaGear(ModelPart root, final EquipmentSlot slot) {
+    public ModelScubaGear(ModelPart root, EquipmentSlot slot) {
         super(root, RenderType::entityCutout);
         this.slot = slot;
 
@@ -915,7 +915,7 @@ public class ModelScubaGear extends HumanoidModel<LivingEntity> {
         return LayerDefinition.create(modelData, 128, 64);
     }
 
-    public static ModelScubaGear createModel(ModelLayerLocation entityModelLayer, EntityModelSet entityModelLoader, final EquipmentSlot slot) {
+    public static ModelScubaGear createModel(ModelLayerLocation entityModelLayer, EntityModelSet entityModelLoader, EquipmentSlot slot) {
         return new ModelScubaGear(entityModelLoader == null ?
                 create().bakeRoot() :
                 entityModelLoader.bakeLayer(entityModelLayer), slot);

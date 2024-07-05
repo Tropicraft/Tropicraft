@@ -21,23 +21,23 @@ public class SeaUrchinRenderer extends MobRenderer<SeaUrchinEntity, SeaUrchinMod
     public static final float ADULT_RENDER_SCALE = 1f;
     public static final ResourceLocation SEA_URCHIN_TEXTURE = TropicraftRenderUtils.bindTextureEntity("seaurchin");
 
-    public SeaUrchinRenderer(final EntityRendererProvider.Context context) {
+    public SeaUrchinRenderer(EntityRendererProvider.Context context) {
         super(context, new SeaUrchinModel(context.bakeLayer(TropicraftRenderLayers.SEA_URCHIN_LAYER)), 0.5f);
     }
 
     @Override
-    protected void scale(final SeaUrchinEntity urchin, final PoseStack stack, final float partialTickTime) {
+    protected void scale(SeaUrchinEntity urchin, PoseStack stack, float partialTickTime) {
         shadowRadius = 0.15f;
         shadowStrength = 0.5f;
         float growthProgress = urchin.getGrowthProgress();
-        final float scale = BABY_RENDER_SCALE + growthProgress * (ADULT_RENDER_SCALE - BABY_RENDER_SCALE);
-        final float scaleAmt = 0.5f * scale;
+        float scale = BABY_RENDER_SCALE + growthProgress * (ADULT_RENDER_SCALE - BABY_RENDER_SCALE);
+        float scaleAmt = 0.5f * scale;
 
         stack.scale(scaleAmt, scaleAmt, scaleAmt);
     }
 
     @Override
-    public ResourceLocation getTextureLocation(final SeaUrchinEntity entity) {
+    public ResourceLocation getTextureLocation(SeaUrchinEntity entity) {
         return SEA_URCHIN_TEXTURE;
     }
 }

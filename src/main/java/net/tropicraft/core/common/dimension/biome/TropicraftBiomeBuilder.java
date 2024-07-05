@@ -79,7 +79,7 @@ public class TropicraftBiomeBuilder {
         return preset;
     }
 
-    public static void bootstrap(final BootstrapContext<MultiNoiseBiomeSourceParameterList> context) {
+    public static void bootstrap(BootstrapContext<MultiNoiseBiomeSourceParameterList> context) {
         context.register(PARAMETER_LIST, new MultiNoiseBiomeSourceParameterList(PRESET, context.lookup(Registries.BIOME)));
     }
 

@@ -12,7 +12,7 @@ public class TropicraftWoodTypes {
     public static final WoodType THATCH = register("thatch");
     public static final WoodType MANGROVE = register("mangrove");
 
-    private static WoodType register(final String name) {
+    private static WoodType register(String name) {
         return WoodType.register(new WoodType(ResourceLocation.fromNamespaceAndPath(Constants.MODID, name).toString(), BlockSetType.OAK));
     }
 }

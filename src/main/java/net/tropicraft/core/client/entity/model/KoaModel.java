@@ -158,11 +158,11 @@ public class KoaModel extends HumanoidModel<EntityKoaBase> {
         hat.visible = false;
 
         riding = entity.isSitting() || entity.isPassenger();
-        final boolean isDancing = entity.isDancing();
+        boolean isDancing = entity.isDancing();
 
         float ticks = (entity.tickCount + Minecraft.getInstance().getTimer().getGameTimeDeltaTicks()) % 360;
 
-        final float headRot = Mth.cos(ticks * 35F * Mth.DEG_TO_RAD);
+        float headRot = Mth.cos(ticks * 35F * Mth.DEG_TO_RAD);
         if (isDancing) {
             head.zRot = headRot * 0.05F;
         } else {

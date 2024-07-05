@@ -20,7 +20,7 @@ public class WallItemRenderer extends EntityRenderer<WallItemEntity> {
     }
 
     @Override
-    public void render(final WallItemEntity entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource bufferIn, int packedLightIn) {
+    public void render(WallItemEntity entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource bufferIn, int packedLightIn) {
         stack.pushPose();
         stack.mulPose(Axis.XP.rotationDegrees(entity.getXRot()));
         stack.mulPose(Axis.YP.rotationDegrees(180.0F - entity.getYRot()));

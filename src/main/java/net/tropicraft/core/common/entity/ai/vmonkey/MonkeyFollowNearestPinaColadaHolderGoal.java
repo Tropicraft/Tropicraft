@@ -20,7 +20,7 @@ public class MonkeyFollowNearestPinaColadaHolderGoal extends Goal {
     private final float stopDistance;
     private float oldWaterCost;
 
-    public MonkeyFollowNearestPinaColadaHolderGoal(final VMonkeyEntity entity, double speedModifier, float stopDistance, float areaSize) {
+    public MonkeyFollowNearestPinaColadaHolderGoal(VMonkeyEntity entity, double speedModifier, float stopDistance, float areaSize) {
         this.monkey = entity;
         this.speedModifier = speedModifier;
         this.stopDistance = stopDistance;

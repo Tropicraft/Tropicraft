@@ -29,13 +29,13 @@ public class PineappleBlock extends TallFlowerBlock implements BonemealableBlock
 
     public static final IntegerProperty STAGE = BlockStateProperties.AGE_7;
 
-    public PineappleBlock(final Properties properties) {
+    public PineappleBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(super.defaultBlockState().setValue(STAGE, 0));
     }
 
     @Override
-    protected void createBlockStateDefinition(final StateDefinition.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(HALF, STAGE);
     }
 
@@ -50,26 +50,26 @@ public class PineappleBlock extends TallFlowerBlock implements BonemealableBlock
     }
 
     @Override
-    public void performBonemeal(final ServerLevel world, final RandomSource random, final BlockPos pos, final BlockState state) {
-        final int currentStage = state.getValue(STAGE);
+    public void performBonemeal(ServerLevel world, RandomSource random, BlockPos pos, BlockState state) {
+        int currentStage = state.getValue(STAGE);
         if (currentStage < TOTAL_GROW_TICKS) {
-            final BlockState growthState = state.setValue(STAGE, currentStage + 1);
+            BlockState growthState = state.setValue(STAGE, currentStage + 1);
             world.setBlock(pos, growthState, 4);
         } else {
-            final BlockState above = world.getBlockState(pos.above());
+            BlockState above = world.getBlockState(pos.above());
 
             // Don't bother placing if it's already there
             if (above.getBlock() == this) return;
             if (state.getValue(HALF) == DoubleBlockHalf.UPPER) return;
 
             // Place actual pineapple plant above stem
-            final BlockState fullGrowth = state.setValue(HALF, DoubleBlockHalf.UPPER);
+            BlockState fullGrowth = state.setValue(HALF, DoubleBlockHalf.UPPER);
             world.setBlock(pos.above(), fullGrowth, 3);
         }
     }
 
     @Override
-    public void tick(final BlockState state, final ServerLevel world, final BlockPos pos, final RandomSource random) {
+    public void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
         if (pos.getY() > world.getMaxBuildHeight() - 2) {
             return;
         }
@@ -122,7 +122,7 @@ public class PineappleBlock extends TallFlowerBlock implements BonemealableBlock
     }
 
     private boolean canPlaceBlockAt(LevelReader worldIn, BlockPos pos, BlockState state) {
-        final BlockState belowState = worldIn.getBlockState(pos.below());
+        BlockState belowState = worldIn.getBlockState(pos.below());
         return belowState.getBlock().canSustainPlant(belowState, worldIn, pos.below(), Direction.UP, state).isTrue();
     }
 

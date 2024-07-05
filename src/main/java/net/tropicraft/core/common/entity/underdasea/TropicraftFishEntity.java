@@ -55,7 +55,7 @@ public abstract class TropicraftFishEntity extends WaterAnimal {
 
     private boolean fishable = false;
 
-    protected TropicraftFishEntity(final EntityType<? extends WaterAnimal> type, final Level world) {
+    protected TropicraftFishEntity(EntityType<? extends WaterAnimal> type, Level world) {
         super(type, world);
     }
 

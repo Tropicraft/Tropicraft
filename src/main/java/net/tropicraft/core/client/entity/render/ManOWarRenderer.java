@@ -11,7 +11,7 @@ import net.tropicraft.core.common.entity.underdasea.ManOWarEntity;
 
 public class ManOWarRenderer extends MobRenderer<ManOWarEntity, ManOWarModel> {
 
-    public ManOWarRenderer(final EntityRendererProvider.Context context) {
+    public ManOWarRenderer(EntityRendererProvider.Context context) {
         super(context, new ManOWarModel(context.bakeLayer(TropicraftRenderLayers.MAN_O_WAR_OUTER_LAYER)), 0.35f);
         addLayer(new ManOWarGelLayer(this, new ManOWarModel(context.bakeLayer(TropicraftRenderLayers.MAN_O_WAR_GEL_LAYER))));
     }

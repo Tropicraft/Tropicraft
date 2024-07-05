@@ -123,7 +123,7 @@ public class SpiderMonkeyEntity extends Animal {
     }
 
     @Override
-    public void addAdditionalSaveData(final CompoundTag nbt) {
+    public void addAdditionalSaveData(CompoundTag nbt) {
         super.addAdditionalSaveData(nbt);
         nbt.putBoolean("standing", this.isStanding());
     }

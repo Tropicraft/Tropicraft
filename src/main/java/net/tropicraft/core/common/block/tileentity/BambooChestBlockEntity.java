@@ -16,7 +16,7 @@ public class BambooChestBlockEntity extends ChestBlockEntity {
      */
     private boolean unbreakable = false;
 
-    public BambooChestBlockEntity(final BlockEntityType<BambooChestBlockEntity> type, final BlockPos pos, final BlockState state) {
+    public BambooChestBlockEntity(BlockEntityType<BambooChestBlockEntity> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
 
@@ -31,13 +31,13 @@ public class BambooChestBlockEntity extends ChestBlockEntity {
     }
 
     @Override
-    protected void loadAdditional(final CompoundTag compound, final HolderLookup.Provider registries) {
+    protected void loadAdditional(CompoundTag compound, HolderLookup.Provider registries) {
         super.loadAdditional(compound, registries);
         unbreakable = compound.getBoolean("unbreakable");
     }
 
     @Override
-    protected void saveAdditional(final CompoundTag compound, final HolderLookup.Provider registries) {
+    protected void saveAdditional(CompoundTag compound, HolderLookup.Provider registries) {
         super.saveAdditional(compound, registries);
         compound.putBoolean("unbreakable", unbreakable);
     }

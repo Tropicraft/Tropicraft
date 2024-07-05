@@ -12,7 +12,7 @@ import net.tropicraft.core.common.entity.SeaTurtleEntity;
 
 public class SeaTurtleRenderer extends MobRenderer<SeaTurtleEntity, SeaTurtleModel> {
 
-    public SeaTurtleRenderer(final EntityRendererProvider.Context context) {
+    public SeaTurtleRenderer(EntityRendererProvider.Context context) {
         super(context, new SeaTurtleModel(context.bakeLayer(TropicraftRenderLayers.SEA_TURTLE_LAYER)), 0.7F);
         shadowRadius = 0.5f;
         shadowStrength = 0.5f;
@@ -21,7 +21,7 @@ public class SeaTurtleRenderer extends MobRenderer<SeaTurtleEntity, SeaTurtleMod
     @Override
     public void render(SeaTurtleEntity turtle, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource bufferIn, int packedLightIn) {
         float scale = 0.3f;
-        final float existingTime = (float) turtle.tickCount / 4000;
+        float existingTime = (float) turtle.tickCount / 4000;
         if (turtle.tickCount < 30) {
             shadowStrength = 0.5f;
             shadowRadius = 0.2f + existingTime;

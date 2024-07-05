@@ -30,7 +30,7 @@ import java.util.List;
 public class CocktailItem extends Item {
     private final Drink drink;
 
-    public CocktailItem(final Drink drink, final Properties properties) {
+    public CocktailItem(Drink drink, Properties properties) {
         super(properties);
         this.drink = drink;
     }
@@ -39,15 +39,15 @@ public class CocktailItem extends Item {
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         Drink drink = getDrink(stack);
         if (drink == Drink.COCKTAIL) {
-            final List<Ingredient> ingredients = getIngredients(stack);
-            for (final Ingredient ingredient : ingredients) {
+            List<Ingredient> ingredients = getIngredients(stack);
+            for (Ingredient ingredient : ingredients) {
                 tooltip.add(ingredient.getDisplayName());
             }
         }
     }
 
     public static int getCocktailColor(ItemStack stack) {
-        final Cocktail cocktail = stack.get(TropicraftDataComponents.COCKTAIL);
+        Cocktail cocktail = stack.get(TropicraftDataComponents.COCKTAIL);
         if (cocktail == null) {
             return Cocktail.DEFAULT_COLOR;
         }
@@ -55,7 +55,7 @@ public class CocktailItem extends Item {
     }
 
     public static ItemStack makeCocktail(MixerRecipe recipe) {
-        final ItemStack stack = MixerRecipes.getItemStack(recipe.getCraftingResult());
+        ItemStack stack = MixerRecipes.getItemStack(recipe.getCraftingResult());
         Drink drink = recipe.getCraftingResult();
         stack.set(TropicraftDataComponents.COCKTAIL, new Cocktail(
                 drink,
@@ -64,9 +64,9 @@ public class CocktailItem extends Item {
         return stack;
     }
 
-    public static @Nonnull ItemStack makeCocktail(final NonNullList<ItemStack> itemStacks) {
+    public static @Nonnull ItemStack makeCocktail(NonNullList<ItemStack> itemStacks) {
         // TODO fixme this is so ugly ugh
-        final ItemStack stack = new ItemStack(TropicraftItems.COCKTAILS.get(Drink.COCKTAIL).get());
+        ItemStack stack = new ItemStack(TropicraftItems.COCKTAILS.get(Drink.COCKTAIL).get());
         stack.set(TropicraftDataComponents.COCKTAIL, new Cocktail(
                 Drink.COCKTAIL,
                 itemStacks.stream()
@@ -78,7 +78,7 @@ public class CocktailItem extends Item {
     }
 
     public static List<Ingredient> getIngredients(ItemStack stack) {
-        final Cocktail cocktail = stack.get(TropicraftDataComponents.COCKTAIL);
+        Cocktail cocktail = stack.get(TropicraftDataComponents.COCKTAIL);
         if (cocktail == null) {
             return List.of();
         }
@@ -130,7 +130,7 @@ public class CocktailItem extends Item {
     @Override
     public ItemStack finishUsingItem(@Nonnull ItemStack stack, @Nonnull Level worldIn, @Nonnull LivingEntity entityLiving) {
         if (entityLiving instanceof Player) {
-            final Player player = (Player) entityLiving;
+            Player player = (Player) entityLiving;
             onFoodEaten(stack, worldIn, player);
 
             Drink drink = getDrink(stack);

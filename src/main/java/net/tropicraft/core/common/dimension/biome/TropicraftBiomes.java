@@ -56,7 +56,7 @@ public final class TropicraftBiomes {
 
     static {
         REGISTRATE.addDataGenerator(ProviderType.LANG, prov -> {
-            final Consumer<String> register = name -> prov.add("biome." + Constants.MODID + "." + name, RegistrateLangProvider.toEnglishName(name));
+            Consumer<String> register = name -> prov.add("biome." + Constants.MODID + "." + name, RegistrateLangProvider.toEnglishName(name));
             register.accept("tropics");
             register.accept("beach");
             register.accept("rainforest");
@@ -85,7 +85,7 @@ public final class TropicraftBiomes {
         });
     }
 
-    public static void bootstrap(final BootstrapContext<Biome> context) {
+    public static void bootstrap(BootstrapContext<Biome> context) {
         context.register(TROPICS, createTropics(context));
         context.register(BEACH, createBeach(context));
         context.register(RAINFOREST, createRainforest(context, false));
@@ -433,7 +433,7 @@ public final class TropicraftBiomes {
         spawns.addSpawn(MobCategory.WATER_CREATURE, new MobSpawnSettings.SpawnerData(EntityType.SQUID, 8, 1, 4));
     }
 
-    private static BiomeGenerationSettings.Builder defaultGeneration(final BootstrapContext<Biome> context) {
+    private static BiomeGenerationSettings.Builder defaultGeneration(BootstrapContext<Biome> context) {
         BiomeGenerationSettings.Builder generation = new BiomeGenerationSettings.Builder(context.lookup(Registries.PLACED_FEATURE), context.lookup(Registries.CONFIGURED_CARVER));
 
         BiomeDefaultFeatures.addDefaultCrystalFormations(generation);
@@ -474,7 +474,7 @@ public final class TropicraftBiomes {
         return Mth.hsvToRgb((224.0F / 360.0F) - shift * 0.05F, 0.5F + shift * 0.1F, 1.0F);
     }
 
-    private static ResourceKey<Biome> createKey(final String name) {
+    private static ResourceKey<Biome> createKey(String name) {
         return ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
     }
 }

@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(HumanoidArmorLayer.class)
 public class HumanoidArmorLayerMixin<T extends LivingEntity, A extends HumanoidModel<T>> {
     @Inject(method = "renderModel(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/client/model/Model;ILnet/minecraft/resources/ResourceLocation;)V", at = @At("HEAD"), remap = false, cancellable = true, require = 0)
-    private void renderModel(final PoseStack poseStack, final MultiBufferSource bufferSource, final int packedLight, final Model model, final int color, final ResourceLocation texture, final CallbackInfo ci) {
+    private void renderModel(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, Model model, int color, ResourceLocation texture, CallbackInfo ci) {
         if (model instanceof ModelScubaGear) {
             VertexConsumer consumer = bufferSource.getBuffer(model.renderType(texture));
             model.renderToBuffer(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, color);

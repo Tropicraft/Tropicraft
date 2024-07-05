@@ -25,7 +25,7 @@ public final class TropicraftTreeGrowers {
     public static final TreeGrower TEA_MANGROVE = create("tea_mangrove", TropicraftTreeFeatures.TEA_MANGROVE);
     public static final TreeGrower BLACK_MANGROVE = create("black_mangrove", TropicraftTreeFeatures.BLACK_MANGROVE);
 
-    private static TreeGrower create(final String id, final ResourceKey<ConfiguredFeature<?, ?>> featureKey) {
+    private static TreeGrower create(String id, ResourceKey<ConfiguredFeature<?, ?>> featureKey) {
         return new TreeGrower(Constants.MODID + ":" + id, Optional.empty(), Optional.of(featureKey), Optional.empty());
     }
 }

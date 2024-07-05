@@ -13,7 +13,7 @@ import net.tropicraft.core.common.entity.underdasea.SeahorseEntity;
 import javax.annotation.Nullable;
 
 public class SeahorseRenderer extends MobRenderer<SeahorseEntity, SeahorseModel> {
-    public SeahorseRenderer(final EntityRendererProvider.Context context) {
+    public SeahorseRenderer(EntityRendererProvider.Context context) {
         super(context, new SeahorseModel(context.bakeLayer(TropicraftRenderLayers.SEAHORSE_LAYER)), 0.5F);
         shadowStrength = 0.5f;
     }

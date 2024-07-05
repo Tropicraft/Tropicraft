@@ -35,15 +35,15 @@ public final class TropicraftNoiseRouterData {
     public static final ResourceKey<DensityFunction> JAGGEDNESS = createKey("tropics/jaggedness");
     public static final ResourceKey<DensityFunction> SLOPED_CHEESE = createKey("tropics/sloped_cheese");
 
-    public static void bootstrap(final BootstrapContext<DensityFunction> context) {
-        final HolderGetter<DensityFunction> densityFunctions = context.lookup(Registries.DENSITY_FUNCTION);
+    public static void bootstrap(BootstrapContext<DensityFunction> context) {
+        HolderGetter<DensityFunction> densityFunctions = context.lookup(Registries.DENSITY_FUNCTION);
 
-        final DensityFunctions.Spline.Coordinate continents = new DensityFunctions.Spline.Coordinate(densityFunctions.getOrThrow(NoiseRouterData.CONTINENTS));
-        final DensityFunctions.Spline.Coordinate erosion = new DensityFunctions.Spline.Coordinate(densityFunctions.getOrThrow(NoiseRouterData.EROSION));
-        final DensityFunctions.Spline.Coordinate ridges = new DensityFunctions.Spline.Coordinate(densityFunctions.getOrThrow(NoiseRouterData.RIDGES_FOLDED));
-        final DensityFunctions.Spline.Coordinate weirdness = new DensityFunctions.Spline.Coordinate(densityFunctions.getOrThrow(NoiseRouterData.RIDGES));
+        DensityFunctions.Spline.Coordinate continents = new DensityFunctions.Spline.Coordinate(densityFunctions.getOrThrow(NoiseRouterData.CONTINENTS));
+        DensityFunctions.Spline.Coordinate erosion = new DensityFunctions.Spline.Coordinate(densityFunctions.getOrThrow(NoiseRouterData.EROSION));
+        DensityFunctions.Spline.Coordinate ridges = new DensityFunctions.Spline.Coordinate(densityFunctions.getOrThrow(NoiseRouterData.RIDGES_FOLDED));
+        DensityFunctions.Spline.Coordinate weirdness = new DensityFunctions.Spline.Coordinate(densityFunctions.getOrThrow(NoiseRouterData.RIDGES));
 
-        final Holder.Reference<DensityFunction> offset = context.register(OFFSET, splineWithBlending(DensityFunctions.add(
+        Holder.Reference<DensityFunction> offset = context.register(OFFSET, splineWithBlending(DensityFunctions.add(
                 DensityFunctions.constant(-0.50375F),
                 DensityFunctions.spline(TropicraftTerrainProvider.offset(
                         continents,
@@ -52,23 +52,23 @@ public final class TropicraftNoiseRouterData {
                 ))
         ), DensityFunctions.blendOffset()));
 
-        final Holder.Reference<DensityFunction> factor = context.register(FACTOR, splineWithBlending(DensityFunctions.spline(TropicraftTerrainProvider.factor(
+        Holder.Reference<DensityFunction> factor = context.register(FACTOR, splineWithBlending(DensityFunctions.spline(TropicraftTerrainProvider.factor(
                 continents,
                 erosion,
                 weirdness,
                 ridges
         )), BLENDING_FACTOR));
 
-        final Holder.Reference<DensityFunction> depth = context.register(DEPTH, DensityFunctions.add(DensityFunctions.yClampedGradient(-64, 320, 1.5, -1.5), wrap(offset)));
+        Holder.Reference<DensityFunction> depth = context.register(DEPTH, DensityFunctions.add(DensityFunctions.yClampedGradient(-64, 320, 1.5, -1.5), wrap(offset)));
 
-        final Holder.Reference<DensityFunction> jaggedness = context.register(JAGGEDNESS, splineWithBlending(DensityFunctions.spline(TropicraftTerrainProvider.jaggedness(
+        Holder.Reference<DensityFunction> jaggedness = context.register(JAGGEDNESS, splineWithBlending(DensityFunctions.spline(TropicraftTerrainProvider.jaggedness(
                 continents,
                 erosion,
                 weirdness,
                 ridges
         )), BLENDING_JAGGEDNESS));
 
-        final DensityFunction jagged = DensityFunctions.mul(wrap(jaggedness), DensityFunctions.noise(context.lookup(Registries.NOISE).getOrThrow(Noises.JAGGED), 1500.0, 0.0).halfNegative());
+        DensityFunction jagged = DensityFunctions.mul(wrap(jaggedness), DensityFunctions.noise(context.lookup(Registries.NOISE).getOrThrow(Noises.JAGGED), 1500.0, 0.0).halfNegative());
 
         context.register(SLOPED_CHEESE, DensityFunctions.add(
                 noiseGradientDensity(wrap(factor), DensityFunctions.add(wrap(depth), jagged)),
@@ -81,7 +81,7 @@ public final class TropicraftNoiseRouterData {
         return DensityFunctions.flatCache(DensityFunctions.cache2d(densityfunction));
     }
 
-    public static NoiseRouter tropics(final HolderGetter<DensityFunction> densityFunctions, final HolderGetter<NormalNoise.NoiseParameters> noiseParameters) {
+    public static NoiseRouter tropics(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters) {
         DensityFunction aquiferBarrier = DensityFunctions.noise(noiseParameters.getOrThrow(Noises.AQUIFER_BARRIER), 0.5);
         DensityFunction aquiferFluidLevelFloodedness = DensityFunctions.noise(noiseParameters.getOrThrow(Noises.AQUIFER_FLUID_LEVEL_FLOODEDNESS), 0.67);
         DensityFunction aquiferFluidLevelSpread = DensityFunctions.noise(noiseParameters.getOrThrow(Noises.AQUIFER_FLUID_LEVEL_SPREAD), 1.0 / 1.4);
@@ -183,7 +183,7 @@ public final class TropicraftNoiseRouterData {
         return ResourceKey.create(Registries.DENSITY_FUNCTION, ResourceLocation.withDefaultNamespace(name));
     }
 
-    private static ResourceKey<DensityFunction> createKey(final String name) {
+    private static ResourceKey<DensityFunction> createKey(String name) {
         return ResourceKey.create(Registries.DENSITY_FUNCTION, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
     }
 }

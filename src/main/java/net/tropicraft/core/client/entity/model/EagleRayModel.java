@@ -115,7 +115,7 @@ public class EagleRayModel extends HierarchicalModel<EagleRayEntity> {
 
             float offset = -0.001f;
             // Bottom
-            final PoseStack.Pose pose = stack.last();
+            PoseStack.Pose pose = stack.last();
 
             vertex(buffer, pose, x, amplitude - offset, 0, color, uBack, reverse ? maxVBack : minVBack, packedLightIn, packedOverlayIn);
             vertex(buffer, pose, x, amplitude - offset, 1, color, uBack, reverse ? minVBack : maxVBack, packedLightIn, packedOverlayIn);
@@ -134,12 +134,12 @@ public class EagleRayModel extends HierarchicalModel<EagleRayEntity> {
 
     @Override
     public void prepareMobModel(EagleRayEntity ray, float par2, float par3, float partialTicks) {
-        final float[] prevWingAmplitudes = ray.getPrevWingAmplitudes();
-        final float[] wingAmplitudes = ray.getWingAmplitudes();
+        float[] prevWingAmplitudes = ray.getPrevWingAmplitudes();
+        float[] wingAmplitudes = ray.getWingAmplitudes();
 
         for (int i = 1; i < EagleRayEntity.WING_JOINTS; i++) {
-            final float prevWingAmplitude = prevWingAmplitudes[i];
-            final float wingAmplitude = wingAmplitudes[i];
+            float prevWingAmplitude = prevWingAmplitudes[i];
+            float wingAmplitude = wingAmplitudes[i];
             interpolatedWingAmplitudes[i] = prevWingAmplitude + partialTicks * (wingAmplitude - prevWingAmplitude);
         }
     }

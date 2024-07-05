@@ -18,8 +18,8 @@ public final class TropicraftStructureSets {
     public static final ResourceKey<StructureSet> KOA_VILLAGES = createKey("koa_village");
     public static final ResourceKey<StructureSet> VOLCANOES = createKey("volcanoes");
 
-    public static void bootstrap(final BootstrapContext<StructureSet> context) {
-        final HolderGetter<Structure> structures = context.lookup(Registries.STRUCTURE);
+    public static void bootstrap(BootstrapContext<StructureSet> context) {
+        HolderGetter<Structure> structures = context.lookup(Registries.STRUCTURE);
         context.register(HOME_TREES, new StructureSet(
                 structures.getOrThrow(TropicraftStructures.HOME_TREE),
                 new RandomSpreadStructurePlacement(24, 8, RandomSpreadType.LINEAR, 1010101010)
@@ -38,7 +38,7 @@ public final class TropicraftStructureSets {
         ));
     }
 
-    private static ResourceKey<StructureSet> createKey(final String name) {
+    private static ResourceKey<StructureSet> createKey(String name) {
         return ResourceKey.create(Registries.STRUCTURE_SET, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
     }
 }

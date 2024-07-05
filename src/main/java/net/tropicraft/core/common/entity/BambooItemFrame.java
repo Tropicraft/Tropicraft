@@ -13,7 +13,7 @@ import net.tropicraft.core.common.item.TropicraftItems;
 
 public class BambooItemFrame extends ItemFrame implements IEntityWithComplexSpawn {
 
-    public BambooItemFrame(final EntityType<? extends ItemFrame> type, final Level world) {
+    public BambooItemFrame(EntityType<? extends ItemFrame> type, Level world) {
         super(type, world);
     }
 
@@ -21,8 +21,8 @@ public class BambooItemFrame extends ItemFrame implements IEntityWithComplexSpaw
         this(TropicraftEntities.BAMBOO_ITEM_FRAME.get(), worldIn, pos, direction);
     }
 
-    protected BambooItemFrame(final EntityType<? extends BambooItemFrame> type, final Level world, final BlockPos pos,
-                              final Direction direction) {
+    protected BambooItemFrame(EntityType<? extends BambooItemFrame> type, Level world, BlockPos pos,
+                              Direction direction) {
         super(type, world);
         this.pos = pos;
         this.setDirection(direction);

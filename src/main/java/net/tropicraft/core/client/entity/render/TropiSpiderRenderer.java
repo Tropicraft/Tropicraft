@@ -9,7 +9,7 @@ import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.common.entity.hostile.TropiSpiderEntity;
 
 public class TropiSpiderRenderer extends SpiderRenderer<TropiSpiderEntity> {
-    public TropiSpiderRenderer(final EntityRendererProvider.Context context) {
+    public TropiSpiderRenderer(EntityRendererProvider.Context context) {
         super(context);
         shadowStrength = 0.5f;
     }
@@ -17,7 +17,7 @@ public class TropiSpiderRenderer extends SpiderRenderer<TropiSpiderEntity> {
     @Override
     public void render(TropiSpiderEntity spider, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource bufferIn, int packedLightIn) {
         stack.pushPose();
-        final float scale = getScale(spider);
+        float scale = getScale(spider);
         shadowRadius = scale;
         stack.scale(scale, scale, scale);
         super.render(spider, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
@@ -35,7 +35,7 @@ public class TropiSpiderRenderer extends SpiderRenderer<TropiSpiderEntity> {
         return TropicraftRenderUtils.bindTextureEntity("spideradult");
     }
 
-    private float getScale(final TropiSpiderEntity spider) {
+    private float getScale(TropiSpiderEntity spider) {
         float scale = 1.0f;
         if (spider.getSpiderType() == TropiSpiderEntity.Type.CHILD) {
             scale = 0.5f;

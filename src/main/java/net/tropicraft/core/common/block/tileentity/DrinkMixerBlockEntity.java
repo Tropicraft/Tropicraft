@@ -46,14 +46,14 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
     private boolean mixing;
     public ItemStack result = ItemStack.EMPTY;
 
-    public DrinkMixerBlockEntity(final BlockEntityType<DrinkMixerBlockEntity> type, final BlockPos pos, final BlockState state) {
+    public DrinkMixerBlockEntity(BlockEntityType<DrinkMixerBlockEntity> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         mixing = false;
         ingredients = NonNullList.withSize(MAX_NUM_INGREDIENTS, ItemStack.EMPTY);
     }
 
     @Override
-    protected void loadAdditional(final CompoundTag nbt, final HolderLookup.Provider registries) {
+    protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
         super.loadAdditional(nbt, registries);
         ticks = nbt.getInt("MixTicks");
         mixing = nbt.getBoolean("Mixing");
@@ -74,14 +74,14 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
     }
 
     @Override
-    protected void saveAdditional(final CompoundTag nbt, final HolderLookup.Provider registries) {
+    protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
         super.saveAdditional(nbt, registries);
 
         nbt.putInt("MixTicks", ticks);
         nbt.putBoolean("Mixing", mixing);
 
         for (int i = 0; i < MAX_NUM_INGREDIENTS; i++) {
-            final ItemStack item = ingredients.get(i);
+            ItemStack item = ingredients.get(i);
             if (!item.isEmpty()) {
                 nbt.put("Ingredient" + i, item.save(registries, new CompoundTag()));
             }
@@ -119,7 +119,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         if (Drink.isDrink(stack.getItem())) {
             is.addAll(CocktailItem.getIngredients(stack));
         } else {
-            final Ingredient i = Ingredient.findMatchingIngredient(stack);
+            Ingredient i = Ingredient.findMatchingIngredient(stack);
             if (i != null) {
                 is.add(i);
             }
@@ -171,7 +171,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
                 continue;
             }
 
-            final ItemStack container = ingredients.get(i).getItem().getCraftingRemainingItem(ingredients.get(i));
+            ItemStack container = ingredients.get(i).getItem().getCraftingRemainingItem(ingredients.get(i));
 
             if (!container.isEmpty()) {
                 dropItem(container, at);
@@ -293,11 +293,11 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
     }
 
     @Override
-    public CompoundTag getUpdateTag(final HolderLookup.Provider registries) {
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
         return writeItems(new CompoundTag(), registries);
     }
 
-    private CompoundTag writeItems(final CompoundTag nbt, final HolderLookup.Provider registries) {
+    private CompoundTag writeItems(CompoundTag nbt, HolderLookup.Provider registries) {
         this.saveAdditional(nbt, registries);
         return nbt;
     }

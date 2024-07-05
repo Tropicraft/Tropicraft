@@ -146,7 +146,7 @@ public class Ingredient implements Comparable<Ingredient> {
     }
 
     public void onDrink(Player player) {
-        for (final DrinkAction action : actions) {
+        for (DrinkAction action : actions) {
             action.onDrink(player);
         }
     }

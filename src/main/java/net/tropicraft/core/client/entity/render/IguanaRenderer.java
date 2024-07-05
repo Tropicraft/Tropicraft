@@ -14,13 +14,13 @@ public class IguanaRenderer extends MobRenderer<IguanaEntity, IguanaModel> {
     private static final ResourceLocation DEFAULT_TEXTURE = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/iggy.png");
     private static final ResourceLocation IGOR_TEXTURE = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/iggy_igor.png");
 
-    public IguanaRenderer(final EntityRendererProvider.Context context) {
+    public IguanaRenderer(EntityRendererProvider.Context context) {
         super(context, new IguanaModel(context.bakeLayer(TropicraftRenderLayers.IGUANA_LAYER)), 0.5F);
         this.shadowStrength = 0.5f;
     }
 
     @Override
-    public ResourceLocation getTextureLocation(final IguanaEntity entity) {
+    public ResourceLocation getTextureLocation(IguanaEntity entity) {
         if (entity.getName().getString().equalsIgnoreCase(IGOR)) {
             return IGOR_TEXTURE;
         }

@@ -25,7 +25,7 @@ public class BranchTreeDecorator extends TreeDecorator {
     private final BlockStateProvider branch;
     private final int minHeight;
 
-    public BranchTreeDecorator(final float probability, final BlockStateProvider branch, final int minHeight) {
+    public BranchTreeDecorator(float probability, BlockStateProvider branch, int minHeight) {
         this.probability = probability;
         this.branch = branch;
         this.minHeight = minHeight;
@@ -37,17 +37,17 @@ public class BranchTreeDecorator extends TreeDecorator {
     }
 
     @Override
-    public void place(final TreeDecorator.Context context) {
-        final RandomSource random = context.random();
-        final List<BlockPos> logs = context.logs();
-        final int bottomLogY = logs.get(0).getY();
-        for (final BlockPos log : logs) {
+    public void place(TreeDecorator.Context context) {
+        RandomSource random = context.random();
+        List<BlockPos> logs = context.logs();
+        int bottomLogY = logs.get(0).getY();
+        for (BlockPos log : logs) {
             if (log.getY() - bottomLogY < minHeight) {
                 continue;
             }
-            for (final Direction direction : Direction.Plane.HORIZONTAL) {
+            for (Direction direction : Direction.Plane.HORIZONTAL) {
                 if (random.nextFloat() <= probability) {
-                    final BlockPos pos = log.relative(direction.getOpposite());
+                    BlockPos pos = log.relative(direction.getOpposite());
                     if (context.isAir(pos)) {
                         context.setBlock(pos, branch.getState(random, pos).trySetValue(FruitingBranchBlock.FACING, direction.getOpposite()));
                     }

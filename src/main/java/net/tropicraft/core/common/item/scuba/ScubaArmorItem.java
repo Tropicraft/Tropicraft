@@ -56,7 +56,7 @@ public class ScubaArmorItem extends ArmorItem {
     }
 
     @Override
-    public ResourceLocation getArmorTexture(final ItemStack stack, final Entity entity, final EquipmentSlot slot, final ArmorMaterial.Layer layer, final boolean innerModel) {
+    public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
         return getArmorTexture(type);
     }
 

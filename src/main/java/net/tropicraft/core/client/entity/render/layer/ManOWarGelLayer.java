@@ -16,7 +16,7 @@ import net.tropicraft.core.common.entity.underdasea.ManOWarEntity;
 public class ManOWarGelLayer extends RenderLayer<ManOWarEntity, ManOWarModel> {
     private final ManOWarModel mowModel;
 
-    public ManOWarGelLayer(ManOWarRenderer manOWarRenderer, final ManOWarModel mowModel) {
+    public ManOWarGelLayer(ManOWarRenderer manOWarRenderer, ManOWarModel mowModel) {
         super(manOWarRenderer);
         this.mowModel = mowModel;
     }

@@ -15,7 +15,7 @@ public class SharkRenderer extends MobRenderer<SharkEntity, SharkModel> {
     public static final ResourceLocation BASIC_SHARK_TEXTURE = TropicraftRenderUtils.getTextureEntity("shark/hammerhead1");
     public static final ResourceLocation BOSS_SHARK_TEXTURE = TropicraftRenderUtils.getTextureEntity("shark/hammerhead4");
 
-    public SharkRenderer(final EntityRendererProvider.Context context) {
+    public SharkRenderer(EntityRendererProvider.Context context) {
         super(context, new SharkModel(context.bakeLayer(TropicraftRenderLayers.HAMMERHEAD_LAYER)), 1);
     }
 
@@ -36,7 +36,7 @@ public class SharkRenderer extends MobRenderer<SharkEntity, SharkModel> {
     }
 
     @Override
-    protected void scale(SharkEntity shark, final PoseStack stack, float partialTickTime) {
+    protected void scale(SharkEntity shark, PoseStack stack, float partialTickTime) {
         float scale = 1f;
 
         if (shark.isBoss()) {

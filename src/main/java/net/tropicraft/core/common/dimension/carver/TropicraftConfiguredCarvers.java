@@ -24,7 +24,7 @@ public final class TropicraftConfiguredCarvers {
     public static final ResourceKey<ConfiguredWorldCarver<?>> CAVE = createKey("cave");
     public static final ResourceKey<ConfiguredWorldCarver<?>> CANYON = createKey("canyon");
 
-    public static void bootstrap(final BootstrapContext<ConfiguredWorldCarver<?>> context) {
+    public static void bootstrap(BootstrapContext<ConfiguredWorldCarver<?>> context) {
         context.register(CAVE, TropicraftCarvers.CAVE.get().configured(new CaveCarverConfiguration(
                 0.25F,
                 BiasedToBottomHeight.of(VerticalAnchor.absolute(0), VerticalAnchor.absolute(240), 8),
@@ -58,7 +58,7 @@ public final class TropicraftConfiguredCarvers {
         generation.addCarver(GenerationStep.Carving.AIR, CANYON);
     }
 
-    private static ResourceKey<ConfiguredWorldCarver<?>> createKey(final String name) {
+    private static ResourceKey<ConfiguredWorldCarver<?>> createKey(String name) {
         return ResourceKey.create(Registries.CONFIGURED_CARVER, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
     }
 }

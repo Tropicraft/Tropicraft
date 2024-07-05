@@ -40,19 +40,19 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class TropicraftFeatureUtil {
-    public static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder.Reference<ConfiguredFeature<?, ?>> register(final BootstrapContext<ConfiguredFeature<?, ?>> context, final ResourceKey<ConfiguredFeature<?, ?>> key, final DeferredHolder<Feature<?>, F> feature, final FC config) {
+    public static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder.Reference<ConfiguredFeature<?, ?>> register(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, DeferredHolder<Feature<?>, F> feature, FC config) {
         return context.register(key, new ConfiguredFeature<>(feature.get(), config));
     }
 
-    public static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder.Reference<ConfiguredFeature<?, ?>> register(final BootstrapContext<ConfiguredFeature<?, ?>> context, final ResourceKey<ConfiguredFeature<?, ?>> key, final F feature, final FC config) {
+    public static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder.Reference<ConfiguredFeature<?, ?>> register(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, F feature, FC config) {
         return context.register(key, new ConfiguredFeature<>(feature, config));
     }
 
-    public static <F extends Feature<NoneFeatureConfiguration>> Holder.Reference<ConfiguredFeature<?, ?>> register(final BootstrapContext<ConfiguredFeature<?, ?>> context, final ResourceKey<ConfiguredFeature<?, ?>> key, final DeferredHolder<Feature<?>, F> feature) {
+    public static <F extends Feature<NoneFeatureConfiguration>> Holder.Reference<ConfiguredFeature<?, ?>> register(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, DeferredHolder<Feature<?>, F> feature) {
         return context.register(key, new ConfiguredFeature<>(feature.get(), NoneFeatureConfiguration.INSTANCE));
     }
 
-    public static Holder.Reference<ConfiguredFeature<?, ?>> registerRandom(final BootstrapContext<ConfiguredFeature<?, ?>> context, final ResourceKey<ConfiguredFeature<?, ?>> key, final List<Holder<PlacedFeature>> choices) {
+    public static Holder.Reference<ConfiguredFeature<?, ?>> registerRandom(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, List<Holder<PlacedFeature>> choices) {
         return context.register(key, randomFeature(choices));
     }
 
@@ -66,43 +66,43 @@ public class TropicraftFeatureUtil {
         }
     }
 
-    public static Holder.Reference<ConfiguredFeature<?, ?>> registerRandom(final BootstrapContext<ConfiguredFeature<?, ?>> context, final ResourceKey<ConfiguredFeature<?, ?>> key, final List<Pair<ResourceKey<PlacedFeature>, Float>> choices, final ResourceKey<PlacedFeature> defaultFeature) {
+    public static Holder.Reference<ConfiguredFeature<?, ?>> registerRandom(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, List<Pair<ResourceKey<PlacedFeature>, Float>> choices, ResourceKey<PlacedFeature> defaultFeature) {
         HolderGetter<PlacedFeature> placedFeatures = context.lookup(Registries.PLACED_FEATURE);
         return registerRandomPlaced(context, key,
                 choices.stream().map(pair -> {
-                    final Holder<PlacedFeature> holder = placedFeatures.getOrThrow(pair.getFirst());
+                    Holder<PlacedFeature> holder = placedFeatures.getOrThrow(pair.getFirst());
                     return new WeightedPlacedFeature(holder, pair.getSecond());
                 }).toList(),
                 defaultFeature
         );
     }
 
-    public static Holder.Reference<ConfiguredFeature<?, ?>> registerRandomPlaced(final BootstrapContext<ConfiguredFeature<?, ?>> context, final ResourceKey<ConfiguredFeature<?, ?>> key, final List<WeightedPlacedFeature> choices, final ResourceKey<PlacedFeature> defaultFeatureKey) {
-        final Holder<PlacedFeature> defaultFeature = context.lookup(Registries.PLACED_FEATURE).getOrThrow(defaultFeatureKey);
+    public static Holder.Reference<ConfiguredFeature<?, ?>> registerRandomPlaced(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, List<WeightedPlacedFeature> choices, ResourceKey<PlacedFeature> defaultFeatureKey) {
+        Holder<PlacedFeature> defaultFeature = context.lookup(Registries.PLACED_FEATURE).getOrThrow(defaultFeatureKey);
         return register(context, key, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(choices, defaultFeature));
     }
 
     @SafeVarargs
-    public static Holder.Reference<ConfiguredFeature<?, ?>> registerRandom(final BootstrapContext<ConfiguredFeature<?, ?>> context, final ResourceKey<ConfiguredFeature<?, ?>> key, final ResourceKey<ConfiguredFeature<?, ?>>... choiceKeys) {
+    public static Holder.Reference<ConfiguredFeature<?, ?>> registerRandom(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, ResourceKey<ConfiguredFeature<?, ?>>... choiceKeys) {
         HolderGetter<ConfiguredFeature<?, ?>> configuredFeatures = context.lookup(Registries.CONFIGURED_FEATURE);
         return registerRandom(context, key, Arrays.stream(choiceKeys).map(k -> PlacementUtils.inlinePlaced(configuredFeatures.getOrThrow(k))).toList());
     }
 
     @SafeVarargs
-    public static Holder.Reference<ConfiguredFeature<?, ?>> registerRandomPlaced(final BootstrapContext<ConfiguredFeature<?, ?>> context, final ResourceKey<ConfiguredFeature<?, ?>> key, final ResourceKey<PlacedFeature>... choices) {
+    public static Holder.Reference<ConfiguredFeature<?, ?>> registerRandomPlaced(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, ResourceKey<PlacedFeature>... choices) {
         HolderGetter<PlacedFeature> placedFeatures = context.lookup(Registries.PLACED_FEATURE);
         return registerRandom(context, key, Arrays.stream(choices).map(placedFeatures::getOrThrow).collect(Collectors.toList()));
     }
 
-    public static RandomPatchConfiguration randomPatch(final Supplier<? extends Block> block) {
+    public static RandomPatchConfiguration randomPatch(Supplier<? extends Block> block) {
         return randomPatch(BlockStateProvider.simple(block.get()));
     }
 
-    public static RandomPatchConfiguration randomPatch(final BlockStateProvider blockStateProvider) {
+    public static RandomPatchConfiguration randomPatch(BlockStateProvider blockStateProvider) {
         return FeatureUtils.simplePatchConfiguration(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(blockStateProvider));
     }
 
-    public static OreConfiguration ore(final int blobSize, final Supplier<? extends Block> block) {
+    public static OreConfiguration ore(int blobSize, Supplier<? extends Block> block) {
         // TODO add deepslate / tropicraft equivalent replacement here
         RuleTest stoneOreReplaceables = new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES);
         return new OreConfiguration(List.of(OreConfiguration.target(stoneOreReplaceables, block.get().defaultBlockState())), blobSize);
@@ -112,11 +112,11 @@ public class TropicraftFeatureUtil {
         return BlockStateProvider.simple(block.get());
     }
 
-    public static boolean goesBeyondWorldSize(final WorldGenLevel world, final int y, final int height) {
+    public static boolean goesBeyondWorldSize(WorldGenLevel world, int y, int height) {
         return y < world.getMinBuildHeight() + 1 || y + height + 1 > world.getMaxBuildHeight();
     }
 
-    public static boolean isBBAvailable(final WorldGenLevel world, final BlockPos pos, final int height) {
+    public static boolean isBBAvailable(WorldGenLevel world, BlockPos pos, int height) {
         for (int y = 0; y <= 1 + height; y++) {
             BlockPos checkPos = pos.above(y);
             int size = 1;
@@ -140,9 +140,9 @@ public class TropicraftFeatureUtil {
         return true;
     }
 
-    public static boolean isSoil(final LevelAccessor world, final BlockPos pos) {
-        final BlockState blockState = world.getBlockState(pos);
-        final Block block = blockState.getBlock();
+    public static boolean isSoil(LevelAccessor world, BlockPos pos) {
+        BlockState blockState = world.getBlockState(pos);
+        Block block = blockState.getBlock();
         return block == Blocks.DIRT || block == Blocks.COARSE_DIRT || block == Blocks.GRASS_BLOCK || block == Blocks.PODZOL;
     }
 }

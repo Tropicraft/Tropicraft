@@ -16,7 +16,7 @@ public class AshenRenderer extends MobRenderer<AshenEntity, AshenModel> {
 
     private static final ResourceLocation ASHEN_TEXTURE_LOCATION = TropicraftRenderUtils.bindTextureEntity("ashen/ashen");
 
-    public AshenRenderer(final EntityRendererProvider.Context context) {
+    public AshenRenderer(EntityRendererProvider.Context context) {
         super(context, new AshenModel(context.bakeLayer(TropicraftRenderLayers.ASHEN_LAYER)), 0.5f);
 
         addLayer(new AshenMaskLayer(this, new AshenModel(context.bakeLayer(TropicraftRenderLayers.ASHEN_LAYER))));

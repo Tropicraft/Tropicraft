@@ -20,7 +20,7 @@ public class TropicraftFishRenderer<T extends AbstractFish> extends MobRenderer<
 
     private final TropicraftSpecialRenderHelper renderHelper;
 
-    public TropicraftFishRenderer(final EntityRendererProvider.Context context, TropicraftFishModel<T> modelbase, float f) {
+    public TropicraftFishRenderer(EntityRendererProvider.Context context, TropicraftFishModel<T> modelbase, float f) {
         super(context, modelbase, f);
         renderHelper = new TropicraftSpecialRenderHelper();
     }

@@ -46,7 +46,7 @@ public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerBlockEntity> {
             {0.8f, 0.8f, 0.8f}
     };
 
-    public DrinkMixerRenderer(final BlockEntityRendererProvider.Context context) {
+    public DrinkMixerRenderer(BlockEntityRendererProvider.Context context) {
         super(context, TropicraftBlocks.DRINK_MIXER.get(), new EIHMachineModel<>(context.getModelSet().bakeLayer(TropicraftRenderLayers.EIHMACHINE_LAYER)));
         this.renderItem = context.getItemRenderer();
         ModelPart mugLayer = context.getModelSet().bakeLayer(TropicraftRenderLayers.BAMBOO_MUG);
@@ -60,15 +60,15 @@ public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerBlockEntity> {
     }
 
     @Override
-    public void renderIngredients(final DrinkMixerBlockEntity te, final PoseStack stack, final MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn) {
+    public void renderIngredients(DrinkMixerBlockEntity te, PoseStack stack, MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn) {
         if (dummyEntityItem == null) {
             dummyEntityItem = new ItemEntity(Minecraft.getInstance().level, 0.0, 0.0, 0.0, new ItemStack(Items.SUGAR));
         }
-        final NonNullList<ItemStack> ingredients = te.getIngredients();
+        NonNullList<ItemStack> ingredients = te.getIngredients();
 
         if (!te.isDoneMixing()) {
             for (int index = 0; index < ingredients.size(); index++) {
-                final ItemStack ingredient = ingredients.get(index);
+                ItemStack ingredient = ingredients.get(index);
                 if (!ingredient.isEmpty()) {
                     renderIngredient(stack, buffer, combinedOverlayIn, combinedLightIn, ingredient, index);
                 }
@@ -90,17 +90,17 @@ public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerBlockEntity> {
         }
     }
 
-    private void renderIngredient(final PoseStack stack, final MultiBufferSource buffer, final int combinedOverlayIn, final int combinedLight, final ItemStack ingredient, final int ingredientIndex) {
+    private void renderIngredient(PoseStack stack, MultiBufferSource buffer, int combinedOverlayIn, int combinedLight, ItemStack ingredient, int ingredientIndex) {
         stack.pushPose();
         stack.mulPose(Axis.XP.rotationDegrees(90));
         stack.mulPose(Axis.YP.rotationDegrees(90));
         stack.mulPose(Axis.ZP.rotationDegrees(90));
-        final float[] offsets = INGREDIENT_OFFSETS[ingredientIndex];
-        final float[] scales = INGREDIENT_SCALES[ingredientIndex];
+        float[] offsets = INGREDIENT_OFFSETS[ingredientIndex];
+        float[] scales = INGREDIENT_SCALES[ingredientIndex];
         stack.translate(offsets[0], offsets[1], offsets[2]);
         stack.scale(scales[0], scales[1], scales[2]);
         dummyEntityItem.setItem(ingredient);
-        final BakedModel bakedModel = TropicraftRenderUtils.getBakedModel(renderItem, ingredient);
+        BakedModel bakedModel = TropicraftRenderUtils.getBakedModel(renderItem, ingredient);
         renderItem.render(ingredient, ItemDisplayContext.FIXED, false, stack, buffer, combinedLight, combinedOverlayIn, bakedModel);
         stack.popPose();
     }

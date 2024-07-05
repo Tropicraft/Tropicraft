@@ -25,7 +25,7 @@ public record ClientboundMixerInventoryPacket(BlockPos pos, List<ItemStack> inve
             ClientboundMixerInventoryPacket::new
     );
 
-    public ClientboundMixerInventoryPacket(final DrinkMixerBlockEntity mixer) {
+    public ClientboundMixerInventoryPacket(DrinkMixerBlockEntity mixer) {
         this(mixer.getBlockPos(), mixer.ingredients, mixer.result);
     }
 

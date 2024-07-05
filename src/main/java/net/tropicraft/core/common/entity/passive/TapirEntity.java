@@ -73,18 +73,18 @@ public class TapirEntity extends Animal {
     }
 
     @Override
-    public void addAdditionalSaveData(final CompoundTag tag) {
+    public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("undercover", isUndercover());
     }
 
     @Override
-    public void readAdditionalSaveData(final CompoundTag tag) {
+    public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         setUndercover(tag.getBoolean("undercover"));
     }
 
-    private void setUndercover(final boolean undercover) {
+    private void setUndercover(boolean undercover) {
         getEntityData().set(DATA_UNDERCOVER, undercover);
     }
 

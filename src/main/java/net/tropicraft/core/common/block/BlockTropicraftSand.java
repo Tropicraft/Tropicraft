@@ -22,7 +22,7 @@ public class BlockTropicraftSand extends FallingBlock {
 
     private final int dustColor;
 
-    public BlockTropicraftSand(final Properties properties) {
+    public BlockTropicraftSand(Properties properties) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState().setValue(UNDERWATER, false));
         this.dustColor = this.defaultMapColor().col | 0xFF000000;
@@ -39,15 +39,15 @@ public class BlockTropicraftSand extends FallingBlock {
     }
 
     @Override
-    public BlockState getStateForPlacement(final BlockPlaceContext context) {
-        final FluidState upState = context.getLevel().getFluidState(context.getClickedPos().above());
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        FluidState upState = context.getLevel().getFluidState(context.getClickedPos().above());
         return this.defaultBlockState().setValue(UNDERWATER, !upState.isEmpty());
     }
 
     @Override
     @Deprecated
-    public void neighborChanged(final BlockState state, final Level world, final BlockPos pos, final Block block, final BlockPos pos2, boolean isMoving) {
-        final FluidState upState = world.getFluidState(pos.above());
+    public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos pos2, boolean isMoving) {
+        FluidState upState = world.getFluidState(pos.above());
         boolean underwater = upState.getType().isSame(Fluids.WATER);
         if (underwater != state.getValue(UNDERWATER)) {
             world.setBlock(pos, state.setValue(UNDERWATER, underwater), Block.UPDATE_CLIENTS);

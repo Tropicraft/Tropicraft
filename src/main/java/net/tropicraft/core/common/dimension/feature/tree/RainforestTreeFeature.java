@@ -46,7 +46,7 @@ public abstract class RainforestTreeFeature extends Feature<NoneFeatureConfigura
         return TropicraftBlocks.MAHOGANY_LOG.get().defaultBlockState();
     }
 
-    protected void placeLog(final LevelSimulatedRW world, int x, int y, int z) {
+    protected void placeLog(LevelSimulatedRW world, int x, int y, int z) {
         setState(world, new BlockPos(x, y, z), getLog());
     }
 

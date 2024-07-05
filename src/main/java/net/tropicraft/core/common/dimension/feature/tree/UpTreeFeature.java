@@ -24,7 +24,7 @@ public class UpTreeFeature extends RainforestTreeFeature {
         BlockPos pos = context.origin();
 
         pos = pos.immutable();
-        final int height = rand.nextInt(4) + 6;
+        int height = rand.nextInt(4) + 6;
         int i = pos.getX();
         int j = pos.getY();
         int k = pos.getZ();
@@ -62,7 +62,7 @@ public class UpTreeFeature extends RainforestTreeFeature {
             }
         }
 
-        final int radius = rand.nextInt(2) + 3;
+        int radius = rand.nextInt(2) + 3;
 
         genCircle(world, i, j + height, k, radius, 0, getLeaf(), false);
         genCircle(world, i, j + height + 1, k, radius + 2, radius, getLeaf(), false);

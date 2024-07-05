@@ -80,7 +80,7 @@ public class SeaTurtleEntity extends Turtle {
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(final ServerLevelAccessor level, final DifficultyInstance difficulty, final MobSpawnType spawnType, @Nullable final SpawnGroupData spawnGroupData) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
         setRandomTurtleType();
         this.lastPosY = getY();
         return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
@@ -93,13 +93,13 @@ public class SeaTurtleEntity extends Turtle {
         // goals
         Set<WrappedGoal> goalSet = this.goalSelector.getAvailableGoals();
 
-        final Optional<WrappedGoal> eggGoal = goalSet.stream().filter(p -> p.getGoal().toString().contains("Egg")).findFirst();
+        Optional<WrappedGoal> eggGoal = goalSet.stream().filter(p -> p.getGoal().toString().contains("Egg")).findFirst();
         if (eggGoal.isPresent()) {
             this.goalSelector.removeGoal(eggGoal.get().getGoal());
             this.goalSelector.addGoal(1, new BetterLayEggGoal(this, 1.0));
         }
 
-        final Optional<WrappedGoal> mateGoal = goalSet.stream().filter(p -> p.getGoal().toString().contains("Mate")).findFirst();
+        Optional<WrappedGoal> mateGoal = goalSet.stream().filter(p -> p.getGoal().toString().contains("Mate")).findFirst();
         if (mateGoal.isPresent()) {
             this.goalSelector.removeGoal(mateGoal.get().getGoal());
             this.goalSelector.addGoal(1, new BetterMateGoal(this, 1.0));
@@ -107,7 +107,7 @@ public class SeaTurtleEntity extends Turtle {
     }
 
     @Override
-    protected void defineSynchedData(final SynchedEntityData.Builder builder) {
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(IS_MATURE, true);
         builder.define(TURTLE_TYPE, 1);
@@ -150,7 +150,7 @@ public class SeaTurtleEntity extends Turtle {
         return getEntityData().get(IS_MATURE);
     }
 
-    public SeaTurtleEntity setIsMature(final boolean mature) {
+    public SeaTurtleEntity setIsMature(boolean mature) {
         getEntityData().set(IS_MATURE, mature);
         return this;
     }
@@ -163,7 +163,7 @@ public class SeaTurtleEntity extends Turtle {
         setTurtleType(random.nextInt(NUM_TYPES) + 1);
     }
 
-    public SeaTurtleEntity setTurtleType(final int type) {
+    public SeaTurtleEntity setTurtleType(int type) {
         getEntityData().set(TURTLE_TYPE, Mth.clamp(type, 1, NUM_TYPES));
         return this;
     }
@@ -172,7 +172,7 @@ public class SeaTurtleEntity extends Turtle {
         return getEntityData().get(NO_BRAKES);
     }
 
-    public SeaTurtleEntity setNoBrakes(final boolean noBrakes) {
+    public SeaTurtleEntity setNoBrakes(boolean noBrakes) {
         getEntityData().set(NO_BRAKES, noBrakes);
         return this;
     }
@@ -181,7 +181,7 @@ public class SeaTurtleEntity extends Turtle {
         return getEntityData().get(CAN_FLY);
     }
 
-    public SeaTurtleEntity setCanFly(final boolean canFly) {
+    public SeaTurtleEntity setCanFly(boolean canFly) {
         getEntityData().set(CAN_FLY, canFly);
         return this;
     }
@@ -414,8 +414,8 @@ public class SeaTurtleEntity extends Turtle {
                     Level world = this.turtle.level();
                     world.playSound(null, blockpos, SoundEvents.TURTLE_LAY_EGG, SoundSource.BLOCKS, 0.3F, 0.9F + world.random.nextFloat() * 0.2F);
                     //world.setBlockState(this.destinationBlock.up(), Blocks.TURTLE_EGG.defaultBlockState().with(TurtleEggBlock.EGGS, Integer.valueOf(this.turtle.rand.nextInt(4) + 1)), 3);
-                    final SeaTurtleEggEntity egg = TropicraftEntities.SEA_TURTLE_EGG.get().create(world);
-                    final BlockPos spawnPos = blockPos.above();
+                    SeaTurtleEggEntity egg = TropicraftEntities.SEA_TURTLE_EGG.get().create(world);
+                    BlockPos spawnPos = blockPos.above();
                     egg.setPos(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
                     world.addFreshEntity(egg);
                     this.turtle.setHasEgg(false);

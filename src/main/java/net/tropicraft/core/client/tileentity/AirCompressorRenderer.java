@@ -24,7 +24,7 @@ public class AirCompressorRenderer extends MachineRenderer<AirCompressorBlockEnt
     private final ModelScubaGear tankModel;
     //private final ModelScubaGear tankModel = new ModelScubaGear(0, EquipmentSlot.CHEST); // Can't reuse the main one with a different scale
 
-    public AirCompressorRenderer(final BlockEntityRendererProvider.Context context) {
+    public AirCompressorRenderer(BlockEntityRendererProvider.Context context) {
         super(context, TropicraftBlocks.AIR_COMPRESSOR.get(), new EIHMachineModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(TropicraftRenderLayers.AIRCOMPRESSOR_LAYER)));
         tankModel = new ModelScubaGear(context.bakeLayer(TropicraftRenderLayers.CHEST_SCUBA_LAYER), EquipmentSlot.CHEST);
     }
@@ -35,7 +35,7 @@ public class AirCompressorRenderer extends MachineRenderer<AirCompressorBlockEnt
     }
 
     @Override
-    protected void animationTransform(AirCompressorBlockEntity te, final PoseStack stack, float partialTicks) {
+    protected void animationTransform(AirCompressorBlockEntity te, PoseStack stack, float partialTicks) {
         float progress = te.getBreatheProgress(partialTicks);
         float sin = 1 + Mth.cos(progress);
         float sc = 1 + 0.05f * sin;

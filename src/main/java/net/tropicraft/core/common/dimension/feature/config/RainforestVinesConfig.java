@@ -20,7 +20,7 @@ public class RainforestVinesConfig implements FeatureConfiguration {
         this(256, 4, 1);
     }
 
-    public RainforestVinesConfig(final int height, final int xzSpread, final int rollsPerY) {
+    public RainforestVinesConfig(int height, int xzSpread, int rollsPerY) {
         this.height = height;
         this.xzSpread = xzSpread;
         this.rollsPerY = rollsPerY;

@@ -44,7 +44,7 @@ public class ManOWarEntity extends WaterAnimal {
     private float randomMotionVecZ;
     private int attackTimer = 0;
 
-    public ManOWarEntity(final EntityType<? extends ManOWarEntity> type, Level world) {
+    public ManOWarEntity(EntityType<? extends ManOWarEntity> type, Level world) {
         super(type, world);
         this.random.setSeed(this.getId());
         this.rotationVelocity = 1.0F / (this.random.nextFloat() + 1.0F) * 0.2F;

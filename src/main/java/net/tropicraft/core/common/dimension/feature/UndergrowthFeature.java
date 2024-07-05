@@ -58,7 +58,7 @@ public class UndergrowthFeature extends Feature<NoneFeatureConfiguration> {
                         int xVariance = x - posTemp.getX();
                         for (int z = posTemp.getZ() - bushWidth; z < posTemp.getZ() + bushWidth; z++) {
                             int zVariance = z - posTemp.getZ();
-                            final BlockPos newPos = new BlockPos(x, y, z);
+                            BlockPos newPos = new BlockPos(x, y, z);
                             if ((Math.abs(xVariance) != bushWidth || Math.abs(zVariance) != bushWidth || rand.nextInt(2) != 0) && isValidPosition(world, newPos)) {
                                 setBlock(world, newPos, TropicraftBlocks.KAPOK_LEAVES.get().defaultBlockState());
                             }

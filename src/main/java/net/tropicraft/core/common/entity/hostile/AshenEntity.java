@@ -120,7 +120,7 @@ public class AshenEntity extends TropicraftCreatureEntity implements RangedAttac
         return getEntityData().get(MASK_TYPE);
     }
 
-    public void setActionState(final AshenState state) {
+    public void setActionState(AshenState state) {
         getEntityData().set(ACTION_STATE, (byte) state.ordinal());
     }
 

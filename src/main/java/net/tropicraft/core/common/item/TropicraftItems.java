@@ -409,7 +409,7 @@ public class TropicraftItems {
     public static final ItemEntry<Item> MUSIC_DISC_TRADE_WINDS = musicDisc(TropicraftJukeboxSongs.TRADE_WINDS).register();
     public static final ItemEntry<Item> MUSIC_DISC_SUMMERING = musicDisc(TropicraftJukeboxSongs.SUMMERING).register();
 
-    private static ItemBuilder<Item, Registrate> musicDisc(final ResourceKey<JukeboxSong> song) {
+    private static ItemBuilder<Item, Registrate> musicDisc(ResourceKey<JukeboxSong> song) {
         return REGISTRATE.item("music_disc_" + song.location().getPath(), Item::new)
                 .properties(p -> p.rarity(Rarity.RARE).component(DataComponents.JUKEBOX_PLAYABLE, new JukeboxPlayable(new EitherHolder<>(song), true)))
                 .lang("Music Disc");
@@ -419,7 +419,7 @@ public class TropicraftItems {
     public static final ItemEntry<Item> SARDINE_BUCKET = fishBucket("sardine_bucket", TropicraftEntities.RIVER_SARDINE).register();
     public static final ItemEntry<Item> PIRANHA_BUCKET = fishBucket("piranha_bucket", TropicraftEntities.PIRANHA).register();
 
-    private static <T extends AbstractFish> ItemBuilder<Item, Registrate> fishBucket(final String name, final Supplier<? extends EntityType<T>> entity) {
+    private static <T extends AbstractFish> ItemBuilder<Item, Registrate> fishBucket(String name, Supplier<? extends EntityType<T>> entity) {
         return REGISTRATE.item(name, p -> (Item) new TropicraftFishBucketItem<>(entity.get(), Fluids.WATER, p))
                 .properties(p -> p.stacksTo(1));
     }
@@ -461,12 +461,12 @@ public class TropicraftItems {
     public static final ItemEntry<Item> SLENDER_HARVEST_MOUSE_SPAWN_EGG = spawnEgg("slender_harvest_mouse_spawn_egg", TropicraftEntities.SLENDER_HARVEST_MOUSE, 0xaf7a41, 0xe6d7bf).register();
     public static final ItemEntry<Item> TOUCAN_SPAWN_EGG = spawnEgg("toucan_spawn_egg", TropicraftEntities.TOUCAN, 0x08060d, 0xe5dc5b).register();
 
-    private static <T extends Mob> ItemBuilder<Item, Registrate> spawnEgg(final String name, final RegistryEntry<EntityType<?>, EntityType<T>> entity, final int backgroundColor, final int highlightColor) {
+    private static <T extends Mob> ItemBuilder<Item, Registrate> spawnEgg(String name, RegistryEntry<EntityType<?>, EntityType<T>> entity, int backgroundColor, int highlightColor) {
         return REGISTRATE.item(name, p -> (Item) new DeferredSpawnEggItem(entity, backgroundColor, highlightColor, p))
                 .model((ctx, prov) -> prov.withExistingParent(ctx.getName(), prov.mcLoc("item/template_spawn_egg")));
     }
 
-    private static <T extends Mob> ItemBuilder<Item, Registrate> customSpawnEgg(final String name, final RegistryEntry<EntityType<?>, EntityType<T>> entity) {
+    private static <T extends Mob> ItemBuilder<Item, Registrate> customSpawnEgg(String name, RegistryEntry<EntityType<?>, EntityType<T>> entity) {
         return REGISTRATE.item(name, p -> new DeferredSpawnEggItem(entity, 0xffffff, 0xffffff, p));
     }
 
@@ -525,7 +525,7 @@ public class TropicraftItems {
     public static final ItemEntry<Item> ZIRCONIUM_SWORD = sword("zirconium_sword", TropicraftToolTiers.ZIRCONIUM, ZIRCONIUM).register();
     public static final ItemEntry<Item> EUDIALYTE_SWORD = sword("eudialyte_sword", TropicraftToolTiers.EUDIALYTE, EUDIALYTE).register();
 
-    private static ItemBuilder<Item, Registrate> hoe(final String name, final TropicraftToolTiers tier, final Supplier<? extends Item> input) {
+    private static ItemBuilder<Item, Registrate> hoe(String name, TropicraftToolTiers tier, Supplier<? extends Item> input) {
         return REGISTRATE.item(name, p -> (Item) new HoeItem(tier, p))
                 .properties(p -> p.component(DataComponents.ATTRIBUTE_MODIFIERS, HoeItem.createAttributes(tier, 0, -2.0f)))
                 .tag(ItemTags.HOES)
@@ -542,7 +542,7 @@ public class TropicraftItems {
                 );
     }
 
-    private static ItemBuilder<Item, Registrate> shovel(final String name, final Tier tier, final Supplier<? extends Item> input) {
+    private static ItemBuilder<Item, Registrate> shovel(String name, Tier tier, Supplier<? extends Item> input) {
         return REGISTRATE.item(name, p -> (Item) new ShovelItem(tier, p))
                 .properties(p -> p.component(DataComponents.ATTRIBUTE_MODIFIERS, ShovelItem.createAttributes(tier, 2.0f, -3.0f)))
                 .tag(ItemTags.SHOVELS)
@@ -559,7 +559,7 @@ public class TropicraftItems {
                 );
     }
 
-    private static ItemBuilder<Item, Registrate> pickaxe(final String name, final Tier tier, final Supplier<? extends Item> input) {
+    private static ItemBuilder<Item, Registrate> pickaxe(String name, Tier tier, Supplier<? extends Item> input) {
         return REGISTRATE.item(name, p -> (Item) new PickaxeItem(tier, p))
                 .properties(p -> p.component(DataComponents.ATTRIBUTE_MODIFIERS, PickaxeItem.createAttributes(tier, 2, -2.0f)))
                 .tag(ItemTags.PICKAXES)
@@ -576,7 +576,7 @@ public class TropicraftItems {
                 );
     }
 
-    private static ItemBuilder<Item, Registrate> axe(final String name, final Tier tier, final Supplier<? extends Item> input) {
+    private static ItemBuilder<Item, Registrate> axe(String name, Tier tier, Supplier<? extends Item> input) {
         return REGISTRATE.item(name, p -> (Item) new AxeItem(tier, p))
                 .properties(p -> p.component(DataComponents.ATTRIBUTE_MODIFIERS, AxeItem.createAttributes(tier, 5.0f, -2.0f)))
                 .tag(ItemTags.AXES)
@@ -593,7 +593,7 @@ public class TropicraftItems {
                 );
     }
 
-    private static ItemBuilder<Item, Registrate> sword(final String name, final Tier tier, final Supplier<? extends Item> input) {
+    private static ItemBuilder<Item, Registrate> sword(String name, Tier tier, Supplier<? extends Item> input) {
         return REGISTRATE.item(name, p -> (Item) new SwordItem(tier, p))
                 .properties(p -> p.component(DataComponents.ATTRIBUTE_MODIFIERS, SwordItem.createAttributes(tier, 3, -3.0f)))
                 .tag(ItemTags.SWORDS)
@@ -657,21 +657,21 @@ public class TropicraftItems {
     public static final ItemEntry<ScubaHarnessItem> PINK_SCUBA_HARNESS = scubaHarness("pink_scuba_harness", ScubaType.PINK, () -> Items.PINK_DYE).register();
     public static final ItemEntry<ScubaArmorItem> PINK_SCUBA_FLIPPERS = scubaFlippers("pink_scuba_flippers", ScubaType.PINK, () -> Items.PINK_DYE).register();
 
-    private static ItemBuilder<ArmorItem, Registrate> fireArmor(final String name, final ArmorItem.Type slotType) {
+    private static ItemBuilder<ArmorItem, Registrate> fireArmor(String name, ArmorItem.Type slotType) {
         return REGISTRATE.item(name, p -> (ArmorItem) new FireArmorItem(slotType, p))
                 .properties(p -> p.stacksTo(1).durability(slotType.getDurability(12)))
                 .tag(ItemTags.TRIMMABLE_ARMOR)
                 .model(TropicraftItems::trimmableArmor);
     }
 
-    private static ItemBuilder<ArmorItem, Registrate> scaleArmor(final String name, final ArmorItem.Type slotType) {
+    private static ItemBuilder<ArmorItem, Registrate> scaleArmor(String name, ArmorItem.Type slotType) {
         return REGISTRATE.item(name, p -> (ArmorItem) new ScaleArmorItem(slotType, p))
                 .properties(p -> p.stacksTo(1).durability(slotType.getDurability(18)))
                 .tag(ItemTags.TRIMMABLE_ARMOR)
                 .model(TropicraftItems::trimmableArmor);
     }
 
-    private static ItemBuilder<ScubaGogglesItem, Registrate> scubaGoggles(final String name, final ScubaType type, Supplier<? extends Item> source) {
+    private static ItemBuilder<ScubaGogglesItem, Registrate> scubaGoggles(String name, ScubaType type, Supplier<? extends Item> source) {
         return REGISTRATE.item(name, p -> new ScubaGogglesItem(type, p))
                 .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get(), 1)
                         .pattern("YYY")
@@ -685,7 +685,7 @@ public class TropicraftItems {
                         .save(prov));
     }
 
-    private static ItemBuilder<ScubaHarnessItem, Registrate> scubaHarness(final String name, final ScubaType type, Supplier<? extends Item> source) {
+    private static ItemBuilder<ScubaHarnessItem, Registrate> scubaHarness(String name, ScubaType type, Supplier<? extends Item> source) {
         return REGISTRATE.item(name, p -> new ScubaHarnessItem(type, p))
                 .properties(p -> p.component(TropicraftDataComponents.SCUBA_AIR, 0))
                 .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get(), 1)
@@ -699,7 +699,7 @@ public class TropicraftItems {
                         .save(prov));
     }
 
-    private static ItemBuilder<ScubaArmorItem, Registrate> scubaFlippers(final String name, final ScubaType type, Supplier<? extends Item> source) {
+    private static ItemBuilder<ScubaArmorItem, Registrate> scubaFlippers(String name, ScubaType type, Supplier<? extends Item> source) {
         return REGISTRATE.item(name, p -> new ScubaArmorItem(type, ArmorItem.Type.BOOTS, p))
                 .properties(p -> p.component(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
                         .add(NeoForgeMod.SWIM_SPEED, new AttributeModifier(ResourceLocation.fromNamespaceAndPath(Constants.MODID, "scuba"), 0.25, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.FEET)
@@ -762,11 +762,11 @@ public class TropicraftItems {
         return REGISTRATE.item(name, Item::new);
     }
 
-    private static ItemBuilder<Item, Registrate> food(final String name, final FoodProperties food) {
+    private static ItemBuilder<Item, Registrate> food(String name, FoodProperties food) {
         return simpleItem(name).properties(p -> p.food(food));
     }
 
-    private static ItemBuilder<SignItem, Registrate> sign(final WoodType woodType, final Supplier<? extends Block> planks, final Supplier<? extends StandingSignBlock> standingSign, final Supplier<? extends WallSignBlock> wallSign) {
+    private static ItemBuilder<SignItem, Registrate> sign(WoodType woodType, Supplier<? extends Block> planks, Supplier<? extends StandingSignBlock> standingSign, Supplier<? extends WallSignBlock> wallSign) {
         String woodName = ResourceLocation.parse(woodType.name()).getPath();
         return REGISTRATE.item(woodName + "_sign", p -> new SignItem(p, standingSign.get(), wallSign.get()))
                 .properties(p -> p.stacksTo(16))

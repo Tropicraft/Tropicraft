@@ -298,12 +298,12 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityWithComp
     }
 
     @Override
-    public void writeSpawnData(final RegistryFriendlyByteBuf buffer) {
+    public void writeSpawnData(RegistryFriendlyByteBuf buffer) {
         buffer.writeDouble(this.lerpYaw);
     }
 
     @Override
-    public void readSpawnData(final RegistryFriendlyByteBuf additionalData) {
+    public void readSpawnData(RegistryFriendlyByteBuf additionalData) {
         this.lerpYaw = Mth.wrapDegrees(additionalData.readDouble());
     }
 

@@ -23,7 +23,7 @@ public class Drinks {
      *
      * @param recipe MixerRecipe instance to register
      */
-    public static void register(final MixerRecipe recipe) {
+    public static void register(MixerRecipe recipe) {
         recipes.add(recipe);
     }
 
@@ -38,7 +38,7 @@ public class Drinks {
             return true; // assuming we didn't put garbage in
         }
 
-        for (final MixerRecipe recipe : recipes) {
+        for (MixerRecipe recipe : recipes) {
             for (Ingredient i : recipe.getIngredients()) {
                 if (i.getIngredientItem() == item.getItem()) {
                     return true;
@@ -53,8 +53,8 @@ public class Drinks {
         return isRegisteredIngredient(new ItemStack(item));
     }
 
-    public static @Nonnull ItemStack getResult(final NonNullList<ItemStack> ingredients) {
-        for (final MixerRecipe recipe : recipes) {
+    public static @Nonnull ItemStack getResult(NonNullList<ItemStack> ingredients) {
+        for (MixerRecipe recipe : recipes) {
             int validIngredientsFound = 0;
 
             for (Ingredient recipeIngredient : recipe.getIngredients()) {

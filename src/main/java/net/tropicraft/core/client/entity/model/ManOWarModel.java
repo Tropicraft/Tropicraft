@@ -42,7 +42,7 @@ public class ManOWarModel extends HierarchicalModel<ManOWarEntity> {
         return create(0, 20, false);
     }
 
-    private static LayerDefinition create(final int i, final int j, final boolean derp) {
+    private static LayerDefinition create(int i, int j, boolean derp) {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
 

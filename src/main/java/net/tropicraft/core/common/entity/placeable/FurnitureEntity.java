@@ -77,17 +77,17 @@ public abstract class FurnitureEntity extends Entity {
 
     @Override
     public void tick() {
-        final int timeSinceHit = getTimeSinceHit();
+        int timeSinceHit = getTimeSinceHit();
         if (timeSinceHit > 0) {
             setTimeSinceHit(timeSinceHit - 1);
         }
 
-        final float damage = getDamage();
+        float damage = getDamage();
         if (damage > 0) {
             setDamage(damage - 1);
         }
 
-        final Vec3 currentPos = position();
+        Vec3 currentPos = position();
         xo = currentPos.x;
         yo = currentPos.y;
         zo = currentPos.z;

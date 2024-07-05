@@ -42,7 +42,7 @@ public class TropicraftDimension {
 
     public static final int SEA_LEVEL = 127;
 
-    public static void bootstrapDimensionType(final BootstrapContext<DimensionType> context) {
+    public static void bootstrapDimensionType(BootstrapContext<DimensionType> context) {
         context.register(DIMENSION_TYPE, new DimensionType(
                 OptionalLong.empty(),
                 true,
@@ -62,7 +62,7 @@ public class TropicraftDimension {
         ));
     }
 
-    public static void bootstrapLevelStem(final BootstrapContext<LevelStem> context) {
+    public static void bootstrapLevelStem(BootstrapContext<LevelStem> context) {
         context.register(DIMENSION, new LevelStem(
                 context.lookup(Registries.DIMENSION_TYPE).getOrThrow(DIMENSION_TYPE),
                 new NoiseBasedChunkGenerator(
@@ -108,13 +108,13 @@ public class TropicraftDimension {
     }
 
     @Nullable
-    public static DimensionTransition getPortalTransition(final ServerLevel level, final Entity entity, final ResourceKey<Level> targetDimension) {
-        final ServerLevel targetLevel = getTeleportDestination(level, targetDimension);
+    public static DimensionTransition getPortalTransition(ServerLevel level, Entity entity, ResourceKey<Level> targetDimension) {
+        ServerLevel targetLevel = getTeleportDestination(level, targetDimension);
         if (targetLevel == null) {
             return null;
         }
-        final TropicsPortalLinker linker = new TropicsPortalLinker(targetLevel);
-        final TropicsPortalLinker.PortalInfo portal = linker.findOrCreatePortal(entity);
+        TropicsPortalLinker linker = new TropicsPortalLinker(targetLevel);
+        TropicsPortalLinker.PortalInfo portal = linker.findOrCreatePortal(entity);
         if (portal == null) {
             return null;
         }
@@ -139,7 +139,7 @@ public class TropicraftDimension {
      */
     public static void teleportPlayerWithPortal(ServerPlayer player, ResourceKey<Level> dimensionType) {
         player.unRide();
-        final DimensionTransition portalTransition = getPortalTransition(player.serverLevel(), player, dimensionType);
+        DimensionTransition portalTransition = getPortalTransition(player.serverLevel(), player, dimensionType);
         if (portalTransition != null) {
             player.changeDimension(portalTransition);
         }

@@ -746,12 +746,12 @@ public class TropicraftEntities {
     }
 
     @SubscribeEvent
-    public static void onMobSpawn(final MobSpawnEvent.PositionCheck event) {
-        final ServerLevel level = event.getLevel().getLevel();
+    public static void onMobSpawn(MobSpawnEvent.PositionCheck event) {
+        ServerLevel level = event.getLevel().getLevel();
         if (level.dimension() == TropicraftDimension.WORLD) {
             if (!TropicsConfigs.COMMON.spawnHostileMobsInTropics.get()) {
                 if (event.getSpawnType() == MobSpawnType.NATURAL || event.getSpawnType() == MobSpawnType.CHUNK_GENERATION) {
-                    final Mob mob = event.getEntity();
+                    Mob mob = event.getEntity();
                     if (mob.getType() != TropicraftEntities.ASHEN.get() && (mob.getType().getCategory() == MobCategory.MONSTER || mob instanceof Enemy)) {
                         event.setResult(MobSpawnEvent.PositionCheck.Result.FAIL);
                     }

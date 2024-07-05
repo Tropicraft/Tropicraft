@@ -50,7 +50,7 @@ public final class BongoDrumBlock extends Block {
         final Supplier<SoundEvent> soundEvent;
         public final int recipeColumns;
 
-        Size(final String name, int size, final Supplier<SoundEvent> soundEvent, int recipeColumns) {
+        Size(String name, int size, Supplier<SoundEvent> soundEvent, int recipeColumns) {
             this.name = name;
             this.recipeColumns = recipeColumns;
             double offset = (16 - size) / 2;
@@ -66,7 +66,7 @@ public final class BongoDrumBlock extends Block {
 
     private final Size size;
 
-    public BongoDrumBlock(final Size size, final Properties properties) {
+    public BongoDrumBlock(Size size, Properties properties) {
         super(properties);
         this.size = size;
         registerDefaultState(stateDefinition.any().setValue(POWERED, Boolean.FALSE));
@@ -77,17 +77,17 @@ public final class BongoDrumBlock extends Block {
     }
 
     @Override
-    public VoxelShape getShape(final BlockState state, final BlockGetter worldIn, final BlockPos pos, final CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
         return size.shape;
     }
 
     @Override
-    public VoxelShape getCollisionShape(final BlockState state, final BlockGetter worldIn, final BlockPos pos, final CollisionContext context) {
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
         return getShape(state, worldIn, pos, context);
     }
 
     @Override
-    protected InteractionResult useWithoutItem(final BlockState state, final Level level, final BlockPos pos, final Player player, final BlockHitResult result) {
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult result) {
         // Only play drum sound if player hits the topR
         if (result.getDirection() != Direction.UP) {
             return InteractionResult.PASS;
@@ -118,9 +118,9 @@ public final class BongoDrumBlock extends Block {
 
     @SubscribeEvent
     public static void onBlockLeftClick(PlayerInteractEvent.LeftClickBlock event) {
-        final Level level = event.getLevel();
-        final BlockState state = level.getBlockState(event.getPos());
-        final Block block = state.getBlock();
+        Level level = event.getLevel();
+        BlockState state = level.getBlockState(event.getPos());
+        Block block = state.getBlock();
         if (state.getBlock() instanceof BongoDrumBlock && event.getFace() == Direction.UP) {
             ((BongoDrumBlock) block).playBongoSound(level, event.getPos(), state);
         }

@@ -17,7 +17,7 @@ public class AshenMaskRenderer extends EntityRenderer<AshenMaskEntity> {
 
     private final TropicraftSpecialRenderHelper mask;
 
-    public AshenMaskRenderer(final EntityRendererProvider.Context context) {
+    public AshenMaskRenderer(EntityRendererProvider.Context context) {
         super(context);
         shadowRadius = 0.5F;
         shadowStrength = 0.5f;
@@ -25,7 +25,7 @@ public class AshenMaskRenderer extends EntityRenderer<AshenMaskEntity> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(final AshenMaskEntity entity) {
+    public ResourceLocation getTextureLocation(AshenMaskEntity entity) {
         return TEXTURE;
     }
 

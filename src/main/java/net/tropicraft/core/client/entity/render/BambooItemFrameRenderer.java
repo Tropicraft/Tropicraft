@@ -32,7 +32,7 @@ public class BambooItemFrameRenderer extends EntityRenderer<BambooItemFrame> {
     private final Minecraft mc = Minecraft.getInstance();
     private final ItemRenderer itemRenderer;
 
-    public BambooItemFrameRenderer(final EntityRendererProvider.Context context) {
+    public BambooItemFrameRenderer(EntityRendererProvider.Context context) {
         super(context);
         itemRenderer = mc.getItemRenderer();
     }
@@ -67,7 +67,7 @@ public class BambooItemFrameRenderer extends EntityRenderer<BambooItemFrame> {
                 matrixStackIn.scale(0.0078125F, 0.0078125F, 0.0078125F);
                 matrixStackIn.translate(-64.0D, -64.0D, 0.0D);
                 matrixStackIn.translate(0.0D, 0.0D, -1.0D);
-                final MapId id = itemstack.get(DataComponents.MAP_ID);
+                MapId id = itemstack.get(DataComponents.MAP_ID);
                 if (mapdata != null && id != null) {
                     this.mc.gameRenderer.getMapRenderer().render(matrixStackIn, bufferIn, id, mapdata, true, packedLightIn);
                 }

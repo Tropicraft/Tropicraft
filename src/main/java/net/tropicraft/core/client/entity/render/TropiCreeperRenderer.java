@@ -17,7 +17,7 @@ public class TropiCreeperRenderer extends MobRenderer<TropiCreeperEntity, TropiC
 
     private static final ResourceLocation CREEPER_TEXTURE = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/tropicreeper.png");
 
-    public TropiCreeperRenderer(final EntityRendererProvider.Context context) {
+    public TropiCreeperRenderer(EntityRendererProvider.Context context) {
         super(context, new TropiCreeperModel(context.bakeLayer(TropicraftRenderLayers.TROPI_CREEPER_LAYER)), 0.5F);
     }
 

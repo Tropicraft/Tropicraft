@@ -7,7 +7,7 @@ import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.underdasea.SeaUrchinEntity;
 
 public class SeaUrchinEggEntity extends EchinodermEggEntity {
-    public SeaUrchinEggEntity(final EntityType<? extends SeaUrchinEggEntity> type, Level world) {
+    public SeaUrchinEggEntity(EntityType<? extends SeaUrchinEggEntity> type, Level world) {
         super(type, world);
     }
 

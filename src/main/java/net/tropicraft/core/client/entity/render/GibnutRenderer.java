@@ -11,7 +11,7 @@ import net.tropicraft.core.common.entity.passive.GibnutEntity;
 public class GibnutRenderer extends MobRenderer<GibnutEntity, GibnutModel> {
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/gibnut.png");
 
-    public GibnutRenderer(final EntityRendererProvider.Context context) {
+    public GibnutRenderer(EntityRendererProvider.Context context) {
         super(context, new GibnutModel(context.bakeLayer(TropicraftRenderLayers.GIBNUT_LAYER)), 0.3f);
     }
 

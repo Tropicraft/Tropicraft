@@ -50,7 +50,7 @@ public abstract class AbstractTexturedFishEntity extends AbstractFish {
         setTexture(nbt.getString("Texture"));
     }
 
-    public void setTexture(final String textureName) {
+    public void setTexture(String textureName) {
         getEntityData().set(TEXTURE_NAME, textureName);
     }
 

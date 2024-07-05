@@ -28,7 +28,7 @@ public class TropicraftSpecialRenderHelper {
         stack.popPose();
     }
 
-    public void renderFish(final PoseStack stack, final VertexConsumer buffer, final int index, final int packedLightIn, final int overlayLightIn) {
+    public void renderFish(PoseStack stack, VertexConsumer buffer, int index, int packedLightIn, int overlayLightIn) {
         float f = ((float) ((index % 8) * 32) + 0.0F) / 256F;
         float f1 = ((float) ((index % 8) * 32) + 31.99F) / 256F;
         float f2 = ((float) ((index / 8) * 32) + 0.0F) / 256F;

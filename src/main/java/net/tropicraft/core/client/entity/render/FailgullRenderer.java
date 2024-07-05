@@ -14,7 +14,7 @@ import net.tropicraft.core.common.entity.passive.FailgullEntity;
 public class FailgullRenderer extends MobRenderer<FailgullEntity, FailgullModel> {
     private static final ResourceLocation FAILGULL_TEXTURE = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/failgull.png");
 
-    public FailgullRenderer(final EntityRendererProvider.Context context) {
+    public FailgullRenderer(EntityRendererProvider.Context context) {
         super(context, new FailgullModel(context.bakeLayer(TropicraftRenderLayers.FAILGULL_LAYER)), 0.25F);
     }
 

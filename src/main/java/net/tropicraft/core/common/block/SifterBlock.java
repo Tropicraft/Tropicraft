@@ -22,7 +22,7 @@ import javax.annotation.Nullable;
 public class SifterBlock extends BaseEntityBlock {
     public static final MapCodec<SifterBlock> CODEC = simpleCodec(SifterBlock::new);
 
-    public SifterBlock(final Properties properties) {
+    public SifterBlock(Properties properties) {
         super(properties);
     }
 
@@ -49,13 +49,13 @@ public class SifterBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(final ItemStack stack, final BlockState state, final Level level, final BlockPos pos, final Player player, final InteractionHand hand, final BlockHitResult hitResult) {
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (!stack.is(ItemTags.SAND)) {
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
 
         if (!level.isClientSide && level.getBlockEntity(pos) instanceof SifterBlockEntity sifter && !stack.isEmpty() && !sifter.isSifting()) {
-            final ItemStack addItem = stack.consumeAndReturn(1, player);
+            ItemStack addItem = stack.consumeAndReturn(1, player);
             sifter.addItemToSifter(addItem);
 
             sifter.startSifting();

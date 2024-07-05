@@ -14,7 +14,7 @@ import net.tropicraft.core.common.entity.passive.HummingbirdEntity;
 public class HummingbirdRenderer extends MobRenderer<HummingbirdEntity, HummingbirdModel<HummingbirdEntity>> {
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/hummingbird.png");
 
-    public HummingbirdRenderer(final EntityRendererProvider.Context context) {
+    public HummingbirdRenderer(EntityRendererProvider.Context context) {
         super(context, new HummingbirdModel<>(context.bakeLayer(TropicraftRenderLayers.HUMMINGBIRD_LAYER)), 0.2F);
     }
 

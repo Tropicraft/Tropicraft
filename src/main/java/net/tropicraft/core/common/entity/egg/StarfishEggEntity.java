@@ -16,7 +16,7 @@ import net.tropicraft.core.common.item.TropicraftItems;
 public class StarfishEggEntity extends EchinodermEggEntity implements IEntityWithComplexSpawn {
     private StarfishType starfishType;
 
-    public StarfishEggEntity(final EntityType<? extends StarfishEggEntity> type, Level world) {
+    public StarfishEggEntity(EntityType<? extends StarfishEggEntity> type, Level world) {
         super(type, world);
         starfishType = StarfishType.values()[random.nextInt(StarfishType.values().length)];
     }

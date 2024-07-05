@@ -38,7 +38,7 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
 
         pos = pos.immutable();
 
-        final int height = 9 + random.nextInt(3);
+        int height = 9 + random.nextInt(3);
 
         if (goesBeyondWorldSize(world, pos.getY(), height)) {
             return false;
@@ -56,7 +56,7 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
             world.setBlock(pos.below(), Blocks.DIRT.defaultBlockState(), 3);
         }
 
-        final int x = pos.getX(), y = pos.getY(), z = pos.getZ();
+        int x = pos.getX(), y = pos.getY(), z = pos.getZ();
 
         int dir = this.pickDirection(world, random, x, z);
         this.setDir(dir);
@@ -65,7 +65,7 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
         // x bb check
         for (int xx = 0; xx < 4; xx++) {
             for (int yy = 0; yy < height; yy++) {
-                final BlockPos posWithDir = getPosWithDir(xx, yy + y, 0);
+                BlockPos posWithDir = getPosWithDir(xx, yy + y, 0);
                 if (!isAir(world, posWithDir)) {
                     return false;
                 }
@@ -133,7 +133,7 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
         return true;
     }
 
-    private int findWater(final LevelSimulatedRW world, final RandomSource rand, int x, int z) {
+    private int findWater(LevelSimulatedRW world, RandomSource rand, int x, int z) {
         int iPos = 0;
         int iNeg = 0;
         int kPos = 0;
@@ -205,7 +205,7 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
         return world.isStateAtPosition(pos, state -> state.is(Blocks.WATER));
     }
 
-    private int pickDirection(final LevelSimulatedRW world, final RandomSource rand, int x, int z) {
+    private int pickDirection(LevelSimulatedRW world, RandomSource rand, int x, int z) {
         int direction = findWater(world, rand, x, z);
         if (direction != -1) {
             return direction;
@@ -223,11 +223,11 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
         this.dir = dir;
     }
 
-    private BlockPos getPosWithDir(final int x, final int y, final int z) {
+    private BlockPos getPosWithDir(int x, int y, int z) {
         return getPosWithDir(pos(x, y, z));
     }
 
-    private BlockPos getPosWithDir(final BlockPos unRotatedPos) {
+    private BlockPos getPosWithDir(BlockPos unRotatedPos) {
         int i = unRotatedPos.getX();
         int j = unRotatedPos.getY();
         int k = unRotatedPos.getZ();
@@ -244,7 +244,7 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
         return BlockPos.ZERO;
     }
 
-    private void placeBlockWithDir(final LevelWriter world, int x, int y, int z, BlockState state) {
+    private void placeBlockWithDir(LevelWriter world, int x, int y, int z, BlockState state) {
         switch (dir) {
             case 2:
                 setBlock(world, pos(this.originX + x, y, this.originZ + z), state);

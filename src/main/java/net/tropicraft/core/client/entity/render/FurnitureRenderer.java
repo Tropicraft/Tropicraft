@@ -21,11 +21,11 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
     private final EntityModel<T> model;
     private final float scale;
 
-    public FurnitureRenderer(final EntityRendererProvider.Context context, String textureName, EntityModel<T> model) {
+    public FurnitureRenderer(EntityRendererProvider.Context context, String textureName, EntityModel<T> model) {
         this(context, textureName, model, 1);
     }
 
-    public FurnitureRenderer(final EntityRendererProvider.Context context, String textureName, EntityModel<T> model, float scale) {
+    public FurnitureRenderer(EntityRendererProvider.Context context, String textureName, EntityModel<T> model, float scale) {
         super(context);
         this.textureName = textureName;
         this.model = model;
@@ -41,13 +41,13 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
         stack.scale(scale, scale, scale);
         setupTransforms(stack);
 
-        final float rockingAngle = getRockingAngle(furniture, partialTicks);
+        float rockingAngle = getRockingAngle(furniture, partialTicks);
         ;
         if (!Mth.equal(rockingAngle, 0.0F)) {
             stack.mulPose(getRockingAxis().rotationDegrees(rockingAngle));
         }
 
-        final int color = furniture.getColor().getTextureDiffuseColor();
+        int color = furniture.getColor().getTextureDiffuseColor();
 
         // Draw uncolored layer
         VertexConsumer ivertexbuilder = buffer.getBuffer(model.renderType(TropicraftRenderUtils.getTextureEntity(textureName + "_base_layer")));
@@ -91,7 +91,7 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
     }
 
     @Override
-    public ResourceLocation getTextureLocation(final T furniture) {
+    public ResourceLocation getTextureLocation(T furniture) {
         return null;
     }
 }

@@ -49,7 +49,7 @@ public class AirCompressorBlockEntity extends BlockEntity implements IMachineBlo
 
     private ScubaArmorItem tank;
 
-    public AirCompressorBlockEntity(final BlockEntityType<AirCompressorBlockEntity> type, final BlockPos pos, final BlockState state) {
+    public AirCompressorBlockEntity(BlockEntityType<AirCompressorBlockEntity> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         this.stack = ItemStack.EMPTY;
     }

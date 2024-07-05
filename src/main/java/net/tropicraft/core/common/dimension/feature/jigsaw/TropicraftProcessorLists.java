@@ -22,7 +22,7 @@ public final class TropicraftProcessorLists {
     public static final ResourceKey<StructureProcessorList> HOME_TREE_BASE = createKey("home_tree/base");
     public static final ResourceKey<StructureProcessorList> HOME_TREE_START = createKey("home_tree/start");
 
-    public static void bootstrap(final BootstrapContext<StructureProcessorList> context) {
+    public static void bootstrap(BootstrapContext<StructureProcessorList> context) {
         StructureSupportsProcessor fenceExtender = new StructureSupportsProcessor(false, HolderSet.direct((BlockEntry<? extends Block>[]) new BlockEntry[]{TropicraftBlocks.BAMBOO_FENCE}));
 
         context.register(KOA_TOWN_CENTERS, new StructureProcessorList(List.of(
@@ -51,7 +51,7 @@ public final class TropicraftProcessorLists {
         ));
     }
 
-    private static ResourceKey<StructureProcessorList> createKey(final String name) {
+    private static ResourceKey<StructureProcessorList> createKey(String name) {
         return ResourceKey.create(Registries.PROCESSOR_LIST, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
     }
 }

@@ -48,7 +48,7 @@ public class TropicraftPackRegistries {
             .add(Registries.MULTI_NOISE_BIOME_SOURCE_PARAMETER_LIST, TropicraftBiomeBuilder::bootstrap)
             .add(Registries.JUKEBOX_SONG, TropicraftJukeboxSongs::bootstrap);
 
-    public static CompletableFuture<RegistrySetBuilder.PatchedRegistries> createLookup(final CompletableFuture<HolderLookup.Provider> vanillaProvider) {
+    public static CompletableFuture<RegistrySetBuilder.PatchedRegistries> createLookup(CompletableFuture<HolderLookup.Provider> vanillaProvider) {
         return RegistryPatchGenerator.createLookup(vanillaProvider, BUILDER);
     }
 }

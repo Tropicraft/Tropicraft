@@ -17,7 +17,7 @@ import java.util.function.Consumer;
 
 public class NigelStacheItem extends ArmorItem {
 
-    public NigelStacheItem(final Properties properties) {
+    public NigelStacheItem(Properties properties) {
         super(TropicraftArmorMaterials.NIGEL_STACHE, Type.HELMET, properties);
     }
 
@@ -32,7 +32,7 @@ public class NigelStacheItem extends ArmorItem {
     }
 
     @Override
-    public ResourceLocation getArmorTexture(final ItemStack stack, final Entity entity, final EquipmentSlot slot, final ArmorMaterial.Layer layer, final boolean innerModel) {
+    public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
         return TropicraftRenderUtils.getTextureArmor("nigel_layer_1");
     }
 }

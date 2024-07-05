@@ -214,16 +214,16 @@ public class EIHFeature extends Feature<NoneFeatureConfiguration> {
         setBlock(world, i + 0, j + -3, k + 0, EIH_STATE.get());
 
         // Coords of the first eye
-        final int eyeOneX = i;
-        final int eyeOneY = j + 5;
-        final int eyeOneZ = k + 1;
+        int eyeOneX = i;
+        int eyeOneY = j + 5;
+        int eyeOneZ = k + 1;
 
         // Coords of the second eye
-        final int eyeTwoX = i - 3;
-        final int eyeTwoY = j + 5;
-        final int eyeTwoZ = k + 1;
+        int eyeTwoX = i - 3;
+        int eyeTwoY = j + 5;
+        int eyeTwoZ = k + 1;
 
-        final int eyeRand = world.getRandom().nextInt(9);
+        int eyeRand = world.getRandom().nextInt(9);
 
         // Place eyes
         placeEye(world, eyeOneX, eyeOneY, eyeOneZ, eyeRand);
@@ -232,7 +232,7 @@ public class EIHFeature extends Feature<NoneFeatureConfiguration> {
         return true;
     }
 
-    private void setBlock(LevelAccessor world, int i, int i1, int i2, final BlockState state) {
+    private void setBlock(LevelAccessor world, int i, int i1, int i2, BlockState state) {
         world.setBlock(new BlockPos(i, i1, i2), state, 3);
     }
 

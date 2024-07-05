@@ -56,7 +56,7 @@ public enum TropicraftFlower implements Supplier<Block> {
     }
 
     @SafeVarargs
-    TropicraftFlower(@Nullable String name, Holder<MobEffect> effect, int effectDuration, int w, int h, @Nullable Item dye, final TagKey<Block>... tags) {
+    TropicraftFlower(@Nullable String name, Holder<MobEffect> effect, int effectDuration, int w, int h, @Nullable Item dye, TagKey<Block>... tags) {
         this.effect = effect;
         this.effectDuration = effectDuration;
         this.dye = dye;

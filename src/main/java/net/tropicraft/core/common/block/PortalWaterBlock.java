@@ -40,20 +40,20 @@ public final class PortalWaterBlock extends LiquidBlock implements Portal {
     }
 
     @Override
-    protected void entityInside(final BlockState state, final Level level, final BlockPos pos, final Entity entity) {
+    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (entity.canUsePortal(false)) {
             entity.setAsInsidePortal(this, pos);
         }
     }
 
     @Override
-    public int getPortalTransitionTime(final ServerLevel level, final Entity entity) {
+    public int getPortalTransitionTime(ServerLevel level, Entity entity) {
         return entity instanceof Player ? SharedConstants.TICKS_PER_SECOND * 4 : 0;
     }
 
     @Nullable
     @Override
-    public DimensionTransition getPortalDestination(final ServerLevel level, final Entity entity, final BlockPos pos) {
+    public DimensionTransition getPortalDestination(ServerLevel level, Entity entity, BlockPos pos) {
         return TropicraftDimension.getPortalTransition(level, entity, TropicraftDimension.WORLD);
     }
 }

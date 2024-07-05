@@ -14,16 +14,16 @@ public class BasiliskLizardRenderer extends MobRenderer<BasiliskLizardEntity, Ba
 
     private final ResourceLocation texture;
 
-    public BasiliskLizardRenderer(EntityRendererProvider.Context context, final ResourceLocation texture) {
+    public BasiliskLizardRenderer(EntityRendererProvider.Context context, ResourceLocation texture) {
         super(context, new BasiliskLizardModel<>(context.bakeLayer(TropicraftRenderLayers.BASILISK_LIZARD_LAYER)), 0.3F);
         this.texture = texture;
     }
 
-    public static BasiliskLizardRenderer brown(final EntityRendererProvider.Context context) {
+    public static BasiliskLizardRenderer brown(EntityRendererProvider.Context context) {
         return new BasiliskLizardRenderer(context, BROWN_TEXTURE);
     }
 
-    public static BasiliskLizardRenderer green(final EntityRendererProvider.Context context) {
+    public static BasiliskLizardRenderer green(EntityRendererProvider.Context context) {
         return new BasiliskLizardRenderer(context, GREEN_TEXTURE);
     }
 

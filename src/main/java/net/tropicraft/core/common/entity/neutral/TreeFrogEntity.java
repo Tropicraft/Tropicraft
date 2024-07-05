@@ -94,13 +94,13 @@ public class TreeFrogEntity extends TropicraftCreatureEntity implements Enemy, R
 
                     // this.jump();
                     // this.motionY += -0.01D + rand.nextDouble() * 0.1D;
-                    final Vec3 motion = getDeltaMovement();
+                    Vec3 motion = getDeltaMovement();
 
                     double speed = Math.sqrt(motion.x * motion.x + motion.z * motion.z);
                     if (speed > 0.02D) {
-                        final double motionY = motion.y + 0.4d;
-                        final double motionX = motion.x * 1.1d;
-                        final double motionZ = motion.z * 1.1d;
+                        double motionY = motion.y + 0.4d;
+                        double motionX = motion.x * 1.1d;
+                        double motionZ = motion.z * 1.1d;
                         setDeltaMovement(motionX, motionY, motionZ);
                     }
                 }
@@ -132,7 +132,7 @@ public class TreeFrogEntity extends TropicraftCreatureEntity implements Enemy, R
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData) {
-        final int type = random.nextInt(Type.values().length);
+        int type = random.nextInt(Type.values().length);
         setFrogType(type);
 
         if (type != 0) {
@@ -156,14 +156,14 @@ public class TreeFrogEntity extends TropicraftCreatureEntity implements Enemy, R
     }
 
     @Override
-    public void performRangedAttack(final LivingEntity entity, float dist) {
+    public void performRangedAttack(LivingEntity entity, float dist) {
         if (dist < 4F && !level().isClientSide && attackTime == 0 && level().getDifficulty() != Difficulty.PEACEFUL) {
             double d = entity.getX() - getX();
             double d1 = entity.getZ() - getZ();
 
-            final PoisonBlotEntity poison = new PoisonBlotEntity(TropicraftEntities.POISON_BLOT.get(), this, level());
+            PoisonBlotEntity poison = new PoisonBlotEntity(TropicraftEntities.POISON_BLOT.get(), this, level());
             poison.setPos(poison.getX(), poison.getY() + 1.3999999761581421D, poison.getZ());
-            final double shotHeight = (entity.getY() + (double) entity.getEyeHeight()) - 0.20000000298023224D - poison.getY();
+            double shotHeight = (entity.getY() + (double) entity.getEyeHeight()) - 0.20000000298023224D - poison.getY();
             float f1 = Mth.sqrt((float) (d * d + d1 * d1)) * 0.2F;
             entity.getCommandSenderWorld().playSound(null, entity.blockPosition(), Sounds.FROG_SPIT.get(), SoundSource.HOSTILE, 1, 1);
             level().addFreshEntity(poison);

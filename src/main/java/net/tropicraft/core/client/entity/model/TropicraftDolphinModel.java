@@ -318,7 +318,7 @@ public class TropicraftDolphinModel extends HierarchicalModel<TropicraftDolphinE
 
     @Override
     public void setupAnim(TropicraftDolphinEntity dolphin, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        final boolean mouthOpen = dolphin.getMouthOpen();
+        boolean mouthOpen = dolphin.getMouthOpen();
 
         float tailVertSpeed = 1.0f;
         float tailHorzSpeed;
