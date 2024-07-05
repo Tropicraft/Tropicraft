@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:raw_ray"
-            ]
+            "items": "tropicraft:raw_ray"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_raw_ray",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_raw_ray"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:cooked_ray_from_raw_ray_campfire"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -14,7 +14,6 @@
   ],
   "result": {
     "count": 4,
-    "item": "tropicraft:mahogany_stairs"
-  },
-  "show_notification": true
+    "id": "tropicraft:mahogany_stairs"
+  }
 }

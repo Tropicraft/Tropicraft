@@ -14,7 +14,7 @@
     "I"
   ],
   "result": {
-    "item": "tropicraft:dagger"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "tropicraft:dagger"
+  }
 }

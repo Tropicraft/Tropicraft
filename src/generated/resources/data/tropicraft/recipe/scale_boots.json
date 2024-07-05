@@ -11,7 +11,7 @@
     "X X"
   ],
   "result": {
-    "item": "tropicraft:scale_boots"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "tropicraft:scale_boots"
+  }
 }

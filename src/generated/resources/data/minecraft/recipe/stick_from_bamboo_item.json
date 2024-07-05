@@ -11,7 +11,7 @@
     "X"
   ],
   "result": {
-    "item": "tropicraft:bamboo_stick"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "tropicraft:bamboo_stick"
+  }
 }

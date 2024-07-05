@@ -18,7 +18,7 @@
     " Z "
   ],
   "result": {
-    "item": "tropicraft:yellow_scuba_goggles"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "tropicraft:yellow_scuba_goggles"
+  }
 }

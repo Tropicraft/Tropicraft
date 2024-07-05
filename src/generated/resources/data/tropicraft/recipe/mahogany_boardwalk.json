@@ -4,7 +4,7 @@
   "group": "tropicraft:boardwalk",
   "key": {
     "S": {
-      "tag": "forge:rods/wooden"
+      "tag": "c:rods/wooden"
     },
     "X": {
       "item": "tropicraft:mahogany_slab"
@@ -16,7 +16,6 @@
   ],
   "result": {
     "count": 3,
-    "item": "tropicraft:mahogany_boardwalk"
-  },
-  "show_notification": true
+    "id": "tropicraft:mahogany_boardwalk"
+  }
 }

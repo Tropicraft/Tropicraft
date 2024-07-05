@@ -13,7 +13,6 @@
   ],
   "result": {
     "count": 3,
-    "item": "tropicraft:red_mangrove_wood"
-  },
-  "show_notification": true
+    "id": "tropicraft:red_mangrove_wood"
+  }
 }

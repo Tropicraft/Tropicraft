@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:mangrove_planks"
-            ]
+            "items": "tropicraft:mangrove_planks"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_mangrove_planks",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_mangrove_planks"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:mangrove_door"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:bamboo"
-            ]
+            "items": "minecraft:bamboo"
           }
         ]
       },
@@ -17,9 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:leather"
-            ]
+            "items": "minecraft:leather"
           }
         ]
       },
@@ -34,15 +30,14 @@
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_bamboo",
-      "has_leather",
-      "has_the_recipe"
+      "has_leather"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:bamboo_item_frame"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

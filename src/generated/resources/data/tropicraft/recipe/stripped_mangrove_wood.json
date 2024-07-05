@@ -13,7 +13,6 @@
   ],
   "result": {
     "count": 3,
-    "item": "tropicraft:stripped_mangrove_wood"
-  },
-  "show_notification": true
+    "id": "tropicraft:stripped_mangrove_wood"
+  }
 }

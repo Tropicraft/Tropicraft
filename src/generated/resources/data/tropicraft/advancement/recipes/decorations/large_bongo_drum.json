@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:iguana_leather"
-            ]
+            "items": "tropicraft:iguana_leather"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_iguana_leather",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_iguana_leather"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:large_bongo_drum"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

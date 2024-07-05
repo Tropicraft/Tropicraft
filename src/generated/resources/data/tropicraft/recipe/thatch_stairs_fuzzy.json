@@ -16,7 +16,6 @@
   ],
   "result": {
     "count": 4,
-    "item": "tropicraft:thatch_stairs_fuzzy"
-  },
-  "show_notification": true
+    "id": "tropicraft:thatch_stairs_fuzzy"
+  }
 }

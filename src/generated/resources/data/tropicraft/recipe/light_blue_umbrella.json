@@ -16,7 +16,7 @@
     " B "
   ],
   "result": {
-    "item": "tropicraft:light_blue_umbrella"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "tropicraft:light_blue_umbrella"
+  }
 }

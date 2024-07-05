@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:raw_coffee_bean"
-            ]
+            "items": "tropicraft:raw_coffee_bean"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_raw_coffee_bean",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_raw_coffee_bean"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:roasted_coffee_bean_from_raw_coffee_bean_campfire"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

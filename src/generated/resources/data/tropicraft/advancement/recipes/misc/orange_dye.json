@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:orange_anthurium"
-            ]
+            "items": "tropicraft:orange_anthurium"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_orange_anthurium",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_orange_anthurium"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:orange_dye"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

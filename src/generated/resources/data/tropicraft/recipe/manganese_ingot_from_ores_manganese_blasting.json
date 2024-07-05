@@ -6,5 +6,8 @@
   "ingredient": {
     "tag": "forge:ores/manganese"
   },
-  "result": "tropicraft:manganese_ingot"
+  "result": {
+    "count": 1,
+    "id": "tropicraft:manganese_ingot"
+  }
 }

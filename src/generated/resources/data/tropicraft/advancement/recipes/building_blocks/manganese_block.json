@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:manganese_ingot"
-            ]
+            "items": "tropicraft:manganese_ingot"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_manganese_ingot",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_manganese_ingot"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:manganese_block"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

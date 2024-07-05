@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:canna"
-            ]
+            "items": "tropicraft:canna"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_canna",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_canna"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:yellow_dye"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

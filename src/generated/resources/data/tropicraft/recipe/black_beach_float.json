@@ -15,7 +15,7 @@
     "BBB"
   ],
   "result": {
-    "item": "tropicraft:black_beach_float"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "tropicraft:black_beach_float"
+  }
 }

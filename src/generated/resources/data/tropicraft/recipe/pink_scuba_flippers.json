@@ -15,7 +15,7 @@
     "XX"
   ],
   "result": {
-    "item": "tropicraft:pink_scuba_flippers"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "tropicraft:pink_scuba_flippers"
+  }
 }

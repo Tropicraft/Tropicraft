@@ -14,7 +14,7 @@
     "X"
   ],
   "result": {
-    "item": "tropicraft:yellow_pony_bottle"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "tropicraft:yellow_pony_bottle"
+  }
 }

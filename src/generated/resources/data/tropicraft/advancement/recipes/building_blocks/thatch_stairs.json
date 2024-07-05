@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:thatch_bundle"
-            ]
+            "items": "tropicraft:thatch_bundle"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_thatch_bundle",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_thatch_bundle"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:thatch_stairs"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

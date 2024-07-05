@@ -15,7 +15,7 @@
     "XXX"
   ],
   "result": {
-    "item": "tropicraft:air_compressor"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "tropicraft:air_compressor"
+  }
 }

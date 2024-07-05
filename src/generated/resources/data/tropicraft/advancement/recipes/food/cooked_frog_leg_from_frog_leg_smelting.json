@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:frog_leg"
-            ]
+            "items": "tropicraft:frog_leg"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_frog_leg",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_frog_leg"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:cooked_frog_leg_from_frog_leg_smelting"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:shaka_ingot"
-            ]
+            "items": "tropicraft:shaka_ingot"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_shaka_ingot",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_shaka_ingot"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:shaka_block"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

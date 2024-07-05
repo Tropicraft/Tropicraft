@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:azurite_gem"
-            ]
+            "items": "tropicraft:azurite_gem"
           }
         ]
       },
@@ -23,9 +21,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:zircon_gem"
-            ]
+            "items": "tropicraft:zircon_gem"
           }
         ]
       },
@@ -34,15 +30,14 @@
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_zircon",
-      "has_azurite",
-      "has_the_recipe"
+      "has_azurite"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:zirconium_gem"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

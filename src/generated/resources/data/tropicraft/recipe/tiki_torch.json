@@ -15,7 +15,7 @@
     "X"
   ],
   "result": {
-    "item": "tropicraft:tiki_torch"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "tropicraft:tiki_torch"
+  }
 }

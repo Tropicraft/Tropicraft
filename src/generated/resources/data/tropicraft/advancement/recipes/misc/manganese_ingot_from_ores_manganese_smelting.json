@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:ores/manganese"
+            "items": "#forge:ores/manganese"
           }
         ]
       },
@@ -20,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_ores_manganese",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_ores_manganese"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:manganese_ingot_from_ores_manganese_smelting"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

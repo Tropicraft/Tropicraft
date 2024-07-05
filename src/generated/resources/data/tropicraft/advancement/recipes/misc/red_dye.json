@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:red_anthurium"
-            ]
+            "items": "tropicraft:red_anthurium"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_red_anthurium",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_red_anthurium"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:red_dye"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

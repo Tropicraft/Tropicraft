@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:azurite_block"
-            ]
+            "items": "tropicraft:azurite_block"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_azurite_block",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_azurite_block"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:azurite_gem_from_azurite_block"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

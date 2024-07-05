@@ -15,7 +15,7 @@
     "  X"
   ],
   "result": {
-    "item": "tropicraft:blow_gun"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "tropicraft:blow_gun"
+  }
 }

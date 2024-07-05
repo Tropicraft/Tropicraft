@@ -4,7 +4,7 @@
   "group": "wooden_fence_gate",
   "key": {
     "#": {
-      "tag": "forge:rods/wooden"
+      "tag": "c:rods/wooden"
     },
     "W": {
       "item": "tropicraft:thatch_bundle"
@@ -15,7 +15,7 @@
     "#W#"
   ],
   "result": {
-    "item": "tropicraft:thatch_fence_gate"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "tropicraft:thatch_fence_gate"
+  }
 }

@@ -12,7 +12,7 @@
     "XXX"
   ],
   "result": {
-    "item": "tropicraft:scale_chestplate"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "tropicraft:scale_chestplate"
+  }
 }

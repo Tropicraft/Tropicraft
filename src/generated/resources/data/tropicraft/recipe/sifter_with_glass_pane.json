@@ -4,7 +4,7 @@
   "group": "tropicraft:sifter",
   "key": {
     "I": {
-      "tag": "forge:glass_panes"
+      "tag": "c:glass_panes"
     },
     "X": {
       "tag": "minecraft:planks"
@@ -16,7 +16,7 @@
     "XXX"
   ],
   "result": {
-    "item": "tropicraft:sifter"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "tropicraft:sifter"
+  }
 }

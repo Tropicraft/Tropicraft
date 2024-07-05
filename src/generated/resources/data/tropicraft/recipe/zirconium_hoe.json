@@ -15,7 +15,7 @@
     " B"
   ],
   "result": {
-    "item": "tropicraft:zirconium_hoe"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "tropicraft:zirconium_hoe"
+  }
 }

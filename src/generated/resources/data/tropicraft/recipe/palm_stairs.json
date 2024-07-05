@@ -14,7 +14,6 @@
   ],
   "result": {
     "count": 4,
-    "item": "tropicraft:palm_stairs"
-  },
-  "show_notification": true
+    "id": "tropicraft:palm_stairs"
+  }
 }

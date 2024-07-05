@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:bamboo_mug"
-            ]
+            "items": "tropicraft:bamboo_mug"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_bamboo_mug",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_bamboo_mug"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:drink_mixer"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:bamboo"
-            ]
+            "items": "minecraft:bamboo"
           }
         ]
       },
@@ -23,9 +21,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:zirconium_gem"
-            ]
+            "items": "tropicraft:zirconium_gem"
           }
         ]
       },
@@ -34,15 +30,14 @@
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_zirconium_gem",
-      "has_bamboo",
-      "has_the_recipe"
+      "has_bamboo"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:zirconium_hoe"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

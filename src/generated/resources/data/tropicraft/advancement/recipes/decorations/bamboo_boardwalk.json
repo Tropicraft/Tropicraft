@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:bamboo_slab"
-            ]
+            "items": "tropicraft:bamboo_slab"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_bamboo_slab",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_bamboo_slab"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:bamboo_boardwalk"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

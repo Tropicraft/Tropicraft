@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:papaya_log"
-            ]
+            "items": "tropicraft:papaya_log"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_papaya_log",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_papaya_log"
     ]
   ],
   "rewards": {
     "recipes": [
       "minecraft:jungle_log"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -6,5 +6,8 @@
   "ingredient": {
     "item": "tropicraft:raw_ray"
   },
-  "result": "tropicraft:cooked_ray"
+  "result": {
+    "count": 1,
+    "id": "tropicraft:cooked_ray"
+  }
 }

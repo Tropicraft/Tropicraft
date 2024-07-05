@@ -13,7 +13,6 @@
   ],
   "result": {
     "count": 4,
-    "item": "tropicraft:chunk_stairs"
-  },
-  "show_notification": true
+    "id": "tropicraft:chunk_stairs"
+  }
 }

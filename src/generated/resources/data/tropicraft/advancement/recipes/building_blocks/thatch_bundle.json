@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:sugar_cane"
-            ]
+            "items": "minecraft:sugar_cane"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_sugar_cane",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_sugar_cane"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:thatch_bundle"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

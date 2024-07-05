@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:palm_log"
-            ]
+            "items": "tropicraft:palm_log"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_palm_log",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_palm_log"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:palm_planks"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

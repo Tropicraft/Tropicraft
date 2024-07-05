@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:ores/azurite"
+            "items": "#forge:ores/azurite"
           }
         ]
       },
@@ -20,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_ores_azurite",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_ores_azurite"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:azurite_gem_from_ores_azurite_blasting"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:scale"
-            ]
+            "items": "tropicraft:scale"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_scale",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_scale"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:scale_helmet"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:magenta_wool"
-            ]
+            "items": "minecraft:magenta_wool"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_magenta_wool",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_magenta_wool"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:magenta_umbrella"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

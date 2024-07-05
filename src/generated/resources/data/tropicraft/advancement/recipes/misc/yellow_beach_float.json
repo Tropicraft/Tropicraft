@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:yellow_wool"
-            ]
+            "items": "minecraft:yellow_wool"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_yellow_wool",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_yellow_wool"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:yellow_beach_float"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

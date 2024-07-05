@@ -16,7 +16,7 @@
     "BB"
   ],
   "result": {
-    "item": "tropicraft:medium_bongo_drum"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "tropicraft:medium_bongo_drum"
+  }
 }

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:seagrass"
-            ]
+            "items": "minecraft:seagrass"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_seagrass",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_seagrass"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:toasted_nori_from_seagrass_smelting"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

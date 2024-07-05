@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:eudialyte_block"
-            ]
+            "items": "tropicraft:eudialyte_block"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_eudialyte_block",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_eudialyte_block"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:eudialyte_gem_from_eudialyte_block"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }
