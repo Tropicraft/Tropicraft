@@ -169,7 +169,7 @@ public class TreeFrogEntity extends TropicraftCreatureEntity implements Enemy, R
             level().addFreshEntity(poison);
             poison.shoot(d, shotHeight + (double) f1, d1, 0.6f, 12.0f);
             attackTime = 50;
-            setYRot((float) ((Math.atan2(d1, d) * 180) / 3.1415927410125732) - 90.0f);
+            setYRot((float) ((Math.atan2(d1, d) * 180) / Math.PI) - 90.0f);
         }
     }
 }

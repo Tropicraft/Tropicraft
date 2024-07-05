@@ -13,6 +13,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
@@ -1099,12 +1100,12 @@ public class ModelScubaGear extends HumanoidModel<LivingEntity> {
         Tank2m1.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 
         Tank2m2.xRot = 0.0f;
-        Tank2m2.yRot = -1.570796f;
+        Tank2m2.yRot = -Mth.HALF_PI;
         Tank2m2.zRot = 0.0f;
         Tank2m2.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 
         Tank2m3.xRot = 0.0f;
-        Tank2m3.yRot = -1.570796f;
+        Tank2m3.yRot = -Mth.HALF_PI;
         Tank2m3.zRot = 0.0f;
         Tank2m3.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 
@@ -1139,12 +1140,12 @@ public class ModelScubaGear extends HumanoidModel<LivingEntity> {
         Tank1m1.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 
         Tank1m2.xRot = 0.0f;
-        Tank1m2.yRot = -1.570796f;
+        Tank1m2.yRot = -Mth.HALF_PI;
         Tank1m2.zRot = 0.0f;
         Tank1m2.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 
         Tank1m3.xRot = 0.0f;
-        Tank1m3.yRot = -1.570796f;
+        Tank1m3.yRot = -Mth.HALF_PI;
         Tank1m3.zRot = 0.0f;
         Tank1m3.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 

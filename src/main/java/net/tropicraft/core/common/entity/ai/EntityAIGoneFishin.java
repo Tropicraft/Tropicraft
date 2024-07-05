@@ -439,8 +439,8 @@ public class EntityAIGoneFishin extends Goal {
         d1 = y + 0.5f - (entity.getY() + (double) entity.getEyeHeight());
 
         double d3 = Mth.sqrt((float) (d * d + d2 * d2));
-        float f2 = (float) ((Math.atan2(d2, d) * 180) / 3.1415927410125732) - 90.0f;
-        float f3 = (float) (-((Math.atan2(d1, d3) * 180) / 3.1415927410125732));
+        float f2 = (float) ((Math.atan2(d2, d) * 180) / Math.PI) - 90.0f;
+        float f3 = (float) (-((Math.atan2(d1, d3) * 180) / Math.PI));
         entity.setXRot(-updateRotation(entity.getXRot(), f3, maxDeltaPitch));
         entity.setYRot(updateRotation(entity.getYRot(), f2, maxDeltaYaw));
     }

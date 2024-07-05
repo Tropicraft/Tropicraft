@@ -81,7 +81,7 @@ public class SharkModel extends HierarchicalModel<SharkEntity> {
         root.addOrReplaceChild("Body1Lower",
                 CubeListBuilder.create().texOffs(28, 47).mirror()
                         .addBox(-4.0f, -11.0f, -5.0f, 8, 12, 5),
-                PartPose.offsetAndRotation(0.0f, 0.0f, 3.0f, 1.570796f, 0.0f, 0.0f));
+                PartPose.offsetAndRotation(0.0f, 0.0f, 3.0f, Mth.HALF_PI, 0.0f, 0.0f));
 
         root.addOrReplaceChild("Body2Upper",
                 CubeListBuilder.create().texOffs(40, 0).mirror()

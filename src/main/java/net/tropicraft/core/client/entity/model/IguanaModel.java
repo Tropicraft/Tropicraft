@@ -172,10 +172,10 @@ public class IguanaModel extends HierarchicalModel<IguanaEntity> {
             tailBase.yRot += idle.eval(1.0f, 1.0f, 0.0f, 0.0f);
 
             // The positions need to be set to ensure the tail parts move in tandem
-            tailMid.setPos(0.0f - (Mth.cos(tailBase.yRot + 1.570796f) * 6), 21.5f, 12.0f + Mth.sin(tailBase.xRot + 3.14159f) * 6);
+            tailMid.setPos(0.0f - (Mth.cos(tailBase.yRot + Mth.HALF_PI) * 6), 21.5f, 12.0f + Mth.sin(tailBase.xRot + 3.14159f) * 6);
             tailMid.yRot += idle.eval(1.0f, 1.0f, 0.05f, 0.0f);
 
-            miscPart.setPos(0.0f - (Mth.cos(tailMid.yRot + 1.570796f) * 6), 21.5f, 18.0f + Mth.sin(tailMid.xRot + 3.14159f) * 6);
+            miscPart.setPos(0.0f - (Mth.cos(tailMid.yRot + Mth.HALF_PI) * 6), 21.5f, 18.0f + Mth.sin(tailMid.xRot + 3.14159f) * 6);
             miscPart.yRot += idle.eval(1.0f, 1.0f, 0.075f, 0.0f);
         }
     }
@@ -183,13 +183,13 @@ public class IguanaModel extends HierarchicalModel<IguanaEntity> {
     @Override
     public void prepareMobModel(IguanaEntity iggy, float limbSwing, float limbSwingAmount, float partialTicks) {
         frontRightLeg.xRot = Mth.cos(limbSwing * 0.6662f) * 1.75f * limbSwingAmount;
-        frontLeftLeg.xRot = Mth.cos(limbSwing * 0.6662f + 3.141593f) * 1.75f * limbSwingAmount;
-        rearRightLeg.xRot = Mth.cos(limbSwing * 0.6662f + 3.141593f) * 1.75f * limbSwingAmount;
+        frontLeftLeg.xRot = Mth.cos(limbSwing * 0.6662f + Mth.PI) * 1.75f * limbSwingAmount;
+        rearRightLeg.xRot = Mth.cos(limbSwing * 0.6662f + Mth.PI) * 1.75f * limbSwingAmount;
         rearLeftLeg.xRot = Mth.cos(limbSwing * 0.6662f) * 1.75f * limbSwingAmount;
         tailBase.yRot = Mth.cos(limbSwing * 0.6662f) * 0.25f * limbSwingAmount;
-        tailMid.setPos(0.0f - (Mth.cos(tailBase.yRot + 1.570796f) * 6), 21.5f, 12.0f + Mth.sin(tailBase.xRot + 3.14159f) * 6);
+        tailMid.setPos(0.0f - (Mth.cos(tailBase.yRot + Mth.HALF_PI) * 6), 21.5f, 12.0f + Mth.sin(tailBase.xRot + 3.14159f) * 6);
         tailMid.yRot = tailBase.yRot + Mth.cos(limbSwing * 0.6662f) * 0.50f * limbSwingAmount;
-        miscPart.setPos(0.0f - (Mth.cos(tailMid.yRot + 1.570796f) * 6), 21.5f, 18.0f + Mth.sin(tailMid.xRot + 3.14159f) * 6);
+        miscPart.setPos(0.0f - (Mth.cos(tailMid.yRot + Mth.HALF_PI) * 6), 21.5f, 18.0f + Mth.sin(tailMid.xRot + 3.14159f) * 6);
         miscPart.yRot = tailMid.yRot + Mth.cos(limbSwing * 0.6662f) * 0.75f * limbSwingAmount;
     }
 

@@ -7,6 +7,7 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.util.Mth;
 import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
 
 public class UmbrellaModel extends HierarchicalModel<UmbrellaEntity> {
@@ -43,17 +44,17 @@ public class UmbrellaModel extends HierarchicalModel<UmbrellaEntity> {
         root.addOrReplaceChild("shape31",
                 CubeListBuilder.create().texOffs(0, 24)
                         .addBox(-4.5f, -1.0f, 0.0f, 9, 1, 3),
-                PartPose.offsetAndRotation(7.5f, -13.0f, 0.0f, -0.2443461f, 1.570796f, 0.0f));
+                PartPose.offsetAndRotation(7.5f, -13.0f, 0.0f, -0.2443461f, Mth.HALF_PI, 0.0f));
 
         root.addOrReplaceChild("shape32",
                 CubeListBuilder.create().texOffs(0, 28)
                         .addBox(-4.5f, -1.0f, -1.0f, 9, 1, 3),
-                PartPose.offsetAndRotation(0.0f, -12.75f, -8.45f, -0.2443461f, 3.141593f, 0.0f));
+                PartPose.offsetAndRotation(0.0f, -12.75f, -8.45f, -0.2443461f, Mth.PI, 0.0f));
 
         root.addOrReplaceChild("shape33",
                 CubeListBuilder.create().texOffs(24, 28)
                         .addBox(-4.5f, -1.0f, 1.0f, 9, 1, 3),
-                PartPose.offsetAndRotation(-6.5f, -13.25f, 0.0f, -0.2443461f, -1.570796f, 0.0f));
+                PartPose.offsetAndRotation(-6.5f, -13.25f, 0.0f, -0.2443461f, -Mth.HALF_PI, 0.0f));
 
         root.addOrReplaceChild("shape11",
                 CubeListBuilder.create().texOffs(0, 0)
@@ -68,12 +69,12 @@ public class UmbrellaModel extends HierarchicalModel<UmbrellaEntity> {
         root.addOrReplaceChild("shape111",
                 CubeListBuilder.create().texOffs(0, 0)
                         .addBox(-0.5f, 0.0f, -0.5f, 1, 9, 1),
-                PartPose.offsetAndRotation(0.0f, -10.0f, 0.0f, 1.902409f, 1.570796f, 0.0f));
+                PartPose.offsetAndRotation(0.0f, -10.0f, 0.0f, 1.902409f, Mth.HALF_PI, 0.0f));
 
         root.addOrReplaceChild("shape112",
                 CubeListBuilder.create().texOffs(0, 0)
                         .addBox(-0.5f, 0.0f, -0.5f, 1, 9, 1),
-                PartPose.offsetAndRotation(0.0f, -10.0f, 0.0f, 1.902409f, -1.570796f, 0.0f));
+                PartPose.offsetAndRotation(0.0f, -10.0f, 0.0f, 1.902409f, -Mth.HALF_PI, 0.0f));
 
         return LayerDefinition.create(mesh, 64, 32);
     }

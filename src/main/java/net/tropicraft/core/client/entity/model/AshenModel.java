@@ -44,8 +44,8 @@ public class AshenModel extends ListModel<AshenEntity> implements ArmedModel {
 
         root.addOrReplaceChild("right_leg", CubeListBuilder.create().texOffs(25, 0).mirror().addBox(0.0f, 0.0f, 0.0f, 1, 7, 1), PartPose.offsetAndRotation(1.0f, 17.0f, 0.0f, 0.0f, 0.0f, 0.0f));
         root.addOrReplaceChild("left_leg", CubeListBuilder.create().texOffs(25, 0).mirror().addBox(-1.0f, 0.0f, 0.0f, 1, 7, 1), PartPose.offsetAndRotation(-1.0f, 17.0f, 0.0f, 0.0f, 0.0f, 0.0f));
-        root.addOrReplaceChild("body", CubeListBuilder.create().texOffs(24, 8).mirror().addBox(-2.0f, -3.0f, 0.0f, 4, 7, 3), PartPose.offsetAndRotation(0.0f, 13.0f, 2.0f, 0.0f, 3.141593f, 0.0f));
-        root.addOrReplaceChild("head", CubeListBuilder.create().texOffs(24, 18).mirror().addBox(-2.0f, -3.0f, -1.0f, 4, 3, 4), PartPose.offsetAndRotation(0.0f, 10.0f, 1.0f, 0.0f, 3.141593f, 0.0f));
+        root.addOrReplaceChild("body", CubeListBuilder.create().texOffs(24, 8).mirror().addBox(-2.0f, -3.0f, 0.0f, 4, 7, 3), PartPose.offsetAndRotation(0.0f, 13.0f, 2.0f, 0.0f, Mth.PI, 0.0f));
+        root.addOrReplaceChild("head", CubeListBuilder.create().texOffs(24, 18).mirror().addBox(-2.0f, -3.0f, -1.0f, 4, 3, 4), PartPose.offsetAndRotation(0.0f, 10.0f, 1.0f, 0.0f, Mth.PI, 0.0f));
 
         PartDefinition rightArm = root.addOrReplaceChild("right_arm", CubeListBuilder.create().texOffs(0, 24).mirror().addBox(-6.0f, -0.5f, -0.5f, 6, 1, 1), PartPose.offsetAndRotation(-2.0f, 10.5f, 0.5f, 0.0f, 0.0f, 0.0f));
         rightArm.addOrReplaceChild("right_arm_sub", CubeListBuilder.create().texOffs(31, 0).mirror().addBox(-0.5f, -6.0f, -0.5f, 1, 6, 1), PartPose.offsetAndRotation(-5.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f));
@@ -114,7 +114,7 @@ public class AshenModel extends ListModel<AshenEntity> implements ArmedModel {
     @Override
     public void prepareMobModel(AshenEntity entity, float limbSwing, float limbSwingAmount, float partialTick) {
         rightLeg.xRot = Mth.cos(limbSwing * 0.6662f) * 1.25f * limbSwingAmount;
-        leftLeg.xRot = Mth.cos(limbSwing * 0.6662f + 3.141593f) * 1.25f * limbSwingAmount;
+        leftLeg.xRot = Mth.cos(limbSwing * 0.6662f + Mth.PI) * 1.25f * limbSwingAmount;
     }
 
     @Override

@@ -7,6 +7,7 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.util.Mth;
 import net.tropicraft.core.common.entity.placeable.ChairEntity;
 
 public class ChairModel extends HierarchicalModel<ChairEntity> {
@@ -26,8 +27,8 @@ public class ChairModel extends HierarchicalModel<ChairEntity> {
         root.addOrReplaceChild("backLeftLeg", CubeListBuilder.create().texOffs(0, 0).addBox(0.0f, 0.0f, 0.0f, 1, 10, 1), PartPose.offsetAndRotation(8.0f, -4.0f, 5.0f, 0.4537856f, 0.0f, 0.0f));
         root.addOrReplaceChild("frontLeftLeg", CubeListBuilder.create().texOffs(0, 0).addBox(0.0f, 0.0f, -1.0f, 1, 10, 1), PartPose.offsetAndRotation(8.0f, -4.0f, 0.0f, -0.4537856f, 0.0f, 0.0f));
         root.addOrReplaceChild("frontRightLeg", CubeListBuilder.create().texOffs(0, 0).addBox(-1.0f, 0.0f, -1.0f, 1, 10, 1), PartPose.offsetAndRotation(-8.0f, -4.0f, 0.0f, -0.4537856f, 0.0f, 0.0f));
-        root.addOrReplaceChild("rightArm", CubeListBuilder.create().texOffs(0, 29).addBox(0.0f, -1.0f, 0.0f, 14, 1, 2), PartPose.offsetAndRotation(-10.0f, -4.0f, 11.0f, 0.0f, 1.570796f, 0.0f));
-        root.addOrReplaceChild("leftArm", CubeListBuilder.create().texOffs(0, 29).addBox(0.0f, 0.0f, 0.0f, 14, 1, 2), PartPose.offsetAndRotation(8.0f, -5.0f, 11.0f, 0.0f, 1.570796f, 0.0f));
+        root.addOrReplaceChild("rightArm", CubeListBuilder.create().texOffs(0, 29).addBox(0.0f, -1.0f, 0.0f, 14, 1, 2), PartPose.offsetAndRotation(-10.0f, -4.0f, 11.0f, 0.0f, Mth.HALF_PI, 0.0f));
+        root.addOrReplaceChild("leftArm", CubeListBuilder.create().texOffs(0, 29).addBox(0.0f, 0.0f, 0.0f, 14, 1, 2), PartPose.offsetAndRotation(8.0f, -5.0f, 11.0f, 0.0f, Mth.HALF_PI, 0.0f));
 
         return LayerDefinition.create(mesh, 64, 32);
     }

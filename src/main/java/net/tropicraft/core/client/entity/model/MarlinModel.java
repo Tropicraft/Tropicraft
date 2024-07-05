@@ -48,7 +48,7 @@ public class MarlinModel extends HierarchicalModel<MarlinEntity> {
         root.addOrReplaceChild("body",
                 CubeListBuilder.create().texOffs(0, 22).mirror()
                         .addBox(-5.0f, -3.0f, -2.0f, 7, 6, 4),
-                PartPose.offsetAndRotation(0.0f, 19.0f, 0.0f, 0.0f, -1.570796f, 0.0f));
+                PartPose.offsetAndRotation(0.0f, 19.0f, 0.0f, 0.0f, -Mth.HALF_PI, 0.0f));
 
         root.addOrReplaceChild("dorsalFin1",
                 CubeListBuilder.create().texOffs(24, 20).mirror()

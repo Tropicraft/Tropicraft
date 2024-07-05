@@ -133,8 +133,8 @@ public class FireArmorItem extends ArmorItem {
             int numFeetParticles = particles == ParticleStatus.DECREASED ? 2 : 11;
 
             for (int i = 0; i < numFeetParticles + (onLava ? 5 : 0); i++) {
-                motionX = (-Math.sin((look) / 180.0f * 3.1415927f) * Math.cos(0 / 180.0f * 3.1415927f) * (speed + (0.1 * rand.nextDouble())));
-                motionZ = (Math.cos((look) / 180.0f * 3.1415927f) * Math.cos(0 / 180.0f * 3.1415927f) * (speed + (0.1 * rand.nextDouble())));
+                motionX = (-Math.sin((look) / 180.0f * Mth.PI) * Math.cos(0 / 180.0f * Mth.PI) * (speed + (0.1 * rand.nextDouble())));
+                motionZ = (Math.cos((look) / 180.0f * Mth.PI) * Math.cos(0 / 180.0f * Mth.PI) * (speed + (0.1 * rand.nextDouble())));
 
                 SimpleParticleType particle = ParticleTypes.FLAME;
                 if (rand.nextInt(22) == 0) particle = ParticleTypes.LARGE_SMOKE;
@@ -175,8 +175,8 @@ public class FireArmorItem extends ArmorItem {
             float look = -180.0f;
             double dist = 0.5f;
 
-            double gatherX = player.getX() + (-Math.sin((player.getYRot() + look) / 180.0f * 3.1415927f) * Math.cos(player.getXRot() / 180.0f * 3.1415927f) * dist);
-            double gatherZ = player.getZ() + (Math.cos((player.getYRot() + look) / 180.0f * 3.1415927f) * Math.cos(player.getXRot() / 180.0f * 3.1415927f) * dist);
+            double gatherX = player.getX() + (-Math.sin((player.getYRot() + look) / 180.0f * Mth.PI) * Math.cos(player.getXRot() / 180.0f * Mth.PI) * dist);
+            double gatherZ = player.getZ() + (Math.cos((player.getYRot() + look) / 180.0f * Mth.PI) * Math.cos(player.getXRot() / 180.0f * Mth.PI) * dist);
 
             SimpleParticleType particle = ParticleTypes.FLAME;
             if (rand.nextInt(2) == 0) particle = ParticleTypes.LARGE_SMOKE;
@@ -196,8 +196,8 @@ public class FireArmorItem extends ArmorItem {
 
             range = 2.0f;
 
-            double gatherX = player.getX() + (-Math.sin((player.getYRot() + look) / 180.0f * 3.1415927f) * Math.cos(player.getXRot() / 180.0f * 3.1415927f) * dist);
-            double gatherZ = player.getZ() + (Math.cos((player.getYRot() + look) / 180.0f * 3.1415927f) * Math.cos(player.getXRot() / 180.0f * 3.1415927f) * dist);
+            double gatherX = player.getX() + (-Math.sin((player.getYRot() + look) / 180.0f * Mth.PI) * Math.cos(player.getXRot() / 180.0f * Mth.PI) * dist);
+            double gatherZ = player.getZ() + (Math.cos((player.getYRot() + look) / 180.0f * Mth.PI) * Math.cos(player.getXRot() / 180.0f * Mth.PI) * dist);
 
             SimpleParticleType particle = ParticleTypes.FLAME;
             if (rand.nextInt(2) == 0) particle = ParticleTypes.LARGE_SMOKE;
