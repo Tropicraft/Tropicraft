@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 
 public class SimpleItemStackRenderer<T extends BlockEntity> extends BlockEntityWithoutLevelRenderer {
     private final Supplier<T> te;
-    
+
     public SimpleItemStackRenderer(Supplier<T> te) {
         super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
         this.te = Suppliers.memoize(te::get);

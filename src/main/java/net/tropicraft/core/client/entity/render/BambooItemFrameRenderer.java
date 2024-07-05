@@ -45,7 +45,7 @@ public class BambooItemFrameRenderer extends EntityRenderer<BambooItemFrame> {
         Vec3 Vector3d = this.getRenderOffset(entityIn, partialTicks);
         matrixStackIn.translate(-Vector3d.x, -Vector3d.y, -Vector3d.z);
         double d0 = 0.46875D;
-        matrixStackIn.translate((double)direction.getStepX() * 0.46875D, (double)direction.getStepY() * 0.46875D, (double)direction.getStepZ() * 0.46875D);
+        matrixStackIn.translate((double) direction.getStepX() * 0.46875D, (double) direction.getStepY() * 0.46875D, (double) direction.getStepZ() * 0.46875D);
         matrixStackIn.mulPose(Axis.XP.rotationDegrees(entityIn.getXRot()));
         matrixStackIn.mulPose(Axis.YP.rotationDegrees(180.0F - entityIn.getYRot()));
         BlockRenderDispatcher blockrendererdispatcher = this.mc.getBlockRenderer();
@@ -60,7 +60,7 @@ public class BambooItemFrameRenderer extends EntityRenderer<BambooItemFrame> {
             MapItemSavedData mapdata = MapItem.getSavedData(itemstack, entityIn.level());
             matrixStackIn.translate(0.0D, 0.0D, 0.4375D);
             int i = mapdata != null ? entityIn.getRotation() % 4 * 2 : entityIn.getRotation();
-            matrixStackIn.mulPose(Axis.ZP.rotationDegrees((float)i * 360.0F / 8.0F));
+            matrixStackIn.mulPose(Axis.ZP.rotationDegrees((float) i * 360.0F / 8.0F));
             if (mapdata != null) {
                 matrixStackIn.mulPose(Axis.ZP.rotationDegrees(180.0F));
                 float f = 0.0078125F;
@@ -82,7 +82,7 @@ public class BambooItemFrameRenderer extends EntityRenderer<BambooItemFrame> {
 
     @Override
     public Vec3 getRenderOffset(BambooItemFrame entityIn, float partialTicks) {
-        return new Vec3((float)entityIn.getDirection().getStepX() * 0.3F, -0.25D, (float)entityIn.getDirection().getStepZ() * 0.3F);
+        return new Vec3((float) entityIn.getDirection().getStepX() * 0.3F, -0.25D, (float) entityIn.getDirection().getStepZ() * 0.3F);
     }
 
     @Override
@@ -95,7 +95,7 @@ public class BambooItemFrameRenderer extends EntityRenderer<BambooItemFrame> {
         if (Minecraft.renderNames() && !entity.getItem().isEmpty() && entity.getItem().has(DataComponents.CUSTOM_NAME) && entityRenderDispatcher.crosshairPickEntity == entity) {
             double dist = entityRenderDispatcher.distanceToSqr(entity);
             float f = entity.isDiscrete() ? 32.0F : 64.0F;
-            return dist < (double)(f * f);
+            return dist < (double) (f * f);
         } else {
             return false;
         }

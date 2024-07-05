@@ -153,6 +153,7 @@ public abstract class EchinodermEntity extends WaterAnimal {
     /**
      * Negative, to be incremented if a child. Positive, to be decremented, if
      * an adult that has just procreated, as a cooldown.
+     *
      * @return the number of ticks.
      */
     public int getGrowingAge() {
@@ -165,6 +166,7 @@ public abstract class EchinodermEntity extends WaterAnimal {
 
     /**
      * Calculates the growth progress of this sea urchin.
+     *
      * @return number between 0 and 1: 0 = freshly hatched, 1 = adult
      */
     public float getGrowthProgress() {
@@ -174,12 +176,12 @@ public abstract class EchinodermEntity extends WaterAnimal {
 
     private void setEchinodermSize() {
         float growthProgress = getGrowthProgress();
-        float width = getBabyWidth() + growthProgress*(getAdultWidth() - getBabyWidth());
-        float height = getBabyHeight() + growthProgress*(getAdultHeight() - getBabyHeight());
-        float yO = getBabyYOffset() + growthProgress*(getAdultYOffset() - getBabyYOffset());
+        float width = getBabyWidth() + growthProgress * (getAdultWidth() - getBabyWidth());
+        float height = getBabyHeight() + growthProgress * (getAdultHeight() - getBabyHeight());
+        float yO = getBabyYOffset() + growthProgress * (getAdultYOffset() - getBabyYOffset());
 
         refreshDimensions();
-    //TODO    setSize(width, height);
+        //TODO    setSize(width, height);
         yOffset = yO;
     }
 
@@ -187,7 +189,6 @@ public abstract class EchinodermEntity extends WaterAnimal {
 //    public EntitySize getSize(Pose poseIn) {
 //        return getSize(poseIn).scale()
 //    }
-
 
     @Override
     public Vec3 getVehicleAttachmentPoint(final Entity entity) {
@@ -199,9 +200,14 @@ public abstract class EchinodermEntity extends WaterAnimal {
     }
 
     public abstract float getBabyWidth();
+
     public abstract float getAdultWidth();
+
     public abstract float getBabyHeight();
+
     public abstract float getAdultHeight();
+
     public abstract float getBabyYOffset();
+
     public abstract float getAdultYOffset();
 }

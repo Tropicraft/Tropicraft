@@ -16,18 +16,18 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class PonyBottleItem extends Item {
-    
+
     private static final int FILL_RATE = 6;
-    
+
     public PonyBottleItem(Item.Properties properties) {
         super(properties);
     }
-    
+
     @Override
     public UseAnim getUseAnimation(ItemStack stack) {
         return UseAnim.DRINK;
     }
-    
+
     @Override
     public int getUseDuration(final ItemStack stack, final LivingEntity entity) {
         return 32;
@@ -54,12 +54,12 @@ public class PonyBottleItem extends Item {
             stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(player.getUsedItemHand()));
         }
     }
-    
+
     @Override
     public boolean canContinueUsing(ItemStack oldStack, ItemStack newStack) {
         return !shouldCauseReequipAnimation(oldStack, newStack, false);
     }
-    
+
     @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
         return oldStack.getItem() != newStack.getItem();

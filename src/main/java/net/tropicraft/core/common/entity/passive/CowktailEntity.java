@@ -44,159 +44,159 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CowktailEntity extends Cow implements IShearable {
-	private static final EntityDataAccessor<String> COWKTAIL_TYPE = SynchedEntityData.defineId(CowktailEntity.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<String> COWKTAIL_TYPE = SynchedEntityData.defineId(CowktailEntity.class, EntityDataSerializers.STRING);
 
-	public CowktailEntity(EntityType<? extends CowktailEntity> type, Level worldIn) {
-		super(type, worldIn);
-	}
+    public CowktailEntity(EntityType<? extends CowktailEntity> type, Level worldIn) {
+        super(type, worldIn);
+    }
 
-	@Override
-	public float getWalkTargetValue(BlockPos pos, LevelReader worldIn) {
-		return worldIn.getBlockState(pos.below()).getBlock() == Blocks.MYCELIUM ? 10.0F : worldIn.getPathfindingCostFromLightLevels(pos);
-	}
+    @Override
+    public float getWalkTargetValue(BlockPos pos, LevelReader worldIn) {
+        return worldIn.getBlockState(pos.below()).getBlock() == Blocks.MYCELIUM ? 10.0F : worldIn.getPathfindingCostFromLightLevels(pos);
+    }
 
-	@Override
-	protected void defineSynchedData(SynchedEntityData.Builder builder) {
-		super.defineSynchedData(builder);
-		builder.define(COWKTAIL_TYPE, Type.IRIS.name);
-	}
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(COWKTAIL_TYPE, Type.IRIS.name);
+    }
 
-	@Override
-	public InteractionResult mobInteract(Player player, InteractionHand hand) {
-		ItemStack itemstack = player.getItemInHand(hand);
-		if (itemstack.getItem() == TropicraftItems.BAMBOO_MUG.get() && !this.isBaby()) {
-			if (player.getAbilities().instabuild) {
-				itemstack.shrink(1);
-			}
+    @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        if (itemstack.getItem() == TropicraftItems.BAMBOO_MUG.get() && !this.isBaby()) {
+            if (player.getAbilities().instabuild) {
+                itemstack.shrink(1);
+            }
 
-			final List<RegistryEntry<Item, CocktailItem>> cocktails = new ArrayList<>(TropicraftItems.COCKTAILS.values());
-			// Remove generic cocktail from cowktail
-			cocktails.removeIf(cocktail -> cocktail.isBound() && cocktail.get().getDrink() == Drink.COCKTAIL);
-			final ItemStack cocktailItem = new ItemStack(cocktails.get(random.nextInt(cocktails.size())).get());
+            final List<RegistryEntry<Item, CocktailItem>> cocktails = new ArrayList<>(TropicraftItems.COCKTAILS.values());
+            // Remove generic cocktail from cowktail
+            cocktails.removeIf(cocktail -> cocktail.isBound() && cocktail.get().getDrink() == Drink.COCKTAIL);
+            final ItemStack cocktailItem = new ItemStack(cocktails.get(random.nextInt(cocktails.size())).get());
 
-			if (itemstack.isEmpty()) {
-				player.setItemInHand(hand, cocktailItem);
-			} else if (!player.getInventory().add(cocktailItem)) {
-				player.drop(cocktailItem, false);
-			}
+            if (itemstack.isEmpty()) {
+                player.setItemInHand(hand, cocktailItem);
+            } else if (!player.getInventory().add(cocktailItem)) {
+                player.drop(cocktailItem, false);
+            }
 
-			this.playSound(SoundEvents.MOOSHROOM_MILK_SUSPICIOUSLY, 1.0F, 1.0F);
-			return InteractionResult.SUCCESS;
-		}
+            this.playSound(SoundEvents.MOOSHROOM_MILK_SUSPICIOUSLY, 1.0F, 1.0F);
+            return InteractionResult.SUCCESS;
+        }
 
-		return super.mobInteract(player, hand);
-	}
+        return super.mobInteract(player, hand);
+    }
 
-	@Override
-	public void addAdditionalSaveData(CompoundTag compound) {
-		super.addAdditionalSaveData(compound);
-		compound.putString("Type", this.getCowktailType().name);
-	}
+    @Override
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putString("Type", this.getCowktailType().name);
+    }
 
-	/**
-	 * (abstract) Protected helper method to read subclass entity data from NBT.
-	 */
-	@Override
-	public void readAdditionalSaveData(CompoundTag compound) {
-		super.readAdditionalSaveData(compound);
-		this.setCowktailType(CowktailEntity.Type.getTypeByName(compound.getString("Type")));
-	}
+    /**
+     * (abstract) Protected helper method to read subclass entity data from NBT.
+     */
+    @Override
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        this.setCowktailType(CowktailEntity.Type.getTypeByName(compound.getString("Type")));
+    }
 
-	private void setCowktailType(CowktailEntity.Type typeIn) {
-		this.entityData.set(COWKTAIL_TYPE, typeIn.name);
-	}
+    private void setCowktailType(CowktailEntity.Type typeIn) {
+        this.entityData.set(COWKTAIL_TYPE, typeIn.name);
+    }
 
-	public CowktailEntity.Type getCowktailType() {
-		return CowktailEntity.Type.getTypeByName(this.entityData.get(COWKTAIL_TYPE));
-	}
+    public CowktailEntity.Type getCowktailType() {
+        return CowktailEntity.Type.getTypeByName(this.entityData.get(COWKTAIL_TYPE));
+    }
 
-	@Override
-	public CowktailEntity getBreedOffspring(ServerLevel world, AgeableMob ageable) {
-		CowktailEntity child = TropicraftEntities.COWKTAIL.get().create(this.level());
-		child.setCowktailType(getOffspringType((CowktailEntity)ageable));
-		return child;
-	}
+    @Override
+    public CowktailEntity getBreedOffspring(ServerLevel world, AgeableMob ageable) {
+        CowktailEntity child = TropicraftEntities.COWKTAIL.get().create(this.level());
+        child.setCowktailType(getOffspringType((CowktailEntity) ageable));
+        return child;
+    }
 
-	private CowktailEntity.Type getOffspringType(CowktailEntity cowktail) {
-		CowktailEntity.Type CowktailEntity$type = this.getCowktailType();
-		CowktailEntity.Type CowktailEntity$type1 = cowktail.getCowktailType();
-		CowktailEntity.Type CowktailEntity$type2;
-		if (CowktailEntity$type == CowktailEntity$type1 && this.random.nextInt(1024) == 0) {
-			CowktailEntity$type2 = Type.getRandomType(random);
-		} else {
-			CowktailEntity$type2 = this.random.nextBoolean() ? CowktailEntity$type : CowktailEntity$type1;
-		}
+    private CowktailEntity.Type getOffspringType(CowktailEntity cowktail) {
+        CowktailEntity.Type CowktailEntity$type = this.getCowktailType();
+        CowktailEntity.Type CowktailEntity$type1 = cowktail.getCowktailType();
+        CowktailEntity.Type CowktailEntity$type2;
+        if (CowktailEntity$type == CowktailEntity$type1 && this.random.nextInt(1024) == 0) {
+            CowktailEntity$type2 = Type.getRandomType(random);
+        } else {
+            CowktailEntity$type2 = this.random.nextBoolean() ? CowktailEntity$type : CowktailEntity$type1;
+        }
 
-		return CowktailEntity$type2;
-	}
+        return CowktailEntity$type2;
+    }
 
-	@Override
-	public boolean isShearable(@Nullable final Player player, final ItemStack item, final Level level, final BlockPos pos) {
-		return !isBaby();
-	}
+    @Override
+    public boolean isShearable(@Nullable final Player player, final ItemStack item, final Level level, final BlockPos pos) {
+        return !isBaby();
+    }
 
-	@Override
-	public List<ItemStack> onSheared(@Nullable final Player player, final ItemStack item, final Level level, final BlockPos pos) {
-		java.util.List<ItemStack> ret = new java.util.ArrayList<>();
+    @Override
+    public List<ItemStack> onSheared(@Nullable final Player player, final ItemStack item, final Level level, final BlockPos pos) {
+        java.util.List<ItemStack> ret = new java.util.ArrayList<>();
         this.level().addParticle(ParticleTypes.EXPLOSION, this.getX(), this.getY(0.5D), this.getZ(), 0.0D, 0.0D, 0.0D);
-		if (!this.level().isClientSide) {
-			this.remove(RemovalReason.DISCARDED);
-			Cow cowentity = EntityType.COW.create(this.level());
-			cowentity.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
-			cowentity.setHealth(this.getHealth());
-			cowentity.yBodyRot = this.yBodyRot;
-			if (this.hasCustomName()) {
-				cowentity.setCustomName(this.getCustomName());
-				cowentity.setCustomNameVisible(this.isCustomNameVisible());
-			}
+        if (!this.level().isClientSide) {
+            this.remove(RemovalReason.DISCARDED);
+            Cow cowentity = EntityType.COW.create(this.level());
+            cowentity.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
+            cowentity.setHealth(this.getHealth());
+            cowentity.yBodyRot = this.yBodyRot;
+            if (this.hasCustomName()) {
+                cowentity.setCustomName(this.getCustomName());
+                cowentity.setCustomNameVisible(this.isCustomNameVisible());
+            }
             this.level().addFreshEntity(cowentity);
-			for(int i = 0; i < 5; ++i) {
-				ret.add(new ItemStack(this.getCowktailType().renderState.getBlock()));
-			}
-			this.playSound(SoundEvents.MOOSHROOM_SHEAR, 1.0F, 1.0F);
-		}
-		return ret;
-	}
+            for (int i = 0; i < 5; ++i) {
+                ret.add(new ItemStack(this.getCowktailType().renderState.getBlock()));
+            }
+            this.playSound(SoundEvents.MOOSHROOM_SHEAR, 1.0F, 1.0F);
+        }
+        return ret;
+    }
 
-	@Override
-	@Nullable
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficultyInstance, MobSpawnType spawnReason, @Nullable SpawnGroupData data) {
-		setCowktailType(Type.getRandomType(random));
-		return super.finalizeSpawn(world, difficultyInstance, spawnReason, data);
-	}
+    @Override
+    @Nullable
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficultyInstance, MobSpawnType spawnReason, @Nullable SpawnGroupData data) {
+        setCowktailType(Type.getRandomType(random));
+        return super.finalizeSpawn(world, difficultyInstance, spawnReason, data);
+    }
 
-	public enum Type {
-		IRIS("iris", TropicraftBlocks.IRIS.get().defaultBlockState().setValue(DoublePlantBlock.HALF, DoubleBlockHalf.UPPER)),
-		ANEMONE("anemone", TropicraftBlocks.FLOWERS.get(TropicraftFlower.ANEMONE).get().defaultBlockState());
+    public enum Type {
+        IRIS("iris", TropicraftBlocks.IRIS.get().defaultBlockState().setValue(DoublePlantBlock.HALF, DoubleBlockHalf.UPPER)),
+        ANEMONE("anemone", TropicraftBlocks.FLOWERS.get(TropicraftFlower.ANEMONE).get().defaultBlockState());
 
-		private final String name;
-		private final BlockState renderState;
+        private final String name;
+        private final BlockState renderState;
 
-		Type(String nameIn, BlockState renderStateIn) {
-			this.name = nameIn;
-			this.renderState = renderStateIn;
-		}
+        Type(String nameIn, BlockState renderStateIn) {
+            this.name = nameIn;
+            this.renderState = renderStateIn;
+        }
 
-		public static CowktailEntity.Type getRandomType(final RandomSource rand) {
-			return Util.getRandom(values(), rand);
-		}
+        public static CowktailEntity.Type getRandomType(final RandomSource rand) {
+            return Util.getRandom(values(), rand);
+        }
 
-		/**
-		 * A block state that is rendered on the back of the mooshroom.
-		 */
-		@OnlyIn(Dist.CLIENT)
-		public BlockState getRenderState() {
-			return this.renderState;
-		}
+        /**
+         * A block state that is rendered on the back of the mooshroom.
+         */
+        @OnlyIn(Dist.CLIENT)
+        public BlockState getRenderState() {
+            return this.renderState;
+        }
 
-		private static CowktailEntity.Type getTypeByName(String nameIn) {
-			for(CowktailEntity.Type CowktailEntity$type : values()) {
-				if (CowktailEntity$type.name.equals(nameIn)) {
-					return CowktailEntity$type;
-				}
-			}
+        private static CowktailEntity.Type getTypeByName(String nameIn) {
+            for (CowktailEntity.Type CowktailEntity$type : values()) {
+                if (CowktailEntity$type.name.equals(nameIn)) {
+                    return CowktailEntity$type;
+                }
+            }
 
-			return IRIS;
-		}
-	}
+            return IRIS;
+        }
+    }
 }

@@ -60,7 +60,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityWithComp
         this.blocksBuilding = true;
         setId(this.getId());
     }
-    
+
     @Override
     public void setId(int id) {
         super.setId(id);
@@ -113,7 +113,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityWithComp
             setDeltaMovement(getDeltaMovement().multiply(1, 0, 1));
             prevMotionY = 0;
         }
-        
+
         super.tick();
 
         setYRot(getYRot() + rotationSpeed);
@@ -135,12 +135,12 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityWithComp
             }
         }
     }
-    
+
     @Override
     protected boolean preventMotion() {
         return false;
     }
-    
+
     private double getCenterY() {
         AABB bb = getBoundingBox();
         return bb.minY + (bb.maxY - bb.minY) * 0.5D;
@@ -183,7 +183,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityWithComp
 
     @Override
     public InteractionResult interact(Player player, InteractionHand hand) {
-        if(invulnerablityCheck(player, hand) == InteractionResult.SUCCESS) {
+        if (invulnerablityCheck(player, hand) == InteractionResult.SUCCESS) {
             return InteractionResult.SUCCESS;
         } else if (!this.level().isClientSide && !player.isShiftKeyDown()) {
             player.startRiding(this);

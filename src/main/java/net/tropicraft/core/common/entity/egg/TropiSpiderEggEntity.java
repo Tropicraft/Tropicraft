@@ -20,84 +20,84 @@ import java.util.UUID;
 
 public class TropiSpiderEggEntity extends EggEntity {
 
-	protected static final EntityDataAccessor<Optional<UUID>> MOTHER_UNIQUE_ID = SynchedEntityData.defineId(TropiSpiderEggEntity.class, EntityDataSerializers.OPTIONAL_UUID);
+    protected static final EntityDataAccessor<Optional<UUID>> MOTHER_UNIQUE_ID = SynchedEntityData.defineId(TropiSpiderEggEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 
-	public TropiSpiderEggEntity(final EntityType<? extends EggEntity> type, Level world) {
-		super(type, world);
-	}
+    public TropiSpiderEggEntity(final EntityType<? extends EggEntity> type, Level world) {
+        super(type, world);
+    }
 
-	@Override
-	protected void defineSynchedData(SynchedEntityData.Builder builder) {
-		super.defineSynchedData(builder);
-		builder.define(MOTHER_UNIQUE_ID, Optional.empty());
-	}
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(MOTHER_UNIQUE_ID, Optional.empty());
+    }
 
-	@Nullable
-	public UUID getMotherId() {
-		return entityData.get(MOTHER_UNIQUE_ID).orElse(null);
-	}
+    @Nullable
+    public UUID getMotherId() {
+        return entityData.get(MOTHER_UNIQUE_ID).orElse(null);
+    }
 
-	public void setMotherId(@Nullable UUID uuid) {
-		entityData.set(MOTHER_UNIQUE_ID, Optional.ofNullable(uuid));
-	}
+    public void setMotherId(@Nullable UUID uuid) {
+        entityData.set(MOTHER_UNIQUE_ID, Optional.ofNullable(uuid));
+    }
 
-	@Override
-	public void addAdditionalSaveData(CompoundTag nbt) {
-		super.addAdditionalSaveData(nbt);
-		if (getMotherId() == null) {
-			nbt.putString("MotherUUID", "");
-		} else {
-			nbt.putString("MotherUUID", getMotherId().toString());
-		}
-	}
+    @Override
+    public void addAdditionalSaveData(CompoundTag nbt) {
+        super.addAdditionalSaveData(nbt);
+        if (getMotherId() == null) {
+            nbt.putString("MotherUUID", "");
+        } else {
+            nbt.putString("MotherUUID", getMotherId().toString());
+        }
+    }
 
-	@Override
-	public void readAdditionalSaveData(CompoundTag nbt) {
-		super.readAdditionalSaveData(nbt);
-		String motherUUID = "";
-		if (nbt.contains("MotherUUID", 8)) {
-			motherUUID = nbt.getString("MotherUUID");
-		}
+    @Override
+    public void readAdditionalSaveData(CompoundTag nbt) {
+        super.readAdditionalSaveData(nbt);
+        String motherUUID = "";
+        if (nbt.contains("MotherUUID", 8)) {
+            motherUUID = nbt.getString("MotherUUID");
+        }
 
-		if (!motherUUID.isEmpty()) {
-			setMotherId(UUID.fromString(motherUUID));
-		}
-	}
+        if (!motherUUID.isEmpty()) {
+            setMotherId(UUID.fromString(motherUUID));
+        }
+    }
 
-	@Override
-	public boolean shouldEggRenderFlat() {
-		return false;
-	}
+    @Override
+    public boolean shouldEggRenderFlat() {
+        return false;
+    }
 
-	@Override
-	public String getEggTexture() {
-		return "spideregg";
-	}
+    @Override
+    public String getEggTexture() {
+        return "spideregg";
+    }
 
-	@Override
-	public Entity onHatch() {
-		if (level() instanceof final ServerLevel serverWorld && getMotherId() != null) {
-			final Entity e = serverWorld.getEntity(getMotherId());
+    @Override
+    public Entity onHatch() {
+        if (level() instanceof final ServerLevel serverWorld && getMotherId() != null) {
+            final Entity e = serverWorld.getEntity(getMotherId());
 
-			if (e instanceof TropiSpiderEntity) {
-				return TropiSpiderEntity.haveBaby((TropiSpiderEntity) e);
-			}
-		}
-		return TropicraftEntities.TROPI_SPIDER.get().create(level());
-	}
+            if (e instanceof TropiSpiderEntity) {
+                return TropiSpiderEntity.haveBaby((TropiSpiderEntity) e);
+            }
+        }
+        return TropicraftEntities.TROPI_SPIDER.get().create(level());
+    }
 
-	@Override
-	public int getHatchTime() {
-		return 2000;
-	}
+    @Override
+    public int getHatchTime() {
+        return 2000;
+    }
 
-	@Override
-	public int getPreHatchMovement() {
-		return 20;
-	}
+    @Override
+    public int getPreHatchMovement() {
+        return 20;
+    }
 
-	@Override
-	public ItemStack getPickedResult(HitResult target) {
-		return new ItemStack(TropicraftItems.TROPI_SPIDER_SPAWN_EGG.get());
-	}
+    @Override
+    public ItemStack getPickedResult(HitResult target) {
+        return new ItemStack(TropicraftItems.TROPI_SPIDER_SPAWN_EGG.get());
+    }
 }

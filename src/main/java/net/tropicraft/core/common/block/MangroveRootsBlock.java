@@ -49,8 +49,8 @@ public final class MangroveRootsBlock extends Block implements SimpleWaterlogged
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    public static final Direction[] DIRECTIONS = new Direction[] { Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST };
-    public static final EnumProperty<Connection>[] CONNECTIONS = new EnumProperty[] { NORTH, EAST, SOUTH, WEST };
+    public static final Direction[] DIRECTIONS = new Direction[]{Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
+    public static final EnumProperty<Connection>[] CONNECTIONS = new EnumProperty[]{NORTH, EAST, SOUTH, WEST};
 
     public MangroveRootsBlock(Block.Properties properties) {
         super(properties);
@@ -228,31 +228,38 @@ public final class MangroveRootsBlock extends Block implements SimpleWaterlogged
     @Override
     public BlockState rotate(BlockState state, Rotation rotation) {
         switch (rotation) {
-            case CLOCKWISE_180: return state
-                    .setValue(NORTH, state.getValue(SOUTH))
-                    .setValue(EAST, state.getValue(WEST))
-                    .setValue(SOUTH, state.getValue(NORTH))
-                    .setValue(WEST, state.getValue(EAST));
-            case COUNTERCLOCKWISE_90: return state
-                    .setValue(NORTH, state.getValue(EAST))
-                    .setValue(EAST, state.getValue(SOUTH))
-                    .setValue(SOUTH, state.getValue(WEST))
-                    .setValue(WEST, state.getValue(NORTH));
-            case CLOCKWISE_90: return state
-                    .setValue(NORTH, state.getValue(WEST))
-                    .setValue(EAST, state.getValue(NORTH))
-                    .setValue(SOUTH, state.getValue(EAST))
-                    .setValue(WEST, state.getValue(SOUTH));
-            default: return state;
+            case CLOCKWISE_180:
+                return state
+                        .setValue(NORTH, state.getValue(SOUTH))
+                        .setValue(EAST, state.getValue(WEST))
+                        .setValue(SOUTH, state.getValue(NORTH))
+                        .setValue(WEST, state.getValue(EAST));
+            case COUNTERCLOCKWISE_90:
+                return state
+                        .setValue(NORTH, state.getValue(EAST))
+                        .setValue(EAST, state.getValue(SOUTH))
+                        .setValue(SOUTH, state.getValue(WEST))
+                        .setValue(WEST, state.getValue(NORTH));
+            case CLOCKWISE_90:
+                return state
+                        .setValue(NORTH, state.getValue(WEST))
+                        .setValue(EAST, state.getValue(NORTH))
+                        .setValue(SOUTH, state.getValue(EAST))
+                        .setValue(WEST, state.getValue(SOUTH));
+            default:
+                return state;
         }
     }
 
     @Override
     public BlockState mirror(BlockState state, Mirror mirror) {
         switch (mirror) {
-            case LEFT_RIGHT: return state.setValue(NORTH, state.getValue(SOUTH)).setValue(SOUTH, state.getValue(NORTH));
-            case FRONT_BACK: return state.setValue(EAST, state.getValue(WEST)).setValue(WEST, state.getValue(EAST));
-            default: return super.mirror(state, mirror);
+            case LEFT_RIGHT:
+                return state.setValue(NORTH, state.getValue(SOUTH)).setValue(SOUTH, state.getValue(NORTH));
+            case FRONT_BACK:
+                return state.setValue(EAST, state.getValue(WEST)).setValue(WEST, state.getValue(EAST));
+            default:
+                return super.mirror(state, mirror);
         }
     }
 

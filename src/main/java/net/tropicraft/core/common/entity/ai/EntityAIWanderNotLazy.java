@@ -17,13 +17,11 @@ public class EntityAIWanderNotLazy extends Goal {
     private int executionChance;
     private boolean mustUpdate;
 
-    public EntityAIWanderNotLazy(PathfinderMob creatureIn, double speedIn)
-    {
+    public EntityAIWanderNotLazy(PathfinderMob creatureIn, double speedIn) {
         this(creatureIn, speedIn, 120);
     }
 
-    public EntityAIWanderNotLazy(PathfinderMob creatureIn, double speedIn, int chance)
-    {
+    public EntityAIWanderNotLazy(PathfinderMob creatureIn, double speedIn, int chance) {
         this.entity = creatureIn;
         this.speed = speedIn;
         this.executionChance = chance;
@@ -34,28 +32,22 @@ public class EntityAIWanderNotLazy extends Goal {
      * Returns whether the EntityAIBase should begin execution.
      */
     @Override
-    public boolean canUse()
-    {
-        if (!this.mustUpdate)
-        {
+    public boolean canUse() {
+        if (!this.mustUpdate) {
             /*if (this.entity.getAge() >= 100)
             {
                 return false;
             }*/
 
-            if (this.entity.getRandom().nextInt(this.executionChance) != 0)
-            {
+            if (this.entity.getRandom().nextInt(this.executionChance) != 0) {
                 return false;
             }
         }
 
         Vec3 vec = DefaultRandomPos.getPos(this.entity, 10, 7);
-        if (vec == null)
-        {
+        if (vec == null) {
             return false;
-        }
-        else
-        {
+        } else {
             this.xPosition = vec.x;
             this.yPosition = vec.y;
             this.zPosition = vec.z;
@@ -68,8 +60,7 @@ public class EntityAIWanderNotLazy extends Goal {
      * Returns whether an in-progress EntityAIBase should continue executing
      */
     @Override
-    public boolean canContinueToUse()
-    {
+    public boolean canContinueToUse() {
         return !this.entity.getNavigation().isDone();
     }
 
@@ -77,24 +68,21 @@ public class EntityAIWanderNotLazy extends Goal {
      * Execute a one shot task or start executing a continuous task
      */
     @Override
-    public void start()
-    {
+    public void start() {
         this.entity.getNavigation().moveTo(this.xPosition, this.yPosition, this.zPosition, this.speed);
     }
 
     /**
      * Makes task to bypass chance
      */
-    public void makeUpdate()
-    {
+    public void makeUpdate() {
         this.mustUpdate = true;
     }
 
     /**
      * Changes task random possibility for execution
      */
-    public void setExecutionChance(int newchance)
-    {
+    public void setExecutionChance(int newchance) {
         this.executionChance = newchance;
     }
 }

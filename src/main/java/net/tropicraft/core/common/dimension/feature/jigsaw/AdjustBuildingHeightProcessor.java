@@ -29,7 +29,7 @@ public class AdjustBuildingHeightProcessor extends CheatyStructureProcessor {
         }
         return blockInfo;
     }
-    
+
     @Override
     public StructureEntityInfo processEntity(LevelReader world, BlockPos seedPos, StructureEntityInfo rawEntityInfo, StructureEntityInfo entityInfo, StructurePlaceSettings placementSettings, StructureTemplate template) {
         if (seedPos.getY() < base) {

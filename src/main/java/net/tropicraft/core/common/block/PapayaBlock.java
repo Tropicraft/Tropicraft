@@ -56,7 +56,6 @@ public final class PapayaBlock extends HorizontalDirectionalBlock implements Bon
         if (i < 1 && worldIn.random.nextInt(5) == 0) {
             worldIn.setBlock(pos, state.setValue(AGE, i + 1), 2);
         }
-
     }
 
     @Override
@@ -82,7 +81,7 @@ public final class PapayaBlock extends HorizontalDirectionalBlock implements Bon
         Level level = context.getLevel();
         BlockPos blockpos = context.getClickedPos();
 
-        for(Direction direction : context.getNearestLookingDirections()) {
+        for (Direction direction : context.getNearestLookingDirections()) {
             if (direction.getAxis().isHorizontal()) {
                 blockstate = blockstate.setValue(HORIZONTAL_FACING, direction);
                 if (blockstate.canSurvive(level, blockpos)) {

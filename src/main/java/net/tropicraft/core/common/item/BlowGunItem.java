@@ -121,5 +121,4 @@ public class BlowGunItem extends ProjectileWeaponItem {
         arrowEntity.setCritArrow(false);
         return arrowEntity;
     }
-
 }

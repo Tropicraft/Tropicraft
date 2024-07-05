@@ -11,7 +11,9 @@ import net.tropicraft.Constants;
 
 public class BambooChestBlockEntity extends ChestBlockEntity {
 
-    /** Is this chest unbreakble (Koa chest) */
+    /**
+     * Is this chest unbreakble (Koa chest)
+     */
     private boolean unbreakable = false;
 
     public BambooChestBlockEntity(final BlockEntityType<BambooChestBlockEntity> type, final BlockPos pos, final BlockState state) {
@@ -41,7 +43,6 @@ public class BambooChestBlockEntity extends ChestBlockEntity {
     }
 
     /**
-     *
      * @return Returns if this chest is unbreakable
      */
     public boolean isUnbreakable() {
@@ -50,6 +51,7 @@ public class BambooChestBlockEntity extends ChestBlockEntity {
 
     /**
      * Sets whether this chest is unbreakable or not
+     *
      * @param flag Value to set the unbreakable flag to
      */
     public void setIsUnbreakable(boolean flag) {

@@ -20,6 +20,7 @@ public class Drinks {
 
     /**
      * Register a recipe with the mixer
+     *
      * @param recipe MixerRecipe instance to register
      */
     public static void register(final MixerRecipe recipe) {
@@ -28,6 +29,7 @@ public class Drinks {
 
     /**
      * Returns true if the ItemStack's Item is used in any of the recipes, that way we don't get weird recipes
+     *
      * @param item ItemStack to check for validity
      * @return true if the ItemStack sent in is used in any of the registered recipes
      */

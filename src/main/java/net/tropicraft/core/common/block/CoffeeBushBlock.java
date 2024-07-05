@@ -28,13 +28,19 @@ public final class CoffeeBushBlock extends CropBlock {
 
     public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 6);
 
-    /** Number of bushes high this plant can grow */
+    /**
+     * Number of bushes high this plant can grow
+     */
     public static final int MAX_HEIGHT = 3;
 
-    /** The growth rate when this plant is fertile */
+    /**
+     * The growth rate when this plant is fertile
+     */
     public static final int GROWTH_RATE_FERTILE = 10;
 
-    /** The growth rate when this plant is infertile */
+    /**
+     * The growth rate when this plant is infertile
+     */
     public static final int GROWTH_RATE_INFERTILE = 20;
 
     public CoffeeBushBlock(Properties properties) {
@@ -72,7 +78,7 @@ public final class CoffeeBushBlock extends CropBlock {
         if (worldIn.isEmptyBlock(pos.above())) {
             int height;
             BlockPos ground = pos;
-            for (height = 1; worldIn.getBlockState(ground = ground.below()).getBlock() == this; ++height);
+            for (height = 1; worldIn.getBlockState(ground = ground.below()).getBlock() == this; ++height) ;
 
             final BlockState blockState = worldIn.getBlockState(ground);
             if (height < MAX_HEIGHT && worldIn.random.nextInt(blockState.getBlock().isFertile(blockState, worldIn, ground) ? GROWTH_RATE_FERTILE : GROWTH_RATE_INFERTILE) == 0) {

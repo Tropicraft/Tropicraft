@@ -63,11 +63,11 @@ public abstract class MachineRenderer<T extends BlockEntity & IMachineBlock> imp
     }
 
     protected abstract Material getMaterial();
-    
+
     protected void animationTransform(T te, PoseStack stack, float partialTicks) {
         float angle = Mth.sin((float) (25f * 2f * Math.PI * te.getProgress(partialTicks))) * 15f;
         stack.mulPose(Axis.YP.rotationDegrees(angle));
     }
-    
+
     protected abstract void renderIngredients(final T te, final PoseStack stack, final MultiBufferSource buffer, int packedLightIn, int combinedOverlayIn);
 }

@@ -15,11 +15,10 @@ import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 
 import java.util.EnumSet;
 
-public class EntityAIEatToHeal extends Goal
-{
+public class EntityAIEatToHeal extends Goal {
     private final EntityKoaBase entityObj;
 
-    private int walkingTimeoutMax = 20*10;
+    private int walkingTimeoutMax = 20 * 10;
 
     private int walkingTimeout;
     private int repathPentalty = 0;
@@ -31,8 +30,7 @@ public class EntityAIEatToHeal extends Goal
 
     private float missingHealthToHeal = 5;
 
-    public EntityAIEatToHeal(EntityKoaBase entityObjIn)
-    {
+    public EntityAIEatToHeal(EntityKoaBase entityObjIn) {
         this.entityObj = entityObjIn;
         this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
@@ -41,8 +39,7 @@ public class EntityAIEatToHeal extends Goal
      * Returns whether the EntityAIBase should begin execution.
      */
     @Override
-    public boolean canUse()
-    {
+    public boolean canUse() {
         if (entityObj.getHealth() < entityObj.getMaxHealth() - missingHealthToHeal) {
             return hasFoodSource();
         } else {
@@ -54,8 +51,7 @@ public class EntityAIEatToHeal extends Goal
      * Returns whether an in-progress EntityAIBase should continue executing
      */
     @Override
-    public boolean canContinueToUse()
-    {
+    public boolean canContinueToUse() {
         return canUse();
     }
 
@@ -98,7 +94,7 @@ public class EntityAIEatToHeal extends Goal
                     boolean success = false;
 
                     if (this.entityObj.distanceToSqr(Vec3.atCenterOf(blockposGoal)) > 256.0D) {
-                        Vec3 Vector3d = DefaultRandomPos.getPosTowards(this.entityObj, 14, 3, new Vec3((double) i + 0.5D, j, (double) k + 0.5D), (float)Math.PI / 2F);
+                        Vec3 Vector3d = DefaultRandomPos.getPosTowards(this.entityObj, 14, 3, new Vec3((double) i + 0.5D, j, (double) k + 0.5D), (float) Math.PI / 2F);
 
                         if (Vector3d != null) {
                             success = this.entityObj.getNavigation().moveTo(Vector3d.x, Vector3d.y, Vector3d.z, 1.0D);
@@ -129,16 +125,13 @@ public class EntityAIEatToHeal extends Goal
                 lookUpdateTimer--;
             }
         }
-
-
     }
 
     /**
      * Execute a one shot task or start executing a continuous task
      */
     @Override
-    public void start()
-    {
+    public void start() {
         super.start();
         //this.insidePosX = -1;
         //reset any previous path so tick can start with a fresh path
@@ -149,8 +142,7 @@ public class EntityAIEatToHeal extends Goal
      * Resets the task
      */
     @Override
-    public void stop()
-    {
+    public void stop() {
         super.stop();
         entityObj.setSitting(false);
         walkingTimeout = 0;

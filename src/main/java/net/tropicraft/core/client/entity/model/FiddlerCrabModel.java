@@ -119,7 +119,6 @@ public class FiddlerCrabModel<T extends Entity> extends HierarchicalModel<T> {
                         .addBox(-3.0F, 0.0F, -1.0F, 3.0F, 1.0F, 1.0F, false),
                 PartPose.offset(-1.0F, -1.0F, 0.0F));
 
-
         PartDefinition modelPartLegLeftFra = body.addOrReplaceChild("leg_left_fra",
                 CubeListBuilder.create()
                         .texOffs(15, 17)
@@ -131,7 +130,6 @@ public class FiddlerCrabModel<T extends Entity> extends HierarchicalModel<T> {
                         .texOffs(7, 13)
                         .addBox(-2.0F, -1.0F, -0.5F, 2.0F, 1.0F, 1.0F, false),
                 PartPose.offset(-0.5F, 2.0F, 0.0F));
-
 
         PartDefinition modelPartLegLeftMia = body.addOrReplaceChild("leg_left_mia",
                 CubeListBuilder.create()
@@ -145,7 +143,6 @@ public class FiddlerCrabModel<T extends Entity> extends HierarchicalModel<T> {
                         .addBox(-2.0F, -1.0F, -0.5F, 2.0F, 1.0F, 1.0F, false),
                 PartPose.offset(-0.5F, 2.0F, 0.0F));
 
-
         PartDefinition modelPartLegLeftBaa = body.addOrReplaceChild("leg_left_baa",
                 CubeListBuilder.create()
                         .texOffs(5, 17)
@@ -157,7 +154,6 @@ public class FiddlerCrabModel<T extends Entity> extends HierarchicalModel<T> {
                         .texOffs(21, 10)
                         .addBox(-2.0F, -1.0F, -0.5F, 2.0F, 1.0F, 1.0F, false),
                 PartPose.offset(-0.5F, 2.0F, 0.0F));
-
 
         PartDefinition modelPartLegRightFra = body.addOrReplaceChild("leg_right_fra",
                 CubeListBuilder.create()
@@ -171,7 +167,6 @@ public class FiddlerCrabModel<T extends Entity> extends HierarchicalModel<T> {
                         .addBox(0.0F, -1.0F, -0.5F, 2.0F, 1.0F, 1.0F, false),
                 PartPose.offset(0.5F, 2.0F, 0.0F));
 
-
         PartDefinition modelPartLegRightMia = body.addOrReplaceChild("leg_right_mia",
                 CubeListBuilder.create()
                         .texOffs(19, 13)
@@ -184,7 +179,6 @@ public class FiddlerCrabModel<T extends Entity> extends HierarchicalModel<T> {
                         .addBox(0.0F, -1.0F, -0.5F, 2.0F, 1.0F, 1.0F, false),
                 PartPose.offset(0.5F, 2.0F, 0.0F));
 
-
         PartDefinition modelPartLegRightBaa = body.addOrReplaceChild("leg_right_baa",
                 CubeListBuilder.create()
                         .texOffs(14, 13)
@@ -196,7 +190,6 @@ public class FiddlerCrabModel<T extends Entity> extends HierarchicalModel<T> {
                         .texOffs(0, 10)
                         .addBox(0.0F, -1.0F, -0.5F, 2.0F, 1.0F, 1.0F, false),
                 PartPose.offset(0.5F, 2.0F, 0.0F));
-
 
         return LayerDefinition.create(mesh, 32, 32);
     }

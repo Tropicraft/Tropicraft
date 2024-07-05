@@ -16,7 +16,8 @@ public final class MixerRecipes {
     private static Map<Drink, Ingredient[]> drinkToIngredientsMap = new HashMap<>();
     private static Map<Drink, Item> drinkToSpecialItemMap = new HashMap<>();
 
-    private MixerRecipes() {}
+    private MixerRecipes() {
+    }
 
     public static void addMixerRecipes() {
         registerMixerRecipe(Drink.LIMEADE, Ingredient.lime, Ingredient.sugar, Ingredient.waterBucket);
@@ -36,20 +37,22 @@ public final class MixerRecipes {
 
     /**
      * Helper method for registering a mixer recipe
+     *
      * @param result Result of the mixer recipe to be registered
      * @param ingredients Ingredients of the mixer recipe to be registered
      */
-    private static void registerMixerRecipe(Drink result, Ingredient...ingredients) {
+    private static void registerMixerRecipe(Drink result, Ingredient... ingredients) {
         Drinks.register(new MixerRecipe(result, ingredients));
         drinkToIngredientsMap.put(result, ingredients);
     }
-    
+
     public static void setDrinkItem(Drink drink, CocktailItem item) {
         drinkToSpecialItemMap.put(drink, item);
     }
 
     /**
      * Probably a more efficient way of doing this, but whatever. This gives you an ItemStack result from a Drink object
+     *
      * @param drink Drink you want in ItemStack form
      * @return ItemStack form of a Drink
      */

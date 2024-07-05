@@ -235,32 +235,32 @@ public class TropicraftBlocks {
     public static final BlockEntry<DropExperienceBlock> AZURITE_ORE = ore("azurite_ore", TropicraftItems.AZURITE, MapColor.STONE)
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .item()
-                .tag(TropicraftTags.Items.AZURITE_ORE, Tags.Items.ORES)
-                .build()
+            .tag(TropicraftTags.Items.AZURITE_ORE, Tags.Items.ORES)
+            .build()
             .register();
     public static final BlockEntry<DropExperienceBlock> EUDIALYTE_ORE = ore("eudialyte_ore", TropicraftItems.EUDIALYTE, MapColor.STONE)
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .item()
-                .tag(TropicraftTags.Items.EUDIALYTE_ORE, Tags.Items.ORES)
-                .build()
+            .tag(TropicraftTags.Items.EUDIALYTE_ORE, Tags.Items.ORES)
+            .build()
             .register();
     public static final BlockEntry<DropExperienceBlock> MANGANESE_ORE = ore("manganese_ore", MapColor.STONE)
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .item()
-                .tag(TropicraftTags.Items.MANGANESE_ORE, Tags.Items.ORES)
-                .build()
+            .tag(TropicraftTags.Items.MANGANESE_ORE, Tags.Items.ORES)
+            .build()
             .register();
     public static final BlockEntry<DropExperienceBlock> SHAKA_ORE = ore("shaka_ore", MapColor.COLOR_BLACK)
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .item()
-                .tag(TropicraftTags.Items.SHAKA_ORE, Tags.Items.ORES)
-                .build()
+            .tag(TropicraftTags.Items.SHAKA_ORE, Tags.Items.ORES)
+            .build()
             .register();
     public static final BlockEntry<DropExperienceBlock> ZIRCON_ORE = ore("zircon_ore", TropicraftItems.ZIRCON, MapColor.STONE)
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .item()
-                .tag(TropicraftTags.Items.ZIRCON_ORE, Tags.Items.ORES)
-                .build()
+            .tag(TropicraftTags.Items.ZIRCON_ORE, Tags.Items.ORES)
+            .build()
             .register();
 
     private static BlockBuilder<DropExperienceBlock, Registrate> ore(String name, MapColor color) {
@@ -269,8 +269,8 @@ public class TropicraftBlocks {
                 .properties(p -> p.strength(3.0F).mapColor(color))
                 .tag(BlockTags.MINEABLE_WITH_PICKAXE, Tags.Blocks.ORES)
                 .item()
-                    .tag(Tags.Items.ORES)
-                    .build();
+                .tag(Tags.Items.ORES)
+                .build();
     }
 
     private static BlockBuilder<DropExperienceBlock, Registrate> ore(String name, Supplier<Item> gem, MapColor color) {
@@ -315,18 +315,18 @@ public class TropicraftBlocks {
     public static final Map<TropicraftFlower, BlockEntry<TropicsFlowerBlock>> FLOWERS = Arrays.stream(TropicraftFlower.values())
             .collect(ImmutableMap.toImmutableMap(Function.identity(), flower -> {
                 BlockBuilder<TropicsFlowerBlock, Registrate> builder = REGISTRATE
-                                .block(flower.getId(), p -> new TropicsFlowerBlock(flower.getEffect(), flower.getEffectDuration(), flower.getShape(), p))
-                                .initialProperties(() -> Blocks.POPPY)
-                                .addLayer(() -> RenderType::cutout)
-                                .tag(flower.getTags())
-                                .blockstate((ctx, prov) -> {
-                                    prov.simpleBlock(ctx.get(), prov.models().withExistingParent(ctx.getName(), "block/cross")
-                                            .texture("cross", "tropicraft:block/flower/" + ctx.getName()));
-                                })
-                                .item()
-                                .tag(ItemTags.FLOWERS)
-                                .model((ctx, prov) -> prov.generated(ctx, prov.modLoc("block/flower/" + ctx.getName())))
-                                .build();
+                        .block(flower.getId(), p -> new TropicsFlowerBlock(flower.getEffect(), flower.getEffectDuration(), flower.getShape(), p))
+                        .initialProperties(() -> Blocks.POPPY)
+                        .addLayer(() -> RenderType::cutout)
+                        .tag(flower.getTags())
+                        .blockstate((ctx, prov) -> {
+                            prov.simpleBlock(ctx.get(), prov.models().withExistingParent(ctx.getName(), "block/cross")
+                                    .texture("cross", "tropicraft:block/flower/" + ctx.getName()));
+                        })
+                        .item()
+                        .tag(ItemTags.FLOWERS)
+                        .model((ctx, prov) -> prov.generated(ctx, prov.modLoc("block/flower/" + ctx.getName())))
+                        .build();
                 Item dye = flower.getDye();
                 if (dye != null) {
                     builder = builder.recipe((ctx, prov) -> {
@@ -356,8 +356,8 @@ public class TropicraftBlocks {
                         .addModels(allYRotations(starfish, 0, false));
             })
             .item()
-                .tag(ItemTags.SAND)
-                .build()
+            .tag(ItemTags.SAND)
+            .build()
             .recipe((ctx, prov) -> prov.smelting(DataIngredient.items(ctx), RecipeCategory.MISC, () -> Blocks.GLASS, 0.3f))
             .register();
 
@@ -372,8 +372,8 @@ public class TropicraftBlocks {
                     .unlockedBy("has_purified_sand", has(PURIFIED_SAND.get()))
                     .save(prov))
             .item()
-                .tag(ItemTags.SAND)
-                .build()
+            .tag(ItemTags.SAND)
+            .build()
             .register();
 
     public static final BlockEntry<BlockTropicraftSand> CORAL_SAND = REGISTRATE.block("coral_sand", BlockTropicraftSand::new)
@@ -382,8 +382,8 @@ public class TropicraftBlocks {
             .blockstate(TropicraftBlocks::simpleBlockAllRotations)
             .tag(BlockTags.SAND, BlockTags.MINEABLE_WITH_SHOVEL, TropicraftTags.Blocks.CARVER_REPLACEABLES)
             .item()
-                .tag(ItemTags.SAND)
-                .build()
+            .tag(ItemTags.SAND)
+            .build()
             .register();
 
     public static final BlockEntry<BlockTropicraftSand> FOAMY_SAND = REGISTRATE.block("foamy_sand", BlockTropicraftSand::new)
@@ -392,8 +392,8 @@ public class TropicraftBlocks {
             .blockstate(TropicraftBlocks::simpleBlockAllRotations)
             .tag(BlockTags.SAND, BlockTags.MINEABLE_WITH_SHOVEL, TropicraftTags.Blocks.CARVER_REPLACEABLES)
             .item()
-                .tag(ItemTags.SAND)
-                .build()
+            .tag(ItemTags.SAND)
+            .build()
             .register();
 
     public static final BlockEntry<VolcanicSandBlock> VOLCANIC_SAND = REGISTRATE.block("volcanic_sand", VolcanicSandBlock::new)
@@ -402,8 +402,8 @@ public class TropicraftBlocks {
             .blockstate(TropicraftBlocks::simpleBlockAllRotations)
             .tag(BlockTags.SAND, BlockTags.MINEABLE_WITH_SHOVEL, TropicraftTags.Blocks.CARVER_REPLACEABLES)
             .item()
-                .tag(ItemTags.SAND)
-                .build()
+            .tag(ItemTags.SAND)
+            .build()
             .register();
 
     public static final BlockEntry<BlockTropicraftSand> MINERAL_SAND = REGISTRATE.block("mineral_sand", BlockTropicraftSand::new)
@@ -413,8 +413,8 @@ public class TropicraftBlocks {
             ))
             .tag(BlockTags.SAND, BlockTags.MINEABLE_WITH_SHOVEL, TropicraftTags.Blocks.CARVER_REPLACEABLES)
             .item()
-                .tag(ItemTags.SAND)
-                .build()
+            .tag(ItemTags.SAND)
+            .build()
             .register();
 
     public static final BlockEntry<MudBlock> MUD = REGISTRATE.block("mud", MudBlock::new)
@@ -516,8 +516,8 @@ public class TropicraftBlocks {
             .addLayer(() -> RenderType::cutout)
             .blockstate((ctx, prov) -> prov.simpleBlock(ctx.get(), prov.models().cross("coconut", prov.modLoc("block/coconut"))))
             .item()
-                .model(TropicraftBlocks::blockSprite)
-                .build()
+            .model(TropicraftBlocks::blockSprite)
+            .build()
             .register();
 
     public static final BlockEntry<SlabBlock> BAMBOO_SLAB = woodenSlab("bamboo_slab", BAMBOO_BUNDLE)
@@ -729,8 +729,8 @@ public class TropicraftBlocks {
                 }
             })
             .item()
-                .model((ctx, prov) -> prov.blockSprite(ctx, prov.modLoc("block/" + ctx.getName() + "_top_tall")))
-                .build()
+            .model((ctx, prov) -> prov.blockSprite(ctx, prov.modLoc("block/" + ctx.getName() + "_top_tall")))
+            .build()
             .register();
 
     // TODO: register with food
@@ -757,16 +757,16 @@ public class TropicraftBlocks {
     public static final BlockEntry<FenceBlock> BAMBOO_FENCE = woodenFence("bamboo_fence", BAMBOO_BUNDLE)
             .blockstate((ctx, prov) -> prov.fenceBlock(ctx.get(), prov.modLoc("block/bamboo_side")))
             .item()
-                .tag(ItemTags.WOODEN_FENCES)
-                .model((ctx, prov) -> prov.fenceInventory(ctx.getName(), prov.modLoc("block/bamboo_side")))
-                .build()
+            .tag(ItemTags.WOODEN_FENCES)
+            .model((ctx, prov) -> prov.fenceInventory(ctx.getName(), prov.modLoc("block/bamboo_side")))
+            .build()
             .register();
     public static final BlockEntry<FenceBlock> THATCH_FENCE = woodenFence("thatch_fence", THATCH_BUNDLE)
             .blockstate((ctx, prov) -> prov.fenceBlock(ctx.get(), prov.modLoc("block/thatch_side")))
             .item()
-                .tag(ItemTags.WOODEN_FENCES)
-                .model((ctx, prov) -> prov.fenceInventory(ctx.getName(), prov.modLoc("block/thatch_side")))
-                .build()
+            .tag(ItemTags.WOODEN_FENCES)
+            .model((ctx, prov) -> prov.fenceInventory(ctx.getName(), prov.modLoc("block/thatch_side")))
+            .build()
             .register();
     public static final BlockEntry<FenceBlock> CHUNK_FENCE = woodenFence("chunk_fence", CHUNK).register();
     public static final BlockEntry<FenceBlock> PALM_FENCE = woodenFence("palm_fence", PALM_PLANKS).register();
@@ -788,9 +788,9 @@ public class TropicraftBlocks {
             .blockstate((ctx, prov) -> prov.wallBlock(ctx.get(), prov.blockTexture(CHUNK.get())))
             .recipe((ctx, prov) -> prov.wall(DataIngredient.items(CHUNK.get()), RecipeCategory.DECORATIONS, ctx))
             .item()
-                .tag(ItemTags.WALLS)
-                .model((ctx, prov) -> prov.wallInventory(ctx.getName(), prov.modLoc("block/" + CHUNK.getId().getPath())))
-                .build()
+            .tag(ItemTags.WALLS)
+            .model((ctx, prov) -> prov.wallInventory(ctx.getName(), prov.modLoc("block/" + CHUNK.getId().getPath())))
+            .build()
             .register();
 
     public static final BlockEntry<DoorBlock> BAMBOO_DOOR = woodenDoor("bamboo_door", BAMBOO_BUNDLE).register();
@@ -810,8 +810,8 @@ public class TropicraftBlocks {
             .blockstate(TropicraftBlocks::doublePlant)
             .recipe((ctx, prov) -> prov.singleItemUnfinished(DataIngredient.items(ctx.get()), RecipeCategory.MISC, () -> Items.PURPLE_DYE, 1, 4).save(prov, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name(Items.PURPLE_DYE))))
             .item()
-                .model((ctx, prov) -> prov.blockSprite(ctx, prov.modLoc("block/iris_top")))
-                .build()
+            .model((ctx, prov) -> prov.blockSprite(ctx, prov.modLoc("block/iris_top")))
+            .build()
             .register();
 
     public static final BlockEntry<PineappleBlock> PINEAPPLE = REGISTRATE.block("pineapple", PineappleBlock::new)
@@ -823,8 +823,8 @@ public class TropicraftBlocks {
             .addLayer(() -> RenderType::cutout)
             .blockstate(TropicraftBlocks::doublePlant)
             .item()
-                .model((ctx, prov) -> prov.blockSprite(ctx, prov.modLoc("block/pineapple_top")))
-                .build()
+            .model((ctx, prov) -> prov.blockSprite(ctx, prov.modLoc("block/pineapple_top")))
+            .build()
             .register();
 
     public static final BlockEntry<BongoDrumBlock> SMALL_BONGO_DRUM = bongoDrum("small_bongo_drum", BongoDrumBlock.Size.SMALL).register();
@@ -843,7 +843,7 @@ public class TropicraftBlocks {
                                     .from((float) bb.minX * 16, (float) bb.minY * 16, (float) bb.minZ * 16)
                                     .to((float) bb.maxX * 16, (float) bb.maxY * 16, (float) bb.maxZ * 16)
                                     .allFaces((dir, face) -> face
-                                            .texture(dir.getAxis().isHorizontal() ? "#side" : dir == Direction.DOWN ? "#bottom": "#top")
+                                            .texture(dir.getAxis().isHorizontal() ? "#side" : dir == Direction.DOWN ? "#bottom" : "#top")
                                             .cullface(dir.getAxis().isVertical() ? dir : null))
                                     .end());
                 })
@@ -876,14 +876,14 @@ public class TropicraftBlocks {
                                 LadderBlock.WATERLOGGED);
             })
             .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ctx.get(), 4)
-                            .pattern("S S").pattern("BSB").pattern("S S")
-                            .define('S', BAMBOO_STICK.get())
-                            .define('B', Items.BAMBOO)
-                            .unlockedBy("has_bamboo", has(Items.BAMBOO))
-                            .save(prov))
+                    .pattern("S S").pattern("BSB").pattern("S S")
+                    .define('S', BAMBOO_STICK.get())
+                    .define('B', Items.BAMBOO)
+                    .unlockedBy("has_bamboo", has(Items.BAMBOO))
+                    .save(prov))
             .item()
-                .model(TropicraftBlocks::blockSprite)
-                .build()
+            .model(TropicraftBlocks::blockSprite)
+            .build()
             .register();
 
     public static final BlockEntry<BoardwalkBlock> BAMBOO_BOARDWALK = boardwalk("bamboo_boardwalk", BAMBOO_SLAB, Either.right(ResourceLocation.fromNamespaceAndPath(Constants.MODID, "block/bamboo_side"))).register();
@@ -896,12 +896,12 @@ public class TropicraftBlocks {
             .properties(p -> p.strength(1.0F))
             .blockstate((ctx, prov) -> noModelBlock(ctx, prov, prov.modLoc("block/bamboo_side")))
             .blockEntity(BambooChestBlockEntity::new)
-                .renderer(() -> BambooChestRenderer::new)
-                .build()
+            .renderer(() -> BambooChestRenderer::new)
+            .build()
             .item(itemWithRenderer(TropicraftItemRenderers::bambooChest))
-                .model((ctx, prov) -> prov.withExistingParent(ctx.getName(), "item/chest")
-                        .texture("particle", prov.modLoc("block/bamboo_side")))
-                .build()
+            .model((ctx, prov) -> prov.withExistingParent(ctx.getName(), "item/chest")
+                    .texture("particle", prov.modLoc("block/bamboo_side")))
+            .build()
             .addMiscData(ProviderType.LANG, prov -> {
                 prov.add(Constants.MODID + ".container.bambooChest", "Bamboo Chest");
                 prov.add(Constants.MODID + ".container.bambooChestDouble", "Large Bamboo Chest");
@@ -920,8 +920,8 @@ public class TropicraftBlocks {
             .properties(Properties::noOcclusion)
             .addLayer(() -> RenderType::cutout)
             .blockEntity(SifterBlockEntity::new)
-                 .renderer(() -> SifterRenderer::new)
-                 .build()
+            .renderer(() -> SifterRenderer::new)
+            .build()
             .setData(ProviderType.LANG, (ctx, prov) -> prov.addBlockWithTooltip(ctx, "Place any type of tropics or regular sand in the sifter. What treasures are hidden inside?"))
             .recipe((ctx, prov) -> {
                 ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ctx.get())
@@ -948,12 +948,12 @@ public class TropicraftBlocks {
             .properties(p -> p.mapColor(MapColor.STONE).strength(2.0F, 30.0F).noOcclusion().instrument(NoteBlockInstrument.BASEDRUM))
             .blockstate((ctx, prov) -> noModelBlock(ctx, prov, prov.modLoc("block/chunk")))
             .blockEntity(DrinkMixerBlockEntity::new)
-                .renderer(() -> DrinkMixerRenderer::new)
-                .build()
+            .renderer(() -> DrinkMixerRenderer::new)
+            .build()
             .item(itemWithRenderer(TropicraftItemRenderers::drinkMixer))
-                .model((ctx, prov) -> prov.withExistingParent(ctx.getName(), prov.modLoc("item/tall_machine"))
-                        .texture("particle", prov.modLoc("block/chunk")))
-                .build()
+            .model((ctx, prov) -> prov.withExistingParent(ctx.getName(), prov.modLoc("item/tall_machine"))
+                    .texture("particle", prov.modLoc("block/chunk")))
+            .build()
             .addLayer(() -> RenderType::cutout)
             .setData(ProviderType.LANG, (ctx, prov) -> prov.addBlockWithTooltip(ctx, "Place two drink ingredients on the mixer, then place an empty mug on the base, then ???, then enjoy!"))
             .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ctx.get())
@@ -970,12 +970,12 @@ public class TropicraftBlocks {
             .properties(p -> p.mapColor(MapColor.STONE).strength(2.0F, 30.0F).noOcclusion().instrument(NoteBlockInstrument.BASEDRUM))
             .blockstate((ctx, prov) -> noModelBlock(ctx, prov, prov.modLoc("block/chunk")))
             .blockEntity(AirCompressorBlockEntity::new)
-                .renderer(() -> AirCompressorRenderer::new)
-                .build()
+            .renderer(() -> AirCompressorRenderer::new)
+            .build()
             .item(itemWithRenderer(TropicraftItemRenderers::airCompressor))
-                .model((ctx, prov) -> prov.withExistingParent(ctx.getName(), prov.modLoc("item/tall_machine"))
-                        .texture("particle", prov.modLoc("block/chunk")))
-                .build()
+            .model((ctx, prov) -> prov.withExistingParent(ctx.getName(), prov.modLoc("item/tall_machine"))
+                    .texture("particle", prov.modLoc("block/chunk")))
+            .build()
             .addLayer(() -> RenderType::cutout)
             .setData(ProviderType.LANG, (ctx, prov) -> prov.addBlockWithTooltip(ctx, "Place an empty scuba harness in the compressor to fill it with air!"))
             .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ctx.get(), 1)
@@ -1052,8 +1052,8 @@ public class TropicraftBlocks {
             .blockstate((ctx, prov) -> prov.simpleBlock(ctx.get(), prov.models().cross(ctx.getName(), prov.modLoc("block/small_golden_leather_fern"))))
             .lang("Golden Leather Fern")
             .item()
-                .model((ctx, prov) -> prov.generated(ctx, prov.modLoc("item/golden_leather_fern")))
-                .build()
+            .model((ctx, prov) -> prov.generated(ctx, prov.modLoc("item/golden_leather_fern")))
+            .build()
             .register();
 
     public static final BlockEntry<GrowableDoublePlantBlock> TALL_GOLDEN_LEATHER_FERN = REGISTRATE.block("tall_golden_leather_fern", p -> new GrowableDoublePlantBlock(p, () -> TropicraftBlocks.LARGE_GOLDEN_LEATHER_FERN).setPickItem(() -> TropicraftBlocks.GOLDEN_LEATHER_FERN))
@@ -1113,8 +1113,8 @@ public class TropicraftBlocks {
                             .texture("particle", texture));
                 })
                 .item()
-                    .model(TropicraftBlocks::blockSprite)
-                    .build();
+                .model(TropicraftBlocks::blockSprite)
+                .build();
     }
 
     private static BlockBuilder<CustomTallSeagrassBlock, Registrate> tallSeagrass(String name, String scientificName, BlockEntry<? extends SeagrassBlock> normal) {
@@ -1218,7 +1218,7 @@ public class TropicraftBlocks {
             if (flower instanceof TropicsFlowerBlock) {
                 model.texture("plant", prov.modLoc(ModelProvider.BLOCK_FOLDER + "/flower/" + flowerName));
             } else if (flower instanceof TallFlowerBlock) {
-                model.texture("plant", prov.modLoc(ModelProvider.BLOCK_FOLDER + "/"+ flowerName + "_top"));
+                model.texture("plant", prov.modLoc(ModelProvider.BLOCK_FOLDER + "/" + flowerName + "_top"));
             } else {
                 model.texture("plant", prov.blockTexture(flower));
             }
@@ -1300,8 +1300,8 @@ public class TropicraftBlocks {
                 .tag(blockTag)
                 .blockstate((ctx, prov) -> prov.stairsBlock(ctx.get(), prov.blockTexture(block.get())))
                 .item()
-                    .tag(itemTag)
-                    .build();
+                .tag(itemTag)
+                .build();
     }
 
     private static BlockBuilder<SlabBlock, Registrate> stoneSlab(String name, BlockEntry<? extends Block> block) {
@@ -1323,37 +1323,37 @@ public class TropicraftBlocks {
                 .tag(blockTag)
                 .blockstate((ctx, prov) -> prov.slabBlock(ctx.get(), block.getId(), prov.blockTexture(block.get())))
                 .item()
-                    .tag(itemTag)
-                    .build();
+                .tag(itemTag)
+                .build();
     }
 
     private static BlockBuilder<ButtonBlock, Registrate> woodButton(String name, BlockEntry<? extends Block> block, String texture) {
         return REGISTRATE.block(name, p -> new ButtonBlock(BlockSetType.OAK, 30, p))
-            .initialProperties(block)
-            .properties(p -> p.noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY))
-            .tag(BlockTags.WOODEN_BUTTONS, BlockTags.MINEABLE_WITH_AXE)
-            .blockstate((ctx, prov) -> prov.buttonBlock(ctx.get(), prov.modLoc("block/" + texture)))
-            .recipe((ctx, prov) -> RegistrateRecipeProvider.buttonBuilder(ctx.get(), Ingredient.of(block.asItem()))
-                    .unlockedBy("has_" + prov.safeName(block.get()), has(block.get()))
-                    .group("wooden_button")
-                    .save(prov))
-            .item()
-            .model((ctx, prov) -> prov.buttonInventory(ctx.getName(), prov.modLoc("block/" + texture)))
+                .initialProperties(block)
+                .properties(p -> p.noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY))
+                .tag(BlockTags.WOODEN_BUTTONS, BlockTags.MINEABLE_WITH_AXE)
+                .blockstate((ctx, prov) -> prov.buttonBlock(ctx.get(), prov.modLoc("block/" + texture)))
+                .recipe((ctx, prov) -> RegistrateRecipeProvider.buttonBuilder(ctx.get(), Ingredient.of(block.asItem()))
+                        .unlockedBy("has_" + prov.safeName(block.get()), has(block.get()))
+                        .group("wooden_button")
+                        .save(prov))
+                .item()
+                .model((ctx, prov) -> prov.buttonInventory(ctx.getName(), prov.modLoc("block/" + texture)))
                 .tag(ItemTags.WOODEN_BUTTONS)
                 .build();
     }
 
     private static BlockBuilder<PressurePlateBlock, Registrate> pressurePlate(String name, BlockEntry<? extends Block> block, String texture) {
         return REGISTRATE.block(name, p -> new PressurePlateBlock(BlockSetType.OAK, p))
-            .initialProperties(block)
-            .properties(p -> p.forceSolidOn().instrument(NoteBlockInstrument.BASS).noCollission().strength(0.5F).ignitedByLava().pushReaction(PushReaction.DESTROY))
-            .tag(BlockTags.WOODEN_PRESSURE_PLATES, BlockTags.MINEABLE_WITH_AXE)
-            .recipe((ctx, prov) -> RegistrateRecipeProvider.pressurePlateBuilder(RecipeCategory.REDSTONE, ctx.get(), Ingredient.of(block.asItem()))
-                    .unlockedBy("has_" + prov.safeName(block.get()), has(block.get()))
-                    .group("wooden_pressure_plate")
-                    .save(prov))
-            .blockstate((ctx, prov) -> prov.pressurePlateBlock(ctx.get(), prov.modLoc("block/" + texture)))
-            .item()
+                .initialProperties(block)
+                .properties(p -> p.forceSolidOn().instrument(NoteBlockInstrument.BASS).noCollission().strength(0.5F).ignitedByLava().pushReaction(PushReaction.DESTROY))
+                .tag(BlockTags.WOODEN_PRESSURE_PLATES, BlockTags.MINEABLE_WITH_AXE)
+                .recipe((ctx, prov) -> RegistrateRecipeProvider.pressurePlateBuilder(RecipeCategory.REDSTONE, ctx.get(), Ingredient.of(block.asItem()))
+                        .unlockedBy("has_" + prov.safeName(block.get()), has(block.get()))
+                        .group("wooden_pressure_plate")
+                        .save(prov))
+                .blockstate((ctx, prov) -> prov.pressurePlateBlock(ctx.get(), prov.modLoc("block/" + texture)))
+                .item()
                 .model((ctx, prov) -> prov.pressurePlate(ctx.getName(), prov.modLoc("block/" + texture)))
                 .build();
     }
@@ -1413,9 +1413,9 @@ public class TropicraftBlocks {
                 .tag(BlockTags.SAPLINGS)
                 .blockstate((ctx, prov) -> prov.simpleBlock(ctx.get(), prov.models().cross(ctx.getName(), prov.blockTexture(ctx.get()))))
                 .item()
-                    .model(TropicraftBlocks::blockSprite)
-                    .tag(ItemTags.SAPLINGS)
-                    .build();
+                .model(TropicraftBlocks::blockSprite)
+                .tag(ItemTags.SAPLINGS)
+                .build();
     }
 
     private static BlockBuilder<LeavesBlock, Registrate> leaves(String name, BlockEntry<SaplingBlock> sapling, float[] saplingRates, boolean decay) {
@@ -1424,8 +1424,8 @@ public class TropicraftBlocks {
                 .loot((loot, block) -> loot.add(block, loot.createLeavesDrops(block, sapling.get(), saplingRates)))
                 .tag(BlockTags.LEAVES, BlockTags.MINEABLE_WITH_HOE)
                 .item()
-                    .tag(ItemTags.LEAVES)
-                    .build();
+                .tag(ItemTags.LEAVES)
+                .build();
     }
 
     private static BlockBuilder<LeavesBlock, Registrate> leaves(String name, boolean decay) {
@@ -1435,12 +1435,12 @@ public class TropicraftBlocks {
                         .setRolls(ConstantValue.exactly(1))
                         .when(hasNoShearsOrSilkTouch(loot))
                         .add(loot.applyExplosionDecay(block, lootTableItem(Items.STICK)
-                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F))))
+                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F))))
                                 .when(BonusLevelTableCondition.bonusLevelFlatChance(fortune(loot), 0.02F, 0.022222223F, 0.025F, 0.033333335F, 0.1F))))))
                 .tag(BlockTags.LEAVES, BlockTags.MINEABLE_WITH_HOE)
                 .item()
-                    .tag(ItemTags.LEAVES)
-                    .build();
+                .tag(ItemTags.LEAVES)
+                .build();
     }
 
     private static BlockBuilder<LeavesBlock, Registrate> fruitLeaves(String name, Supplier<SaplingBlock> sapling, Supplier<? extends Item> fruit) {
@@ -1453,8 +1453,8 @@ public class TropicraftBlocks {
                 ))
                 .tag(BlockTags.LEAVES, BlockTags.MINEABLE_WITH_HOE)
                 .item()
-                    .tag(ItemTags.LEAVES)
-                    .build();
+                .tag(ItemTags.LEAVES)
+                .build();
     }
 
     private static BlockBuilder<RotatedPillarBlock, Registrate> log(String name, MapColor topColor, MapColor sideColor) {
@@ -1468,8 +1468,8 @@ public class TropicraftBlocks {
                 .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN, BlockTags.MINEABLE_WITH_AXE)
                 .blockstate((ctx, prov) -> prov.logBlock(ctx.get()))
                 .item()
-                    .tag(ItemTags.LOGS, ItemTags.LOGS_THAT_BURN)
-                    .build();
+                .tag(ItemTags.LOGS, ItemTags.LOGS_THAT_BURN)
+                .build();
     }
 
     private static BlockBuilder<RotatedPillarBlock, Registrate> wood(String name, MapColor color, BlockEntry<? extends RotatedPillarBlock> bark) {
@@ -1491,8 +1491,8 @@ public class TropicraftBlocks {
                         .unlockedBy("has_log", has(Blocks.ACACIA_LOG))
                         .save(prov))
                 .item()
-                    .tag(ItemTags.LOGS, ItemTags.LOGS_THAT_BURN)
-                    .build();
+                .tag(ItemTags.LOGS, ItemTags.LOGS_THAT_BURN)
+                .build();
     }
 
     private static BlockBuilder<MangroveRootsBlock, Registrate> mangroveRoots(String name) {
@@ -1561,8 +1561,8 @@ public class TropicraftBlocks {
                     }
                 })
                 .item()
-                    .model((ctx, prov) -> prov.blockItem(ctx, "_stem"))
-                    .build();
+                .model((ctx, prov) -> prov.blockItem(ctx, "_stem"))
+                .build();
     }
 
     private static BlockBuilder<MangroveLeavesBlock, Registrate> mangroveLeaves(String name, Supplier<PropaguleBlock> propagule) {
@@ -1573,12 +1573,12 @@ public class TropicraftBlocks {
                         .setRolls(ConstantValue.exactly(1))
                         .when(hasNoShearsOrSilkTouch(loot))
                         .add(loot.applyExplosionDecay(block, lootTableItem(Items.STICK)
-                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F))))
+                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F))))
                                 .when(BonusLevelTableCondition.bonusLevelFlatChance(fortune(loot), 0.02F, 0.022222223F, 0.025F, 0.033333335F, 0.1F))))))
                 .tag(BlockTags.LEAVES)
                 .item()
-                    .tag(ItemTags.LEAVES)
-                    .build();
+                .tag(ItemTags.LEAVES)
+                .build();
     }
 
     private static BlockBuilder<PropaguleBlock, Registrate> propagule(String name, TreeGrower tree, String scientificName) {
@@ -1595,9 +1595,9 @@ public class TropicraftBlocks {
                 })
                 .setData(ProviderType.LANG, (ctx, prov) -> prov.addBlockWithTooltip(ctx, scientificName))
                 .item()
-                    .model(TropicraftBlocks::blockSprite)
-                    .tag(ItemTags.SAPLINGS)
-                    .build();
+                .model(TropicraftBlocks::blockSprite)
+                .tag(ItemTags.SAPLINGS)
+                .build();
     }
 
     private static BlockBuilder<Block, Registrate> planks(String name, MapColor color, Supplier<DataIngredient> log) {
@@ -1607,8 +1607,8 @@ public class TropicraftBlocks {
                 .tag(BlockTags.PLANKS, BlockTags.MINEABLE_WITH_AXE)
                 .recipe((ctx, prov) -> prov.planks(log.get(), RecipeCategory.BUILDING_BLOCKS, ctx))
                 .item()
-                    .tag(ItemTags.PLANKS)
-                    .build();
+                .tag(ItemTags.PLANKS)
+                .build();
     }
 
     private static BlockBuilder<FenceBlock, Registrate> woodenFence(String name, BlockEntry<? extends Block> block) {
@@ -1618,9 +1618,9 @@ public class TropicraftBlocks {
                 .blockstate((ctx, prov) -> prov.fenceBlock(ctx.get(), prov.blockTexture(block.get())))
                 .recipe((ctx, prov) -> prov.fence(DataIngredient.items(block.get()), RecipeCategory.DECORATIONS, ctx, "wooden_fence"))
                 .item()
-                    .tag(ItemTags.WOODEN_FENCES)
-                    .model((ctx, prov) -> prov.fenceInventory(ctx.getName(), prov.modLoc("block/" + prov.name(block))))
-                    .build();
+                .tag(ItemTags.WOODEN_FENCES)
+                .model((ctx, prov) -> prov.fenceInventory(ctx.getName(), prov.modLoc("block/" + prov.name(block))))
+                .build();
     }
 
     private static BlockBuilder<FenceGateBlock, Registrate> fenceGate(String name, BlockEntry<? extends Block> block) {
@@ -1641,9 +1641,9 @@ public class TropicraftBlocks {
                 .blockstate((ctx, prov) -> prov.doorBlock(ctx.get(), prov.modLoc("block/" + ctx.getName() + "_bottom"), prov.modLoc("block/" + ctx.getName() + "_top")))
                 .recipe((ctx, prov) -> prov.trapDoor(DataIngredient.items(material.get()), RecipeCategory.DECORATIONS, ctx, "wooden_door"))
                 .item()
-                    .defaultModel()
-                    .tag(ItemTags.WOODEN_DOORS)
-                    .build();
+                .defaultModel()
+                .tag(ItemTags.WOODEN_DOORS)
+                .build();
     }
 
     private static BlockBuilder<TrapDoorBlock, Registrate> trapdoor(String name, BlockEntry<? extends Block> material) {
@@ -1654,9 +1654,9 @@ public class TropicraftBlocks {
                 .blockstate((ctx, prov) -> prov.trapdoorBlock(ctx.get(), prov.blockTexture(ctx.get()), true))
                 .recipe((ctx, prov) -> prov.trapDoor(DataIngredient.items(material.get()), RecipeCategory.DECORATIONS, ctx, "wooden_trapdoor"))
                 .item()
-                    .tag(ItemTags.WOODEN_TRAPDOORS)
-                    .model((ctx, prov) -> prov.blockItem(ctx, "_bottom"))
-                    .build();
+                .tag(ItemTags.WOODEN_TRAPDOORS)
+                .model((ctx, prov) -> prov.blockItem(ctx, "_bottom"))
+                .build();
     }
 
     private static BlockBuilder<BoardwalkBlock, Registrate> boardwalk(String name, BlockEntry<SlabBlock> slab, Either<Supplier<Block>, ResourceLocation> texture) {
@@ -1679,7 +1679,7 @@ public class TropicraftBlocks {
 
                     MultiPartBlockStateBuilder builder = prov.getMultipartBuilder(ctx.get());
 
-                    Direction.Axis[] horizontals = new Direction.Axis[] { Direction.Axis.X, Direction.Axis.Z };
+                    Direction.Axis[] horizontals = new Direction.Axis[]{Direction.Axis.X, Direction.Axis.Z};
                     for (Direction.Axis axis : horizontals) {
                         int rotation = axis == Direction.Axis.X ? 270 : 0;
 
@@ -1705,7 +1705,7 @@ public class TropicraftBlocks {
                     builder.part().modelFile(tallPostModel).addModel()
                             .condition(BoardwalkBlock.TYPE, BoardwalkBlock.Type.TALL_POSTS);
                 })
-                .recipe((ctx, prov) ->  ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ctx.get(), 3)
+                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ctx.get(), 3)
                         .pattern("XXX")
                         .pattern("S S")
                         .define('X', slab.get())
@@ -1714,8 +1714,8 @@ public class TropicraftBlocks {
                         .unlockedBy("has_" + prov.safeName(slab.get()), has(slab.get()))
                         .save(prov))
                 .item()
-                    .model((ctx, prov) -> prov.blockItem(ctx, "_short"))
-                    .build();
+                .model((ctx, prov) -> prov.blockItem(ctx, "_short"))
+                .build();
     }
 
     private static Properties rotatedPillarProperties(Properties properties, MapColor topColor, MapColor sideColor) {

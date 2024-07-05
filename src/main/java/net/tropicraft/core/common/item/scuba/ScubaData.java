@@ -55,7 +55,7 @@ public class ScubaData {
     );
 
     private static final Set<ServerPlayer> underwaterPlayers = Collections.newSetFromMap(new WeakHashMap<>());
-    
+
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
         Player player = event.getEntity();
@@ -89,21 +89,21 @@ public class ScubaData {
         }
     }
 
-    @SubscribeEvent 
+    @SubscribeEvent
     public static void onPlayerRespawn(PlayerRespawnEvent event) {
         updateClient(event);
     }
-    
+
     @SubscribeEvent
     public static void onPlayerLogIn(PlayerLoggedInEvent event) {
         updateClient(event);
     }
-    
+
     @SubscribeEvent
     public static void onPlayerChangeDimension(PlayerChangedDimensionEvent event) {
         updateClient(event);
     }
-    
+
     private static void updateClient(PlayerEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
             player.getData(ATTACHMENT).updateClient(player, true);
@@ -112,7 +112,7 @@ public class ScubaData {
 
     private long diveTime;
     private double maxDepth;
-    
+
     private boolean dirty;
 
     public ScubaData() {
@@ -127,7 +127,7 @@ public class ScubaData {
         BlockPos headPos = BlockPos.containing(player.getEyePosition(0));
         return player.level().getFluidState(headPos).is(FluidTags.WATER);
     }
-    
+
     public static double getDepth(Player player) {
         if (isUnderWater(player)) {
             int surface = TropicraftDimension.getSeaLevel(player.level());
@@ -136,7 +136,7 @@ public class ScubaData {
         }
         return 0;
     }
-    
+
     void tick(Player player) {
         this.diveTime++;
         if (player.level().getGameTime() % 100 == 0) {
@@ -148,7 +148,7 @@ public class ScubaData {
     public long getDiveTime() {
         return diveTime;
     }
-    
+
     void updateMaxDepth(double depth) {
         if (depth > maxDepth) {
             this.maxDepth = depth;
@@ -158,7 +158,7 @@ public class ScubaData {
     public double getMaxDepth() {
         return maxDepth;
     }
-    
+
     void updateClient(ServerPlayer target, boolean force) {
         if (dirty || force) {
             PacketDistributor.sendToPlayer(target, new ClientboundUpdateScubaDataPacket(this));

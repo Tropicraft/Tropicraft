@@ -149,7 +149,6 @@ public class IguanaModel extends HierarchicalModel<IguanaEntity> {
                         .addBox(-0.5F, -0.5F, 0F, 1, 1, 5),
                 PartPose.ZERO);
 
-
         return LayerDefinition.create(mesh, 64, 32);
     }
 

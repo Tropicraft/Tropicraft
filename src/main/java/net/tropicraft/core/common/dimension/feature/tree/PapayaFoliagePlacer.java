@@ -14,7 +14,7 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 
 public final class PapayaFoliagePlacer extends FoliagePlacer {
-    private static final Direction[] DIRECTIONS = new Direction[] { Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST };
+    private static final Direction[] DIRECTIONS = new Direction[]{Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
     public static final MapCodec<PapayaFoliagePlacer> CODEC = RecordCodecBuilder.mapCodec((instance) -> {
         return foliagePlacerParts(instance).apply(instance, PapayaFoliagePlacer::new);
     });
@@ -59,7 +59,7 @@ public final class PapayaFoliagePlacer extends FoliagePlacer {
 
     private static void set(LevelSimulatedReader world, BlockPos pos, RandomSource random, TreeConfiguration config) {
         if (TreeFeature.isAirOrLeaves(world, pos)) {
-            ((LevelSimulatedRW)world).setBlock(pos, config.foliageProvider.getState(random, pos), 19);
+            ((LevelSimulatedRW) world).setBlock(pos, config.foliageProvider.getState(random, pos), 19);
         }
     }
 
@@ -72,5 +72,4 @@ public final class PapayaFoliagePlacer extends FoliagePlacer {
     protected boolean shouldSkipLocation(RandomSource random, int dx, int y, int dz, int radius, boolean giantTrunk) {
         return radius != 0 && dx == radius && dz == radius;
     }
-
 }

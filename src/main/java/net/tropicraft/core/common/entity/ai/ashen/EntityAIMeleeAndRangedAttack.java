@@ -12,11 +12,14 @@ import net.tropicraft.core.common.item.AshenMaskItem;
 
 import java.util.EnumSet;
 
-public class EntityAIMeleeAndRangedAttack extends Goal
-{
-    /** The entity the AI instance has been applied to */
+public class EntityAIMeleeAndRangedAttack extends Goal {
+    /**
+     * The entity the AI instance has been applied to
+     */
     private final AshenEntity entityHost;
-    /** The entity (as a RangedAttackMob) the AI instance has been applied to. */
+    /**
+     * The entity (as a RangedAttackMob) the AI instance has been applied to.
+     */
     private final RangedAttackMob rangedAttackEntityHost;
     private LivingEntity attackTarget;
     /**
@@ -27,7 +30,9 @@ public class EntityAIMeleeAndRangedAttack extends Goal
     private final double entityMoveSpeed;
     private int seeTime;
     private final int maxMeleeAttackTime;
-    /** The maximum time the AI has to wait before peforming another ranged attack. */
+    /**
+     * The maximum time the AI has to wait before peforming another ranged attack.
+     */
     private final int maxRangedAttackTime;
     private final float shootCutoffRange;
     private final float shootCutoffRangeSqr;
@@ -103,7 +108,7 @@ public class EntityAIMeleeAndRangedAttack extends Goal
             seeTime = 0;
         }
 
-        if (d0 <= (double)shootCutoffRangeSqr && seeTime >= 20) {
+        if (d0 <= (double) shootCutoffRangeSqr && seeTime >= 20) {
             //this.entityHost.getNavigation().clearPathEntity();
         } else {
             //this.entityHost.getNavigation().tryMoveToEntityLiving(this.attackTarget, this.entityMoveSpeed);
@@ -130,7 +135,7 @@ public class EntityAIMeleeAndRangedAttack extends Goal
                 f1 = 1.0F;
             }
 
-            if (d0 >= (double)shootCutoffRange * (double)shootCutoffRange) {
+            if (d0 >= (double) shootCutoffRange * (double) shootCutoffRange) {
                 rangedAttackEntityHost.performRangedAttack(attackTarget, f1);
                 rangedAttackTime = maxRangedAttackTime;
             } else if (d0 <= meleeHitRange * meleeHitRange) {

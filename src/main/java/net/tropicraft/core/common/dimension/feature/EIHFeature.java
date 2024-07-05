@@ -231,13 +231,14 @@ public class EIHFeature extends Feature<NoneFeatureConfiguration> {
 
         return true;
     }
-    
+
     private void setBlock(LevelAccessor world, int i, int i1, int i2, final BlockState state) {
         world.setBlock(new BlockPos(i, i1, i2), state, 3);
     }
 
     /**
      * Place an eye on the head
+     *
      * @param x xCoord
      * @param y yCoord
      * @param z zCoord

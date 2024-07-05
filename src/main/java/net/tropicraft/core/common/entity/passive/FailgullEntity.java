@@ -40,280 +40,279 @@ import java.util.UUID;
 
 public class FailgullEntity extends Animal implements FlyingAnimal {
 
-	private boolean isFlockLeader;
-	private static final EntityDataAccessor<Optional<UUID>> FLOCK_LEADER_UUID = SynchedEntityData.defineId(FailgullEntity.class, EntityDataSerializers.OPTIONAL_UUID);
+    private boolean isFlockLeader;
+    private static final EntityDataAccessor<Optional<UUID>> FLOCK_LEADER_UUID = SynchedEntityData.defineId(FailgullEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 
-	public FailgullEntity(EntityType<? extends FailgullEntity> type, Level world) {
-		super(type, world);
-		xpReward = 1;
-		moveControl = new FlyingMoveControl(this, 5, true);
-		this.setPathfindingMalus(PathType.WATER, -1.0F);
-		this.setPathfindingMalus(PathType.COCOA, -1.0F);
-		this.setPathfindingMalus(PathType.FENCE, -1.0F);
-	}
+    public FailgullEntity(EntityType<? extends FailgullEntity> type, Level world) {
+        super(type, world);
+        xpReward = 1;
+        moveControl = new FlyingMoveControl(this, 5, true);
+        this.setPathfindingMalus(PathType.WATER, -1.0F);
+        this.setPathfindingMalus(PathType.COCOA, -1.0F);
+        this.setPathfindingMalus(PathType.FENCE, -1.0F);
+    }
 
-	public static AttributeSupplier.Builder createAttributes() {
-		return Animal.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 3.0)
-				.add(Attributes.MOVEMENT_SPEED, 0.6)
-				.add(Attributes.FLYING_SPEED, 0.9)
-				.add(Attributes.FOLLOW_RANGE, 12.0);
-	}
+    public static AttributeSupplier.Builder createAttributes() {
+        return Animal.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 3.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.6)
+                .add(Attributes.FLYING_SPEED, 0.9)
+                .add(Attributes.FOLLOW_RANGE, 12.0);
+    }
 
-	@Override
-	protected void defineSynchedData(SynchedEntityData.Builder builder) {
-		super.defineSynchedData(builder);
-		builder.define(FLOCK_LEADER_UUID, Optional.empty());
-	}
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(FLOCK_LEADER_UUID, Optional.empty());
+    }
 
-	@Override
-	public void readAdditionalSaveData(CompoundTag nbt) {
-		super.readAdditionalSaveData(nbt);
-		isFlockLeader = nbt.getBoolean("IsFlockLeader");
-		if (nbt.contains("FlockLeader")) {
-			setFlockLeader(Optional.of(nbt.getUUID("FlockLeader")));
-		} else {
-			setFlockLeader(Optional.empty());
-		}
-	}
+    @Override
+    public void readAdditionalSaveData(CompoundTag nbt) {
+        super.readAdditionalSaveData(nbt);
+        isFlockLeader = nbt.getBoolean("IsFlockLeader");
+        if (nbt.contains("FlockLeader")) {
+            setFlockLeader(Optional.of(nbt.getUUID("FlockLeader")));
+        } else {
+            setFlockLeader(Optional.empty());
+        }
+    }
 
-	@Override
-	public boolean isFood(final ItemStack stack) {
-		return false;
-	}
+    @Override
+    public boolean isFood(final ItemStack stack) {
+        return false;
+    }
 
-	@Override
-	public void addAdditionalSaveData(final CompoundTag nbt) {
-		super.addAdditionalSaveData(nbt);
-		nbt.putBoolean("IsFlockLeader", isFlockLeader);
-		entityData.get(FLOCK_LEADER_UUID).ifPresent(uuid -> nbt.putUUID("FlockLeader", uuid));
-	}
+    @Override
+    public void addAdditionalSaveData(final CompoundTag nbt) {
+        super.addAdditionalSaveData(nbt);
+        nbt.putBoolean("IsFlockLeader", isFlockLeader);
+        entityData.get(FLOCK_LEADER_UUID).ifPresent(uuid -> nbt.putUUID("FlockLeader", uuid));
+    }
 
-	@Override
-	public float getWalkTargetValue(final BlockPos pos, final LevelReader worldIn) {
-		return worldIn.getBlockState(pos).isAir() ? 10.0F : 0.0F;
-	}
+    @Override
+    public float getWalkTargetValue(final BlockPos pos, final LevelReader worldIn) {
+        return worldIn.getBlockState(pos).isAir() ? 10.0F : 0.0F;
+    }
 
-	@Override
-	public void registerGoals() {
-		goalSelector.addGoal(0, new ValidateFlockLeader(this));
-		goalSelector.addGoal(1, new SelectFlockLeader(this));
-		goalSelector.addGoal(2, new SetTravelDestination());
-		goalSelector.addGoal(2, new FollowLeaderGoal());
-	}
+    @Override
+    public void registerGoals() {
+        goalSelector.addGoal(0, new ValidateFlockLeader(this));
+        goalSelector.addGoal(1, new SelectFlockLeader(this));
+        goalSelector.addGoal(2, new SetTravelDestination());
+        goalSelector.addGoal(2, new FollowLeaderGoal());
+    }
 
-	@Override
-	protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
-	}
+    @Override
+    protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
+    }
 
-	@Override
-	protected PathNavigation createNavigation(Level worldIn) {
-		FlyingPathNavigation flyingpathnavigator = new FlyingPathNavigation(this, worldIn) {
-			@Override
-			public boolean isStableDestination(BlockPos pos) {
-				return !level.isEmptyBlock(pos.below());
-			}
-		};
-		flyingpathnavigator.setCanOpenDoors(false);
-		flyingpathnavigator.setCanFloat(false);
-		flyingpathnavigator.setCanPassDoors(true);
-		return flyingpathnavigator;
-	}
+    @Override
+    protected PathNavigation createNavigation(Level worldIn) {
+        FlyingPathNavigation flyingpathnavigator = new FlyingPathNavigation(this, worldIn) {
+            @Override
+            public boolean isStableDestination(BlockPos pos) {
+                return !level.isEmptyBlock(pos.below());
+            }
+        };
+        flyingpathnavigator.setCanOpenDoors(false);
+        flyingpathnavigator.setCanFloat(false);
+        flyingpathnavigator.setCanPassDoors(true);
+        return flyingpathnavigator;
+    }
 
-	private void poop() {
-		if (!level().isClientSide && level().random.nextInt(20) == 0) {
-			Snowball s = new Snowball(level(), getX(), getY(), getZ());
-			s.shoot(0, 0, 0, 0, 0);
+    private void poop() {
+        if (!level().isClientSide && level().random.nextInt(20) == 0) {
+            Snowball s = new Snowball(level(), getX(), getY(), getZ());
+            s.shoot(0, 0, 0, 0, 0);
             level().addFreshEntity(s);
-		}
-	}
+        }
+    }
 
-	@Override
-	protected SoundEvent getHurtSound(DamageSource damageSource) {
-		return null;
-	}
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSource) {
+        return null;
+    }
 
-	@Override
-	protected SoundEvent getDeathSound() {
-		return null;
-	}
+    @Override
+    protected SoundEvent getDeathSound() {
+        return null;
+    }
 
-	@Override
-	protected float getSoundVolume() {
-		return 0.4F;
-	}
+    @Override
+    protected float getSoundVolume() {
+        return 0.4F;
+    }
 
-	@Nullable
-	@Override
-	public AgeableMob getBreedOffspring(ServerLevel world, AgeableMob partner) {
-		return null;
-	}
+    @Nullable
+    @Override
+    public AgeableMob getBreedOffspring(ServerLevel world, AgeableMob partner) {
+        return null;
+    }
 
-	private void setIsFlockLeader(final boolean isFlockLeader) {
-		this.isFlockLeader = isFlockLeader;
-	}
+    private void setIsFlockLeader(final boolean isFlockLeader) {
+        this.isFlockLeader = isFlockLeader;
+    }
 
-	private void setFlockLeader(final Optional<UUID> flockLeaderUUID) {
-		entityData.set(FLOCK_LEADER_UUID, flockLeaderUUID);
-	}
+    private void setFlockLeader(final Optional<UUID> flockLeaderUUID) {
+        entityData.set(FLOCK_LEADER_UUID, flockLeaderUUID);
+    }
 
-	private boolean getIsFlockLeader() {
-		return isFlockLeader;
-	}
+    private boolean getIsFlockLeader() {
+        return isFlockLeader;
+    }
 
-	private boolean hasFlockLeader() {
-		return entityData.get(FLOCK_LEADER_UUID).isPresent();
-	}
+    private boolean hasFlockLeader() {
+        return entityData.get(FLOCK_LEADER_UUID).isPresent();
+    }
 
-	@Nullable
-	private Entity getFlockLeader() {
-		if (level() instanceof ServerLevel && hasFlockLeader()) {
-			return ((ServerLevel) level()).getEntity(entityData.get(FLOCK_LEADER_UUID).get());
-		}
+    @Nullable
+    private Entity getFlockLeader() {
+        if (level() instanceof ServerLevel && hasFlockLeader()) {
+            return ((ServerLevel) level()).getEntity(entityData.get(FLOCK_LEADER_UUID).get());
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	@Nullable
-	private BlockPos getRandomLocation() {
-		final RandomSource random = getRandom();
-		for (int i = 0; i < 20; i++) {
-			final BlockPos pos = BlockPos.containing(
-					getX() + (random.nextFloat() * 2.0F - 1.0F) * 48,
-					getY() + (random.nextFloat() * 2.0F - 1.0F) * 3,
-					getZ() + (random.nextFloat() * 2.0F - 1.0F) * 48
-			);
-			if (level().isEmptyBlock(pos)) {
-				return pos;
-			}
-		}
+    @Nullable
+    private BlockPos getRandomLocation() {
+        final RandomSource random = getRandom();
+        for (int i = 0; i < 20; i++) {
+            final BlockPos pos = BlockPos.containing(
+                    getX() + (random.nextFloat() * 2.0F - 1.0F) * 48,
+                    getY() + (random.nextFloat() * 2.0F - 1.0F) * 3,
+                    getZ() + (random.nextFloat() * 2.0F - 1.0F) * 48
+            );
+            if (level().isEmptyBlock(pos)) {
+                return pos;
+            }
+        }
 
-		Vec3 direction = getViewVector(0.0F);
-		final float maxAngle = ((float) Math.PI / 2F);
+        Vec3 direction = getViewVector(0.0F);
+        final float maxAngle = ((float) Math.PI / 2F);
 
-		Vec3 target = HoverRandomPos.getPos(FailgullEntity.this, 40, 3, direction.x, direction.z, maxAngle, 2, 1);
-		final Vec3 groundPos = AirAndWaterRandomPos.getPos(FailgullEntity.this, 40, 4, -2, direction.x, direction.z, maxAngle);
-		return target != null ? BlockPos.containing(target) : groundPos != null ? BlockPos.containing(groundPos) : null;
-	}
+        Vec3 target = HoverRandomPos.getPos(FailgullEntity.this, 40, 3, direction.x, direction.z, maxAngle, 2, 1);
+        final Vec3 groundPos = AirAndWaterRandomPos.getPos(FailgullEntity.this, 40, 4, -2, direction.x, direction.z, maxAngle);
+        return target != null ? BlockPos.containing(target) : groundPos != null ? BlockPos.containing(groundPos) : null;
+    }
 
-	@Override
-	public boolean isFlying() {
-		return !this.onGround();
-	}
+    @Override
+    public boolean isFlying() {
+        return !this.onGround();
+    }
 
-	class FollowLeaderGoal extends Goal {
-		FollowLeaderGoal() {
-			this.setFlags(EnumSet.of(Goal.Flag.MOVE, Flag.LOOK));
-		}
+    class FollowLeaderGoal extends Goal {
+        FollowLeaderGoal() {
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Flag.LOOK));
+        }
 
-		private boolean canFollow() {
-			return !getIsFlockLeader() && hasFlockLeader();
-		}
+        private boolean canFollow() {
+            return !getIsFlockLeader() && hasFlockLeader();
+        }
 
-		@Override
-		public boolean canUse() {
-			return canFollow() && getNavigation().isDone() && FailgullEntity.this.random.nextInt(10) == 0;
-		}
+        @Override
+        public boolean canUse() {
+            return canFollow() && getNavigation().isDone() && FailgullEntity.this.random.nextInt(10) == 0;
+        }
 
-		@Override
-		public boolean canContinueToUse() {
-			return canFollow() && getNavigation().isInProgress();
-		}
+        @Override
+        public boolean canContinueToUse() {
+            return canFollow() && getNavigation().isInProgress();
+        }
 
-		@Override
-		public void start() {
-			final Entity flockLeader = getFlockLeader();
-			final PathNavigation navigator = getNavigation();
-			if (flockLeader != null && flockLeader.getType() == TropicraftEntities.FAILGULL.get()) {
-				navigator.moveTo(navigator.createPath(flockLeader.blockPosition(), 1), 1.0D);
-				return;
-			}
-			BlockPos Vector3d = getRandomLocation();
-			if (Vector3d != null) {
-				navigator.moveTo(navigator.createPath(Vector3d, 1), 1.0D);
-			}
+        @Override
+        public void start() {
+            final Entity flockLeader = getFlockLeader();
+            final PathNavigation navigator = getNavigation();
+            if (flockLeader != null && flockLeader.getType() == TropicraftEntities.FAILGULL.get()) {
+                navigator.moveTo(navigator.createPath(flockLeader.blockPosition(), 1), 1.0D);
+                return;
+            }
+            BlockPos Vector3d = getRandomLocation();
+            if (Vector3d != null) {
+                navigator.moveTo(navigator.createPath(Vector3d, 1), 1.0D);
+            }
+        }
+    }
 
-		}
-	}
+    class SetTravelDestination extends Goal {
+        SetTravelDestination() {
+            setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+        }
 
-	class SetTravelDestination extends Goal {
-		SetTravelDestination() {
-			setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
-		}
+        private boolean shouldLead() {
+            return getIsFlockLeader() || !hasFlockLeader();
+        }
 
-		private boolean shouldLead() {
-			return getIsFlockLeader() || !hasFlockLeader();
-		}
+        @Override
+        public boolean canUse() {
+            return shouldLead() && getNavigation().isDone() && getRandom().nextInt(10) == 0;
+        }
 
-		@Override
-		public boolean canUse() {
-			return shouldLead() && getNavigation().isDone() && getRandom().nextInt(10) == 0;
-		}
+        @Override
+        public boolean canContinueToUse() {
+            return shouldLead() && getNavigation().isInProgress();
+        }
 
-		@Override
-		public boolean canContinueToUse() {
-			return shouldLead() && getNavigation().isInProgress();
-		}
+        @Override
+        public void start() {
+            BlockPos Vector3d = getRandomLocation();
+            if (Vector3d != null) {
+                final PathNavigation navigator = getNavigation();
+                navigator.moveTo(navigator.createPath(Vector3d, 1), 1.0D);
+            }
+        }
+    }
 
-		@Override
-		public void start() {
-			BlockPos Vector3d = getRandomLocation();
-			if (Vector3d != null) {
-				final PathNavigation navigator = getNavigation();
-				navigator.moveTo(navigator.createPath(Vector3d, 1), 1.0D);
-			}
-		}
-	}
+    private static class ValidateFlockLeader extends Goal {
+        final FailgullEntity mob;
 
-	private static class ValidateFlockLeader extends Goal {
-		final FailgullEntity mob;
+        public ValidateFlockLeader(FailgullEntity failgullEntity) {
+            mob = failgullEntity;
+        }
 
-		public ValidateFlockLeader(FailgullEntity failgullEntity) {
-			mob = failgullEntity;
-		}
+        @Override
+        public boolean canUse() {
+            if (mob.getIsFlockLeader()) {
+                return false;
+            }
 
-		@Override
-		public boolean canUse() {
-			if (mob.getIsFlockLeader()) {
-				return false;
-			}
+            final Entity flockLeader = mob.getFlockLeader();
+            return flockLeader == null || !flockLeader.isAlive();
+        }
 
-			final Entity flockLeader = mob.getFlockLeader();
-			return flockLeader == null || !flockLeader.isAlive();
-		}
+        @Override
+        public void start() {
+            mob.setFlockLeader(Optional.empty());
+        }
+    }
 
-		@Override
-		public void start() {
-			mob.setFlockLeader(Optional.empty());
-		}
-	}
+    private static class SelectFlockLeader extends Goal {
+        final FailgullEntity mob;
 
-	private static class SelectFlockLeader extends Goal {
-		final FailgullEntity mob;
+        public SelectFlockLeader(FailgullEntity failgullEntity) {
+            mob = failgullEntity;
+        }
 
-		public SelectFlockLeader(FailgullEntity failgullEntity) {
-			mob = failgullEntity;
-		}
+        @Override
+        public boolean canUse() {
+            return !mob.hasFlockLeader();
+        }
 
-		@Override
-		public boolean canUse() {
-			return !mob.hasFlockLeader();
-		}
+        @Override
+        public void start() {
+            List<FailgullEntity> list = mob.level().getEntitiesOfClass(FailgullEntity.class, mob.getBoundingBox().inflate(10D, 10D, 10D));
+            list.remove(mob);
 
-		@Override
-		public void start() {
-			List<FailgullEntity> list = mob.level().getEntitiesOfClass(FailgullEntity.class, mob.getBoundingBox().inflate(10D, 10D, 10D));
-			list.remove(mob);
-
-			final Optional<FailgullEntity> oldest = list.stream().min(Comparator.comparingInt(FailgullEntity::getId));
-			// Found an older one nearby, set it as the flock leader
-			if (oldest.isPresent() && !oldest.get().uuid.equals(mob.getUUID())) {
-				final FailgullEntity oldestFailgull = oldest.get();
-				oldestFailgull.setIsFlockLeader(true);
-				oldestFailgull.setFlockLeader(Optional.empty());
-				mob.setIsFlockLeader(false);
-				mob.setFlockLeader(Optional.of(oldestFailgull.getUUID()));
-			}
-		}
-	}
+            final Optional<FailgullEntity> oldest = list.stream().min(Comparator.comparingInt(FailgullEntity::getId));
+            // Found an older one nearby, set it as the flock leader
+            if (oldest.isPresent() && !oldest.get().uuid.equals(mob.getUUID())) {
+                final FailgullEntity oldestFailgull = oldest.get();
+                oldestFailgull.setIsFlockLeader(true);
+                oldestFailgull.setFlockLeader(Optional.empty());
+                mob.setIsFlockLeader(false);
+                mob.setFlockLeader(Optional.of(oldestFailgull.getUUID()));
+            }
+        }
+    }
 }

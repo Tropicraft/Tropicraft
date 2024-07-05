@@ -22,11 +22,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-public class EntityAIPartyTime extends Goal
-{
+public class EntityAIPartyTime extends Goal {
     private EntityKoaBase entityObj;
 
-    private int walkingTimeoutMax = 20*10;
+    private int walkingTimeoutMax = 20 * 10;
 
     private int walkingTimeout;
     private int repathPentalty = 0;
@@ -40,8 +39,7 @@ public class EntityAIPartyTime extends Goal
     private boolean wasClose = false;
     private boolean bangDrum = false;
 
-    public EntityAIPartyTime(EntityKoaBase entityObjIn)
-    {
+    public EntityAIPartyTime(EntityKoaBase entityObjIn) {
         this.entityObj = entityObjIn;
         this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
@@ -50,8 +48,7 @@ public class EntityAIPartyTime extends Goal
      * Returns whether the EntityAIBase should begin execution.
      */
     @Override
-    public boolean canUse()
-    {
+    public boolean canUse() {
 
         if ((!entityObj.getWantsToParty() && this.entityObj.druggedTime <= 0) || entityObj.listPosDrums.size() == 0) {
             return false;
@@ -69,9 +66,7 @@ public class EntityAIPartyTime extends Goal
             } else {
                 return false;
             }
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
@@ -80,14 +75,11 @@ public class EntityAIPartyTime extends Goal
      * Returns whether an in-progress EntityAIBase should continue executing
      */
     @Override
-    public boolean canContinueToUse()
-    {
+    public boolean canContinueToUse() {
         BlockPos blockpos = this.entityObj.blockPosition();
         //return !this.entityObj.getNavigation().noPath();
-        if ((this.entityObj.druggedTime > 0 || !this.entityObj.level().isDay() || this.entityObj.level().isRaining() && this.entityObj.level().getBiome(blockpos).value().getPrecipitationAt(blockpos) != Biome.Precipitation.RAIN))
-        {
+        if ((this.entityObj.druggedTime > 0 || !this.entityObj.level().isDay() || this.entityObj.level().isRaining() && this.entityObj.level().getBiome(blockpos).value().getPrecipitationAt(blockpos) != Biome.Precipitation.RAIN)) {
             return !isTooClose();
-
         } else {
             return entityObj.level().random.nextInt(60) != 0;
         }
@@ -104,12 +96,12 @@ public class EntityAIPartyTime extends Goal
             blockposGoal = entityObj.listPosDrums.get(assignedDrumIndex);
         }
 
-        if (entityObj.level().getGameTime() % 200 == 0){
+        if (entityObj.level().getGameTime() % 200 == 0) {
             if (this.entityObj.listPosDrums.size() > 0) {
                 assignedDrumIndex = entityObj.level().random.nextInt(entityObj.listPosDrums.size());
             }
             //if (wasClose) {
-                bangDrum = entityObj.level().random.nextBoolean();
+            bangDrum = entityObj.level().random.nextBoolean();
             //}
         }
 
@@ -158,7 +150,7 @@ public class EntityAIPartyTime extends Goal
                     int phases = 4;
                     int phaseSplit = (nightEnd - nightStart) / phases;
 
-                    int timeOfDay = (int)(entityObj.level().getDayTime() % 24000);
+                    int timeOfDay = (int) (entityObj.level().getDayTime() % 24000);
                     int nightTime = (timeOfDay - nightStart);
 
                     if (nightTime > phaseSplit * 3) {
@@ -225,19 +217,15 @@ public class EntityAIPartyTime extends Goal
                                                 new GameProfile(UUID.fromString("e517cf6a-ce31-4ac8-b48d-44b4f0f918a7"), "tropicraftKoa")));
                             }
                             entityObj.swing(InteractionHand.MAIN_HAND);
-
                         }
                     }
 
                     entityObj.syncBPM();
-
                 }
 
                 this.entityObj.getLookControl().setLookAt(blockposGoal.getX() + randXPos, blockposGoal.getY() + randYPos + 1D, blockposGoal.getZ() + randZPos,
                         8F, 8F);
             }
-
-
         } else {
             wasClose = false;
             entityObj.setSitting(false);
@@ -254,7 +242,7 @@ public class EntityAIPartyTime extends Goal
                 boolean success = false;
 
                 if (this.entityObj.distanceToSqr(Vec3.atCenterOf(blockposGoal)) > 256.0) {
-                    Vec3 Vector3d = DefaultRandomPos.getPosTowards(this.entityObj, 14, 3, new Vec3((double) i + 0.5D, (double) j, (double) k + 0.5D), (float)Math.PI / 2F);
+                    Vec3 Vector3d = DefaultRandomPos.getPosTowards(this.entityObj, 14, 3, new Vec3((double) i + 0.5D, (double) j, (double) k + 0.5D), (float) Math.PI / 2F);
 
                     if (Vector3d != null) {
                         success = this.entityObj.getNavigation().moveTo(Vector3d.x, Vector3d.y, Vector3d.z, 1.0D);
@@ -293,8 +281,7 @@ public class EntityAIPartyTime extends Goal
      * Execute a one shot task or start executing a continuous task
      */
     @Override
-    public void start()
-    {
+    public void start() {
         super.start();
         //this.insidePosX = -1;
         //reset any previous path so tick can start with a fresh path
@@ -309,8 +296,7 @@ public class EntityAIPartyTime extends Goal
      * Resets the task
      */
     @Override
-    public void stop()
-    {
+    public void stop() {
         super.stop();
         entityObj.setSitting(false);
         walkingTimeout = 0;

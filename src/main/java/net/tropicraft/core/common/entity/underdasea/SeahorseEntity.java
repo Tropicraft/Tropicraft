@@ -13,39 +13,39 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class SeahorseEntity extends AbstractTexturedFishEntity {
-	private final static String[] SEAHORSE_TEXTURE_NAMES = new String[] {"razz", "blue", "cyan", "yellow", "green", "orange"};
+    private final static String[] SEAHORSE_TEXTURE_NAMES = new String[]{"razz", "blue", "cyan", "yellow", "green", "orange"};
 
-	public SeahorseEntity(EntityType<? extends SeahorseEntity> type, Level world) {
-		super(type, world);
-	}
+    public SeahorseEntity(EntityType<? extends SeahorseEntity> type, Level world) {
+        super(type, world);
+    }
 
-	public static AttributeSupplier.Builder createAttributes() {
-		return AbstractFish.createAttributes()
-				.add(Attributes.MAX_HEALTH, 4.0);
-	}
+    public static AttributeSupplier.Builder createAttributes() {
+        return AbstractFish.createAttributes()
+                .add(Attributes.MAX_HEALTH, 4.0);
+    }
 
-	@Override
-	protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-		return InteractionResult.PASS;
-	}
+    @Override
+    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
+        return InteractionResult.PASS;
+    }
 
-	@Override
-	String getRandomTexture() {
-		return SEAHORSE_TEXTURE_NAMES[random.nextInt(SEAHORSE_TEXTURE_NAMES.length)];
-	}
+    @Override
+    String getRandomTexture() {
+        return SEAHORSE_TEXTURE_NAMES[random.nextInt(SEAHORSE_TEXTURE_NAMES.length)];
+    }
 
-	@Override
-	String getDefaultTexture() {
-		return SEAHORSE_TEXTURE_NAMES[0];
-	}
+    @Override
+    String getDefaultTexture() {
+        return SEAHORSE_TEXTURE_NAMES[0];
+    }
 
-	@Override
-	public ItemStack getBucketItemStack() {
-		return ItemStack.EMPTY;
-	}
+    @Override
+    public ItemStack getBucketItemStack() {
+        return ItemStack.EMPTY;
+    }
 
-	@Override
-	protected SoundEvent getFlopSound() {
-		return SoundEvents.SALMON_FLOP;
-	}
+    @Override
+    protected SoundEvent getFlopSound() {
+        return SoundEvents.SALMON_FLOP;
+    }
 }

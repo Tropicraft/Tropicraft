@@ -29,7 +29,7 @@ public class KoaModel extends HumanoidModel<EntityKoaBase> {
     private final ModelPart leaf10;
     private final ModelPart armbandL;
 
-    public KoaModel(ModelPart root){
+    public KoaModel(ModelPart root) {
         super(root);
         headband = this.head.getChild("headband");
         armbandR = this.rightArm.getChild("armbandR");
@@ -82,7 +82,6 @@ public class KoaModel extends HumanoidModel<EntityKoaBase> {
                         .addBox(-7.5F, -2F, -2.5F, 5, 1, 5),
                 PartPose.offset(6F, 3F, 0F));
 
-
         modelPartHeadBand.addOrReplaceChild("leaf1",
                 leafModelBuilder(),
                 PartPose.offset(2F, -6F, -6F));
@@ -114,10 +113,10 @@ public class KoaModel extends HumanoidModel<EntityKoaBase> {
                 leafModelBuilder(),
                 PartPose.offset(2F, -6F, 5F));
 
-        return LayerDefinition.create(mesh, 64,32);
+        return LayerDefinition.create(mesh, 64, 32);
     }
 
-    public static CubeListBuilder leafModelBuilder(){
+    public static CubeListBuilder leafModelBuilder() {
         return CubeListBuilder.create()
                 .texOffs(0, 0)
                 .mirror()

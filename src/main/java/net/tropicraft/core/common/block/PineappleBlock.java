@@ -22,7 +22,9 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 public class PineappleBlock extends TallFlowerBlock implements BonemealableBlock {
 
-    /** Number of total random ticks it takes for this pineapple to grow */
+    /**
+     * Number of total random ticks it takes for this pineapple to grow
+     */
     public static final int TOTAL_GROW_TICKS = 7;
 
     public static final IntegerProperty STAGE = BlockStateProperties.AGE_7;
@@ -90,7 +92,7 @@ public class PineappleBlock extends TallFlowerBlock implements BonemealableBlock
             }
         }
     }
-    
+
     @Override
     public BlockState playerWillDestroy(Level worldIn, BlockPos pos, BlockState state, Player player) {
         if (state.getValue(HALF) == DoubleBlockHalf.LOWER) {
@@ -101,7 +103,7 @@ public class PineappleBlock extends TallFlowerBlock implements BonemealableBlock
             return state;
         }
     }
-    
+
     @Override
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
         if (canSurvive(stateIn, worldIn, currentPos)) {
@@ -109,7 +111,7 @@ public class PineappleBlock extends TallFlowerBlock implements BonemealableBlock
         }
         return Blocks.AIR.defaultBlockState();
     }
-    
+
     @Override
     public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
         if (state.getValue(HALF) == DoubleBlockHalf.UPPER) {

@@ -32,7 +32,9 @@ import java.util.UUID;
 
 public class IguanaEntity extends TropicraftCreatureEntity {
 
-    /** Timer for how much longer the iggy will be enraged */
+    /**
+     * Timer for how much longer the iggy will be enraged
+     */
     private int angerLevel;
     private UUID angerTargetUUID;
 
@@ -77,7 +79,7 @@ public class IguanaEntity extends TropicraftCreatureEntity {
     @Override
     public void addAdditionalSaveData(final CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        compound.putShort("Anger", (short)angerLevel);
+        compound.putShort("Anger", (short) angerLevel);
 
         if (angerTargetUUID != null) {
             compound.putString("HurtBy", angerTargetUUID.toString());
@@ -134,7 +136,7 @@ public class IguanaEntity extends TropicraftCreatureEntity {
             return false;
         } else {
             Entity sourceEntity = damageSource.getEntity();
-            if (sourceEntity instanceof Player && !((Player)sourceEntity).isCreative() && hasLineOfSight(sourceEntity)) {
+            if (sourceEntity instanceof Player && !((Player) sourceEntity).isCreative() && hasLineOfSight(sourceEntity)) {
                 becomeAngryAt(sourceEntity);
             }
 
@@ -145,7 +147,7 @@ public class IguanaEntity extends TropicraftCreatureEntity {
     private boolean becomeAngryAt(Entity target) {
         angerLevel = 400 + random.nextInt(400);
         if (target instanceof LivingEntity) {
-            setLastHurtByMob((LivingEntity)target);
+            setLastHurtByMob((LivingEntity) target);
         }
 
         return true;
@@ -177,7 +179,7 @@ public class IguanaEntity extends TropicraftCreatureEntity {
 
         @Override
         public boolean canUse() {
-            return ((IguanaEntity)this.mob).isAngry() && super.canUse();
+            return ((IguanaEntity) this.mob).isAngry() && super.canUse();
         }
     }
 
@@ -189,10 +191,9 @@ public class IguanaEntity extends TropicraftCreatureEntity {
 
         @Override
         protected void alertOther(Mob mob, LivingEntity target) {
-            if (mob instanceof IguanaEntity && this.mob.hasLineOfSight(target) && ((IguanaEntity)mob).becomeAngryAt(target)) {
+            if (mob instanceof IguanaEntity && this.mob.hasLineOfSight(target) && ((IguanaEntity) mob).becomeAngryAt(target)) {
                 mob.setTarget(target);
             }
-
         }
     }
 }

@@ -24,7 +24,7 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
     public FurnitureRenderer(final EntityRendererProvider.Context context, String textureName, EntityModel<T> model) {
         this(context, textureName, model, 1);
     }
-    
+
     public FurnitureRenderer(final EntityRendererProvider.Context context, String textureName, EntityModel<T> model, float scale) {
         super(context);
         this.textureName = textureName;
@@ -41,7 +41,8 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
         stack.scale(scale, scale, scale);
         setupTransforms(stack);
 
-        final float rockingAngle = getRockingAngle(furniture, partialTicks);;
+        final float rockingAngle = getRockingAngle(furniture, partialTicks);
+        ;
         if (!Mth.equal(rockingAngle, 0.0F)) {
             stack.mulPose(getRockingAxis().rotationDegrees(rockingAngle));
         }
@@ -60,15 +61,15 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
         super.render(furniture, entityYaw, partialTicks, stack, buffer, packedLightIn);
         stack.popPose();
     }
-    
+
     protected double getYOffset() {
         return 0.3125;
     }
-    
+
     protected void setupTransforms(PoseStack stack) {
 
     }
-    
+
     protected float getRockingAngle(T entity, float partialTicks) {
         float f2 = entity.getTimeSinceHit() - partialTicks;
         float f3 = entity.getDamage() - partialTicks;

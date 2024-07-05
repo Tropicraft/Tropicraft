@@ -23,19 +23,19 @@ public class EggModel extends ListModel<EggEntity> {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
         root.addOrReplaceChild("body", CubeListBuilder.create().mirror(true)
-                .texOffs(0,16)
+                .texOffs(0, 16)
                 .addBox(-3F, -10F, -3F, 6, 10, 6)
-                .texOffs(0,0)
+                .texOffs(0, 0)
                 .addBox(-1.5F, -11F, -1.5F, 3, 1, 3)
-                .texOffs(0,7)
+                .texOffs(0, 7)
                 .addBox(3F, -7F, -1.5F, 1, 6, 3)
-                .texOffs(24,9)
+                .texOffs(24, 9)
                 .addBox(-1.5F, -7F, 3F, 3, 6, 1)
-                .texOffs(16,7)
+                .texOffs(16, 7)
                 .addBox(-4F, -7F, -1.5F, 1, 6, 3)
-                .texOffs(8,9)
-                .addBox(-1.5F, -7F, -4F, 3, 6, 1), PartPose.offset(0F,24F,0F));
-        return LayerDefinition.create(mesh,64,32);
+                .texOffs(8, 9)
+                .addBox(-1.5F, -7F, -4F, 3, 6, 1), PartPose.offset(0F, 24F, 0F));
+        return LayerDefinition.create(mesh, 64, 32);
     }
 
     @Override

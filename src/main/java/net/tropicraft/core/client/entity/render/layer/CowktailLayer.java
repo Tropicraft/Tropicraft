@@ -13,40 +13,40 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.tropicraft.core.common.entity.passive.CowktailEntity;
 
 public class CowktailLayer<T extends CowktailEntity> extends RenderLayer<T, CowModel<T>> {
-   public CowktailLayer(RenderLayerParent<T, CowModel<T>> rendererIn) {
-      super(rendererIn);
-   }
+    public CowktailLayer(RenderLayerParent<T, CowModel<T>> rendererIn) {
+        super(rendererIn);
+    }
 
-   @Override
-   public void render(PoseStack stack, MultiBufferSource bufferIn, int packedLightIn, T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-      if (!entitylivingbaseIn.isBaby() && !entitylivingbaseIn.isInvisible()) {
-         BlockRenderDispatcher renderer = Minecraft.getInstance().getBlockRenderer();
-         BlockState blockState = entitylivingbaseIn.getCowktailType().getRenderState();
-         int overlayCoords = LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F);
-         stack.pushPose();
-         stack.translate(0.2F, -0.35F, 0.5D);
-         stack.mulPose(Axis.YP.rotationDegrees(-48.0F));
-         stack.scale(-1.0F, -1.0F, 1.0F);
-         stack.translate(-0.5D, -0.5D, -0.5D);
-         renderer.renderSingleBlock(blockState, stack, bufferIn, packedLightIn, overlayCoords);
-         stack.popPose();
-         stack.pushPose();
-         stack.translate(0.2F, -0.35F, 0.5D);
-         stack.mulPose(Axis.YP.rotationDegrees(42.0F));
-         stack.translate(0.1F, 0.0D, -0.6F);
-         stack.mulPose(Axis.YP.rotationDegrees(-48.0F));
-         stack.scale(-1.0F, -1.0F, 1.0F);
-         stack.translate(-0.5D, -0.5D, -0.5D);
-         renderer.renderSingleBlock(blockState, stack, bufferIn, packedLightIn, overlayCoords);
-         stack.popPose();
-         stack.pushPose();
-         this.getParentModel().getHead().translateAndRotate(stack);
-         stack.translate(0.0D, -0.7F, -0.2F);
-         stack.mulPose(Axis.YP.rotationDegrees(-78.0F));
-         stack.scale(-1.0F, -1.0F, 1.0F);
-         stack.translate(-0.5D, -0.5D, -0.5D);
-         renderer.renderSingleBlock(blockState, stack, bufferIn, packedLightIn, overlayCoords);
-         stack.popPose();
-      }
-   }
+    @Override
+    public void render(PoseStack stack, MultiBufferSource bufferIn, int packedLightIn, T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        if (!entitylivingbaseIn.isBaby() && !entitylivingbaseIn.isInvisible()) {
+            BlockRenderDispatcher renderer = Minecraft.getInstance().getBlockRenderer();
+            BlockState blockState = entitylivingbaseIn.getCowktailType().getRenderState();
+            int overlayCoords = LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F);
+            stack.pushPose();
+            stack.translate(0.2F, -0.35F, 0.5D);
+            stack.mulPose(Axis.YP.rotationDegrees(-48.0F));
+            stack.scale(-1.0F, -1.0F, 1.0F);
+            stack.translate(-0.5D, -0.5D, -0.5D);
+            renderer.renderSingleBlock(blockState, stack, bufferIn, packedLightIn, overlayCoords);
+            stack.popPose();
+            stack.pushPose();
+            stack.translate(0.2F, -0.35F, 0.5D);
+            stack.mulPose(Axis.YP.rotationDegrees(42.0F));
+            stack.translate(0.1F, 0.0D, -0.6F);
+            stack.mulPose(Axis.YP.rotationDegrees(-48.0F));
+            stack.scale(-1.0F, -1.0F, 1.0F);
+            stack.translate(-0.5D, -0.5D, -0.5D);
+            renderer.renderSingleBlock(blockState, stack, bufferIn, packedLightIn, overlayCoords);
+            stack.popPose();
+            stack.pushPose();
+            this.getParentModel().getHead().translateAndRotate(stack);
+            stack.translate(0.0D, -0.7F, -0.2F);
+            stack.mulPose(Axis.YP.rotationDegrees(-78.0F));
+            stack.scale(-1.0F, -1.0F, 1.0F);
+            stack.translate(-0.5D, -0.5D, -0.5D);
+            renderer.renderSingleBlock(blockState, stack, bufferIn, packedLightIn, overlayCoords);
+            stack.popPose();
+        }
+    }
 }

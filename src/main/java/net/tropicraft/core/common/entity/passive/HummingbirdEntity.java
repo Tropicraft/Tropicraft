@@ -44,7 +44,7 @@ import javax.annotation.Nullable;
 import java.util.EnumSet;
 
 public class HummingbirdEntity extends Animal implements FlyingAnimal {
-    private static final Direction[] HORIZONTALS = new Direction[] { Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST };
+    private static final Direction[] HORIZONTALS = new Direction[]{Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
 
     private static final int POLLINATE_THRESHOLD = 5;
 

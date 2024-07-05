@@ -19,18 +19,18 @@ public class AIAshenShootDart extends Goal {
     private boolean strafingBackwards;
     private int strafingTime = -1;
     private float moveSpeedAmplifier;
-    
+
     public AIAshenShootDart(AshenEntity entity) {
         this.entity = entity;
         attackCooldown = 60;
         maxAttackDistance = 15 * 15;
         moveSpeedAmplifier = 1.0F;
     }
-    
+
     public void setAttackCooldown(int attackCooldown) {
         this.attackCooldown = attackCooldown;
     }
-    
+
     /**
      * Returns whether the EntityAIBase should begin execution.
      */
@@ -63,7 +63,7 @@ public class AIAshenShootDart extends Goal {
         attackTime = -1;
         entity.stopUsingItem();
     }
-    
+
     @Override
     public void tick() {
         LivingEntity target = entity.getTarget();
@@ -88,7 +88,7 @@ public class AIAshenShootDart extends Goal {
                 --seeTime;
             }
 
-            if (d0 <= (double)maxAttackDistance && seeTime >= 20) {
+            if (d0 <= (double) maxAttackDistance && seeTime >= 20) {
                 entity.getNavigation().stop();
                 ++strafingTime;
             } else {
@@ -138,5 +138,4 @@ public class AIAshenShootDart extends Goal {
             }
         }
     }
-
 }

@@ -30,9 +30,9 @@ public class WaterWandItem extends Item {
             for (double lat = 0; lat < 2 * Math.PI; lat += inc) {
                 for (double lng = 0; lng < 2 * Math.PI; lng += inc) {
                     for (double len = 1; len < 3; len += 0.5D) {
-                        int x1 = (int)(Math.cos(lat) * len);
-                        int z1 = (int)(Math.sin(lat) * len);
-                        int y1 = (int)(Math.sin(lng) * len);
+                        int x1 = (int) (Math.cos(lat) * len);
+                        int z1 = (int) (Math.sin(lat) * len);
+                        int y1 = (int) (Math.sin(lng) * len);
                         if (!removeWater(world, itemstack, player, new BlockPos(player.blockPosition().offset(x1, y1, z1)), slot)) {
                             break;
                         }

@@ -21,8 +21,8 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 
 public class StructureSupportsProcessor extends CheatyStructureProcessor {
     public static final MapCodec<StructureSupportsProcessor> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
-        Codec.BOOL.optionalFieldOf("can_replace_land", false).forGetter(p -> p.canReplaceLand),
-        RegistryCodecs.homogeneousList(Registries.BLOCK).fieldOf("blocks_to_extend").forGetter(p -> p.blocksToExtend)
+            Codec.BOOL.optionalFieldOf("can_replace_land", false).forGetter(p -> p.canReplaceLand),
+            RegistryCodecs.homogeneousList(Registries.BLOCK).fieldOf("blocks_to_extend").forGetter(p -> p.blocksToExtend)
     ).apply(i, StructureSupportsProcessor::new));
 
     private final boolean canReplaceLand;

@@ -46,12 +46,12 @@ public class MarlinModel extends HierarchicalModel<MarlinEntity> {
         PartDefinition root = mesh.getRoot();
 
         root.addOrReplaceChild("body",
-                CubeListBuilder.create().texOffs(0,22).mirror()
+                CubeListBuilder.create().texOffs(0, 22).mirror()
                         .addBox(-5F, -3F, -2F, 7, 6, 4),
                 PartPose.offsetAndRotation(0F, 19F, 0F, 0F, -1.570796F, 0F));
 
         root.addOrReplaceChild("dorsalFin1",
-                CubeListBuilder.create().texOffs(24,20).mirror()
+                CubeListBuilder.create().texOffs(24, 20).mirror()
                         .addBox(-0.5F, -0.5F, -0.5F, 1, 2, 10),
                 PartPose.offset(0F, 15.5F, -5F));
 
@@ -61,7 +61,7 @@ public class MarlinModel extends HierarchicalModel<MarlinEntity> {
                 PartPose.offset(2F, 21F, -3F));
 
         root.addOrReplaceChild("rightFin",
-                CubeListBuilder.create().texOffs(12,7).mirror()
+                CubeListBuilder.create().texOffs(12, 7).mirror()
                         .addBox(-4F, -0.5F, -2F, 4, 1, 2),
                 PartPose.offset(-2F, 21F, -3F));
 
@@ -112,8 +112,7 @@ public class MarlinModel extends HierarchicalModel<MarlinEntity> {
                         .addBox(-0.5F, 1F, -1F, 1, 5, 2),
                 PartPose.offsetAndRotation(0F, 0F, 0F, 2.548179F, 0F, 0F));
 
-
-        return LayerDefinition.create(mesh,64,32);
+        return LayerDefinition.create(mesh, 64, 32);
     }
 
     @Override

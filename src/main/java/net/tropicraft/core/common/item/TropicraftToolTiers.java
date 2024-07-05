@@ -14,8 +14,7 @@ public enum TropicraftToolTiers implements Tier {
     BAMBOO(BlockTags.INCORRECT_FOR_WOODEN_TOOL, 110, 1.2F, 1F, 6, () -> Ingredient.of(Items.BAMBOO)),
     ZIRCON(BlockTags.INCORRECT_FOR_STONE_TOOL, 200, 4.5f, 1f, 14, () -> Ingredient.of(TropicraftItems.ZIRCON.get())),
     EUDIALYTE(BlockTags.INCORRECT_FOR_STONE_TOOL, 750, 6.5f, 2f, 14, () -> Ingredient.of(TropicraftItems.EUDIALYTE.get())),
-    ZIRCONIUM(BlockTags.INCORRECT_FOR_IRON_TOOL, 1800, 8.5f, 3f, 10, () -> Ingredient.of(TropicraftItems.ZIRCONIUM.get()))
-    ;
+    ZIRCONIUM(BlockTags.INCORRECT_FOR_IRON_TOOL, 1800, 8.5f, 3f, 10, () -> Ingredient.of(TropicraftItems.ZIRCONIUM.get()));
 
     private final TagKey<Block> incorrectBlockDrops;
     private final int maxUses;

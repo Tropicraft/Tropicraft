@@ -22,37 +22,37 @@ import java.util.function.Supplier;
 
 public final class CustomSeagrassBlock extends SeagrassBlock {
 
-	private final String scientificName;
-	@Nullable
-	private final Supplier<? extends TallSeagrassBlock> tall;
+    private final String scientificName;
+    @Nullable
+    private final Supplier<? extends TallSeagrassBlock> tall;
 
-	public CustomSeagrassBlock(Properties properties, String scientificName, @Nullable Supplier<? extends TallSeagrassBlock> tall) {
-		super(properties);
-		this.scientificName = scientificName;
-		this.tall = tall;
-	}
+    public CustomSeagrassBlock(Properties properties, String scientificName, @Nullable Supplier<? extends TallSeagrassBlock> tall) {
+        super(properties);
+        this.scientificName = scientificName;
+        this.tall = tall;
+    }
 
-	@Override
-	public MapCodec<SeagrassBlock> codec() {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public MapCodec<SeagrassBlock> codec() {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	public void appendHoverText(final ItemStack itemStack, final Item.TooltipContext context, final List<Component> tooltip, final TooltipFlag flag) {
-		tooltip.add(Component.literal(scientificName).withStyle(ChatFormatting.AQUA, ChatFormatting.ITALIC));
-	}
+    @Override
+    public void appendHoverText(final ItemStack itemStack, final Item.TooltipContext context, final List<Component> tooltip, final TooltipFlag flag) {
+        tooltip.add(Component.literal(scientificName).withStyle(ChatFormatting.AQUA, ChatFormatting.ITALIC));
+    }
 
-	@Override
-	public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
-		if (tall == null) return;
+    @Override
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+        if (tall == null) return;
 
-		BlockState bottomState = tall.get().defaultBlockState();
-		BlockState topState = bottomState.setValue(TallSeagrassBlock.HALF, DoubleBlockHalf.UPPER);
+        BlockState bottomState = tall.get().defaultBlockState();
+        BlockState topState = bottomState.setValue(TallSeagrassBlock.HALF, DoubleBlockHalf.UPPER);
 
-		BlockPos topPos = pos.above();
-		if (level.getBlockState(topPos).is(Blocks.WATER)) {
-			level.setBlock(pos, bottomState, Block.UPDATE_CLIENTS);
-			level.setBlock(topPos, topState, Block.UPDATE_CLIENTS);
-		}
-	}
+        BlockPos topPos = pos.above();
+        if (level.getBlockState(topPos).is(Blocks.WATER)) {
+            level.setBlock(pos, bottomState, Block.UPDATE_CLIENTS);
+            level.setBlock(topPos, topState, Block.UPDATE_CLIENTS);
+        }
+    }
 }

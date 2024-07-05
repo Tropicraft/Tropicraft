@@ -344,7 +344,6 @@ public final class TropicraftBiomes {
                 .build();
     }
 
-
     // TODO: rebalance all spawns
     private static Biome createMangroves(BootstrapContext<Biome> context, boolean overgrown) {
         BiomeGenerationSettings.Builder generation = defaultGeneration(context);

@@ -23,5 +23,4 @@ public abstract class EchinodermEggEntity extends EggEntity {
     public int getPreHatchMovement() {
         return 0;
     }
-    
 }

@@ -32,7 +32,7 @@ public class SwimToAvoidEntityGoal extends Goal {
     @Override
     public void tick() {
         super.tick();
-        
+
         List<Entity> ents = entity.level().getEntities(entity, entity.getBoundingBox().inflate(this.distanceToAvoid));
         List<Class<? extends Entity>> classes = Arrays.asList(entityClassToAvoid);
         for (int i = 0; i < ents.size(); i++) {
@@ -40,7 +40,7 @@ public class SwimToAvoidEntityGoal extends Goal {
                 entity.fleeEntity(ents.get(i));
                 break;
             }
-        }            
+        }
     }
 
     /**

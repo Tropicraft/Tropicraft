@@ -33,6 +33,7 @@ public class AirCompressorRenderer extends MachineRenderer<AirCompressorBlockEnt
     protected Material getMaterial() {
         return TropicraftRenderUtils.getTEMaterial("drink_mixer");
     }
+
     @Override
     protected void animationTransform(AirCompressorBlockEntity te, final PoseStack stack, float partialTicks) {
         float progress = te.getBreatheProgress(partialTicks);

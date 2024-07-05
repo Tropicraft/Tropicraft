@@ -20,12 +20,12 @@ public abstract class EggEntity extends LivingEntity {
     private static final EntityDataAccessor<Integer> HATCH_DELAY = SynchedEntityData.defineId(EggEntity.class, EntityDataSerializers.INT);
 
     public double rotationRand;
-   
+
     public EggEntity(final EntityType<? extends EggEntity> type, Level w) {
         super(type, w);
         rotationRand = 0;
         noCulling = true;
-       
+
         setYRot(random.nextInt(360));
     }
 
@@ -55,36 +55,38 @@ public abstract class EggEntity extends LivingEntity {
     }
 
     public abstract boolean shouldEggRenderFlat();
-    
+
     public abstract String getEggTexture();
-    
+
     /**
      * Create and return a Entity here
      */
     public abstract Entity onHatch();
-    
+
     /**
      * The amount of time in ticks it will take for the egg to hatch
-     *     eg. hatch on tick n
+     * eg. hatch on tick n
+     *
      * @return a positive number
      */
     public abstract int getHatchTime();
-    
+
     /**
      * The amount of time in ticks the egg will move around before it hatches
-     *  eg. start rolling n ticks before hatch
+     * eg. start rolling n ticks before hatch
+     *
      * @return a positive number lower than getHatchTime()
      */
     public abstract int getPreHatchMovement();
-    
+
     public int getRandomHatchDelay() {
         return this.getEntityData().get(HATCH_DELAY);
     }
-     
+
     public boolean isHatching() {
         return this.tickCount > (getHatchTime() + getRandomHatchDelay());
     }
-    
+
     public boolean isNearHatching() {
         return this.tickCount > (getHatchTime() + getRandomHatchDelay()) - getPreHatchMovement();
     }
@@ -92,10 +94,10 @@ public abstract class EggEntity extends LivingEntity {
     @Override
     public void aiStep() {
         super.aiStep();
-        
+
         if (isNearHatching()) {
             rotationRand += 0.1707F * level().random.nextFloat();
-            
+
             // Hatch time!
             if (tickCount >= this.getHatchTime()) {
                 if (!level().isClientSide) {
@@ -105,13 +107,13 @@ public abstract class EggEntity extends LivingEntity {
                     remove(RemovalReason.DISCARDED);
                 }
             }
-        } 
+        }
     }
-    
+
     public void setHatchDelay(int i) {
         this.getEntityData().set(HATCH_DELAY, -60 + random.nextInt(120));
     }
-    
+
     public int getHatchDelay() {
         return this.getEntityData().get(HATCH_DELAY);
     }

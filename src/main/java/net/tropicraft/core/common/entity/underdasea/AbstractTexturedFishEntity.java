@@ -22,6 +22,7 @@ public abstract class AbstractTexturedFishEntity extends AbstractFish {
     }
 
     abstract String getRandomTexture();
+
     abstract String getDefaultTexture();
 
     @Override

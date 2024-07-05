@@ -7,17 +7,17 @@ import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.underdasea.SeaUrchinEntity;
 
 public class SeaUrchinEggEntity extends EchinodermEggEntity {
-	public SeaUrchinEggEntity(final EntityType<? extends SeaUrchinEggEntity> type, Level world) {
-		super(type, world);
-	}
+    public SeaUrchinEggEntity(final EntityType<? extends SeaUrchinEggEntity> type, Level world) {
+        super(type, world);
+    }
 
-	@Override
-	public String getEggTexture() {
-		return "seaurchinegg";
-	}
+    @Override
+    public String getEggTexture() {
+        return "seaurchinegg";
+    }
 
-	@Override
-	public Entity onHatch() {
-		return new SeaUrchinEntity(TropicraftEntities.SEA_URCHIN.get(), level());
-	}
+    @Override
+    public Entity onHatch() {
+        return new SeaUrchinEntity(TropicraftEntities.SEA_URCHIN.get(), level());
+    }
 }

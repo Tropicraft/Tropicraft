@@ -31,10 +31,14 @@ public class ChairEntity extends FurnitureEntity {
     // TODO make it so monkies can sit in the chair ouo
     private static final EntityDataAccessor<Byte> COMESAILAWAY = SynchedEntityData.defineId(ChairEntity.class, EntityDataSerializers.BYTE);
 
-    /** Is any entity sitting in the chair? */
+    /**
+     * Is any entity sitting in the chair?
+     */
     public boolean isChairEmpty = true;
 
-    /** Acceleration */
+    /**
+     * Acceleration
+     */
     private double speedMultiplier = 0.1;
 
     private float rotationDelta = 0;
@@ -123,8 +127,8 @@ public class ChairEntity extends FurnitureEntity {
 
             if (this.getComeSailAway())
                 for (int i = 0; i < 4; ++i) {
-                    int x = Mth.floor(this.getX() + ((double)(i % 2) - 0.5D) * 0.8D);
-                    int z = Mth.floor(this.getZ() + ((double)(i / 2) - 0.5D) * 0.8D);
+                    int x = Mth.floor(this.getX() + ((double) (i % 2) - 0.5D) * 0.8D);
+                    int z = Mth.floor(this.getZ() + ((double) (i / 2) - 0.5D) * 0.8D);
                     for (int j1 = 0; j1 < 2; ++j1) {
                         int k = Mth.floor(this.getY()) + j1;
                         BlockPos pos = new BlockPos(x, k, z);
@@ -157,10 +161,10 @@ public class ChairEntity extends FurnitureEntity {
             double deltaZ = this.zo - this.getZ();
 
             if (deltaX * deltaX + deltaZ * deltaZ > 0.001D) {
-                targetYRot = (float)(Math.atan2(deltaZ, deltaX) * 180.0D / Math.PI);
+                targetYRot = (float) (Math.atan2(deltaZ, deltaX) * 180.0D / Math.PI);
             }
 
-            double yRotStep = Mth.wrapDegrees(targetYRot - (double)this.getYRot());
+            double yRotStep = Mth.wrapDegrees(targetYRot - (double) this.getYRot());
             yRotStep = Mth.clamp(yRotStep, -20.0, 20.0);
 
             this.setYRot((float) (this.getYRot() + yRotStep));
@@ -229,7 +233,7 @@ public class ChairEntity extends FurnitureEntity {
 
     @Override
     public InteractionResult interact(Player player, InteractionHand hand) {
-        if(invulnerablityCheck(player, hand) == InteractionResult.SUCCESS) {
+        if (invulnerablityCheck(player, hand) == InteractionResult.SUCCESS) {
             return InteractionResult.SUCCESS;
         } else if (!level().isClientSide && !player.isShiftKeyDown()) {
             player.startRiding(this);
@@ -261,11 +265,11 @@ public class ChairEntity extends FurnitureEntity {
     }
 
     public void setComeSailAway(boolean sail) {
-        entityData.set(COMESAILAWAY, sail ? Byte.valueOf((byte)1) : Byte.valueOf((byte)0));
+        entityData.set(COMESAILAWAY, sail ? Byte.valueOf((byte) 1) : Byte.valueOf((byte) 0));
     }
 
     public boolean getComeSailAway() {
-        return entityData.get(COMESAILAWAY) == (byte)1;
+        return entityData.get(COMESAILAWAY) == (byte) 1;
     }
 
     @Override

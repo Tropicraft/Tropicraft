@@ -18,13 +18,13 @@ public class RandomSwimGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        return entity.isInWater() && entity.tickCount % 10+rand.nextInt(20) == 0;
+        return entity.isInWater() && entity.tickCount % 10 + rand.nextInt(20) == 0;
     }
 
     @Override
     public void tick() {
         super.tick();
-        
+
         entity.setRandomTargetHeading();
         if (entity.eatenFishAmount > 0 && rand.nextInt(10) == 0) {
             entity.eatenFishAmount--;

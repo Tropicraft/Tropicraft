@@ -22,14 +22,16 @@ public class BambooItemFrame extends ItemFrame implements IEntityWithComplexSpaw
     }
 
     protected BambooItemFrame(final EntityType<? extends BambooItemFrame> type, final Level world, final BlockPos pos,
-            final Direction direction) {
+                              final Direction direction) {
         super(type, world);
         this.pos = pos;
         this.setDirection(direction);
     }
-    
+
     @Override
-    public ItemStack getFrameItemStack() { return new ItemStack(TropicraftItems.BAMBOO_ITEM_FRAME.get()); }
+    public ItemStack getFrameItemStack() {
+        return new ItemStack(TropicraftItems.BAMBOO_ITEM_FRAME.get());
+    }
 
     @Override
     public void writeSpawnData(RegistryFriendlyByteBuf buffer) {

@@ -64,5 +64,4 @@ public class SpawnerProcessor extends StructureProcessor {
             return blockInfo;
         }
     }
-
 }

@@ -25,7 +25,9 @@ public class UpTreeFeature extends RainforestTreeFeature {
 
         pos = pos.immutable();
         final int height = rand.nextInt(4) + 6;
-        int i = pos.getX(); int j = pos.getY(); int k = pos.getZ();
+        int i = pos.getX();
+        int j = pos.getY();
+        int k = pos.getZ();
 
         if (goesBeyondWorldSize(world, pos.getY(), height)) {
             return false;

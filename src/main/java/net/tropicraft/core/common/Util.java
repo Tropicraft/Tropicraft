@@ -70,14 +70,14 @@ public class Util {
                 int y = MathHelper.floor(player.posY);
                 int z = MathHelper.floor(player.posZ);*/
 
-                double d = x+0.5F - ent.getX();
-                double d2 = z+0.5F - ent.getZ();
+                double d = x + 0.5F - ent.getX();
+                double d2 = z + 0.5F - ent.getZ();
                 double d1;
-                d1 = y+0.5F - (ent.getY() + (double)ent.getEyeHeight());
+                d1 = y + 0.5F - (ent.getY() + (double) ent.getEyeHeight());
 
                 double d3 = Mth.sqrt((float) (d * d + d2 * d2));
-                float f2 = (float)((Math.atan2(d2, d) * 180D) / 3.1415927410125732D) - 90F;
-                float f3 = (float)(-((Math.atan2(d1, d3) * 180D) / 3.1415927410125732D));
+                float f2 = (float) ((Math.atan2(d2, d) * 180D) / 3.1415927410125732D) - 90F;
+                float f3 = (float) (-((Math.atan2(d1, d3) * 180D) / 3.1415927410125732D));
                 float rotationPitch = -f3;//-ent.updateRotation(rotationPitch, f3, 180D);
                 float rotationYaw = f2;//updateRotation(rotationYaw, f2, 180D);
 
@@ -85,12 +85,12 @@ public class Util {
 
                 RandomSource rand = world.random;
 
-                float randLook = rand.nextInt(90)-45;
+                float randLook = rand.nextInt(90) - 45;
                 //int height = 10;
-                double dist = (followDist * 0.75D) + rand.nextInt((int)followDist / 2);//rand.nextInt(26)+(queue.get(0).retryState * 6);
-                int gatherX = (int)Math.floor(center.getX() + ((double)(-Math.sin((rotationYaw+randLook) / 180.0F * 3.1415927F)/* * Math.cos(center.rotationPitch / 180.0F * 3.1415927F)*/) * dist));
-                int gatherY = (int)center.getY();//Math.floor(center.posY-0.5 + (double)(-MathHelper.sin(center.rotationPitch / 180.0F * 3.1415927F) * dist) - 0D); //center.posY - 0D;
-                int gatherZ = (int)Math.floor(center.getZ() + ((double)(Math.cos((rotationYaw+randLook) / 180.0F * 3.1415927F)/* * Math.cos(center.rotationPitch / 180.0F * 3.1415927F)*/) * dist));
+                double dist = (followDist * 0.75D) + rand.nextInt((int) followDist / 2);//rand.nextInt(26)+(queue.get(0).retryState * 6);
+                int gatherX = (int) Math.floor(center.getX() + ((double) (-Math.sin((rotationYaw + randLook) / 180.0F * 3.1415927F)/* * Math.cos(center.rotationPitch / 180.0F * 3.1415927F)*/) * dist));
+                int gatherY = (int) center.getY();//Math.floor(center.posY-0.5 + (double)(-MathHelper.sin(center.rotationPitch / 180.0F * 3.1415927F) * dist) - 0D); //center.posY - 0D;
+                int gatherZ = (int) Math.floor(center.getZ() + ((double) (Math.cos((rotationYaw + randLook) / 180.0F * 3.1415927F)/* * Math.cos(center.rotationPitch / 180.0F * 3.1415927F)*/) * dist));
 
                 BlockPos pos = new BlockPos(gatherX, gatherY, gatherZ);
 
@@ -155,9 +155,9 @@ public class Util {
                 scanSize = scanRange;
                 scanSizeY = scanRange / 2;
             }
-            tryX = Mth.floor(entity.getX()) + (entity.level().random.nextInt(scanSize)-scanSize/2);
-            int i = tryY + entity.level().random.nextInt(scanSizeY)-(scanSizeY/2);
-            tryZ = Mth.floor(entity.getZ()) + entity.level().random.nextInt(scanSize)-scanSize/2;
+            tryX = Mth.floor(entity.getX()) + (entity.level().random.nextInt(scanSize) - scanSize / 2);
+            int i = tryY + entity.level().random.nextInt(scanSizeY) - (scanSizeY / 2);
+            tryZ = Mth.floor(entity.getZ()) + entity.level().random.nextInt(scanSize) - scanSize / 2;
             BlockPos posTry = new BlockPos(tryX, tryY, tryZ);
 
             boolean foundBlock = false;
@@ -218,8 +218,7 @@ public class Util {
         return world.getBlockState(pos).isSolid();
     }
 
-    public static double getDistance(Entity ent, double x, double y, double z)
-    {
+    public static double getDistance(Entity ent, double x, double y, double z) {
         double d0 = ent.getX() - x;
         double d1 = ent.getY() - y;
         double d2 = ent.getZ() - z;

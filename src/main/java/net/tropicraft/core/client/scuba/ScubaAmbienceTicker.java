@@ -21,7 +21,7 @@ import net.tropicraft.core.common.item.scuba.ScubaData;
 
 @EventBusSubscriber(value = Dist.CLIENT, modid = Constants.MODID, bus = EventBusSubscriber.Bus.GAME)
 public class ScubaAmbienceTicker {
-    
+
     public static final SoundEvent SHALLOW_SCUBA = SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(Constants.MODID, "scuba.shallow"));
     public static final SoundEvent DEEP_SCUBA = SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(Constants.MODID, "scuba.deep"));
 
@@ -48,7 +48,7 @@ public class ScubaAmbienceTicker {
         }
         stop();
     }
-    
+
     private static void play(SoundEvent sound) {
         if (currentSound != sound) {
             stop();
@@ -56,7 +56,7 @@ public class ScubaAmbienceTicker {
             Minecraft.getInstance().getSoundManager().play(new SimpleSoundInstance(sound.getLocation(), SoundSource.AMBIENT, 0.4f, 1.0f, SoundInstance.createUnseededRandom(), true, 0, SoundInstance.Attenuation.NONE, 0.0F, 0.0F, 0.0F, true));
         }
     }
-    
+
     private static void stop() {
         if (currentSound != null) {
             Minecraft.getInstance().getSoundManager().stop(currentSound.getLocation(), SoundSource.AMBIENT);

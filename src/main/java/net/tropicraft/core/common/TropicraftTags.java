@@ -35,7 +35,7 @@ public class TropicraftTags {
             return tag("forge", name);
         }
     }
-    
+
     public static class Items extends TropicraftTags {
 
         public static final TagKey<Item> AZURITE_ORE = compatTag("ores/azurite");
@@ -43,16 +43,16 @@ public class TropicraftTags {
         public static final TagKey<Item> MANGANESE_ORE = compatTag("ores/manganese");
         public static final TagKey<Item> SHAKA_ORE = compatTag("ores/shaka");
         public static final TagKey<Item> ZIRCON_ORE = compatTag("ores/zircon");
-        
+
         public static final TagKey<Item> AZURITE_GEM = compatTag("gems/azurite");
         public static final TagKey<Item> EUDIALYTE_GEM = compatTag("gems/eudialyte");
         public static final TagKey<Item> MANGANESE_INGOT = compatTag("ingots/manganese");
         public static final TagKey<Item> SHAKA_INGOT = compatTag("ingots/shaka");
         public static final TagKey<Item> ZIRCON_GEM = compatTag("gems/zircon");
         public static final TagKey<Item> ZIRCONIUM_GEM = compatTag("gems/zirconium");
-        
+
         public static final TagKey<Item> MANGROVE_LOGS = modTag("mangrove_logs");
-        
+
         public static final TagKey<Item> SHELLS = modTag("shells");
 
         public static final TagKey<Item> ASHEN_MASKS = modTag("ashen_masks");

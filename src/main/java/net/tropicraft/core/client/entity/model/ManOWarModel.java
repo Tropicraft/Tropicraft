@@ -23,7 +23,7 @@ public class ManOWarModel extends HierarchicalModel<ManOWarEntity> {
 
     private static final CubeDeformation DEFORMATION = new CubeDeformation(0.001f);
 
-    public ManOWarModel(ModelPart root){
+    public ManOWarModel(ModelPart root) {
         Body = root.getChild("Body");
         CenterTent = Body.getChild("CenterTent");
         CenterTent2 = CenterTent.getChild("CenterTent2");
@@ -89,10 +89,10 @@ public class ManOWarModel extends HierarchicalModel<ManOWarEntity> {
                 tenticlePartBuilder("tent4"),
                 PartPose.offset(1.5F, 2F, -1.5F));
 
-        return LayerDefinition.create(mesh, 64,32);
+        return LayerDefinition.create(mesh, 64, 32);
     }
 
-    private static CubeListBuilder tenticlePartBuilder(String name){
+    private static CubeListBuilder tenticlePartBuilder(String name) {
         return CubeListBuilder.create()
                 .mirror()
                 .addBox(name, -0.5F, 0F, -0.5F, 1, 11, 1, DEFORMATION, 0, 0);

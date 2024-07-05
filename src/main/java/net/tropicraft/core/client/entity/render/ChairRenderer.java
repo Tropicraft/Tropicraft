@@ -12,7 +12,7 @@ public class ChairRenderer extends FurnitureRenderer<ChairEntity> {
         super(context, "chair", new ChairModel(context.bakeLayer(TropicraftRenderLayers.CHAIR_LAYER)));
         shadowRadius = 0.65f;
     }
-    
+
     @Override
     protected void setupTransforms(PoseStack stack) {
         stack.translate(0, 0, -0.15);
