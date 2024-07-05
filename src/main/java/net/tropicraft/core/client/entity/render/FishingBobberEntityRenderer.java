@@ -9,19 +9,18 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.CommonColors;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 import net.tropicraft.core.common.entity.passive.FishingBobberEntity;
-import org.joml.Matrix3f;
-import org.joml.Matrix4f;
 
 @OnlyIn(Dist.CLIENT)
 public class FishingBobberEntityRenderer extends EntityRenderer<FishingBobberEntity> {
-    private static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation("textures/entity/fishing_hook.png");
+    private static final ResourceLocation TEXTURE_LOCATION = ResourceLocation.withDefaultNamespace("textures/entity/fishing_hook.png");
     private static final RenderType RENDER_TYPE = RenderType.entityCutout(TEXTURE_LOCATION);
 
     public FishingBobberEntityRenderer(EntityRendererProvider.Context context) {
@@ -39,13 +38,12 @@ public class FishingBobberEntityRenderer extends EntityRenderer<FishingBobberEnt
         poseStack.scale(0.5F, 0.5F, 0.5F);
         poseStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
         poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
-        Matrix4f pose = poseStack.last().pose();
-        Matrix3f normal = poseStack.last().normal();
+        PoseStack.Pose pose = poseStack.last();
         VertexConsumer consumer = bufferSource.getBuffer(RENDER_TYPE);
-        vertex(consumer, pose, normal, packedLight, 0.0F, 0, 0, 1);
-        vertex(consumer, pose, normal, packedLight, 1.0F, 0, 1, 1);
-        vertex(consumer, pose, normal, packedLight, 1.0F, 1, 1, 0);
-        vertex(consumer, pose, normal, packedLight, 0.0F, 1, 0, 0);
+        vertex(consumer, pose, packedLight, 0.0F, 0, 0, 1);
+        vertex(consumer, pose, packedLight, 1.0F, 0, 1, 1);
+        vertex(consumer, pose, packedLight, 1.0F, 1, 1, 0);
+        vertex(consumer, pose, packedLight, 0.0F, 1, 0, 0);
         poseStack.popPose();
 
         float handOffset = koa.getMainArm() == HumanoidArm.RIGHT ? 0.35f : -0.35f;
@@ -75,8 +73,8 @@ public class FishingBobberEntityRenderer extends EntityRenderer<FishingBobberEnt
         super.render(entity, yaw, partialTicks, poseStack, bufferSource, packedLight);
     }
 
-    private static void vertex(VertexConsumer consumer, Matrix4f pose, Matrix3f normal, int p_114715_, float p_114716_, int p_114717_, int p_114718_, int p_114719_) {
-        consumer.vertex(pose, p_114716_ - 0.5F, p_114717_ - 0.5F, 0.0F).color(255, 255, 255, 255).uv((float) p_114718_, (float) p_114719_).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(p_114715_).normal(normal, 0.0F, 1.0F, 0.0F).endVertex();
+    private static void vertex(VertexConsumer consumer, PoseStack.Pose pose, int p_114715_, float p_114716_, int p_114717_, int p_114718_, int p_114719_) {
+        consumer.addVertex(pose, p_114716_ - 0.5F, p_114717_ - 0.5F, 0.0F).setColor(CommonColors.WHITE).setUv((float) p_114718_, (float) p_114719_).setOverlay(OverlayTexture.NO_OVERLAY).setLight(p_114715_).setNormal(pose, 0.0F, 1.0F, 0.0F);
     }
 
     private static void stringVertex(float deltaX, float deltaY, float deltaZ, VertexConsumer consumer, PoseStack.Pose pose, float start, float end) {
@@ -90,7 +88,7 @@ public class FishingBobberEntityRenderer extends EntityRenderer<FishingBobberEnt
         normalX = normalX / length;
         normalY = normalY / length;
         normalZ = normalZ / length;
-        consumer.vertex(pose.pose(), x, y, z).color(0, 0, 0, 255).normal(pose.normal(), normalX, normalY, normalZ).endVertex();
+        consumer.addVertex(pose, x, y, z).setColor(CommonColors.BLACK).setNormal(pose, normalX, normalY, normalZ);
     }
 
     @Override

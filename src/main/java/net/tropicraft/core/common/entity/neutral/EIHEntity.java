@@ -13,21 +13,21 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LeapAtTargetGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.Tiers;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.TierSortingRegistry;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.entity.hostile.TropicraftCreatureEntity;
-import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.sound.Sounds;
 
 public class EIHEntity extends TropicraftCreatureEntity {
@@ -48,9 +48,9 @@ public class EIHEntity extends TropicraftCreatureEntity {
     }
 
     @Override
-    public void defineSynchedData() {
-        super.defineSynchedData();
-        getEntityData().define(STATE, (byte) 0);
+    public void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(STATE, (byte) 0);
     }
 
     public byte getState() {
@@ -209,9 +209,9 @@ public class EIHEntity extends TropicraftCreatureEntity {
 
     public void setEIHFlag(int id, boolean flag) {
         if (flag) {
-            this.entityData.set(STATE, (byte)(this.entityData.get(STATE) | id));
+            this.entityData.set(STATE, (byte) (this.entityData.get(STATE) | id));
         } else {
-            this.entityData.set(STATE, (byte)(this.entityData.get(STATE) & ~id));
+            this.entityData.set(STATE, (byte) (this.entityData.get(STATE) & ~id));
         }
     }
 
@@ -271,8 +271,7 @@ public class EIHEntity extends TropicraftCreatureEntity {
     }
 
     private static boolean isValidPickaxeTier(Tier tier) {
-        var sorted = TierSortingRegistry.getSortedTiers();
-        return sorted.indexOf(tier) >= sorted.indexOf(Tiers.STONE);
+        return !TropicraftBlocks.CHUNK.is(tier.getIncorrectBlocksForDrops());
     }
 
     private static class TargetAggressorGoal extends NearestAttackableTargetGoal<Player> {

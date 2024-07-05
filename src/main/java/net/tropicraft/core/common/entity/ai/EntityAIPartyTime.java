@@ -13,7 +13,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.NoteBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.util.FakePlayerFactory;
+import net.neoforged.neoforge.common.util.FakePlayerFactory;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 
@@ -220,7 +220,7 @@ public class EntityAIPartyTime extends Goal
                                 }
                             } else {
                                 //note.triggerNote(entityObj.world, blockposGoal);
-                                state.getBlock().attack(state, entityObj.level(), blockposGoal,
+                                state.attack(entityObj.level(), blockposGoal,
                                         FakePlayerFactory.get((ServerLevel) entityObj.level(),
                                                 new GameProfile(UUID.fromString("e517cf6a-ce31-4ac8-b48d-44b4f0f918a7"), "tropicraftKoa")));
                             }

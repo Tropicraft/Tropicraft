@@ -4,11 +4,10 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.Pools;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
@@ -49,7 +48,7 @@ public final class TropicraftTemplatePools {
     public static final ResourceKey<StructureTemplatePool> HOME_TREE_BRANCHES_WEST = createKey("home_tree/branches/west");
     public static final ResourceKey<StructureTemplatePool> HOME_TREE_BRANCHES_SOUTH_WEST = createKey("home_tree/branches/southwest");
 
-    public static void bootstrap(final BootstapContext<StructureTemplatePool> context) {
+    public static void bootstrap(final BootstrapContext<StructureTemplatePool> context) {
         HolderGetter<StructureProcessorList> processorLists = context.lookup(Registries.PROCESSOR_LIST);
 
         Holder.Reference<StructureProcessorList> koaTownCenterProcessors = processorLists.getOrThrow(TropicraftProcessorLists.KOA_TOWN_CENTERS);
@@ -193,21 +192,21 @@ public final class TropicraftTemplatePools {
 
     private static WeightedPiece noAirSingle(String path, Holder<StructureProcessorList> processors, int weight) {
         return new WeightedPiece(
-                () -> SingleNoAirJigsawPiece.create(Constants.MODID + ":" + path, processors, false),
+                () -> SingleNoAirJigsawPiece.create(ResourceLocation.fromNamespaceAndPath(Constants.MODID, path), processors, false),
                 weight
         );
     }
 
     private static WeightedPiece noAirSingle(String path, int weight) {
         return new WeightedPiece(
-                () -> SingleNoAirJigsawPiece.create(Constants.MODID + ":" + path),
+                () -> SingleNoAirJigsawPiece.create(ResourceLocation.fromNamespaceAndPath(Constants.MODID, path)),
                 weight
         );
     }
 
     private static WeightedPiece noRotateSingle(String path, Holder<StructureProcessorList> processors, int weight) {
         return new WeightedPiece(
-                () -> NoRotateSingleJigsawPiece.createNoRotate(Constants.MODID + ":" + path, processors),
+                () -> NoRotateSingleJigsawPiece.createNoRotate(ResourceLocation.fromNamespaceAndPath(Constants.MODID, path), processors),
                 weight
         );
     }
@@ -221,22 +220,22 @@ public final class TropicraftTemplatePools {
 
     private static WeightedPiece koaPath(String path, int weight, Holder<StructureProcessorList> processorList) {
         return new WeightedPiece(
-                () -> SingleNoAirJigsawPiece.create(Constants.MODID + ":" + path, processorList, true),
+                () -> SingleNoAirJigsawPiece.create(ResourceLocation.fromNamespaceAndPath(Constants.MODID, path), processorList, true),
                 weight
         );
     }
 
-    private static Holder.Reference<StructureTemplatePool> register(BootstapContext<StructureTemplatePool> context, ResourceKey<StructureTemplatePool> key, StructureTemplatePool.Projection placementBehaviour, WeightedPiece... pieces) {
+    private static Holder.Reference<StructureTemplatePool> register(BootstrapContext<StructureTemplatePool> context, ResourceKey<StructureTemplatePool> key, StructureTemplatePool.Projection placementBehaviour, WeightedPiece... pieces) {
         Holder<StructureTemplatePool> empty = context.lookup(Registries.TEMPLATE_POOL).getOrThrow(Pools.EMPTY);
         return register(context, key, empty, placementBehaviour, pieces);
     }
 
-    private static Holder.Reference<StructureTemplatePool> register(BootstapContext<StructureTemplatePool> context, ResourceKey<StructureTemplatePool> key, Holder<StructureTemplatePool> fallback, StructureTemplatePool.Projection placementBehaviour, WeightedPiece... pieces) {
+    private static Holder.Reference<StructureTemplatePool> register(BootstrapContext<StructureTemplatePool> context, ResourceKey<StructureTemplatePool> key, Holder<StructureTemplatePool> fallback, StructureTemplatePool.Projection placementBehaviour, WeightedPiece... pieces) {
         return context.register(key, new StructureTemplatePool(fallback, Arrays.stream(pieces).map(WeightedPiece::resolve).toList(), placementBehaviour));
     }
 
     private static ResourceKey<StructureTemplatePool> createKey(final String name) {
-        return ResourceKey.create(Registries.TEMPLATE_POOL, new ResourceLocation(Constants.MODID, name));
+        return ResourceKey.create(Registries.TEMPLATE_POOL, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
     }
 
     private record WeightedPiece(

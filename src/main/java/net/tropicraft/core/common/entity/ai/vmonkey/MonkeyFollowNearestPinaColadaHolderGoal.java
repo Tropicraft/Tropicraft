@@ -4,7 +4,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
 
@@ -67,15 +67,15 @@ public class MonkeyFollowNearestPinaColadaHolderGoal extends Goal {
     @Override
     public void start() {
         timeToRecalcPath = 0;
-        oldWaterCost = monkey.getPathfindingMalus(BlockPathTypes.WATER);
-        monkey.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+        oldWaterCost = monkey.getPathfindingMalus(PathType.WATER);
+        monkey.setPathfindingMalus(PathType.WATER, 0.0F);
     }
 
     @Override
     public void stop() {
         monkey.setFollowing(null);
         navigation.stop();
-        monkey.setPathfindingMalus(BlockPathTypes.WATER, oldWaterCost);
+        monkey.setPathfindingMalus(PathType.WATER, oldWaterCost);
     }
 
     @Override

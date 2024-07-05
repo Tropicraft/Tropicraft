@@ -91,7 +91,7 @@ public class EntityAITemptHelmet extends Goal
 
     protected boolean isTempting(ItemStack stack) {
         for (ItemEntry<? extends Item> items : temptItem) {
-            if (items.isPresent() && items.get().asItem() == stack.getItem()) {
+            if (items.isBound() && items.get().asItem() == stack.getItem()) {
                 return true;
             }
         }

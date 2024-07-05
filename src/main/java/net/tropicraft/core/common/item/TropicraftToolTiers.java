@@ -1,33 +1,36 @@
 package net.tropicraft.core.common.item;
 
-import net.minecraft.util.LazyLoadedValue;
+import com.google.common.base.Suppliers;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.Block;
 
 import java.util.function.Supplier;
 
 public enum TropicraftToolTiers implements Tier {
-    BAMBOO(1, 110, 1.2F, 1F, 6, () -> Ingredient.of(Items.BAMBOO)),
-    ZIRCON(2, 200, 4.5f, 1f, 14, () -> Ingredient.of(TropicraftItems.ZIRCON.get())),
-    EUDIALYTE(2, 750, 6.5f, 2f, 14, () -> Ingredient.of(TropicraftItems.EUDIALYTE.get())),
-    ZIRCONIUM(3, 1800, 8.5f, 3f, 10, () -> Ingredient.of(TropicraftItems.ZIRCONIUM.get()))
+    BAMBOO(BlockTags.INCORRECT_FOR_WOODEN_TOOL, 110, 1.2F, 1F, 6, () -> Ingredient.of(Items.BAMBOO)),
+    ZIRCON(BlockTags.INCORRECT_FOR_STONE_TOOL, 200, 4.5f, 1f, 14, () -> Ingredient.of(TropicraftItems.ZIRCON.get())),
+    EUDIALYTE(BlockTags.INCORRECT_FOR_STONE_TOOL, 750, 6.5f, 2f, 14, () -> Ingredient.of(TropicraftItems.EUDIALYTE.get())),
+    ZIRCONIUM(BlockTags.INCORRECT_FOR_IRON_TOOL, 1800, 8.5f, 3f, 10, () -> Ingredient.of(TropicraftItems.ZIRCONIUM.get()))
     ;
 
-    private final int harvestLevel;
+    private final TagKey<Block> incorrectBlockDrops;
     private final int maxUses;
     private final float efficiency;
     private final float attackDamage;
     private final int enchantability;
-    private final LazyLoadedValue<Ingredient> repairMaterial;
+    private final Supplier<Ingredient> repairMaterial;
 
-    TropicraftToolTiers(int harvestLevelIn, int maxUsesIn, float efficiencyIn, float attackDamageIn, int enchantabilityIn, Supplier<Ingredient> repairMaterialIn) {
-        this.harvestLevel = harvestLevelIn;
+    TropicraftToolTiers(TagKey<Block> incorrectBlockDrops, int maxUsesIn, float efficiencyIn, float attackDamageIn, int enchantabilityIn, Supplier<Ingredient> repairMaterialIn) {
+        this.incorrectBlockDrops = incorrectBlockDrops;
         this.maxUses = maxUsesIn;
         this.efficiency = efficiencyIn;
         this.attackDamage = attackDamageIn;
         this.enchantability = enchantabilityIn;
-        this.repairMaterial = new LazyLoadedValue<>(repairMaterialIn);
+        this.repairMaterial = Suppliers.memoize(repairMaterialIn::get);
     }
 
     @Override
@@ -46,8 +49,8 @@ public enum TropicraftToolTiers implements Tier {
     }
 
     @Override
-    public int getLevel() {
-        return this.harvestLevel;
+    public TagKey<Block> getIncorrectBlocksForDrops() {
+        return this.incorrectBlockDrops;
     }
 
     @Override

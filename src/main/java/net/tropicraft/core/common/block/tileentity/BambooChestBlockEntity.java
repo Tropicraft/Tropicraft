@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.block.tileentity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -28,14 +29,14 @@ public class BambooChestBlockEntity extends ChestBlockEntity {
     }
 
     @Override
-    public void load(CompoundTag compound) {
-        super.load(compound);
+    protected void loadAdditional(final CompoundTag compound, final HolderLookup.Provider registries) {
+        super.loadAdditional(compound, registries);
         unbreakable = compound.getBoolean("unbreakable");
     }
 
     @Override
-    public void saveAdditional(CompoundTag compound) {
-        super.saveAdditional(compound);
+    protected void saveAdditional(final CompoundTag compound, final HolderLookup.Provider registries) {
+        super.saveAdditional(compound, registries);
         compound.putBoolean("unbreakable", unbreakable);
     }
 

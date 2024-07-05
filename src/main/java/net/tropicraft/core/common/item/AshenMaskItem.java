@@ -3,6 +3,8 @@ package net.tropicraft.core.common.item;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -13,7 +15,7 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.PlayerHeadpieceModel;
@@ -24,7 +26,7 @@ import java.util.function.Consumer;
 public class AshenMaskItem extends ArmorItem {
     private final AshenMasks maskType;
 
-    public AshenMaskItem(ArmorMaterial armorMaterial, AshenMasks maskType, Properties properties) {
+    public AshenMaskItem(Holder<ArmorMaterial> armorMaterial, AshenMasks maskType, Properties properties) {
         super(armorMaterial, Type.HELMET, properties);
         this.maskType = maskType;
     }
@@ -78,7 +80,7 @@ public class AshenMaskItem extends ArmorItem {
     }
 
     @Override
-    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-        return TropicraftRenderUtils.getTextureEntity("ashen/mask").toString();
+    public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
+        return TropicraftRenderUtils.getTextureEntity("ashen/mask");
     }
 }

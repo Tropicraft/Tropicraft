@@ -29,10 +29,10 @@ public class PonyBottleItem extends Item {
     }
     
     @Override
-    public int getUseDuration(ItemStack stack) {
+    public int getUseDuration(final ItemStack stack, final LivingEntity entity) {
         return 32;
     }
-    
+
     @Override
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
@@ -51,7 +51,7 @@ public class PonyBottleItem extends Item {
         // Wait for drink sound to start, and don't add air that won't fit
         if (player.getUseItemRemainingTicks() <= 25 && player.getAirSupply() < player.getMaxAirSupply() - fillAmt) {
             player.setAirSupply(player.getAirSupply() + fillAmt);
-            stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(p.getUsedItemHand()));
+            stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(player.getUsedItemHand()));
         }
     }
     

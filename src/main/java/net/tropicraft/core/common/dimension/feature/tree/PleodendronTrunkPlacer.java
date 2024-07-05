@@ -1,6 +1,6 @@
 package net.tropicraft.core.common.dimension.feature.tree;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 public class PleodendronTrunkPlacer extends TrunkPlacer {
-    public static final Codec<PleodendronTrunkPlacer> CODEC = RecordCodecBuilder.create(instance -> {
+    public static final MapCodec<PleodendronTrunkPlacer> CODEC = RecordCodecBuilder.mapCodec(instance -> {
         return trunkPlacerParts(instance)
                 .apply(instance, PleodendronTrunkPlacer::new);
     });

@@ -23,16 +23,6 @@ public class WallItemEntity extends BambooItemFrame {
     }
 
     @Override
-    public int getWidth() {
-        return 16;
-    }
-
-    @Override
-    public int getHeight() {
-        return 16;
-    }
-
-    @Override
     protected void dropItem(@Nullable Entity entityIn, boolean p_146065_2_) {
         super.dropItem(entityIn, false);
         this.remove(RemovalReason.DISCARDED);

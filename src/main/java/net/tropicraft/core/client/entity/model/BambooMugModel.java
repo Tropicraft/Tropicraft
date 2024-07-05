@@ -11,6 +11,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.CommonColors;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -54,12 +55,12 @@ public class BambooMugModel extends Model {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer consumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer consumer, int packedLight, int packedOverlay, int color) {
         for (ModelPart part : parts) {
-            part.render(poseStack, consumer, packedLight, packedOverlay, 1.0f, 1.0f, 1.0f, 1.0f);
+            part.render(poseStack, consumer, packedLight, packedOverlay, CommonColors.WHITE);
         }
         if (liquid != null) {
-            liquid.render(poseStack, consumer, packedLight, packedOverlay, red, green, blue, alpha);
+            liquid.render(poseStack, consumer, packedLight, packedOverlay, color);
         }
     }
 }

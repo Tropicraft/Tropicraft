@@ -1,20 +1,29 @@
 package net.tropicraft.core.common.dimension;
 
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.RegistrySetBuilder;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.data.registries.RegistryPatchGenerator;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomeBuilder;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
 import net.tropicraft.core.common.dimension.carver.TropicraftConfiguredCarvers;
-import net.tropicraft.core.common.dimension.feature.*;
+import net.tropicraft.core.common.dimension.feature.TropicraftMiscFeatures;
+import net.tropicraft.core.common.dimension.feature.TropicraftMiscPlacements;
+import net.tropicraft.core.common.dimension.feature.TropicraftStructureSets;
+import net.tropicraft.core.common.dimension.feature.TropicraftStructures;
+import net.tropicraft.core.common.dimension.feature.TropicraftTreeFeatures;
+import net.tropicraft.core.common.dimension.feature.TropicraftTreePlacements;
+import net.tropicraft.core.common.dimension.feature.TropicraftVegetationFeatures;
+import net.tropicraft.core.common.dimension.feature.TropicraftVegetationPlacements;
 import net.tropicraft.core.common.dimension.feature.jigsaw.TropicraftProcessorLists;
 import net.tropicraft.core.common.dimension.feature.pools.TropicraftTemplatePools;
 import net.tropicraft.core.common.dimension.noise.TropicraftNoiseGenSettings;
 import net.tropicraft.core.common.dimension.noise.TropicraftNoiseRouterData;
+import net.tropicraft.core.common.item.TropicraftJukeboxSongs;
 
-public class TropicraftWorldgenRegistries {
+import java.util.concurrent.CompletableFuture;
+
+public class TropicraftPackRegistries {
     public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
             .add(Registries.CONFIGURED_FEATURE, context -> {
                 TropicraftTreeFeatures.bootstrap(context);
@@ -36,10 +45,10 @@ public class TropicraftWorldgenRegistries {
             .add(Registries.BIOME, TropicraftBiomes::bootstrap)
             .add(Registries.DIMENSION_TYPE, TropicraftDimension::bootstrapDimensionType)
             .add(Registries.LEVEL_STEM, TropicraftDimension::bootstrapLevelStem)
-            .add(Registries.MULTI_NOISE_BIOME_SOURCE_PARAMETER_LIST, TropicraftBiomeBuilder::bootstrap);
+            .add(Registries.MULTI_NOISE_BIOME_SOURCE_PARAMETER_LIST, TropicraftBiomeBuilder::bootstrap)
+            .add(Registries.JUKEBOX_SONG, TropicraftJukeboxSongs::bootstrap);
 
-    public static HolderLookup.Provider createLookup(final HolderLookup.Provider vanillaProvider) {
-        final RegistryAccess.Frozen registryAccess = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
-        return BUILDER.buildPatch(registryAccess, vanillaProvider);
+    public static CompletableFuture<RegistrySetBuilder.PatchedRegistries> createLookup(final CompletableFuture<HolderLookup.Provider> vanillaProvider) {
+        return RegistryPatchGenerator.createLookup(vanillaProvider, BUILDER);
     }
 }

@@ -27,9 +27,9 @@ public class TropiSpiderEggEntity extends EggEntity {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		entityData.define(MOTHER_UNIQUE_ID, Optional.empty());
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(MOTHER_UNIQUE_ID, Optional.empty());
 	}
 
 	@Nullable

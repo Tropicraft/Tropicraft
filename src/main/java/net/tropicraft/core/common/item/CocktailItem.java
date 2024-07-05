@@ -3,8 +3,6 @@ package net.tropicraft.core.common.item;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -19,29 +17,18 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.tropicraft.core.common.drinks.*;
+import net.tropicraft.core.common.drinks.Cocktail;
+import net.tropicraft.core.common.drinks.Drink;
+import net.tropicraft.core.common.drinks.Ingredient;
+import net.tropicraft.core.common.drinks.MixerRecipe;
+import net.tropicraft.core.common.drinks.MixerRecipes;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 public class CocktailItem extends Item {
-
-    private static final int DEFAULT_COLOR = 0xf3be36;
-    
     private final Drink drink;
-
-    // nbt layout:
-    // - byte DrinkID: 0 if no known drink, else the Drink.drinkList index
-    // - int Color: alpha blended mix of colors based on ingredients
-    // - NBTTagList Ingredients
-    //   - byte IngredientID: Ingredient.ingredientList index
-    //   - short Count: count of this ingredient in the mixture, typically 1
 
     public CocktailItem(final Drink drink, final Properties properties) {
         super(properties);
@@ -49,129 +36,54 @@ public class CocktailItem extends Item {
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
-    public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         Drink drink = getDrink(stack);
-
-        if (drink == Drink.COCKTAIL && stack.hasTag() && stack.getTag().contains("Ingredients")) {
-            final ListTag ingredients = stack.getTag().getList("Ingredients", 10);
-    
-            for (int i = 0; i < ingredients.size(); ++i) {
-                CompoundTag ingredient = ingredients.getCompound(i);
-                int id = ingredient.getByte("IngredientID");
-                Component ingredientName = Ingredient.ingredientsList[id].getDisplayName();
-                int ingredientColor = Ingredient.ingredientsList[id].getColor();
-                //String lvl = StatCollector.translateToLocal("enchantment.level." + count);
-                //par3List.add(ingredientName + " " + lvl);
-                tooltip.add(ingredientName);
+        if (drink == Drink.COCKTAIL) {
+            final List<Ingredient> ingredients = getIngredients(stack);
+            for (final Ingredient ingredient : ingredients) {
+                tooltip.add(ingredient.getDisplayName());
             }
         }
     }
 
     public static int getCocktailColor(ItemStack stack) {
-        final CompoundTag tag = stack.getTag();
-        if (tag != null && !tag.isEmpty()) {
-            if (tag.contains("Color")) {
-                return tag.getInt("Color");
-            }
+        final Cocktail cocktail = stack.get(TropicraftDataComponents.COCKTAIL);
+        if (cocktail == null) {
+            return Cocktail.DEFAULT_COLOR;
         }
-        return DEFAULT_COLOR;
+        return cocktail.color();
     }
 
-    public static @Nonnull ItemStack makeCocktail(MixerRecipe recipe) {
+    public static ItemStack makeCocktail(MixerRecipe recipe) {
         final ItemStack stack = MixerRecipes.getItemStack(recipe.getCraftingResult());
-        CompoundTag nbt = new CompoundTag();
         Drink drink = recipe.getCraftingResult();
-        nbt.putByte("DrinkID", (byte) drink.drinkId);
-        ListTag tagList = new ListTag();
-
-        Ingredient primary = null;
-        List<Ingredient> additives = new LinkedList<>();
-
-        for (Ingredient ingredient: recipe.getIngredients()) {
-            CompoundTag ingredientNbt = new CompoundTag();
-            ingredientNbt.putByte("IngredientID", (byte)ingredient.id);
-            tagList.add(ingredientNbt);
-
-            if (ingredient.isPrimary()) {
-                primary = ingredient;
-            } else {
-                additives.add(ingredient);
-            }
-        }
-
-        nbt.put("Ingredients", tagList);
-
-        int color = primary == null ? DEFAULT_COLOR : primary.getColor();
-
-        for (Ingredient additive: additives) {
-            color = ColorMixer.getInstance().alphaBlendRGBA(color, additive.getColor(), additive.getAlpha());
-        }
-
-        nbt.putInt("Color", color);
-
-        stack.setTag(nbt);
+        stack.set(TropicraftDataComponents.COCKTAIL, new Cocktail(
+                drink,
+                List.of(recipe.getIngredients())
+        ));
         return stack;
     }
 
     public static @Nonnull ItemStack makeCocktail(final NonNullList<ItemStack> itemStacks) {
         // TODO fixme this is so ugly ugh
         final ItemStack stack = new ItemStack(TropicraftItems.COCKTAILS.get(Drink.COCKTAIL).get());
-        CompoundTag nbt = new CompoundTag();
-        nbt.putByte("DrinkID", (byte) Drink.COCKTAIL.drinkId);
-        ListTag tagList = new ListTag();
-
-        List<Ingredient> ingredients = new ArrayList<>();
-        for (ItemStack ingredientStack : itemStacks) {
-            ingredients.addAll(Ingredient.listIngredients(ingredientStack));
-        }
-        Collections.sort(ingredients);
-
-        Ingredient primary = null;
-        List<Ingredient> additives = new LinkedList<>();
-
-        for (Ingredient ingredient : ingredients) {
-            CompoundTag ingredientNbt = new CompoundTag();
-            ingredientNbt.putByte("IngredientID", (byte)ingredient.id);
-            tagList.add(ingredientNbt);
-
-            if (ingredient.isPrimary()) {
-                primary = ingredient;
-            } else {
-                additives.add(ingredient);
-            }
-        }
-
-        nbt.put("Ingredients", tagList);
-
-        int color = primary == null ? DEFAULT_COLOR : primary.getColor();
-
-        for (Ingredient additive: additives) {
-            color = ColorMixer.getInstance().alphaBlendRGBA(color, additive.getColor(), additive.getAlpha());
-        }
-
-        nbt.putInt("Color", color);
-
-        stack.setTag(nbt);
+        stack.set(TropicraftDataComponents.COCKTAIL, new Cocktail(
+                Drink.COCKTAIL,
+                itemStacks.stream()
+                        .flatMap(item -> Ingredient.listIngredients(item).stream())
+                        .sorted()
+                        .toList()
+        ));
         return stack;
 
     }
 
-    public static Ingredient[] getIngredients(ItemStack stack) {
-        if (!Drink.isDrink(stack.getItem()) || !stack.hasTag()) {
-            return new Ingredient[0];
+    public static List<Ingredient> getIngredients(ItemStack stack) {
+        final Cocktail cocktail = stack.get(TropicraftDataComponents.COCKTAIL);
+        if (cocktail == null) {
+            return List.of();
         }
-
-        CompoundTag nbt = stack.getTag();
-        ListTag tagList = nbt.getList("Ingredients", 10);
-        Ingredient[] ingredients = new Ingredient[tagList.size()];
-
-        for (int i = 0; i < tagList.size(); ++i) {
-            final int ingredientID = (tagList.getCompound(i)).getByte("IngredientID");
-            ingredients[i] = Ingredient.ingredientsList[ingredientID];
-        }
-
-        return ingredients;
+        return cocktail.ingredients();
     }
 
     @Nullable
@@ -183,7 +95,7 @@ public class CocktailItem extends Item {
     }
 
     @Override
-    public int getUseDuration(ItemStack par1ItemStack) {
+    public int getUseDuration(ItemStack stack, LivingEntity entity) {
         return 32;
     }
 

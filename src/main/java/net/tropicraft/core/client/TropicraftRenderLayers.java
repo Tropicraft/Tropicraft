@@ -1,27 +1,54 @@
 package net.tropicraft.core.client;
 
-import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.client.model.CowModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.tropicraft.Constants;
-import net.tropicraft.core.client.entity.model.*;
+import net.tropicraft.core.client.entity.model.AshenModel;
+import net.tropicraft.core.client.entity.model.BambooMugModel;
+import net.tropicraft.core.client.entity.model.BasiliskLizardModel;
+import net.tropicraft.core.client.entity.model.BeachFloatModel;
+import net.tropicraft.core.client.entity.model.ChairModel;
+import net.tropicraft.core.client.entity.model.CuberaModel;
+import net.tropicraft.core.client.entity.model.EIHMachineModel;
+import net.tropicraft.core.client.entity.model.EIHModel;
+import net.tropicraft.core.client.entity.model.EagleRayModel;
+import net.tropicraft.core.client.entity.model.EggModel;
+import net.tropicraft.core.client.entity.model.FailgullModel;
+import net.tropicraft.core.client.entity.model.FiddlerCrabModel;
+import net.tropicraft.core.client.entity.model.HummingbirdModel;
+import net.tropicraft.core.client.entity.model.IguanaModel;
+import net.tropicraft.core.client.entity.model.JaguarModel;
+import net.tropicraft.core.client.entity.model.KoaModel;
+import net.tropicraft.core.client.entity.model.ManOWarModel;
+import net.tropicraft.core.client.entity.model.MarlinModel;
+import net.tropicraft.core.client.entity.model.PlayerHeadpieceModel;
+import net.tropicraft.core.client.entity.model.SeaTurtleModel;
+import net.tropicraft.core.client.entity.model.SeaUrchinModel;
+import net.tropicraft.core.client.entity.model.SeahorseModel;
+import net.tropicraft.core.client.entity.model.SharkModel;
+import net.tropicraft.core.client.entity.model.SpiderMonkeyModel;
+import net.tropicraft.core.client.entity.model.TapirModel;
+import net.tropicraft.core.client.entity.model.TreeFrogModel;
+import net.tropicraft.core.client.entity.model.TropiBeeModel;
+import net.tropicraft.core.client.entity.model.TropiCreeperModel;
+import net.tropicraft.core.client.entity.model.TropiSkellyModel;
+import net.tropicraft.core.client.entity.model.TropicraftDolphinModel;
+import net.tropicraft.core.client.entity.model.TropicraftFishModel;
+import net.tropicraft.core.client.entity.model.UmbrellaModel;
+import net.tropicraft.core.client.entity.model.VMonkeyModel;
+import net.tropicraft.core.client.entity.model.WhiteLippedPeccaryModel;
 import net.tropicraft.core.client.scuba.ModelScubaGear;
-import net.tropicraft.core.common.item.AshenMaskItem;
-import net.tropicraft.core.common.item.TropicraftItems;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 import java.util.function.Supplier;
 
-@Mod.EventBusSubscriber(modid = Constants.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(modid = Constants.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class TropicraftRenderLayers {
     public static ModelLayerLocation KOA_HUNTER_LAYER;
     public static ModelLayerLocation TROPI_CREEPER_LAYER;
@@ -58,8 +85,8 @@ public class TropicraftRenderLayers {
     public static ModelLayerLocation BAMBOO_CHEST;
     public static ModelLayerLocation BAMBOO_DOUBLE_CHEST_LEFT;
     public static ModelLayerLocation BAMBOO_DOUBLE_CHEST_RIGHT;
-    public static ModelLayerLocation EIHMACHINE_LAYER = new ModelLayerLocation(new ResourceLocation(Constants.MODID, "drink_mixer"), "main");;
-    public static ModelLayerLocation AIRCOMPRESSOR_LAYER = new ModelLayerLocation(new ResourceLocation(Constants.MODID, "air_compressor"), "main");;
+    public static ModelLayerLocation EIHMACHINE_LAYER = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Constants.MODID, "drink_mixer"), "main");;
+    public static ModelLayerLocation AIRCOMPRESSOR_LAYER = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Constants.MODID, "air_compressor"), "main");;
     public static ModelLayerLocation BASILISK_LIZARD_LAYER;
     public static ModelLayerLocation CUBERA_LAYER;
     public static ModelLayerLocation FIDDLER_CRAB_LAYER;
@@ -132,7 +159,7 @@ public class TropicraftRenderLayers {
     }
 
     private static ModelLayerLocation registerMain(String id, Supplier<LayerDefinition> layerDefinition, EntityRenderersEvent.RegisterLayerDefinitions event) {
-        ModelLayerLocation modelLayer = new ModelLayerLocation(new ResourceLocation(Constants.MODID, id), "main");
+        ModelLayerLocation modelLayer = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Constants.MODID, id), "main");
         event.registerLayerDefinition(modelLayer, layerDefinition);
         return modelLayer;
     }

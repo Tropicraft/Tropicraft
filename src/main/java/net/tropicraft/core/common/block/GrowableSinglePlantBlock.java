@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.block;
 
-import com.tterrag.registrate.util.entry.RegistryEntry;
+import com.mojang.serialization.MapCodec;
+import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -20,11 +21,16 @@ import java.util.function.Supplier;
 public final class GrowableSinglePlantBlock extends BushBlock implements BonemealableBlock {
     private static final VoxelShape SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 13.0, 14.0);
 
-    private final Supplier<RegistryEntry<GrowableDoublePlantBlock>> growInto;
+    private final Supplier<BlockEntry<GrowableDoublePlantBlock>> growInto;
 
-    public GrowableSinglePlantBlock(Properties properties, Supplier<RegistryEntry<GrowableDoublePlantBlock>> growInto) {
+    public GrowableSinglePlantBlock(Properties properties, Supplier<BlockEntry<GrowableDoublePlantBlock>> growInto) {
         super(properties);
         this.growInto = growInto;
+    }
+
+    @Override
+    protected MapCodec<GrowableSinglePlantBlock> codec() {
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -33,7 +39,7 @@ public final class GrowableSinglePlantBlock extends BushBlock implements Bonemea
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, boolean isClient) {
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
         return true;
     }
 

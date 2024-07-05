@@ -6,7 +6,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 
@@ -121,7 +125,7 @@ public class KoaModel extends HumanoidModel<EntityKoaBase> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
         poseStack.pushPose();
 
         if (young) {
@@ -157,7 +161,7 @@ public class KoaModel extends HumanoidModel<EntityKoaBase> {
         riding = entity.isSitting() || entity.isPassenger();
         final boolean isDancing = entity.isDancing();
 
-        float ticks = (entity.tickCount + Minecraft.getInstance().getFrameTime()) % 360;
+        float ticks = (entity.tickCount + Minecraft.getInstance().getTimer().getGameTimeDeltaTicks()) % 360;
 
         final float headRot = Mth.cos(ticks * 35F * Mth.DEG_TO_RAD);
         if (isDancing) {

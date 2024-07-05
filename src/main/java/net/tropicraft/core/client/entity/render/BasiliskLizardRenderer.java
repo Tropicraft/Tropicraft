@@ -9,8 +9,8 @@ import net.tropicraft.core.client.entity.model.BasiliskLizardModel;
 import net.tropicraft.core.common.entity.passive.basilisk.BasiliskLizardEntity;
 
 public class BasiliskLizardRenderer extends MobRenderer<BasiliskLizardEntity, BasiliskLizardModel<BasiliskLizardEntity>> {
-    private static final ResourceLocation BROWN_TEXTURE = new ResourceLocation(Constants.MODID, "textures/entity/basilisk_lizard_brown.png");
-    private static final ResourceLocation GREEN_TEXTURE = new ResourceLocation(Constants.MODID, "textures/entity/basilisk_lizard_green.png");
+    private static final ResourceLocation BROWN_TEXTURE = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/basilisk_lizard_brown.png");
+    private static final ResourceLocation GREEN_TEXTURE = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/basilisk_lizard_green.png");
 
     private final ResourceLocation texture;
 

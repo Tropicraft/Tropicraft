@@ -9,7 +9,7 @@ import net.tropicraft.core.client.entity.model.FiddlerCrabModel;
 import net.tropicraft.core.common.entity.passive.FiddlerCrabEntity;
 
 public class FiddlerCrabRenderer extends MobRenderer<FiddlerCrabEntity, FiddlerCrabModel<FiddlerCrabEntity>> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(Constants.MODID, "textures/entity/fiddler_crab.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/fiddler_crab.png");
 
     public FiddlerCrabRenderer(final EntityRendererProvider.Context context) {
         super(context, new FiddlerCrabModel<>(context.bakeLayer(TropicraftRenderLayers.FIDDLER_CRAB_LAYER)), 0.3F);

@@ -18,10 +18,16 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.Cat;
@@ -33,10 +39,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.HitResult;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.entity.ai.TropiCreeperSwellGoal;
-import net.tropicraft.core.common.item.TropicraftItems;
 
 import java.util.Collection;
 
@@ -77,10 +81,10 @@ public class TropiCreeperEntity extends PathfinderMob {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(STATE, -1);
-        this.entityData.define(IGNITED, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(STATE, -1);
+        builder.define(IGNITED, false);
     }
 
     /**
@@ -191,9 +195,7 @@ public class TropiCreeperEntity extends PathfinderMob {
             player.swing(hand);
             if (!this.level().isClientSide) {
                 this.ignite();
-                itemstack.hurtAndBreak(1, player, p -> {
-                    p.broadcastBreakEvent(hand);
-                });
+                itemstack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
                 return InteractionResult.SUCCESS;
             }
         }

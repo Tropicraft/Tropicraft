@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.entity.underdasea;
 
 import net.minecraft.Util;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -23,9 +24,9 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.phys.HitResult;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nullable;
@@ -75,20 +76,16 @@ public class TropicraftTropicalFishEntity extends AbstractSchoolingFish implemen
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        entityData.define(DATA_FISH_TYPE, (byte) 0);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_FISH_TYPE, (byte) 0);
     }
 
     @Override
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficultyInstance, MobSpawnType spawnReason, @Nullable SpawnGroupData entityData, @Nullable CompoundTag nbt) {
-        entityData = super.finalizeSpawn(world, difficultyInstance, spawnReason, entityData, nbt);
-        if (nbt != null && nbt.contains("BucketVariantTag", 3)) {
-            setFishType(FishType.getById(nbt.getInt("BucketVariantTag")));
-        } else {
-            setFishType(FishType.getRandomType(random));
-        }
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficultyInstance, MobSpawnType spawnReason, @Nullable SpawnGroupData entityData) {
+        entityData = super.finalizeSpawn(world, difficultyInstance, spawnReason, entityData);
+        setFishType(FishType.getRandomType(random));
         return entityData;
     }
 
@@ -182,14 +179,18 @@ public class TropicraftTropicalFishEntity extends AbstractSchoolingFish implemen
         setFishType(FishType.getById(compound.getInt("FishType")));
     }
 
-    /**
-     * Add extra data to the bucket that just picked this fish up
-     */
+    @Override
+    public void loadFromBucketTag(CompoundTag nbt) {
+        super.loadFromBucketTag(nbt);
+        if (nbt.contains("BucketVariantTag", 3)) {
+            setFishType(FishType.getById(nbt.getInt("BucketVariantTag")));
+        }
+    }
+
     @Override
     public void saveToBucketTag(final ItemStack bucket) {
         super.saveToBucketTag(bucket);
-        CompoundTag compoundnbt = bucket.getOrCreateTag();
-        compoundnbt.putInt("BucketVariantTag", getFishType().id);
+        CustomData.update(DataComponents.BUCKET_ENTITY_DATA, bucket, nbt -> nbt.putInt("BucketVariantTag", getFishType().id));
     }
 
     private boolean isFishHolder(ItemStack stack) {

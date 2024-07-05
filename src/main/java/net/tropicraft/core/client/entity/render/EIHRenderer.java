@@ -13,9 +13,9 @@ import javax.annotation.Nullable;
 
 public class EIHRenderer extends MobRenderer<EIHEntity, EIHModel> {
 
-    private static final ResourceLocation TEXTURE_SLEEP = new ResourceLocation(Constants.MODID, "textures/entity/eih/headtext.png");
-    private static final ResourceLocation TEXTURE_AWARE = new ResourceLocation(Constants.MODID, "textures/entity/eih/headawaretext.png");
-    private static final ResourceLocation TEXTURE_ANGRY = new ResourceLocation(Constants.MODID, "textures/entity/eih/headangrytext.png");
+    private static final ResourceLocation TEXTURE_SLEEP = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/eih/headtext.png");
+    private static final ResourceLocation TEXTURE_AWARE = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/eih/headawaretext.png");
+    private static final ResourceLocation TEXTURE_ANGRY = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/eih/headangrytext.png");
 
     public EIHRenderer(final EntityRendererProvider.Context context) {
         super(context, new EIHModel(context.bakeLayer(TropicraftRenderLayers.EIH_LAYER)), 1.2F);

@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.dimension.feature.tree.mangrove;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.ints.IntArrayFIFOQueue;
 import net.minecraft.core.BlockPos;
@@ -28,7 +29,7 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
-    public static final Codec<MangroveTrunkPlacer> CODEC = RecordCodecBuilder.create(i -> trunkPlacerParts(i).and(i.group(
+    public static final MapCodec<MangroveTrunkPlacer> CODEC = RecordCodecBuilder.mapCodec(i -> trunkPlacerParts(i).and(i.group(
             BlockStateProvider.CODEC.fieldOf("roots_block").forGetter(c -> c.rootsBlock),
             Codec.BOOL.fieldOf("can_generate_raised").forGetter(c -> c.canGenerateRaised),
             Codec.BOOL.fieldOf("tea_mangrove").forGetter(c -> c.teaMangrove)

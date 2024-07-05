@@ -16,9 +16,9 @@ public abstract class MachineModel<T extends BlockEntity & IMachineBlock> extend
     public abstract Iterable<ModelPart> getParts();
 
     @Override
-    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, int color) {
         getParts().forEach((part) -> {
-            part.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+            part.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, color);
         });
     }
 }

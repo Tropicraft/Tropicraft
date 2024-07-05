@@ -24,8 +24,4 @@ public abstract class EchinodermEggEntity extends EggEntity {
         return 0;
     }
     
-    @Override
-    public boolean canBreatheUnderwater() {
-        return true;
-    }
 }

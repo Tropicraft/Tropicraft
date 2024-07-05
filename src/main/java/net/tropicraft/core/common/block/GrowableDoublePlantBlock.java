@@ -1,12 +1,13 @@
 package net.tropicraft.core.common.block;
 
+import com.mojang.serialization.MapCodec;
+import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -23,21 +24,26 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public final class GrowableDoublePlantBlock extends DoublePlantBlock implements BonemealableBlock {
-    private final Supplier<RegistryEntry<HugePlantBlock>> growInto;
-    private Supplier<RegistryEntry<? extends ItemLike>> pickItem;
+    private final Supplier<BlockEntry<HugePlantBlock>> growInto;
+    private Supplier<RegistryEntry<? extends ItemLike, ? extends ItemLike>> pickItem;
 
-    public GrowableDoublePlantBlock(Properties properties, Supplier<RegistryEntry<HugePlantBlock>> growInto) {
+    public GrowableDoublePlantBlock(Properties properties, Supplier<BlockEntry<HugePlantBlock>> growInto) {
         super(properties);
         this.growInto = growInto;
     }
 
-    public GrowableDoublePlantBlock setPickItem(Supplier<RegistryEntry<? extends ItemLike>> item) {
+    public GrowableDoublePlantBlock setPickItem(Supplier<RegistryEntry<? extends ItemLike, ? extends ItemLike>> item) {
         this.pickItem = item;
         return this;
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, boolean isClient) {
+    public MapCodec<? extends DoublePlantBlock> codec() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
         return true;
     }
 
@@ -67,10 +73,10 @@ public final class GrowableDoublePlantBlock extends DoublePlantBlock implements 
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
         if (this.pickItem != null) {
             return new ItemStack(this.pickItem.get().get());
         }
-        return super.getCloneItemStack(state, target, world, pos, player);
+        return super.getCloneItemStack(state, target, level, pos, player);
     }
 }

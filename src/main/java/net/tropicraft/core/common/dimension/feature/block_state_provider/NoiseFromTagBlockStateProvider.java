@@ -1,6 +1,6 @@
 package net.tropicraft.core.common.dimension.feature.block_state_provider;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -18,7 +18,7 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProviderType;
 
 public final class NoiseFromTagBlockStateProvider extends BlockStateProvider {
-    public static final Codec<NoiseFromTagBlockStateProvider> CODEC = RecordCodecBuilder.create(i -> i.group(
+    public static final MapCodec<NoiseFromTagBlockStateProvider> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
             RegistryCodecs.homogeneousList(Registries.BLOCK).fieldOf("blocks").forGetter(o -> o.blocks)
     ).apply(i, NoiseFromTagBlockStateProvider::new));
 

@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.dimension.feature;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -11,14 +12,17 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
+import net.minecraft.world.level.levelgen.structure.pools.DimensionPadding;
 import net.minecraft.world.level.levelgen.structure.pools.JigsawPlacement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
+import net.minecraft.world.level.levelgen.structure.pools.alias.PoolAliasLookup;
+import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
 
 import java.util.Optional;
 
 // TODO: Try to not be special
 public class KoaVillageStructure extends Structure {
-    public static final Codec<KoaVillageStructure> CODEC = RecordCodecBuilder.create(i -> i.group(
+    public static final MapCodec<KoaVillageStructure> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
             settingsCodec(i),
             StructureTemplatePool.CODEC.fieldOf("start_pool").forGetter(s -> s.startPool),
             Codec.intRange(0, 7).fieldOf("size").forGetter(s -> s.maxDepth)
@@ -54,7 +58,7 @@ public class KoaVillageStructure extends Structure {
         if (!isFeatureChunk(context, startPos)) {
             return Optional.empty();
         }
-        return JigsawPlacement.addPieces(context, startPool, Optional.empty(), maxDepth, startPos, true, Optional.of(Heightmap.Types.WORLD_SURFACE_WG), 80);
+        return JigsawPlacement.addPieces(context, startPool, Optional.empty(), maxDepth, startPos, true, Optional.of(Heightmap.Types.WORLD_SURFACE_WG), 80, PoolAliasLookup.EMPTY, DimensionPadding.ZERO, LiquidSettings.APPLY_WATERLOGGING);
     }
 
     @Override

@@ -2,32 +2,33 @@ package net.tropicraft.core.common.block.tileentity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.tropicraft.core.common.block.DrinkMixerBlock;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.Drinks;
 import net.tropicraft.core.common.drinks.Ingredient;
 import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.item.CocktailItem;
-import net.tropicraft.core.common.network.TropicraftPackets;
-import net.tropicraft.core.common.network.message.MessageMixerInventory;
-import net.tropicraft.core.common.network.message.MessageMixerStart;
+import net.tropicraft.core.common.network.message.ClientboundMixerInventoryPacket;
+import net.tropicraft.core.common.network.message.ClientboundMixerStartPacket;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock {
@@ -48,38 +49,43 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
     }
 
     @Override
-    public void load(@Nonnull CompoundTag nbt) {
-        super.load(nbt);
+    protected void loadAdditional(final CompoundTag nbt, final HolderLookup.Provider registries) {
+        super.loadAdditional(nbt, registries);
         ticks = nbt.getInt("MixTicks");
         mixing = nbt.getBoolean("Mixing");
 
         for (int i = 0; i < MAX_NUM_INGREDIENTS; i++) {
             if (nbt.contains("Ingredient" + i)) {
-                ingredients.set(i, ItemStack.of(nbt.getCompound("Ingredient" + i)));
+                ingredients.set(i, ItemStack.parse(registries, nbt.getCompound("Ingredient" + i)).orElse(ItemStack.EMPTY));
+            } else {
+                ingredients.set(i, ItemStack.EMPTY);
             }
         }
 
         if (nbt.contains("Result")) {
-            result = ItemStack.of(nbt.getCompound("Result"));
+            result = ItemStack.parse(registries, nbt.getCompound("Result")).orElse(ItemStack.EMPTY);
+        } else {
+            result = ItemStack.EMPTY;
         }
     }
 
     @Override
-    public void saveAdditional(@Nonnull CompoundTag nbt) {
-        super.saveAdditional(nbt);
+    protected void saveAdditional(final CompoundTag nbt, final HolderLookup.Provider registries) {
+        super.saveAdditional(nbt, registries);
 
         nbt.putInt("MixTicks", ticks);
         nbt.putBoolean("Mixing", mixing);
 
         for (int i = 0; i < MAX_NUM_INGREDIENTS; i++) {
-            CompoundTag ingredientNbt = new CompoundTag();
-            ingredients.get(i).save(ingredientNbt);
-            nbt.put("Ingredient" + i, ingredientNbt);
+            final ItemStack item = ingredients.get(i);
+            if (!item.isEmpty()) {
+                nbt.put("Ingredient" + i, item.save(registries, new CompoundTag()));
+            }
         }
 
-        CompoundTag resultNbt = new CompoundTag();
-        result.save(resultNbt);
-        nbt.put("Result", resultNbt);
+        if (!result.isEmpty()) {
+            nbt.put("Result", result.save(registries, new CompoundTag()));
+        }
     }
 
     public static void mixTick(Level level, BlockPos pos, BlockState state, DrinkMixerBlockEntity mixer) {
@@ -107,7 +113,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         List<Ingredient> is = new ArrayList<>();
 
         if (Drink.isDrink(stack.getItem())) {
-            Collections.addAll(is, CocktailItem.getIngredients(stack));
+            is.addAll(CocktailItem.getIngredients(stack));
         } else {
             final Ingredient i = Ingredient.findMatchingIngredient(stack);
             if (i != null) {
@@ -121,8 +127,8 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
     public void startMixing() {
         this.ticks = 0;
         this.mixing = true;
-        if (!level.isClientSide) {
-            TropicraftPackets.CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(getBlockPos())), new MessageMixerStart(getBlockPos()));
+        if (level instanceof ServerLevel serverLevel) {
+            PacketDistributor.sendToPlayersTrackingChunk(serverLevel, new ChunkPos(getBlockPos()), new ClientboundMixerStartPacket(getBlockPos()));
         }
     }
 
@@ -265,23 +271,14 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         return state.getValue(DrinkMixerBlock.FACING);
     }
 
-    /**
-     * Called when you receive a TileEntityData packet for the location this
-     * TileEntity is currently in. On the client, the NetworkManager will always
-     * be the remote server. On the server, it will be whomever is responsible for
-     * sending the packet.
-     *
-     * @param net The NetworkManager the packet originated from
-     * @param pkt The data packet
-     */
     @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        load(pkt.getTag());
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider registries) {
+        loadAdditional(pkt.getTag(), registries);
     }
 
     protected void syncInventory() {
-        if (!level.isClientSide) {
-            TropicraftPackets.CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(getBlockPos())), new MessageMixerInventory(this));
+        if (level instanceof ServerLevel serverLevel) {
+            PacketDistributor.sendToPlayersTrackingChunk(serverLevel, new ChunkPos(getBlockPos()), new ClientboundMixerInventoryPacket(this));
         }
     }
 
@@ -292,12 +289,12 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        return writeItems(new CompoundTag());
+    public CompoundTag getUpdateTag(final HolderLookup.Provider registries) {
+        return writeItems(new CompoundTag(), registries);
     }
 
-    private CompoundTag writeItems(final CompoundTag nbt) {
-        this.saveAdditional(nbt);
+    private CompoundTag writeItems(final CompoundTag nbt, final HolderLookup.Provider registries) {
+        this.saveAdditional(nbt, registries);
         return nbt;
     }
 

@@ -20,6 +20,7 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.animal.Cow;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -28,10 +29,9 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.IForgeShearable;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.common.IShearable;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.block.TropicraftFlower;
 import net.tropicraft.core.common.drinks.Drink;
@@ -39,12 +39,11 @@ import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.item.CocktailItem;
 import net.tropicraft.core.common.item.TropicraftItems;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CowktailEntity extends Cow implements IForgeShearable {
+public class CowktailEntity extends Cow implements IShearable {
 	private static final EntityDataAccessor<String> COWKTAIL_TYPE = SynchedEntityData.defineId(CowktailEntity.class, EntityDataSerializers.STRING);
 
 	public CowktailEntity(EntityType<? extends CowktailEntity> type, Level worldIn) {
@@ -57,9 +56,9 @@ public class CowktailEntity extends Cow implements IForgeShearable {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.entityData.define(COWKTAIL_TYPE, Type.IRIS.name);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(COWKTAIL_TYPE, Type.IRIS.name);
 	}
 
 	@Override
@@ -70,9 +69,9 @@ public class CowktailEntity extends Cow implements IForgeShearable {
 				itemstack.shrink(1);
 			}
 
-			final List<RegistryEntry<CocktailItem>> cocktails = new ArrayList<>(TropicraftItems.COCKTAILS.values());
+			final List<RegistryEntry<Item, CocktailItem>> cocktails = new ArrayList<>(TropicraftItems.COCKTAILS.values());
 			// Remove generic cocktail from cowktail
-			cocktails.removeIf(cocktail -> cocktail.isPresent() && cocktail.get().getDrink() == Drink.COCKTAIL);
+			cocktails.removeIf(cocktail -> cocktail.isBound() && cocktail.get().getDrink() == Drink.COCKTAIL);
 			final ItemStack cocktailItem = new ItemStack(cocktails.get(random.nextInt(cocktails.size())).get());
 
 			if (itemstack.isEmpty()) {
@@ -132,13 +131,12 @@ public class CowktailEntity extends Cow implements IForgeShearable {
 	}
 
 	@Override
-	public boolean isShearable(@Nonnull ItemStack item, Level world, BlockPos pos) {
-		return !this.isBaby();
+	public boolean isShearable(@Nullable final Player player, final ItemStack item, final Level level, final BlockPos pos) {
+		return !isBaby();
 	}
 
-	@Nonnull
 	@Override
-	public List<ItemStack> onSheared(@Nullable Player player, @Nonnull ItemStack item, Level world, BlockPos pos, int fortune) {
+	public List<ItemStack> onSheared(@Nullable final Player player, final ItemStack item, final Level level, final BlockPos pos) {
 		java.util.List<ItemStack> ret = new java.util.ArrayList<>();
         this.level().addParticle(ParticleTypes.EXPLOSION, this.getX(), this.getY(0.5D), this.getZ(), 0.0D, 0.0D, 0.0D);
 		if (!this.level().isClientSide) {
@@ -162,9 +160,9 @@ public class CowktailEntity extends Cow implements IForgeShearable {
 
 	@Override
 	@Nullable
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficultyInstance, MobSpawnType spawnReason, @Nullable SpawnGroupData data, @Nullable CompoundTag nbt) {
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficultyInstance, MobSpawnType spawnReason, @Nullable SpawnGroupData data) {
 		setCowktailType(Type.getRandomType(random));
-		return super.finalizeSpawn(world, difficultyInstance, spawnReason, data, nbt);
+		return super.finalizeSpawn(world, difficultyInstance, spawnReason, data);
 	}
 
 	public enum Type {

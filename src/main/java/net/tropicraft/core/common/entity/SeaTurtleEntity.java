@@ -19,19 +19,30 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ExperienceOrb;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.BreedGoal;
 import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.animal.Turtle;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.*;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ForgeMod;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 import net.tropicraft.core.common.entity.egg.SeaTurtleEggEntity;
 import org.jetbrains.annotations.Nullable;
@@ -55,7 +66,6 @@ public class SeaTurtleEntity extends Turtle {
 
     public SeaTurtleEntity(EntityType<? extends Turtle> type, Level world) {
         super(type, world);
-        setMaxUpStep(1.0f);
     }
 
     @Override
@@ -64,26 +74,16 @@ public class SeaTurtleEntity extends Turtle {
     }
 
     @Override
-    public boolean canBreatheUnderwater() {
-        return true;
-    }
-
-    @Override
-    public MobType getMobType() {
-        return MobType.WATER;
-    }
-
-    @Override
     protected float nextStep() {
         return this.moveDist + 0.15F;
     }
 
-    @Override
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficultyInstance, MobSpawnType spawnReason, @Nullable SpawnGroupData data, @Nullable CompoundTag nbt) {
+    @Override
+    public SpawnGroupData finalizeSpawn(final ServerLevelAccessor level, final DifficultyInstance difficulty, final MobSpawnType spawnType, @Nullable final SpawnGroupData spawnGroupData) {
         setRandomTurtleType();
         this.lastPosY = getY();
-        return super.finalizeSpawn(world, difficultyInstance, spawnReason, data, nbt);
+        return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
     }
 
     @Override
@@ -107,14 +107,14 @@ public class SeaTurtleEntity extends Turtle {
     }
 
     @Override
-    public void defineSynchedData() {
-        super.defineSynchedData();
-        getEntityData().define(IS_MATURE, true);
-        getEntityData().define(TURTLE_TYPE, 1);
-        getEntityData().define(NO_BRAKES, false);
-        getEntityData().define(CAN_FLY, false);
-        getEntityData().define(IS_DIGGING, false);
-        getEntityData().define(HAS_EGG, false);
+    protected void defineSynchedData(final SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(IS_MATURE, true);
+        builder.define(TURTLE_TYPE, 1);
+        builder.define(NO_BRAKES, false);
+        builder.define(CAN_FLY, false);
+        builder.define(IS_DIGGING, false);
+        builder.define(HAS_EGG, false);
     }
 
     @Override
@@ -194,11 +194,6 @@ public class SeaTurtleEntity extends Turtle {
 
     public static boolean canSpawnOnLand(EntityType<SeaTurtleEntity> turtle, LevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource rand) {
         return pos.getY() < TropicraftDimension.getSeaLevel(world) + 4 && world.getBlockState(pos.below()).getBlock() == Blocks.SAND && world.getRawBrightness(pos, 0) > 8;
-    }
-
-    @Override
-    public double getPassengersRidingOffset() {
-        return super.getPassengersRidingOffset() - 0.1;
     }
 
     @Nullable
@@ -333,7 +328,7 @@ public class SeaTurtleEntity extends Turtle {
         yRotO = yBodyRot = yHeadRot = getYRot();
 
         if (!isInWater()) {
-            double gravity = getAttribute(ForgeMod.ENTITY_GRAVITY.get()).getValue();
+            double gravity = getGravity();
             if (getCanFly()) {
                 setDeltaMovement(getDeltaMovement().add(0, -gravity * 0.05, 0));
             } else {

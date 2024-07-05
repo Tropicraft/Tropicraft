@@ -1,6 +1,6 @@
 package net.tropicraft.core.common.dimension.feature.jigsaw;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import javax.annotation.Nullable;
 
 public class StructureVoidProcessor extends StructureProcessor {
-    public static final Codec<StructureVoidProcessor> CODEC = Codec.unit(new StructureVoidProcessor());
+    public static final MapCodec<StructureVoidProcessor> CODEC = MapCodec.unit(new StructureVoidProcessor());
 
     @Override
     public StructureBlockInfo process(LevelReader world, BlockPos pos, BlockPos p_230386_3_, StructureBlockInfo originalInfo, StructureBlockInfo blockInfo, StructurePlaceSettings placementSettings, @Nullable StructureTemplate template) {

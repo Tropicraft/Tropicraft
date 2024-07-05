@@ -1,10 +1,8 @@
 plugins {
     id 'eclipse'
     id 'idea'
-    id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
-    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
-    id 'org.spongepowered.mixin' version '0.7+'
+    id 'java-library'
+    id 'net.neoforged.gradle.userdev' version '7.0.145'
 }
 
 jarJar.enable()
@@ -13,8 +11,6 @@ group = 'net.tropicraft'
 base {
     archivesName = 'Tropicraft'
 }
-
-boolean dev = System.getenv('RELEASE') == null || System.getenv('RELEASE').equals('false');
 
 ext.buildnumber = 0
 
@@ -28,101 +24,59 @@ if (System.getenv('GHA_RELEASE_WORKFLOW')) {
     version = "${mod_version}-${release_type}+${buildnumber}"
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+runs {
+    configureEach {
+        workingDirectory project.file('run')
+
+        systemProperty 'forge.logging.markers', 'REGISTRIES'
+        systemProperty 'forge.logging.console.level', 'debug'
+
+        modSource project.sourceSets.main
+    }
+
+    client {
+        programArguments.addAll '--username', 'Dev###'
+    }
+
+    server {
+        programArgument '--nogui'
+    }
+
+    data {
+        programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+    }
+}
 
 minecraft {
-    mappings channel: 'parchment', version: parchment_version
+    accessTransformers {
+        file('src/main/resources/META-INF/accesstransformer.cfg')
+    }
+}
 
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-
-    runs {
-        configureEach {
-            copyIdeResources = true
-
-            workingDirectory project.file('run')
-
-            property 'forge.logging.markers', 'REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', 'debug'
-            arg "-mixin.config=tropicraft.mixins.json"
-
-            mods {
-                tropicraft {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        client {
-        	taskName 'tropicraft_client'
-        }
-
-        server {
-        	taskName 'tropicraft_server'
-        }
-
-        data {
-        	taskName 'tropicraft_data'
-            environment 'target', 'fmluserdevdata'
-
-			args '--mod', 'tropicraft', '--all', '--output', '"' + rootProject.file('src/generated/resources/') + '"',
-				 '--existing', '"' + sourceSets.main.resources.srcDirs[0] + '"'
-
-        }
+subsystems {
+    parchment {
+        minecraftVersion = minecraft_version
+        mappingsVersion = parchment_version
     }
 }
 
 sourceSets.main.resources {
-	srcDir 'src/generated/resources'
+    srcDir 'src/generated/resources'
 }
 
 repositories {
-    maven {
-        url "https://maven.tterrag.com/"
-    }
-	mavenLocal()
+    maven { url = "https://maven.ithundxr.dev/snapshots/" }
+    mavenLocal()
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    implementation "net.neoforged:neoforge:${neo_version}"
 
-    jarJar(implementation(fg.deobf("com.tterrag.registrate:Registrate:MC1.20-${registrate_version}"))) {
-        jarJar.ranged(it, "[MC1.20-${registrate_version},MC1.21)")
+    jarJar(implementation("com.tterrag.registrate:Registrate:MC1.21-${registrate_version}")) {
+        jarJar.ranged(it, "[MC1.21-${registrate_version},MC1.22)")
     }
-
-    if (System.getProperty("idea.sync.active") != "true") {
-        annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-    }
-}
-
-tasks.named('jar', Jar).configure {
-    manifest {
-        attributes([
-            "Specification-Title": "tropicraftmod",
-            "Specification-Vendor": "Tropicraft",
-            "Specification-Version": "1", // We are version 1 of ourselves
-            "Implementation-Title": project.name,
-            "Implementation-Version": project.jar.archiveVersion,
-            "Implementation-Vendor" :"Tropicraft",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-            "MixinConfigs": "tropicraft.mixins.json"
-        ])
-    }
-
-    archiveClassifier = 'slim'
-    finalizedBy 'reobfJar'
-}
-
-tasks.named('jarJar').configure {
-    archiveClassifier = ''
-    finalizedBy 'reobfJarJar'
-}
-
-reobf {
-    jarJar { }
-}
-
-mixin {
-    add sourceSets.main, "tropicraft.refmap.json"
 }
 
 tasks.named('processResources', ProcessResources).configure {
@@ -131,11 +85,18 @@ tasks.named('processResources', ProcessResources).configure {
     ]
     inputs.properties replaceProperties
 
-    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
-        expand replaceProperties + [project: project]
+    filesMatching(['META-INF/neoforge.mods.toml']) {
+        expand replaceProperties
     }
 }
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+}
+
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
 }

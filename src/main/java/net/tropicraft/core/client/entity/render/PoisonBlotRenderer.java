@@ -8,8 +8,9 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.util.CommonColors;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.common.entity.projectile.PoisonBlotEntity;
 
@@ -38,12 +39,12 @@ public class PoisonBlotRenderer extends EntityRenderer<PoisonBlotEntity> {
     }
 
     private static void vertex(PoseStack.Pose pose, VertexConsumer buffer, float x, float y, float u, float v, int light) {
-        buffer.vertex(pose.pose(), x, y, 0f)
-                .color(255, 255, 255, 255)
-                .uv(u, v)
-                .overlayCoords(OverlayTexture.NO_OVERLAY)
-                .uv2(light)
-                .normal(pose.normal(), 0f, 0f, 1f).endVertex();
+        buffer.addVertex(pose, x, y, 0f)
+                .setColor(CommonColors.WHITE)
+                .setUv(u, v)
+                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .setLight(light)
+                .setNormal(pose, 0f, 0f, 1f);
     }
 
     @Nullable

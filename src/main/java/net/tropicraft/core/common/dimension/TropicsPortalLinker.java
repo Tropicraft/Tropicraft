@@ -1,41 +1,32 @@
 package net.tropicraft.core.common.dimension;
 
-import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
-import it.unimi.dsi.fastutil.longs.Long2ObjectMaps;
-import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.objects.ObjectIterator;
+import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.SectionPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.TicketType;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.portal.PortalInfo;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.util.ITeleporter;
 import net.tropicraft.core.common.block.TikiTorchBlock;
 import net.tropicraft.core.common.block.TropicraftBlocks;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
 
 // TODO: this could do with some significant rethinking & refactoring!
-public class TropicsTeleporter implements ITeleporter {
-    private static final Logger LOGGER = LogManager.getLogger("tropics portal");
+public class TropicsPortalLinker {
+    private static final Logger LOGGER = LogUtils.getLogger();
 
     private static final Block PORTAL_WALL_BLOCK = Blocks.SANDSTONE; // todo tropics portal
     private static final Block PORTAL_BLOCK = TropicraftBlocks.PORTAL_WATER.get();
@@ -43,44 +34,25 @@ public class TropicsTeleporter implements ITeleporter {
 
     private final ServerLevel world;
 
-    /**
-     * Stores successful portal placement locations for rapid lookup.
-     */
-
-    private final Long2ObjectMap<PortalPosition> destinationCoordinateCache = new Long2ObjectOpenHashMap<>(4096);
-
-    static final record PortalPosition(BlockPos pos, long lastUpdateTime) {
-        public PortalPosition touch(long time) {
-            return new PortalPosition(this.pos, time);
-        }
-    }
-
-    public TropicsTeleporter(ServerLevel world) {
+    public TropicsPortalLinker(ServerLevel world) {
         this.world = world;
     }
 
     @Nullable
-    @Override
-    public PortalInfo getPortalInfo(Entity entity, ServerLevel destWorld, Function<ServerLevel, PortalInfo> defaultPortalInfo) {
+    public PortalInfo findOrCreatePortal(Entity entity) {
         long startTime = System.currentTimeMillis();
-        PortalInfo portalInfo = placeInExistingPortal(entity);
-
+        PortalInfo portalInfo = findExistingPortal(entity);
         if (portalInfo == null) {
             makePortal(entity);
-
-            long finishTime = System.currentTimeMillis();
-            LOGGER.debug("It took {} seconds for TeleporterTropics.placeInPortal to complete", (finishTime - startTime) / 1000.0F);
-
-            return placeInExistingPortal(entity);
-        } else {
-            long finishTime = System.currentTimeMillis();
-            LOGGER.debug("It took {} seconds for TeleporterTropics.placeInPortal to complete", (finishTime - startTime) / 1000.0F);
-
-            return portalInfo;
+            // TODO: We just created the portal, why do we need to scan for it again?
+            portalInfo = findExistingPortal(entity);
         }
+        long finishTime = System.currentTimeMillis();
+        LOGGER.debug("It took {} seconds for TeleporterTropics.placeInPortal to complete", (finishTime - startTime) / 1000.0F);
+        return portalInfo;
     }
 
-    public PortalInfo placeInExistingPortal(Entity entity) {
+    private PortalInfo findExistingPortal(Entity entity) {
         int searchArea = 148;
         double closestPortalDistance = -1D;
         int foundX = 0;
@@ -88,43 +60,34 @@ public class TropicsTeleporter implements ITeleporter {
         int foundZ = 0;
         int entityX = Mth.floor(entity.getOnPos().getX());
         int entityZ = Mth.floor(entity.getOnPos().getZ());
-        BlockPos blockpos = BlockPos.ZERO;
-        boolean notInCache = true;
 
-        long queryPos = ChunkPos.asLong(entityX, entityZ);
+        // TODO: Use POIs to speed up scan
+        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
 
-        if (destinationCoordinateCache.containsKey(queryPos)) {
-            PortalPosition portal = destinationCoordinateCache.get(queryPos);
-            closestPortalDistance = 0.0D;
-            blockpos = portal.pos;
-            destinationCoordinateCache.put(queryPos, portal.touch(world.getGameTime()));
-            notInCache = false;
-        } else {
-            BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+        for (int x = entityX - searchArea; x <= entityX + searchArea; x++) {
+            double distX = x + 0.5D - entity.getOnPos().getX();
 
-            for (int x = entityX - searchArea; x <= entityX + searchArea; x++) {
-                double distX = x + 0.5D - entity.getOnPos().getX();
+            for (int z = entityZ - searchArea; z <= entityZ + searchArea; z++) {
+                double distZ = z + 0.5D - entity.getOnPos().getZ();
 
-                for (int z = entityZ - searchArea; z <= entityZ + searchArea; z++) {
-                    double distZ = z + 0.5D - entity.getOnPos().getZ();
+                LevelChunk chunk = world.getChunk(SectionPos.blockToSectionCoord(x), SectionPos.blockToSectionCoord(z));
 
-                    for (int y = world.getMaxBuildHeight() - 1; y >= 0; y--) {
-                        mutablePos.set(x, y, z);
-                        if (world.getBlockState(mutablePos).getBlock() == PORTAL_BLOCK) {
+                for (int y = chunk.getHeight(Heightmap.Types.WORLD_SURFACE, x, z); y >= chunk.getMinBuildHeight(); y--) {
+                    mutablePos.set(x, y, z);
+                    if (chunk.getBlockState(mutablePos).is(PORTAL_BLOCK)) {
+                        mutablePos.move(Direction.DOWN);
+                        while (chunk.getBlockState(mutablePos).is(PORTAL_BLOCK)) {
+                            --y;
                             mutablePos.move(Direction.DOWN);
-                            while (world.getBlockState(mutablePos).getBlock() == PORTAL_BLOCK) {
-                                --y;
-                                mutablePos.move(Direction.DOWN);
-                            }
+                        }
 
-                            double distY = y + 0.5D - mutablePos.getY();
-                            double distance = distX * distX + distY * distY + distZ * distZ;
-                            if (closestPortalDistance < 0.0D || distance < closestPortalDistance) {
-                                closestPortalDistance = distance;
-                                foundX = x;
-                                foundY = y;
-                                foundZ = z;
-                            }
+                        double distY = y + 0.5D - mutablePos.getY();
+                        double distance = distX * distX + distY * distY + distZ * distZ;
+                        if (closestPortalDistance < 0.0D || distance < closestPortalDistance) {
+                            closestPortalDistance = distance;
+                            foundX = x;
+                            foundY = y;
+                            foundZ = z;
                         }
                     }
                 }
@@ -132,10 +95,6 @@ public class TropicsTeleporter implements ITeleporter {
         }
 
         if (closestPortalDistance >= 0.0D) {
-            if (notInCache) {
-                this.destinationCoordinateCache.put(queryPos, new PortalPosition(blockpos, this.world.getGameTime()));
-            }
-
             double newLocX = foundX + 0.5D;
             double newLocY = foundY + 0.5D;
             double newLocZ = foundZ + 0.5D;
@@ -147,13 +106,13 @@ public class TropicsTeleporter implements ITeleporter {
             if (world.getBlockState(pos.north()).getBlock() == PORTAL_BLOCK) newLocZ -= 0.5D;
             if (world.getBlockState(pos.south()).getBlock() == PORTAL_BLOCK) newLocZ += 0.5D;
 
-            return new PortalInfo(new Vec3(newLocX, newLocY + 2, newLocZ), Vec3.ZERO, entity.getYRot(), entity.getXRot());
+            return new PortalInfo(new Vec3(newLocX, newLocY + 2, newLocZ), entity.getYRot(), entity.getXRot());
         } else {
             return null;
         }
     }
 
-    public boolean makePortal(Entity entity) {
+    private boolean makePortal(Entity entity) {
         int searchArea = 16;
         double closestSpot = -1D;
         int entityX = Mth.floor(entity.getX());
@@ -305,7 +264,7 @@ public class TropicsTeleporter implements ITeleporter {
      * @return The terrain height at the specified coordinates
      */
 
-    public int getTerrainHeightAt(int x, int z) {
+    private int getTerrainHeightAt(int x, int z) {
         LevelChunk chunk2 = world.getChunk(x >> 4, z >> 4);
         int worldSpawnY = chunk2.getHeight(Heightmap.Types.WORLD_SURFACE, x & 15, z & 15);
 
@@ -320,7 +279,7 @@ public class TropicsTeleporter implements ITeleporter {
         return 0;
     }
 
-    public void buildTeleporterAt(int x, int y, int z) {
+    private void buildTeleporterAt(int x, int y, int z) {
         y = Math.max(y, 9);
 
         for (int yOffset = 4; yOffset >= -7; yOffset--) {
@@ -364,29 +323,6 @@ public class TropicsTeleporter implements ITeleporter {
         }
     }
 
-    public void tick(long worldTime) {
-        if (worldTime % 100L == 0L) {
-            this.pruneCoordinateCache(worldTime);
-        }
-    }
-
-    private void pruneCoordinateCache(long gameTime) {
-        long sinceTime = gameTime - 300L;
-
-        ObjectIterator<Long2ObjectMap.Entry<PortalPosition>> iterator = Long2ObjectMaps.fastIterator(this.destinationCoordinateCache);
-        while (iterator.hasNext()) {
-            Long2ObjectMap.Entry<PortalPosition> entry = iterator.next();
-            PortalPosition position = entry.getValue();
-            if (position.lastUpdateTime < sinceTime) {
-                ChunkPos columnPos = new ChunkPos(entry.getLongKey());
-                DimensionType dimension = this.world.getLevel().dimensionType();
-                LOGGER.debug("Removing tropics portal ticket for {}:{}", dimension, columnPos);
-                this.world.getChunkSource().addRegionTicket(TicketType.PORTAL, columnPos, 3, position.pos);
-                iterator.remove();
-            }
-        }
-    }
-
     /**
      * TODO why in the world is this a thing?
      *
@@ -396,9 +332,16 @@ public class TropicsTeleporter implements ITeleporter {
     private List<BlockState> getValidBuildBlocks() {
         return Arrays.asList(
                 Blocks.SAND.defaultBlockState(),
-                Blocks.GRASS.defaultBlockState(),
+                Blocks.GRASS_BLOCK.defaultBlockState(),
                 Blocks.DIRT.defaultBlockState(),
                 TropicraftBlocks.PURIFIED_SAND.get().defaultBlockState());
+    }
+
+    public record PortalInfo(
+            Vec3 position,
+            float yRot,
+            float xRot
+    ) {
     }
 }
 

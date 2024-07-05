@@ -1,14 +1,18 @@
 package net.tropicraft.core.common.dimension.feature;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
-import net.minecraft.world.level.levelgen.placement.*;
+import net.minecraft.world.level.levelgen.placement.BiomeFilter;
+import net.minecraft.world.level.levelgen.placement.CountPlacement;
+import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
+import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.tropicraft.Constants;
 
 import java.util.List;
@@ -31,7 +35,7 @@ public final class TropicraftMiscPlacements {
 
     public static final ResourceKey<PlacedFeature> SHAKA = createKey("shaka");
 
-    public static void boostrap(final BootstapContext<PlacedFeature> context) {
+    public static void boostrap(final BootstrapContext<PlacedFeature> context) {
         register(context, MUD_DISK, TropicraftMiscFeatures.MUD_DISK, List.of(
                 CountPlacement.of(3),
                 InSquarePlacement.spread(),
@@ -73,7 +77,7 @@ public final class TropicraftMiscPlacements {
     }
 
     private static ResourceKey<PlacedFeature> createKey(final String name) {
-        return ResourceKey.create(Registries.PLACED_FEATURE, new ResourceLocation(Constants.MODID, name));
+        return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
     }
 
     public static void addMudDisks(BiomeGenerationSettings.Builder generation) {

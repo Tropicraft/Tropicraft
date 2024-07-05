@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.dimension.feature.tree;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
@@ -10,7 +11,7 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 
 public class PleodendronFoliagePlacer extends FoliagePlacer {
-   public static final Codec<PleodendronFoliagePlacer> CODEC = RecordCodecBuilder.create((instance) -> {
+   public static final MapCodec<PleodendronFoliagePlacer> CODEC = RecordCodecBuilder.mapCodec((instance) -> {
       return foliagePlacerParts(instance)
               .and(Codec.intRange(0, 16).fieldOf("height").forGetter((placer) -> placer.height))
               .apply(instance, PleodendronFoliagePlacer::new);

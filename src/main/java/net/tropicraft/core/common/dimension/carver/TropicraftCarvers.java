@@ -1,19 +1,19 @@
 package net.tropicraft.core.common.dimension.carver;
 
-import net.minecraft.world.level.levelgen.carver.*;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.level.levelgen.carver.CanyonCarverConfiguration;
+import net.minecraft.world.level.levelgen.carver.CanyonWorldCarver;
+import net.minecraft.world.level.levelgen.carver.CaveCarverConfiguration;
+import net.minecraft.world.level.levelgen.carver.CaveWorldCarver;
+import net.minecraft.world.level.levelgen.carver.WorldCarver;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import net.tropicraft.Constants;
 
 public class TropicraftCarvers {
 
-    public static final DeferredRegister<WorldCarver<?>> CARVERS = DeferredRegister.create(ForgeRegistries.WORLD_CARVERS, Constants.MODID);
+    public static final DeferredRegister<WorldCarver<?>> CARVERS = DeferredRegister.create(Registries.CARVER, Constants.MODID);
 
-    public static final RegistryObject<CaveWorldCarver> CAVE = CARVERS.register("cave", () -> new CaveWorldCarver(CaveCarverConfiguration.CODEC));
-    public static final RegistryObject<CanyonWorldCarver> CANYON = CARVERS.register("canyon", () -> new CanyonWorldCarver(CanyonCarverConfiguration.CODEC));
-
-//    public static final RegistryObject<TropicsUnderwaterCaveCarver> UNDERWATER_CAVE = CARVERS.register("underwater_cave", () -> new TropicsUnderwaterCaveCarver(CaveCarverConfiguration.CODEC));
-//    public static final RegistryObject<TropicsUnderwaterCanyonCarver> UNDERWATER_CANYON = CARVERS.register("underwater_canyon", () -> new TropicsUnderwaterCanyonCarver(CanyonCarverConfiguration.CODEC));
-
+    public static final DeferredHolder<WorldCarver<?>, CaveWorldCarver> CAVE = CARVERS.register("cave", () -> new CaveWorldCarver(CaveCarverConfiguration.CODEC));
+    public static final DeferredHolder<WorldCarver<?>, CanyonWorldCarver> CANYON = CARVERS.register("canyon", () -> new CanyonWorldCarver(CanyonCarverConfiguration.CODEC));
 }

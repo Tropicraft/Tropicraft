@@ -6,7 +6,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
@@ -50,14 +50,14 @@ public class MonkeyPickUpPinaColadaGoal extends Goal {
     @Override
     public void stop() {
         navigation.stop();
-        entity.setPathfindingMalus(BlockPathTypes.WATER, this.oldWaterCost);
+        entity.setPathfindingMalus(PathType.WATER, this.oldWaterCost);
     }
 
     @Override
     public void start() {
         timeToRecalcPath = 0;
-        oldWaterCost = entity.getPathfindingMalus(BlockPathTypes.WATER);
-        entity.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+        oldWaterCost = entity.getPathfindingMalus(PathType.WATER);
+        entity.setPathfindingMalus(PathType.WATER, 0.0F);
     }
 
     private boolean hasNearbyDrink(final Drink drink) {
@@ -68,7 +68,7 @@ public class MonkeyPickUpPinaColadaGoal extends Goal {
         if (!list.isEmpty()) {
             for (ItemEntity item : list) {
                 if (!item.isInvisible()) {
-                    if (ItemStack.isSameItemSameTags(item.getItem(), stack) && item.isAlive()) {
+                    if (ItemStack.isSameItemSameComponents(item.getItem(), stack) && item.isAlive()) {
                         drinkEntity = item;
                         return true;
                     }

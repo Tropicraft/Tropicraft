@@ -1,7 +1,7 @@
 package net.tropicraft.core.common.dimension.feature.jigsaw.piece;
 
 import com.mojang.datafixers.util.Either;
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -17,6 +17,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pools.SinglePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElementType;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
+import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
@@ -24,21 +25,21 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 public class NoRotateSingleJigsawPiece extends SinglePoolElement {
 
-    public static final Codec<NoRotateSingleJigsawPiece> CODEC = RecordCodecBuilder.create(instance -> {
-        return instance.group(templateCodec(), processorsCodec(), projectionCodec())
-                .apply(instance, NoRotateSingleJigsawPiece::new);
-    });
+    public static final MapCodec<NoRotateSingleJigsawPiece> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
+            templateCodec(), processorsCodec(), projectionCodec(), overrideLiquidSettingsCodec()
+    ).apply(i, NoRotateSingleJigsawPiece::new));
 
-    public NoRotateSingleJigsawPiece(Either<ResourceLocation, StructureTemplate> template, Holder<StructureProcessorList> processors, StructureTemplatePool.Projection placementBehaviour) {
-        super(template, processors, placementBehaviour);
+    public NoRotateSingleJigsawPiece(Either<ResourceLocation, StructureTemplate> template, Holder<StructureProcessorList> processors, StructureTemplatePool.Projection placementBehaviour, Optional<LiquidSettings> overrideLiquidSettings) {
+        super(template, processors, placementBehaviour, overrideLiquidSettings);
     }
 
-    public static Function<StructureTemplatePool.Projection, NoRotateSingleJigsawPiece> createNoRotate(String id, Holder<StructureProcessorList> processors) {
-        return placementBehaviour -> new NoRotateSingleJigsawPiece(Either.left(new ResourceLocation(id)), processors, placementBehaviour);
+    public static Function<StructureTemplatePool.Projection, NoRotateSingleJigsawPiece> createNoRotate(ResourceLocation id, Holder<StructureProcessorList> processors) {
+        return placementBehaviour -> new NoRotateSingleJigsawPiece(Either.left(id), processors, placementBehaviour, Optional.empty());
     }
 
     @Override
@@ -47,8 +48,8 @@ public class NoRotateSingleJigsawPiece extends SinglePoolElement {
     }
 
     @Override
-    protected StructurePlaceSettings getSettings(Rotation rotation, BoundingBox box, boolean b) {
-        return super.getSettings(Rotation.NONE, box, b);
+    protected StructurePlaceSettings getSettings(final Rotation rotation, final BoundingBox box, final LiquidSettings liquidSettings, final boolean offset) {
+        return super.getSettings(Rotation.NONE, box, liquidSettings, offset);
     }
 
     @Override
@@ -72,8 +73,8 @@ public class NoRotateSingleJigsawPiece extends SinglePoolElement {
     }
 
     @Override
-    public boolean place(StructureTemplateManager templates, WorldGenLevel world, StructureManager structures, ChunkGenerator generator, BlockPos pos, BlockPos pos2, Rotation rotation, BoundingBox box, RandomSource random, boolean b) {
-        return super.place(templates, world, structures, generator, pos, pos2, Rotation.NONE, box, random, b);
+    public boolean place(StructureTemplateManager templates, WorldGenLevel world, StructureManager structures, ChunkGenerator generator, BlockPos pos, BlockPos pos2, Rotation rotation, BoundingBox box, RandomSource random, LiquidSettings liquidSettings, boolean keepJigsaws) {
+        return super.place(templates, world, structures, generator, pos, pos2, Rotation.NONE, box, random, liquidSettings, keepJigsaws);
     }
 
     @Override

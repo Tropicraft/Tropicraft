@@ -33,8 +33,8 @@ public class SpearRenderer<T extends SpearEntity> extends EntityRenderer<T> {
 		
 		poseStack.scale(2.5F, 2.5F, 2.5F);
 
-		BakedModel model = itemRenderer.getModel(entity.getPickupItem(), entity.level(), null, entity.getId());
-		itemRenderer.render(entity.getPickupItem(), ItemDisplayContext.GROUND, false, poseStack, bufferSource, packedLight, OverlayTexture.NO_OVERLAY, model);
+		BakedModel model = itemRenderer.getModel(entity.getPickupItemStackOrigin(), entity.level(), null, entity.getId());
+		itemRenderer.render(entity.getPickupItemStackOrigin(), ItemDisplayContext.GROUND, false, poseStack, bufferSource, packedLight, OverlayTexture.NO_OVERLAY, model);
 		poseStack.popPose();
 
 		super.render(entity, entityYaw, partialTicks, poseStack, bufferSource, packedLight);

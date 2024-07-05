@@ -1,6 +1,8 @@
 package net.tropicraft.core.common.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.FlowerBlock;
@@ -13,9 +15,14 @@ public class TropicsFlowerBlock extends FlowerBlock {
 
     private final VoxelShape shape;
 
-    public TropicsFlowerBlock(MobEffect effect, int effectDuration, VoxelShape shape, Properties properties) {
+    public TropicsFlowerBlock(Holder<MobEffect> effect, int effectDuration, VoxelShape shape, Properties properties) {
         super(effect, effectDuration, properties);
         this.shape = shape;
+    }
+
+    @Override
+    public MapCodec<TropicsFlowerBlock> codec() {
+        throw new UnsupportedOperationException();
     }
 
     @Override

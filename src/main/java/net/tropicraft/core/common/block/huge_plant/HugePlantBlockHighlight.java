@@ -9,13 +9,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderHighlightEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.RenderHighlightEvent;
 import net.tropicraft.Constants;
 
-@Mod.EventBusSubscriber(modid = Constants.MODID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = Constants.MODID, value = Dist.CLIENT)
 public final class HugePlantBlockHighlight {
     private static final Minecraft CLIENT = Minecraft.getInstance();
 

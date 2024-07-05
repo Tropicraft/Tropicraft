@@ -1,10 +1,13 @@
 package net.tropicraft.core.common.block;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
@@ -18,32 +21,46 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.tropicraft.Constants;
 import net.tropicraft.core.common.sound.Sounds;
 
 import java.util.function.Supplier;
 
-@Mod.EventBusSubscriber
-public class BongoDrumBlock extends Block {
+@EventBusSubscriber(modid = Constants.MODID)
+public final class BongoDrumBlock extends Block {
+    public static final MapCodec<BongoDrumBlock> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
+            Size.CODEC.fieldOf("size").forGetter(b -> b.size),
+            propertiesCodec()
+    ).apply(i, BongoDrumBlock::new));
 
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-    public enum Size {
-        SMALL(8, Sounds.BONGO_HIGH, 1),
-        MEDIUM(10, Sounds.BONGO_MED, 2),
-        LARGE(12, Sounds.BONGO_LOW, 3);
+    public enum Size implements StringRepresentable {
+        SMALL("small", 8, Sounds.BONGO_HIGH, 1),
+        MEDIUM("medium", 10, Sounds.BONGO_MED, 2),
+        LARGE("large", 12, Sounds.BONGO_LOW, 3);
 
+        public static final Codec<Size> CODEC = StringRepresentable.fromEnum(Size::values);
+
+        private final String name;
         public final VoxelShape shape;
         final Supplier<SoundEvent> soundEvent;
         public final int recipeColumns;
 
-        Size(int size, final Supplier<SoundEvent> soundEvent, int recipeColumns) {
+        Size(final String name, int size, final Supplier<SoundEvent> soundEvent, int recipeColumns) {
+            this.name = name;
             this.recipeColumns = recipeColumns;
             double offset = (16 - size) / 2;
             this.shape = box(offset, 0, offset, 16 - offset, 16, 16 - offset);
             this.soundEvent = soundEvent;
+        }
+
+        @Override
+        public String getSerializedName() {
+            return name;
         }
     }
 
@@ -70,17 +87,17 @@ public class BongoDrumBlock extends Block {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-        // Only play drum sound if player hits the top
+    protected InteractionResult useWithoutItem(final BlockState state, final Level level, final BlockPos pos, final Player player, final BlockHitResult result) {
+        // Only play drum sound if player hits the topR
         if (result.getDirection() != Direction.UP) {
             return InteractionResult.PASS;
         }
 
-        if (world.isClientSide) {
+        if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         }
 
-        playBongoSound(world, pos, state, getAdjustedPitch(result));
+        playBongoSound(level, pos, state, getAdjustedPitch(result));
         return InteractionResult.CONSUME;
     }
 

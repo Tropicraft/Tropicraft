@@ -4,27 +4,26 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityAttachment;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderNameTagEvent;
-import net.minecraftforge.client.event.RenderPlayerEvent;
-import net.minecraftforge.eventbus.api.Event.Result;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.EventPriority;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.RenderNameTagEvent;
+import net.neoforged.neoforge.client.event.RenderPlayerEvent;
+import net.neoforged.neoforge.common.util.TriState;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.entity.SeaTurtleEntity;
 import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
+import org.joml.Quaternionf;
 
 @EventBusSubscriber(value = Dist.CLIENT, modid = Constants.MODID)
 public class PlayerRotationHandler {
 
     private static float rotationYawHead, prevRotationYawHead, rotationPitch, prevRotationPitch;
-    
-    private static float interpolateAndWrap(float cur, float prev, float partial) {
-        return Mth.wrapDegrees(prev + ((cur - prev) * partial));
-    }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onRenderPlayer(RenderPlayerEvent.Pre event) {
@@ -35,13 +34,14 @@ public class PlayerRotationHandler {
 
         if (riding instanceof BeachFloatEntity floaty) {
             stack.pushPose();
-            stack.mulPose(Axis.YP.rotationDegrees(-(floaty.yRotO + (partialTick * (floaty.getYRot() - floaty.yRotO)))));
-            stack.translate(0, 1.55, 1.55);
+            stack.mulPose(Axis.YP.rotationDegrees(-Mth.rotLerp(partialTick, floaty.yRotO, floaty.getYRot())));
+            Vec3 attachment = floaty.getAttachments().getClamped(EntityAttachment.PASSENGER, 0, 0.0f);
+            float playerHeight = p.getDimensions(Pose.STANDING).height();
+            stack.translate(-attachment.x, -attachment.y + 13.0 / 16.0, playerHeight / 2.0 - attachment.z);
             stack.mulPose(Axis.XN.rotationDegrees(90));
 
             // Cancel out player camera rotation
-            float f = interpolateAndWrap(p.yBodyRot, p.yBodyRotO, partialTick);
-            stack.mulPose(Axis.YP.rotationDegrees(f));
+            stack.mulPose(Axis.YP.rotationDegrees(Mth.rotLerp(partialTick, p.yBodyRotO, p.yBodyRot)));
 
             // Lock in head
             rotationYawHead = p.yHeadRot;
@@ -61,16 +61,15 @@ public class PlayerRotationHandler {
             stack.pushPose();
 
             // Cancel out player camera rotation
-            float pitch = interpolateAndWrap(turtle.getXRot(), turtle.xRotO, partialTick);
-            float yaw = interpolateAndWrap(turtle.yHeadRot, turtle.yHeadRotO, partialTick);
+            float pitch = Mth.rotLerp(partialTick, turtle.xRotO, turtle.getXRot());
+            float yaw = Mth.rotLerp(partialTick, turtle.yHeadRotO, turtle.yHeadRot);
 
-            stack.translate(0, turtle.getPassengersRidingOffset() - p.getMyRidingOffset(), 0);
-            stack.mulPose(Axis.YN.rotationDegrees(yaw));
-            stack.translate(0, -0.1, 0); // TODO figure out why this budging is needed
-            stack.mulPose(Axis.XP.rotationDegrees(pitch));
-            stack.translate(0, 0.1, 0);
-            stack.mulPose(Axis.YP.rotationDegrees(yaw));
-            stack.translate(0, -turtle.getPassengersRidingOffset() + p.getMyRidingOffset(), 0);
+            Quaternionf rotation = Axis.YN.rotationDegrees(yaw)
+                    .mul(Axis.XP.rotationDegrees(pitch))
+                    .mul(Axis.YP.rotationDegrees(yaw));
+
+            Vec3 sitOffset = p.getAttachments().getClamped(EntityAttachment.VEHICLE, 0, 0);
+            stack.rotateAround(rotation, (float) sitOffset.x, (float) sitOffset.y - 0.1f, (float) sitOffset.z);
 
             Vec3 passengerOffset = (new Vec3(-0.25f, 0.0D, 0.0D)).yRot((float) (-Math.toRadians(yaw) - (Math.PI / 2)));
             stack.translate(passengerOffset.x(), 0, passengerOffset.z());
@@ -100,7 +99,7 @@ public class PlayerRotationHandler {
     @SubscribeEvent
     public static void onRenderPlayerSpecials(RenderNameTagEvent event) {
         if (event.getEntity().getVehicle() instanceof BeachFloatEntity) {
-            event.setResult(Result.DENY);
+            event.setCanRender(TriState.FALSE);
         }
     }
 }

@@ -1,14 +1,12 @@
 package net.tropicraft.core.common.item;
 
-import com.google.common.base.Suppliers;
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -16,35 +14,38 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.component.Tool;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
-import java.util.function.Supplier;
+import java.util.List;
 
 public class DaggerItem extends Item {
-
-    private final Supplier<Multimap<Attribute, AttributeModifier>> defaultModifiers;
-
     public DaggerItem(Tier tier, Properties properties) {
-        super(properties.defaultDurability(tier.getUses()));
-
-        this.defaultModifiers = Suppliers.memoize(() -> ImmutableMultimap.<Attribute, AttributeModifier>builder()
-                .putAll(super.getAttributeModifiers(EquipmentSlot.MAINHAND, new ItemStack(this)))
-                .put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", (double) tier.getAttackDamageBonus() + 2.5D, AttributeModifier.Operation.ADDITION))
-                .put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", 0, AttributeModifier.Operation.ADDITION))
-                .build());
+        super(properties.durability(tier.getUses())
+                .component(DataComponents.TOOL, createToolProperties())
+                .component(DataComponents.ATTRIBUTE_MODIFIERS, createAttributes(tier))
+        );
     }
 
-    @Override
-    public float getDestroySpeed(ItemStack stack, BlockState state) {
-        Block block = state.getBlock();
-        if (block == Blocks.COBWEB) {
-            return 15.0F;
-        } else {
-            return state.is(BlockTags.SWORD_EFFICIENT) ? 1.5F : 1.0F;
-        }
+    private static ItemAttributeModifiers createAttributes(final Tier tier) {
+        return ItemAttributeModifiers.builder()
+                .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, tier.getAttackDamageBonus() + 2.5, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                .add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, 0, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                .build();
+    }
+
+    private static Tool createToolProperties() {
+        return new Tool(
+                List.of(
+                        Tool.Rule.minesAndDrops(List.of(Blocks.COBWEB), 15.0f),
+                        Tool.Rule.overrideSpeed(BlockTags.SWORD_EFFICIENT, 1.5f)
+                ),
+                1.0f,
+                0
+        );
     }
 
     @Override
@@ -54,9 +55,7 @@ public class DaggerItem extends Item {
 
     @Override
     public boolean hurtEnemy(ItemStack itemStack, LivingEntity attacker, LivingEntity target) {
-        itemStack.hurtAndBreak(1, target, (e) -> {
-            e.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-        });
+        itemStack.hurtAndBreak(1, target, EquipmentSlot.MAINHAND);
         return true;
     }
 
@@ -66,21 +65,7 @@ public class DaggerItem extends Item {
     }
 
     @Override
-    public int getUseDuration(ItemStack itemstack) {
+    public int getUseDuration(ItemStack itemstack, LivingEntity entity) {
         return 60 * SharedConstants.TICKS_PER_MINUTE;
-    }
-
-    @Override
-    public boolean isCorrectToolForDrops(BlockState state) {
-        return state.getBlock() == Blocks.COBWEB;
-    }
-
-    @Override
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
-        if (slot == EquipmentSlot.MAINHAND) {
-            return defaultModifiers.get();
-        } else {
-            return super.getAttributeModifiers(slot, stack);
-        }
     }
 }

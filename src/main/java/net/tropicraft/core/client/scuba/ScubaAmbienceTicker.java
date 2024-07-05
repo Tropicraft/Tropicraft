@@ -11,27 +11,24 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.material.FogType;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.event.TickEvent.ClientTickEvent;
-import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.item.scuba.ScubaArmorItem;
 import net.tropicraft.core.common.item.scuba.ScubaData;
 
-@EventBusSubscriber(value = Dist.CLIENT, modid = Constants.MODID, bus = Bus.FORGE)
+@EventBusSubscriber(value = Dist.CLIENT, modid = Constants.MODID, bus = EventBusSubscriber.Bus.GAME)
 public class ScubaAmbienceTicker {
     
-    public static final SoundEvent SHALLOW_SCUBA = SoundEvent.createVariableRangeEvent(new ResourceLocation(Constants.MODID, "scuba.shallow"));
-    public static final SoundEvent DEEP_SCUBA = SoundEvent.createVariableRangeEvent(new ResourceLocation(Constants.MODID, "scuba.deep"));
+    public static final SoundEvent SHALLOW_SCUBA = SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(Constants.MODID, "scuba.shallow"));
+    public static final SoundEvent DEEP_SCUBA = SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(Constants.MODID, "scuba.deep"));
 
     private static SoundEvent currentSound;
 
     @SubscribeEvent
-    public static void onClientTick(ClientTickEvent event) {
-        if (event.phase != Phase.START) return;
+    public static void onClientTick(ClientTickEvent.Pre event) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.level != null && mc.player != null) {
             Camera renderInfo = mc.getEntityRenderDispatcher().camera;

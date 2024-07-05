@@ -5,7 +5,8 @@ import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -27,14 +28,14 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.entity.IEntityAdditionalSpawnData;
+import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BeachFloatEntity extends FurnitureEntity implements IEntityAdditionalSpawnData {
+public class BeachFloatEntity extends FurnitureEntity implements IEntityWithComplexSpawn {
 
     @Nonnull
     private static final RandomSource rand = RandomSource.create(298457L);
@@ -195,32 +196,15 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
     /* Following three methods copied from EntityBoat for passenger updates */
 
     @Override
-    protected void positionRider(Entity passenger, MoveFunction function) {
-        if (!this.hasPassenger(passenger)) {
-            return;
-        }
-
-        float offset = (float) ((!isAlive() ? 0.001 : this.getPassengersRidingOffset()) + passenger.getMyRidingOffset());
-
-        float len = 0.6f;
-        double x = this.getX() + (-Mth.sin(-this.getYRot() * Mth.DEG_TO_RAD) * len);
-        double z = this.getZ() + (-Mth.cos(this.getYRot() * Mth.DEG_TO_RAD) * len);
-        function.accept(passenger, x, this.getY() + offset, z);
-        passenger.setYRot(passenger.getYRot() + this.rotationSpeed);
-        passenger.setYHeadRot(passenger.getYHeadRot() + this.rotationSpeed);
-        this.applyYawToEntity(passenger);
-
-        if (passenger instanceof LivingEntity && this.getPassengers().size() > 1) {
-            int j = passenger.getId() % 2 == 0 ? 90 : 270;
-            passenger.setYBodyRot(((LivingEntity) passenger).yBodyRot + (float) j);
-            passenger.setYHeadRot(passenger.getYHeadRot() + (float) j);
-        }
-
-        if (passenger instanceof Player) {
-            passenger.setBoundingBox(getBoundingBox().expandTowards(0, 0.3, 0).contract(0, -0.1875, 0));
+    protected void positionRider(Entity passenger, Entity.MoveFunction move) {
+        super.positionRider(passenger, move);
+        if (!passenger.getType().is(EntityTypeTags.CAN_TURN_IN_BOATS)) {
+            passenger.setYRot(passenger.getYRot() + this.rotationSpeed);
+            passenger.setYHeadRot(passenger.getYHeadRot() + this.rotationSpeed);
+            this.applyYawToEntity(passenger);
         }
     }
-    
+
     @Override
     protected void removePassenger(Entity passenger) {
         super.removePassenger(passenger);
@@ -298,16 +282,6 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
     }
 
     @Override
-    public double getMyRidingOffset() {
-        return 0;
-    }
-
-    @Override
-    public double getPassengersRidingOffset() {
-        return getBbHeight() - 1.1;
-    }
-
-    @Override
     @Nullable
     public LivingEntity getControllingPassenger() {
         return getFirstPassenger() instanceof LivingEntity living ? living : null;
@@ -324,12 +298,12 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
     }
 
     @Override
-    public void writeSpawnData(FriendlyByteBuf buffer) {
+    public void writeSpawnData(final RegistryFriendlyByteBuf buffer) {
         buffer.writeDouble(this.lerpYaw);
     }
 
     @Override
-    public void readSpawnData(FriendlyByteBuf additionalData) {
+    public void readSpawnData(final RegistryFriendlyByteBuf additionalData) {
         this.lerpYaw = Mth.wrapDegrees(additionalData.readDouble());
     }
 

@@ -13,8 +13,6 @@ import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
 import net.tropicraft.core.client.entity.model.EggModel;
 import net.tropicraft.core.common.entity.egg.EggEntity;
-import org.joml.Matrix3f;
-import org.joml.Matrix4f;
 
 public class EggRenderer extends LivingEntityRenderer<EggEntity, EggModel> {
 
@@ -49,12 +47,11 @@ public class EggRenderer extends LivingEntityRenderer<EggEntity, EggModel> {
 		final VertexConsumer buffer = TropicraftRenderUtils.getEntityCutoutBuilder(bufferIn, getTextureLocation(ent));
 		int overlay = getOverlayCoords(ent, getWhiteOverlayProgress(ent, partialTicks));
 		
-		Matrix4f mat = stack.last().pose();
-		Matrix3f normal = new Matrix3f();
-		TropicraftSpecialRenderHelper.vertex(buffer, mat, normal, -.5, -.25, 0, 1, 1, 1, 1, 0, 1, Direction.UP, packedLightIn, overlay);
-		TropicraftSpecialRenderHelper.vertex(buffer, mat, normal,  .5, -.25, 0, 1, 1, 1, 1, 1, 1, Direction.UP, packedLightIn, overlay);
-		TropicraftSpecialRenderHelper.vertex(buffer, mat, normal,  .5,  .75, 0, 1, 1, 1, 1, 1, 0, Direction.UP, packedLightIn, overlay);
-		TropicraftSpecialRenderHelper.vertex(buffer, mat, normal, -.5,  .75, 0, 1, 1, 1, 1, 0, 0, Direction.UP, packedLightIn, overlay);
+		PoseStack.Pose pose = stack.last();
+		TropicraftSpecialRenderHelper.vertex(buffer, pose, -.5, -.25, 0, 1, 1, 1, 1, 0, 1, Direction.UP, packedLightIn, overlay);
+		TropicraftSpecialRenderHelper.vertex(buffer, pose,  .5, -.25, 0, 1, 1, 1, 1, 1, 1, Direction.UP, packedLightIn, overlay);
+		TropicraftSpecialRenderHelper.vertex(buffer, pose,  .5,  .75, 0, 1, 1, 1, 1, 1, 0, Direction.UP, packedLightIn, overlay);
+		TropicraftSpecialRenderHelper.vertex(buffer, pose, -.5,  .75, 0, 1, 1, 1, 1, 0, 0, Direction.UP, packedLightIn, overlay);
 
 		stack.popPose();
 	}

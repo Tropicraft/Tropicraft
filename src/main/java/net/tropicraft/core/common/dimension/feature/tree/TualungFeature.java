@@ -46,7 +46,7 @@ public class TualungFeature extends RainforestTreeFeature {
             return false;
         }
 
-        if (!getSapling().canSurvive(getSapling().defaultBlockState(), world, pos)) {
+        if (!getSapling().defaultBlockState().canSurvive(world, pos)) {
             return false;
         }
 

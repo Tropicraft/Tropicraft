@@ -23,7 +23,7 @@ public class TallRainforestTreeFeature extends RainforestTreeFeature {
     }
 
     private boolean isSoil(LevelAccessor world, BlockPos pos) {
-        return getSapling().canSurvive(getSapling().defaultBlockState(), world, pos);
+        return getSapling().defaultBlockState().canSurvive(world, pos);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.dimension.feature.jigsaw;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,7 +18,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 
 public class SmoothingGravityProcessor extends PathStructureProcessor {
 
-    public static final Codec<SmoothingGravityProcessor> CODEC = RecordCodecBuilder.create(i -> i.group(
+    public static final MapCodec<SmoothingGravityProcessor> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
             Types.CODEC.fieldOf("heightmap").forGetter(p -> p.heightmap),
             Codec.INT.fieldOf("offset").forGetter(p -> p.offset)
     ).apply(i, SmoothingGravityProcessor::new));

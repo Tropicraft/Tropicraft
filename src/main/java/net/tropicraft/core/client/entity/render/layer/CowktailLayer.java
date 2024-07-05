@@ -10,11 +10,8 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.core.common.entity.passive.CowktailEntity;
 
-@OnlyIn(Dist.CLIENT)
 public class CowktailLayer<T extends CowktailEntity> extends RenderLayer<T, CowModel<T>> {
    public CowktailLayer(RenderLayerParent<T, CowModel<T>> rendererIn) {
       super(rendererIn);

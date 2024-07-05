@@ -2,9 +2,9 @@ package net.tropicraft.core.common.dimension.biome;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import net.minecraft.Util;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
@@ -12,7 +12,6 @@ import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.MultiNoiseBiomeSourceParameterList;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 
-import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -73,13 +72,14 @@ public class TropicraftBiomeBuilder {
 
     private static MultiNoiseBiomeSourceParameterList.Preset registerMultiNoisePreset(ResourceLocation id, MultiNoiseBiomeSourceParameterList.Preset.SourceProvider sourceProvider) {
         MultiNoiseBiomeSourceParameterList.Preset preset = new MultiNoiseBiomeSourceParameterList.Preset(id, sourceProvider);
-        Map<ResourceLocation, MultiNoiseBiomeSourceParameterList.Preset> byName = new Object2ObjectOpenHashMap<>(MultiNoiseBiomeSourceParameterList.Preset.BY_NAME);
-        byName.put(id, preset);
-        MultiNoiseBiomeSourceParameterList.Preset.BY_NAME = Map.copyOf(byName);
+        MultiNoiseBiomeSourceParameterList.Preset.BY_NAME = Util.copyAndPut(
+                MultiNoiseBiomeSourceParameterList.Preset.BY_NAME,
+                id, preset
+        );
         return preset;
     }
 
-    public static void bootstrap(final BootstapContext<MultiNoiseBiomeSourceParameterList> context) {
+    public static void bootstrap(final BootstrapContext<MultiNoiseBiomeSourceParameterList> context) {
         context.register(PARAMETER_LIST, new MultiNoiseBiomeSourceParameterList(PRESET, context.lookup(Registries.BIOME)));
     }
 

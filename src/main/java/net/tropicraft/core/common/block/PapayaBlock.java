@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -25,7 +26,9 @@ import javax.annotation.Nullable;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING;
 
-public class PapayaBlock extends HorizontalDirectionalBlock implements BonemealableBlock {
+public final class PapayaBlock extends HorizontalDirectionalBlock implements BonemealableBlock {
+    public static final MapCodec<PapayaBlock> CODEC = simpleCodec(PapayaBlock::new);
+
     public static final IntegerProperty AGE = BlockStateProperties.AGE_1;
     protected static final VoxelShape EAST_AABB = Block.box(7.0D, 3.0D, 4.0D, 15.0D, 12.0D, 12.0D);
     protected static final VoxelShape WEST_AABB = Block.box(1.0D, 3.0D, 4.0D, 9.0D, 12.0D, 12.0D);
@@ -35,6 +38,11 @@ public class PapayaBlock extends HorizontalDirectionalBlock implements Bonemeala
     public PapayaBlock(Block.Properties properties) {
         super(properties);
         registerDefaultState(getStateDefinition().any().setValue(HORIZONTAL_FACING, Direction.NORTH).setValue(AGE, 0));
+    }
+
+    @Override
+    protected MapCodec<PapayaBlock> codec() {
+        return CODEC;
     }
 
     @Override
@@ -92,7 +100,7 @@ public class PapayaBlock extends HorizontalDirectionalBlock implements Bonemeala
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, boolean isClient) {
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
         return state.getValue(AGE) < 1;
     }
 
@@ -112,7 +120,7 @@ public class PapayaBlock extends HorizontalDirectionalBlock implements Bonemeala
     }
 
     @Override
-    public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
+    public boolean isPathfindable(BlockState pState, PathComputationType pType) {
         return false;
     }
 }

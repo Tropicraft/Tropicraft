@@ -1,7 +1,7 @@
 package net.tropicraft.core.common.dimension.feature;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -15,7 +15,8 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.RuleBasedBlockS
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
-import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.*;
+import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.ore;
+import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.register;
 
 public final class TropicraftMiscFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> MUD_DISK = createKey("mud_disk");
@@ -29,7 +30,7 @@ public final class TropicraftMiscFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> MANGANESE = createKey("manganese");
     public static final ResourceKey<ConfiguredFeature<?, ?>> SHAKA = createKey("shaka");
 
-    public static void bootstrap(final BootstapContext<ConfiguredFeature<?, ?>> context) {
+    public static void bootstrap(final BootstrapContext<ConfiguredFeature<?, ?>> context) {
         register(context, MUD_DISK, Feature.DISK, new DiskConfiguration(
                 RuleBasedBlockStateProvider.simple(TropicraftBlocks.MUD.get()),
                 BlockPredicate.matchesBlocks(Blocks.DIRT, Blocks.GRASS_BLOCK),
@@ -45,6 +46,6 @@ public final class TropicraftMiscFeatures {
     }
 
     private static ResourceKey<ConfiguredFeature<?, ?>> createKey(final String name) {
-        return ResourceKey.create(Registries.CONFIGURED_FEATURE, new ResourceLocation(Constants.MODID, name));
+        return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
     }
 }

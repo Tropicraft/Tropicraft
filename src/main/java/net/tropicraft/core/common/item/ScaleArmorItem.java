@@ -1,24 +1,26 @@
 package net.tropicraft.core.common.item;
 
+import net.minecraft.core.Holder;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.item.ArmorItem;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraft.world.item.ArmorMaterial;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.tropicraft.Constants;
 
-@Mod.EventBusSubscriber(modid = Constants.MODID)
-public class ScaleArmorItem extends TropicraftArmorItem {
+@EventBusSubscriber(modid = Constants.MODID)
+public class ScaleArmorItem extends ArmorItem {
     public ScaleArmorItem(ArmorItem.Type slotType, Properties properties) {
-        super(ArmorMaterials.SCALE_ARMOR, slotType, properties);
+        super((Holder<ArmorMaterial>) TropicraftArmorMaterials.SCALE_ARMOR, slotType, properties);
     }
 
     @SubscribeEvent
-    public static void onLivingHurt(LivingHurtEvent event) {
+    public static void onLivingHurt(LivingDamageEvent.Pre event) {
         if (event.getSource().is(DamageTypeTags.IS_FIRE)) {
             for (var armor : event.getEntity().getArmorSlots()) {
                 if (armor.getItem() instanceof ScaleArmorItem) {
-                    event.setCanceled(true);
+                    event.setNewDamage(0.0f);
                     break;
                 }
             }

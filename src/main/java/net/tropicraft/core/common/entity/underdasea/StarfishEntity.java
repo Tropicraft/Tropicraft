@@ -1,7 +1,7 @@
 package net.tropicraft.core.common.entity.underdasea;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -16,7 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.entity.IEntityAdditionalSpawnData;
+import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.egg.EggEntity;
 import net.tropicraft.core.common.entity.egg.StarfishEggEntity;
@@ -24,7 +24,7 @@ import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nullable;
 
-public class StarfishEntity extends EchinodermEntity implements IEntityAdditionalSpawnData {
+public class StarfishEntity extends EchinodermEntity implements IEntityWithComplexSpawn {
 	public static final float BABY_WIDTH = 0.25f;
 	public static final float ADULT_WIDTH = 1f;
 	public static final float BABY_HEIGHT = 0.1f;
@@ -41,15 +41,15 @@ public class StarfishEntity extends EchinodermEntity implements IEntityAdditiona
 
 	@Override
 	@Nullable
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficultyInstance, MobSpawnType spawnReason, @Nullable SpawnGroupData entityData, @Nullable CompoundTag nbt) {
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficultyInstance, MobSpawnType spawnReason, @Nullable SpawnGroupData entityData) {
 		setStarfishType(StarfishType.values()[random.nextInt(StarfishType.values().length)]);
-		return super.finalizeSpawn(world, difficultyInstance, spawnReason, entityData, nbt);
+		return super.finalizeSpawn(world, difficultyInstance, spawnReason, entityData);
 	}
 
 	@Override
-	public void defineSynchedData() {
-		super.defineSynchedData();
-		getEntityData().define(DATA_STARFISH_TYPE, (byte) 0);
+	public void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(DATA_STARFISH_TYPE, (byte) 0);
 	}
 
 	public static AttributeSupplier.Builder createAttributes() {
@@ -82,12 +82,12 @@ public class StarfishEntity extends EchinodermEntity implements IEntityAdditiona
 	}
 
 	@Override
-	public void writeSpawnData(FriendlyByteBuf buffer) {
+	public void writeSpawnData(RegistryFriendlyByteBuf buffer) {
 		buffer.writeByte(getStarfishType().ordinal());
 	}
 
 	@Override
-	public void readSpawnData(FriendlyByteBuf additionalData) {
+	public void readSpawnData(RegistryFriendlyByteBuf additionalData) {
 		setStarfishType(StarfishType.values()[additionalData.readByte()]);
 	}
 

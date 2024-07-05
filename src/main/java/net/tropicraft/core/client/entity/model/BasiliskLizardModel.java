@@ -3,19 +3,24 @@ package net.tropicraft.core.client.entity.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.tropicraft.core.common.entity.passive.basilisk.BasiliskLizardEntity;
 
-public class BasiliskLizardModel<T extends BasiliskLizardEntity> extends EntityModel<T> {
+public class BasiliskLizardModel<T extends BasiliskLizardEntity> extends HierarchicalModel<T> {
     private static final Minecraft CLIENT = Minecraft.getInstance();
 
     private static final float BACK_LEG_ANGLE = 65.0F * ModelAnimator.DEG_TO_RAD;
     private static final float FRONT_LEG_ANGLE = -40.0F * ModelAnimator.DEG_TO_RAD;
 
+    private final ModelPart root;
     private final ModelPart body_base;
     private final ModelPart sail_back;
     private final ModelPart leg_back_left;
@@ -29,6 +34,7 @@ public class BasiliskLizardModel<T extends BasiliskLizardEntity> extends EntityM
     private final ModelPart leg_front_right;
 
     public BasiliskLizardModel(ModelPart root) {
+        this.root = root;
         body_base = root.getChild("body_base");
         sail_back = body_base.getChild("sail_back");
         leg_back_left = body_base.getChild("leg_back_left");
@@ -119,7 +125,7 @@ public class BasiliskLizardModel<T extends BasiliskLizardEntity> extends EntityM
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float age, float headYaw, float headPitch) {
         ModelAnimator.look(head_base, headYaw, headPitch);
 
-        float running = entity.getRunningAnimation(CLIENT.getFrameTime());
+        float running = entity.getRunningAnimation(CLIENT.getTimer().getGameTimeDeltaTicks());
         body_base.xRot = Mth.lerp(running, -15.0F, -50.0F) * ModelAnimator.DEG_TO_RAD;
         tail_base.xRot = Mth.lerp(running, 5.0F, 30.0F) * ModelAnimator.DEG_TO_RAD;
         tail_tip.xRot = Mth.lerp(running, 5.0F, 20.0F) * ModelAnimator.DEG_TO_RAD;
@@ -136,10 +142,15 @@ public class BasiliskLizardModel<T extends BasiliskLizardEntity> extends EntityM
     }
 
     @Override
-    public void renderToBuffer(PoseStack matrixStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(PoseStack matrixStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
         matrixStack.pushPose();
         matrixStack.translate(0.0, 0.0, 0.1);
-        body_base.render(matrixStack, buffer, packedLight, packedOverlay);
+        super.renderToBuffer(matrixStack, buffer, packedLight, packedOverlay, color);
         matrixStack.popPose();
+    }
+
+    @Override
+    public ModelPart root() {
+        return root;
     }
 }

@@ -10,11 +10,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.animal.Dolphin;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.phys.HitResult;
-import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.sound.Sounds;
 
 import javax.annotation.Nullable;
@@ -29,17 +26,17 @@ public class TropicraftDolphinEntity extends Dolphin {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        entityData.define(MOUTH_OPEN, false);
-        entityData.define(TEXTURE_NAME, "dolphin");
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(MOUTH_OPEN, false);
+        builder.define(TEXTURE_NAME, "dolphin");
     }
 
     @Override
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficultyInstance, MobSpawnType spawnReason, @Nullable SpawnGroupData entityData, @Nullable CompoundTag nbt) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficultyInstance, MobSpawnType spawnReason, @Nullable SpawnGroupData entityData) {
         setTexture(random.nextInt(50) == 0 ? "special_dolphin" : "dolphin");
-        return super.finalizeSpawn(world, difficultyInstance, spawnReason, entityData, nbt);
+        return super.finalizeSpawn(world, difficultyInstance, spawnReason, entityData);
     }
 
     public void setTexture(final String textureName) {

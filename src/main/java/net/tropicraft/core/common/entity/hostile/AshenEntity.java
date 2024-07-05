@@ -10,7 +10,13 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -65,19 +71,19 @@ public class AshenEntity extends TropicraftCreatureEntity implements RangedAttac
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData) {
         setItemInHand(InteractionHand.OFF_HAND, new ItemStack(TropicraftItems.BLOW_GUN.get()));
         setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(TropicraftItems.DAGGER.get()));
         setMaskType((byte) AshenMasks.VALUES[world.getRandom().nextInt(AshenMasks.VALUES.length)].ordinal());
         setActionState(AshenState.HOSTILE);
-        return super.finalizeSpawn(world, difficulty, reason, spawnData, dataTag);
+        return super.finalizeSpawn(world, difficulty, reason, spawnData);
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        getEntityData().define(MASK_TYPE, (byte) 0);
-        getEntityData().define(ACTION_STATE, (byte) AshenState.HOSTILE.ordinal());
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(MASK_TYPE, (byte) 0);
+        builder.define(ACTION_STATE, (byte) AshenState.HOSTILE.ordinal());
     }
 
     @Override
@@ -134,7 +140,7 @@ public class AshenEntity extends TropicraftCreatureEntity implements RangedAttac
             return;
         }
 
-        Arrow tippedArrow = BlowGunItem.createArrow(level(), this, BlowGunItem.getProjectile());
+        Arrow tippedArrow = BlowGunItem.createArrow(level(), this, BlowGunItem.getProjectile(), new ItemStack(TropicraftItems.BLOW_GUN.get()));
         double d0 = target.getX() - getX();
         double d1 = target.getBoundingBox().minY + (double)(target.getBbHeight() / 3.0F) - tippedArrow.getY();
         double d2 = target.getZ() - getZ();
@@ -142,7 +148,6 @@ public class AshenEntity extends TropicraftCreatureEntity implements RangedAttac
         tippedArrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, velocity);
 
         tippedArrow.setBaseDamage(1);
-        tippedArrow.setKnockback(0);
 
         playSound(SoundEvents.CROSSBOW_SHOOT, 1.0F, 1.0F / (getRandom().nextFloat() * 0.4F + 0.8F));
         level().addFreshEntity(tippedArrow);

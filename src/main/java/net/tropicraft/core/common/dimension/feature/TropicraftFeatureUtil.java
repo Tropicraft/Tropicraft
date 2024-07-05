@@ -6,7 +6,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
@@ -20,12 +20,19 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.WeightedPlacedFeature;
-import net.minecraft.world.level.levelgen.feature.configurations.*;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.RandomBooleanFeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.RandomFeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.SimpleRandomFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,19 +40,19 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class TropicraftFeatureUtil {
-    public static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder.Reference<ConfiguredFeature<?, ?>> register(final BootstapContext<ConfiguredFeature<?, ?>> context, final ResourceKey<ConfiguredFeature<?, ?>> key, final RegistryObject<F> feature, final FC config) {
+    public static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder.Reference<ConfiguredFeature<?, ?>> register(final BootstrapContext<ConfiguredFeature<?, ?>> context, final ResourceKey<ConfiguredFeature<?, ?>> key, final DeferredHolder<Feature<?>, F> feature, final FC config) {
         return context.register(key, new ConfiguredFeature<>(feature.get(), config));
     }
 
-    public static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder.Reference<ConfiguredFeature<?, ?>> register(final BootstapContext<ConfiguredFeature<?, ?>> context, final ResourceKey<ConfiguredFeature<?, ?>> key, final F feature, final FC config) {
+    public static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder.Reference<ConfiguredFeature<?, ?>> register(final BootstrapContext<ConfiguredFeature<?, ?>> context, final ResourceKey<ConfiguredFeature<?, ?>> key, final F feature, final FC config) {
         return context.register(key, new ConfiguredFeature<>(feature, config));
     }
 
-    public static <F extends Feature<NoneFeatureConfiguration>> Holder.Reference<ConfiguredFeature<?, ?>> register(final BootstapContext<ConfiguredFeature<?, ?>> context, final ResourceKey<ConfiguredFeature<?, ?>> key, final RegistryObject<F> feature) {
+    public static <F extends Feature<NoneFeatureConfiguration>> Holder.Reference<ConfiguredFeature<?, ?>> register(final BootstrapContext<ConfiguredFeature<?, ?>> context, final ResourceKey<ConfiguredFeature<?, ?>> key, final DeferredHolder<Feature<?>, F> feature) {
         return context.register(key, new ConfiguredFeature<>(feature.get(), NoneFeatureConfiguration.INSTANCE));
     }
 
-    public static Holder.Reference<ConfiguredFeature<?, ?>> registerRandom(final BootstapContext<ConfiguredFeature<?, ?>> context, final ResourceKey<ConfiguredFeature<?, ?>> key, final List<Holder<PlacedFeature>> choices) {
+    public static Holder.Reference<ConfiguredFeature<?, ?>> registerRandom(final BootstrapContext<ConfiguredFeature<?, ?>> context, final ResourceKey<ConfiguredFeature<?, ?>> key, final List<Holder<PlacedFeature>> choices) {
         return context.register(key, randomFeature(choices));
     }
 
@@ -59,7 +66,7 @@ public class TropicraftFeatureUtil {
         }
     }
 
-    public static Holder.Reference<ConfiguredFeature<?, ?>> registerRandom(final BootstapContext<ConfiguredFeature<?, ?>> context, final ResourceKey<ConfiguredFeature<?, ?>> key, final List<Pair<ResourceKey<PlacedFeature>, Float>> choices, final ResourceKey<PlacedFeature> defaultFeature) {
+    public static Holder.Reference<ConfiguredFeature<?, ?>> registerRandom(final BootstrapContext<ConfiguredFeature<?, ?>> context, final ResourceKey<ConfiguredFeature<?, ?>> key, final List<Pair<ResourceKey<PlacedFeature>, Float>> choices, final ResourceKey<PlacedFeature> defaultFeature) {
         HolderGetter<PlacedFeature> placedFeatures = context.lookup(Registries.PLACED_FEATURE);
         return registerRandomPlaced(context, key,
                 choices.stream().map(pair -> {
@@ -70,19 +77,19 @@ public class TropicraftFeatureUtil {
         );
     }
 
-    public static Holder.Reference<ConfiguredFeature<?, ?>> registerRandomPlaced(final BootstapContext<ConfiguredFeature<?, ?>> context, final ResourceKey<ConfiguredFeature<?, ?>> key, final List<WeightedPlacedFeature> choices, final ResourceKey<PlacedFeature> defaultFeatureKey) {
+    public static Holder.Reference<ConfiguredFeature<?, ?>> registerRandomPlaced(final BootstrapContext<ConfiguredFeature<?, ?>> context, final ResourceKey<ConfiguredFeature<?, ?>> key, final List<WeightedPlacedFeature> choices, final ResourceKey<PlacedFeature> defaultFeatureKey) {
         final Holder<PlacedFeature> defaultFeature = context.lookup(Registries.PLACED_FEATURE).getOrThrow(defaultFeatureKey);
         return register(context, key, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(choices, defaultFeature));
     }
 
     @SafeVarargs
-    public static Holder.Reference<ConfiguredFeature<?, ?>> registerRandom(final BootstapContext<ConfiguredFeature<?, ?>> context, final ResourceKey<ConfiguredFeature<?, ?>> key, final ResourceKey<ConfiguredFeature<?, ?>>... choiceKeys) {
+    public static Holder.Reference<ConfiguredFeature<?, ?>> registerRandom(final BootstrapContext<ConfiguredFeature<?, ?>> context, final ResourceKey<ConfiguredFeature<?, ?>> key, final ResourceKey<ConfiguredFeature<?, ?>>... choiceKeys) {
         HolderGetter<ConfiguredFeature<?, ?>> configuredFeatures = context.lookup(Registries.CONFIGURED_FEATURE);
         return registerRandom(context, key, Arrays.stream(choiceKeys).map(k -> PlacementUtils.inlinePlaced(configuredFeatures.getOrThrow(k))).toList());
     }
 
     @SafeVarargs
-    public static Holder.Reference<ConfiguredFeature<?, ?>> registerRandomPlaced(final BootstapContext<ConfiguredFeature<?, ?>> context, final ResourceKey<ConfiguredFeature<?, ?>> key, final ResourceKey<PlacedFeature>... choices) {
+    public static Holder.Reference<ConfiguredFeature<?, ?>> registerRandomPlaced(final BootstrapContext<ConfiguredFeature<?, ?>> context, final ResourceKey<ConfiguredFeature<?, ?>> key, final ResourceKey<PlacedFeature>... choices) {
         HolderGetter<PlacedFeature> placedFeatures = context.lookup(Registries.PLACED_FEATURE);
         return registerRandom(context, key, Arrays.stream(choices).map(placedFeatures::getOrThrow).collect(Collectors.toList()));
     }

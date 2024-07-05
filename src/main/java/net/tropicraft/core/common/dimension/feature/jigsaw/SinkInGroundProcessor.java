@@ -1,6 +1,6 @@
 package net.tropicraft.core.common.dimension.feature.jigsaw;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.LevelReader;
@@ -16,7 +16,7 @@ import net.tropicraft.core.common.dimension.TropicraftDimension;
 import javax.annotation.Nullable;
 
 public class SinkInGroundProcessor extends CheatyStructureProcessor {
-    public static final Codec<SinkInGroundProcessor> CODEC = Codec.unit(new SinkInGroundProcessor());
+    public static final MapCodec<SinkInGroundProcessor> CODEC = MapCodec.unit(new SinkInGroundProcessor());
 
     @SuppressWarnings("deprecation")
 	@Override

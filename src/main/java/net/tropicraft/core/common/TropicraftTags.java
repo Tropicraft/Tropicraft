@@ -24,7 +24,7 @@ public class TropicraftTags {
         public static final TagKey<Block> BONGOS = modTag("bongos");
 
         static TagKey<Block> tag(String modid, String name) {
-            return TagKey.create(Registries.BLOCK, new ResourceLocation(modid, name));
+            return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(modid, name));
         }
 
         static TagKey<Block> modTag(String name) {
@@ -61,8 +61,11 @@ public class TropicraftTags {
         public static final TagKey<Item> MEATS = modTag("meats");
         public static final TagKey<Item> LIME = modTag("lime");
 
+        public static final TagKey<Item> REPAIRS_FIRE_ARMOR = modTag("repairs_fire_armor");
+        public static final TagKey<Item> REPAIRS_SCUBA_GEAR = modTag("repairs_scuba_gear");
+
         static TagKey<Item> tag(String modid, String name) {
-            return TagKey.create(Registries.ITEM, new ResourceLocation(modid, name));
+            return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(modid, name));
         }
 
         static TagKey<Item> modTag(String name) {
@@ -81,7 +84,7 @@ public class TropicraftTags {
         public static final TagKey<Biome> HAS_OCEAN_VOLCANO = modTag("has_structure/ocean_volcano");
 
         static TagKey<Biome> tag(String modid, String name) {
-            return TagKey.create(Registries.BIOME, new ResourceLocation(modid, name));
+            return TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(modid, name));
         }
 
         static TagKey<Biome> modTag(String name) {

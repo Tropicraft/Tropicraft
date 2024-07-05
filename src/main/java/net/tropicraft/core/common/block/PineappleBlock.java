@@ -19,9 +19,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraftforge.common.IPlantable;
 
-public class PineappleBlock extends TallFlowerBlock implements BonemealableBlock, IPlantable {
+public class PineappleBlock extends TallFlowerBlock implements BonemealableBlock {
 
     /** Number of total random ticks it takes for this pineapple to grow */
     public static final int TOTAL_GROW_TICKS = 7;
@@ -39,7 +38,7 @@ public class PineappleBlock extends TallFlowerBlock implements BonemealableBlock
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState blockState, boolean b) {
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState blockState) {
         return blockState.getBlock() == TropicraftBlocks.PINEAPPLE.get() && blockState.getValue(PineappleBlock.HALF) == DoubleBlockHalf.LOWER && level.getBlockState(pos.above()).isAir();
     }
 
@@ -93,12 +92,13 @@ public class PineappleBlock extends TallFlowerBlock implements BonemealableBlock
     }
     
     @Override
-    public void playerWillDestroy(Level worldIn, BlockPos pos, BlockState state, Player player) {
+    public BlockState playerWillDestroy(Level worldIn, BlockPos pos, BlockState state, Player player) {
         if (state.getValue(HALF) == DoubleBlockHalf.LOWER) {
-            super.playerWillDestroy(worldIn, pos, state, player);
+            return super.playerWillDestroy(worldIn, pos, state, player);
         } else {
             worldIn.levelEvent(player, 2001, pos, getId(state));
             dropResources(state, worldIn, pos, null, player, player.getMainHandItem());
+            return state;
         }
     }
     
@@ -115,13 +115,13 @@ public class PineappleBlock extends TallFlowerBlock implements BonemealableBlock
         if (state.getValue(HALF) == DoubleBlockHalf.UPPER) {
             return worldIn.getBlockState(pos.below()).getBlock() == TropicraftBlocks.PINEAPPLE.get();
         } else {
-            return canPlaceBlockAt(worldIn, pos);
+            return canPlaceBlockAt(worldIn, pos, state);
         }
     }
 
-    private boolean canPlaceBlockAt(LevelReader worldIn, BlockPos pos) {
+    private boolean canPlaceBlockAt(LevelReader worldIn, BlockPos pos, BlockState state) {
         final BlockState belowState = worldIn.getBlockState(pos.below());
-        return belowState.getBlock().canSustainPlant(belowState, worldIn, pos.below(), Direction.UP, this);
+        return belowState.getBlock().canSustainPlant(belowState, worldIn, pos.below(), Direction.UP, state).isTrue();
     }
 
     @Override

@@ -1,7 +1,7 @@
 package net.tropicraft.core.common.dimension.feature.jigsaw;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -25,7 +25,7 @@ public class SpawnerProcessor extends StructureProcessor {
     public static final SpawnerProcessor EIH = new SpawnerProcessor(ImmutableList.of(TropicraftEntities.EIH.getId()));
     public static final SpawnerProcessor IGUANA_AND_ASHEN = new SpawnerProcessor(ImmutableList.of(TropicraftEntities.ASHEN.getId(), TropicraftEntities.IGUANA.getId()));
 
-    public static final Codec<SpawnerProcessor> CODEC = RecordCodecBuilder.create(i -> i.group(
+    public static final MapCodec<SpawnerProcessor> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
             ResourceLocation.CODEC.listOf().fieldOf("entity_types").forGetter(p -> p.entityTypes)
     ).apply(i, SpawnerProcessor::new));
 

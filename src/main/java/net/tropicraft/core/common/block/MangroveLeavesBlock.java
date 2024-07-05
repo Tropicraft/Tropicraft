@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -17,6 +18,11 @@ public class MangroveLeavesBlock extends LeavesBlock {
     public MangroveLeavesBlock(Properties props, Supplier<PropaguleBlock> propaguleBlock) {
         super(props);
         this.propaguleBlock = propaguleBlock;
+    }
+
+    @Override
+    public MapCodec<? extends LeavesBlock> codec() {
+        throw new UnsupportedOperationException();
     }
 
     @Override

@@ -1,6 +1,6 @@
 package net.tropicraft.core.common.dimension.feature.tree;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -13,7 +13,7 @@ import net.tropicraft.core.common.block.PapayaBlock;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 public final class PapayaTreeDecorator extends TreeDecorator {
-    public static final Codec<PapayaTreeDecorator> CODEC = Codec.unit(new PapayaTreeDecorator());
+    public static final MapCodec<PapayaTreeDecorator> CODEC = MapCodec.unit(new PapayaTreeDecorator());
 
     @Override
     protected TreeDecoratorType<?> type() {

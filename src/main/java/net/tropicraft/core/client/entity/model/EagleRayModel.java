@@ -11,8 +11,6 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.tropicraft.core.common.entity.underdasea.EagleRayEntity;
-import org.joml.Matrix3f;
-import org.joml.Matrix4f;
 
 public class EagleRayModel extends HierarchicalModel<EagleRayEntity> {
 	/**
@@ -45,13 +43,13 @@ public class EagleRayModel extends HierarchicalModel<EagleRayEntity> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-		super.renderToBuffer(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-		renderWings(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-		renderTailSimple(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+	public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, int color) {
+		super.renderToBuffer(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, color);
+		renderWings(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, color);
+		renderTailSimple(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, color);
 	}
 
-	private void renderTailSimple(PoseStack stack, VertexConsumer buffer, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+	private void renderTailSimple(PoseStack stack, VertexConsumer buffer, int packedLightIn, int packedOverlayIn, int color) {
 		float minU = 0.75f;
 		float maxU = 1.0f;
 		float minV = 0.0f;
@@ -61,35 +59,35 @@ public class EagleRayModel extends HierarchicalModel<EagleRayEntity> {
 		stack.translate(0.55f, 0f, 1.5f);
 		stack.mulPose(Axis.YP.rotationDegrees(-90f));
 		stack.scale(1.5f, 1f, 1f);
-		vertex(buffer, stack.last().pose(), stack.last().normal(), 0, 0, 0, red, green, blue, alpha, minU, minV, packedLightIn, packedOverlayIn);
-		vertex(buffer, stack.last().pose(), stack.last().normal(), 0, 0, 1, red, green, blue, alpha, minU, maxV, packedLightIn, packedOverlayIn);
-		vertex(buffer, stack.last().pose(), stack.last().normal(), 1, 0, 1, red, green, blue, alpha, maxU, maxV, packedLightIn, packedOverlayIn);
-		vertex(buffer, stack.last().pose(), stack.last().normal(), 1, 0, 0, red, green, blue, alpha, maxU, minV, packedLightIn, packedOverlayIn);
+		vertex(buffer, stack.last(), 0, 0, 0, color, minU, minV, packedLightIn, packedOverlayIn);
+		vertex(buffer, stack.last(), 0, 0, 1, color, minU, maxV, packedLightIn, packedOverlayIn);
+		vertex(buffer, stack.last(), 1, 0, 1, color, maxU, maxV, packedLightIn, packedOverlayIn);
+		vertex(buffer, stack.last(), 1, 0, 0, color, maxU, minV, packedLightIn, packedOverlayIn);
 		stack.popPose();
 	}
 
-	private static void vertex(VertexConsumer bufferIn, Matrix4f matrixIn, Matrix3f matrixNormalIn, float x, float y, float z, float red, float green, float blue, float alpha, float texU, float texV, int packedLight, int packedOverlay) {
-		bufferIn.vertex(matrixIn, x, y, z).color(red, green, blue, alpha).uv(texU, texV).overlayCoords(packedOverlay).uv2(packedLight).normal(matrixNormalIn, 0.0F, -1.0F, 0.0F).endVertex();
+	private static void vertex(VertexConsumer bufferIn, PoseStack.Pose pose, float x, float y, float z, int color, float texU, float texV, int packedLight, int packedOverlay) {
+		bufferIn.addVertex(pose, x, y, z).setColor(color).setUv(texU, texV).setOverlay(packedOverlay).setLight(packedLight).setNormal(pose, 0.0F, -1.0F, 0.0F);
 	}
 
-	private void renderWings(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+	private void renderWings(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, int color) {
 		matrixStackIn.pushPose();
 		matrixStackIn.translate(0.5f / 16f, 0, -0.5f); // Center on body
 		matrixStackIn.scale(2f, 0.5f, 2f); // Scale to correct size
 
-		renderWing(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha, false);
+		renderWing(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, color, false);
 
 		// Rotate around center
 		matrixStackIn.translate(0, 0, 0.5f);
 		matrixStackIn.mulPose(Axis.YP.rotationDegrees(180f));
 		matrixStackIn.translate(0, 0, -0.5f);
 
-		renderWing(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha, true);
+		renderWing(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, color, true);
 
 		matrixStackIn.popPose();
 	}
 
-	private void renderWing(PoseStack stack, VertexConsumer buffer, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha, boolean reverse) {
+	private void renderWing(PoseStack stack, VertexConsumer buffer, int packedLightIn, int packedOverlayIn, int color, boolean reverse) {
 		float minUFront = 0f;
 		float maxUFront = 0.25f;
 		float minVFront = 0f;
@@ -117,19 +115,18 @@ public class EagleRayModel extends HierarchicalModel<EagleRayEntity> {
 
 			float offset = -0.001f;
 			// Bottom
-			final Matrix4f matrix = stack.last().pose();
-			final Matrix3f normal = stack.last().normal();
+			final PoseStack.Pose pose = stack.last();
 
-			vertex(buffer, matrix, normal, x, amplitude-offset, 0, red, green, blue, alpha, uBack, reverse ? maxVBack : minVBack, packedLightIn, packedOverlayIn);
-			vertex(buffer, matrix, normal, x, amplitude-offset, 1, red, green, blue, alpha, uBack, reverse ? minVBack : maxVBack, packedLightIn, packedOverlayIn);
-			vertex(buffer, matrix, normal, prevX, prevAmplitude-offset, 1, red, green, blue, alpha, prevUBack, reverse ? minVBack : maxVBack, packedLightIn, packedOverlayIn);
-			vertex(buffer, matrix, normal, prevX, prevAmplitude-offset, 0, red, green, blue, alpha, prevUBack, reverse ? maxVBack : minVBack, packedLightIn, packedOverlayIn);
+			vertex(buffer, pose, x, amplitude-offset, 0, color, uBack, reverse ? maxVBack : minVBack, packedLightIn, packedOverlayIn);
+			vertex(buffer, pose, x, amplitude-offset, 1, color, uBack, reverse ? minVBack : maxVBack, packedLightIn, packedOverlayIn);
+			vertex(buffer, pose, prevX, prevAmplitude-offset, 1, color, prevUBack, reverse ? minVBack : maxVBack, packedLightIn, packedOverlayIn);
+			vertex(buffer, pose, prevX, prevAmplitude-offset, 0, color, prevUBack, reverse ? maxVBack : minVBack, packedLightIn, packedOverlayIn);
 
 			// Top
-			vertex(buffer, matrix, normal, prevX, prevAmplitude, 0, red, green, blue, alpha, prevUFront, reverse ? maxVFront : minVFront, packedLightIn, packedOverlayIn);
-			vertex(buffer, matrix, normal, prevX, prevAmplitude, 1, red, green, blue, alpha, prevUFront, reverse ? minVFront : maxVFront, packedLightIn, packedOverlayIn);
-			vertex(buffer, matrix, normal, x, amplitude, 1, red, green, blue, alpha, uFront, reverse ? minVFront : maxVFront, packedLightIn, packedOverlayIn);
-			vertex(buffer, matrix, normal, x, amplitude, 0, red, green, blue, alpha, uFront, reverse ? maxVFront : minVFront, packedLightIn, packedOverlayIn);
+			vertex(buffer, pose, prevX, prevAmplitude, 0, color, prevUFront, reverse ? maxVFront : minVFront, packedLightIn, packedOverlayIn);
+			vertex(buffer, pose, prevX, prevAmplitude, 1, color, prevUFront, reverse ? minVFront : maxVFront, packedLightIn, packedOverlayIn);
+			vertex(buffer, pose, x, amplitude, 1, color, uFront, reverse ? minVFront : maxVFront, packedLightIn, packedOverlayIn);
+			vertex(buffer, pose, x, amplitude, 0, color, uFront, reverse ? maxVFront : minVFront, packedLightIn, packedOverlayIn);
 		}
 
 		stack.popPose();

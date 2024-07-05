@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.dimension.feature.jigsaw;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
@@ -11,7 +12,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureEntityInfo;
 
 public class AdjustBuildingHeightProcessor extends CheatyStructureProcessor {
-    public static final Codec<AdjustBuildingHeightProcessor> CODEC = RecordCodecBuilder.create(i -> i.group(
+    public static final MapCodec<AdjustBuildingHeightProcessor> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
             Codec.INT.optionalFieldOf("base", 126).forGetter(c -> c.base)
     ).apply(i, AdjustBuildingHeightProcessor::new));
 

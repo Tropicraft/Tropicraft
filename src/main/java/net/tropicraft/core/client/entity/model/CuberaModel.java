@@ -1,14 +1,16 @@
 package net.tropicraft.core.client.entity.model;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.tropicraft.core.common.entity.underdasea.CuberaEntity;
 
-public class CuberaModel<T extends CuberaEntity> extends EntityModel<T> {
+public class CuberaModel<T extends CuberaEntity> extends HierarchicalModel<T> {
     private final ModelPart body_base;
     private final ModelPart fin_anal;
     private final ModelPart fin_pelvic_right;
@@ -26,8 +28,6 @@ public class CuberaModel<T extends CuberaEntity> extends EntityModel<T> {
     private final ModelPart tail_base;
     private final ModelPart tail_main;
     private final ModelPart fin_tail;
-
-    public boolean inWater;
 
     public CuberaModel(ModelPart root) {
         this.body_base = root;
@@ -123,7 +123,7 @@ public class CuberaModel<T extends CuberaEntity> extends EntityModel<T> {
 
     @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float age, float headYaw, float headPitch) {
-        if (inWater) {
+        if (entity.isInWater()) {
             body_base.zRot = 0.0F;
             body_base.y = 20.0F;
         } else {
@@ -154,7 +154,7 @@ public class CuberaModel<T extends CuberaEntity> extends EntityModel<T> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        body_base.render(poseStack, buffer, packedLight, packedOverlay);
+    public ModelPart root() {
+        return body_base;
     }
 }

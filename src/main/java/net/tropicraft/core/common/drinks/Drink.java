@@ -1,10 +1,15 @@
 package net.tropicraft.core.common.drinks;
 
+import com.mojang.serialization.Codec;
 import com.tterrag.registrate.providers.RegistrateLangProvider;
+import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.ChatFormatting;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -16,6 +21,7 @@ import net.tropicraft.core.common.item.TropicraftItems;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO: Make a registry
 public class Drink {
     public static final Int2ObjectMap<Drink> DRINKS = new Int2ObjectOpenHashMap<>();
     public static final Drink LEMONADE = new Drink(1, 0xfadb41, "lemonade", ChatFormatting.YELLOW).addAction(new DrinkActionPotion(MobEffects.MOVEMENT_SPEED, 5, 1));
@@ -40,6 +46,9 @@ public class Drink {
     public static final Drink COCONUT_WATER = new Drink(7, 0xdfdfdf, "coconut_water", ChatFormatting.WHITE).addAction(new DrinkActionPotion(MobEffects.MOVEMENT_SPEED, 5, 1));
     public static final Drink MAI_TAI = new Drink(8, 0xff772e, "mai_tai", ChatFormatting.GOLD).addAction(new DrinkActionPotion(MobEffects.CONFUSION, 5, 0));
     public static final Drink COCKTAIL = new Drink(9, 0, "cocktail", ChatFormatting.WHITE);
+
+    public static final Codec<Drink> CODEC = ExtraCodecs.idResolverCodec(value -> value.drinkId, DRINKS::get, -1);
+    public static final StreamCodec<ByteBuf, Drink> STREAM_CODEC = ByteBufCodecs.idMapper(DRINKS::get, value -> value.drinkId);
 
     public int drinkId;
     public int color;
