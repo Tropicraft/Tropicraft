@@ -25,11 +25,11 @@ public abstract class PalmTreeFeature extends Feature<NoneFeatureConfiguration> 
     protected SaplingBlock getSapling() {
         return TropicraftBlocks.PALM_SAPLING.get();
     }
-    
+
     protected final BlockState getLeaf() {
         return TropicraftBlocks.PALM_LEAVES.get().defaultBlockState();
     }
-    
+
     protected final BlockState getLog() {
         return TropicraftBlocks.PALM_LOG.get().defaultBlockState();
     }
@@ -60,6 +60,7 @@ public abstract class PalmTreeFeature extends Feature<NoneFeatureConfiguration> 
     }
 
     private static final Direction[] DIRECTIONS = ArrayUtils.removeElement(Direction.values(), Direction.UP);
+
     public static void spawnCoconuts(LevelSimulatedRW world, BlockPos pos, RandomSource random, int chance, BlockState leaf) {
         final BlockState coconut = TropicraftBlocks.COCONUT.get().defaultBlockState();
         for (Direction d : DIRECTIONS) {

@@ -32,20 +32,20 @@ public abstract class FurnitureEntity extends Entity {
     private static final EntityDataAccessor<Integer> FORWARD_DIRECTION = SynchedEntityData.defineId(FurnitureEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> TIME_SINCE_HIT = SynchedEntityData.defineId(FurnitureEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> GLUED_DOWN = SynchedEntityData.defineId(FurnitureEntity.class, EntityDataSerializers.BOOLEAN);
-    
+
     private static final int DAMAGE_THRESHOLD = 40;
-    
+
     private final Function<DyeColor, Item> itemLookup;
-    
+
     protected int lerpSteps;
     protected double lerpX;
     protected double lerpY;
     protected double lerpZ;
     protected double lerpYaw = Double.NaN; // Force first-time sync even if packet is incomplete
     protected double lerpPitch;
-    
+
     protected FurnitureEntity(EntityType<?> entityTypeIn, Level worldIn, Map<DyeColor, ? extends RegistryEntry<? extends Item, ? extends Item>> items) {
-        this(entityTypeIn, worldIn, c -> items.get(c).get());        
+        this(entityTypeIn, worldIn, c -> items.get(c).get());
     }
 
     protected FurnitureEntity(EntityType<?> entityTypeIn, Level worldIn, Function<DyeColor, Item> itemLookup) {
@@ -81,7 +81,7 @@ public abstract class FurnitureEntity extends Entity {
         if (timeSinceHit > 0) {
             setTimeSinceHit(timeSinceHit - 1);
         }
-    
+
         final float damage = getDamage();
         if (damage > 0) {
             setDamage(damage - 1);
@@ -91,19 +91,19 @@ public abstract class FurnitureEntity extends Entity {
         xo = currentPos.x;
         yo = currentPos.y;
         zo = currentPos.z;
-    
+
         super.tick();
-    
+
         tickLerp();
-    
+
         if (preventMotion()) {
             setDeltaMovement(Vec3.ZERO);
         }
-    
+
         //updateRocking();
-    
+
         this.checkInsideBlocks();
-        List<Entity> list = this.level().getEntities(this, this.getBoundingBox().inflate((double)0.2F, (double)-0.01F, (double)0.2F), EntitySelector.pushableBy(this));
+        List<Entity> list = this.level().getEntities(this, this.getBoundingBox().inflate((double) 0.2F, (double) -0.01F, (double) 0.2F), EntitySelector.pushableBy(this));
         if (!list.isEmpty()) {
             for (Entity entity : list) {
                 if (!entity.hasPassenger(this)) {
@@ -112,7 +112,7 @@ public abstract class FurnitureEntity extends Entity {
             }
         }
     }
-    
+
     protected boolean preventMotion() {
         return true;
     }
@@ -133,12 +133,12 @@ public abstract class FurnitureEntity extends Entity {
 
     private void tickLerp() {
         if (this.lerpSteps > 0) {
-            double d0 = this.getX() + (this.lerpX - this.getX()) / (double)this.lerpSteps;
-            double d1 = this.getY() + (this.lerpY - this.getY()) / (double)this.lerpSteps;
-            double d2 = this.getZ() + (this.lerpZ - this.getZ()) / (double)this.lerpSteps;
-            double d3 = Mth.wrapDegrees(this.lerpYaw - (double)this.getYRot());
-            this.setYRot((float)((double)this.getYRot() + d3 / (double)this.lerpSteps));
-            this.setXRot((float)((double)this.getXRot() + (this.lerpPitch - (double)this.getXRot()) / (double)this.lerpSteps));
+            double d0 = this.getX() + (this.lerpX - this.getX()) / (double) this.lerpSteps;
+            double d1 = this.getY() + (this.lerpY - this.getY()) / (double) this.lerpSteps;
+            double d2 = this.getZ() + (this.lerpZ - this.getZ()) / (double) this.lerpSteps;
+            double d3 = Mth.wrapDegrees(this.lerpYaw - (double) this.getYRot());
+            this.setYRot((float) ((double) this.getYRot() + d3 / (double) this.lerpSteps));
+            this.setXRot((float) ((double) this.getXRot() + (this.lerpPitch - (double) this.getXRot()) / (double) this.lerpSteps));
             --this.lerpSteps;
             this.setPos(d0, d1, d2);
             this.setRot(this.getYRot(), this.getXRot());
@@ -147,16 +147,16 @@ public abstract class FurnitureEntity extends Entity {
 
     @Override
     public InteractionResult interact(Player pPlayer, InteractionHand pHand) {
-        if(invulnerablityCheck(pPlayer, pHand) == InteractionResult.SUCCESS) {
+        if (invulnerablityCheck(pPlayer, pHand) == InteractionResult.SUCCESS) {
             return InteractionResult.SUCCESS;
         }
 
         return super.interact(pPlayer, pHand);
     }
 
-    public InteractionResult invulnerablityCheck(Player pPlayer, InteractionHand pHand){
-        if(pPlayer.getItemInHand(pHand).is(Items.DEBUG_STICK)){
-            if(!this.level().isClientSide) {
+    public InteractionResult invulnerablityCheck(Player pPlayer, InteractionHand pHand) {
+        if (pPlayer.getItemInHand(pHand).is(Items.DEBUG_STICK)) {
+            if (!this.level().isClientSide) {
                 this.entityData.set(GLUED_DOWN, !this.entityData.get(GLUED_DOWN));
                 pPlayer.sendSystemMessage(Component.translatable("Invulnerability Mode: " + (this.entityData.get(GLUED_DOWN) ? "On" : "Off")));
             }
@@ -167,11 +167,10 @@ public abstract class FurnitureEntity extends Entity {
         return InteractionResult.FAIL;
     }
 
-
     @Override
     public boolean hurt(DamageSource damageSource, float amount) {
         if (this.isInvulnerableTo(damageSource)) {
-            if(damageSource.getEntity() instanceof Player player){
+            if (damageSource.getEntity() instanceof Player player) {
                 return player.getMainHandItem().is(Items.DEBUG_STICK);
             }
 
@@ -183,22 +182,22 @@ public abstract class FurnitureEntity extends Entity {
             this.setTimeSinceHit(10);
             this.setDamage(this.getDamage() + amount * 10.0F);
             this.markHurt();
-            boolean flag = damageSource.getEntity() instanceof Player && ((Player)damageSource.getEntity()).getAbilities().instabuild;
-    
+            boolean flag = damageSource.getEntity() instanceof Player && ((Player) damageSource.getEntity()).getAbilities().instabuild;
+
             if (flag || this.getDamage() > DAMAGE_THRESHOLD) {
                 Entity rider = this.getControllingPassenger();
                 if (rider != null) {
                     rider.startRiding(this);
                 }
-    
+
                 if (!flag) {
                     this.spawnAtLocation(getItemStack(), 0.0F);
                 }
-    
+
                 this.remove(RemovalReason.KILLED);
             }
         }
-    
+
         return true;
     }
 
@@ -232,7 +231,7 @@ public abstract class FurnitureEntity extends Entity {
     protected void readAdditionalSaveData(CompoundTag nbt) {
         setColor(DyeColor.byId(nbt.getInt("Color")));
 
-        if(nbt.contains("GluedDown")){
+        if (nbt.contains("GluedDown")) {
             entityData.set(GLUED_DOWN, nbt.getBoolean("GluedDown"));
         }
     }

@@ -56,7 +56,6 @@ public class SlenderHarvestMouseEntity extends Animal {
         return BREEDING_ITEMS.get().test(stack);
     }
 
-
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel pLevel, AgeableMob pOtherParent) {

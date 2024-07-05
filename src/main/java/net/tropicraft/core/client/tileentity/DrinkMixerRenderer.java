@@ -34,16 +34,16 @@ public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerBlockEntity> {
     private final ItemRenderer renderItem;
     private ItemEntity dummyEntityItem;
 
-    private static final float[][] INGREDIENT_OFFSETS = new float[][] {
-        {0.3f, -0.5f, 0.05f},
-        {-0.3f, -0.5f, 0.05f},
-        {0.0f, 0.3f, -0.1f}
+    private static final float[][] INGREDIENT_OFFSETS = new float[][]{
+            {0.3f, -0.5f, 0.05f},
+            {-0.3f, -0.5f, 0.05f},
+            {0.0f, 0.3f, -0.1f}
     };
 
-    private static final float[][] INGREDIENT_SCALES = new float[][] {
-        {1, 1, 1},
-        {1, 1, 1},
-        {0.8f, 0.8f, 0.8f}
+    private static final float[][] INGREDIENT_SCALES = new float[][]{
+            {1, 1, 1},
+            {1, 1, 1},
+            {0.8f, 0.8f, 0.8f}
     };
 
     public DrinkMixerRenderer(final BlockEntityRendererProvider.Context context) {

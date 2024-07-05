@@ -68,7 +68,9 @@ public class VMonkeyEntity extends TamableAnimal {
         return false;
     };
 
-    /** Entity this monkey is following around */
+    /**
+     * Entity this monkey is following around
+     */
     private LivingEntity following;
     private boolean madAboutStolenAlcohol;
 
@@ -157,9 +159,9 @@ public class VMonkeyEntity extends TamableAnimal {
 
     public void setMonkeyFlag(int id, boolean flag) {
         if (flag) {
-            entityData.set(DATA_FLAGS, (byte)(entityData.get(DATA_FLAGS) | id));
+            entityData.set(DATA_FLAGS, (byte) (entityData.get(DATA_FLAGS) | id));
         } else {
-            entityData.set(DATA_FLAGS, (byte)(entityData.get(DATA_FLAGS) & ~id));
+            entityData.set(DATA_FLAGS, (byte) (entityData.get(DATA_FLAGS) & ~id));
         }
     }
 

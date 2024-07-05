@@ -13,12 +13,12 @@ public class BeachFloatRenderer extends FurnitureRenderer<BeachFloatEntity> {
         super(context, "beach_float", new BeachFloatModel(context.bakeLayer(TropicraftRenderLayers.BEACH_FLOAT_LAYER)));
         shadowRadius = .5F;
     }
-    
+
     @Override
     protected double getYOffset() {
         return super.getYOffset() + 1.2;
     }
-    
+
     @Override
     protected void setupTransforms(PoseStack stack) {
         stack.mulPose(Axis.YP.rotationDegrees(-180));

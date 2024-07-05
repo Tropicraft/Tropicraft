@@ -32,7 +32,7 @@ public class LavaBallEntity extends Entity {
         lifeTimer = 0;
     }
 
-    public LavaBallEntity(EntityType<? extends LavaBallEntity> type,Level world, double i, double j, double k, double motX, double motY, double motZ) {
+    public LavaBallEntity(EntityType<? extends LavaBallEntity> type, Level world, double i, double j, double k, double motX, double motY, double motZ) {
         super(type, world);
         setFire = false;
         moveTo(i, j, k, 0, 0);
@@ -104,9 +104,9 @@ public class LavaBallEntity extends Entity {
         motionY *= .99;
 
         if (!onGround()) {
-            motionY -=.05F;
+            motionY -= .05F;
             if (level().isClientSide) {
-                for (int i = 0; i < 5 + random.nextInt(3); i++){
+                for (int i = 0; i < 5 + random.nextInt(3); i++) {
                     supahDrip();
                 }
             }
@@ -118,9 +118,9 @@ public class LavaBallEntity extends Entity {
         }
 
         //TODO: Note below, these used to be tempLavaMoving - maybe they still need to be?
-        int thisX = (int)Math.floor(getX());
-        int thisY = (int)Math.floor(getY());
-        int thisZ = (int)Math.floor(getZ());
+        int thisX = (int) Math.floor(getX());
+        int thisY = (int) Math.floor(getY());
+        int thisZ = (int) Math.floor(getZ());
 
         BlockPos posCurrent = new BlockPos(thisX, thisY, thisZ);
         BlockPos posBelow = posCurrent.below();

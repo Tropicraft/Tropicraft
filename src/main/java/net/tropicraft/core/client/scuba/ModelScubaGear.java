@@ -529,7 +529,7 @@ public class ModelScubaGear extends HumanoidModel<LivingEntity> {
     }
 
     public static LayerDefinition create() {
-        MeshDefinition modelData = createMesh(CubeDeformation.NONE,0);
+        MeshDefinition modelData = createMesh(CubeDeformation.NONE, 0);
         PartDefinition modelPartData = modelData.getRoot();
 
         modelPartData.addOrReplaceChild("body",
@@ -1004,8 +1004,7 @@ public class ModelScubaGear extends HumanoidModel<LivingEntity> {
 //        bipedLeftLeg.rotationPointY = 0;
         //TODO bipedLeftLeg.offsetY = 0.763f;
 
-
-        if(showLegs) {
+        if (showLegs) {
             // TODO is this necessary?
 //        if(entityIn.isInWater()) {
 //            this.Fin2m3.offsetX = -0.2f;
@@ -1066,9 +1065,6 @@ public class ModelScubaGear extends HumanoidModel<LivingEntity> {
 
             GlStateManager.popMatrix();*/
 
-
-
-
 //        }else {
             //TODO  this.Fin2m3.offsetX = 0f;
 
@@ -1089,8 +1085,6 @@ public class ModelScubaGear extends HumanoidModel<LivingEntity> {
 //        }
 
         }
-
-
     }
 
     private void renderTank(PoseStack stack, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn) {
@@ -1241,8 +1235,7 @@ public class ModelScubaGear extends HumanoidModel<LivingEntity> {
      * Copies the angles from one object to another. This is used when objects should stay aligned with each other, like
      * the hair over a players head.
      */
-    public static void copyModelRotations(ModelPart source, ModelPart dest)
-    {
+    public static void copyModelRotations(ModelPart source, ModelPart dest) {
         dest.xRot = source.xRot;
         dest.yRot = source.yRot;
         dest.zRot = source.zRot;

@@ -92,13 +92,13 @@ public class TropiCreeperEntity extends PathfinderMob {
      */
     @Override
     public int getMaxFallDistance() {
-        return this.getTarget() == null ? 3 : 3 + (int)(this.getHealth() - 1.0F);
+        return this.getTarget() == null ? 3 : 3 + (int) (this.getHealth() - 1.0F);
     }
 
     @Override
     public boolean causeFallDamage(float distance, float pMultiplier, DamageSource pSource) {
         boolean fall = super.causeFallDamage(distance, pMultiplier, pSource);
-        this.timeSinceIgnited = (int)((float) this.timeSinceIgnited + distance * 1.5F);
+        this.timeSinceIgnited = (int) ((float) this.timeSinceIgnited + distance * 1.5F);
         if (this.timeSinceIgnited > this.fuseTime - 5) {
             this.timeSinceIgnited = this.fuseTime - 5;
         }
@@ -109,8 +109,8 @@ public class TropiCreeperEntity extends PathfinderMob {
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        compound.putShort("Fuse", (short)this.fuseTime);
-        compound.putByte("ExplosionRadius", (byte)this.explosionRadius);
+        compound.putShort("Fuse", (short) this.fuseTime);
+        compound.putByte("ExplosionRadius", (byte) this.explosionRadius);
         compound.putBoolean("ignited", this.hasIgnited());
     }
 
@@ -245,9 +245,9 @@ public class TropiCreeperEntity extends PathfinderMob {
             areaeffectcloudentity.setRadiusOnUse(-0.5F);
             areaeffectcloudentity.setWaitTime(10);
             areaeffectcloudentity.setDuration(areaeffectcloudentity.getDuration() / 2);
-            areaeffectcloudentity.setRadiusPerTick(-areaeffectcloudentity.getRadius() / (float)areaeffectcloudentity.getDuration());
+            areaeffectcloudentity.setRadiusPerTick(-areaeffectcloudentity.getRadius() / (float) areaeffectcloudentity.getDuration());
 
-            for(MobEffectInstance effectinstance : collection) {
+            for (MobEffectInstance effectinstance : collection) {
                 areaeffectcloudentity.addEffect(new MobEffectInstance(effectinstance));
             }
 
@@ -262,8 +262,8 @@ public class TropiCreeperEntity extends PathfinderMob {
     public void ignite() {
         this.entityData.set(IGNITED, true);
     }
-    
+
     public float getCreeperFlashIntensity(float partialTicks) {
-       return Mth.lerp(partialTicks, (float)this.prevTimeSinceIgnited, (float)this.timeSinceIgnited) / (float)(this.fuseTime - 2);
+        return Mth.lerp(partialTicks, (float) this.prevTimeSinceIgnited, (float) this.timeSinceIgnited) / (float) (this.fuseTime - 2);
     }
 }

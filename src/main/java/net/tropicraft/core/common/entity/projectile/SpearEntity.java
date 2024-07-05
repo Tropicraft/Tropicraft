@@ -192,7 +192,6 @@ public class SpearEntity extends AbstractArrow {
         if (this.ownedBy(pEntity) || this.getOwner() == null) {
             super.playerTouch(pEntity);
         }
-
     }
 
     /**
@@ -217,7 +216,6 @@ public class SpearEntity extends AbstractArrow {
         if (this.pickup != AbstractArrow.Pickup.ALLOWED || i <= 0) {
             super.tickDespawn();
         }
-
     }
 
     @Override

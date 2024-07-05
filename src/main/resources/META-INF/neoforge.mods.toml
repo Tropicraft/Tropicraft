@@ -1,21 +1,21 @@
-modLoader="javafml"
-loaderVersion="[2,)"
-issueTrackerURL="https://github.com/Tropicraft/Tropicraft/issues"
-license="Mozilla Public License Version 2.0"
+modLoader = "javafml"
+loaderVersion = "[2,)"
+issueTrackerURL = "https://github.com/Tropicraft/Tropicraft/issues"
+license = "Mozilla Public License Version 2.0"
 
 [[mods]]
-modId="tropicraft"
-version="${mod_version}"
-displayName="Tropicraft"
-displayURL="https://tropicraft.net"
-logoFile="logo.png"
-credits="Mr_okushama, MrRube, newthead, pablomittens, fotoply, and others who have contributed over the years <3"
-authors="Cojomax99, Corosus, tterrag"
-description='''
+modId = "tropicraft"
+version = "${mod_version}"
+displayName = "Tropicraft"
+displayURL = "https://tropicraft.net"
+logoFile = "logo.png"
+credits = "Mr_okushama, MrRube, newthead, pablomittens, fotoply, and others who have contributed over the years <3"
+authors = "Cojomax99, Corosus, tterrag"
+description = '''
 This is Tropicraft, the utopian idyllic getaway that you have been waiting for! Craft a pina colada, plop yourself down into a beach chair, take a sip at sunset, and drift away'''
 [projects]
-  modrinth="20zpzIT1"
-  curseforge=254794
+modrinth = "20zpzIT1"
+curseforge = 254794
 
 [[mixins]]
 config = "tropicraft.mixins.json"

@@ -33,7 +33,9 @@ public class TallRainforestTreeFeature extends RainforestTreeFeature {
         BlockPos pos = context.origin();
 
         pos = pos.immutable();
-        int i = pos.getX(); int j = pos.getY(); int k = pos.getZ();
+        int i = pos.getX();
+        int j = pos.getY();
+        int k = pos.getZ();
         final int height = rand.nextInt(15) + 15;
 
         if (goesBeyondWorldSize(world, pos.getY(), height)) {
@@ -94,7 +96,7 @@ public class TallRainforestTreeFeature extends RainforestTreeFeature {
                 genCircle(world, nx, y + 2, nz, leafSize - 1, leafSize - 3, getLeaf(), false);
                 genCircle(world, nx, y + 1, nz, leafSize, leafSize - 1, getLeaf(), false);
 
-                placeBlockLine(world, new int[] { i, y - 2, k }, new int[] { nx, y + 2, nz }, getLog());
+                placeBlockLine(world, new int[]{i, y - 2, k}, new int[]{nx, y + 2, nz}, getLog());
             }
         }
 

@@ -48,7 +48,7 @@ public class SmallMangroveTrunkPlacer extends TrunkPlacer {
         }
 
         for (int i = 0; i < height; ++i) {
-            placeLog(world, acceptor, random, origin.above(i),config);
+            placeLog(world, acceptor, random, origin.above(i), config);
         }
 
         generateRoots((LevelSimulatedRW) world, random, origin, 0);

@@ -12,6 +12,7 @@ public class TropicsConfigs {
     public static class Common {
         public final ModConfigSpec.ConfigValue<Boolean> allowExplodingCoconutsByNonOPs;
         public final ModConfigSpec.ConfigValue<Boolean> spawnHostileMobsInTropics;
+
         public Common(ModConfigSpec.Builder builder) {
             builder.push("Items");
             allowExplodingCoconutsByNonOPs = builder

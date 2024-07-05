@@ -118,12 +118,17 @@ public final class BoardwalkBlock extends Block implements SimpleWaterloggedBloc
     public BlockState rotate(BlockState state, Rotation rotation) {
         switch (rotation) {
             case COUNTERCLOCKWISE_90:
-            case CLOCKWISE_90: switch (state.getValue(AXIS)) {
-                case Z: return state.setValue(AXIS, Direction.Axis.X);
-                case X: return state.setValue(AXIS, Direction.Axis.Z);
-                default: return state;
-            }
-            default: return state;
+            case CLOCKWISE_90:
+                switch (state.getValue(AXIS)) {
+                    case Z:
+                        return state.setValue(AXIS, Direction.Axis.X);
+                    case X:
+                        return state.setValue(AXIS, Direction.Axis.Z);
+                    default:
+                        return state;
+                }
+            default:
+                return state;
         }
     }
 
@@ -157,12 +162,12 @@ public final class BoardwalkBlock extends Block implements SimpleWaterloggedBloc
         SHORT("short"),
         SHORT_POST("short_post");
 
-        public static final Type[] TALLS = new Type[] { TALL, TALL_POST, TALL_POST_FRONT, TALL_POST_BACK, TALL_POST_FRONT_BACK };
-        public static final Type[] SHORTS = new Type[] { SHORT, SHORT_POST };
-        public static final Type[] TALL_POSTS = new Type[] { TALL_POST, TALL_POST_FRONT, TALL_POST_BACK, TALL_POST_FRONT_BACK };
-        public static final Type[] SHORT_POSTS = new Type[] { SHORT_POST };
-        public static final Type[] FRONTS = new Type[] { TALL_POST_FRONT, TALL_POST_FRONT_BACK };
-        public static final Type[] BACKS = new Type[] { TALL_POST_BACK, TALL_POST_FRONT_BACK };
+        public static final Type[] TALLS = new Type[]{TALL, TALL_POST, TALL_POST_FRONT, TALL_POST_BACK, TALL_POST_FRONT_BACK};
+        public static final Type[] SHORTS = new Type[]{SHORT, SHORT_POST};
+        public static final Type[] TALL_POSTS = new Type[]{TALL_POST, TALL_POST_FRONT, TALL_POST_BACK, TALL_POST_FRONT_BACK};
+        public static final Type[] SHORT_POSTS = new Type[]{SHORT_POST};
+        public static final Type[] FRONTS = new Type[]{TALL_POST_FRONT, TALL_POST_FRONT_BACK};
+        public static final Type[] BACKS = new Type[]{TALL_POST_BACK, TALL_POST_FRONT_BACK};
 
         private final String name;
 

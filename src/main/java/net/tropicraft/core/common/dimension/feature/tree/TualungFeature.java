@@ -30,7 +30,9 @@ public class TualungFeature extends RainforestTreeFeature {
         BlockPos pos = context.origin();
 
         pos = pos.immutable();
-        int i = pos.getX(); int j = pos.getY(); int k = pos.getZ();
+        int i = pos.getX();
+        int j = pos.getY();
+        int k = pos.getZ();
         int height = rand.nextInt(maxHeight - baseHeight) + baseHeight + j;
         int branches = rand.nextInt(3) + 3;
 
@@ -69,7 +71,7 @@ public class TualungFeature extends RainforestTreeFeature {
             int bx = rand.nextInt(15) - 8 + i;
             int bz = rand.nextInt(15) - 8 + k;
 
-            placeBlockLine(world, new int[] { i + sign((bx - i) / 2), height, k + sign((bz - k) / 2) }, new int[] { bx, branchHeight, bz }, getLog());
+            placeBlockLine(world, new int[]{i + sign((bx - i) / 2), height, k + sign((bz - k) / 2)}, new int[]{bx, branchHeight, bz}, getLog());
 
             genCircle(world, bx, branchHeight, bz, 2, 1, getLeaf(), false);
             genCircle(world, bx, branchHeight + 1, bz, 3, 2, getLeaf(), false);

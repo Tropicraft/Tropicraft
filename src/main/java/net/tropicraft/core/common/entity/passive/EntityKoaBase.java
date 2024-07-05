@@ -134,8 +134,8 @@ public class EntityKoaBase extends Villager {
     public int hitIndex3 = 0;
     public int hitDelay = 0;
     private long lastTradeTime = 0;
-    private static final int TRADE_COOLDOWN = 24000*3;
-    private static final int DIVE_TIME_NEEDED = 60*60;
+    private static final int TRADE_COOLDOWN = 24000 * 3;
+    private static final int DIVE_TIME_NEEDED = 60 * 60;
 
     public boolean debug = false;
 
@@ -155,14 +155,21 @@ public class EntityKoaBase extends Villager {
             //TODO: 1.14 fix
             input -> (input instanceof Monster/* && !(input instanceof CreeperEntity)) || input instanceof EntityTropiSkeleton || input instanceof EntityIguana || input instanceof EntityAshen*/);
 
-
     public enum Genders {
         MALE,
         FEMALE;
 
         private static final Map<Integer, Genders> lookup = new HashMap<>();
-        static { for(Genders e : EnumSet.allOf(Genders.class)) { lookup.put(e.ordinal(), e); } }
-        public static Genders get(int intValue) { return lookup.get(intValue); }
+
+        static {
+            for (Genders e : EnumSet.allOf(Genders.class)) {
+                lookup.put(e.ordinal(), e);
+            }
+        }
+
+        public static Genders get(int intValue) {
+            return lookup.get(intValue);
+        }
     }
 
     public enum Roles {
@@ -170,8 +177,16 @@ public class EntityKoaBase extends Villager {
         FISHERMAN;
 
         private static final Map<Integer, Roles> lookup = new HashMap<>();
-        static { for(Roles e : EnumSet.allOf(Roles.class)) { lookup.put(e.ordinal(), e); } }
-        public static Roles get(int intValue) { return lookup.get(intValue); }
+
+        static {
+            for (Roles e : EnumSet.allOf(Roles.class)) {
+                lookup.put(e.ordinal(), e);
+            }
+        }
+
+        public static Roles get(int intValue) {
+            return lookup.get(intValue);
+        }
     }
 
     public EntityKoaBase(EntityType<? extends EntityKoaBase> type, Level level) {
@@ -254,6 +269,7 @@ public class EntityKoaBase extends Villager {
 
     /**
      * Fixes race condition issue of dataparam packet coming in before lure client spawn packet
+     *
      * @param koa
      * @param id
      */
@@ -501,8 +517,6 @@ public class EntityKoaBase extends Villager {
         this.goalSelector.getAvailableGoals().forEach(WrappedGoal::stop);
         this.targetSelector.getAvailableGoals().forEach(WrappedGoal::stop);
 
-
-
         int curPri = 0;
 
         this.goalSelector.addGoal(curPri++, new FloatGoal(this));
@@ -548,8 +562,6 @@ public class EntityKoaBase extends Villager {
         if (canHunt()) {
             this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, LivingEntity.class, 10, true, false, ENEMY_PREDICATE));
         }
-
-
     }
 
     @Override
@@ -596,7 +608,6 @@ public class EntityKoaBase extends Villager {
         /*Util.removeGoal(this, EntityAIHarvestFarmland.class);
         Util.removeGoal(this, EntityAIPlay.class);*/
 
-
         if (!this.isTrading() && this.updateMerchantTimer > 0) {
             if (--this.updateMerchantTimer <= 0) {
                 if (this.increaseProfessionLevelOnUpdate) {
@@ -607,7 +618,6 @@ public class EntityKoaBase extends Villager {
                 this.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 10 * SharedConstants.TICKS_PER_SECOND, 0));
             }
         }
-
 
         //this.setDead();
         /*if (isChild()) {
@@ -621,7 +631,6 @@ public class EntityKoaBase extends Villager {
         findAndSetFireSource(false);
         findAndSetDrums(false);
         findAndSetTownID(false);
-
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -689,10 +698,9 @@ public class EntityKoaBase extends Villager {
                     }
                     zapMemory();
 
-                    druggedTime += 20*60*2;
+                    druggedTime += 20 * 60 * 2;
                     addEffect(new MobEffectInstance(MobEffects.CONFUSION, druggedTime));
                     findAndSetDrums(true);
-
                 }
                 // [1.15] Cojo - commenting out until we know what we want koa scuba interaction to be
                 /*else if (!stack.isEmpty() && stack.getItem() == ItemRegistry.diveComputer) {
@@ -821,14 +829,12 @@ public class EntityKoaBase extends Villager {
 
         ListTag nbttaglist = new ListTag();
 
-        for (int i = 0; i < this.inventory.getContainerSize(); ++i)
-        {
+        for (int i = 0; i < this.inventory.getContainerSize(); ++i) {
             ItemStack itemstack = this.inventory.getItem(i);
 
-            if (!itemstack.isEmpty())
-            {
+            if (!itemstack.isEmpty()) {
                 CompoundTag nbttagcompound = new CompoundTag();
-                nbttagcompound.putByte("Slot", (byte)i);
+                nbttagcompound.putByte("Slot", (byte) i);
                 nbttaglist.add(itemstack.save(registryAccess(), nbttagcompound));
             }
         }
@@ -925,12 +931,12 @@ public class EntityKoaBase extends Villager {
         if (villageDimension != null) {
             //if (villageID != -1) {
 
-                //if not in home dimension, full reset
-                if (this.level().dimension() != villageDimension) {
-                    dbg("koa detected different dimension, zapping memory");
-                    zapMemory();
-                    addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 5));
-                }
+            //if not in home dimension, full reset
+            if (this.level().dimension() != villageDimension) {
+                dbg("koa detected different dimension, zapping memory");
+                zapMemory();
+                addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 5));
+            }
             //}
         }
 
@@ -998,7 +1004,7 @@ public class EntityKoaBase extends Villager {
 
     public void findAndSetHomeToCloseChest(boolean force) {
 
-        if (!force && (level().getGameTime()+this.getId()) % (20*30) != 0) return;
+        if (!force && (level().getGameTime() + this.getId()) % (20 * 30) != 0) return;
 
         //validate home position
         boolean tryFind = false;
@@ -1032,7 +1038,7 @@ public class EntityKoaBase extends Villager {
     }
 
     public boolean findAndSetTownID(boolean force) {
-        if (!force && (level().getGameTime()+this.getId()) % (20*30) != 0) return false;
+        if (!force && (level().getGameTime() + this.getId()) % (20 * 30) != 0) return false;
 
         boolean tryFind = false;
 
@@ -1060,7 +1066,7 @@ public class EntityKoaBase extends Villager {
 
         //this.setHomePosAndDistance(this.getRestrictCenter(), 128);
 
-        if (!force && (level().getGameTime()+this.getId()) % (20*30) != 0) return;
+        if (!force && (level().getGameTime() + this.getId()) % (20 * 30) != 0) return;
 
         //validate fire source
         boolean tryFind = false;
@@ -1078,7 +1084,7 @@ public class EntityKoaBase extends Villager {
         if (tryFind) {
             int range = 20;
             for (int x = -range; x <= range; x++) {
-                for (int y = -range/2; y <= range/2; y++) {
+                for (int y = -range / 2; y <= range / 2; y++) {
                     for (int z = -range; z <= range; z++) {
                         BlockPos pos = this.blockPosition().offset(x, y, z);
                         BlockState state = level().getBlockState(pos);
@@ -1108,7 +1114,7 @@ public class EntityKoaBase extends Villager {
 
     //for other system not used
     public void syncBPM() {
-        if ((level().getGameTime()+this.getId()) % (20) != 0) return;
+        if ((level().getGameTime() + this.getId()) % (20) != 0) return;
 
         List<EntityKoaBase> listEnts = level().getEntitiesOfClass(EntityKoaBase.class, new AABB(this.blockPosition()).inflate(10, 5, 10));
         //Collections.shuffle(listEnts);
@@ -1132,7 +1138,7 @@ public class EntityKoaBase extends Villager {
 
         //this.setHomePosAndDistance(this.getRestrictCenter(), 128);
 
-        if (!force && (level().getGameTime()+this.getId()) % (20*30) != 0) return;
+        if (!force && (level().getGameTime() + this.getId()) % (20 * 30) != 0) return;
 
         Iterator<BlockPos> it = listPosDrums.iterator();
         while (it.hasNext()) {
@@ -1182,11 +1188,11 @@ public class EntityKoaBase extends Villager {
 
         int range = 20;
         for (int x = -range; x <= range; x++) {
-            for (int y = -range/2; y <= range/2; y++) {
+            for (int y = -range / 2; y <= range / 2; y++) {
                 for (int z = -range; z <= range; z++) {
                     BlockPos pos = this.blockPosition().offset(x, y, z);
                     if (isInstrument(pos)) {
-                    //if (state.getBlock() == BlockRegistry.bongo) {
+                        //if (state.getBlock() == BlockRegistry.bongo) {
 
                         boolean match = false;
 
@@ -1208,7 +1214,6 @@ public class EntityKoaBase extends Villager {
                         if (listPosDrums.size() >= MAX_DRUMS) {
                             return;
                         }
-
                     }
                 }
             }
@@ -1244,33 +1249,27 @@ public class EntityKoaBase extends Villager {
     }
 
     @Nullable
-    public ItemStack addItem(ChestBlockEntity chest, ItemStack stack)
-    {
+    public ItemStack addItem(ChestBlockEntity chest, ItemStack stack) {
         ItemStack itemstack = stack.copy();
 
-        for (int i = 0; i < chest.getContainerSize(); ++i)
-        {
+        for (int i = 0; i < chest.getContainerSize(); ++i) {
             ItemStack itemstack1 = chest.getItem(i);
 
-            if (itemstack1.isEmpty())
-            {
+            if (itemstack1.isEmpty()) {
                 chest.setItem(i, itemstack);
                 chest.setChanged();
                 return ItemStack.EMPTY;
             }
 
-            if (ItemStack.isSameItemSameComponents(itemstack1, itemstack))
-            {
+            if (ItemStack.isSameItemSameComponents(itemstack1, itemstack)) {
                 int j = Math.min(chest.getMaxStackSize(), itemstack1.getMaxStackSize());
                 int k = Math.min(itemstack.getCount(), j - itemstack1.getCount());
 
-                if (k > 0)
-                {
+                if (k > 0) {
                     itemstack1.grow(k);
                     itemstack.shrink(k);
 
-                    if (itemstack.getCount() <= 0)
-                    {
+                    if (itemstack.getCount() <= 0) {
                         chest.setChanged();
                         return ItemStack.EMPTY;
                     }
@@ -1278,8 +1277,7 @@ public class EntityKoaBase extends Villager {
             }
         }
 
-        if (itemstack.getCount() != stack.getCount())
-        {
+        if (itemstack.getCount() != stack.getCount()) {
             chest.setChanged();
         }
 
@@ -1391,7 +1389,7 @@ public class EntityKoaBase extends Villager {
 
         if (!level().isClientSide) {
             //if (world.getGameTime() % (20*5) == 0) {
-                //this.heal(5);
+            //this.heal(5);
             //}
 
             if (druggedTime > 0) {
@@ -1657,13 +1655,11 @@ public class EntityKoaBase extends Villager {
         super.playSound(soundIn, volume, pitch);
     }
 
-    public void setPlaying(boolean playing)
-    {
+    public void setPlaying(boolean playing) {
         this.isPlaying = playing;
     }
 
-    public boolean isPlaying()
-    {
+    public boolean isPlaying() {
         return this.isPlaying;
     }
 }

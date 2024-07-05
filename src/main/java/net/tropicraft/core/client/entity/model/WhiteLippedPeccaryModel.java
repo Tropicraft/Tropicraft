@@ -134,25 +134,25 @@ public class WhiteLippedPeccaryModel<T extends Entity> extends TropicraftAgeable
         return LayerDefinition.create(mesh, 64, 64);
     }
 
-	@Override
+    @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float age, float headYaw, float headPitch) {
-		ModelAnimator.look(getHead(), headYaw, headPitch);
+        ModelAnimator.look(getHead(), headYaw, headPitch);
 
-		try (ModelAnimator.Cycle walk = ModelAnimator.cycle(limbSwing * 0.2F, limbSwingAmount)) {
-			leg_left_fr.xRot = walk.eval(1.0F, 1.0F);
-			leg_right_fr.xRot = walk.eval(-1.0F, 1.0F);
-			leg_left_ba.xRot = walk.eval(-1.0F, 1.0F);
-			leg_right_ba.xRot = walk.eval(1.0F, 1.0F);
-		}
-	}
+        try (ModelAnimator.Cycle walk = ModelAnimator.cycle(limbSwing * 0.2F, limbSwingAmount)) {
+            leg_left_fr.xRot = walk.eval(1.0F, 1.0F);
+            leg_right_fr.xRot = walk.eval(-1.0F, 1.0F);
+            leg_left_ba.xRot = walk.eval(-1.0F, 1.0F);
+            leg_right_ba.xRot = walk.eval(1.0F, 1.0F);
+        }
+    }
 
-	@Override
-	protected ModelPart getHead() {
-		return this.head_base;
-	}
+    @Override
+    protected ModelPart getHead() {
+        return this.head_base;
+    }
 
-	@Override
-	protected ModelPart getBody() {
-		return this.body_base;
-	}
+    @Override
+    protected ModelPart getBody() {
+        return this.body_base;
+    }
 }

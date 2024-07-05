@@ -13,8 +13,7 @@ public enum AshenMasks {
     MOJO("Mojo"),
     WARTHOG("Warthog"),
     THE_HEART("The Heart"),
-    ENIGMA("Enigma")
-    ;
+    ENIGMA("Enigma");
 
     private final String name;
     private final double xOffset, yOffset;
@@ -24,7 +23,7 @@ public enum AshenMasks {
     AshenMasks(String name) {
         this(name, 0.5, 1);
     }
-    
+
     AshenMasks(String name, double xOffset, double yOffset) {
         this.name = name;
         this.xOffset = xOffset / 16;
@@ -38,7 +37,7 @@ public enum AshenMasks {
     public double getXOffset() {
         return xOffset;
     }
-    
+
     public double getYOffset() {
         return yOffset;
     }

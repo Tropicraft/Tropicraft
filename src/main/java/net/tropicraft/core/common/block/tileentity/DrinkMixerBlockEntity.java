@@ -32,11 +32,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock {
-    /** Number of ticks to mix */
-    private static final int TICKS_TO_MIX = 4*20;
+    /**
+     * Number of ticks to mix
+     */
+    private static final int TICKS_TO_MIX = 4 * 20;
     private static final int MAX_NUM_INGREDIENTS = 3;
 
-    /** Number of ticks the mixer has been mixin' */
+    /**
+     * Number of ticks the mixer has been mixin'
+     */
     private int ticks;
     public NonNullList<ItemStack> ingredients;
     private boolean mixing;

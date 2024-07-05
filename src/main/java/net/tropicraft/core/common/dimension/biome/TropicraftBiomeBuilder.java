@@ -223,25 +223,25 @@ public class TropicraftBiomeBuilder {
     private void addSurfaceBiome(BiConsumer<Climate.ParameterPoint, ResourceKey<Biome>> consumer, Climate.Parameter temperature, Climate.Parameter humidity, Climate.Parameter continentalness, Climate.Parameter erosion, Climate.Parameter weirdness, float offset, ResourceKey<Biome> biome) {
         // Depth 0
         consumer.accept(Climate.parameters(
-                temperature,
-                humidity,
-                continentalness,
-                erosion,
-                Climate.Parameter.point(0.0F),
-                weirdness,
-                offset),
+                        temperature,
+                        humidity,
+                        continentalness,
+                        erosion,
+                        Climate.Parameter.point(0.0F),
+                        weirdness,
+                        offset),
                 biome
         );
 
         // Depth 1
         consumer.accept(Climate.parameters(
-                temperature,
-                humidity,
-                continentalness,
-                erosion,
-                Climate.Parameter.point(1.0F),
-                weirdness,
-                offset),
+                        temperature,
+                        humidity,
+                        continentalness,
+                        erosion,
+                        Climate.Parameter.point(1.0F),
+                        weirdness,
+                        offset),
                 biome
         );
     }

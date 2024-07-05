@@ -46,7 +46,7 @@ public class LargePalmTreeFeature extends PalmTreeFeature {
         for (int y = 0; y <= height; y++) {
             placeLog(world, pos.getX(), pos.getY() + y, pos.getZ());
         }
-        
+
         final int i = pos.getX(), j = pos.getY(), k = pos.getZ();
 
         // Wheeee, auto-generated code!

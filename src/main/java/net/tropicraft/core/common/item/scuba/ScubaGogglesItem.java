@@ -28,7 +28,7 @@ import java.util.function.Supplier;
 
 @EventBusSubscriber(modid = Constants.MODID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
 public class ScubaGogglesItem extends ScubaArmorItem {
-    
+
     public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(Registries.ATTRIBUTE, Constants.MODID);
 
     // This is never registered to any entities, so it's not used in any logic

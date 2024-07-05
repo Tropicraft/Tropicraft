@@ -92,7 +92,6 @@ public class EIHEntity extends TropicraftCreatureEntity {
             }
         });
 
-
         goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
 //        goalSelector.addGoal(8, new LookRandomlyGoal(this));
         targetSelector.addGoal(1, new HurtByTargetGoal(this));

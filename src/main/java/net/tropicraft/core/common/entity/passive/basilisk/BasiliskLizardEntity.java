@@ -124,9 +124,9 @@ public final class BasiliskLizardEntity extends Animal {
             double dz = (random.nextDouble() * 2.0 - 1.0) * 0.25;
 
             level().addParticle(
-                random.nextBoolean() ? ParticleTypes.BUBBLE : ParticleTypes.SPLASH,
-                getX() + dx, surfaceY, getZ() + dz,
-                motion.x, motion.y - random.nextDouble() * 0.2F, motion.z
+                    random.nextBoolean() ? ParticleTypes.BUBBLE : ParticleTypes.SPLASH,
+                    getX() + dx, surfaceY, getZ() + dz,
+                    motion.x, motion.y - random.nextDouble() * 0.2F, motion.z
             );
         }
     }

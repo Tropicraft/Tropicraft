@@ -29,10 +29,10 @@ public class SteepPathProcessor extends PathStructureProcessor {
         if (axis == null) {
             return blockInfo;
         }
-        
+
         // If this is true, we are "bridging" upwards past an air gap, handles overhangs
         int bridgeTo = -1;
-        
+
         BlockState ladder = null;
         for (Direction.AxisDirection axisDir : Direction.AxisDirection.values()) {
             Direction dir = Direction.get(axisDir, axis);
@@ -64,10 +64,10 @@ public class SteepPathProcessor extends PathStructureProcessor {
         Direction dir = ladder.getValue(LadderBlock.FACING).getOpposite();
         pos = pos.above();
         if (bridgeTo == pos.getY() && canPlaceLadderAt(level, pos.above(), dir) == null) {
-        	if (pos.getY() > TropicraftDimension.SEA_LEVEL) {
-	            // If the next spot up can't support a ladder, this is a one block step, so place a stair block
-	            setBlockState(level, pos, TropicraftBlocks.THATCH_STAIRS.get().defaultBlockState().setValue(StairBlock.FACING, dir));
-        	}
+            if (pos.getY() > TropicraftDimension.SEA_LEVEL) {
+                // If the next spot up can't support a ladder, this is a one block step, so place a stair block
+                setBlockState(level, pos, TropicraftBlocks.THATCH_STAIRS.get().defaultBlockState().setValue(StairBlock.FACING, dir));
+            }
         } else {
             // Otherwise, place ladders upwards until we find air (bridging over an initial gap if required)
             while (bridgeTo >= pos.getY() || canPlaceLadderAt(level, pos, dir) != null) {
@@ -78,7 +78,7 @@ public class SteepPathProcessor extends PathStructureProcessor {
         }
         return blockInfo;//new BlockInfo(blockInfo.pos, debugState, blockInfo.nbt);
     }
-    
+
     // Check that there is a solid block behind the ladder at this pos, and return the correct ladder state
     // Returns null if placement is not possible
     private BlockState canPlaceLadderAt(LevelReader level, BlockPos pos, Direction dir) {
@@ -92,14 +92,13 @@ public class SteepPathProcessor extends PathStructureProcessor {
         }
         return null;
     }
-    
+
     private BlockState getLadderState(Direction dir) {
         return TropicraftBlocks.BAMBOO_LADDER.get().defaultBlockState().setValue(LadderBlock.FACING, dir.getOpposite());
     }
-    
+
     @Override
     protected StructureProcessorType<?> getType() {
         return TropicraftProcessorTypes.STEEP_PATH.get();
     }
-
 }

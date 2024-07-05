@@ -10,20 +10,20 @@ public class AIAshenHunt extends Goal {
     public AshenEntity ashen;
     public long huntRange = 24;
     public long keepDistantRange = 14;
-    
+
     public boolean xRay = false;
-    
+
     public boolean useMelee = false;
     public int useMeleeCountdown = 0;
     public int useMeleeCountdownMax = 80;
-    
+
     public Vec3 targetLastPos = null;
     public int targetNoMoveTicks = 0;
     public int targetNoMoveTicksMax = 4;
     public int panicTicks = 0;
-    
+
     public LivingEntity target;
-    
+
     public AIAshenHunt(AshenEntity ashen) {
         this.ashen = ashen;
     }
@@ -39,7 +39,7 @@ public class AIAshenHunt extends Goal {
             return true;
         }
     }
-    
+
     @Override
     public boolean canContinueToUse() {
         return this.canUse() || !this.ashen.getNavigation().isDone();

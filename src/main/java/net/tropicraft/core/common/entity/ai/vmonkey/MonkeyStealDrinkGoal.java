@@ -41,8 +41,8 @@ public class MonkeyStealDrinkGoal extends Goal {
         float f = Mth.sqrt((float) (d0 * d0 + d1 * d1));
         final Vec3 motion = entity.getDeltaMovement();
 
-        if ((double)f >= 1.0E-4D) {
-            entity.setDeltaMovement(motion.add(d0 / (double)f * 0.5D * 0.800000011920929D + motion.x * 0.20000000298023224D, 0, d1 / (double)f * 0.5D * 0.800000011920929D + motion.z * 0.20000000298023224D));
+        if ((double) f >= 1.0E-4D) {
+            entity.setDeltaMovement(motion.add(d0 / (double) f * 0.5D * 0.800000011920929D + motion.x * 0.20000000298023224D, 0, d1 / (double) f * 0.5D * 0.800000011920929D + motion.z * 0.20000000298023224D));
         }
 
         entity.setDeltaMovement(new Vec3(motion.x, 0.25, motion.z));

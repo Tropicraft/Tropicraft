@@ -36,5 +36,4 @@ public class AshenMaskRenderer extends EntityRenderer<AshenMaskEntity> {
         mask.renderMask(stack, buffer.getBuffer(RenderType.entityCutout(getTextureLocation(entity))), entity.getMaskType(), packedLightIn, OverlayTexture.NO_OVERLAY);
         stack.popPose();
     }
-
 }

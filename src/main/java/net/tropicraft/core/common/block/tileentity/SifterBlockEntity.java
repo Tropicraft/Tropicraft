@@ -31,13 +31,19 @@ import javax.annotation.Nullable;
 
 public class SifterBlockEntity extends BlockEntity {
 
-    /** Number of seconds to sift multiplied by the number of ticks per second */
+    /**
+     * Number of seconds to sift multiplied by the number of ticks per second
+     */
     private static final int SIFT_TIME = 4 * 20;
 
-    /** Is this machine currently sifting? */
+    /**
+     * Is this machine currently sifting?
+     */
     private boolean isSifting;
 
-    /** Current progress in sifting; -1 if not sifting */
+    /**
+     * Current progress in sifting; -1 if not sifting
+     */
     private int currentSiftTime;
 
     private RandomSource rand;

@@ -11,8 +11,7 @@ import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 import java.util.EnumSet;
 import java.util.List;
 
-public class EntityAIKoaMate extends Goal
-{
+public class EntityAIKoaMate extends Goal {
 
     /**
      * TODO: potential problems from vanilla one
@@ -27,13 +26,12 @@ public class EntityAIKoaMate extends Goal
     //counts down from 300 when mating starts, on 0 mate completes
     private int matingTimeout;
 
-    private final long TIME_BETWEEN_POPULATION_CHECKS = 20*10;
+    private final long TIME_BETWEEN_POPULATION_CHECKS = 20 * 10;
     private final int MAX_TOWN_POPULATION = 10;
     private long lastTimeCheckedVillagePopulation = -1;
     private int cachedVillagePopulation = 0;
 
-    public EntityAIKoaMate(EntityKoaBase villagerIn)
-    {
+    public EntityAIKoaMate(EntityKoaBase villagerIn) {
         this.villagerObj = villagerIn;
         this.world = villagerIn.level();
         this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
@@ -43,19 +41,13 @@ public class EntityAIKoaMate extends Goal
      * Returns whether the EntityAIBase should begin execution.
      */
     @Override
-    public boolean canUse()
-    {
+    public boolean canUse() {
         //adult cooldown
-        if (this.villagerObj.getAge() != 0)
-        {
+        if (this.villagerObj.getAge() != 0) {
             return false;
-        }
-        else if (this.villagerObj.getRandom().nextInt(500) != 0)
-        {
+        } else if (this.villagerObj.getRandom().nextInt(500) != 0) {
             return false;
-        }
-        else
-        {
+        } else {
             if (this.canTownHandleMoreVillagers() && this.villagerObj.getIsWillingToMate(true)) {
                 List<EntityKoaBase> listEntities = this.world.getEntitiesOfClass(EntityKoaBase.class, this.villagerObj.getBoundingBox().inflate(8.0D, 3.0D, 8.0D));
                 EntityKoaBase clEnt = null;
@@ -121,28 +113,26 @@ public class EntityAIKoaMate extends Goal
         --this.matingTimeout;
         this.villagerObj.getLookControl().setLookAt(this.mate, 10.0F, 30.0F);
 
-        if (this.villagerObj.distanceToSqr(this.mate) > 2.25D)
-        {
+        if (this.villagerObj.distanceToSqr(this.mate) > 2.25D) {
             this.villagerObj.getNavigation().moveTo(this.mate, 0.75D);
-        }
-        else if (this.matingTimeout == 0 && this.mate.isMating())
-        {
+        } else if (this.matingTimeout == 0 && this.mate.isMating()) {
             this.mate.setMating(false);
             //System.out.println("mate complete");
             this.giveBirth();
         }
 
-        if (this.villagerObj.getRandom().nextInt(35) == 0)
-        {
-            this.world.broadcastEntityEvent(this.villagerObj, (byte)12);
+        if (this.villagerObj.getRandom().nextInt(35) == 0) {
+            this.world.broadcastEntityEvent(this.villagerObj, (byte) 12);
         }
     }
 
     //TODO: for now just checks if villagers in general area, potentially prone to overpopulation due to half chunks loaded
     // fix in 1.14 by readding village object, or migrating to new vanilla villager system
+
     /**
      * Calculates if town can handle more villagers
      * result is cached due to active ticking of mating constantly querying this method
+     *
      * @return
      */
     private boolean canTownHandleMoreVillagers() {
@@ -157,8 +147,6 @@ public class EntityAIKoaMate extends Goal
             //System.out.println("return cached koa population: " + cachedVillagePopulation);
             return cachedVillagePopulation < MAX_TOWN_POPULATION;
         }
-
-
     }
 
     /*private boolean canTownHandleMoreVillagers112()
@@ -209,10 +197,8 @@ public class EntityAIKoaMate extends Goal
             entityvillager.level().playSound(null, entityvillager.blockPosition(), SoundEvents.CHICKEN_EGG, SoundSource.AMBIENT, 1, 1);
         }
 
-
-
         this.world.addFreshEntity(entityvillager);
-        this.world.broadcastEntityEvent(entityvillager, (byte)12);
+        this.world.broadcastEntityEvent(entityvillager, (byte) 12);
     }
 }
 

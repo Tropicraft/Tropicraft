@@ -14,7 +14,6 @@ import net.tropicraft.core.client.data.TropicraftLangKeys;
 import net.tropicraft.core.common.TropicsConfigs;
 import net.tropicraft.core.common.entity.projectile.ExplodingCoconutEntity;
 
-
 public class ExplodingCoconutItem extends Item {
 
     public ExplodingCoconutItem(Properties properties) {
@@ -31,7 +30,7 @@ public class ExplodingCoconutItem extends Item {
             }
             return new InteractionResultHolder<>(InteractionResult.PASS, item);
         }
-        
+
         if (!player.isCreative()) {
             item.shrink(1);
         }

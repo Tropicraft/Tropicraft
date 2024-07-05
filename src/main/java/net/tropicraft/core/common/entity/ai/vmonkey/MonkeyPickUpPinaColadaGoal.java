@@ -23,7 +23,7 @@ public class MonkeyPickUpPinaColadaGoal extends Goal {
     private int timeToRecalcPath;
     private final float stopDistance;
     private float oldWaterCost;
-    
+
     public MonkeyPickUpPinaColadaGoal(VMonkeyEntity monkey) {
         entity = monkey;
         setFlags(EnumSet.of(Flag.LOOK, Flag.MOVE));
@@ -32,7 +32,7 @@ public class MonkeyPickUpPinaColadaGoal extends Goal {
         navigation = entity.getNavigation();
         drinkEntity = null;
     }
-    
+
     @Override
     public boolean canContinueToUse() {
         return !entity.isTame() && !entity.selfHoldingDrink(Drink.PINA_COLADA) && drinkEntity != null;
@@ -64,7 +64,7 @@ public class MonkeyPickUpPinaColadaGoal extends Goal {
         ItemStack stack = MixerRecipes.getItemStack(drink);
 
         List<ItemEntity> list = entity.level().getEntitiesOfClass(ItemEntity.class, entity.getBoundingBox().inflate(10.0D));
-        
+
         if (!list.isEmpty()) {
             for (ItemEntity item : list) {
                 if (!item.isInvisible()) {
@@ -93,7 +93,7 @@ public class MonkeyPickUpPinaColadaGoal extends Goal {
                 return;
             }
 
-            if (entity.distanceToSqr(drinkEntity) > (double)(stopDistance * stopDistance)) {
+            if (entity.distanceToSqr(drinkEntity) > (double) (stopDistance * stopDistance)) {
                 if (--timeToRecalcPath <= 0) {
                     timeToRecalcPath = 10;
                     double d0 = entity.getX() - drinkEntity.getX();
@@ -101,12 +101,12 @@ public class MonkeyPickUpPinaColadaGoal extends Goal {
                     double d2 = entity.getZ() - drinkEntity.getZ();
                     double d3 = d0 * d0 + d1 * d1 + d2 * d2;
 
-                    if (d3 > (double)(stopDistance * stopDistance)) {
+                    if (d3 > (double) (stopDistance * stopDistance)) {
                         navigation.moveTo(drinkEntity, speedModifier);
                     } else {
                         navigation.stop();
 
-                        if (d3 <= (double)stopDistance) {
+                        if (d3 <= (double) stopDistance) {
                             double d4 = drinkEntity.getX() - entity.getX();
                             double d5 = drinkEntity.getZ() - entity.getZ();
                             navigation.moveTo(entity.getX() - d4, entity.getY(), entity.getZ() - d5, speedModifier);
@@ -119,5 +119,4 @@ public class MonkeyPickUpPinaColadaGoal extends Goal {
             }
         }
     }
-
 }

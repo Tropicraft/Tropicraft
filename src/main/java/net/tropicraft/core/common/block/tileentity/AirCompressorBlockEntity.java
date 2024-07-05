@@ -26,16 +26,24 @@ import javax.annotation.Nullable;
 
 public class AirCompressorBlockEntity extends BlockEntity implements IMachineBlock {
 
-    /** Is the compressor currently giving air */
+    /**
+     * Is the compressor currently giving air
+     */
     private boolean compressing;
 
-    /** Number of ticks compressed so far */
+    /**
+     * Number of ticks compressed so far
+     */
     private int ticks;
 
-    /** Amount of PSI (ticks of air time) to fill per tick */
+    /**
+     * Amount of PSI (ticks of air time) to fill per tick
+     */
     private static final int fillRate = 5; // fills 5x faster than it's used
 
-    /** The stack that is currently being filled */
+    /**
+     * The stack that is currently being filled
+     */
     @Nonnull
     private ItemStack stack;
 
@@ -104,7 +112,7 @@ public class AirCompressorBlockEntity extends BlockEntity implements IMachineBlo
     }
 
     public boolean addTank(ItemStack stack) {
-        if (tank == null && stack.getItem() instanceof ScubaArmorItem && ((ScubaArmorItem)stack.getItem()).providesAir()) {
+        if (tank == null && stack.getItem() instanceof ScubaArmorItem && ((ScubaArmorItem) stack.getItem()).providesAir()) {
             setTank(stack);
             this.compressing = true;
             syncInventory();

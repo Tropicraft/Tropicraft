@@ -347,7 +347,8 @@ public class TropicraftItems {
             .register();
     public static final ItemEntry<SunglassesItem> COOL_SHADES = REGISTRATE.item("cool_shades", SunglassesItem::new)
             .properties(p -> p.stacksTo(1))
-            .model((ctx, prov) -> {})
+            .model((ctx, prov) -> {
+            })
             .register();
 
     public static final ItemEntry<Item> FRESH_MARLIN = food("fresh_marlin", Foods.FRESH_MARLIN).register();

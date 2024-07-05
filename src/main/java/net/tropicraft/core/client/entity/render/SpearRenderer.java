@@ -15,33 +15,33 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.tropicraft.core.common.entity.projectile.SpearEntity;
 
 public class SpearRenderer<T extends SpearEntity> extends EntityRenderer<T> {
-	private final ItemRenderer itemRenderer;
+    private final ItemRenderer itemRenderer;
 
-	public SpearRenderer(EntityRendererProvider.Context context) {
-		super(context);
-		itemRenderer = context.getItemRenderer();
-	}
+    public SpearRenderer(EntityRendererProvider.Context context) {
+        super(context);
+        itemRenderer = context.getItemRenderer();
+    }
 
-	@Override
-	public void render(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-		poseStack.pushPose();
+    @Override
+    public void render(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+        poseStack.pushPose();
 
-		poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot())));
-		poseStack.mulPose(Axis.XP.rotationDegrees(-Mth.lerp(partialTicks, entity.xRotO, entity.getXRot())));
-		poseStack.mulPose(Axis.YP.rotationDegrees(-45.0F));
-		poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
-		
-		poseStack.scale(2.5F, 2.5F, 2.5F);
+        poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot())));
+        poseStack.mulPose(Axis.XP.rotationDegrees(-Mth.lerp(partialTicks, entity.xRotO, entity.getXRot())));
+        poseStack.mulPose(Axis.YP.rotationDegrees(-45.0F));
+        poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
 
-		BakedModel model = itemRenderer.getModel(entity.getPickupItemStackOrigin(), entity.level(), null, entity.getId());
-		itemRenderer.render(entity.getPickupItemStackOrigin(), ItemDisplayContext.GROUND, false, poseStack, bufferSource, packedLight, OverlayTexture.NO_OVERLAY, model);
-		poseStack.popPose();
+        poseStack.scale(2.5F, 2.5F, 2.5F);
 
-		super.render(entity, entityYaw, partialTicks, poseStack, bufferSource, packedLight);
-	}
+        BakedModel model = itemRenderer.getModel(entity.getPickupItemStackOrigin(), entity.level(), null, entity.getId());
+        itemRenderer.render(entity.getPickupItemStackOrigin(), ItemDisplayContext.GROUND, false, poseStack, bufferSource, packedLight, OverlayTexture.NO_OVERLAY, model);
+        poseStack.popPose();
 
-	@Override
-	public ResourceLocation getTextureLocation(T entity) {
-		return TextureAtlas.LOCATION_BLOCKS;
-	}
+        super.render(entity, entityYaw, partialTicks, poseStack, bufferSource, packedLight);
+    }
+
+    @Override
+    public ResourceLocation getTextureLocation(T entity) {
+        return TextureAtlas.LOCATION_BLOCKS;
+    }
 }

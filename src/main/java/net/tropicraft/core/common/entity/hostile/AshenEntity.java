@@ -92,7 +92,7 @@ public class AshenEntity extends TropicraftCreatureEntity implements RangedAttac
         goalSelector.addGoal(2, new AIAshenChaseAndPickupLostMask(this, 1.0D));
         goalSelector.addGoal(3, new AIAshenShootDart(this));
         goalSelector.addGoal(4, new RandomStrollGoal(this, 1.0D));
-        goalSelector.addGoal(5, new EntityAIMeleeAndRangedAttack(this, 1.0D, 20*2, 20*10, 5F));
+        goalSelector.addGoal(5, new EntityAIMeleeAndRangedAttack(this, 1.0D, 20 * 2, 20 * 10, 5F));
         goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
         goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         targetSelector.addGoal(1, new HurtByTargetGoal(this));
@@ -142,7 +142,7 @@ public class AshenEntity extends TropicraftCreatureEntity implements RangedAttac
 
         Arrow tippedArrow = BlowGunItem.createArrow(level(), this, BlowGunItem.getProjectile(), new ItemStack(TropicraftItems.BLOW_GUN.get()));
         double d0 = target.getX() - getX();
-        double d1 = target.getBoundingBox().minY + (double)(target.getBbHeight() / 3.0F) - tippedArrow.getY();
+        double d1 = target.getBoundingBox().minY + (double) (target.getBbHeight() / 3.0F) - tippedArrow.getY();
         double d2 = target.getZ() - getZ();
         double d3 = Mth.sqrt((float) (d0 * d0 + d2 * d2));
         tippedArrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, velocity);
@@ -172,6 +172,7 @@ public class AshenEntity extends TropicraftCreatureEntity implements RangedAttac
         nbt.putByte("MaskType", getMaskType());
         nbt.putByte("ActionState", getActionStateValue());
     }
+
     @Override
     public void readAdditionalSaveData(CompoundTag nbt) {
         super.readAdditionalSaveData(nbt);

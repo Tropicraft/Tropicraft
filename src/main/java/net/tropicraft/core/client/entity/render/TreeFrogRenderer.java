@@ -15,7 +15,7 @@ public class TreeFrogRenderer extends MobRenderer<TreeFrogEntity, TreeFrogModel>
         shadowStrength = 0.5f;
         shadowRadius = 0.3f;
     }
-    
+
     @Override
     public ResourceLocation getTextureLocation(TreeFrogEntity entity) {
         return TropicraftRenderUtils.getTextureEntity("treefrog/treefrog" + entity.getColor());

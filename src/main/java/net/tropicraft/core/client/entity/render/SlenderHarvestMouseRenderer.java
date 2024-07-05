@@ -19,5 +19,4 @@ public class SlenderHarvestMouseRenderer extends MobRenderer<SlenderHarvestMouse
     public ResourceLocation getTextureLocation(SlenderHarvestMouseEntity entity) {
         return TEXTURE;
     }
-
 }

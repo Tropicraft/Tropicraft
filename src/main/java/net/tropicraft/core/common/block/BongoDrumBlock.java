@@ -122,7 +122,7 @@ public final class BongoDrumBlock extends Block {
         final BlockState state = level.getBlockState(event.getPos());
         final Block block = state.getBlock();
         if (state.getBlock() instanceof BongoDrumBlock && event.getFace() == Direction.UP) {
-            ((BongoDrumBlock)block).playBongoSound(level, event.getPos(), state);
+            ((BongoDrumBlock) block).playBongoSound(level, event.getPos(), state);
         }
     }
 

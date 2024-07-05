@@ -51,7 +51,7 @@ public class FireArmorItem extends ArmorItem {
             if (player.isOnFire()) player.clearFire();
 
             // Repair in the sun?
-            int factor = (int)(40D / (0.001D + world.getLightLevelDependentMagicValue(player.blockPosition())));
+            int factor = (int) (40D / (0.001D + world.getLightLevelDependentMagicValue(player.blockPosition())));
             if (world.getGameTime() % (factor) == 0 && world.canSeeSkyFromBelowWater(new BlockPos(Mth.floor(player.getX()), Mth.floor(player.getY() + 1), Mth.floor(player.getZ())))) {
                 //repair!
                 stack.hurtAndBreak(-1, player, slot);
@@ -59,7 +59,7 @@ public class FireArmorItem extends ArmorItem {
         }
     }
 
-//    @Override
+    //    @Override
 //    public void damageArmor(LivingEntity player, ItemStack stack, DamageSource source, int damage, int slot) {
 //        if (source == DamageSource.IN_FIRE || source == DamageSource.LAVA) {
 //            //cheap way to slow the damage
@@ -127,8 +127,8 @@ public class FireArmorItem extends ArmorItem {
             double gatherY = player.getBoundingBox().minY;
             double gatherZ = player.getZ();
 
-            double motionX = ((rand.nextFloat() * speed) - (speed/2));
-            double motionZ = ((rand.nextFloat() * speed) - (speed/2));
+            double motionX = ((rand.nextFloat() * speed) - (speed / 2));
+            double motionZ = ((rand.nextFloat() * speed) - (speed / 2));
 
             final int numFeetParticles = particles == ParticleStatus.DECREASED ? 2 : 11;
 
@@ -142,35 +142,34 @@ public class FireArmorItem extends ArmorItem {
                 if (onLava || rand.nextInt(1 + extraRand) == 0) {
                     Vec3 motion1 = player.getDeltaMovement();
                     player.level().addParticle(particle,
-                            gatherX + ((rand.nextFloat() * range) - (range/2)),
-                            gatherY + ((rand.nextFloat() * range) - (range/2)),
-                            gatherZ + ((rand.nextFloat() * range) - (range/2)),
+                            gatherX + ((rand.nextFloat() * range) - (range / 2)),
+                            gatherY + ((rand.nextFloat() * range) - (range / 2)),
+                            gatherZ + ((rand.nextFloat() * range) - (range / 2)),
                             motion1.x + motionX,
                             0.01F,
                             motion1.z + motionZ);
 
                     player.level().addParticle(particle,
-                            (double)gatherX + ((rand.nextFloat() * range) - (range/2)),
-                            (double)gatherY + ((rand.nextFloat() * range) - (range/2)),
-                            (double)gatherZ + ((rand.nextFloat() * range) - (range/2)),
+                            (double) gatherX + ((rand.nextFloat() * range) - (range / 2)),
+                            (double) gatherY + ((rand.nextFloat() * range) - (range / 2)),
+                            (double) gatherZ + ((rand.nextFloat() * range) - (range / 2)),
                             motion1.x - motionX,
                             0.01F,
                             motion1.z - motionZ);
                 }
             }
-
         } else if (this == TropicraftItems.FIRE_LEGGINGS.get()) {
             SimpleParticleType particle = ParticleTypes.FLAME;
             if (rand.nextInt(2) == 0) particle = ParticleTypes.LARGE_SMOKE;
 
             if (rand.nextInt(3 + extraRand) == 0) {
                 player.level().addParticle(particle,
-                        player.getX() + ((rand.nextFloat() * range) - (range/2)),
-                        player.getY() - 0.8F + ((rand.nextFloat() * range) - (range/2)),
-                        player.getZ() + ((rand.nextFloat() * range) - (range/2)),
-                        ((rand.nextFloat() * speed) - (speed/2)),
+                        player.getX() + ((rand.nextFloat() * range) - (range / 2)),
+                        player.getY() - 0.8F + ((rand.nextFloat() * range) - (range / 2)),
+                        player.getZ() + ((rand.nextFloat() * range) - (range / 2)),
+                        ((rand.nextFloat() * speed) - (speed / 2)),
                         -0.05F,
-                        ((rand.nextFloat() * speed) - (speed/2)));
+                        ((rand.nextFloat() * speed) - (speed / 2)));
             }
         } else if (this == TropicraftItems.FIRE_CHESTPLATE.get()) {
             float look = -180F;
@@ -184,14 +183,13 @@ public class FireArmorItem extends ArmorItem {
 
             if (rand.nextInt(1 + extraRand) == 0) {
                 player.level().addParticle(particle,
-                        gatherX + ((rand.nextFloat() * range) - (range/2)),
-                        player.getY() - 0.4F + ((rand.nextFloat() * range) - (range/2)),
-                        gatherZ + ((rand.nextFloat() * range) - (range/2)),
-                        ((rand.nextFloat() * speed) - (speed/2)),
+                        gatherX + ((rand.nextFloat() * range) - (range / 2)),
+                        player.getY() - 0.4F + ((rand.nextFloat() * range) - (range / 2)),
+                        gatherZ + ((rand.nextFloat() * range) - (range / 2)),
+                        ((rand.nextFloat() * speed) - (speed / 2)),
                         -0.01F,
-                        ((rand.nextFloat() * speed) - (speed/2)));
+                        ((rand.nextFloat() * speed) - (speed / 2)));
             }
-
         } else if (this == TropicraftItems.FIRE_HELMET.get()) {
             float look = -180F;
             double dist = 0.5F;
@@ -206,12 +204,12 @@ public class FireArmorItem extends ArmorItem {
 
             if (rand.nextInt(2) == 0) {
                 player.level().addParticle(particle,
-                        gatherX + ((rand.nextFloat() * range) - (range/2)),
+                        gatherX + ((rand.nextFloat() * range) - (range / 2)),
                         player.getY() + 0.7F,
-                        gatherZ + ((rand.nextFloat() * range) - (range/2)),
-                        ((rand.nextFloat() * speed) - (speed/2)),
+                        gatherZ + ((rand.nextFloat() * range) - (range / 2)),
+                        ((rand.nextFloat() * speed) - (speed / 2)),
                         -0.01F,
-                        ((rand.nextFloat() * speed) - (speed/2)));
+                        ((rand.nextFloat() * speed) - (speed / 2)));
             }
         }
     }

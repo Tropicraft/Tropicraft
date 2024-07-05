@@ -61,7 +61,7 @@ public class MonkeyFollowNearestPinaColadaHolderGoal extends Goal {
             return false;
         }
         return VMonkeyEntity.FOLLOW_PREDICATE.test(monkey.getFollowing()) && canUse()
-                && !navigation.isDone() && monkey.distanceToSqr(monkey.getFollowing()) > (double)(stopDistance * stopDistance);
+                && !navigation.isDone() && monkey.distanceToSqr(monkey.getFollowing()) > (double) (stopDistance * stopDistance);
     }
 
     @Override
@@ -89,16 +89,15 @@ public class MonkeyFollowNearestPinaColadaHolderGoal extends Goal {
                 double yDist = monkey.getY() - following.getY();
                 double zDist = monkey.getZ() - following.getZ();
                 double sqrDist = xDist * xDist + yDist * yDist + zDist * zDist;
-                if (sqrDist > (double)(stopDistance * stopDistance)) {
+                if (sqrDist > (double) (stopDistance * stopDistance)) {
                     navigation.moveTo(following, speedModifier);
                 } else {
                     navigation.stop();
-                    if (sqrDist <= (double)stopDistance) {
+                    if (sqrDist <= (double) stopDistance) {
                         double xDist2 = following.getX() - monkey.getX();
                         double zDist2 = following.getZ() - monkey.getZ();
                         navigation.moveTo(monkey.getX() - xDist2, monkey.getY(), monkey.getZ() - zDist2, speedModifier);
                     }
-
                 }
             }
         }

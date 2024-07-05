@@ -174,7 +174,6 @@ public class EIHMachineModel<T extends BlockEntity & IMachineBlock> extends Mach
                         .addBox(0F, -1F, -2F, 1, 3, 4),
                 PartPose.offset(1F, 16F, 0F));
 
-
         return LayerDefinition.create(mesh, 64, 64);
     }
 
@@ -186,5 +185,4 @@ public class EIHMachineModel<T extends BlockEntity & IMachineBlock> extends Mach
                 basinCorner3, basinCorner4, lidBase, lidTop, mouth
         );
     }
-
 }

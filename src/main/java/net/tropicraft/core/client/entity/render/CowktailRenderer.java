@@ -16,23 +16,22 @@ import net.tropicraft.core.common.entity.passive.CowktailEntity;
 import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
-public class CowktailRenderer extends MobRenderer<CowktailEntity, CowModel<CowktailEntity>>
-{
-	private static final Map<CowktailEntity.Type, ResourceLocation> textures = Util.make(Maps.newHashMap(), (map) -> {
-		map.put(CowktailEntity.Type.IRIS, ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/cowktail/iris_cowktail.png"));
-		map.put(CowktailEntity.Type.ANEMONE, ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/cowktail/anemone_cowktail.png"));
-	});
+public class CowktailRenderer extends MobRenderer<CowktailEntity, CowModel<CowktailEntity>> {
+    private static final Map<CowktailEntity.Type, ResourceLocation> textures = Util.make(Maps.newHashMap(), (map) -> {
+        map.put(CowktailEntity.Type.IRIS, ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/cowktail/iris_cowktail.png"));
+        map.put(CowktailEntity.Type.ANEMONE, ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/cowktail/anemone_cowktail.png"));
+    });
 
-	public CowktailRenderer(final EntityRendererProvider.Context context) {
-		super(context, new CowModel<>(context.bakeLayer(TropicraftRenderLayers.COWKTAIL_LAYER)), 0.7F);
-		this.addLayer(new CowktailLayer<>(this));
-	}
+    public CowktailRenderer(final EntityRendererProvider.Context context) {
+        super(context, new CowModel<>(context.bakeLayer(TropicraftRenderLayers.COWKTAIL_LAYER)), 0.7F);
+        this.addLayer(new CowktailLayer<>(this));
+    }
 
-	/**
-	 * Returns the location of an entity's texture.
-	 */
-	@Override
+    /**
+     * Returns the location of an entity's texture.
+     */
+    @Override
     public ResourceLocation getTextureLocation(CowktailEntity entity) {
-		return textures.get(entity.getCowktailType());
-	}
+        return textures.get(entity.getCowktailType());
+    }
 }

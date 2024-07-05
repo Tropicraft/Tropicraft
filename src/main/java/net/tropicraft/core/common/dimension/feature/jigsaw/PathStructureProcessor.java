@@ -21,7 +21,8 @@ import java.util.stream.Collectors;
 
 public abstract class PathStructureProcessor extends CheatyStructureProcessor {
 
-    protected PathStructureProcessor() {}
+    protected PathStructureProcessor() {
+    }
 
     // Represents a section of the structure which is a path going in a certain direction
     private static class PathVector {
@@ -51,7 +52,7 @@ public abstract class PathStructureProcessor extends CheatyStructureProcessor {
     }
 
     // Cache vectors for this structure to avoid redoing work
-    private static final WeakHashMap<StructurePlaceSettings, List<PathVector>> VECTOR_CACHE = new WeakHashMap<>(); 
+    private static final WeakHashMap<StructurePlaceSettings, List<PathVector>> VECTOR_CACHE = new WeakHashMap<>();
 
     @Nullable
     protected Direction.Axis getPathDirection(LevelReader level, BlockPos seedPos, StructureTemplate.StructureBlockInfo current, StructurePlaceSettings settings, StructureTemplate template) {
@@ -63,8 +64,8 @@ public abstract class PathStructureProcessor extends CheatyStructureProcessor {
          *  the jigsaw block to the end of the structure in that direction, and 1 block to
          *  either side.
          */
-    	final StructurePlaceSettings infiniteBounds = settings.copy();
-    	infiniteBounds.setBoundingBox(BoundingBox.infinite());
+        final StructurePlaceSettings infiniteBounds = settings.copy();
+        infiniteBounds.setBoundingBox(BoundingBox.infinite());
         return VECTOR_CACHE.computeIfAbsent(settings, s ->
                         template.filterBlocks(seedPos, infiniteBounds, Blocks.JIGSAW, true).stream() // Find all jigsaw blocks
                                 .filter(b -> b.nbt().getString("target").equals(Constants.MODID + ":path_center")) // Filter for vector markers

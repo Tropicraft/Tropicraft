@@ -89,8 +89,10 @@ public class TropicraftRenderLayers {
     public static ModelLayerLocation BAMBOO_CHEST;
     public static ModelLayerLocation BAMBOO_DOUBLE_CHEST_LEFT;
     public static ModelLayerLocation BAMBOO_DOUBLE_CHEST_RIGHT;
-    public static ModelLayerLocation EIHMACHINE_LAYER = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Constants.MODID, "drink_mixer"), "main");;
-    public static ModelLayerLocation AIRCOMPRESSOR_LAYER = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Constants.MODID, "air_compressor"), "main");;
+    public static ModelLayerLocation EIHMACHINE_LAYER = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Constants.MODID, "drink_mixer"), "main");
+    ;
+    public static ModelLayerLocation AIRCOMPRESSOR_LAYER = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Constants.MODID, "air_compressor"), "main");
+    ;
     public static ModelLayerLocation BASILISK_LIZARD_LAYER;
     public static ModelLayerLocation CUBERA_LAYER;
     public static ModelLayerLocation FIDDLER_CRAB_LAYER;
@@ -137,7 +139,7 @@ public class TropicraftRenderLayers {
         TROPI_SPIDER_EGG_LAYER = registerMain("tropi_spider_egg", EggModel::create, event);
         ASHEN_LAYER = registerMain("ashen", AshenModel::create, event);
         HAMMERHEAD_LAYER = registerMain("hammerhead", SharkModel::create, event);
-        SEA_TURTLE_EGG_LAYER  = registerMain("turtle_egg", EggModel::create, event);
+        SEA_TURTLE_EGG_LAYER = registerMain("turtle_egg", EggModel::create, event);
         TROPI_BEE_LAYER = registerMain("tropi_bee", TropiBeeModel::createBodyLayer, event);
         COWKTAIL_LAYER = registerMain("cowktail", CowModel::createBodyLayer, event);
         MAN_O_WAR_OUTER_LAYER = registerMain("man_o_war", ManOWarModel::createOuterModel, event);
@@ -178,7 +180,7 @@ public class TropicraftRenderLayers {
         return modelLayer;
     }
 
-    public static void setupScubaGearModels(){
+    public static void setupScubaGearModels() {
         ModelScubaGear.HEAD = ModelScubaGear.createModel(HEAD_SCUBA_LAYER, null, EquipmentSlot.HEAD);
         ModelScubaGear.CHEST = ModelScubaGear.createModel(CHEST_SCUBA_LAYER, null, EquipmentSlot.CHEST);
         ModelScubaGear.FEET = ModelScubaGear.createModel(FEET_SCUBA_LAYER, null, EquipmentSlot.FEET);

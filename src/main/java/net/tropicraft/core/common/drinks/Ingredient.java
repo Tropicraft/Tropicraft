@@ -105,6 +105,7 @@ public class Ingredient implements Comparable<Ingredient> {
 
     /**
      * Adds an action to be performed when a cocktail containing this ingredient is ingested.
+     *
      * @param action the action to register
      * @return this Ingredient object
      */
@@ -115,14 +116,16 @@ public class Ingredient implements Comparable<Ingredient> {
 
     /**
      * Returns the ingredient as an Item
+     *
      * @return ingredient Item
      */
     public Item getIngredientItem() {
         return this.item.value().asItem();
     }
-    
+
     /**
      * Getter for render color
+     *
      * @return render color in mug
      */
     public int getColor() {
@@ -141,13 +144,13 @@ public class Ingredient implements Comparable<Ingredient> {
     public int compareTo(Ingredient other) {
         return Integer.compare(id, other.id);
     }
-    
+
     public void onDrink(Player player) {
-        for (final DrinkAction action: actions) {
+        for (final DrinkAction action : actions) {
             action.onDrink(player);
         }
     }
-    
+
     public static Ingredient findMatchingIngredient(@Nonnull ItemStack stack) {
         if (stack.isEmpty()) return null;
         for (Ingredient ingredient : Ingredient.ingredientsList) {
@@ -158,24 +161,23 @@ public class Ingredient implements Comparable<Ingredient> {
                 return ingredient;
             }
         }
-        
+
         return null;
     }
-    
+
     public static List<Ingredient> listIngredients(ItemStack stack) {
         List<Ingredient> is = new ArrayList<>();
-        
+
         if (!stack.isEmpty() && Drink.isDrink(stack.getItem())) {
             is.addAll(CocktailItem.getIngredients(stack));
         } else if (!stack.isEmpty()) {
             is.add(findMatchingIngredient(stack));
         }
-        
+
         return is;
     }
 
     public Component getDisplayName() {
         return new ItemStack(getIngredientItem()).getHoverName();
     }
-
 }

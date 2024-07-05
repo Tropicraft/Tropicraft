@@ -38,8 +38,8 @@ public class EntityAIGoneFishin extends Goal {
     private BlockPos posLastWaterFound;
     private BlockPos posLastLandFound;
 
-    private int walkingTimeoutMax = 20*30;
-    private int fishingTimeoutMax = 20*30;
+    private int walkingTimeoutMax = 20 * 30;
+    private int fishingTimeoutMax = 20 * 30;
 
     private int walkingTimeout;
     private int fishingTimeout;
@@ -53,7 +53,7 @@ public class EntityAIGoneFishin extends Goal {
     private int repathPenaltyMax = 60;
 
     private int repathAttempts = 0;
-    public long timeBetweenFishing = 20*60*1;
+    public long timeBetweenFishing = 20 * 60 * 1;
     public long timeBetweenFishingRandom = 30;
 
     public List<ItemStack> listFishables = new ArrayList<>();
@@ -286,7 +286,6 @@ public class EntityAIGoneFishin extends Goal {
                 } else {
                     fishingTimeout--;
                 }
-
             } else if (state == FISHING_STATE.RETURN_TO_BASE) {
                 //entity.getRestrictCenter()
 
@@ -434,28 +433,28 @@ public class EntityAIGoneFishin extends Goal {
     }
 
     public void faceCoord(int x, int y, int z, float maxDeltaYaw, float maxDeltaPitch) {
-        double d = x+0.5F - entity.getX();
-        double d2 = z+0.5F - entity.getZ();
+        double d = x + 0.5F - entity.getX();
+        double d2 = z + 0.5F - entity.getZ();
         double d1;
-        d1 = y+0.5F - (entity.getY() + (double)entity.getEyeHeight());
+        d1 = y + 0.5F - (entity.getY() + (double) entity.getEyeHeight());
 
         double d3 = Mth.sqrt((float) (d * d + d2 * d2));
-        float f2 = (float)((Math.atan2(d2, d) * 180D) / 3.1415927410125732D) - 90F;
-        float f3 = (float)(-((Math.atan2(d1, d3) * 180D) / 3.1415927410125732D));
+        float f2 = (float) ((Math.atan2(d2, d) * 180D) / 3.1415927410125732D) - 90F;
+        float f3 = (float) (-((Math.atan2(d1, d3) * 180D) / 3.1415927410125732D));
         entity.setXRot(-updateRotation(entity.getXRot(), f3, maxDeltaPitch));
         entity.setYRot(updateRotation(entity.getYRot(), f2, maxDeltaYaw));
     }
 
     public float updateRotation(float curRotation, float targetRotation, float maxDeltaRotation) {
         float f3;
-        for(f3 = targetRotation - curRotation; f3 < -180F; f3 += 360F) { }
-        for(; f3 >= 180F; f3 -= 360F) { }
-        if(f3 > maxDeltaRotation)
-        {
+        for (f3 = targetRotation - curRotation; f3 < -180F; f3 += 360F) {
+        }
+        for (; f3 >= 180F; f3 -= 360F) {
+        }
+        if (f3 > maxDeltaRotation) {
             f3 = maxDeltaRotation;
         }
-        if(f3 < -maxDeltaRotation)
-        {
+        if (f3 < -maxDeltaRotation) {
             f3 = -maxDeltaRotation;
         }
         return curRotation + f3;

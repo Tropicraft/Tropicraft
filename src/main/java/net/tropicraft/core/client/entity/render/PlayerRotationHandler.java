@@ -52,7 +52,7 @@ public class PlayerRotationHandler {
             prevRotationPitch = p.xRotO;
             p.setXRot(10f);
             p.xRotO = 10f;
-            
+
             // Cancel limb swing
             p.walkAnimation.setSpeed(0.0f);
             p.walkAnimation.update(0.0f, 1.0f);

@@ -44,7 +44,7 @@ public class ManOWarEntity extends WaterAnimal {
     private float randomMotionVecZ;
     private int attackTimer = 0;
 
-    public ManOWarEntity(final EntityType<? extends ManOWarEntity> type, Level world){
+    public ManOWarEntity(final EntityType<? extends ManOWarEntity> type, Level world) {
         super(type, world);
         this.random.setSeed(this.getId());
         this.rotationVelocity = 1.0F / (this.random.nextFloat() + 1.0F) * 0.2F;
@@ -81,16 +81,16 @@ public class ManOWarEntity extends WaterAnimal {
         this.prevSquidRotation = this.squidRotation;
         this.lastTentacleAngle = this.tentacleAngle;
         this.squidRotation += this.rotationVelocity;
-        if ((double)this.squidRotation > 6.283185307179586D) {
+        if ((double) this.squidRotation > 6.283185307179586D) {
             if (this.level().isClientSide) {
                 this.squidRotation = 6.2831855F;
             } else {
-                this.squidRotation = (float)((double)this.squidRotation - 6.283185307179586D);
+                this.squidRotation = (float) ((double) this.squidRotation - 6.283185307179586D);
                 if (this.random.nextInt(10) == 0) {
                     this.rotationVelocity = 1.0F / (this.random.nextFloat() + 1.0F) * 0.2F;
                 }
 
-                this.level().broadcastEntityEvent(this, (byte)19);
+                this.level().broadcastEntityEvent(this, (byte) 19);
             }
         }
 
@@ -114,7 +114,7 @@ public class ManOWarEntity extends WaterAnimal {
             if (this.squidRotation < 3.1415927F) {
                 float lvt_1_1_ = this.squidRotation / 3.1415927F;
                 this.tentacleAngle = Mth.sin(lvt_1_1_ * lvt_1_1_ * 3.1415927F) * 3.1415927F * 0.25F;
-                if ((double)lvt_1_1_ > 0.75D) {
+                if ((double) lvt_1_1_ > 0.75D) {
                     this.randomMotionSpeed = 1.0F;
                     this.rotateSpeed = 1.0F;
                 } else {
@@ -132,16 +132,16 @@ public class ManOWarEntity extends WaterAnimal {
 
             Vec3 motion = this.getDeltaMovement();
             double horizontalDistance = motion.horizontalDistance();
-            this.yBodyRot += (-((float)Mth.atan2(motion.x, motion.z)) * 57.295776F - this.yBodyRot) * 0.1F;
+            this.yBodyRot += (-((float) Mth.atan2(motion.x, motion.z)) * 57.295776F - this.yBodyRot) * 0.1F;
             this.setYRot(this.yBodyRot);
-            this.squidYaw = (float)((double)this.squidYaw + 3.141592653589793D * (double)this.rotateSpeed * 1.5D);
-            this.squidPitch += (-((float)Mth.atan2(horizontalDistance, motion.y)) * 57.295776F - this.squidPitch) * 0.1F;
+            this.squidYaw = (float) ((double) this.squidYaw + 3.141592653589793D * (double) this.rotateSpeed * 1.5D);
+            this.squidPitch += (-((float) Mth.atan2(horizontalDistance, motion.y)) * 57.295776F - this.squidPitch) * 0.1F;
         } else {
             this.tentacleAngle = Mth.abs(Mth.sin(this.squidRotation)) * 3.1415927F * 0.25F;
             if (!this.level().isClientSide) {
                 double lvt_1_3_ = this.getDeltaMovement().y;
                 if (this.hasEffect(MobEffects.LEVITATION)) {
-                    lvt_1_3_ = 0.05D * (double)(this.getEffect(MobEffects.LEVITATION).getAmplifier() + 1);
+                    lvt_1_3_ = 0.05D * (double) (this.getEffect(MobEffects.LEVITATION).getAmplifier() + 1);
                 } else if (!this.isNoGravity()) {
                     lvt_1_3_ -= 0.08D;
                 }
@@ -149,9 +149,8 @@ public class ManOWarEntity extends WaterAnimal {
                 this.setDeltaMovement(0.0D, lvt_1_3_ * 0.9800000190734863D, 0.0D);
             }
 
-            this.squidPitch = (float)((double)this.squidPitch + (double)(-90.0F - this.squidPitch) * 0.02D);
+            this.squidPitch = (float) ((double) this.squidPitch + (double) (-90.0F - this.squidPitch) * 0.02D);
         }
-
     }
 
     @Override
@@ -246,7 +245,7 @@ public class ManOWarEntity extends WaterAnimal {
                         lvt_2_1_.normalize();
                         float lvt_7_1_ = 3.0F;
                         if (lvt_5_1_ > 5.0D) {
-                            lvt_7_1_ = (float)((double)lvt_7_1_ - (lvt_5_1_ - 5.0D) / 5.0D);
+                            lvt_7_1_ = (float) ((double) lvt_7_1_ - (lvt_5_1_ - 5.0D) / 5.0D);
                         }
 
                         if (lvt_7_1_ > 0.0F) {
@@ -258,13 +257,12 @@ public class ManOWarEntity extends WaterAnimal {
                         lvt_2_1_ = lvt_2_1_.subtract(0.0D, lvt_2_1_.y, 0.0D);
                     }
 
-                    ManOWarEntity.this.setMovementVector((float)lvt_2_1_.x / 20.0F, (float)lvt_2_1_.y / 20.0F, (float)lvt_2_1_.z / 20.0F);
+                    ManOWarEntity.this.setMovementVector((float) lvt_2_1_.x / 20.0F, (float) lvt_2_1_.y / 20.0F, (float) lvt_2_1_.z / 20.0F);
                 }
 
                 if (this.tickCounter % 10 == 5) {
                     ManOWarEntity.this.level().addParticle(ParticleTypes.BUBBLE, ManOWarEntity.this.getX(), ManOWarEntity.this.getY(), ManOWarEntity.this.getZ(), 0.0D, 0.0D, 0.0D);
                 }
-
             }
         }
     }
@@ -293,7 +291,6 @@ public class ManOWarEntity extends WaterAnimal {
                 float lvt_5_1_ = Mth.sin(lvt_2_1_) * 0.2F;
                 this.manOWarEntity.setMovementVector(lvt_3_1_, lvt_4_1_, lvt_5_1_);
             }
-
         }
     }
 }

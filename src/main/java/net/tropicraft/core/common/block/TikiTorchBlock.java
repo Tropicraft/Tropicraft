@@ -38,7 +38,7 @@ public final class TikiTorchBlock extends Block {
         UPPER(2), MIDDLE(1), LOWER(0);
 
         final int height;
-        
+
         private TorchSection(int height) {
             this.height = height;
         }
@@ -52,7 +52,9 @@ public final class TikiTorchBlock extends Block {
         public String toString() {
             return this.getSerializedName();
         }
-    };
+    }
+
+    ;
 
     public static final EnumProperty<TorchSection> SECTION = EnumProperty.create("section", TorchSection.class);
 
@@ -108,7 +110,7 @@ public final class TikiTorchBlock extends Block {
                 context.getLevel().getBlockState(blockpos.above()).canBeReplaced(context) &&
                 context.getLevel().getBlockState(blockpos.above(2)).canBeReplaced(context) ? ret : null;
     }
-    
+
     @Override
     @Deprecated
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
@@ -124,7 +126,7 @@ public final class TikiTorchBlock extends Block {
         worldIn.setBlock(pos.above(), this.defaultBlockState().setValue(SECTION, TorchSection.MIDDLE), Block.UPDATE_ALL);
         worldIn.setBlock(pos.above(2), this.defaultBlockState().setValue(SECTION, TorchSection.UPPER), Block.UPDATE_ALL);
     }
-    
+
     private boolean placeShortTorchOn(BlockState state) {
         // Only place top block if it's on a fence/wall
         return state.is(BlockTags.FENCES) || state.is(BlockTags.WALLS);

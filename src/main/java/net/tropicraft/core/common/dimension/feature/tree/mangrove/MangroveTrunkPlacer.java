@@ -57,7 +57,6 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         return TropicraftTrunkPlacers.MANGROVE.get();
     }
 
-
     @Override
     public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> acceptor, RandomSource random, int height, BlockPos origin, TreeConfiguration config) {
         int rootLength = Mth.clamp(height - 5, MIN_LENGTH, MAX_LENGTH);

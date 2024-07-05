@@ -35,5 +35,4 @@ public class SeaTurtleEggEntity extends EggEntity {
     public boolean shouldEggRenderFlat() {
         return false;
     }
-
 }

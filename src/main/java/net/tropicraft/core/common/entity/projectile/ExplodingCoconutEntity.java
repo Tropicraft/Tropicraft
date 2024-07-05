@@ -16,11 +16,11 @@ public class ExplodingCoconutEntity extends ThrowableItemProjectile {
     public static final float DEFAULT_EXPLOSION_RADIUS = 2.4f;
 
     private float explosionRadius = DEFAULT_EXPLOSION_RADIUS;
-    
+
     public ExplodingCoconutEntity(EntityType<? extends ExplodingCoconutEntity> type, Level world) {
         super(type, world);
     }
-    
+
     public ExplodingCoconutEntity(Level world, LivingEntity thrower, float explosionRadius) {
         super(TropicraftEntities.EXPLODING_COCONUT.get(), thrower, world);
         this.explosionRadius = explosionRadius;

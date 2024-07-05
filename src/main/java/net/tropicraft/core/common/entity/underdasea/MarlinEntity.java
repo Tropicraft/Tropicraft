@@ -41,7 +41,7 @@ public class MarlinEntity extends AbstractFish {
         return AbstractFish.createAttributes()
                 .add(Attributes.MAX_HEALTH, 5.0);
     }
-    
+
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         return InteractionResult.PASS;

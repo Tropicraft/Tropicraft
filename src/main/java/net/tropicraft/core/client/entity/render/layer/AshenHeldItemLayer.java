@@ -76,11 +76,11 @@ public class AshenHeldItemLayer<T extends AshenEntity, M extends EntityModel<T> 
             } else {
                 stack.pushPose();
                 model.rightArm.translateAndRotate(stack);
-                
+
                 stack.translate(-0.375F, -0.35F, -0.125F);
                 stack.mulPose(Axis.YP.rotationDegrees(90F));
                 stack.scale(scale, scale, scale);
-                
+
                 Minecraft.getInstance().getItemRenderer().renderStatic(entity, itemstack, ItemDisplayContext.THIRD_PERSON_LEFT_HAND, false, stack, buffer, entity.level(), combinedLightIn, OverlayTexture.NO_OVERLAY, entity.getId());
                 stack.popPose();
             }

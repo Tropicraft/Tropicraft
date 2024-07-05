@@ -28,17 +28,15 @@ public class SeagrassFeature extends Feature<NoneFeatureConfiguration> {
                     return selector
                             ? new SeagrassData(TropicraftBlocks.SICKLE_SEAGRASS.get(), TropicraftBlocks.MATTED_SICKLE_SEAGRASS.get(), TropicraftBlocks.TALL_SICKLE_SEAGRASS.get())
                             : new SeagrassData(TropicraftBlocks.NOODLE_SEAGRASS.get(), TropicraftBlocks.MATTED_NOODLE_SEAGRASS.get(), null);
-
                 } else {
                     return selector
                             ? // Eel grass is special, as it has a flowering variety- represent that here
                             new SeagrassData(TropicraftBlocks.EEL_GRASS.get(), TropicraftBlocks.MATTED_EEL_GRASS.get(), TropicraftBlocks.TALL_EEL_GRASS.get(),
-                            new SeagrassData(TropicraftBlocks.FLOWERING_EEL_GRASS.get(), TropicraftBlocks.MATTED_EEL_GRASS.get(), TropicraftBlocks.FLOWERING_TALL_EEL_GRASS.get()))
+                                    new SeagrassData(TropicraftBlocks.FLOWERING_EEL_GRASS.get(), TropicraftBlocks.MATTED_EEL_GRASS.get(), TropicraftBlocks.FLOWERING_TALL_EEL_GRASS.get()))
                             : new SeagrassData(TropicraftBlocks.FERN_SEAGRASS.get(), TropicraftBlocks.MATTED_FERN_SEAGRASS.get(), TropicraftBlocks.TALL_FERN_SEAGRASS.get());
                 }
             }
     );
-
 
     public SeagrassFeature(Codec<NoneFeatureConfiguration> pCodec) {
         super(pCodec);
@@ -63,7 +61,7 @@ public class SeagrassFeature extends Feature<NoneFeatureConfiguration> {
         }
 
         WorldgenRandom worldgenrandom = new WorldgenRandom(new LegacyRandomSource(level.getSeed()));
-        NormalNoise seagrassSelector = NormalNoise.create(worldgenrandom, -6,  1.0D);
+        NormalNoise seagrassSelector = NormalNoise.create(worldgenrandom, -6, 1.0D);
 
         int rad = random.nextInt(4) + 8;
 

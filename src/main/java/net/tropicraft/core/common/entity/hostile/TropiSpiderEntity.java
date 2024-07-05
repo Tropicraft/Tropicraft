@@ -72,7 +72,7 @@ public class TropiSpiderEntity extends Spider {
         goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
         goalSelector.addGoal(8, new RandomLookAroundGoal(this));
     }
-    
+
     @Override
     protected void actuallyHurt(DamageSource damageSrc, float damageAmount) {
         if (damageSrc.getEntity() != null && damageSrc.getEntity() instanceof LivingEntity) {
@@ -165,8 +165,7 @@ public class TropiSpiderEntity extends Spider {
             ticksSinceLastEgg++;
         }
     }
-    
-    
+
     @Override
     protected SoundEvent getAmbientSound() {
         return random.nextInt(20) == 0 ? super.getAmbientSound() : null;
@@ -192,11 +191,11 @@ public class TropiSpiderEntity extends Spider {
         if (!level().isClientSide) {
             setSpiderType(Type.MOTHER);
             int r = random.nextInt(SPIDER_MAX_EGGS) + 1;
-            
+
             if (r < 2) {
                 return;
             }
-            
+
             for (int i = 0; i < r; i++) {
                 TropiSpiderEggEntity egg = TropicraftEntities.TROPI_SPIDER_EGG.get().create(level());
                 egg.setMotherId(getUUID());
@@ -204,7 +203,7 @@ public class TropiSpiderEntity extends Spider {
                 level().addFreshEntity(egg);
                 ticksSinceLastEgg = 0;
             }
-            
+
             for (int x = 0; x < 5; x++) {
                 for (int z = 0; z < 5; z++) {
                     if (random.nextInt(8) == 0) {
@@ -235,7 +234,7 @@ public class TropiSpiderEntity extends Spider {
         ticksSinceLastEgg = n.getLong("timeSinceLastEgg");
         super.readAdditionalSaveData(n);
     }
-    
+
     public Type getSpiderType() {
         return Type.VALUES[getEntityData().get(TYPE)];
     }

@@ -85,7 +85,7 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
 
         // generate curved trunk
         for (int xx = 0, yy = 0; yy < height; yy++) {
-            placeBlockWithDir(world, xx, yy+ y, 0, getLog());
+            placeBlockWithDir(world, xx, yy + y, 0, getLog());
             if (yy == 0 || yy == 1 || yy == 3) {
                 xx++;
                 placeBlockWithDir(world, xx, yy + y, 0, getLog());
@@ -138,7 +138,7 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
         int iNeg = 0;
         int kPos = 0;
         int kNeg = 0;
-        while (iPos < WATER_SEARCH_DIST &&  !isWater(world, new BlockPos(x + iPos, TropicraftDimension.SEA_LEVEL, z))) {
+        while (iPos < WATER_SEARCH_DIST && !isWater(world, new BlockPos(x + iPos, TropicraftDimension.SEA_LEVEL, z))) {
             iPos++;
         }
 
@@ -146,11 +146,11 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
             iNeg--;
         }
 
-        while (kPos < WATER_SEARCH_DIST &&  !isWater(world, new BlockPos(x, TropicraftDimension.SEA_LEVEL, z + kPos))) {
+        while (kPos < WATER_SEARCH_DIST && !isWater(world, new BlockPos(x, TropicraftDimension.SEA_LEVEL, z + kPos))) {
             kPos++;
         }
 
-        while (kNeg > -WATER_SEARCH_DIST &&  !isWater(world, new BlockPos(x, TropicraftDimension.SEA_LEVEL, z + kNeg))) {
+        while (kNeg > -WATER_SEARCH_DIST && !isWater(world, new BlockPos(x, TropicraftDimension.SEA_LEVEL, z + kNeg))) {
             kNeg--;
         }
 
@@ -228,7 +228,9 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
     }
 
     private BlockPos getPosWithDir(final BlockPos unRotatedPos) {
-        int i = unRotatedPos.getX(); int j = unRotatedPos.getY(); int k = unRotatedPos.getZ();
+        int i = unRotatedPos.getX();
+        int j = unRotatedPos.getY();
+        int k = unRotatedPos.getZ();
         switch (this.dir) {
             case 2:
                 return pos(this.originX + i, j, this.originZ + k);
@@ -273,7 +275,7 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
     }
 
     private int getActualZAt(int i, int k) {
-        switch(this.dir) {
+        switch (this.dir) {
             case 2:
                 return this.originZ + k;
             case 0:
