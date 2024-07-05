@@ -10,8 +10,8 @@ import net.tropicraft.core.client.entity.render.layer.VMonkeyHeldItemLayer;
 import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
 
 public class VMonkeyRenderer extends MobRenderer<VMonkeyEntity, VMonkeyModel> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(Constants.MODID, "textures/entity/monkeytext.png");
-    private static final ResourceLocation ANGRY_TEXTURE = new ResourceLocation(Constants.MODID, "textures/entity/monkey_angrytext.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/monkeytext.png");
+    private static final ResourceLocation ANGRY_TEXTURE = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/monkey_angrytext.png");
 
     public VMonkeyRenderer(final EntityRendererProvider.Context context) {
         super(context, new VMonkeyModel(context.bakeLayer(TropicraftRenderLayers.V_MONKEY_LAYER)), 0.5F);

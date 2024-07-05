@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.dimension.feature.tree.mangrove;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -16,7 +17,7 @@ import net.tropicraft.core.common.dimension.feature.tree.TropicraftTreeDecorator
 import static net.minecraft.world.level.levelgen.feature.TreeFeature.validTreePos;
 
 public class PneumatophoresTreeDecorator extends TreeDecorator {
-    public static final Codec<PneumatophoresTreeDecorator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    public static final MapCodec<PneumatophoresTreeDecorator> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             BlockStateProvider.CODEC.fieldOf("roots_block").forGetter(c -> c.rootsBlock),
             Codec.INT.fieldOf("min_count").forGetter(c -> c.minCount),
             Codec.INT.fieldOf("max_count").forGetter(c -> c.maxCount),

@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nullable;
@@ -211,9 +210,9 @@ public class ChairEntity extends FurnitureEntity {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.getEntityData().define(COMESAILAWAY, (byte) 0);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(COMESAILAWAY, (byte) 0);
     }
 
     @Override
@@ -255,18 +254,10 @@ public class ChairEntity extends FurnitureEntity {
     }
 
     @Override
-    public double getPassengersRidingOffset() {
-        return 0.11;
-    }
-
-    @Override
-    public void positionRider(Entity passenger, MoveFunction function) {
-        if (this.hasPassenger(passenger)) {
-            Vec3 xzOffset = new Vec3(0, 0, -0.125).yRot((float) Math.toRadians(-getYRot()));
-            function.accept(passenger, getX() + xzOffset.x, getY() + getPassengersRidingOffset() + passenger.getMyRidingOffset(), getZ() + xzOffset.z);
-            passenger.setYRot(passenger.getYRot() + rotationDelta);
-            passenger.setYBodyRot(passenger.getYRot() + rotationDelta);
-        }
+    protected void positionRider(Entity passenger, Entity.MoveFunction move) {
+        super.positionRider(passenger, move);
+        passenger.setYRot(passenger.getYRot() + this.rotationDelta);
+        passenger.setYHeadRot(passenger.getYHeadRot() + this.rotationDelta);
     }
 
     public void setComeSailAway(boolean sail) {

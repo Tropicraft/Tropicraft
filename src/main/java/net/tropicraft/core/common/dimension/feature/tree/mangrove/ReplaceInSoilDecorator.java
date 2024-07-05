@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.dimension.feature.tree.mangrove;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -13,7 +14,7 @@ import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftTreeDecorators;
 
 public class ReplaceInSoilDecorator extends TreeDecorator {
-    public static final Codec<ReplaceInSoilDecorator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    public static final MapCodec<ReplaceInSoilDecorator> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.INT.fieldOf("count").forGetter(c -> c.count),
             Codec.INT.fieldOf("spread").forGetter(c -> c.spread),
             RuleBasedBlockStateProvider.CODEC.fieldOf("state_provider").forGetter(c -> c.stateProvider),

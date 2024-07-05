@@ -2,22 +2,24 @@ package net.tropicraft.core.common.block.tileentity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.tropicraft.core.common.block.AirCompressorBlock;
 import net.tropicraft.core.common.item.scuba.ScubaArmorItem;
-import net.tropicraft.core.common.network.TropicraftPackets;
-import net.tropicraft.core.common.network.message.MessageAirCompressorInventory;
+import net.tropicraft.core.common.network.message.ClientboundAirCompressorInventoryPacket;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -45,25 +47,25 @@ public class AirCompressorBlockEntity extends BlockEntity implements IMachineBlo
     }
 
     @Override
-    public void load(CompoundTag nbt) {
-        super.load(nbt);
+    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        super.loadAdditional(nbt, registries);
         this.compressing = nbt.getBoolean("Compressing");
 
         if (nbt.contains("Tank")) {
-            setTank(ItemStack.of(nbt.getCompound("Tank")));
+            setTank(ItemStack.parse(registries, nbt.getCompound("Tank")).orElse(ItemStack.EMPTY));
         } else {
             setTank(ItemStack.EMPTY);
         }
     }
 
     @Override
-    public void saveAdditional(@Nonnull CompoundTag nbt) {
-        super.saveAdditional(nbt);
+    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        super.saveAdditional(nbt, registries);
         nbt.putBoolean("Compressing", compressing);
 
-        CompoundTag var4 = new CompoundTag();
-        this.stack.save(var4);
-        nbt.put("Tank", var4);
+        if (!stack.isEmpty()) {
+            nbt.put("Tank", stack.save(registries, new CompoundTag()));
+        }
     }
 
     public void setTank(@Nonnull ItemStack tankItemStack) {
@@ -176,23 +178,14 @@ public class AirCompressorBlockEntity extends BlockEntity implements IMachineBlo
         return state.getValue(AirCompressorBlock.FACING);
     }
 
-    /**
-     * Called when you receive a TileEntityData packet for the location this
-     * TileEntity is currently in. On the client, the NetworkManager will always
-     * be the remote server. On the server, it will be whomever is responsible for
-     * sending the packet.
-     *
-     * @param net The NetworkManager the packet originated from
-     * @param pkt The data packet
-     */
     @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        this.load(pkt.getTag());
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider registries) {
+        this.loadAdditional(pkt.getTag(), registries);
     }
 
     protected void syncInventory() {
-        if (!level.isClientSide) {
-            TropicraftPackets.CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(getBlockPos())), new MessageAirCompressorInventory(this));
+        if (level instanceof ServerLevel serverLevel) {
+            PacketDistributor.sendToPlayersTrackingChunk(serverLevel, new ChunkPos(getBlockPos()), new ClientboundAirCompressorInventoryPacket(this));
         }
     }
 
@@ -203,9 +196,9 @@ public class AirCompressorBlockEntity extends BlockEntity implements IMachineBlo
     }
 
     @Override
-    public @Nonnull CompoundTag getUpdateTag() {
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
         CompoundTag nbt = new CompoundTag();
-        this.saveAdditional(nbt);
+        this.saveAdditional(nbt, registries);
         return nbt;
     }
 }

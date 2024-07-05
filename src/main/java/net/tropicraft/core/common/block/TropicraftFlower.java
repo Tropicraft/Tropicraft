@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.block;
 
+import net.minecraft.core.Holder;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffect;
@@ -32,7 +33,7 @@ public enum TropicraftFlower implements Supplier<Block> {
     PATHOS(MobEffects.REGENERATION, 0, 15, 12, null, BlockTags.SMALL_FLOWERS, TropicraftTags.Blocks.TROPICS_FLOWERS, TropicraftTags.Blocks.OVERWORLD_FLOWERS),
     RED_ANTHURIUM(MobEffects.REGENERATION, 0, 11, Items.RED_DYE, BlockTags.SMALL_FLOWERS, TropicraftTags.Blocks.TROPICS_FLOWERS, TropicraftTags.Blocks.RAINFOREST_FLOWERS, TropicraftTags.Blocks.OVERWORLD_FLOWERS);
 
-    private final MobEffect effect;
+    private final Holder<MobEffect> effect;
     private final int effectDuration;
     private final VoxelShape shape;
     private final TagKey<Block>[] tags;
@@ -40,22 +41,22 @@ public enum TropicraftFlower implements Supplier<Block> {
     private final Item dye;
 
     @SafeVarargs
-    TropicraftFlower(MobEffect effect, int effectDuration, Item dye, TagKey<Block>... tags) {
+    TropicraftFlower(Holder<MobEffect> effect, int effectDuration, Item dye, TagKey<Block>... tags) {
         this(effect, effectDuration, 7, dye, tags);
     }
 
     @SafeVarargs
-    TropicraftFlower(MobEffect effect, int effectDuration, int w, Item dye, TagKey<Block>... tags) {
+    TropicraftFlower(Holder<MobEffect> effect, int effectDuration, int w, Item dye, TagKey<Block>... tags) {
         this(effect, effectDuration, w, 15, dye, tags);
     }
 
     @SafeVarargs
-    TropicraftFlower(MobEffect effect, int effectDuration, int w, int h, Item dye, TagKey<Block>... tags) {
+    TropicraftFlower(Holder<MobEffect> effect, int effectDuration, int w, int h, Item dye, TagKey<Block>... tags) {
         this(null, effect, effectDuration, w, h, dye, tags);
     }
 
     @SafeVarargs
-    TropicraftFlower(@Nullable String name, MobEffect effect, int effectDuration, int w, int h, @Nullable Item dye, final TagKey<Block>... tags) {
+    TropicraftFlower(@Nullable String name, Holder<MobEffect> effect, int effectDuration, int w, int h, @Nullable Item dye, final TagKey<Block>... tags) {
         this.effect = effect;
         this.effectDuration = effectDuration;
         this.dye = dye;
@@ -64,7 +65,7 @@ public enum TropicraftFlower implements Supplier<Block> {
         this.shape = Block.box(8 - halfW, 0, 8 - halfW, 8 + halfW, h, 8 + halfW);
     }
 
-    public MobEffect getEffect() {
+    public Holder<MobEffect> getEffect() {
         return effect;
     }
 

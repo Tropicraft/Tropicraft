@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -30,11 +31,12 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import javax.annotation.Nullable;
 import java.util.Locale;
 
-public class TikiTorchBlock extends Block {
+public final class TikiTorchBlock extends Block {
+    public static final MapCodec<TikiTorchBlock> CODEC = simpleCodec(TikiTorchBlock::new);
 
     public enum TorchSection implements StringRepresentable {
         UPPER(2), MIDDLE(1), LOWER(0);
-        
+
         final int height;
         
         private TorchSection(int height) {
@@ -61,7 +63,12 @@ public class TikiTorchBlock extends Block {
         super(properties);
         this.registerDefaultState(defaultBlockState().setValue(SECTION, TorchSection.UPPER));
     }
-    
+
+    @Override
+    protected MapCodec<TikiTorchBlock> codec() {
+        return CODEC;
+    }
+
     @Override
     protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);

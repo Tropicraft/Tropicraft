@@ -1,7 +1,7 @@
 {
   "required": true,
   "package": "net.tropicraft.core.mixin",
-  "compatibilityLevel": "JAVA_17",
+  "compatibilityLevel": "JAVA_21",
   "refmap": "tropicraft.refmap.json",
   "mixins": [
     "BlockEntityTypeAccessor",

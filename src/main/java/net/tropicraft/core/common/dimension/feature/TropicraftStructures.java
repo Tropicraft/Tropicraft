@@ -2,7 +2,7 @@ package net.tropicraft.core.common.dimension.feature;
 
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -26,7 +26,7 @@ public final class TropicraftStructures {
     public static final ResourceKey<Structure> OCEAN_VOLCANO = createKey("ocean_volcano");
     public static final ResourceKey<Structure> LAND_VOLCANO = createKey("land_volcano");
 
-    public static void bootstrap(final BootstapContext<Structure> context) {
+    public static void bootstrap(final BootstrapContext<Structure> context) {
         final HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
         final HolderGetter<StructureTemplatePool> pools = context.lookup(Registries.TEMPLATE_POOL);
 
@@ -76,6 +76,6 @@ public final class TropicraftStructures {
     }
 
     private static ResourceKey<Structure> createKey(final String name) {
-        return ResourceKey.create(Registries.STRUCTURE, new ResourceLocation(Constants.MODID, name));
+        return ResourceKey.create(Registries.STRUCTURE, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
     }
 }

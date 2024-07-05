@@ -3,10 +3,14 @@ package net.tropicraft.core.common.dimension.noise;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.levelgen.*;
+import net.minecraft.world.level.levelgen.DensityFunction;
+import net.minecraft.world.level.levelgen.DensityFunctions;
+import net.minecraft.world.level.levelgen.NoiseRouter;
+import net.minecraft.world.level.levelgen.NoiseRouterData;
+import net.minecraft.world.level.levelgen.Noises;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.dimension.TropicraftTerrainProvider;
@@ -31,7 +35,7 @@ public final class TropicraftNoiseRouterData {
     public static final ResourceKey<DensityFunction> JAGGEDNESS = createKey("tropics/jaggedness");
     public static final ResourceKey<DensityFunction> SLOPED_CHEESE = createKey("tropics/sloped_cheese");
 
-    public static void bootstrap(final BootstapContext<DensityFunction> context) {
+    public static void bootstrap(final BootstrapContext<DensityFunction> context) {
         final HolderGetter<DensityFunction> densityFunctions = context.lookup(Registries.DENSITY_FUNCTION);
 
         final DensityFunctions.Spline.Coordinate continents = new DensityFunctions.Spline.Coordinate(densityFunctions.getOrThrow(NoiseRouterData.CONTINENTS));
@@ -176,10 +180,10 @@ public final class TropicraftNoiseRouterData {
     }
 
     private static ResourceKey<DensityFunction> vanillaKey(String name) {
-        return ResourceKey.create(Registries.DENSITY_FUNCTION, new ResourceLocation(name));
+        return ResourceKey.create(Registries.DENSITY_FUNCTION, ResourceLocation.withDefaultNamespace(name));
     }
 
     private static ResourceKey<DensityFunction> createKey(final String name) {
-        return ResourceKey.create(Registries.DENSITY_FUNCTION, new ResourceLocation(Constants.MODID, name));
+        return ResourceKey.create(Registries.DENSITY_FUNCTION, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
     }
 }

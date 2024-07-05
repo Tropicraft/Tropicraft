@@ -10,25 +10,25 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.tropicraft.Constants;
 import net.tropicraft.core.client.scuba.ModelScubaGear;
-import net.tropicraft.core.common.item.ArmorMaterials;
-import net.tropicraft.core.common.item.TropicraftArmorItem;
+import net.tropicraft.core.common.item.TropicraftArmorMaterials;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 
-public class ScubaArmorItem extends TropicraftArmorItem {
+public class ScubaArmorItem extends ArmorItem {
 
-    private static final ResourceLocation GOGGLES_OVERLAY_TEX_PATH = new ResourceLocation(Constants.MODID, "textures/gui/goggles.png");
+    private static final ResourceLocation GOGGLES_OVERLAY_TEX_PATH = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/gui/goggles.png");
 
     private final ScubaType type;
 
     public ScubaArmorItem(ScubaType type, ArmorItem.Type slotType, Item.Properties properties) {
-        super(ArmorMaterials.SCUBA, slotType, properties);
+        super(TropicraftArmorMaterials.SCUBA, slotType, properties.durability(slotType.getDurability(10)));
         this.type = type;
     }
 
@@ -56,12 +56,12 @@ public class ScubaArmorItem extends TropicraftArmorItem {
     }
 
     @Override
-    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-        return getArmorTexture(this.type).toString();
+    public ResourceLocation getArmorTexture(final ItemStack stack, final Entity entity, final EquipmentSlot slot, final ArmorMaterial.Layer layer, final boolean innerModel) {
+        return getArmorTexture(type);
     }
 
-    public static ResourceLocation getArmorTexture(ScubaType material) {
-        return new ResourceLocation(Constants.ARMOR_LOCATION + "scuba_gear_" + material.getTextureName() + ".png");
+    public static ResourceLocation getArmorTexture(ScubaType type) {
+        return ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/models/armor/scuba_gear_" + type.getTextureName() + ".png");
     }
 
     @Override

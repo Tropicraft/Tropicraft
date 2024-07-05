@@ -6,8 +6,8 @@ import net.minecraft.client.renderer.blockentity.ChestRenderer;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.properties.ChestType;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.tileentity.BambooChestBlockEntity;
 
@@ -27,7 +27,7 @@ public class BambooChestRenderer extends ChestRenderer<BambooChestBlockEntity> {
     }
 
     private static Material getChestMaterial(String chestName) {
-        return new Material(Sheets.CHEST_SHEET, new ResourceLocation(Constants.MODID, "entity/chest/" + chestName));
+        return new Material(Sheets.CHEST_SHEET, ResourceLocation.fromNamespaceAndPath(Constants.MODID, "entity/chest/" + chestName));
     }
 
     public BambooChestRenderer(BlockEntityRendererProvider.Context context) {

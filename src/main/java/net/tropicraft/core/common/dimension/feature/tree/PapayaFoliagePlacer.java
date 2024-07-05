@@ -1,6 +1,6 @@
 package net.tropicraft.core.common.dimension.feature.tree;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerTy
 
 public final class PapayaFoliagePlacer extends FoliagePlacer {
     private static final Direction[] DIRECTIONS = new Direction[] { Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST };
-    public static final Codec<PapayaFoliagePlacer> CODEC = RecordCodecBuilder.create((instance) -> {
+    public static final MapCodec<PapayaFoliagePlacer> CODEC = RecordCodecBuilder.mapCodec((instance) -> {
         return foliagePlacerParts(instance).apply(instance, PapayaFoliagePlacer::new);
     });
 

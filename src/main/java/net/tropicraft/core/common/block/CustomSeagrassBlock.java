@@ -1,13 +1,14 @@
 package net.tropicraft.core.common.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SeagrassBlock;
@@ -19,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class CustomSeagrassBlock extends SeagrassBlock {
+public final class CustomSeagrassBlock extends SeagrassBlock {
 
 	private final String scientificName;
 	@Nullable
@@ -32,7 +33,12 @@ public class CustomSeagrassBlock extends SeagrassBlock {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack itemStack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flag) {
+	public MapCodec<SeagrassBlock> codec() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void appendHoverText(final ItemStack itemStack, final Item.TooltipContext context, final List<Component> tooltip, final TooltipFlag flag) {
 		tooltip.add(Component.literal(scientificName).withStyle(ChatFormatting.AQUA, ChatFormatting.ITALIC));
 	}
 

@@ -12,32 +12,58 @@ import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.client.color.item.ItemColor;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.models.ItemModelGenerators;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.CommonColors;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.animal.AbstractFish;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.EitherHolder;
+import net.minecraft.world.item.HoeItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemNameBlockItem;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.JukeboxPlayable;
+import net.minecraft.world.item.JukeboxSong;
+import net.minecraft.world.item.PickaxeItem;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.ShovelItem;
+import net.minecraft.world.item.SignItem;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FlowerPotBlock;
+import net.minecraft.world.level.block.StandingSignBlock;
+import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.client.model.generators.ItemModelBuilder;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.common.ForgeSpawnEggItem;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegisterEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.common.DeferredSpawnEggItem;
+import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.registries.RegisterEvent;
 import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.Foods;
@@ -52,7 +78,11 @@ import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
 import net.tropicraft.core.common.entity.placeable.ChairEntity;
 import net.tropicraft.core.common.entity.placeable.FurnitureEntity;
 import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
-import net.tropicraft.core.common.item.scuba.*;
+import net.tropicraft.core.common.item.scuba.PonyBottleItem;
+import net.tropicraft.core.common.item.scuba.ScubaArmorItem;
+import net.tropicraft.core.common.item.scuba.ScubaGogglesItem;
+import net.tropicraft.core.common.item.scuba.ScubaHarnessItem;
+import net.tropicraft.core.common.item.scuba.ScubaType;
 
 import java.util.Arrays;
 import java.util.List;
@@ -64,7 +94,7 @@ import java.util.function.Supplier;
 import static com.tterrag.registrate.providers.RegistrateRecipeProvider.has;
 import static net.tropicraft.core.common.block.TropicraftBlocks.CHUNK;
 
-@EventBusSubscriber(modid = Constants.MODID, bus = Bus.MOD)
+@EventBusSubscriber(modid = Constants.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class TropicraftItems {
     public static final Registrate REGISTRATE = Tropicraft.registrate();
 
@@ -160,7 +190,7 @@ public class TropicraftItems {
 
     private static <T extends FurnitureEntity> ItemBuilder<FurnitureItem<T>, Registrate> furniture(String name, Supplier<EntityType<T>> type, DyeColor color) {
         return REGISTRATE.item(name, p -> new FurnitureItem<>(p, type, color))
-                .color(() -> () -> (stack, tintIndex) -> tintIndex == 0 ? 0xffffff : color.getTextColor());
+                .color(() -> () -> (stack, tintIndex) -> tintIndex == 0 ? CommonColors.WHITE : FastColor.ARGB32.opaque(color.getTextColor()));
     }
 
     public static final ItemEntry<Item> BAMBOO_STICK = simpleItem("bamboo_stick")
@@ -171,7 +201,7 @@ public class TropicraftItems {
                         .pattern("X").pattern("X")
                         .define('X', Items.BAMBOO)
                         .unlockedBy("has_bamboo", has(Items.BAMBOO))
-                        .save(prov, new ResourceLocation("stick_from_bamboo_item"));
+                        .save(prov, ResourceLocation.withDefaultNamespace("stick_from_bamboo_item"));
             })
             .model((ctx, prov) -> prov.handheld(ctx))
             .register();
@@ -182,6 +212,7 @@ public class TropicraftItems {
                     .define('X', BAMBOO_STICK.get())
                     .unlockedBy("has_bamboo_stick", has(BAMBOO_STICK.get()))
                     .save(prov))
+            .tag(ItemTags.TRIDENT_ENCHANTABLE)
             .model((ctx, prov) -> {
                 ItemModelBuilder throwing = prov.withExistingParent(ctx.getName() + "_throwing", prov.modLoc("spear_throwing"))
                         .texture("layer0", prov.itemTexture(ctx));
@@ -260,9 +291,9 @@ public class TropicraftItems {
                             .model((ctx, prov) -> prov.generated(ctx, prov.modLoc("item/cocktail"), prov.modLoc("item/cocktail_contents")))
                             .color(() -> () -> (ItemColor) (stack, tintIndex) -> {
                                 if (tintIndex == 0) {
-                                    return 0xffffff;
+                                    return CommonColors.WHITE;
                                 }
-                                return drink == Drink.COCKTAIL ? CocktailItem.getCocktailColor(stack) : drink.color;
+                                return FastColor.ARGB32.opaque(drink == Drink.COCKTAIL ? CocktailItem.getCocktailColor(stack) : drink.color);
                             })
                             .lang(drink.getName())
                             .register()
@@ -315,7 +346,7 @@ public class TropicraftItems {
     public static final ItemEntry<Item> POISON_FROG_SKIN = simpleItem("poison_frog_skin").register();
 
     public static final ItemEntry<Item> IGUANA_LEATHER = simpleItem("iguana_leather")
-            .tag(Tags.Items.LEATHER)
+            .tag(Tags.Items.LEATHERS)
             .register();
     public static final ItemEntry<TropicalFertilizerItem> TROPICAL_FERTILIZER = REGISTRATE.item("tropical_fertilizer", TropicalFertilizerItem::new)
             .recipe((ctx, prov) -> ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ctx.get())
@@ -337,21 +368,25 @@ public class TropicraftItems {
                     .save(prov))
             .register();
 
-    public static final ImmutableMap<RecordMusic, ItemEntry<TropicalMusicDiscItem>> MUSIC_DISCS = Arrays.stream(RecordMusic.values())
-            .collect(Maps.<RecordMusic, RecordMusic, ItemEntry<TropicalMusicDiscItem>>toImmutableEnumMap(Function.identity(), type ->
-                    REGISTRATE.item("music_disc_" + type.name().toLowerCase(Locale.ROOT), p -> new TropicalMusicDiscItem(type, p))
-                            .properties(p -> p.rarity(Rarity.RARE))
-                            .tag(ItemTags.MUSIC_DISCS)
-                            .setData(ProviderType.LANG, (ctx, prov) -> prov.addItemWithTooltip(ctx, "Music Disc", type.getTooltip()))
-                            .register()
-            ));
+    public static final ItemEntry<Item> MUSIC_DISC_BURIED_TREASURE = musicDisc(TropicraftJukeboxSongs.BURIED_TREASURE).register();
+    public static final ItemEntry<Item> MUSIC_DISC_EASTERN_ISLES = musicDisc(TropicraftJukeboxSongs.EASTERN_ISLES).register();
+    public static final ItemEntry<Item> MUSIC_DISC_THE_TRIBE = musicDisc(TropicraftJukeboxSongs.THE_TRIBE).register();
+    public static final ItemEntry<Item> MUSIC_DISC_LOW_TIDE = musicDisc(TropicraftJukeboxSongs.LOW_TIDE).register();
+    public static final ItemEntry<Item> MUSIC_DISC_TRADE_WINDS = musicDisc(TropicraftJukeboxSongs.TRADE_WINDS).register();
+    public static final ItemEntry<Item> MUSIC_DISC_SUMMERING = musicDisc(TropicraftJukeboxSongs.SUMMERING).register();
+
+    private static ItemBuilder<Item, Registrate> musicDisc(final ResourceKey<JukeboxSong> song) {
+        return REGISTRATE.item("music_disc_" + song.location().getPath(), Item::new)
+                .properties(p -> p.rarity(Rarity.RARE).component(DataComponents.JUKEBOX_PLAYABLE, new JukeboxPlayable(new EitherHolder<>(song), true)))
+                .lang("Music Disc");
+    }
 
     public static final ItemEntry<Item> TROPICAL_FISH_BUCKET = fishBucket("tropical_fish_bucket", TropicraftEntities.TROPICAL_FISH).register();
     public static final ItemEntry<Item> SARDINE_BUCKET = fishBucket("sardine_bucket", TropicraftEntities.RIVER_SARDINE).register();
     public static final ItemEntry<Item> PIRANHA_BUCKET = fishBucket("piranha_bucket", TropicraftEntities.PIRANHA).register();
 
     private static <T extends AbstractFish> ItemBuilder<Item, Registrate> fishBucket(final String name, final Supplier<? extends EntityType<T>> entity) {
-        return REGISTRATE.item(name, p -> (Item) new TropicraftFishBucketItem<>(entity, Fluids.WATER, p))
+        return REGISTRATE.item(name, p -> (Item) new TropicraftFishBucketItem<>(entity.get(), Fluids.WATER, p))
                 .properties(p -> p.stacksTo(1));
     }
 
@@ -388,18 +423,18 @@ public class TropicraftItems {
     public static final ItemEntry<Item> WHITE_LIPPED_PECCARY_SPAWN_EGG = spawnEgg("white_lipped_peccary_spawn_egg", TropicraftEntities.WHITE_LIPPED_PECCARY, 0x665D54, 0x544D42).register();
     public static final ItemEntry<Item> CUBERA_SPAWN_EGG = spawnEgg("cubera_spawn_egg", TropicraftEntities.CUBERA, 0xF77631, 0x872C18).register();
 
-    private static <T extends Mob> ItemBuilder<Item, Registrate> spawnEgg(final String name, final RegistryEntry<EntityType<T>> entity, final int backgroundColor, final int highlightColor) {
-        return REGISTRATE.item(name, p -> (Item) new ForgeSpawnEggItem(entity, backgroundColor, highlightColor, p))
+    private static <T extends Mob> ItemBuilder<Item, Registrate> spawnEgg(final String name, final RegistryEntry<EntityType<?>, EntityType<T>> entity, final int backgroundColor, final int highlightColor) {
+        return REGISTRATE.item(name, p -> (Item) new DeferredSpawnEggItem(entity, backgroundColor, highlightColor, p))
                 .model((ctx, prov) -> prov.withExistingParent(ctx.getName(), prov.mcLoc("item/template_spawn_egg")));
     }
 
-    private static <T extends Mob> ItemBuilder<Item, Registrate> customSpawnEgg(final String name, final RegistryEntry<EntityType<T>> entity) {
-        return REGISTRATE.item(name, p -> new ForgeSpawnEggItem(entity, 0xffffff, 0xffffff, p));
+    private static <T extends Mob> ItemBuilder<Item, Registrate> customSpawnEgg(final String name, final RegistryEntry<EntityType<?>, EntityType<T>> entity) {
+        return REGISTRATE.item(name, p -> new DeferredSpawnEggItem(entity, 0xffffff, 0xffffff, p));
     }
 
     public static final ImmutableMap<AshenMasks, ItemEntry<AshenMaskItem>> ASHEN_MASKS = Arrays.stream(AshenMasks.values())
             .collect(Maps.<AshenMasks, AshenMasks, ItemEntry<AshenMaskItem>>toImmutableEnumMap(Function.identity(), type ->
-                    REGISTRATE.item("ashen_mask_" + type.name().toLowerCase(Locale.ROOT), p -> new AshenMaskItem(ArmorMaterials.ASHEN_MASK, type, p))
+                    REGISTRATE.item("ashen_mask_" + type.name().toLowerCase(Locale.ROOT), p -> new AshenMaskItem(TropicraftArmorMaterials.ASHEN_MASK, type, p))
                             .tag(TropicraftTags.Items.ASHEN_MASKS)
                             .lang(type.getName())
                             .register()
@@ -453,7 +488,8 @@ public class TropicraftItems {
     public static final ItemEntry<Item> EUDIALYTE_SWORD = sword("eudialyte_sword", TropicraftToolTiers.EUDIALYTE, EUDIALYTE).register();
 
     private static ItemBuilder<Item, Registrate> hoe(final String name, final TropicraftToolTiers tier, final Supplier<? extends Item> input) {
-        return REGISTRATE.item(name, p -> (Item) new HoeItem(tier, 0, -2.0f, p))
+        return REGISTRATE.item(name, p -> (Item) new HoeItem(tier, p))
+                .properties(p -> p.component(DataComponents.ATTRIBUTE_MODIFIERS, HoeItem.createAttributes(tier, 0, -2.0f)))
                 .tag(ItemTags.HOES)
                 .model((ctx, prov) -> prov.handheld(ctx))
                 .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ctx.get())
@@ -469,7 +505,8 @@ public class TropicraftItems {
     }
 
     private static ItemBuilder<Item, Registrate> shovel(final String name, final Tier tier, final Supplier<? extends Item> input) {
-        return REGISTRATE.item(name, p -> (Item) new ShovelItem(tier, 2.0f, -3.0f, p))
+        return REGISTRATE.item(name, p -> (Item) new ShovelItem(tier, p))
+                .properties(p -> p.component(DataComponents.ATTRIBUTE_MODIFIERS, ShovelItem.createAttributes(tier, 2.0f, -3.0f)))
                 .tag(ItemTags.SHOVELS)
                 .model((ctx, prov) -> prov.handheld(ctx))
                 .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ctx.get())
@@ -485,7 +522,8 @@ public class TropicraftItems {
     }
 
     private static ItemBuilder<Item, Registrate> pickaxe(final String name, final Tier tier, final Supplier<? extends Item> input) {
-        return REGISTRATE.item(name, p -> (Item) new PickaxeItem(tier, 2, -2.0f, p))
+        return REGISTRATE.item(name, p -> (Item) new PickaxeItem(tier, p))
+                .properties(p -> p.component(DataComponents.ATTRIBUTE_MODIFIERS, PickaxeItem.createAttributes(tier, 2, -2.0f)))
                 .tag(ItemTags.PICKAXES)
                 .model((ctx, prov) -> prov.handheld(ctx))
                 .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ctx.get())
@@ -501,7 +539,8 @@ public class TropicraftItems {
     }
 
     private static ItemBuilder<Item, Registrate> axe(final String name, final Tier tier, final Supplier<? extends Item> input) {
-        return REGISTRATE.item(name, p -> (Item) new AxeItem(tier, 5.0f, -2.0f, p))
+        return REGISTRATE.item(name, p -> (Item) new AxeItem(tier, p))
+                .properties(p -> p.component(DataComponents.ATTRIBUTE_MODIFIERS, AxeItem.createAttributes(tier, 5.0f, -2.0f)))
                 .tag(ItemTags.AXES)
                 .model((ctx, prov) -> prov.handheld(ctx))
                 .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ctx.get())
@@ -517,7 +556,8 @@ public class TropicraftItems {
     }
 
     private static ItemBuilder<Item, Registrate> sword(final String name, final Tier tier, final Supplier<? extends Item> input) {
-        return REGISTRATE.item(name, p -> (Item) new SwordItem(tier, 3, -3.0f, p))
+        return REGISTRATE.item(name, p -> (Item) new SwordItem(tier, p))
+                .properties(p -> p.component(DataComponents.ATTRIBUTE_MODIFIERS, SwordItem.createAttributes(tier, 3, -3.0f)))
                 .tag(ItemTags.SWORDS)
                 .model((ctx, prov) -> prov.handheld(ctx))
                 .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ctx.get())
@@ -574,21 +614,21 @@ public class TropicraftItems {
 
     public static final ItemEntry<ScubaGogglesItem> YELLOW_SCUBA_GOGGLES = scubaGoggles("yellow_scuba_goggles", ScubaType.YELLOW, () -> Items.YELLOW_DYE).register();
     public static final ItemEntry<ScubaHarnessItem> YELLOW_SCUBA_HARNESS = scubaHarness("yellow_scuba_harness", ScubaType.YELLOW, () -> Items.YELLOW_DYE).register();
-    public static final ItemEntry<ScubaFlippersItem> YELLOW_SCUBA_FLIPPERS = scubaFlippers("yellow_scuba_flippers", ScubaType.YELLOW, () -> Items.YELLOW_DYE).register();
+    public static final ItemEntry<ScubaArmorItem> YELLOW_SCUBA_FLIPPERS = scubaFlippers("yellow_scuba_flippers", ScubaType.YELLOW, () -> Items.YELLOW_DYE).register();
     public static final ItemEntry<ScubaGogglesItem> PINK_SCUBA_GOGGLES = scubaGoggles("pink_scuba_goggles", ScubaType.PINK, () -> Items.PINK_DYE).register();
     public static final ItemEntry<ScubaHarnessItem> PINK_SCUBA_HARNESS = scubaHarness("pink_scuba_harness", ScubaType.PINK, () -> Items.PINK_DYE).register();
-    public static final ItemEntry<ScubaFlippersItem> PINK_SCUBA_FLIPPERS = scubaFlippers("pink_scuba_flippers", ScubaType.PINK, () -> Items.PINK_DYE).register();
+    public static final ItemEntry<ScubaArmorItem> PINK_SCUBA_FLIPPERS = scubaFlippers("pink_scuba_flippers", ScubaType.PINK, () -> Items.PINK_DYE).register();
 
     private static ItemBuilder<ArmorItem, Registrate> fireArmor(final String name, final ArmorItem.Type slotType) {
         return REGISTRATE.item(name, p -> (ArmorItem) new FireArmorItem(slotType, p))
-                .properties(p -> p.stacksTo(1).durability(300))
+                .properties(p -> p.stacksTo(1).durability(slotType.getDurability(12)))
                 .tag(ItemTags.TRIMMABLE_ARMOR)
                 .model(TropicraftItems::trimmableArmor);
     }
 
     private static ItemBuilder<ArmorItem, Registrate> scaleArmor(final String name, final ArmorItem.Type slotType) {
         return REGISTRATE.item(name, p -> (ArmorItem) new ScaleArmorItem(slotType, p))
-                .properties(p -> p.stacksTo(1))
+                .properties(p -> p.stacksTo(1).durability(slotType.getDurability(18)))
                 .tag(ItemTags.TRIMMABLE_ARMOR)
                 .model(TropicraftItems::trimmableArmor);
     }
@@ -609,19 +649,23 @@ public class TropicraftItems {
 
     private static ItemBuilder<ScubaHarnessItem, Registrate> scubaHarness(final String name, final ScubaType type, Supplier<? extends Item> source) {
         return REGISTRATE.item(name, p -> new ScubaHarnessItem(type, p))
+                .properties(p -> p.component(TropicraftDataComponents.SCUBA_AIR, 0))
                 .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get(), 1)
                         .pattern("Y Y")
                         .pattern("YXY")
                         .pattern("YZY")
                         .define('X', source.get())
-                        .define('Y', Tags.Items.LEATHER)
+                        .define('Y', Tags.Items.LEATHERS)
                         .define('Z', AZURITE.get())
                         .unlockedBy("has_" + prov.safeName(AZURITE.get()), has(AZURITE.get()))
                         .save(prov));
     }
 
-    private static ItemBuilder<ScubaFlippersItem, Registrate> scubaFlippers(final String name, final ScubaType type, Supplier<? extends Item> source) {
-        return REGISTRATE.item(name, p -> new ScubaFlippersItem(type, p))
+    private static ItemBuilder<ScubaArmorItem, Registrate> scubaFlippers(final String name, final ScubaType type, Supplier<? extends Item> source) {
+        return REGISTRATE.item(name, p -> new ScubaArmorItem(type, ArmorItem.Type.BOOTS, p))
+                .properties(p -> p.component(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
+                        .add(NeoForgeMod.SWIM_SPEED, new AttributeModifier(ResourceLocation.fromNamespaceAndPath(Constants.MODID, "scuba"), 0.25, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.FEET)
+                        .build()))
                 .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get(), 1)
                         .pattern("XX")
                         .pattern("YY")
@@ -685,7 +729,7 @@ public class TropicraftItems {
     }
 
     private static ItemBuilder<SignItem, Registrate> sign(final WoodType woodType, final Supplier<? extends Block> planks, final Supplier<? extends StandingSignBlock> standingSign, final Supplier<? extends WallSignBlock> wallSign) {
-        String woodName = new ResourceLocation(woodType.name()).getPath();
+        String woodName = ResourceLocation.parse(woodType.name()).getPath();
         return REGISTRATE.item(woodName + "_sign", p -> new SignItem(p, standingSign.get(), wallSign.get()))
                 .properties(p -> p.stacksTo(16))
                 .tag(ItemTags.SIGNS)
@@ -702,13 +746,13 @@ public class TropicraftItems {
 
     @SubscribeEvent
     public static void onItemRegister(RegisterEvent event) {
-        if (!ForgeRegistries.ITEMS.equals(event.getForgeRegistry())) {
+        if (event.getRegistryKey() != Registries.ITEM) {
             return;
         }
-        ForgeRegistries.BLOCKS.getEntries().forEach(entry -> {
-            if (entry.getValue() instanceof FlowerPotBlock flowerPot) {
+        event.getRegistry().holders().forEach(holder -> {
+            if (holder.value() instanceof FlowerPotBlock flowerPot) {
                 FlowerPotBlock emptyPot = flowerPot.getEmptyPot();
-                Block content = flowerPot.getContent();
+                Block content = flowerPot.getPotted();
                 if (emptyPot.builtInRegistryHolder().is(TropicraftBlocks.BAMBOO_FLOWER_POT.getId()) && emptyPot != flowerPot) {
                     addPlant(TropicraftBlocks.BAMBOO_FLOWER_POT.get(), flowerPot);
                 } else if (content.builtInRegistryHolder().key().location().getNamespace().equals(Constants.MODID)) {
@@ -719,7 +763,7 @@ public class TropicraftItems {
     }
 
     private static void addPlant(FlowerPotBlock empty, FlowerPotBlock full) {
-        empty.addPlant(full.getContent().builtInRegistryHolder().key().location(), full.builtInRegistryHolder());
+        empty.addPlant(full.getPotted().builtInRegistryHolder().key().location(), () -> full);
     }
 
     private static DataIngredient ingredient(NonNullSupplier<? extends ItemLike> item) {
@@ -745,7 +789,7 @@ public class TropicraftItems {
 
         ItemModelBuilder builder = prov.generated(ctx, texture);
         for (TrimMaterial trim : GENERATED_TRIM_MATERIALS) {
-            ResourceLocation materialOverlayTexture = new ResourceLocation("trims/items/" + armorType.getName() + "_trim_" + trim.name());
+            ResourceLocation materialOverlayTexture = ResourceLocation.withDefaultNamespace("trims/items/" + armorType.getName() + "_trim_" + trim.name());
             // Trim textures are generated at runtime during atlas stitching
             prov.existingFileHelper.trackGenerated(materialOverlayTexture, PackType.CLIENT_RESOURCES, ".png", "textures");
 

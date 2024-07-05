@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.dimension.feature.jigsaw.piece;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,6 +24,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElementType;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
+import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.tropicraft.Constants;
@@ -33,15 +35,13 @@ import java.util.List;
 import java.util.function.Function;
 
 public final class HomeTreeBranchPiece extends StructurePoolElement implements IntersectionAllowedPiece {
-    public static final Codec<HomeTreeBranchPiece> CODEC = RecordCodecBuilder.create(i -> i.group(
+    public static final MapCodec<HomeTreeBranchPiece> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
             Codec.FLOAT.fieldOf("min_angle").forGetter(c -> c.minAngle),
             Codec.FLOAT.fieldOf("max_angle").forGetter(c -> c.maxAngle)
     ).apply(i, HomeTreeBranchPiece::new));
 
     private static final int MAX_RADIUS = 48;
     private static final Direction.Axis[] ALL_AXIS = Direction.Axis.values();
-
-    private static final StructurePoolElementType<HomeTreeBranchPiece> TYPE = StructurePoolElementType.register(Constants.MODID + ":home_tree_branch", CODEC);
 
     private static final CompoundTag JIGSAW_NBT = createJigsawNbt();
 
@@ -90,7 +90,7 @@ public final class HomeTreeBranchPiece extends StructurePoolElement implements I
     }
 
     @Override
-    public boolean place(StructureTemplateManager templates, WorldGenLevel level, StructureManager structureManager, ChunkGenerator generator, BlockPos origin, BlockPos p_227341_, Rotation rotation, BoundingBox chunkBounds, RandomSource random, boolean p_227345_) {
+    public boolean place(StructureTemplateManager templates, WorldGenLevel level, StructureManager structureManager, ChunkGenerator generator, BlockPos origin, BlockPos p_227341_, Rotation rotation, BoundingBox chunkBounds, RandomSource random, LiquidSettings liquidSettings, boolean p_227345_) {
         WorldgenRandom rand = new WorldgenRandom(new LegacyRandomSource(level.getSeed()));
         rand.setDecorationSeed(level.getSeed(), origin.getX(), origin.getZ());
 
@@ -216,6 +216,6 @@ public final class HomeTreeBranchPiece extends StructurePoolElement implements I
 
     @Override
     public StructurePoolElementType<?> getType() {
-        return TYPE;
+        return TropicraftStructurePoolElementTypes.HOME_TREE_BRANCH.get();
     }
 }

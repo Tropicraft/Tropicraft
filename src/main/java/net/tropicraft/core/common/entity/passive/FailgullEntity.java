@@ -9,7 +9,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
@@ -25,14 +27,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.entity.TropicraftEntities;
-import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.Comparator;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 public class FailgullEntity extends Animal implements FlyingAnimal {
 
@@ -43,9 +47,9 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
 		super(type, world);
 		xpReward = 1;
 		moveControl = new FlyingMoveControl(this, 5, true);
-		this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
-		this.setPathfindingMalus(BlockPathTypes.COCOA, -1.0F);
-		this.setPathfindingMalus(BlockPathTypes.FENCE, -1.0F);
+		this.setPathfindingMalus(PathType.WATER, -1.0F);
+		this.setPathfindingMalus(PathType.COCOA, -1.0F);
+		this.setPathfindingMalus(PathType.FENCE, -1.0F);
 	}
 
 	public static AttributeSupplier.Builder createAttributes() {
@@ -57,9 +61,9 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		entityData.define(FLOCK_LEADER_UUID, Optional.empty());
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(FLOCK_LEADER_UUID, Optional.empty());
 	}
 
 	@Override
@@ -71,6 +75,11 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
 		} else {
 			setFlockLeader(Optional.empty());
 		}
+	}
+
+	@Override
+	public boolean isFood(final ItemStack stack) {
+		return false;
 	}
 
 	@Override
@@ -91,11 +100,6 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
 		goalSelector.addGoal(1, new SelectFlockLeader(this));
 		goalSelector.addGoal(2, new SetTravelDestination());
 		goalSelector.addGoal(2, new FollowLeaderGoal());
-	}
-
-	@Override
-	protected float getStandingEyeHeight(Pose poseIn, EntityDimensions sizeIn) {
-		return sizeIn.height * 0.5F;
 	}
 
 	@Override

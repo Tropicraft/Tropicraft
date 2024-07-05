@@ -4,10 +4,12 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.entity.egg.EggEntity;
 
 public abstract class EchinodermEntity extends WaterAnimal {
@@ -77,9 +79,9 @@ public abstract class EchinodermEntity extends WaterAnimal {
     public abstract EggEntity createEgg();
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        entityData.define(GROWING_AGE, 0);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(GROWING_AGE, 0);
     }
 
     @Override
@@ -186,12 +188,13 @@ public abstract class EchinodermEntity extends WaterAnimal {
 //        return getSize(poseIn).scale()
 //    }
 
+
     @Override
-    public double getMyRidingOffset() {
+    public Vec3 getVehicleAttachmentPoint(final Entity entity) {
         if (yOffset < 0) {
-            return super.getMyRidingOffset();
+            return super.getVehicleAttachmentPoint(entity);
         } else {
-            return yOffset;
+            return new Vec3(0.0, yOffset, 0.0);
         }
     }
 

@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.block.tileentity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
@@ -111,7 +112,7 @@ public class VolcanoBlockEntity extends BlockEntity {
 						raiseLavaLevels();
 					} else {
 						ticksUntilEruption = 0;
-						getLevel().playLocalSound(this.worldPosition.getX(), 73, this.worldPosition.getY(), SoundEvents.GENERIC_EXPLODE, SoundSource.NEUTRAL, 1.0F, getLevel().random.nextFloat() / 4 + 0.825F, false);
+						getLevel().playLocalSound(this.worldPosition.getX(), 73, this.worldPosition.getY(), SoundEvents.GENERIC_EXPLODE.value(), SoundSource.NEUTRAL, 1.0F, getLevel().random.nextFloat() / 4 + 0.825F, false);
 						int balls = getLevel().random.nextInt(25) + 15;
 
 						for (int i = 0; i < balls; i++) {
@@ -314,8 +315,8 @@ public class VolcanoBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	public void load(CompoundTag nbt) {
-		super.load(nbt);
+	public void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+		super.loadAdditional(nbt, registries);
 		heightOffset = nbt.getInt("height_offset");
 		state = VolcanoState.valueOf(nbt.getString("state"));
 		ticksUntilDormant = nbt.getInt("ticksUntilDormant");
@@ -328,8 +329,8 @@ public class VolcanoBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag nbt) {
-		super.saveAdditional(nbt);
+	public void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+		super.saveAdditional(nbt, registries);
 		nbt.putInt("height_offset", heightOffset);
 		nbt.putString("state", state.name());
 		nbt.putInt("ticksUntilDormant", ticksUntilDormant);
@@ -342,8 +343,8 @@ public class VolcanoBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-		load(pkt.getTag());
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider registries) {
+		loadAdditional(pkt.getTag(), registries);
 	}
 
 	@Override
@@ -353,9 +354,9 @@ public class VolcanoBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	public CompoundTag getUpdateTag() {
+	public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
 		CompoundTag nbt = new CompoundTag();
-		this.saveAdditional(nbt);
+		this.saveAdditional(nbt, registries);
 		return nbt;
 	}
 

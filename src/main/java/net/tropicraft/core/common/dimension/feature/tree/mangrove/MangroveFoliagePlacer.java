@@ -1,6 +1,6 @@
 package net.tropicraft.core.common.dimension.feature.tree.mangrove;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
@@ -11,9 +11,7 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerTy
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftFoliagePlacers;
 
 public final class MangroveFoliagePlacer extends FoliagePlacer {
-    public static final Codec<MangroveFoliagePlacer> CODEC = RecordCodecBuilder.create((instance) -> {
-        return foliagePlacerParts(instance).apply(instance, MangroveFoliagePlacer::new);
-    });
+    public static final MapCodec<MangroveFoliagePlacer> CODEC = RecordCodecBuilder.mapCodec(i -> foliagePlacerParts(i).apply(i, MangroveFoliagePlacer::new));
 
     public MangroveFoliagePlacer(IntProvider radius, IntProvider offset) {
         super(radius, offset);

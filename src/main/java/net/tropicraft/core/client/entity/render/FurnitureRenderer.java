@@ -46,19 +46,16 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
             stack.mulPose(getRockingAxis().rotationDegrees(rockingAngle));
         }
 
-        final float[] color = furniture.getColor().getTextureDiffuseColors();
-        float red = color[0];
-        float green = color[1];
-        float blue = color[2];
+        final int color = furniture.getColor().getTextureDiffuseColor();
 
         // Draw uncolored layer
         VertexConsumer ivertexbuilder = buffer.getBuffer(model.renderType(TropicraftRenderUtils.getTextureEntity(textureName + "_base_layer")));
         stack.scale(-1.0F, -1.0F, 1.0F);
-        model.renderToBuffer(stack, ivertexbuilder, getPackedLightCoords(furniture, partialTicks), OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        model.renderToBuffer(stack, ivertexbuilder, getPackedLightCoords(furniture, partialTicks), OverlayTexture.NO_OVERLAY);
 
         // Draw the colored part
         ivertexbuilder = buffer.getBuffer(model.renderType(TropicraftRenderUtils.getTextureEntity(textureName + "_color_layer")));
-        model.renderToBuffer(stack, ivertexbuilder, getPackedLightCoords(furniture, partialTicks), OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
+        model.renderToBuffer(stack, ivertexbuilder, getPackedLightCoords(furniture, partialTicks), OverlayTexture.NO_OVERLAY, color);
 
         super.render(furniture, entityYaw, partialTicks, stack, buffer, packedLightIn);
         stack.popPose();

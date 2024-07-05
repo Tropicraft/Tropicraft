@@ -1,13 +1,12 @@
 package net.tropicraft.core.common.dimension.feature;
 
-import com.tterrag.registrate.util.entry.RegistryEntry;
+import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.placement.BlockPredicateFilter;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
@@ -43,7 +42,7 @@ public final class TropicraftTreePlacements {
 
     public static final ResourceKey<PlacedFeature> LIGHT_MANGROVES_CHECKED = createKey("light_mangroves");
 
-    public static void boostrap(final BootstapContext<PlacedFeature> context) {
+    public static void boostrap(final BootstrapContext<PlacedFeature> context) {
         register(context, GRAPEFRUIT_TREE_CHECKED, TropicraftTreeFeatures.GRAPEFRUIT_TREE, checkTree(TropicraftBlocks.GRAPEFRUIT_SAPLING));
         register(context, ORANGE_TREE_CHECKED, TropicraftTreeFeatures.ORANGE_TREE, checkTree(TropicraftBlocks.ORANGE_SAPLING));
         register(context, LEMON_TREE_CHECKED, TropicraftTreeFeatures.LEMON_TREE, checkTree(TropicraftBlocks.LEMON_SAPLING));
@@ -67,18 +66,18 @@ public final class TropicraftTreePlacements {
     }
 
     private static ResourceKey<PlacedFeature> createKey(final String name) {
-        return ResourceKey.create(Registries.PLACED_FEATURE, new ResourceLocation(Constants.MODID, name));
+        return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
     }
 
-    private static List<PlacementModifier> checkTree(RegistryEntry<? extends Block> sapling) {
+    private static List<PlacementModifier> checkTree(BlockEntry<?> sapling) {
         return List.of(saplingFilter(sapling));
     }
 
-    private static List<PlacementModifier> checkMangrove(RegistryEntry<? extends Block> sapling, int maxWaterDepth) {
+    private static List<PlacementModifier> checkMangrove(BlockEntry<?> sapling, int maxWaterDepth) {
         return List.of(SurfaceWaterDepthFilter.forMaxDepth(maxWaterDepth), saplingFilter(sapling));
     }
 
-    private static BlockPredicateFilter saplingFilter(RegistryEntry<? extends Block> sapling) {
+    private static BlockPredicateFilter saplingFilter(BlockEntry<?> sapling) {
         return BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(sapling.get().defaultBlockState(), BlockPos.ZERO));
     }
 }

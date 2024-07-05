@@ -2,19 +2,16 @@ package net.tropicraft.core.common.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.entity.IEntityAdditionalSpawnData;
-import net.minecraftforge.network.NetworkHooks;
+import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import net.tropicraft.core.common.item.TropicraftItems;
 
-public class BambooItemFrame extends ItemFrame implements IEntityAdditionalSpawnData {
+public class BambooItemFrame extends ItemFrame implements IEntityWithComplexSpawn {
 
     public BambooItemFrame(final EntityType<? extends ItemFrame> type, final Level world) {
         super(type, world);
@@ -35,18 +32,13 @@ public class BambooItemFrame extends ItemFrame implements IEntityAdditionalSpawn
     public ItemStack getFrameItemStack() { return new ItemStack(TropicraftItems.BAMBOO_ITEM_FRAME.get()); }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return NetworkHooks.getEntitySpawningPacket(this);
-    }
-
-    @Override
-    public void writeSpawnData(FriendlyByteBuf buffer) {
+    public void writeSpawnData(RegistryFriendlyByteBuf buffer) {
         buffer.writeBlockPos(this.pos);
         buffer.writeByte(direction.get3DDataValue());
     }
 
     @Override
-    public void readSpawnData(FriendlyByteBuf additionalData) {
+    public void readSpawnData(RegistryFriendlyByteBuf additionalData) {
         this.pos = additionalData.readBlockPos();
         setDirection(Direction.from3DDataValue(additionalData.readByte()));
     }

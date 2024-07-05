@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.block;
 
+import com.mojang.serialization.MapCodec;
 import it.unimi.dsi.fastutil.objects.Reference2ByteMap;
 import it.unimi.dsi.fastutil.objects.Reference2ByteOpenHashMap;
 import net.minecraft.core.BlockPos;
@@ -12,7 +13,12 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.FenceBlock;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -26,6 +32,8 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public final class MangroveRootsBlock extends Block implements SimpleWaterloggedBlock {
+    public static final MapCodec<MangroveRootsBlock> CODEC = simpleCodec(MangroveRootsBlock::new);
+
     private static final Reference2ByteMap<BlockState> STATE_TO_KEY = new Reference2ByteOpenHashMap<>();
     private static final VoxelShape[] SHAPE_TABLE = buildShapeTable();
 
@@ -55,6 +63,11 @@ public final class MangroveRootsBlock extends Block implements SimpleWaterlogged
                 .setValue(WEST, Connection.NONE)
                 .setValue(WATERLOGGED, false)
         );
+    }
+
+    @Override
+    protected MapCodec<MangroveRootsBlock> codec() {
+        return CODEC;
     }
 
     private static VoxelShape[] buildShapeTable() {
@@ -249,7 +262,7 @@ public final class MangroveRootsBlock extends Block implements SimpleWaterlogged
     }
 
     @Override
-    public boolean isPathfindable(BlockState state, BlockGetter worldIn, BlockPos pos, PathComputationType type) {
+    public boolean isPathfindable(BlockState state, PathComputationType type) {
         return false;
     }
 

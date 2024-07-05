@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.dimension.feature.jigsaw;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderSet;
@@ -19,7 +20,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 
 public class StructureSupportsProcessor extends CheatyStructureProcessor {
-    public static final Codec<StructureSupportsProcessor> CODEC = RecordCodecBuilder.create(i -> i.group(
+    public static final MapCodec<StructureSupportsProcessor> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
         Codec.BOOL.optionalFieldOf("can_replace_land", false).forGetter(p -> p.canReplaceLand),
         RegistryCodecs.homogeneousList(Registries.BLOCK).fieldOf("blocks_to_extend").forGetter(p -> p.blocksToExtend)
     ).apply(i, StructureSupportsProcessor::new));

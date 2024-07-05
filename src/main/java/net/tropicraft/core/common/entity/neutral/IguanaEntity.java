@@ -1,22 +1,30 @@
 package net.tropicraft.core.common.entity.neutral;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.MoveTowardsRestrictionGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.HitResult;
+import net.tropicraft.Constants;
 import net.tropicraft.core.common.entity.hostile.TropicraftCreatureEntity;
-import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.sound.Sounds;
 
 import javax.annotation.Nullable;
@@ -28,8 +36,7 @@ public class IguanaEntity extends TropicraftCreatureEntity {
     private int angerLevel;
     private UUID angerTargetUUID;
 
-    private static final UUID ATTACK_SPEED_BOOST_MODIFIER_UUID = UUID.fromString("49455A49-7EC5-45BA-B886-3B90B23A1718");
-    private static final AttributeModifier ATTACK_SPEED_BOOST_MODIFIER = new AttributeModifier(ATTACK_SPEED_BOOST_MODIFIER_UUID, "Attacking speed boost", 0.05D, AttributeModifier.Operation.ADDITION);
+    private static final AttributeModifier ATTACK_SPEED_BOOST_MODIFIER = new AttributeModifier(ResourceLocation.fromNamespaceAndPath(Constants.MODID, "attack_speed_boost"), 0.05D, AttributeModifier.Operation.ADD_VALUE);
 
     public IguanaEntity(EntityType<? extends PathfinderMob> type, Level world) {
         super(type, world);
@@ -102,12 +109,12 @@ public class IguanaEntity extends TropicraftCreatureEntity {
         AttributeInstance attribute = this.getAttribute(Attributes.MOVEMENT_SPEED);
 
         if (this.isAngry()) {
-            if (!this.isBaby() && !attribute.hasModifier(ATTACK_SPEED_BOOST_MODIFIER)) {
+            if (!this.isBaby() && !attribute.hasModifier(ATTACK_SPEED_BOOST_MODIFIER.id())) {
                 attribute.addTransientModifier(ATTACK_SPEED_BOOST_MODIFIER);
             }
 
             --this.angerLevel;
-        } else if (attribute.hasModifier(ATTACK_SPEED_BOOST_MODIFIER)) {
+        } else if (attribute.hasModifier(ATTACK_SPEED_BOOST_MODIFIER.id())) {
             attribute.removeModifier(ATTACK_SPEED_BOOST_MODIFIER);
         }
 

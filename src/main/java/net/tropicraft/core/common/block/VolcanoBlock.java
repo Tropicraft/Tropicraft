@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -13,9 +14,15 @@ import net.tropicraft.core.common.block.tileentity.VolcanoBlockEntity;
 import javax.annotation.Nullable;
 
 public class VolcanoBlock extends BaseEntityBlock {
+    public static final MapCodec<VolcanoBlock> CODEC = simpleCodec(VolcanoBlock::new);
 
     public VolcanoBlock(Block.Properties properties) {
         super(properties);
+    }
+
+    @Override
+    protected MapCodec<VolcanoBlock> codec() {
+        return CODEC;
     }
 
     @Nullable

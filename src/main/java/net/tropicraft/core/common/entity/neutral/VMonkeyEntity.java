@@ -9,10 +9,21 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
+import net.minecraft.world.entity.ai.goal.LeapAtTargetGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
@@ -20,11 +31,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.HitResult;
 import net.tropicraft.core.common.drinks.Drink;
-import net.tropicraft.core.common.entity.ai.vmonkey.*;
+import net.tropicraft.core.common.entity.ai.vmonkey.MonkeyAngryThrowGoal;
+import net.tropicraft.core.common.entity.ai.vmonkey.MonkeyFollowNearestPinaColadaHolderGoal;
+import net.tropicraft.core.common.entity.ai.vmonkey.MonkeyPickUpPinaColadaGoal;
+import net.tropicraft.core.common.entity.ai.vmonkey.MonkeySitAndDrinkGoal;
+import net.tropicraft.core.common.entity.ai.vmonkey.MonkeySitInChairGoal;
+import net.tropicraft.core.common.entity.ai.vmonkey.MonkeyStealDrinkGoal;
 import net.tropicraft.core.common.item.CocktailItem;
-import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nullable;
 
@@ -63,9 +77,9 @@ public class VMonkeyEntity extends TamableAnimal {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        entityData.define(DATA_FLAGS, (byte) 0);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_FLAGS, (byte) 0);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -88,7 +102,7 @@ public class VMonkeyEntity extends TamableAnimal {
         goalSelector.addGoal(4, new MonkeySitInChairGoal(this));
         goalSelector.addGoal(4, new SitWhenOrderedToGoal(this));
         goalSelector.addGoal(6, new MeleeAttackGoal(this, 1.0D, true));
-        goalSelector.addGoal(7, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false));
+        goalSelector.addGoal(7, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F));
         goalSelector.addGoal(8, new RandomStrollGoal(this, 1.0D));
         goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 8.0F));
         goalSelector.addGoal(9, new RandomLookAroundGoal(this));
@@ -171,7 +185,7 @@ public class VMonkeyEntity extends TamableAnimal {
 
             if (!level().isClientSide) {
                 if (random.nextInt(3) == 0) {
-                    setTame(true);
+                    setTame(true, true);
                     navigation.stop();
                     setTarget(null);
                     this.setOrderedToSit(true);
@@ -205,17 +219,6 @@ public class VMonkeyEntity extends TamableAnimal {
         // Only attack players, and only when not tamed
         // NOTE: Maybe we want to attack other players though?
         return !isTame() && target.getType() == EntityType.PLAYER;
-    }
-
-    @Override
-    public boolean doHurtTarget(Entity entity) {
-        boolean damaged = entity.hurt(damageSources().mobAttack(this), (float) getAttribute(Attributes.ATTACK_DAMAGE).getValue());
-
-        if (damaged) {
-            doEnchantDamageEffects(this, entity);
-        }
-
-        return damaged;
     }
 
     @Override

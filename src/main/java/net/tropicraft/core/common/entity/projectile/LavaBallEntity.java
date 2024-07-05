@@ -3,8 +3,7 @@ package net.tropicraft.core.common.entity.projectile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
@@ -12,9 +11,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.network.NetworkHooks;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 public class LavaBallEntity extends Entity {
     public boolean setFire;
@@ -76,7 +74,7 @@ public class LavaBallEntity extends Entity {
     }
 
     @Override
-    protected void defineSynchedData() {
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
     }
 
     @Override
@@ -162,12 +160,6 @@ public class LavaBallEntity extends Entity {
         this.move(MoverType.SELF, motion);
     }
 
-    // TODO: Need this again? 1.14
-    /*@Override
-    protected void entityInit() {
-
-    }*/
-
     @Override
     protected void readAdditionalSaveData(CompoundTag nbt) {
         this.lifeTimer = nbt.getInt("lifeTimer");
@@ -177,10 +169,4 @@ public class LavaBallEntity extends Entity {
     protected void addAdditionalSaveData(CompoundTag nbt) {
         nbt.putInt("lifeTimer", this.lifeTimer);
     }
-
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return NetworkHooks.getEntitySpawningPacket(this);
-    }
-
 }

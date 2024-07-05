@@ -1,8 +1,9 @@
 package net.tropicraft.core.common.item;
 
 import com.google.common.collect.Maps;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.CommonColors;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.tropicraft.Constants;
@@ -20,7 +21,7 @@ public class LoveTropicsShellItem extends ShellItem {
         static {
             for (final String name : ArrayUtils.addAll(Constants.LT17_NAMES, Constants.LT18_NAMES)) {
                 rand.setSeed(name.hashCode());
-                colors.put(name, Color.HSBtoRGB(rand.nextFloat(), (rand.nextFloat() * 0.2f) + 0.7f, 1));
+                colors.put(name, FastColor.ARGB32.opaque(Color.HSBtoRGB(rand.nextFloat(), (rand.nextFloat() * 0.2f) + 0.7f, 1)));
             }
         }
     }
@@ -30,19 +31,19 @@ public class LoveTropicsShellItem extends ShellItem {
     }
 
     public static int getColor(ItemStack itemstack, int pass) {
-        final CompoundTag tag = itemstack.getTag();
-        if (tag != null && !tag.isEmpty() && tag.contains("Name")) {
-            return pass == 0 ? 0xFFFFFFFF : LTUtil.colors.get(tag.getString("Name"));
+        final String name = itemstack.get(TropicraftDataComponents.SHELL_NAME);
+        if (name != null) {
+            return pass == 0 ? CommonColors.WHITE : LTUtil.colors.get(name);
         }
-        return pass == 0 ? 0xFFFFFFFF : LTUtil.colors.get(Constants.LT17_NAMES[0]);
+        return pass == 0 ? CommonColors.WHITE : LTUtil.colors.get(Constants.LT17_NAMES[0]);
     }
 
     @Override
     public Component getName(final ItemStack stack) {
-        if (!stack.hasTag() || !stack.getTag().contains("Name")) {
+        final String name = stack.get(TropicraftDataComponents.SHELL_NAME);
+        if (name == null) {
             return super.getName(stack);
         }
-        final String name = stack.getTag().getString("Name");
         final String type = name.endsWith("s") ? "with_s" : "normal";
         return Component.translatable("item.tropicraft.shell.owned." + type, name);
     }

@@ -187,8 +187,8 @@ public class EntityAIKoaMate extends Goal
         this.mate.setIsWillingToMate(false);
         this.villagerObj.setIsWillingToMate(false);
 
-        //final net.minecraftforge.event.entity.living.BabyEntitySpawnEvent event = new net.minecraftforge.event.entity.living.BabyEntitySpawnEvent(villagerObj, mate, entityvillager);
-        //if (net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(event) || event.getChild() == null) { return; }
+        //final net.neoforged.event.entity.living.BabyEntitySpawnEvent event = new net.neoforged.event.entity.living.BabyEntitySpawnEvent(villagerObj, mate, entityvillager);
+        //if (net.neoforged.common.MinecraftForge.EVENT_BUS.post(event) || event.getChild() == null) { return; }
         //entityvillager = event.getChild();
         entityvillager.setAge(-24000);
         entityvillager.moveTo(villagerObj.getX(), villagerObj.getY(), villagerObj.getZ(), 0.0F, 0.0F);

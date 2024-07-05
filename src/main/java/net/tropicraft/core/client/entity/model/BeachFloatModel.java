@@ -45,10 +45,10 @@ public class BeachFloatModel extends HierarchicalModel<BeachFloatEntity> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(-90));
-        super.renderToBuffer(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        super.renderToBuffer(poseStack, buffer, packedLight, packedOverlay, color);
         poseStack.popPose();
     }
 

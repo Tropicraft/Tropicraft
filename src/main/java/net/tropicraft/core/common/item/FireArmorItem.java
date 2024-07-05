@@ -15,17 +15,36 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.tropicraft.Constants;
 
-public class FireArmorItem extends TropicraftArmorItem {
+@EventBusSubscriber(modid = Constants.MODID)
+public class FireArmorItem extends ArmorItem {
     public FireArmorItem(ArmorItem.Type slotType, Properties properties) {
-        super(ArmorMaterials.FIRE_ARMOR, slotType, properties);
+        super(TropicraftArmorMaterials.FIRE_ARMOR, slotType, properties);
     }
 
-    // TODO waiting on Forge
-    @Override
-    public void onArmorTick(ItemStack stack, Level world, Player player) {
+    @SubscribeEvent
+    public static void onPlayerTick(PlayerTickEvent.Post event) {
+        final Player player = event.getEntity();
+        tickArmor(player, EquipmentSlot.HEAD);
+        tickArmor(player, EquipmentSlot.CHEST);
+        tickArmor(player, EquipmentSlot.LEGS);
+        tickArmor(player, EquipmentSlot.FEET);
+    }
+
+    private static void tickArmor(final Player player, final EquipmentSlot slot) {
+        final ItemStack itemStack = player.getItemBySlot(slot);
+        if (itemStack.getItem() instanceof final FireArmorItem item) {
+            item.onArmorTick(itemStack, player.level(), player, slot);
+        }
+    }
+
+    private void onArmorTick(ItemStack stack, Level world, Player player, EquipmentSlot slot) {
         if (world.isClientSide) {
             clientTick(player);
         } else {
@@ -35,9 +54,7 @@ public class FireArmorItem extends TropicraftArmorItem {
             int factor = (int)(40D / (0.001D + world.getLightLevelDependentMagicValue(player.blockPosition())));
             if (world.getGameTime() % (factor) == 0 && world.canSeeSkyFromBelowWater(new BlockPos(Mth.floor(player.getX()), Mth.floor(player.getY() + 1), Mth.floor(player.getZ())))) {
                 //repair!
-                stack.hurtAndBreak(-1, player, (e) -> {
-                    e.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-                });
+                stack.hurtAndBreak(-1, player, slot);
             }
         }
     }

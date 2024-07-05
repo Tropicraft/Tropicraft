@@ -133,8 +133,8 @@ public class SeaUrchinModel extends ListModel<SeaUrchinEntity> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        super.renderToBuffer(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+	public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
+        super.renderToBuffer(poseStack, buffer, packedLight, packedOverlay, color);
 
 		for (int v = 0; v < VERTICAL_SPINES; v++) {
 			for (int h = 0; h < HORIZONTAL_SPINES; h++) {
@@ -144,7 +144,7 @@ public class SeaUrchinModel extends ListModel<SeaUrchinEntity> {
 				poseStack.mulPose(Axis.XP.rotationDegrees(360 * ((float) h) / HORIZONTAL_SPINES));
 				poseStack.translate(0f, -0.4f, 0f);
 				poseStack.scale(0.33f, 1f, 0.33f);
-				spine.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+				spine.render(poseStack, buffer, packedLight, packedOverlay, color);
 				poseStack.popPose();
 			}
 		}

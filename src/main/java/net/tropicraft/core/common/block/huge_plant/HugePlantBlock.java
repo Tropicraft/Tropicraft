@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.block.huge_plant;
 
+import com.mojang.serialization.MapCodec;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -9,7 +10,11 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.*;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BushBlock;
@@ -31,14 +36,19 @@ import java.util.function.Supplier;
 public final class HugePlantBlock extends BushBlock {
     public static final EnumProperty<Type> TYPE = EnumProperty.create("type", Type.class);
 
-    private Supplier<RegistryEntry<? extends ItemLike>> pickItem;
+    private Supplier<RegistryEntry<? extends ItemLike, ? extends ItemLike>> pickItem;
 
     public HugePlantBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(TYPE, Type.SEED));
     }
 
-    public HugePlantBlock setPickItem(Supplier<RegistryEntry<? extends ItemLike>> item) {
+    @Override
+    protected MapCodec<? extends BushBlock> codec() {
+        throw new UnsupportedOperationException();
+    }
+
+    public HugePlantBlock setPickItem(Supplier<RegistryEntry<? extends ItemLike, ? extends ItemLike>> item) {
         this.pickItem = item;
         return this;
     }
@@ -123,10 +133,10 @@ public final class HugePlantBlock extends BushBlock {
     }
 
     @Override
-    public void playerWillDestroy(Level world, BlockPos pos, BlockState state, Player player) {
+    public BlockState playerWillDestroy(Level world, BlockPos pos, BlockState state, Player player) {
         Shape shape = Shape.match(this, world, pos);
         if (shape == null) {
-            return;
+            return state;
         }
 
         if (!world.isClientSide) {
@@ -150,6 +160,7 @@ public final class HugePlantBlock extends BushBlock {
                 ParticleEffects.breakBlockWithFewerParticles(world, state, plantPos);
             }
         }
+        return state;
     }
 
     @Override
@@ -162,11 +173,11 @@ public final class HugePlantBlock extends BushBlock {
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
         if (this.pickItem != null) {
             return new ItemStack(this.pickItem.get().get());
         }
-        return super.getCloneItemStack(state, target, world, pos, player);
+        return super.getCloneItemStack(state, target, level, pos, player);
     }
 
     @Override

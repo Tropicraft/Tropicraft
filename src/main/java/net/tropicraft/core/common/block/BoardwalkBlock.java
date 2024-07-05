@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
@@ -21,10 +22,12 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 public final class BoardwalkBlock extends Block implements SimpleWaterloggedBlock {
+    public static final MapCodec<BoardwalkBlock> CODEC = simpleCodec(BoardwalkBlock::new);
+
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
     public static final EnumProperty<Type> TYPE = EnumProperty.create("type", Type.class);
 
@@ -36,6 +39,11 @@ public final class BoardwalkBlock extends Block implements SimpleWaterloggedBloc
     public BoardwalkBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(AXIS, Direction.Axis.X).setValue(TYPE, Type.SHORT).setValue(WATERLOGGED, false));
+    }
+
+    @Override
+    protected MapCodec<BoardwalkBlock> codec() {
+        return CODEC;
     }
 
     @Override
@@ -136,7 +144,7 @@ public final class BoardwalkBlock extends Block implements SimpleWaterloggedBloc
     }
 
     @Override
-    public boolean isPathfindable(BlockState state, BlockGetter world, BlockPos pos, PathComputationType type) {
+    public boolean isPathfindable(BlockState state, PathComputationType type) {
         return false;
     }
 

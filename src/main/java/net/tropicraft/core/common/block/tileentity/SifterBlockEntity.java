@@ -1,27 +1,30 @@
 package net.tropicraft.core.common.block.tileentity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.TropicraftTags;
+import net.tropicraft.core.common.item.TropicraftDataComponents;
 import net.tropicraft.core.common.item.TropicraftItems;
-import net.tropicraft.core.common.network.TropicraftPackets;
-import net.tropicraft.core.common.network.message.MessageSifterInventory;
-import net.tropicraft.core.common.network.message.MessageSifterStart;
+import net.tropicraft.core.common.network.message.ClientboundSifterInventoryPacket;
+import net.tropicraft.core.common.network.message.ClientboundSifterStartPacket;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -101,10 +104,8 @@ public class SifterBlockEntity extends BlockEntity {
                 } else {
                     name = Constants.LT18_NAMES[rand.nextInt(Constants.LT18_NAMES.length)];
                 }
-                final CompoundTag nameTag = new CompoundTag();
-                nameTag.putString("Name", name);
                 stack = new ItemStack(TropicraftItems.LOVE_TROPICS_SHELL.get());
-                stack.setTag(nameTag);
+                stack.set(TropicraftDataComponents.SHELL_NAME, name);
             } else {
                 stack = getCommonItem();
             }
@@ -135,27 +136,16 @@ public class SifterBlockEntity extends BlockEntity {
     }
 
     private ItemStack getRareItem() {
-        final int dmg = rand.nextInt(12);
-
-        switch (dmg) {
-            case 1:
-                return new ItemStack(Items.GOLD_NUGGET, 1);
-            case 2:
-                return new ItemStack(Items.BUCKET, 1);
-            case 3:
-                return new ItemStack(Items.WOODEN_SHOVEL, 1);
-            case 4:
-                return new ItemStack(Items.GLASS_BOTTLE, 1);
-            case 5:
-                return new ItemStack(TropicraftItems.WHITE_PEARL.get(), 1);
-            case 6:
-                return new ItemStack(TropicraftItems.BLACK_PEARL.get(), 1);
-            case 7:
-                return new ItemStack(Items.STONE_SHOVEL, 1);
-            case 0:
-            default:
-                return new ItemStack(TropicraftItems.RUBE_NAUTILUS.get());
-        }
+        return switch (rand.nextInt(12)) {
+            case 1 -> new ItemStack(Items.GOLD_NUGGET, 1);
+            case 2 -> new ItemStack(Items.BUCKET, 1);
+            case 3 -> new ItemStack(Items.WOODEN_SHOVEL, 1);
+            case 4 -> new ItemStack(Items.GLASS_BOTTLE, 1);
+            case 5 -> new ItemStack(TropicraftItems.WHITE_PEARL.get(), 1);
+            case 6 -> new ItemStack(TropicraftItems.BLACK_PEARL.get(), 1);
+            case 7 -> new ItemStack(Items.STONE_SHOVEL, 1);
+            default -> new ItemStack(TropicraftItems.RUBE_NAUTILUS.get());
+        };
     }
 
     public void addItemToSifter(ItemStack stack) {
@@ -167,8 +157,8 @@ public class SifterBlockEntity extends BlockEntity {
         isSifting = true;
         currentSiftTime = SIFT_TIME;
 
-        if (!level.isClientSide) {
-            TropicraftPackets.CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(getBlockPos())), new MessageSifterStart(getBlockPos()));
+        if (level instanceof ServerLevel serverLevel) {
+            PacketDistributor.sendToPlayersTrackingChunk(serverLevel, new ChunkPos(getBlockPos()), new ClientboundSifterStartPacket(getBlockPos()));
         }
     }
 
@@ -195,41 +185,36 @@ public class SifterBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void load(CompoundTag nbt) {
-        super.load(nbt);
+    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        super.loadAdditional(nbt, registries);
         isSifting = nbt.getBoolean("isSifting");
         currentSiftTime = nbt.getInt("currentSiftTime");
 
         if (nbt.contains("Item", 10)) {
-            siftItem = ItemStack.of(nbt.getCompound("Item"));
+            siftItem = ItemStack.parse(registries, nbt.getCompound("Item")).orElse(ItemStack.EMPTY);
+        } else {
+            siftItem = ItemStack.EMPTY;
         }
     }
 
     @Override
-    public void saveAdditional(CompoundTag nbt) {
-        super.saveAdditional(nbt);
+    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        super.saveAdditional(nbt, registries);
         nbt.putBoolean("isSifting", isSifting);
         nbt.putInt("currentSiftTime", currentSiftTime);
         if (!siftItem.isEmpty()) {
-            nbt.put("Item", siftItem.save(new CompoundTag()));
+            nbt.put("Item", siftItem.save(registries, new CompoundTag()));
         }
     }
 
-    public CompoundTag getTagCompound(ItemStack stack) {
-        if (!stack.hasTag())
-            stack.setTag(new CompoundTag());
-
-        return stack.getTag();
-    }
-
     @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        load(pkt.getTag());
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider registries) {
+        loadAdditional(pkt.getTag(), registries);
     }
 
     protected void syncInventory() {
-        if (!level.isClientSide()) {
-            TropicraftPackets.CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(getBlockPos())), new MessageSifterInventory(this));
+        if (level instanceof ServerLevel serverLevel) {
+            PacketDistributor.sendToPlayersTrackingChunk(serverLevel, new ChunkPos(getBlockPos()), new ClientboundSifterInventoryPacket(this));
         }
     }
 
@@ -240,12 +225,12 @@ public class SifterBlockEntity extends BlockEntity {
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        return writeItems(new CompoundTag());
+    public CompoundTag getUpdateTag(final HolderLookup.Provider registries) {
+        return writeItems(new CompoundTag(), registries);
     }
 
-    private CompoundTag writeItems(final CompoundTag nbt) {
-        this.saveAdditional(nbt);
+    private CompoundTag writeItems(final CompoundTag nbt, final HolderLookup.Provider registries) {
+        this.saveAdditional(nbt, registries);
         return nbt;
     }
 

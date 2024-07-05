@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.entity.ai;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
@@ -201,8 +202,7 @@ public class EntityAIEatToHeal extends Goal
 
     public boolean hasFoodSource(Container inv) {
         for (int i = 0; i < inv.getContainerSize(); i++) {
-            ItemStack stack = inv.getItem(i);
-            if (!stack.isEmpty() && stack.getItem().isEdible()) {
+            if (inv.getItem(i).has(DataComponents.FOOD)) {
                 return true;
             }
         }
@@ -232,15 +232,11 @@ public class EntityAIEatToHeal extends Goal
         for (int i = 0; i < inv.getContainerSize(); i++) {
             ItemStack stack = inv.getItem(i);
             if (!stack.isEmpty()) {
-                if (stack.getItem().isEdible()) {
-                    stack.shrink(1);
+                if (stack.has(DataComponents.FOOD)) {
+                    ItemStack newStack = stack.split(1);
                     if (stack.getCount() <= 0) {
                         inv.setItem(i, ItemStack.EMPTY);
                     }
-
-                    //returning the state of the single ate item, though this return value doesnt seem to be used anywhere atm
-                    ItemStack newStack = stack.copy();
-                    newStack.setCount(1);
                     return newStack;
                 }
             }

@@ -2,7 +2,7 @@ package net.tropicraft.core.common.dimension.noise;
 
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.SurfaceRuleData;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -21,7 +21,7 @@ import java.util.List;
 public final class TropicraftNoiseGenSettings {
     public static final ResourceKey<NoiseGeneratorSettings> TROPICS = createKey("tropics");
 
-    public static void bootstrap(final BootstapContext<NoiseGeneratorSettings> context) {
+    public static void bootstrap(final BootstrapContext<NoiseGeneratorSettings> context) {
         HolderGetter<DensityFunction> densityFunctions = context.lookup(Registries.DENSITY_FUNCTION);
         HolderGetter<NormalNoise.NoiseParameters> noiseParameters = context.lookup(Registries.NOISE);
         context.register(TROPICS, createNoise(densityFunctions, noiseParameters, true));
@@ -48,6 +48,6 @@ public final class TropicraftNoiseGenSettings {
     }
 
     private static ResourceKey<NoiseGeneratorSettings> createKey(final String name) {
-        return ResourceKey.create(Registries.NOISE_SETTINGS, new ResourceLocation(Constants.MODID, name));
+        return ResourceKey.create(Registries.NOISE_SETTINGS, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
     }
 }

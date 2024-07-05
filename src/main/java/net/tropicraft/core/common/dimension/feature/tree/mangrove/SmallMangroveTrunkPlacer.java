@@ -1,7 +1,7 @@
 package net.tropicraft.core.common.dimension.feature.tree.mangrove;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 public class SmallMangroveTrunkPlacer extends TrunkPlacer {
-    public static final Codec<SmallMangroveTrunkPlacer> CODEC = RecordCodecBuilder.create(instance -> {
+    public static final MapCodec<SmallMangroveTrunkPlacer> CODEC = RecordCodecBuilder.mapCodec(instance -> {
         return trunkPlacerParts(instance)
                 .and(BuiltInRegistries.BLOCK.byNameCodec().fieldOf("roots_block").forGetter(c -> c.rootsBlock))
                 .apply(instance, SmallMangroveTrunkPlacer::new);

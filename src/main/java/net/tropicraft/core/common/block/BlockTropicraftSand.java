@@ -1,22 +1,23 @@
 package net.tropicraft.core.common.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.common.PlantType;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 public class BlockTropicraftSand extends FallingBlock {
+    public static final MapCodec<BlockTropicraftSand> CODEC = simpleCodec(BlockTropicraftSand::new);
+
     public static final BooleanProperty UNDERWATER = BooleanProperty.create("underwater");
 
     private final int dustColor;
@@ -28,34 +29,13 @@ public class BlockTropicraftSand extends FallingBlock {
     }
 
     @Override
+    protected MapCodec<? extends BlockTropicraftSand> codec() {
+        return CODEC;
+    }
+
+    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(UNDERWATER);
-    }
-    
-    @Override
-    public boolean canSustainPlant(BlockState state, BlockGetter world, BlockPos pos, Direction facing, IPlantable plantable) {
-        BlockState plant = plantable.getPlant(world, pos.relative(facing));
-        PlantType type = plantable.getPlantType(world, pos.relative(facing));
-
-        if (plant.getBlock() instanceof SeagrassBlock || plant.getBlock() instanceof TallSeagrassBlock) {
-            return true;
-        }
-
-        // Support beach plant types, taken from forge Block logic
-        if (PlantType.BEACH.equals(type)) {
-            boolean hasWater = false;
-            for (Direction face : Direction.Plane.HORIZONTAL) {
-                BlockState blockState = world.getBlockState(pos.relative(face));
-                net.minecraft.world.level.material.FluidState fluidState = world.getFluidState(pos.relative(face));
-                hasWater |= blockState.is(Blocks.FROSTED_ICE);
-                hasWater |= fluidState.is(net.minecraft.tags.FluidTags.WATER);
-                if (hasWater)
-                    break; //No point continuing.
-            }
-            return hasWater;
-        }
-
-        return PlantType.DESERT.equals(type);
     }
 
     @Override

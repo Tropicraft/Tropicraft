@@ -1,11 +1,9 @@
 package net.tropicraft.core.common.dimension.feature;
 
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.FeatureUtils;
-import net.minecraft.data.worldgen.features.VegetationFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -74,7 +72,7 @@ public final class TropicraftVegetationFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> MANGROVE_REEDS = createKey("mangrove_reeds");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TROPI_SEAGRASS = createKey("tropi_seagrass");
 
-    public static void bootstrap(final BootstapContext<ConfiguredFeature<?, ?>> context) {
+    public static void bootstrap(final BootstrapContext<ConfiguredFeature<?, ?>> context) {
         register(context, RAINFOREST_VINES, TropicraftFeatures.VINES, new RainforestVinesConfig());
 
         register(context, SMALL_GOLDEN_LEATHER_FERN, Feature.RANDOM_PATCH, randomPatch(TropicraftBlocks.GOLDEN_LEATHER_FERN));
@@ -98,7 +96,7 @@ public final class TropicraftVegetationFeatures {
         register(context, PATCH_GRASS_TROPICS, Feature.RANDOM_PATCH, new RandomPatchConfiguration(32, 7, 3, PlacementUtils.filtered(
                 Feature.SIMPLE_BLOCK,
                 new SimpleBlockConfiguration(new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder()
-                        .add(Blocks.GRASS.defaultBlockState(), 3)
+                        .add(Blocks.SHORT_GRASS.defaultBlockState(), 3)
                         .add(Blocks.FERN.defaultBlockState(), 1)
                 )),
                 BlockPredicate.ONLY_IN_AIR_PREDICATE
@@ -134,6 +132,6 @@ public final class TropicraftVegetationFeatures {
     }
 
     private static ResourceKey<ConfiguredFeature<?, ?>> createKey(final String name) {
-        return ResourceKey.create(Registries.CONFIGURED_FEATURE, new ResourceLocation(Constants.MODID, name));
+        return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
     }
 }

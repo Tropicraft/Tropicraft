@@ -1,7 +1,7 @@
 package net.tropicraft.core.common.dimension.feature;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.random.SimpleWeightedRandomList;
@@ -18,21 +18,33 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.RuleBasedBlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
+import net.minecraft.world.level.levelgen.feature.treedecorators.BeehiveDecorator;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
-import net.tropicraft.core.common.block.TropicraftTrees;
-import net.tropicraft.core.common.dimension.feature.tree.*;
-import net.tropicraft.core.common.dimension.feature.tree.mangrove.*;
+import net.tropicraft.core.common.dimension.feature.tree.CitrusFoliagePlacer;
+import net.tropicraft.core.common.dimension.feature.tree.CitrusTrunkPlacer;
+import net.tropicraft.core.common.dimension.feature.tree.PapayaFoliagePlacer;
+import net.tropicraft.core.common.dimension.feature.tree.PapayaTreeDecorator;
+import net.tropicraft.core.common.dimension.feature.tree.PleodendronFoliagePlacer;
+import net.tropicraft.core.common.dimension.feature.tree.PleodendronTrunkPlacer;
+import net.tropicraft.core.common.dimension.feature.tree.mangrove.MangroveFoliagePlacer;
+import net.tropicraft.core.common.dimension.feature.tree.mangrove.MangroveTrunkPlacer;
+import net.tropicraft.core.common.dimension.feature.tree.mangrove.PneumatophoresTreeDecorator;
+import net.tropicraft.core.common.dimension.feature.tree.mangrove.ReplaceInSoilDecorator;
+import net.tropicraft.core.common.dimension.feature.tree.mangrove.SmallMangroveFoliagePlacer;
+import net.tropicraft.core.common.dimension.feature.tree.mangrove.SmallMangroveTrunkPlacer;
 
 import java.util.List;
 import java.util.OptionalInt;
 import java.util.function.Supplier;
 
-import static net.tropicraft.core.common.block.TropicraftTrees.BEEHIVE_002;
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.*;
 
 public final class TropicraftTreeFeatures {
+    private static final BeehiveDecorator BEEHIVE_002 = new BeehiveDecorator(0.02F);
+    private static final BeehiveDecorator BEEHIVE_005 = new BeehiveDecorator(0.05F);
+
     public static final ResourceKey<ConfiguredFeature<?, ?>> GRAPEFRUIT_TREE = createKey("grapefruit_tree");
     public static final ResourceKey<ConfiguredFeature<?, ?>> ORANGE_TREE = createKey("orange_tree");
     public static final ResourceKey<ConfiguredFeature<?, ?>> LEMON_TREE = createKey("lemon_tree");
@@ -47,6 +59,7 @@ public final class TropicraftTreeFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> RAINFOREST_SMALL_TUALUNG = createKey("rainforest_small_tualung");
     public static final ResourceKey<ConfiguredFeature<?, ?>> RAINFOREST_LARGE_TUALUNG = createKey("rainforest_large_tualung");
     public static final ResourceKey<ConfiguredFeature<?, ?>> RAINFOREST_TALL_TREE = createKey("rainforest_tall_tree");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> RAINFOREST_TREE = createKey("rainforest_tree");
 
     public static final ResourceKey<ConfiguredFeature<?, ?>> PLEODENDRON = createKey("pleodendron");
 
@@ -87,7 +100,7 @@ public final class TropicraftTreeFeatures {
 
     private static final TwoLayersFeatureSize MANGROVE_MINIMUM_SIZE = new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4));
 
-    public static void bootstrap(final BootstapContext<ConfiguredFeature<?, ?>> context) {
+    public static void bootstrap(final BootstrapContext<ConfiguredFeature<?, ?>> context) {
         register(context, GRAPEFRUIT_TREE, Feature.TREE, fruitTree(TropicraftBlocks.GRAPEFRUIT_LEAVES));
         register(context, ORANGE_TREE, Feature.TREE, fruitTree(TropicraftBlocks.ORANGE_LEAVES));
         register(context, LEMON_TREE, Feature.TREE, fruitTree(TropicraftBlocks.LEMON_LEAVES));
@@ -102,6 +115,7 @@ public final class TropicraftTreeFeatures {
         register(context, RAINFOREST_SMALL_TUALUNG, TropicraftFeatures.SMALL_TUALUNG);
         register(context, RAINFOREST_LARGE_TUALUNG, TropicraftFeatures.LARGE_TUALUNG);
         register(context, RAINFOREST_TALL_TREE, TropicraftFeatures.TALL_TREE);
+        registerRandom(context, RAINFOREST_TREE, RAINFOREST_UP_TREE, RAINFOREST_SMALL_TUALUNG, LARGE_PALM_TREE, RAINFOREST_TALL_TREE);
 
         register(context, PLEODENDRON, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
                 BlockStateProvider.simple(Blocks.JUNGLE_LOG.defaultBlockState()),
@@ -118,7 +132,7 @@ public final class TropicraftTreeFeatures {
                 new PapayaFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0)),
                 new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
         )
-                .decorators(List.of(TropicraftTrees.BEEHIVE_005, new PapayaTreeDecorator()))
+                .decorators(List.of(BEEHIVE_005, new PapayaTreeDecorator()))
                 .build());
 
         register(context, RED_MANGROVE_SHORT, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
@@ -177,6 +191,6 @@ public final class TropicraftTreeFeatures {
     }
 
     private static ResourceKey<ConfiguredFeature<?, ?>> createKey(final String name) {
-        return ResourceKey.create(Registries.CONFIGURED_FEATURE, new ResourceLocation(Constants.MODID, name));
+        return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
     }
 }

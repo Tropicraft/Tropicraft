@@ -1,22 +1,18 @@
 package net.tropicraft.core.common.drinks;
 
+import net.minecraft.SharedConstants;
+import net.minecraft.core.Holder;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 
-public class DrinkActionPotion extends DrinkAction {
-    private final MobEffect potion;
-    private final int duration;
-    private final int amplifier;
-
-    public DrinkActionPotion(MobEffect potion, int duration, int amplifier) {
-        this.potion = potion;
-        this.duration = duration;
-        this.amplifier = amplifier;
-    }
-
+public record DrinkActionPotion(
+        Holder<MobEffect> potion,
+        int duration,
+        int amplifier
+) implements DrinkAction {
     @Override
     public void onDrink(Player player) {
-        player.addEffect(new MobEffectInstance(potion, duration * 20, amplifier));
+        player.addEffect(new MobEffectInstance(potion, duration * SharedConstants.TICKS_PER_SECOND, amplifier));
     }
 }

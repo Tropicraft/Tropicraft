@@ -1,5 +1,7 @@
 package net.tropicraft.core.common.block;
 
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -7,13 +9,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.grower.AbstractTreeGrower;
+import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -21,23 +24,32 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.tropicraft.core.common.TropicraftTags;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public final class PropaguleBlock extends WaterloggableSaplingBlock {
+    public static final MapCodec<PropaguleBlock> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
+            TreeGrower.CODEC.fieldOf("tree").forGetter(b -> b.treeGrower),
+            propertiesCodec()
+    ).apply(i, PropaguleBlock::new));
+
     private static final VoxelShape SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
 
     private static final int GROW_CHANCE = 7;
 
     public static final BooleanProperty PLANTED = BooleanProperty.create("planted");
 
-    public PropaguleBlock(AbstractTreeGrower tree, Properties properties) {
+    public PropaguleBlock(TreeGrower tree, Properties properties) {
         super(tree, properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(STAGE, 0).setValue(WATERLOGGED, false).setValue(PLANTED, true));
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable BlockGetter world, List<Component> tooltip, TooltipFlag flag) {
+    public MapCodec<PropaguleBlock> codec() {
+        return CODEC;
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable(getDescriptionId() + ".desc").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
     }
 
@@ -78,7 +90,7 @@ public final class PropaguleBlock extends WaterloggableSaplingBlock {
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, boolean isClient) {
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
         return state.getValue(PLANTED);
     }
 

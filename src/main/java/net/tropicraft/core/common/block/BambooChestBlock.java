@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.CompoundContainer;
@@ -15,7 +16,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.DoubleBlockCombiner;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.tropicraft.Constants;
@@ -23,25 +23,10 @@ import net.tropicraft.core.common.block.tileentity.BambooChestBlockEntity;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
-import java.util.function.Supplier;
 
-public class BambooChestBlock extends ChestBlock {
-    private static final DoubleBlockCombiner.Combiner<ChestBlockEntity, Optional<Container>> CHEST_COMBINER = new DoubleBlockCombiner.Combiner<ChestBlockEntity, Optional<Container>>() {
-        @Override
-        public Optional<Container> acceptDouble(ChestBlockEntity p_225539_1_, ChestBlockEntity p_225539_2_) {
-            return Optional.of(new CompoundContainer(p_225539_1_, p_225539_2_));
-        }
+public final class BambooChestBlock extends ChestBlock {
+    public static final MapCodec<BambooChestBlock> CODEC = simpleCodec(BambooChestBlock::new);
 
-        @Override
-        public Optional<Container> acceptSingle(ChestBlockEntity p_225538_1_) {
-            return Optional.of(p_225538_1_);
-        }
-
-        @Override
-        public Optional<Container> acceptNone() {
-            return Optional.empty();
-        }
-    };
     public static final DoubleBlockCombiner.Combiner<ChestBlockEntity, Optional<MenuProvider>> MENU_PROVIDER_COMBINER = new DoubleBlockCombiner.Combiner<ChestBlockEntity, Optional<MenuProvider>>() {
         @Override
         public Optional<MenuProvider> acceptDouble(final ChestBlockEntity left, final ChestBlockEntity right) {
@@ -81,11 +66,13 @@ public class BambooChestBlock extends ChestBlock {
         }
     };
 
+    protected BambooChestBlock(Block.Properties props) {
+        super(props, () -> TropicraftBlocks.BAMBOO_CHEST_ENTITY.get());
+    }
 
-///////////////////////////////////////////////////////////////////////////////////
-
-    protected BambooChestBlock(Block.Properties props, Supplier<BlockEntityType<? extends ChestBlockEntity>> tileEntityTypeIn) {
-        super(props, tileEntityTypeIn);
+    @Override
+    public MapCodec<BambooChestBlock> codec() {
+        return CODEC;
     }
 
     @Override
@@ -99,9 +86,6 @@ public class BambooChestBlock extends ChestBlock {
         return combine(state, worldIn, pos, false).apply(MENU_PROVIDER_COMBINER).orElse(null);
     }
 
-    /**
-     * Get the hardness of this Block relative to the ability of the given player
-     */
     @Override
     @Deprecated
     public float getDestroyProgress(BlockState state, Player player, BlockGetter world, BlockPos pos) {
@@ -111,34 +95,4 @@ public class BambooChestBlock extends ChestBlock {
         }
         return super.getDestroyProgress(state, player, world, pos);
     }
-
-    // private static final MethodHandle _upperChest, _lowerChest;
-    // static {
-    // MethodHandle uc = null, lc = null;
-    // try {
-    // MethodHandles.Lookup lookup = MethodHandles.lookup();
-    // uc = lookup.unreflectGetter(ObfuscationReflectionHelper.findField(DoubleSidedInventory.class, "container2"));
-    // lc = lookup.unreflectGetter(ObfuscationReflectionHelper.findField(DoubleSidedInventory.class, "container1"));
-    // } catch (IllegalAccessException e) {
-    // e.printStackTrace();
-    // }
-    // _upperChest = uc;
-    // _lowerChest = lc;
-    // }
-    //
-    // @Override
-    // @Nullable
-    // public INamedContainerProvider getContainer(BlockState state, World world, BlockPos pos) {
-    // INamedContainerProvider ret = super.getContainer(state, world, pos);
-    // if (_upperChest != null && _lowerChest != null && ret instanceof DoubleSidedInventory) {
-    // DoubleSidedInventory invLC = (DoubleSidedInventory) ret;
-    // try {
-    // // Replace the name of the large inventory with our own, without copying all the code from super :D
-    // return new DoubleSidedInventory((IInventory) _upperChest.invokeExact(invLC), (IInventory) _lowerChest.invokeExact(invLC));
-    // } catch (Throwable e) {
-    // e.printStackTrace();
-    // }
-    // }
-    // return ret;
-    // }
 }

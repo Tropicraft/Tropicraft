@@ -1,8 +1,6 @@
 package net.tropicraft.core.common.entity.placeable;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -14,7 +12,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.NetworkHooks;
 import net.tropicraft.core.common.item.AshenMasks;
 import net.tropicraft.core.common.item.TropicraftItems;
 
@@ -42,8 +39,8 @@ public class AshenMaskEntity extends Entity {
     }
 
     @Override
-    protected void defineSynchedData() {
-        entityData.define(MASK_TYPE, (byte) 0);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(MASK_TYPE, (byte) 0);
     }
 
     @Override
@@ -101,11 +98,6 @@ public class AshenMaskEntity extends Entity {
 
             return true;
         }
-    }
-
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     @Override

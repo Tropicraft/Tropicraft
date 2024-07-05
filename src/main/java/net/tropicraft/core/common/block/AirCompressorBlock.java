@@ -1,16 +1,18 @@
 package net.tropicraft.core.common.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -22,22 +24,24 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.core.common.block.tileentity.AirCompressorBlockEntity;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class AirCompressorBlock extends BaseEntityBlock {
+public final class AirCompressorBlock extends BaseEntityBlock {
+    public static final MapCodec<AirCompressorBlock> CODEC = simpleCodec(AirCompressorBlock::new);
 
-    @Nonnull
     public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
 
     public AirCompressorBlock(Block.Properties properties) {
         super(properties);
         this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH));
+    }
+
+    @Override
+    protected MapCodec<AirCompressorBlock> codec() {
+        return CODEC;
     }
 
     @Nullable
@@ -46,13 +50,9 @@ public class AirCompressorBlock extends BaseEntityBlock {
         return createTickerHelper(type, TropicraftBlocks.AIR_COMPRESSOR_ENTITY.get(), AirCompressorBlockEntity::compressTick);
     }
 
-    /**
-     * allows items to add custom lines of information to the mouseover description
-     */
-    @OnlyIn(Dist.CLIENT)
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable BlockGetter worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, worldIn, tooltip, flagIn);
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, context, tooltip, flagIn);
         tooltip.add(Component.translatable(getDescriptionId() + ".desc").withStyle(ChatFormatting.GRAY));
     }
 
@@ -63,33 +63,44 @@ public class AirCompressorBlock extends BaseEntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-        if (world.isClientSide) {
+    protected InteractionResult useWithoutItem(final BlockState state, final Level level, final BlockPos pos, final Player player, final BlockHitResult hitResult) {
+        if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         }
 
-        ItemStack stack = player.getMainHandItem();
+        if (!(level.getBlockEntity(pos) instanceof AirCompressorBlockEntity compressor)) {
+            return InteractionResult.FAIL;
+        }
 
-        AirCompressorBlockEntity mixer = (AirCompressorBlockEntity)world.getBlockEntity(pos);
-
-        if (mixer.isDoneCompressing()) {
-            mixer.ejectTank();
+        if (compressor.isDoneCompressing()) {
+            compressor.ejectTank();
             return InteractionResult.CONSUME;
         }
 
-        if (stack.isEmpty()) {
-            mixer.ejectTank();
-            return InteractionResult.CONSUME;
+        return InteractionResult.PASS;
+    }
+
+    @Override
+    protected ItemInteractionResult useItemOn(final ItemStack stack, final BlockState state, final Level level, final BlockPos pos, final Player player, final InteractionHand hand, final BlockHitResult hitResult) {
+        if (level.isClientSide) {
+            return ItemInteractionResult.SUCCESS;
         }
 
-        ItemStack ingredientStack = stack.copy();
-        ingredientStack.setCount(1);
+        if (!(level.getBlockEntity(pos) instanceof AirCompressorBlockEntity compressor)) {
+            return ItemInteractionResult.FAIL;
+        }
 
-        if (mixer.addTank(ingredientStack)) {
+        if (compressor.isDoneCompressing()) {
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
+
+        ItemStack ingredientStack = stack.copyWithCount(1);
+
+        if (compressor.addTank(ingredientStack)) {
             player.getInventory().removeItem(player.getInventory().selected, 1);
         }
 
-        return InteractionResult.CONSUME;
+        return ItemInteractionResult.CONSUME;
     }
 
     @Override

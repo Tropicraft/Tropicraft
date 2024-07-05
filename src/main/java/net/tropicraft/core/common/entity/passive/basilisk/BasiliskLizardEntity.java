@@ -26,12 +26,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.Easings;
-import net.tropicraft.core.common.entity.TropicraftEntities;
-import net.tropicraft.core.common.item.TropicraftItems;
 
 public final class BasiliskLizardEntity extends Animal {
     private static final EntityDataAccessor<Boolean> RUNNING = SynchedEntityData.defineId(BasiliskLizardEntity.class, EntityDataSerializers.BOOLEAN);
@@ -49,8 +46,8 @@ public final class BasiliskLizardEntity extends Animal {
 
     public BasiliskLizardEntity(EntityType<? extends BasiliskLizardEntity> type, Level world) {
         super(type, world);
-        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
-        this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
+        this.setPathfindingMalus(PathType.WATER, 0.0F);
+        this.setPathfindingMalus(PathType.WATER_BORDER, 0.0F);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -73,9 +70,9 @@ public final class BasiliskLizardEntity extends Animal {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(RUNNING, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(RUNNING, false);
     }
 
     @Override

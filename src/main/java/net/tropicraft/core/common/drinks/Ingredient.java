@@ -1,6 +1,12 @@
 package net.tropicraft.core.common.drinks;
 
+import com.mojang.serialization.Codec;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -13,10 +19,8 @@ import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.Supplier;
 
 public class Ingredient implements Comparable<Ingredient> {
 
@@ -41,11 +45,14 @@ public class Ingredient implements Comparable<Ingredient> {
     public static final Ingredient milkBucket = new Ingredient(16, Items.MILK_BUCKET.builtInRegistryHolder(), false, 0xffffff, 0.1f).addAction(new DrinkActionFood(2, 0.2f));
     public static final Ingredient cocoaBean = new Ingredient(17, Items.COCOA_BEANS.builtInRegistryHolder(), false, 0x805A3E, 0.95f).addAction(new DrinkActionFood(4, 0.2f));
 
+    public static final Codec<Ingredient> CODEC = ExtraCodecs.idResolverCodec(value -> value.id, id -> ingredientsList[id], -1);
+    public static final StreamCodec<ByteBuf, Ingredient> STREAM_CODEC = ByteBufCodecs.idMapper(id -> ingredientsList[id], value -> value.id);
+
     /**
      * An ItemStack representing the item this ingredient is
      */
     @Nonnull
-    private Supplier<? extends ItemLike> item;
+    private Holder<? extends ItemLike> item;
 
     /**
      * Render color of this Ingredient in a mug
@@ -77,7 +84,7 @@ public class Ingredient implements Comparable<Ingredient> {
         this.item = Items.AIR.builtInRegistryHolder();
     }
 
-    public Ingredient(int id, @Nonnull Supplier<? extends ItemLike> ingredientItem, boolean primary, int color) {
+    public Ingredient(int id, @Nonnull Holder<? extends ItemLike> ingredientItem, boolean primary, int color) {
         if (ingredientsList[id] != null) {
             throw new IllegalArgumentException("Ingredient Id slot " + id + " already occupied by " + ingredientsList[id] + "!");
         }
@@ -89,7 +96,7 @@ public class Ingredient implements Comparable<Ingredient> {
         ingredientsList[id] = this;
     }
 
-    public Ingredient(int id, @Nonnull Supplier<? extends ItemLike> ingredientItem, boolean primary, int color, float alpha) {
+    public Ingredient(int id, @Nonnull Holder<? extends ItemLike> ingredientItem, boolean primary, int color, float alpha) {
         this(id, ingredientItem, primary, color);
         this.alpha = alpha;
     }
@@ -109,7 +116,7 @@ public class Ingredient implements Comparable<Ingredient> {
      * @return ingredient Item
      */
     public Item getIngredientItem() {
-        return this.item.get().asItem();
+        return this.item.value().asItem();
     }
     
     /**
@@ -157,7 +164,7 @@ public class Ingredient implements Comparable<Ingredient> {
         List<Ingredient> is = new ArrayList<>();
         
         if (!stack.isEmpty() && Drink.isDrink(stack.getItem())) {
-            Collections.addAll(is, CocktailItem.getIngredients(stack));
+            is.addAll(CocktailItem.getIngredients(stack));
         } else if (!stack.isEmpty()) {
             is.add(findMatchingIngredient(stack));
         }

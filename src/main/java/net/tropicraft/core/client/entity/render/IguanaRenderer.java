@@ -11,8 +11,8 @@ import net.tropicraft.core.common.entity.neutral.IguanaEntity;
 public class IguanaRenderer extends MobRenderer<IguanaEntity, IguanaModel> {
     private static final String IGOR = "igor";
 
-    private static final ResourceLocation DEFAULT_TEXTURE = new ResourceLocation(Constants.MODID, "textures/entity/iggy.png");
-    private static final ResourceLocation IGOR_TEXTURE = new ResourceLocation(Constants.MODID, "textures/entity/iggy_igor.png");
+    private static final ResourceLocation DEFAULT_TEXTURE = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/iggy.png");
+    private static final ResourceLocation IGOR_TEXTURE = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/iggy_igor.png");
 
     public IguanaRenderer(final EntityRendererProvider.Context context) {
         super(context, new IguanaModel(context.bakeLayer(TropicraftRenderLayers.IGUANA_LAYER)), 0.5F);

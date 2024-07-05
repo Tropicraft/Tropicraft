@@ -14,11 +14,13 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
+import net.minecraft.world.level.saveddata.maps.MapId;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.entity.BambooItemFrame;
@@ -65,8 +67,7 @@ public class BambooItemFrameRenderer extends EntityRenderer<BambooItemFrame> {
                 matrixStackIn.scale(0.0078125F, 0.0078125F, 0.0078125F);
                 matrixStackIn.translate(-64.0D, -64.0D, 0.0D);
                 matrixStackIn.translate(0.0D, 0.0D, -1.0D);
-                Integer id = MapItem.getMapId(itemstack);
-
+                final MapId id = itemstack.get(DataComponents.MAP_ID);
                 if (mapdata != null && id != null) {
                     this.mc.gameRenderer.getMapRenderer().render(matrixStackIn, bufferIn, id, mapdata, true, packedLightIn);
                 }
@@ -91,7 +92,7 @@ public class BambooItemFrameRenderer extends EntityRenderer<BambooItemFrame> {
 
     @Override
     protected boolean shouldShowName(BambooItemFrame entity) {
-        if (Minecraft.renderNames() && !entity.getItem().isEmpty() && entity.getItem().hasCustomHoverName() && entityRenderDispatcher.crosshairPickEntity == entity) {
+        if (Minecraft.renderNames() && !entity.getItem().isEmpty() && entity.getItem().has(DataComponents.CUSTOM_NAME) && entityRenderDispatcher.crosshairPickEntity == entity) {
             double dist = entityRenderDispatcher.distanceToSqr(entity);
             float f = entity.isDiscrete() ? 32.0F : 64.0F;
             return dist < (double)(f * f);
@@ -101,7 +102,7 @@ public class BambooItemFrameRenderer extends EntityRenderer<BambooItemFrame> {
     }
 
     @Override
-    protected void renderNameTag(BambooItemFrame entityIn, Component displayNameIn, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
-        super.renderNameTag(entityIn, entityIn.getItem().getHoverName(), matrixStackIn, bufferIn, packedLightIn);
+    protected void renderNameTag(BambooItemFrame entityIn, Component displayNameIn, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, float partialTicks) {
+        super.renderNameTag(entityIn, entityIn.getItem().getHoverName(), matrixStackIn, bufferIn, packedLightIn, partialTicks);
     }
 }

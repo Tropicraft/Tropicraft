@@ -1,8 +1,6 @@
 package net.tropicraft.core.client.entity.model;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -11,7 +9,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.Entity;
 
-public class FiddlerCrabModel<T extends Entity> extends EntityModel<T> {
+public class FiddlerCrabModel<T extends Entity> extends HierarchicalModel<T> {
     private final ModelPart body_base;
     private final ModelPart eyestalk_right;
     private final ModelPart eyestalk_left;
@@ -238,8 +236,8 @@ public class FiddlerCrabModel<T extends Entity> extends EntityModel<T> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack matrixStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        body_base.render(matrixStack, buffer, packedLight, packedOverlay);
+    public ModelPart root() {
+        return body_base;
     }
 
     private void setRotationAngle(ModelPart modelRenderer, float x, float y, float z) {

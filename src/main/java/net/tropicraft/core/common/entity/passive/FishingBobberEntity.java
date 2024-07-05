@@ -3,9 +3,7 @@ package net.tropicraft.core.common.entity.passive;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -29,15 +27,14 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.entity.IEntityAdditionalSpawnData;
-import net.minecraftforge.network.NetworkHooks;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 
 import javax.annotation.Nullable;
 
-public class FishingBobberEntity extends Entity implements IEntityAdditionalSpawnData {
+public class FishingBobberEntity extends Entity implements IEntityWithComplexSpawn {
    private static final EntityDataAccessor<Integer> DATA_HOOKED_ENTITY = SynchedEntityData.defineId(FishingBobberEntity.class, EntityDataSerializers.INT);
    private boolean inGround;
    private int ticksInGround;
@@ -97,8 +94,8 @@ public class FishingBobberEntity extends Entity implements IEntityAdditionalSpaw
    }
 
    @Override
-   protected void defineSynchedData() {
-      this.getEntityData().define(DATA_HOOKED_ENTITY, 0);
+   protected void defineSynchedData(SynchedEntityData.Builder builder) {
+      builder.define(DATA_HOOKED_ENTITY, 0);
    }
 
    @Override
@@ -128,8 +125,7 @@ public class FishingBobberEntity extends Entity implements IEntityAdditionalSpaw
    }
 
    @Override
-   @OnlyIn(Dist.CLIENT)
-   public void lerpTo(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
+   public void lerpTo(double x, double y, double z, float yaw, float pitch, int posRotationIncrements) {
    }
 
    @Override
@@ -417,22 +413,19 @@ public class FishingBobberEntity extends Entity implements IEntityAdditionalSpaw
       return this.angler;
    }
 
-   /**
-    * Returns false if this Entity is a boss, true otherwise.
-    */
    @Override
-   public boolean canChangeDimensions() {
+   public boolean canChangeDimensions(final Level oldLevel, final Level newLevel) {
       return false;
    }
 
    @Override
-   public void writeSpawnData(FriendlyByteBuf data) {
+   public void writeSpawnData(RegistryFriendlyByteBuf data) {
       Entity entity = this.getAngler();
       data.writeInt(entity == null ? -1 : entity.getId());
    }
 
    @Override
-   public void readSpawnData(FriendlyByteBuf data) {
+   public void readSpawnData(RegistryFriendlyByteBuf data) {
       int anglerID = data.readInt();
       if (anglerID != -1) {
          Entity entity = level().getEntity(anglerID);
@@ -440,11 +433,6 @@ public class FishingBobberEntity extends Entity implements IEntityAdditionalSpaw
             angler = (EntityKoaBase) entity;
          }
       }
-   }
-
-   @Override
-   public Packet<ClientGamePacketListener> getAddEntityPacket() {
-      return NetworkHooks.getEntitySpawningPacket(this);
    }
 
    enum State {

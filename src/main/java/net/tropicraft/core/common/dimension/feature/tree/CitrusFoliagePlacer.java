@@ -1,6 +1,6 @@
 package net.tropicraft.core.common.dimension.feature.tree;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
@@ -10,7 +10,7 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 
 public final class CitrusFoliagePlacer extends FoliagePlacer {
-    public static final Codec<CitrusFoliagePlacer> CODEC = RecordCodecBuilder.create((instance) -> {
+    public static final MapCodec<CitrusFoliagePlacer> CODEC = RecordCodecBuilder.mapCodec((instance) -> {
         return foliagePlacerParts(instance).apply(instance, CitrusFoliagePlacer::new);
     });
 

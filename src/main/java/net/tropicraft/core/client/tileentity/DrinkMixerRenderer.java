@@ -80,14 +80,11 @@ public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerBlockEntity> {
             stack.translate(-0.2f, -0.25f, 0.0f);
             if (te.isDoneMixing()) {
                 int liquidColor = CocktailItem.getCocktailColor(te.result);
-                float red = FastColor.ARGB32.red(liquidColor) / 255.0F;
-                float green = FastColor.ARGB32.green(liquidColor) / 255.0F;
-                float blue = FastColor.ARGB32.blue(liquidColor) / 255.0F;
                 VertexConsumer consumer = buffer.getBuffer(filledMugModel.renderType(TEXTURE));
-                filledMugModel.renderToBuffer(stack, consumer, combinedLightIn, combinedOverlayIn, red, green, blue, 1.0f);
+                filledMugModel.renderToBuffer(stack, consumer, combinedLightIn, combinedOverlayIn, FastColor.ARGB32.opaque(liquidColor));
             } else {
                 VertexConsumer consumer = buffer.getBuffer(emptyMugModel.renderType(TEXTURE));
-                emptyMugModel.renderToBuffer(stack, consumer, combinedLightIn, combinedOverlayIn, 1.0f, 1.0f, 1.0f, 1.0f);
+                emptyMugModel.renderToBuffer(stack, consumer, combinedLightIn, combinedOverlayIn);
             }
             stack.popPose();
         }

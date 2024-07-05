@@ -1,7 +1,5 @@
 package net.tropicraft.core.common.item;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -39,11 +37,7 @@ public class ExplodingCoconutItem extends Item {
         }
         world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (player.getRandom().nextFloat() * 0.4F + 0.8F));
         if (!world.isClientSide) {
-            float explosionRadius = ExplodingCoconutEntity.DEFAULT_EXPLOSION_RADIUS;
-            CompoundTag tag = item.getTag();
-            if (tag != null && tag.contains("explosion_radius", Tag.TAG_FLOAT)) {
-                explosionRadius = tag.getFloat("explosion_radius");
-            }
+            float explosionRadius = item.getOrDefault(TropicraftDataComponents.EXPLOSION_RADIUS, ExplodingCoconutEntity.DEFAULT_EXPLOSION_RADIUS);
             ExplodingCoconutEntity coconut = new ExplodingCoconutEntity(world, player, explosionRadius);
             coconut.setItem(item);
             coconut.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);

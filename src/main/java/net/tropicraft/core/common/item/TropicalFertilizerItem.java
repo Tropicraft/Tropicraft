@@ -33,7 +33,7 @@ public class TropicalFertilizerItem extends BoneMealItem {
             if (!context.getLevel().isClientSide) {
                 // Logic from GrassBlock#grow, with probability for grass significantly reduced
                 BlockPos blockpos = context.getClickedPos().above();
-                BlockState blockstate = Blocks.GRASS.defaultBlockState();
+                BlockState blockstate = Blocks.TALL_GRASS.defaultBlockState();
                 Level level = context.getLevel();
                 RandomSource rand = level.getRandom();
                 Optional<Holder.Reference<PlacedFeature>> grassBonemeal = level.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolder(VegetationPlacements.GRASS_BONEMEAL);

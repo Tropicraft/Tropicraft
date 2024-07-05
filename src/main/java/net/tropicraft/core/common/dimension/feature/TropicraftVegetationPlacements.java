@@ -2,9 +2,8 @@ package net.tropicraft.core.common.dimension.feature;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.AquaticFeatures;
-import net.minecraft.data.worldgen.features.VegetationFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.resources.ResourceKey;
@@ -15,7 +14,16 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
-import net.minecraft.world.level.levelgen.placement.*;
+import net.minecraft.world.level.levelgen.placement.BiomeFilter;
+import net.minecraft.world.level.levelgen.placement.BlockPredicateFilter;
+import net.minecraft.world.level.levelgen.placement.CarvingMaskPlacement;
+import net.minecraft.world.level.levelgen.placement.CountPlacement;
+import net.minecraft.world.level.levelgen.placement.HeightmapPlacement;
+import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
+import net.minecraft.world.level.levelgen.placement.NoiseBasedCountPlacement;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.minecraft.world.level.levelgen.placement.PlacementModifier;
+import net.minecraft.world.level.levelgen.placement.RarityFilter;
 import net.tropicraft.Constants;
 
 import java.util.List;
@@ -96,10 +104,11 @@ public final class TropicraftVegetationPlacements {
                 BiomeFilter.biome());
     }
 
-    public static void bootstrap(final BootstapContext<PlacedFeature> context) {
+    public static void bootstrap(final BootstrapContext<PlacedFeature> context) {
         register(context, RAINFOREST_VINES, TropicraftVegetationFeatures.RAINFOREST_VINES, List.of(
                 CountPlacement.of(50),
-                InSquarePlacement.spread()
+                InSquarePlacement.spread(),
+                BiomeFilter.biome()
         ));
 
         register(context, SMALL_GOLDEN_LEATHER_FERN, TropicraftVegetationFeatures.SMALL_GOLDEN_LEATHER_FERN, List.of(
@@ -217,7 +226,8 @@ public final class TropicraftVegetationPlacements {
 
         register(context, SEAGRASS, TropicraftVegetationFeatures.SEAGRASS, List.of(CountPlacement.of(48),
                 InSquarePlacement.spread(),
-                HeightmapPlacement.onHeightmap(Heightmap.Types.OCEAN_FLOOR_WG)
+                HeightmapPlacement.onHeightmap(Heightmap.Types.OCEAN_FLOOR_WG),
+                BiomeFilter.biome()
         ));
 
         register(context, UNDERGROUND_SEAGRASS_ON_STONE, TropicraftVegetationFeatures.UNDERGROUND_SEAGRASS, seagrassPlacement(() -> Blocks.STONE));
@@ -245,7 +255,7 @@ public final class TropicraftVegetationPlacements {
     }
 
     private static ResourceKey<PlacedFeature> createKey(final String name) {
-        return ResourceKey.create(Registries.PLACED_FEATURE, new ResourceLocation(Constants.MODID, name));
+        return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
     }
 
     public static void addFruitTrees(BiomeGenerationSettings.Builder generation) {

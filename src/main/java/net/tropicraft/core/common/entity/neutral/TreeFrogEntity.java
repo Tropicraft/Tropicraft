@@ -8,7 +8,11 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -18,15 +22,12 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.hostile.TropicraftCreatureEntity;
 import net.tropicraft.core.common.entity.projectile.PoisonBlotEntity;
-import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.sound.Sounds;
 
 import javax.annotation.Nullable;
@@ -111,9 +112,9 @@ public class TreeFrogEntity extends TropicraftCreatureEntity implements Enemy, R
     }
 
     @Override
-    public void defineSynchedData() {
-        super.defineSynchedData();
-        getEntityData().define(TYPE, 0);
+    public void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(TYPE, 0);
     }
 
     @Override
@@ -130,7 +131,7 @@ public class TreeFrogEntity extends TropicraftCreatureEntity implements Enemy, R
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData) {
         final int type = random.nextInt(Type.values().length);
         setFrogType(type);
 
@@ -139,7 +140,7 @@ public class TreeFrogEntity extends TropicraftCreatureEntity implements Enemy, R
             targetSelector.addGoal(1, hostileAI);
         }
 
-        return super.finalizeSpawn(world, difficulty, reason, spawnData, dataTag);
+        return super.finalizeSpawn(world, difficulty, reason, spawnData);
     }
 
     public void setFrogType(int i) {

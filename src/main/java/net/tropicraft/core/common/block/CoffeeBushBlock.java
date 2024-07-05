@@ -1,10 +1,10 @@
 package net.tropicraft.core.common.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -23,7 +23,8 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.tropicraft.core.common.item.TropicraftItems;
 
-public class CoffeeBushBlock extends CropBlock {
+public final class CoffeeBushBlock extends CropBlock {
+    public static final MapCodec<CoffeeBushBlock> CODEC = simpleCodec(CoffeeBushBlock::new);
 
     public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 6);
 
@@ -38,6 +39,11 @@ public class CoffeeBushBlock extends CropBlock {
 
     public CoffeeBushBlock(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    public MapCodec<CoffeeBushBlock> codec() {
+        return CODEC;
     }
 
     @Override
@@ -78,7 +84,7 @@ public class CoffeeBushBlock extends CropBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
+    protected InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult result) {
         if (state.getValue(AGE) == getMaxAge()) {
             world.setBlockAndUpdate(pos, state.setValue(AGE, 0));
             final int count = 1 + player.getRandom().nextInt(3);

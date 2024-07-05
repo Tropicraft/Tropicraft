@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -15,13 +16,20 @@ import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class CoconutBlock extends DirectionalBlock {
+public final class CoconutBlock extends DirectionalBlock {
+    public static final MapCodec<CoconutBlock> CODEC = simpleCodec(CoconutBlock::new);
+
     private static final VoxelShape COCONUT_AABB = Block.box(4, 0.0D, 4, 12, 10, 12);
 
     public CoconutBlock(final Properties properties) {
         super(properties);
     }
-    
+
+    @Override
+    protected MapCodec<CoconutBlock> codec() {
+        return CODEC;
+    }
+
     @Override
     protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
@@ -56,16 +64,16 @@ public class CoconutBlock extends DirectionalBlock {
 
     @Override
     public BlockState rotate(BlockState state, Rotation rot) {
-       return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
+        return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
     }
 
     @Override
     public BlockState mirror(BlockState state, net.minecraft.world.level.block.Mirror mirrorIn) {
-       return state.setValue(FACING, mirrorIn.mirror(state.getValue(FACING)));
+        return state.setValue(FACING, mirrorIn.mirror(state.getValue(FACING)));
     }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-       return this.defaultBlockState().setValue(FACING, context.getClickedFace().getOpposite());
+        return this.defaultBlockState().setValue(FACING, context.getClickedFace().getOpposite());
     }
 }

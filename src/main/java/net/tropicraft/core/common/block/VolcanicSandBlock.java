@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -12,12 +13,18 @@ import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
 public class VolcanicSandBlock extends BlockTropicraftSand {
+	public static final MapCodec<VolcanicSandBlock> CODEC = simpleCodec(VolcanicSandBlock::new);
 
 	public static final BooleanProperty HOT = BooleanProperty.create("hot");
 
 	public VolcanicSandBlock(Block.Properties properties) {
 		super(properties);
 		this.registerDefaultState(defaultBlockState().setValue(HOT, false));
+	}
+
+	@Override
+	protected MapCodec<VolcanicSandBlock> codec() {
+		return CODEC;
 	}
 
 	@Override

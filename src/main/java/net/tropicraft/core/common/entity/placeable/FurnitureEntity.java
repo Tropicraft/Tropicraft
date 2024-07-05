@@ -3,8 +3,6 @@ package net.tropicraft.core.common.entity.placeable;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -22,7 +20,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.NetworkHooks;
 
 import java.util.List;
 import java.util.Map;
@@ -47,7 +44,7 @@ public abstract class FurnitureEntity extends Entity {
     protected double lerpYaw = Double.NaN; // Force first-time sync even if packet is incomplete
     protected double lerpPitch;
     
-    protected FurnitureEntity(EntityType<?> entityTypeIn, Level worldIn, Map<DyeColor, ? extends RegistryEntry<? extends Item>> items) {
+    protected FurnitureEntity(EntityType<?> entityTypeIn, Level worldIn, Map<DyeColor, ? extends RegistryEntry<? extends Item, ? extends Item>> items) {
         this(entityTypeIn, worldIn, c -> items.get(c).get());        
     }
 
@@ -70,17 +67,12 @@ public abstract class FurnitureEntity extends Entity {
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return NetworkHooks.getEntitySpawningPacket(this);
-    }
-
-    @Override
-    protected void defineSynchedData() {
-        this.getEntityData().define(COLOR, 0);
-        this.getEntityData().define(DAMAGE, (float) 0);
-        this.getEntityData().define(FORWARD_DIRECTION, 1);
-        this.getEntityData().define(TIME_SINCE_HIT, 0);
-        this.getEntityData().define(GLUED_DOWN, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(COLOR, 0);
+        builder.define(DAMAGE, (float) 0);
+        builder.define(FORWARD_DIRECTION, 1);
+        builder.define(TIME_SINCE_HIT, 0);
+        builder.define(GLUED_DOWN, false);
     }
 
     @Override
@@ -124,23 +116,19 @@ public abstract class FurnitureEntity extends Entity {
     protected boolean preventMotion() {
         return true;
     }
-    
+
     /* Following two methods mostly copied from EntityBoat interpolation code */
     @Override
-    public void lerpTo(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
-        if (teleport) {
-            super.lerpTo(x, y, z, yaw, pitch, posRotationIncrements, teleport);
-        } else {
-            this.lerpX = x;
-            this.lerpY = y;
-            this.lerpZ = z;
-            // Avoid "jumping" back to the client's rotation due to vanilla's dumb incomplete packets
-            if (yaw != getYRot() || Double.isNaN(lerpYaw)) {
-                this.lerpYaw = Mth.wrapDegrees((double) yaw);
-            }
-            this.lerpSteps = 10;
-            this.setXRot(pitch);
+    public void lerpTo(double x, double y, double z, float yaw, float pitch, int posRotationIncrements) {
+        this.lerpX = x;
+        this.lerpY = y;
+        this.lerpZ = z;
+        // Avoid "jumping" back to the client's rotation due to vanilla's dumb incomplete packets
+        if (yaw != getYRot() || Double.isNaN(lerpYaw)) {
+            this.lerpYaw = Mth.wrapDegrees((double) yaw);
         }
+        this.lerpSteps = 10;
+        this.setXRot(pitch);
     }
 
     private void tickLerp() {
@@ -216,11 +204,6 @@ public abstract class FurnitureEntity extends Entity {
 
     private ItemStack getItemStack() {
         return new ItemStack(itemLookup.apply(getColor()));
-    }
-
-    @Override
-    public double getPassengersRidingOffset() {
-        return 0.0D;
     }
 
     @Override

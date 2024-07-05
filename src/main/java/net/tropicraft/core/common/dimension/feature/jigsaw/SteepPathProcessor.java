@@ -1,6 +1,6 @@
 package net.tropicraft.core.common.dimension.feature.jigsaw;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.LevelReader;
@@ -15,7 +15,7 @@ import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 
 public class SteepPathProcessor extends PathStructureProcessor {
-    public static final Codec<SteepPathProcessor> CODEC = Codec.unit(new SteepPathProcessor());
+    public static final MapCodec<SteepPathProcessor> CODEC = MapCodec.unit(new SteepPathProcessor());
 
     @Override
     public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos seedPos, BlockPos pos2, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo blockInfo, StructurePlaceSettings placementSettingsIn, StructureTemplate template) {

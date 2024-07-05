@@ -1,6 +1,6 @@
 package net.tropicraft.core.common.dimension.feature.volcano;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.valueproviders.IntProvider;
@@ -15,7 +15,7 @@ import net.tropicraft.core.common.dimension.feature.TropicraftStructureTypes;
 import java.util.Optional;
 
 public class VolcanoStructure extends Structure {
-    public static final Codec<VolcanoStructure> CODEC = RecordCodecBuilder.create(i -> i.group(
+    public static final MapCodec<VolcanoStructure> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
             settingsCodec(i),
             HeightProvider.CODEC.fieldOf("height").forGetter(s -> s.height),
             IntProvider.CODEC.fieldOf("radius").forGetter(s -> s.radius)

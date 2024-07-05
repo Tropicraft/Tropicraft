@@ -13,8 +13,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathFinder;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -99,8 +99,8 @@ public final class WaterWalking {
         }
 
         @Override
-        protected boolean hasValidPathType(BlockPathTypes type) {
-            return type == BlockPathTypes.WATER || type == BlockPathTypes.WATER_BORDER || super.hasValidPathType(type);
+        protected boolean hasValidPathType(PathType type) {
+            return type == PathType.WATER || type == PathType.WATER_BORDER || super.hasValidPathType(type);
         }
 
         @Override

@@ -25,16 +25,16 @@ public abstract class AbstractTexturedFishEntity extends AbstractFish {
     abstract String getDefaultTexture();
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        entityData.define(TEXTURE_NAME, getDefaultTexture());
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(TEXTURE_NAME, getDefaultTexture());
     }
 
     @Override
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficultyInstance, MobSpawnType spawnReason, @Nullable SpawnGroupData entityData, @Nullable CompoundTag nbt) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficultyInstance, MobSpawnType spawnReason, @Nullable SpawnGroupData entityData) {
         setTexture(getRandomTexture());
-        return super.finalizeSpawn(world, difficultyInstance, spawnReason, entityData, nbt);
+        return super.finalizeSpawn(world, difficultyInstance, spawnReason, entityData);
     }
 
     @Override

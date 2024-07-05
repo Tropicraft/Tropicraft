@@ -1,10 +1,9 @@
 package net.tropicraft.core.common.dimension.feature.jigsaw;
 
 import com.tterrag.registrate.util.entry.BlockEntry;
-import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
@@ -13,7 +12,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
-import java.util.Arrays;
 import java.util.List;
 
 public final class TropicraftProcessorLists {
@@ -24,8 +22,8 @@ public final class TropicraftProcessorLists {
     public static final ResourceKey<StructureProcessorList> HOME_TREE_BASE = createKey("home_tree/base");
     public static final ResourceKey<StructureProcessorList> HOME_TREE_START = createKey("home_tree/start");
 
-    public static void bootstrap(final BootstapContext<StructureProcessorList> context) {
-        StructureSupportsProcessor fenceExtender = new StructureSupportsProcessor(false, holderSet(TropicraftBlocks.BAMBOO_FENCE));
+    public static void bootstrap(final BootstrapContext<StructureProcessorList> context) {
+        StructureSupportsProcessor fenceExtender = new StructureSupportsProcessor(false, HolderSet.direct((BlockEntry<? extends Block>[]) new BlockEntry[]{TropicraftBlocks.BAMBOO_FENCE}));
 
         context.register(KOA_TOWN_CENTERS, new StructureProcessorList(List.of(
                 fenceExtender,
@@ -49,17 +47,11 @@ public final class TropicraftProcessorLists {
         context.register(HOME_TREE_BASE, new StructureProcessorList(List.of(new AirToCaveAirProcessor())));
         context.register(HOME_TREE_START, new StructureProcessorList(List.of(
                 new AirToCaveAirProcessor(),
-                new StructureSupportsProcessor(true, holderSet(TropicraftBlocks.MAHOGANY_LOG)))
+                new StructureSupportsProcessor(true, HolderSet.direct((BlockEntry<? extends Block>[]) new BlockEntry[]{TropicraftBlocks.MAHOGANY_LOG})))
         ));
     }
 
-    @SuppressWarnings("unchecked")
-    @SafeVarargs
-    private static HolderSet.Direct<Block> holderSet(BlockEntry<? extends Block>... blocks) {
-        return HolderSet.direct(Arrays.stream(blocks).map(object -> object.getHolder().orElseThrow()).toArray(Holder[]::new));
-    }
-
     private static ResourceKey<StructureProcessorList> createKey(final String name) {
-        return ResourceKey.create(Registries.PROCESSOR_LIST, new ResourceLocation(Constants.MODID, name));
+        return ResourceKey.create(Registries.PROCESSOR_LIST, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
     }
 }

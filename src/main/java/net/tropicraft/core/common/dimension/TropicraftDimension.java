@@ -1,15 +1,16 @@
 package net.tropicraft.core.common.dimension;
 
+import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Mth;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
@@ -18,9 +19,9 @@ import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraft.world.level.portal.DimensionTransition;
+import net.minecraft.world.phys.Vec3;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomeBuilder;
 import net.tropicraft.core.common.dimension.noise.TropicraftNoiseGenSettings;
@@ -30,11 +31,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.OptionalLong;
 
-@Mod.EventBusSubscriber(modid = Constants.MODID)
 public class TropicraftDimension {
     private static final Logger LOGGER = LogManager.getLogger(TropicraftDimension.class);
 
-    public static final ResourceLocation ID = new ResourceLocation(Constants.MODID, "tropics");
+    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "tropics");
     public static final ResourceLocation EFFECTS_ID = ID;
 
     public static final ResourceKey<Level> WORLD = ResourceKey.create(Registries.DIMENSION, ID);
@@ -43,7 +43,7 @@ public class TropicraftDimension {
 
     public static final int SEA_LEVEL = 127;
 
-    public static void bootstrapDimensionType(final BootstapContext<DimensionType> context) {
+    public static void bootstrapDimensionType(final BootstrapContext<DimensionType> context) {
         context.register(DIMENSION_TYPE, new DimensionType(
                 OptionalLong.empty(),
                 true,
@@ -63,7 +63,7 @@ public class TropicraftDimension {
         ));
     }
 
-    public static void bootstrapLevelStem(final BootstapContext<LevelStem> context) {
+    public static void bootstrapLevelStem(final BootstrapContext<LevelStem> context) {
         context.register(DIMENSION, new LevelStem(
                 context.lookup(Registries.DIMENSION_TYPE).getOrThrow(DIMENSION_TYPE),
                 new NoiseBasedChunkGenerator(
@@ -85,20 +85,48 @@ public class TropicraftDimension {
      * @param dimensionType The Tropicraft Dimension Type for reference
      */
     public static void teleportPlayer(ServerPlayer player, ResourceKey<Level> dimensionType) {
-        ServerLevel destLevel = getTeleportDestination(player, dimensionType);
-        if (destLevel == null) return;
+        ServerLevel targetLevel = getTeleportDestination(player.serverLevel(), dimensionType);
+        if (targetLevel == null) {
+            return;
+        }
 
-        ResourceKey<Level> destDimension = destLevel.dimension();
-        if (!ForgeHooks.onTravelToDimension(player, destDimension)) return;
+        int x = player.getBlockX();
+        int z = player.getBlockZ();
 
-        int x = Mth.floor(player.getX());
-        int z = Mth.floor(player.getZ());
+        LevelChunk chunk = targetLevel.getChunk(SectionPos.blockToSectionCoord(x), SectionPos.blockToSectionCoord(z));
+        int topY = chunk.getHeight(Heightmap.Types.WORLD_SURFACE, SectionPos.sectionRelative(x), SectionPos.sectionRelative(z));
+        Vec3 pos = new Vec3(x + 0.5, topY + 1.0, z + 0.5);
 
-        LevelChunk chunk = destLevel.getChunk(x >> 4, z >> 4);
-        int topY = chunk.getHeight(Heightmap.Types.WORLD_SURFACE, x & 15, z & 15);
-        player.teleportTo(destLevel, x + 0.5, topY + 1.0, z + 0.5, player.getYRot(), player.getXRot());
+        player.unRide();
+        player.changeDimension(new DimensionTransition(
+                targetLevel,
+                pos,
+                Vec3.ZERO,
+                player.getYRot(),
+                player.getXRot(),
+                DimensionTransition.DO_NOTHING
+        ));
+    }
 
-        ForgeEventFactory.firePlayerChangedDimensionEvent(player, destDimension, destDimension);
+    @Nullable
+    public static DimensionTransition getPortalTransition(final ServerLevel level, final Entity entity, final ResourceKey<Level> targetDimension) {
+        final ServerLevel targetLevel = getTeleportDestination(level, targetDimension);
+        if (targetLevel == null) {
+            return null;
+        }
+        final TropicsPortalLinker linker = new TropicsPortalLinker(targetLevel);
+        final TropicsPortalLinker.PortalInfo portal = linker.findOrCreatePortal(entity);
+        if (portal == null) {
+            return null;
+        }
+        return new DimensionTransition(
+                targetLevel,
+                portal.position(),
+                Vec3.ZERO,
+                portal.yRot(),
+                portal.xRot(),
+                DimensionTransition.PLACE_PORTAL_TICKET.then(DimensionTransition.PLAY_PORTAL_SOUND)
+        );
     }
 
     /**
@@ -111,28 +139,23 @@ public class TropicraftDimension {
      * @param dimensionType The Tropicraft Dimension Type for reference
      */
     public static void teleportPlayerWithPortal(ServerPlayer player, ResourceKey<Level> dimensionType) {
-        ServerLevel destLevel = getTeleportDestination(player, dimensionType);
-        if (destLevel == null) return;
-
-        if (!player.isOnPortalCooldown()) {
-            player.unRide();
-            player.changeDimension(destLevel, new TropicsTeleporter(destLevel));
-
-            //Note: Stops the player from teleporting right after going through the portal
-            player.portalCooldown = 160;
+        player.unRide();
+        final DimensionTransition portalTransition = getPortalTransition(player.serverLevel(), player, dimensionType);
+        if (portalTransition != null) {
+            player.changeDimension(portalTransition);
         }
     }
 
     @Nullable
-    private static ServerLevel getTeleportDestination(ServerPlayer player, ResourceKey<Level> dimensionType) {
+    private static ServerLevel getTeleportDestination(Level sourceLevel, ResourceKey<Level> targetDimension) {
         ResourceKey<Level> destination;
-        if (player.level().dimension() == dimensionType) {
+        if (sourceLevel.dimension() == targetDimension) {
             destination = Level.OVERWORLD;
         } else {
-            destination = dimensionType;
+            destination = targetDimension;
         }
 
-        ServerLevel destLevel = player.server.getLevel(destination);
+        ServerLevel destLevel = sourceLevel.getServer().getLevel(destination);
         if (destLevel == null) {
             LOGGER.error("Cannot teleport player to dimension {} as it does not exist!", destination.location());
             return null;

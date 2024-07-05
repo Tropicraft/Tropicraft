@@ -9,7 +9,7 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
@@ -40,7 +40,7 @@ public class MonkeyAngryThrowGoal extends Goal {
   public void stop() {
     navigation.stop();
     this.madMeter = 0;
-    entity.setPathfindingMalus(BlockPathTypes.WATER, this.oldWaterCost);
+    entity.setPathfindingMalus(PathType.WATER, this.oldWaterCost);
     this.trackedMug = null;
     this.trackedPlayer = null;
   }
@@ -49,8 +49,8 @@ public class MonkeyAngryThrowGoal extends Goal {
   public void start() {
     this.timeToRecalcPath = 0;
     this.madMeter = 100;
-    this.oldWaterCost = entity.getPathfindingMalus(BlockPathTypes.WATER);
-    entity.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+    this.oldWaterCost = entity.getPathfindingMalus(PathType.WATER);
+    entity.setPathfindingMalus(PathType.WATER, 0.0F);
     this.trackedMug = null;
     this.trackedPlayer = null;
   }

@@ -1,19 +1,19 @@
 package net.tropicraft.core.common.entity.egg;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.entity.IEntityAdditionalSpawnData;
+import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.underdasea.StarfishEntity;
 import net.tropicraft.core.common.entity.underdasea.StarfishType;
 import net.tropicraft.core.common.item.TropicraftItems;
 
-public class StarfishEggEntity extends EchinodermEggEntity implements IEntityAdditionalSpawnData {
+public class StarfishEggEntity extends EchinodermEggEntity implements IEntityWithComplexSpawn {
 	private StarfishType starfishType;
 
 	public StarfishEggEntity(final EntityType<? extends StarfishEggEntity> type, Level world) {
@@ -30,12 +30,12 @@ public class StarfishEggEntity extends EchinodermEggEntity implements IEntityAdd
 	}
 
 	@Override
-	public void writeSpawnData(FriendlyByteBuf buffer) {
+	public void writeSpawnData(RegistryFriendlyByteBuf buffer) {
 		buffer.writeByte(starfishType.ordinal());
 	}
 
 	@Override
-	public void readSpawnData(FriendlyByteBuf additionalData) {
+	public void readSpawnData(RegistryFriendlyByteBuf additionalData) {
 		starfishType = StarfishType.values()[additionalData.readByte()];
 	}
 

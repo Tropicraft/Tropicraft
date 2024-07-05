@@ -13,12 +13,14 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.CommonColors;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PlayerHeadItem;
 import net.minecraft.world.level.Level;
 import net.tropicraft.Constants;
 
+import java.util.Locale;
 import java.util.Map;
 
 public class TropicraftRenderUtils {
@@ -38,7 +40,7 @@ public class TropicraftRenderUtils {
     }
 
     public static void renderModel(final Material material, final Model model, PoseStack stack, MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn) {
-        model.renderToBuffer(stack, buffer.getBuffer(model.renderType(material.texture())), combinedLightIn, combinedOverlayIn, 1, 1, 1, 1);
+        model.renderToBuffer(stack, buffer.getBuffer(model.renderType(material.texture())), combinedLightIn, combinedOverlayIn, CommonColors.WHITE);
     }
 
     public static Material getBlockMaterial(final String path) {
@@ -62,27 +64,27 @@ public class TropicraftRenderUtils {
     }
 
     private static ResourceLocation getResLoc(String path) {
-        return new ResourceLocation(Constants.MODID, path);
+        return ResourceLocation.fromNamespaceAndPath(Constants.MODID, path);
     }
 
     public static ResourceLocation getTextureArmor(String path) {
-        return getTexture(String.format("textures/models/armor/%s.png", path));
+        return getTexture(String.format(Locale.ROOT, "textures/models/armor/%s.png", path));
     }
 
     public static ResourceLocation getTextureBlock(String path) {
-        return getTexture(String.format("textures/block/%s.png", path));
+        return getTexture(String.format(Locale.ROOT, "textures/block/%s.png", path));
     }
 
     public static ResourceLocation getTextureEntity(String path) {
-        return getTexture(String.format("textures/entity/%s.png", path));
+        return getTexture(String.format(Locale.ROOT, "textures/entity/%s.png", path));
     }
 
     public static ResourceLocation getTextureGui(String path) {
-        return getTexture(String.format("textures/gui/%s.png", path));
+        return getTexture(String.format(Locale.ROOT, "textures/gui/%s.png", path));
     }
 
     public static ResourceLocation getTextureTE(String path) {
-        return getTexture(String.format("textures/block/te/%s.png", path));
+        return getTexture(String.format(Locale.ROOT, "textures/block/te/%s.png", path));
     }
 
     public static ResourceLocation bindTextureArmor(String path) {
