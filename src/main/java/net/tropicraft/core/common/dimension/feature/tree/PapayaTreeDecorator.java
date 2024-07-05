@@ -23,7 +23,7 @@ public final class PapayaTreeDecorator extends TreeDecorator {
     @Override
     public void place(Context context) {
         ObjectArrayList<BlockPos> logs = context.logs();
-        int y = logs.get(logs.size() - 1).getY();
+        int y = logs.getLast().getY();
 
         for (BlockPos log : logs) {
             if (log.getY() > y - 4) {

@@ -103,7 +103,7 @@ public final class MixerRecipes {
             ingredients.add(ingredient);
 
             for (MixerRecipe recipe : Drinks.getRecipes()) {
-                HashSet recipeIngredientSet = new HashSet<>(Arrays.asList(recipe.getIngredients()));
+                HashSet<Ingredient> recipeIngredientSet = new HashSet<>(Arrays.asList(recipe.getIngredients()));
 
                 if (ingredients.equals(recipeIngredientSet)) {
                     return recipe.getCraftingResult();

@@ -231,17 +231,13 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
         int i = unRotatedPos.getX();
         int j = unRotatedPos.getY();
         int k = unRotatedPos.getZ();
-        switch (dir) {
-            case 2:
-                return pos(originX + i, j, originZ + k);
-            case 0:
-                return pos(originX + k, j, originZ - i);
-            case 3:
-                return pos(originX - i, j, originZ - k);
-            case 1:
-                return pos(originX - k, j, originZ + i);
-        }
-        return BlockPos.ZERO;
+        return switch (dir) {
+            case 2 -> pos(originX + i, j, originZ + k);
+            case 0 -> pos(originX + k, j, originZ - i);
+            case 3 -> pos(originX - i, j, originZ - k);
+            case 1 -> pos(originX - k, j, originZ + i);
+            default -> BlockPos.ZERO;
+        };
     }
 
     private void placeBlockWithDir(LevelWriter world, int x, int y, int z, BlockState state) {
@@ -261,31 +257,23 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
     }
 
     private int getActualXAt(int i, int k) {
-        switch (dir) {
-            case 2:
-                return originX + i;
-            case 0:
-                return originX + k;
-            case 3:
-                return originX - i;
-            case 1:
-                return originX - k;
-        }
-        return originX;
+        return switch (dir) {
+            case 2 -> originX + i;
+            case 0 -> originX + k;
+            case 3 -> originX - i;
+            case 1 -> originX - k;
+            default -> originX;
+        };
     }
 
     private int getActualZAt(int i, int k) {
-        switch (dir) {
-            case 2:
-                return originZ + k;
-            case 0:
-                return originZ - i;
-            case 3:
-                return originZ - k;
-            case 1:
-                return originZ + i;
-        }
-        return originZ;
+        return switch (dir) {
+            case 2 -> originZ + k;
+            case 0 -> originZ - i;
+            case 3 -> originZ - k;
+            case 1 -> originZ + i;
+            default -> originZ;
+        };
     }
 
     public BlockPos pos(int x, int y, int z) {

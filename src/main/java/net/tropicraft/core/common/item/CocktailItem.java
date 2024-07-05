@@ -129,8 +129,7 @@ public class CocktailItem extends Item {
      */
     @Override
     public ItemStack finishUsingItem(@Nonnull ItemStack stack, @Nonnull Level worldIn, @Nonnull LivingEntity entityLiving) {
-        if (entityLiving instanceof Player) {
-            Player player = (Player) entityLiving;
+        if (entityLiving instanceof Player player) {
             onFoodEaten(stack, worldIn, player);
 
             Drink drink = getDrink(stack);

@@ -35,9 +35,9 @@ public class SwimToAvoidEntityGoal extends Goal {
 
         List<Entity> ents = entity.level().getEntities(entity, entity.getBoundingBox().inflate(distanceToAvoid));
         List<Class<? extends Entity>> classes = Arrays.asList(entityClassToAvoid);
-        for (int i = 0; i < ents.size(); i++) {
-            if (classes.contains(ents.get(i).getClass())) {
-                entity.fleeEntity(ents.get(i));
+        for (Entity ent : ents) {
+            if (classes.contains(ent.getClass())) {
+                entity.fleeEntity(ent);
                 break;
             }
         }

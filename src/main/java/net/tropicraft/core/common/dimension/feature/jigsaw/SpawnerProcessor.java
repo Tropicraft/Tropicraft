@@ -50,7 +50,7 @@ public class SpawnerProcessor extends StructureProcessor {
         } else {
             CompoundTag tag = new CompoundTag();
 
-            String typeName = entityTypes.get(0).toString();
+            String typeName = entityTypes.getFirst().toString();
             tag.putString("id", typeName);
 
             blockInfo.nbt().getCompound("SpawnData").putString("id", typeName);

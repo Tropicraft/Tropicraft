@@ -27,8 +27,7 @@ public class PoisonBlotEntity extends ThrowableProjectile {
         if (result.getType() == HitResult.Type.ENTITY) {
             Entity entity = ((EntityHitResult) result).getEntity();
 
-            if (entity instanceof Player) {
-                Player player = (Player) entity;
+            if (entity instanceof Player player) {
                 player.addEffect(new MobEffectInstance(MobEffects.POISON, 12 * 20, 0));
                 remove(RemovalReason.DISCARDED);
             }

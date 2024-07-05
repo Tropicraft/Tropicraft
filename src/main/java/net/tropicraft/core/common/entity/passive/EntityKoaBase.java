@@ -521,7 +521,7 @@ public class EntityKoaBase extends Villager {
 
         goalSelector.addGoal(curPri++, new FloatGoal(this));
 
-        goalSelector.addGoal(curPri++, new EntityAIAvoidEntityOnLowHealth(this, LivingEntity.class, ENEMY_PREDICATE,
+        goalSelector.addGoal(curPri++, new EntityAIAvoidEntityOnLowHealth<>(this, LivingEntity.class, ENEMY_PREDICATE,
                 12.0F, 1.4D, 1.4D, 15F));
 
         goalSelector.addGoal(curPri++, new EntityAIEatToHeal(this));
@@ -587,12 +587,12 @@ public class EntityKoaBase extends Villager {
     }
 
     public void setHunter() {
-        getEntityData().set(ROLE, Integer.valueOf(Roles.HUNTER.ordinal()));
+        getEntityData().set(ROLE, Roles.HUNTER.ordinal());
         setFightingItem();
     }
 
     public void setFisher() {
-        getEntityData().set(ROLE, Integer.valueOf(Roles.FISHERMAN.ordinal()));
+        getEntityData().set(ROLE, Roles.FISHERMAN.ordinal());
         setFishingItem();
     }
 
@@ -1140,13 +1140,7 @@ public class EntityKoaBase extends Villager {
 
         if (!force && (level().getGameTime() + getId()) % (20 * 30) != 0) return;
 
-        Iterator<BlockPos> it = listPosDrums.iterator();
-        while (it.hasNext()) {
-            BlockPos pos = it.next();
-            if (!isInstrument(pos)) {
-                it.remove();
-            }
-        }
+        listPosDrums.removeIf(pos -> !isInstrument(pos));
 
         if (listPosDrums.size() >= MAX_DRUMS) {
             return;
@@ -1158,16 +1152,12 @@ public class EntityKoaBase extends Villager {
             if (listPosDrums.size() >= MAX_DRUMS) {
                 return;
             }
-            Iterator<BlockPos> it2 = ent.listPosDrums.iterator();
-            while (it2.hasNext()) {
-                BlockPos pos = it2.next();
+            for (BlockPos pos : ent.listPosDrums) {
                 //IBlockState state = world.getBlockState(pos);
 
                 boolean match = false;
 
-                Iterator<BlockPos> it3 = listPosDrums.iterator();
-                while (it3.hasNext()) {
-                    BlockPos pos2 = it3.next();
+                for (BlockPos pos2 : listPosDrums) {
                     //IBlockState state2 = world.getBlockState(pos2);
                     if (pos.equals(pos2)) {
                         match = true;
@@ -1196,9 +1186,7 @@ public class EntityKoaBase extends Villager {
 
                         boolean match = false;
 
-                        Iterator<BlockPos> it3 = listPosDrums.iterator();
-                        while (it3.hasNext()) {
-                            BlockPos pos2 = it3.next();
+                        for (BlockPos pos2 : listPosDrums) {
                             //IBlockState state2 = world.getBlockState(pos2);
                             if (pos.equals(pos2)) {
                                 match = true;

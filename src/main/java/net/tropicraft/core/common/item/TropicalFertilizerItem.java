@@ -60,7 +60,7 @@ public class TropicalFertilizerItem extends BoneMealItem {
                                 if (list.isEmpty()) {
                                     break;
                                 }
-                                holder = ((RandomPatchConfiguration) list.get(0).config()).feature();
+                                holder = ((RandomPatchConfiguration) list.getFirst().config()).feature();
                             } else {
                                 if (grassBonemeal.isEmpty()) {
                                     continue;

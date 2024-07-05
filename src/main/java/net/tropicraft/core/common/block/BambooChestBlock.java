@@ -27,7 +27,7 @@ import java.util.Optional;
 public final class BambooChestBlock extends ChestBlock {
     public static final MapCodec<BambooChestBlock> CODEC = simpleCodec(BambooChestBlock::new);
 
-    public static final DoubleBlockCombiner.Combiner<ChestBlockEntity, Optional<MenuProvider>> MENU_PROVIDER_COMBINER = new DoubleBlockCombiner.Combiner<ChestBlockEntity, Optional<MenuProvider>>() {
+    public static final DoubleBlockCombiner.Combiner<ChestBlockEntity, Optional<MenuProvider>> MENU_PROVIDER_COMBINER = new DoubleBlockCombiner.Combiner<>() {
         @Override
         public Optional<MenuProvider> acceptDouble(ChestBlockEntity left, ChestBlockEntity right) {
             Container inventory = new CompoundContainer(left, right);

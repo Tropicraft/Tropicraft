@@ -33,8 +33,7 @@ public class ScubaAmbienceTicker {
         if (mc.level != null && mc.player != null) {
             Camera renderInfo = mc.getEntityRenderDispatcher().camera;
             Entity renderViewEntity = mc.getCameraEntity();
-            if (renderInfo != null && renderViewEntity instanceof Player) {
-                Player player = (Player) renderViewEntity;
+            if (renderInfo != null && renderViewEntity instanceof Player player) {
                 if (renderInfo.getFluidInCamera() == FogType.WATER && player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ScubaArmorItem) {
                     if (ScubaData.getDepth(player) < 60) {
                         play(SHALLOW_SCUBA);
