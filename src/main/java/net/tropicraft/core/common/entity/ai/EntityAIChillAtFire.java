@@ -37,7 +37,7 @@ public class EntityAIChillAtFire extends Goal {
     @Override
     public boolean canUse() {
 
-        if ((entityObj.getWantsToParty() || this.entityObj.druggedTime > 0) && entityObj.listPosDrums.size() > 0) {
+        if ((entityObj.getWantsToParty() || this.entityObj.druggedTime > 0) && !entityObj.listPosDrums.isEmpty()) {
             return false;
         }
 
@@ -60,7 +60,7 @@ public class EntityAIChillAtFire extends Goal {
     @Override
     public boolean canContinueToUse() {
 
-        if ((entityObj.getWantsToParty() || this.entityObj.druggedTime > 0) && entityObj.listPosDrums.size() > 0) {
+        if ((entityObj.getWantsToParty() || this.entityObj.druggedTime > 0) && !entityObj.listPosDrums.isEmpty()) {
             return false;
         }
 

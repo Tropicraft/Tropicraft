@@ -50,7 +50,7 @@ public class EntityAIPartyTime extends Goal {
     @Override
     public boolean canUse() {
 
-        if ((!entityObj.getWantsToParty() && this.entityObj.druggedTime <= 0) || entityObj.listPosDrums.size() == 0) {
+        if ((!entityObj.getWantsToParty() && this.entityObj.druggedTime <= 0) || entityObj.listPosDrums.isEmpty()) {
             return false;
         }
 
@@ -97,7 +97,7 @@ public class EntityAIPartyTime extends Goal {
         }
 
         if (entityObj.level().getGameTime() % 200 == 0) {
-            if (this.entityObj.listPosDrums.size() > 0) {
+            if (!this.entityObj.listPosDrums.isEmpty()) {
                 assignedDrumIndex = entityObj.level().random.nextInt(entityObj.listPosDrums.size());
             }
             //if (wasClose) {
@@ -286,7 +286,7 @@ public class EntityAIPartyTime extends Goal {
         //this.insidePosX = -1;
         //reset any previous path so tick can start with a fresh path
         this.entityObj.getNavigation().stop();
-        if (this.entityObj.listPosDrums.size() > 0) {
+        if (!this.entityObj.listPosDrums.isEmpty()) {
             assignedDrumIndex = entityObj.level().random.nextInt(entityObj.listPosDrums.size());
         }
         //System.out.println("start party mode");

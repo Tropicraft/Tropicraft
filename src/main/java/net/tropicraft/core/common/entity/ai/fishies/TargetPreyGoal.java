@@ -34,7 +34,7 @@ public class TargetPreyGoal extends Goal {
         AABB entityBB = entity.getBoundingBox();
         if (entity.tickCount % 80 == 0 && entity.aggressTarget == null || entity.getCommandSenderWorld().getEntity(entity.aggressTarget.getId()) == null) {
             List<Entity> list = entity.level().getEntities(entity, entityBB.inflate(20D, 20D, 20D).move(0.0D, -8.0D, 0.0D), e -> e.isAlive());
-            if (list.size() > 0) {
+            if (!list.isEmpty()) {
                 Entity ent = list.get(rand.nextInt(list.size()));
                 boolean skip = false;
                 if (ent.equals(entity)) skip = true;
