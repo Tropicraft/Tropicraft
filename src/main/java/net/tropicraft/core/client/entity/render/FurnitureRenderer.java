@@ -42,7 +42,6 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
         setupTransforms(stack);
 
         float rockingAngle = getRockingAngle(furniture, partialTicks);
-        ;
         if (!Mth.equal(rockingAngle, 0.0F)) {
             stack.mulPose(getRockingAxis().rotationDegrees(rockingAngle));
         }
