@@ -116,7 +116,7 @@ public final class TikiTorchBlock extends Block {
     }
 
     @Override
-    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         TorchSection section = state.getValue(SECTION);
 
         if (section == TorchSection.UPPER) return;

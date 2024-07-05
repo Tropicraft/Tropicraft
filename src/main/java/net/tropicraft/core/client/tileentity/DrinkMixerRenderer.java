@@ -26,12 +26,15 @@ import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.block.tileentity.DrinkMixerBlockEntity;
 import net.tropicraft.core.common.item.CocktailItem;
 
+import javax.annotation.Nullable;
+
 public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerBlockEntity> {
     private static final ResourceLocation TEXTURE = TropicraftRenderUtils.getTextureTE("bamboo_mug");
 
     private final BambooMugModel emptyMugModel;
     private final BambooMugModel filledMugModel;
     private final ItemRenderer renderItem;
+    @Nullable
     private ItemEntity dummyEntityItem;
 
     private static final float[][] INGREDIENT_OFFSETS = new float[][]{

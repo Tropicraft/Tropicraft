@@ -128,7 +128,6 @@ public final class DrinkMixerBlock extends BaseEntityBlock {
         return ret.setValue(FACING, context.getPlayer().getDirection());
     }
 
-    @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new DrinkMixerBlockEntity(TropicraftBlocks.DRINK_MIXER_ENTITY.get(), pos, state);

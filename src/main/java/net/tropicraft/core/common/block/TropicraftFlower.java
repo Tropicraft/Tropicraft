@@ -41,17 +41,17 @@ public enum TropicraftFlower implements Supplier<Block> {
     private final Item dye;
 
     @SafeVarargs
-    TropicraftFlower(Holder<MobEffect> effect, int effectDuration, Item dye, TagKey<Block>... tags) {
+    TropicraftFlower(Holder<MobEffect> effect, int effectDuration, @Nullable Item dye, TagKey<Block>... tags) {
         this(effect, effectDuration, 7, dye, tags);
     }
 
     @SafeVarargs
-    TropicraftFlower(Holder<MobEffect> effect, int effectDuration, int w, Item dye, TagKey<Block>... tags) {
+    TropicraftFlower(Holder<MobEffect> effect, int effectDuration, int w, @Nullable Item dye, TagKey<Block>... tags) {
         this(effect, effectDuration, w, 15, dye, tags);
     }
 
     @SafeVarargs
-    TropicraftFlower(Holder<MobEffect> effect, int effectDuration, int w, int h, Item dye, TagKey<Block>... tags) {
+    TropicraftFlower(Holder<MobEffect> effect, int effectDuration, int w, int h, @Nullable Item dye, TagKey<Block>... tags) {
         this(null, effect, effectDuration, w, h, dye, tags);
     }
 

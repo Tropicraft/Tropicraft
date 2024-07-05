@@ -10,8 +10,6 @@ import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.MarlinModel;
 import net.tropicraft.core.common.entity.underdasea.MarlinEntity;
 
-import javax.annotation.Nullable;
-
 @OnlyIn(Dist.CLIENT)
 public class MarlinRenderer extends MobRenderer<MarlinEntity, MarlinModel> {
     public MarlinRenderer(EntityRendererProvider.Context context) {
@@ -19,7 +17,6 @@ public class MarlinRenderer extends MobRenderer<MarlinEntity, MarlinModel> {
         shadowStrength = 0.5f;
     }
 
-    @Nullable
     @Override
     public ResourceLocation getTextureLocation(MarlinEntity marlin) {
         return TropicraftRenderUtils.getTextureEntity(marlin.getTexture());

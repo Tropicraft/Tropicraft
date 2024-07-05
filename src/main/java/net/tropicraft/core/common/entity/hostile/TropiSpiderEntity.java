@@ -23,6 +23,8 @@ import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.ai.EntityAIWanderNotLazy;
 import net.tropicraft.core.common.entity.egg.TropiSpiderEggEntity;
 
+import javax.annotation.Nullable;
+
 public class TropiSpiderEntity extends Spider {
 
     public enum Type {
@@ -37,7 +39,9 @@ public class TropiSpiderEntity extends Spider {
     private static final long SPIDER_MIN_EGG_DELAY = 12000; // Once per half minecraft day minimum
     private static final int SPIDER_EGG_CHANCE = 1000;
 
+    @Nullable
     private BlockPos nestSite;
+    @Nullable
     private TropiSpiderEntity mother = null;
     private long ticksSinceLastEgg = 0L;
     public final byte initialType = 0;

@@ -316,7 +316,7 @@ public class EntityAIPartyTime extends Goal {
             blockposGoal = entityObj.getRestrictCenter();
         }
 
-        if (blockposGoal == null || blockposGoal == BlockPos.ZERO) {
+        if (blockposGoal == BlockPos.ZERO) {
             return false;
         }
 

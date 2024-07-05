@@ -3,11 +3,14 @@ package net.tropicraft.core.client.entity.model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 
+import javax.annotation.Nullable;
+
 public final class ModelAnimator {
     static final float PI = (float) Math.PI;
     static final float DEG_TO_RAD = (float) (Math.PI / 180.0f);
     static final float TAU = 2 * PI;
 
+    @Nullable
     static Cycle cycle;
 
     public static void look(ModelPart part, float yaw, float pitch) {

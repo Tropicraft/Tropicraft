@@ -14,6 +14,7 @@ import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 import net.tropicraft.core.common.entity.passive.FishingBobberEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -35,7 +36,9 @@ public class EntityAIGoneFishin extends Goal {
     private final EntityKoaBase entity;
     private final RandomSource rand;
 
+    @Nullable
     private BlockPos posLastWaterFound;
+    @Nullable
     private BlockPos posLastLandFound;
 
     private final int walkingTimeoutMax = 20 * 30;
@@ -399,10 +402,12 @@ public class EntityAIGoneFishin extends Goal {
         }
     }
 
+    @Nullable
     private BlockPos findWater() {
         return Util.findBlock(entity, 60, Util::isDeepWater);
     }
 
+    @Nullable
     private BlockPos findLand() {
         return Util.findBlock(entity, 60, Util::isLand);
     }

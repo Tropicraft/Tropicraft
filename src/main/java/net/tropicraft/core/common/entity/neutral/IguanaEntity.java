@@ -36,6 +36,7 @@ public class IguanaEntity extends TropicraftCreatureEntity {
      * Timer for how much longer the iggy will be enraged
      */
     private int angerLevel;
+    @Nullable
     private UUID angerTargetUUID;
 
     private static final AttributeModifier ATTACK_SPEED_BOOST_MODIFIER = new AttributeModifier(ResourceLocation.fromNamespaceAndPath(Constants.MODID, "attack_speed_boost"), 0.05, AttributeModifier.Operation.ADD_VALUE);

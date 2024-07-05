@@ -19,6 +19,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
+import javax.annotation.Nullable;
 import java.util.function.BiFunction;
 
 public class SeagrassFeature extends Feature<NoneFeatureConfiguration> {
@@ -132,8 +133,8 @@ public class SeagrassFeature extends Feature<NoneFeatureConfiguration> {
         return true;
     }
 
-    record SeagrassData(Block seagrass, Block matted, Block tall, SeagrassData flowering) {
-        SeagrassData(Block seagrass, Block matted, Block tall) {
+    record SeagrassData(Block seagrass, Block matted, @Nullable Block tall, @Nullable SeagrassData flowering) {
+        SeagrassData(Block seagrass, Block matted, @Nullable Block tall) {
             this(seagrass, matted, tall, null);
         }
     }

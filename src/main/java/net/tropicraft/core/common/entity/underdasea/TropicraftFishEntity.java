@@ -11,12 +11,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
+import javax.annotation.Nullable;
+
 public abstract class TropicraftFishEntity extends WaterAnimal {
 
     public float swimPitch = 0.0f;
     public float swimYaw = 0.0f;
 
+    @Nullable
     public Vec2 targetVectorHeading;
+    @Nullable
     public Vec3 targetVector;
 
     public int outOfWaterTime = 0;
@@ -51,6 +55,7 @@ public abstract class TropicraftFishEntity extends WaterAnimal {
     private float swimSpeedChasing = 2.0f;
     private float swimSpeedCharging = 2.5f;
 
+    @Nullable
     public Entity aggressTarget = null;
 
     private final boolean fishable = false;

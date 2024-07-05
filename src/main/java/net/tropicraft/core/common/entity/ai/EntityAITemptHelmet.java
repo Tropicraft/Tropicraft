@@ -9,6 +9,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 
+import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Set;
 
@@ -41,6 +42,7 @@ public class EntityAITemptHelmet extends Goal {
     /**
      * The player that is tempting the entity that is using this AI.
      */
+    @Nullable
     private Player temptingPlayer;
     /**
      * A counter that is decremented each time the shouldExecute method is called. The shouldExecute method will always

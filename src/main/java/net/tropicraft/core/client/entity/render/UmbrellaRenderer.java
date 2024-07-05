@@ -1,12 +1,11 @@
 package net.tropicraft.core.client.entity.render;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.entity.model.UmbrellaModel;
 import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
-
-import javax.annotation.Nullable;
 
 public class UmbrellaRenderer extends FurnitureRenderer<UmbrellaEntity> {
 
@@ -48,9 +47,8 @@ public class UmbrellaRenderer extends FurnitureRenderer<UmbrellaEntity> {
 //        }
 //    }
 
-    @Nullable
     @Override
     public ResourceLocation getTextureLocation(UmbrellaEntity umbrella) {
-        return null;
+        return TextureAtlas.LOCATION_BLOCKS;
     }
 }

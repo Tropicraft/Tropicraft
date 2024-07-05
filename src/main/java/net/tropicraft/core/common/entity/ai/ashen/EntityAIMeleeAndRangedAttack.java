@@ -10,6 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.tropicraft.core.common.entity.hostile.AshenEntity;
 import net.tropicraft.core.common.item.AshenMaskItem;
 
+import javax.annotation.Nullable;
 import java.util.EnumSet;
 
 public class EntityAIMeleeAndRangedAttack extends Goal {
@@ -21,6 +22,7 @@ public class EntityAIMeleeAndRangedAttack extends Goal {
      * The entity (as a RangedAttackMob) the AI instance has been applied to.
      */
     private final RangedAttackMob rangedAttackEntityHost;
+    @Nullable
     private LivingEntity attackTarget;
     /**
      * A decrementing tick that spawns a ranged attack once this value reaches 0. It is then set back to the

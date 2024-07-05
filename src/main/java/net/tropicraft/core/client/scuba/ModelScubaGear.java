@@ -18,12 +18,18 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 
+import javax.annotation.Nullable;
+
 public class ModelScubaGear extends HumanoidModel<LivingEntity> {
 
+    @Nullable
     public static ModelScubaGear HEAD; //= ModelScubaGear.createModel(TropicraftRenderLayers.HEAD_SCUBA_LAYER, null, EquipmentSlot.CHEST);
+    @Nullable
     public static ModelScubaGear CHEST; //= ModelScubaGear.createModel(TropicraftRenderLayers.CHEST_SCUBA_LAYER, null, EquipmentSlot.CHEST);
+    @Nullable
     public static ModelScubaGear FEET; //= ModelScubaGear.createModel(TropicraftRenderLayers.FEET_SCUBA_LAYER, null, EquipmentSlot.CHEST);
 
+    @Nullable
     public static ModelScubaGear tankModel; //= ModelScubaGear.createModel(TropicraftRenderLayers.TANK_SCUBA_LAYER, null, EquipmentSlot.CHEST); // Can't reuse the main one with a different scale
 
     private boolean showHead;
@@ -916,7 +922,7 @@ public class ModelScubaGear extends HumanoidModel<LivingEntity> {
         return LayerDefinition.create(modelData, 128, 64);
     }
 
-    public static ModelScubaGear createModel(ModelLayerLocation entityModelLayer, EntityModelSet entityModelLoader, EquipmentSlot slot) {
+    public static ModelScubaGear createModel(ModelLayerLocation entityModelLayer, @Nullable EntityModelSet entityModelLoader, EquipmentSlot slot) {
         return new ModelScubaGear(entityModelLoader == null ?
                 create().bakeRoot() :
                 entityModelLoader.bakeLayer(entityModelLayer), slot);

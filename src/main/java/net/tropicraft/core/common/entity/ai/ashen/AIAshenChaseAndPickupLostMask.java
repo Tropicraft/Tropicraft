@@ -6,10 +6,12 @@ import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.entity.hostile.AshenEntity;
 
+import javax.annotation.Nullable;
 import java.util.EnumSet;
 
 public class AIAshenChaseAndPickupLostMask extends Goal {
     public final AshenEntity ashen;
+    @Nullable
     public LivingEntity target;
     public double speed = 1D;
     public final double maskGrabDistance = 3D;

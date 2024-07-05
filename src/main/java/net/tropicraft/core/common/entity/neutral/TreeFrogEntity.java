@@ -53,6 +53,7 @@ public class TreeFrogEntity extends TropicraftCreatureEntity implements Enemy, R
         }
     }
 
+    @Nullable
     private NearestAttackableTargetGoal<Player> hostileAI;
 
     public int jumpDelay = 0;

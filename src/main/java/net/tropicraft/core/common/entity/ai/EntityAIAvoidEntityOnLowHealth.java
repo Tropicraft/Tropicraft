@@ -9,6 +9,7 @@ import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 
+import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.function.Predicate;
@@ -21,11 +22,13 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal {
     protected PathfinderMob theEntity;
     private final double farSpeed;
     private final double nearSpeed;
+    @Nullable
     protected T closestLivingEntity;
     private final float avoidDistance;
     /**
      * The PathEntity of our entity
      */
+    @Nullable
     private Path entityPathEntity;
     /**
      * The PathNavigate of our entity

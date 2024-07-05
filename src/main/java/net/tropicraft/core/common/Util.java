@@ -136,6 +136,7 @@ public class Util {
         return success;
     }
 
+    @Nullable
     public static BlockPos findBlock(Mob entity, int scanRange, BiPredicate<Level, BlockPos> predicate) {
 
         int scanSize = scanRange;

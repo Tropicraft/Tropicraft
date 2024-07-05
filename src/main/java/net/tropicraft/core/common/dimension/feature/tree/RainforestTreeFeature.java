@@ -13,6 +13,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 
 public abstract class RainforestTreeFeature extends Feature<NoneFeatureConfiguration> {
@@ -62,6 +63,7 @@ public abstract class RainforestTreeFeature extends Feature<NoneFeatureConfigura
      * @param state IBlockState to place
      * @return The coords that blocks were placed on
      */
+    @Nullable
     public ArrayList<int[]> placeBlockLine(LevelSimulatedRW world, int[] ai, int[] ai1, BlockState state) {
         ArrayList<int[]> places = new ArrayList<>();
         int[] ai2 = {0, 0, 0};

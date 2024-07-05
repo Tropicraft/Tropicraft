@@ -314,6 +314,7 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
 
     abstract class FlyingGoal extends Goal {
         final float speed;
+        @Nullable
         Vec3 target;
 
         FlyingGoal(float speed) {

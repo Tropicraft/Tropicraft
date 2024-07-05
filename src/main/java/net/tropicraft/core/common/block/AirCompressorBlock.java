@@ -113,7 +113,6 @@ public final class AirCompressorBlock extends BaseEntityBlock {
         super.onRemove(state, world, pos, newState, isMoving);
     }
 
-    @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos p, BlockState s) {
         return new AirCompressorBlockEntity(TropicraftBlocks.AIR_COMPRESSOR_ENTITY.get(), p, s);

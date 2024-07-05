@@ -5,6 +5,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 
+import javax.annotation.Nullable;
+
 public class SeaTurtleEggEntity extends EggEntity {
 
     public SeaTurtleEggEntity(EntityType<? extends SeaTurtleEggEntity> type, Level world) {
@@ -12,6 +14,7 @@ public class SeaTurtleEggEntity extends EggEntity {
     }
 
     @Override
+    @Nullable
     public Entity onHatch() {
         return TropicraftEntities.SEA_TURTLE.get().create(level());
     }

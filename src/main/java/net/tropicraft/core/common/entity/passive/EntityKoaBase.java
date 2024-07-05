@@ -90,7 +90,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -101,6 +100,7 @@ public class EntityKoaBase extends Villager {
     //TODO: consider serializing found water sources to prevent them refinding each time, which old AI did
     public long lastTimeFished = 0;
 
+    @Nullable
     public BlockPos posLastFireplaceFound = null;
     public final List<BlockPos> listPosDrums = new ArrayList<>();
     public static final int MAX_DRUMS = 12;
@@ -119,8 +119,9 @@ public class EntityKoaBase extends Villager {
 
     private int villageID = -1;
 
+    @Nullable
     private ResourceKey<Level> villageDimension;
-
+    @Nullable
     private FishingBobberEntity lure;
 
     private boolean wasInWater = false;
@@ -1067,7 +1068,7 @@ public class EntityKoaBase extends Villager {
         boolean tryFind = false;
         if (posLastFireplaceFound == null) {
             tryFind = true;
-        } else if (posLastFireplaceFound != null) {
+        } else {
             BlockState state = level().getBlockState(posLastFireplaceFound);
             if (state.getBlock() != Blocks.CAMPFIRE) {
                 //System.out.println("removing invalid fire spot");
@@ -1267,7 +1268,7 @@ public class EntityKoaBase extends Villager {
         return itemstack;
     }
 
-    public void setFirelacePos(BlockPos pos) {
+    public void setFirelacePos(@Nullable BlockPos pos) {
         posLastFireplaceFound = pos;
     }
 
@@ -1426,6 +1427,7 @@ public class EntityKoaBase extends Villager {
         villageDimension = villageDimID;
     }
 
+    @Nullable
     public ResourceKey<Level> getVillageDimension() {
         return villageDimension;
     }
@@ -1511,15 +1513,16 @@ public class EntityKoaBase extends Villager {
         }
     }
 
+    @Nullable
     public FishingBobberEntity getLure() {
         return lure;
     }
 
-    public void setLure(FishingBobberEntity lure) {
+    public void setLure(@Nullable FishingBobberEntity lure) {
         this.lure = lure;
         if (!level().isClientSide) {
             if (lure != null) {
-                getEntityData().set(LURE_ID, this.lure.getId());
+                getEntityData().set(LURE_ID, lure.getId());
             } else {
                 getEntityData().set(LURE_ID, -1);
             }

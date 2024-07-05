@@ -4,10 +4,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
 
+import javax.annotation.Nullable;
 import java.util.EnumSet;
 
 public class TropiCreeperSwellGoal extends Goal {
     private final TropiCreeperEntity creeper;
+    @Nullable
     private LivingEntity target;
 
     public TropiCreeperSwellGoal(TropiCreeperEntity creeper) {

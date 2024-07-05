@@ -18,6 +18,7 @@ import net.tropicraft.core.common.item.CocktailItem;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -151,6 +152,7 @@ public class Ingredient implements Comparable<Ingredient> {
         }
     }
 
+    @Nullable
     public static Ingredient findMatchingIngredient(@Nonnull ItemStack stack) {
         if (stack.isEmpty()) return null;
         for (Ingredient ingredient : Ingredient.ingredientsList) {

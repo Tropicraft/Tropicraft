@@ -3,6 +3,7 @@ package net.tropicraft.core.common.entity.underdasea;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -28,7 +29,7 @@ public enum StarfishType implements StringRepresentable {
             "starfish_royal_1"
     });
 
-    StarfishType(String unlocalizedName, String displayName, String[] textures, float[] heights) {
+    StarfishType(String unlocalizedName, String displayName, String[] textures, @Nullable float[] heights) {
         this.unlocalizedName = unlocalizedName;
         this.displayName = displayName;
 

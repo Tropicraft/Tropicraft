@@ -14,6 +14,8 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.HumanoidArm;
 import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
 
+import javax.annotation.Nullable;
+
 public class VMonkeyModel extends HierarchicalModel<VMonkeyEntity> implements ArmedModel {
     private final ModelPart root;
     private final ModelPart body;
@@ -30,6 +32,7 @@ public class VMonkeyModel extends HierarchicalModel<VMonkeyEntity> implements Ar
     private final ModelPart rLegLower;
     private final ModelPart face;
     private final ModelPart head;
+    @Nullable
     protected RandomSource rand;
     public float herps;
 

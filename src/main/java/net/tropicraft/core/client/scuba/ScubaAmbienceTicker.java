@@ -19,12 +19,15 @@ import net.tropicraft.Constants;
 import net.tropicraft.core.common.item.scuba.ScubaArmorItem;
 import net.tropicraft.core.common.item.scuba.ScubaData;
 
+import javax.annotation.Nullable;
+
 @EventBusSubscriber(value = Dist.CLIENT, modid = Constants.MODID, bus = EventBusSubscriber.Bus.GAME)
 public class ScubaAmbienceTicker {
 
     public static final SoundEvent SHALLOW_SCUBA = SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(Constants.MODID, "scuba.shallow"));
     public static final SoundEvent DEEP_SCUBA = SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(Constants.MODID, "scuba.deep"));
 
+    @Nullable
     private static SoundEvent currentSound;
 
     @SubscribeEvent
@@ -33,8 +36,8 @@ public class ScubaAmbienceTicker {
         if (mc.level != null && mc.player != null) {
             Camera renderInfo = mc.getEntityRenderDispatcher().camera;
             Entity renderViewEntity = mc.getCameraEntity();
-            if (renderInfo != null && renderViewEntity instanceof Player player) {
-                if (renderInfo.getFluidInCamera() == FogType.WATER && player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ScubaArmorItem) {
+            if (renderViewEntity instanceof Player player) {
+                if (renderInfo != null && renderInfo.getFluidInCamera() == FogType.WATER && player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ScubaArmorItem) {
                     if (ScubaData.getDepth(player) < 60) {
                         play(SHALLOW_SCUBA);
                         return;

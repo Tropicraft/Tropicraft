@@ -36,6 +36,7 @@ import java.util.function.Supplier;
 public final class HugePlantBlock extends BushBlock {
     public static final EnumProperty<Type> TYPE = EnumProperty.create("type", Type.class);
 
+    @Nullable
     private Supplier<RegistryEntry<? extends ItemLike, ? extends ItemLike>> pickItem;
 
     public HugePlantBlock(Properties properties) {
@@ -71,7 +72,7 @@ public final class HugePlantBlock extends BushBlock {
     }
 
     @Override
-    public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+    public void setPlacedBy(Level world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         Shape shape = Shape.fromSeed(this, pos);
         for (BlockPos plantPos : shape) {
             if (!plantPos.equals(pos)) {

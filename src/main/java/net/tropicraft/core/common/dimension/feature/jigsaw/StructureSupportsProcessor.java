@@ -19,6 +19,8 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 
+import javax.annotation.Nullable;
+
 public class StructureSupportsProcessor extends CheatyStructureProcessor {
     public static final MapCodec<StructureSupportsProcessor> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
             Codec.BOOL.optionalFieldOf("can_replace_land", false).forGetter(p -> p.canReplaceLand),
@@ -34,7 +36,7 @@ public class StructureSupportsProcessor extends CheatyStructureProcessor {
     }
 
     @Override
-    public StructureBlockInfo process(LevelReader world, BlockPos seedPos, BlockPos pos2, StructureBlockInfo originalInfo, StructureBlockInfo blockInfo, StructurePlaceSettings placement, StructureTemplate template) {
+    public StructureBlockInfo process(LevelReader world, BlockPos seedPos, BlockPos pos2, StructureBlockInfo originalInfo, StructureBlockInfo blockInfo, StructurePlaceSettings placement, @Nullable StructureTemplate template) {
         BlockPos pos = blockInfo.pos();
         if (originalInfo.pos().getY() <= 1 && blockInfo.state().is(blocksToExtend)) {
             if (!canReplaceLand && !canPassThrough(world, pos)) {

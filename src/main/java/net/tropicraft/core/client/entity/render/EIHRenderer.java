@@ -9,8 +9,6 @@ import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.entity.model.EIHModel;
 import net.tropicraft.core.common.entity.neutral.EIHEntity;
 
-import javax.annotation.Nullable;
-
 public class EIHRenderer extends MobRenderer<EIHEntity, EIHModel> {
 
     private static final ResourceLocation TEXTURE_SLEEP = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/eih/headtext.png");
@@ -26,7 +24,6 @@ public class EIHRenderer extends MobRenderer<EIHEntity, EIHModel> {
         stack.scale(2.0f, 1.75f, 2.0f);
     }
 
-    @Nullable
     @Override
     public ResourceLocation getTextureLocation(EIHEntity eih) {
         if (eih.isAware()) {
