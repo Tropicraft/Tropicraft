@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:glass_panes"
+            "items": "#c:glass_panes"
           }
         ]
       },
@@ -20,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_glass_pane",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_glass_pane"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:sifter_with_glass_pane"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

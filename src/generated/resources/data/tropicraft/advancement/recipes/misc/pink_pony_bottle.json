@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:pink_stained_glass_pane"
-            ]
+            "items": "minecraft:pink_stained_glass_pane"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_pink_stained_glass_pane",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_pink_stained_glass_pane"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:pink_pony_bottle"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

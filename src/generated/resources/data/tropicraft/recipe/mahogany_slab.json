@@ -12,7 +12,6 @@
   ],
   "result": {
     "count": 6,
-    "item": "tropicraft:mahogany_slab"
-  },
-  "show_notification": true
+    "id": "tropicraft:mahogany_slab"
+  }
 }

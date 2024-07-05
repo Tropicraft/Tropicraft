@@ -6,5 +6,8 @@
   "ingredient": {
     "item": "tropicraft:purified_sand"
   },
-  "result": "minecraft:glass"
+  "result": {
+    "count": 1,
+    "id": "minecraft:glass"
+  }
 }

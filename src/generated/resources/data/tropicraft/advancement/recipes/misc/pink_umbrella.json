@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:pink_wool"
-            ]
+            "items": "minecraft:pink_wool"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_pink_wool",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_pink_wool"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:pink_umbrella"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

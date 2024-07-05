@@ -13,7 +13,6 @@
   ],
   "result": {
     "count": 2,
-    "item": "tropicraft:mangrove_door"
-  },
-  "show_notification": true
+    "id": "tropicraft:mangrove_door"
+  }
 }

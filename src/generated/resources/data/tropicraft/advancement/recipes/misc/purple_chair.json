@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:purple_wool"
-            ]
+            "items": "minecraft:purple_wool"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_purple_wool",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_purple_wool"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:purple_chair"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

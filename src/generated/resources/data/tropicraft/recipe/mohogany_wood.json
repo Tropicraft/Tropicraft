@@ -13,7 +13,6 @@
   ],
   "result": {
     "count": 3,
-    "item": "tropicraft:mohogany_wood"
-  },
-  "show_notification": true
+    "id": "tropicraft:mohogany_wood"
+  }
 }

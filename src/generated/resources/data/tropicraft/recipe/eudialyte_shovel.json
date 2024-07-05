@@ -15,7 +15,7 @@
     "B"
   ],
   "result": {
-    "item": "tropicraft:eudialyte_shovel"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "tropicraft:eudialyte_shovel"
+  }
 }

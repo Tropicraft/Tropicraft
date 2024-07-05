@@ -12,7 +12,7 @@
     "X X"
   ],
   "result": {
-    "item": "tropicraft:scale_leggings"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "tropicraft:scale_leggings"
+  }
 }

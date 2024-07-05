@@ -16,7 +16,7 @@
     "BWB"
   ],
   "result": {
-    "item": "tropicraft:yellow_chair"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "tropicraft:yellow_chair"
+  }
 }

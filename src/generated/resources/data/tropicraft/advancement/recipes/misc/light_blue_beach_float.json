@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:light_blue_wool"
-            ]
+            "items": "minecraft:light_blue_wool"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_light_blue_wool",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_light_blue_wool"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:light_blue_beach_float"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

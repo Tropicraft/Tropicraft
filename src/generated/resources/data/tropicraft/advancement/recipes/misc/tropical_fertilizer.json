@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:magic_mushroom"
-            ]
+            "items": "tropicraft:magic_mushroom"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_magic_mushroom",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_magic_mushroom"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:tropical_fertilizer"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

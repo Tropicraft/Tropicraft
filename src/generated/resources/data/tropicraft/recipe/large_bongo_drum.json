@@ -16,7 +16,7 @@
     "BBB"
   ],
   "result": {
-    "item": "tropicraft:large_bongo_drum"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "tropicraft:large_bongo_drum"
+  }
 }

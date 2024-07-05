@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:ores/zircon"
+            "items": "#forge:ores/zircon"
           }
         ]
       },
@@ -20,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_ores_zircon",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_ores_zircon"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:zircon_gem_from_ores_zircon_smelting"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -15,7 +15,7 @@
     "XXX"
   ],
   "result": {
-    "item": "tropicraft:drink_mixer"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "tropicraft:drink_mixer"
+  }
 }

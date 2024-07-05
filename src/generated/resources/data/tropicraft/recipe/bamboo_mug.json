@@ -12,7 +12,7 @@
     "XXX"
   ],
   "result": {
-    "item": "tropicraft:bamboo_mug"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "tropicraft:bamboo_mug"
+  }
 }

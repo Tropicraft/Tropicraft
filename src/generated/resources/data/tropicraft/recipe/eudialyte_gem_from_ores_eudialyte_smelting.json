@@ -6,5 +6,8 @@
   "ingredient": {
     "tag": "forge:ores/eudialyte"
   },
-  "result": "tropicraft:eudialyte_gem"
+  "result": {
+    "count": 1,
+    "id": "tropicraft:eudialyte_gem"
+  }
 }

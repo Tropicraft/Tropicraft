@@ -6,5 +6,8 @@
   "ingredient": {
     "item": "tropicraft:frog_leg"
   },
-  "result": "tropicraft:cooked_frog_leg"
+  "result": {
+    "count": 1,
+    "id": "tropicraft:cooked_frog_leg"
+  }
 }

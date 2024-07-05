@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:coffee_berry"
-            ]
+            "items": "tropicraft:coffee_berry"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_coffee_bean",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_coffee_bean"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:raw_coffee_bean"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

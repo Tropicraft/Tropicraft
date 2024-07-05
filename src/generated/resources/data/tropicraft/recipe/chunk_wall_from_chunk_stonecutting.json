@@ -1,8 +1,10 @@
 {
   "type": "minecraft:stonecutting",
-  "count": 1,
   "ingredient": {
     "item": "tropicraft:chunk"
   },
-  "result": "tropicraft:chunk_wall"
+  "result": {
+    "count": 1,
+    "id": "tropicraft:chunk_wall"
+  }
 }

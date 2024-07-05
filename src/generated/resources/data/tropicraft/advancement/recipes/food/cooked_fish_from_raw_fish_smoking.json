@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:raw_fish"
-            ]
+            "items": "tropicraft:raw_fish"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_raw_fish",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_raw_fish"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:cooked_fish_from_raw_fish_smoking"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

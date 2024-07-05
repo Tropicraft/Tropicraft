@@ -12,7 +12,7 @@
     "XXX"
   ],
   "result": {
-    "item": "tropicraft:zirconium_block"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "tropicraft:zirconium_block"
+  }
 }

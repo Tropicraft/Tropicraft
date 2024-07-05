@@ -15,7 +15,7 @@
     "Y  "
   ],
   "result": {
-    "item": "tropicraft:water_wand"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "tropicraft:water_wand"
+  }
 }

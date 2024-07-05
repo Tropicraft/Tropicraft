@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:mahogany_slab"
-            ]
+            "items": "tropicraft:mahogany_slab"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_mahogany_slab",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_mahogany_slab"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:mahogany_boardwalk"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

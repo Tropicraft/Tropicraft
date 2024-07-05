@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:green_wool"
-            ]
+            "items": "minecraft:green_wool"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_green_wool",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_green_wool"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:green_chair"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

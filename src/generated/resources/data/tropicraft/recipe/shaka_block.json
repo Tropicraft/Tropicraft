@@ -12,7 +12,7 @@
     "XXX"
   ],
   "result": {
-    "item": "tropicraft:shaka_block"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "tropicraft:shaka_block"
+  }
 }

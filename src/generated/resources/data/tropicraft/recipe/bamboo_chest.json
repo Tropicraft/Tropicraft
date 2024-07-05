@@ -12,7 +12,7 @@
     "BBB"
   ],
   "result": {
-    "item": "tropicraft:bamboo_chest"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "tropicraft:bamboo_chest"
+  }
 }

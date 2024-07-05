@@ -6,5 +6,8 @@
   "ingredient": {
     "item": "tropicraft:raw_fish"
   },
-  "result": "tropicraft:cooked_fish"
+  "result": {
+    "count": 1,
+    "id": "tropicraft:cooked_fish"
+  }
 }

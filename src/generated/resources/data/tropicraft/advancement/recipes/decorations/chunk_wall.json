@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:chunk"
-            ]
+            "items": "tropicraft:chunk"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_chunk",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_chunk"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:chunk_wall"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

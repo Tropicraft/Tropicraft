@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:fresh_marlin"
-            ]
+            "items": "tropicraft:fresh_marlin"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_fresh_marlin",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_fresh_marlin"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:seared_marlin_from_fresh_marlin_campfire"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

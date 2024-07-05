@@ -11,7 +11,7 @@
     "XX"
   ],
   "result": {
-    "item": "tropicraft:packed_purified_sand"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "tropicraft:packed_purified_sand"
+  }
 }

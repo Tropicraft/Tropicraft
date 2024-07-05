@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:yellow_stained_glass_pane"
-            ]
+            "items": "minecraft:yellow_stained_glass_pane"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_yellow_stained_glass_pane",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_yellow_stained_glass_pane"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:yellow_pony_bottle"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

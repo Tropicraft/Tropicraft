@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:purified_sand"
-            ]
+            "items": "tropicraft:purified_sand"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_purified_sand",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_purified_sand"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:glass_from_purified_sand_smelting"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -6,10 +6,8 @@
   },
   "radius": {
     "type": "minecraft:uniform",
-    "value": {
-      "max_inclusive": 64,
-      "min_inclusive": 45
-    }
+    "max_inclusive": 64,
+    "min_inclusive": 45
   },
   "spawn_overrides": {},
   "step": "surface_structures"

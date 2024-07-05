@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:mahogany_planks"
-            ]
+            "items": "tropicraft:mahogany_planks"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_mahogany",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_mahogany"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:mahogany_sign"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

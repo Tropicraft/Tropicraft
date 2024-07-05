@@ -6,5 +6,8 @@
   "ingredient": {
     "item": "minecraft:seagrass"
   },
-  "result": "tropicraft:toasted_nori"
+  "result": {
+    "count": 1,
+    "id": "tropicraft:toasted_nori"
+  }
 }

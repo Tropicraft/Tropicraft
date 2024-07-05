@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:light_gray_wool"
-            ]
+            "items": "minecraft:light_gray_wool"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_light_gray_wool",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_light_gray_wool"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:light_gray_umbrella"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

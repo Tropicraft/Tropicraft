@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:ores/shaka"
+            "items": "#forge:ores/shaka"
           }
         ]
       },
@@ -20,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_ores_shaka",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_ores_shaka"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:shaka_ingot_from_ores_shaka_blasting"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -6,7 +6,7 @@
       "conditions": [
         {
           "condition": "minecraft:entity_properties",
-          "entity": "killer",
+          "entity": "attacker",
           "predicate": {
             "type": "#minecraft:skeletons"
           }

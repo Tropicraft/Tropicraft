@@ -13,7 +13,6 @@
   ],
   "result": {
     "count": 2,
-    "item": "tropicraft:thatch_trapdoor"
-  },
-  "show_notification": true
+    "id": "tropicraft:thatch_trapdoor"
+  }
 }

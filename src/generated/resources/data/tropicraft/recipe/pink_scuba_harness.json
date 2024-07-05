@@ -6,7 +6,7 @@
       "item": "minecraft:pink_dye"
     },
     "Y": {
-      "tag": "forge:leather"
+      "tag": "c:leathers"
     },
     "Z": {
       "item": "tropicraft:azurite_gem"
@@ -18,7 +18,7 @@
     "YZY"
   ],
   "result": {
-    "item": "tropicraft:pink_scuba_harness"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "tropicraft:pink_scuba_harness"
+  }
 }

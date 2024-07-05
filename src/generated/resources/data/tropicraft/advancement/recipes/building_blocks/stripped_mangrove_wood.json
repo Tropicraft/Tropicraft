@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:acacia_log"
-            ]
+            "items": "minecraft:acacia_log"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_log",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_log"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:stripped_mangrove_wood"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

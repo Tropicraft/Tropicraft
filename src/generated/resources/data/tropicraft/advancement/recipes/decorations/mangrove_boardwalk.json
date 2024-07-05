@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:mangrove_slab"
-            ]
+            "items": "tropicraft:mangrove_slab"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_mangrove_slab",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_mangrove_slab"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:mangrove_boardwalk"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

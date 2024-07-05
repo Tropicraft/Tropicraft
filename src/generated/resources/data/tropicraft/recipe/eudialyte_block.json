@@ -12,7 +12,7 @@
     "XXX"
   ],
   "result": {
-    "item": "tropicraft:eudialyte_block"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "tropicraft:eudialyte_block"
+  }
 }

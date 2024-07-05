@@ -6,5 +6,8 @@
   "ingredient": {
     "item": "tropicraft:fresh_marlin"
   },
-  "result": "tropicraft:seared_marlin"
+  "result": {
+    "count": 1,
+    "id": "tropicraft:seared_marlin"
+  }
 }

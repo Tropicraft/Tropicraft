@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:bamboo_stick"
-            ]
+            "items": "tropicraft:bamboo_stick"
           }
         ]
       },
@@ -23,9 +21,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:zircon_gem"
-            ]
+            "items": "tropicraft:zircon_gem"
           }
         ]
       },
@@ -34,15 +30,14 @@
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_zircon_gem",
-      "has_bamboo_stick",
-      "has_the_recipe"
+      "has_bamboo_stick"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:blow_gun"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

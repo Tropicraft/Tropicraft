@@ -12,7 +12,7 @@
     "XXX"
   ],
   "result": {
-    "item": "tropicraft:manganese_block"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "tropicraft:manganese_block"
+  }
 }

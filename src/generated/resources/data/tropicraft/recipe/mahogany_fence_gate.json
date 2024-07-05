@@ -4,7 +4,7 @@
   "group": "wooden_fence_gate",
   "key": {
     "#": {
-      "tag": "forge:rods/wooden"
+      "tag": "c:rods/wooden"
     },
     "W": {
       "item": "tropicraft:mahogany_planks"
@@ -15,7 +15,7 @@
     "#W#"
   ],
   "result": {
-    "item": "tropicraft:mahogany_fence_gate"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "tropicraft:mahogany_fence_gate"
+  }
 }

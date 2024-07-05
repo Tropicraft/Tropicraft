@@ -22,7 +22,7 @@
                 {
                   "condition": "minecraft:match_tool",
                   "predicate": {
-                    "tag": "minecraft:swords"
+                    "items": "#minecraft:swords"
                   }
                 }
               ],

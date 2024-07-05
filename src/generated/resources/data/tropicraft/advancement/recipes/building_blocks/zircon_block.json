@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:zircon_gem"
-            ]
+            "items": "tropicraft:zircon_gem"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_zircon_gem",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_zircon_gem"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:zircon_block"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

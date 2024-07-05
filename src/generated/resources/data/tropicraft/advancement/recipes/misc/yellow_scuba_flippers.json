@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:yellow_dye"
-            ]
+            "items": "minecraft:yellow_dye"
           }
         ]
       },
@@ -23,9 +21,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:zircon_gem"
-            ]
+            "items": "tropicraft:zircon_gem"
           }
         ]
       },
@@ -34,15 +30,14 @@
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_yellow_dye",
-      "has_zircon_gem",
-      "has_the_recipe"
+      "has_zircon_gem"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:yellow_scuba_flippers"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

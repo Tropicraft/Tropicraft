@@ -15,7 +15,7 @@
     "XXX"
   ],
   "result": {
-    "item": "tropicraft:bamboo_item_frame"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "tropicraft:bamboo_item_frame"
+  }
 }

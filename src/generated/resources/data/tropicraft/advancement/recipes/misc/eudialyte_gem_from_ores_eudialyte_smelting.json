@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:ores/eudialyte"
+            "items": "#forge:ores/eudialyte"
           }
         ]
       },
@@ -20,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_ores_eudialyte",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_ores_eudialyte"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:eudialyte_gem_from_ores_eudialyte_smelting"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

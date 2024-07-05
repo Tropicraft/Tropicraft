@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tropicraft:bamboo_stick"
-            ]
+            "items": "tropicraft:bamboo_stick"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_bamboo_stick",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_bamboo_stick"
     ]
   ],
   "rewards": {
     "recipes": [
       "tropicraft:bamboo_spear"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }
