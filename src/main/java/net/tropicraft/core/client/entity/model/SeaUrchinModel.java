@@ -56,73 +56,73 @@ public class SeaUrchinModel extends ListModel<SeaUrchinEntity> {
 
         root.addOrReplaceChild("base",
                 CubeListBuilder.create().mirror()
-                        .texOffs(0, 0).addBox(-3F, 16F, -3F, 6, 6, 6),
-                PartPose.offset(0F, 0F, 0F));
+                        .texOffs(0, 0).addBox(-3.0f, 16.0f, -3.0f, 6, 6, 6),
+                PartPose.offset(0.0f, 0.0f, 0.0f));
 
         root.addOrReplaceChild("top1",
                 CubeListBuilder.create().mirror()
-                        .texOffs(0, 38).addBox(-2F, 15F, -2F, 4, 1, 4),
-                PartPose.offset(0F, 0F, 0F));
+                        .texOffs(0, 38).addBox(-2.0f, 15.0f, -2.0f, 4, 1, 4),
+                PartPose.offset(0.0f, 0.0f, 0.0f));
 
         root.addOrReplaceChild("top2",
                 CubeListBuilder.create().mirror()
-                        .texOffs(16, 38).addBox(-1F, 14F, -1F, 2, 1, 2),
-                PartPose.offset(0F, 0F, 0F));
+                        .texOffs(16, 38).addBox(-1.0f, 14.0f, -1.0f, 2, 1, 2),
+                PartPose.offset(0.0f, 0.0f, 0.0f));
 
         root.addOrReplaceChild("front1",
                 CubeListBuilder.create().mirror()
-                        .texOffs(0, 12).addBox(-2F, 17F, -4F, 4, 4, 1),
-                PartPose.offset(0F, 0F, 0F));
+                        .texOffs(0, 12).addBox(-2.0f, 17.0f, -4.0f, 4, 4, 1),
+                PartPose.offset(0.0f, 0.0f, 0.0f));
 
         root.addOrReplaceChild("front2",
                 CubeListBuilder.create().mirror()
-                        .texOffs(10, 12).addBox(-1F, 18F, -5F, 2, 2, 1),
-                PartPose.offset(0F, 0F, 0F));
+                        .texOffs(10, 12).addBox(-1.0f, 18.0f, -5.0f, 2, 2, 1),
+                PartPose.offset(0.0f, 0.0f, 0.0f));
 
         root.addOrReplaceChild("left1",
                 CubeListBuilder.create().mirror()
-                        .texOffs(0, 17).addBox(3F, 17F, -2F, 1, 4, 4),
-                PartPose.offset(0F, 0F, 0F));
+                        .texOffs(0, 17).addBox(3.0f, 17.0f, -2.0f, 1, 4, 4),
+                PartPose.offset(0.0f, 0.0f, 0.0f));
 
         root.addOrReplaceChild("left2",
                 CubeListBuilder.create().mirror()
-                        .texOffs(10, 17).addBox(4F, 18F, -1F, 1, 2, 2),
-                PartPose.offset(0F, 0F, 0F));
+                        .texOffs(10, 17).addBox(4.0f, 18.0f, -1.0f, 1, 2, 2),
+                PartPose.offset(0.0f, 0.0f, 0.0f));
 
         root.addOrReplaceChild("back1",
                 CubeListBuilder.create().mirror()
-                        .texOffs(0, 25).addBox(-2F, 17F, 3F, 4, 4, 1),
-                PartPose.offset(0F, 0F, 0F));
+                        .texOffs(0, 25).addBox(-2.0f, 17.0f, 3.0f, 4, 4, 1),
+                PartPose.offset(0.0f, 0.0f, 0.0f));
 
         root.addOrReplaceChild("back2",
                 CubeListBuilder.create().mirror()
-                        .texOffs(10, 25).addBox(-1F, 18F, 4F, 2, 2, 1),
-                PartPose.offset(0F, 0F, 0F));
+                        .texOffs(10, 25).addBox(-1.0f, 18.0f, 4.0f, 2, 2, 1),
+                PartPose.offset(0.0f, 0.0f, 0.0f));
 
         root.addOrReplaceChild("right1",
                 CubeListBuilder.create().mirror()
-                        .texOffs(0, 30).addBox(-4F, 17F, -2F, 1, 4, 4),
-                PartPose.offset(0F, 0F, 0F));
+                        .texOffs(0, 30).addBox(-4.0f, 17.0f, -2.0f, 1, 4, 4),
+                PartPose.offset(0.0f, 0.0f, 0.0f));
 
         root.addOrReplaceChild("right2",
                 CubeListBuilder.create().mirror()
-                        .texOffs(10, 30).addBox(-5F, 18F, -1F, 1, 2, 2),
-                PartPose.offset(0F, 0F, 0F));
+                        .texOffs(10, 30).addBox(-5.0f, 18.0f, -1.0f, 1, 2, 2),
+                PartPose.offset(0.0f, 0.0f, 0.0f));
 
         root.addOrReplaceChild("bottom1",
                 CubeListBuilder.create().mirror()
-                        .texOffs(0, 38).addBox(-2F, 22F, -2F, 4, 1, 4),
-                PartPose.offset(0F, 0F, 0F));
+                        .texOffs(0, 38).addBox(-2.0f, 22.0f, -2.0f, 4, 1, 4),
+                PartPose.offset(0.0f, 0.0f, 0.0f));
 
         root.addOrReplaceChild("bottom2",
                 CubeListBuilder.create().mirror()
-                        .texOffs(16, 38).addBox(-1F, 23F, -1F, 2, 1, 2),
-                PartPose.offset(0F, 0F, 0F));
+                        .texOffs(16, 38).addBox(-1.0f, 23.0f, -1.0f, 2, 1, 2),
+                PartPose.offset(0.0f, 0.0f, 0.0f));
 
         root.addOrReplaceChild("spine",
                 CubeListBuilder.create().mirror()
-                        .texOffs(24, 0).addBox(-0.5F, -9F, -0.5F, 1, 6, 1),
-                PartPose.offset(0F, 19F, 0F));
+                        .texOffs(24, 0).addBox(-0.5f, -9.0f, -0.5f, 1, 6, 1),
+                PartPose.offset(0.0f, 19.0f, 0.0f));
 
         return LayerDefinition.create(mesh, 64, 64);
     }
@@ -139,11 +139,11 @@ public class SeaUrchinModel extends ListModel<SeaUrchinEntity> {
         for (int v = 0; v < VERTICAL_SPINES; v++) {
             for (int h = 0; h < HORIZONTAL_SPINES; h++) {
                 poseStack.pushPose();
-                poseStack.translate(0f, 1.25f, 0f);
+                poseStack.translate(0.0f, 1.25f, 0.0f);
                 poseStack.mulPose(Axis.ZP.rotationDegrees(360 * ((float) v) / VERTICAL_SPINES));
                 poseStack.mulPose(Axis.XP.rotationDegrees(360 * ((float) h) / HORIZONTAL_SPINES));
-                poseStack.translate(0f, -0.4f, 0f);
-                poseStack.scale(0.33f, 1f, 0.33f);
+                poseStack.translate(0.0f, -0.4f, 0.0f);
+                poseStack.scale(0.33f, 1.0f, 0.33f);
                 spine.render(poseStack, buffer, packedLight, packedOverlay, color);
                 poseStack.popPose();
             }

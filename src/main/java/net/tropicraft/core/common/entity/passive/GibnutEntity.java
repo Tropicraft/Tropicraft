@@ -47,7 +47,7 @@ public class GibnutEntity extends Animal {
         goalSelector.addGoal(3, new TemptGoal(this, 1.25, BREEDING_ITEMS.get(), false));
         goalSelector.addGoal(4, new FollowParentGoal(this, 1.25));
         goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0));
-        goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0f));
         goalSelector.addGoal(7, new RandomLookAroundGoal(this));
     }
 

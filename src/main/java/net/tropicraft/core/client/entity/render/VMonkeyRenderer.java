@@ -14,7 +14,7 @@ public class VMonkeyRenderer extends MobRenderer<VMonkeyEntity, VMonkeyModel> {
     private static final ResourceLocation ANGRY_TEXTURE = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/monkey_angrytext.png");
 
     public VMonkeyRenderer(EntityRendererProvider.Context context) {
-        super(context, new VMonkeyModel(context.bakeLayer(TropicraftRenderLayers.V_MONKEY_LAYER)), 0.5F);
+        super(context, new VMonkeyModel(context.bakeLayer(TropicraftRenderLayers.V_MONKEY_LAYER)), 0.5f);
         shadowRadius = 0.3f;
         shadowStrength = 0.5f;
         addLayer(new VMonkeyHeldItemLayer<>(this, context.getItemRenderer(), context.getItemInHandRenderer()));

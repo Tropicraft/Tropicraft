@@ -46,13 +46,13 @@ public class SpearItem extends TridentItem {
                     stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(entity.getUsedItemHand()));
 
                     SpearEntity spear = new SpearEntity(level, player, stack);
-                    spear.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.5F, 1.0F);
+                    spear.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0f, 2.5f, 1.0f);
                     if (player.getAbilities().instabuild) {
                         spear.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
                     }
 
                     level.addFreshEntity(spear);
-                    level.playSound(null, spear, SoundEvents.TRIDENT_THROW.value(), SoundSource.PLAYERS, 1.0F, 1.0F);
+                    level.playSound(null, spear, SoundEvents.TRIDENT_THROW.value(), SoundSource.PLAYERS, 1.0f, 1.0f);
                     if (!player.getAbilities().instabuild) {
                         player.getInventory().removeItem(stack);
                     }

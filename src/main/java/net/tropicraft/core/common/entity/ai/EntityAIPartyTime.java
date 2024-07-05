@@ -199,9 +199,9 @@ public class EntityAIPartyTime extends Goal {
                         /*if (state.getBlock() instanceof BlockBongoDrum) {
                             //((BlockBongoDrum) state.getOwner()).playBongoSound(entityObj.world, null, blockposGoal, state);
                             TropicraftBongos bongo = ((BlockBongoDrum) state.getOwner()).getVariant(state);
-                            float pitch = (entityObj.level.random.nextFloat() * 1F) + 0F;
-                            entityObj.world.playSound(null, blockposGoal.getX(), blockposGoal.getY() + 0.5D, blockposGoal.getZ(),
-                                    bongo.getSoundEvent(), SoundCategory.BLOCKS, 2.5F, pitch);
+                            float pitch = (entityObj.level.random.nextFloat() * 1.0f) + 0.0f;
+                            entityObj.world.playSound(null, blockposGoal.getX(), blockposGoal.getY() + 0.5, blockposGoal.getZ(),
+                                    bongo.getSoundEvent(), SoundCategory.BLOCKS, 2.5f, pitch);
                             entityObj.swingArm(Hand.MAIN_HAND);
                         } else */
                         if (state.getBlock() instanceof NoteBlock) {
@@ -224,7 +224,7 @@ public class EntityAIPartyTime extends Goal {
                 }
 
                 entityObj.getLookControl().setLookAt(blockposGoal.getX() + randXPos, blockposGoal.getY() + randYPos + 1D, blockposGoal.getZ() + randZPos,
-                        8F, 8F);
+                        8.0f, 8.0f);
             }
         } else {
             wasClose = false;
@@ -242,16 +242,16 @@ public class EntityAIPartyTime extends Goal {
                 boolean success = false;
 
                 if (entityObj.distanceToSqr(Vec3.atCenterOf(blockposGoal)) > 256.0) {
-                    Vec3 Vector3d = DefaultRandomPos.getPosTowards(entityObj, 14, 3, new Vec3((double) i + 0.5D, (double) j, (double) k + 0.5D), (float) Math.PI / 2F);
+                    Vec3 Vector3d = DefaultRandomPos.getPosTowards(entityObj, 14, 3, new Vec3((double) i + 0.5, (double) j, (double) k + 0.5), (float) Math.PI / 2.0f);
 
                     if (Vector3d != null) {
-                        success = entityObj.getNavigation().moveTo(Vector3d.x, Vector3d.y, Vector3d.z, 1.0D);
+                        success = entityObj.getNavigation().moveTo(Vector3d.x, Vector3d.y, Vector3d.z, 1.0);
                     } else {
                         success = Util.tryMoveToXYZLongDist(entityObj, new BlockPos(i, j, k), 1);
                         //System.out.println("success? " + success);
                     }
                 } else {
-                    success = entityObj.getNavigation().moveTo((double) i + 0.5D, j, (double) k + 0.5D, 1.0D);
+                    success = entityObj.getNavigation().moveTo((double) i + 0.5, j, (double) k + 0.5, 1.0);
                 }
 
                 if (!success) {

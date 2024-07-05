@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
 
 public class StarfishEntity extends EchinodermEntity implements IEntityWithComplexSpawn {
     public static final float BABY_WIDTH = 0.25f;
-    public static final float ADULT_WIDTH = 1f;
+    public static final float ADULT_WIDTH = 1.0f;
     public static final float BABY_HEIGHT = 0.1f;
     public static final float ADULT_HEIGHT = 0.2f;
     public static final float BABY_YOFFSET = 0.03125f;

@@ -39,7 +39,7 @@ public final class HugePlantBlockHighlight {
 
         Vec3 view = event.getCamera().getPosition();
         AABB aabb = shape.asAabb().move(-view.x, -view.y, -view.z);
-        LevelRenderer.renderLineBox(event.getPoseStack(), builder, aabb, 0.0F, 0.0F, 0.0F, 0.4F);
+        LevelRenderer.renderLineBox(event.getPoseStack(), builder, aabb, 0.0f, 0.0f, 0.0f, 0.4f);
 
         event.setCanceled(true);
     }

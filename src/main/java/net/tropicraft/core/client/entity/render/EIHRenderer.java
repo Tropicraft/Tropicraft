@@ -18,12 +18,12 @@ public class EIHRenderer extends MobRenderer<EIHEntity, EIHModel> {
     private static final ResourceLocation TEXTURE_ANGRY = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/eih/headangrytext.png");
 
     public EIHRenderer(EntityRendererProvider.Context context) {
-        super(context, new EIHModel(context.bakeLayer(TropicraftRenderLayers.EIH_LAYER)), 1.2F);
+        super(context, new EIHModel(context.bakeLayer(TropicraftRenderLayers.EIH_LAYER)), 1.2f);
     }
 
     @Override
     protected void scale(EIHEntity eih, PoseStack stack, float partialTickTime) {
-        stack.scale(2.0F, 1.75F, 2.0F);
+        stack.scale(2.0f, 1.75f, 2.0f);
     }
 
     @Nullable

@@ -69,7 +69,7 @@ public class LavaBallEntity extends Entity {
         float z = (float) getZ();
 
         if (level().isClientSide) {
-            level().addParticle(ParticleTypes.LAVA, x, y, z, getDeltaMovement().x, -1.5F, getDeltaMovement().z);
+            level().addParticle(ParticleTypes.LAVA, x, y, z, getDeltaMovement().x, -1.5f, getDeltaMovement().z);
         }
     }
 
@@ -93,18 +93,18 @@ public class LavaBallEntity extends Entity {
         double motionZ = getDeltaMovement().z;
 
         if (size < 1) {
-            size += .025;
+            size += 0.025;
         }
 
         if (onGround()) {
-            motionZ *= .95;
-            motionX *= .95;
+            motionZ *= 0.95;
+            motionX *= 0.95;
         }
 
-        motionY *= .99;
+        motionY *= 0.99;
 
         if (!onGround()) {
-            motionY -= .05F;
+            motionY -= 0.05f;
             if (level().isClientSide) {
                 for (int i = 0; i < 5 + random.nextInt(3); i++) {
                     supahDrip();

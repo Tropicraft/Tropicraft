@@ -15,7 +15,7 @@ public class BasiliskLizardRenderer extends MobRenderer<BasiliskLizardEntity, Ba
     private final ResourceLocation texture;
 
     public BasiliskLizardRenderer(EntityRendererProvider.Context context, ResourceLocation texture) {
-        super(context, new BasiliskLizardModel<>(context.bakeLayer(TropicraftRenderLayers.BASILISK_LIZARD_LAYER)), 0.3F);
+        super(context, new BasiliskLizardModel<>(context.bakeLayer(TropicraftRenderLayers.BASILISK_LIZARD_LAYER)), 0.3f);
         this.texture = texture;
     }
 

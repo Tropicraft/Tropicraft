@@ -27,7 +27,7 @@ public class AshenRenderer extends MobRenderer<AshenEntity, AshenModel> {
 
     @Override
     public void render(AshenEntity entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-        if (entity.getTarget() != null && entity.distanceTo(entity.getTarget()) < 5.0F && !entity.swinging) {
+        if (entity.getTarget() != null && entity.distanceTo(entity.getTarget()) < 5.0f && !entity.swinging) {
             model.swinging = true;
         } else {
             if (entity.swinging && entity.swingTime > 6) {

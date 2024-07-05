@@ -105,208 +105,208 @@ public class TropicraftDolphinModel extends HierarchicalModel<TropicraftDolphinE
 
         root.addOrReplaceChild("body1",
                 CubeListBuilder.create().texOffs(0, 0)
-                        .addBox(-3F, -3F, -3F, 6, 6, 8),
-                PartPose.offset(0F, 20F, 0F));
+                        .addBox(-3.0f, -3.0f, -3.0f, 6, 6, 8),
+                PartPose.offset(0.0f, 20.0f, 0.0f));
 
         root.addOrReplaceChild("body2",
                 CubeListBuilder.create().texOffs(0, 14)
-                        .addBox(-3F, -2F, -5F, 6, 5, 4),
-                PartPose.offset(0F, 19.8F, -2F));
+                        .addBox(-3.0f, -2.0f, -5.0f, 6, 5, 4),
+                PartPose.offset(0.0f, 19.8f, -2.0f));
 
         root.addOrReplaceChild("head1",
                 CubeListBuilder.create().texOffs(0, 57)
-                        .addBox(-2.5F, -3F, -3F, 5, 4, 3),
-                PartPose.offset(0F, 21.4F, -6.3F));
+                        .addBox(-2.5f, -3.0f, -3.0f, 5, 4, 3),
+                PartPose.offset(0.0f, 21.4f, -6.3f));
 
         root.addOrReplaceChild("lowerJaw1",
                 CubeListBuilder.create().texOffs(16, 61)
-                        .addBox(-2.5F, 0F, -1F, 5, 2, 1),
-                PartPose.offset(0F, 20.4F, -9.3F));
+                        .addBox(-2.5f, 0.0f, -1.0f, 5, 2, 1),
+                PartPose.offset(0.0f, 20.4f, -9.3f));
 
         root.addOrReplaceChild("lowerJaw2",
                 CubeListBuilder.create().texOffs(29, 60)
-                        .addBox(-2F, 0F, -3F, 4, 1, 3),
-                PartPose.offset(0F, 21.4F, -10.3F));
+                        .addBox(-2.0f, 0.0f, -3.0f, 4, 1, 3),
+                PartPose.offset(0.0f, 21.4f, -10.3f));
 
         root.addOrReplaceChild("lowerJaw3",
                 CubeListBuilder.create().texOffs(29, 54)
-                        .addBox(-2F, 0F, -3F, 4, 1, 3),
-                PartPose.offset(0F, 20.4F, -10.3F));
+                        .addBox(-2.0f, 0.0f, -3.0f, 4, 1, 3),
+                PartPose.offset(0.0f, 20.4f, -10.3f));
 
         root.addOrReplaceChild("lowerJaw4",
                 CubeListBuilder.create().texOffs(44, 61)
-                        .addBox(-1.5F, 0F, -2F, 3, 1, 2),
-                PartPose.offset(0F, 21.4F, -13.3F));
+                        .addBox(-1.5f, 0.0f, -2.0f, 3, 1, 2),
+                PartPose.offset(0.0f, 21.4f, -13.3f));
 
         root.addOrReplaceChild("lowerJaw5",
                 CubeListBuilder.create().texOffs(45, 56)
-                        .addBox(-1.5F, -1F, -1F, 3, 1, 1),
-                PartPose.offset(0F, 22.4F, -15.3F));
+                        .addBox(-1.5f, -1.0f, -1.0f, 3, 1, 1),
+                PartPose.offset(0.0f, 22.4f, -15.3f));
 
         root.addOrReplaceChild("upperJaw1",
                 CubeListBuilder.create().texOffs(52, 0)
-                        .addBox(-2.5F, 0F, -1F, 5, 1, 1),
-                PartPose.offset(0F, 19.4F, -9.3F));
+                        .addBox(-2.5f, 0.0f, -1.0f, 5, 1, 1),
+                PartPose.offset(0.0f, 19.4f, -9.3f));
 
         root.addOrReplaceChild("upperJaw2",
                 CubeListBuilder.create().texOffs(50, 3)
-                        .addBox(-2F, 0F, -3F, 4, 1, 3),
-                PartPose.offset(0F, 19.4F, -10.3F));
+                        .addBox(-2.0f, 0.0f, -3.0f, 4, 1, 3),
+                PartPose.offset(0.0f, 19.4f, -10.3f));
 
         root.addOrReplaceChild("upperJaw3",
                 CubeListBuilder.create().texOffs(54, 8)
-                        .addBox(-1.5F, -1F, -2F, 3, 1, 2),
-                PartPose.offset(0F, 21.36575F, -12.77706F));
+                        .addBox(-1.5f, -1.0f, -2.0f, 3, 1, 2),
+                PartPose.offset(0.0f, 21.36575f, -12.77706f));
 
         root.addOrReplaceChild("upperJaw4",
                 CubeListBuilder.create().texOffs(58, 12)
-                        .addBox(-1F, -1F, -1F, 2, 1, 1),
-                PartPose.offset(0F, 21.36575F, -14.77706F));
+                        .addBox(-1.0f, -1.0f, -1.0f, 2, 1, 1),
+                PartPose.offset(0.0f, 21.36575f, -14.77706f));
 
         root.addOrReplaceChild("upperJaw5",
                 CubeListBuilder.create().texOffs(52, 15)
-                        .addBox(-1F, 0F, -4F, 2, 1, 4),
-                PartPose.offset(0F, 19.74202F, -11.23969F));
+                        .addBox(-1.0f, 0.0f, -4.0f, 2, 1, 4),
+                PartPose.offset(0.0f, 19.74202f, -11.23969f));
 
         root.addOrReplaceChild("head2",
                 CubeListBuilder.create().texOffs(0, 49)
-                        .addBox(-2F, -1F, -4F, 4, 2, 4),
-                PartPose.offset(0F, 18.4F, -6.3F));
+                        .addBox(-2.0f, -1.0f, -4.0f, 4, 2, 4),
+                PartPose.offset(0.0f, 18.4f, -6.3f));
 
         root.addOrReplaceChild("head3",
                 CubeListBuilder.create().texOffs(14, 49)
-                        .addBox(-1.5F, 0F, -1F, 3, 2, 1),
-                PartPose.offset(0F, 17.99005F, -10.40267F));
+                        .addBox(-1.5f, 0.0f, -1.0f, 3, 2, 1),
+                PartPose.offset(0.0f, 17.99005f, -10.40267f));
 
         root.addOrReplaceChild("head4",
                 CubeListBuilder.create().texOffs(24, 49)
-                        .addBox(-1.5F, 0F, -1F, 3, 2, 1),
-                PartPose.offset(0F, 18.43765F, -11.29691F));
+                        .addBox(-1.5f, 0.0f, -1.0f, 3, 2, 1),
+                PartPose.offset(0.0f, 18.43765f, -11.29691f));
 
         root.addOrReplaceChild("head5",
                 CubeListBuilder.create().texOffs(34, 49)
-                        .addBox(-1.5F, 0F, -1F, 3, 1, 1),
-                PartPose.offset(0F, 19.10989F, -12.03724F));
+                        .addBox(-1.5f, 0.0f, -1.0f, 3, 1, 1),
+                PartPose.offset(0.0f, 19.10989f, -12.03724f));
 
         root.addOrReplaceChild("body3",
                 CubeListBuilder.create().texOffs(20, 14)
-                        .addBox(-2.5F, 0F, -4.3F, 5, 1, 5),
-                PartPose.offset(0F, 17.1F, -2.5F));
+                        .addBox(-2.5f, 0.0f, -4.3f, 5, 1, 5),
+                PartPose.offset(0.0f, 17.1f, -2.5f));
 
         root.addOrReplaceChild("rightPectoralFin1",
                 CubeListBuilder.create().texOffs(0, 37)
-                        .addBox(-3F, 0F, 0F, 3, 1, 3),
-                PartPose.offset(-3F, 21.3F, -5F));
+                        .addBox(-3.0f, 0.0f, 0.0f, 3, 1, 3),
+                PartPose.offset(-3.0f, 21.3f, -5.0f));
 
         root.addOrReplaceChild("rightPectoralFin2",
                 CubeListBuilder.create().texOffs(0, 41)
-                        .addBox(-1F, 0F, 0F, 1, 1, 2),
-                PartPose.offset(-5.104775F, 22.85859F, -3.227792F));
+                        .addBox(-1.0f, 0.0f, 0.0f, 1, 1, 2),
+                PartPose.offset(-5.104775f, 22.85859f, -3.227792f));
 
         root.addOrReplaceChild("rightPectoralFin3",
                 CubeListBuilder.create().texOffs(8, 42)
-                        .addBox(-1F, 0F, 0F, 1, 1, 1),
-                PartPose.offset(-5.521684F, 23.16731F, -1.912163F));
+                        .addBox(-1.0f, 0.0f, 0.0f, 1, 1, 1),
+                PartPose.offset(-5.521684f, 23.16731f, -1.912163f));
 
         root.addOrReplaceChild("leftPectoralFin1",
                 CubeListBuilder.create().texOffs(0, 37)
-                        .addBox(0F, 0F, 0F, 3, 1, 3),
-                PartPose.offset(3F, 21.3F, -5F));
+                        .addBox(0.0f, 0.0f, 0.0f, 3, 1, 3),
+                PartPose.offset(3.0f, 21.3f, -5.0f));
 
         root.addOrReplaceChild("leftPectoralFin2",
                 CubeListBuilder.create().texOffs(0, 41)
                         .addBox(3, -0.1f, 0.5f, 1, 1, 2),
-                PartPose.offset(3F, 21.3F, -5F));
+                PartPose.offset(3.0f, 21.3f, -5.0f));
 
         root.addOrReplaceChild("leftPectoralFin3",
                 CubeListBuilder.create().texOffs(8, 42)
-                        .addBox(4, -0.15F, 0.5f, 1, 1, 1),
-                PartPose.offset(3F, 21.3F, -5F));
+                        .addBox(4, -0.15f, 0.5f, 1, 1, 1),
+                PartPose.offset(3.0f, 21.3f, -5.0f));
 
         root.addOrReplaceChild("tail1",
                 CubeListBuilder.create().texOffs(0, 24)
-                        .addBox(-2.5F, -2.5F, -1F, 5, 5, 7),
-                PartPose.offset(0F, 19.8F, 5.1F));
+                        .addBox(-2.5f, -2.5f, -1.0f, 5, 5, 7),
+                PartPose.offset(0.0f, 19.8f, 5.1f));
 
         root.addOrReplaceChild("tail2",
                 CubeListBuilder.create().texOffs(24, 27)
-                        .addBox(-2F, -2F, -1F, 4, 4, 5),
-                PartPose.offset(0F, 20.07322F, 11.09378F));
+                        .addBox(-2.0f, -2.0f, -1.0f, 4, 4, 5),
+                PartPose.offset(0.0f, 20.07322f, 11.09378f));
 
         root.addOrReplaceChild("tail3",
                 CubeListBuilder.create().texOffs(40, 24)
-                        .addBox(-1.5F, -1.5F, -1F, 3, 3, 4),
-                PartPose.offset(0F, 20.8163F, 15.02924F));
+                        .addBox(-1.5f, -1.5f, -1.0f, 3, 3, 4),
+                PartPose.offset(0.0f, 20.8163f, 15.02924f));
 
         root.addOrReplaceChild("tail4",
                 CubeListBuilder.create().texOffs(27, 30)
-                        .addBox(-1F, -1F, 0F, 2, 2, 3),
-                PartPose.offset(0F, 21.49112F, 17.43644F));
+                        .addBox(-1.0f, -1.0f, 0.0f, 2, 2, 3),
+                PartPose.offset(0.0f, 21.49112f, 17.43644f));
 
         root.addOrReplaceChild("fluke1",
                 CubeListBuilder.create().texOffs(44, 34)
-                        .addBox(-3F, 0F, 0F, 6, 1, 1),
-                PartPose.offset(0F, 22.1683F, 19.21166F));
+                        .addBox(-3.0f, 0.0f, 0.0f, 6, 1, 1),
+                PartPose.offset(0.0f, 22.1683f, 19.21166f));
 
         root.addOrReplaceChild("fluke2",
                 CubeListBuilder.create().texOffs(43, 38)
-                        .addBox(-4.5F, 0F, 0F, 9, 1, 1),
-                PartPose.offset(0F, 22.25945F, 20.2075F));
+                        .addBox(-4.5f, 0.0f, 0.0f, 9, 1, 1),
+                PartPose.offset(0.0f, 22.25945f, 20.2075f));
 
         root.addOrReplaceChild("fluke3",
                 CubeListBuilder.create().texOffs(30, 38)
-                        .addBox(-5F, 0F, -1F, 5, 1, 1),
-                PartPose.offset(4.9F, 22.44176F, 22.19917F));
+                        .addBox(-5.0f, 0.0f, -1.0f, 5, 1, 1),
+                PartPose.offset(4.9f, 22.44176f, 22.19917f));
 
         root.addOrReplaceChild("fluke4",
                 CubeListBuilder.create().texOffs(14, 38)
-                        .addBox(-5F, 0F, 0F, 6, 1, 1),
-                PartPose.offset(4.9F, 22.44176F, 22.19917F));
+                        .addBox(-5.0f, 0.0f, 0.0f, 6, 1, 1),
+                PartPose.offset(4.9f, 22.44176f, 22.19917f));
 
         root.addOrReplaceChild("fluke5",
                 CubeListBuilder.create().texOffs(30, 38)
-                        .addBox(0F, 0F, -1F, 5, 1, 1),
-                PartPose.offset(-4.9F, 22.44176F, 22.19917F));
+                        .addBox(0.0f, 0.0f, -1.0f, 5, 1, 1),
+                PartPose.offset(-4.9f, 22.44176f, 22.19917f));
 
         root.addOrReplaceChild("fluke6",
                 CubeListBuilder.create().texOffs(14, 38)
-                        .addBox(-1F, 0F, 0F, 6, 1, 1),
-                PartPose.offset(-4.9F, 22.44176F, 22.19917F));
+                        .addBox(-1.0f, 0.0f, 0.0f, 6, 1, 1),
+                PartPose.offset(-4.9f, 22.44176f, 22.19917f));
 
         root.addOrReplaceChild("fluke7",
                 CubeListBuilder.create().texOffs(55, 30)
-                        .addBox(-3F, 0F, 0F, 3, 1, 1),
-                PartPose.offset(0F, 22.43265F, 22.09959F));
+                        .addBox(-3.0f, 0.0f, 0.0f, 3, 1, 1),
+                PartPose.offset(0.0f, 22.43265f, 22.09959f));
 
         root.addOrReplaceChild("fluke8",
                 CubeListBuilder.create().texOffs(55, 30)
-                        .addBox(0F, 0F, 0F, 3, 1, 1),
-                PartPose.offset(0F, 22.43265F, 22.09959F));
+                        .addBox(0.0f, 0.0f, 0.0f, 3, 1, 1),
+                PartPose.offset(0.0f, 22.43265f, 22.09959f));
 
         root.addOrReplaceChild("dorsalFin1",
                 CubeListBuilder.create().texOffs(21, 0)
-                        .addBox(-0.5F, -1F, -0.7F, 1, 1, 5),
-                PartPose.offset(0F, 17.1F, 0F));
+                        .addBox(-0.5f, -1.0f, -0.7f, 1, 1, 5),
+                PartPose.offset(0.0f, 17.1f, 0.0f));
 
         root.addOrReplaceChild("dorsalFin2",
                 CubeListBuilder.create().texOffs(35, 0)
-                        .addBox(-0.5F, -1F, 0F, 1, 1, 4),
-                PartPose.offset(0F, 16.10415F, 0.09098025F));
+                        .addBox(-0.5f, -1.0f, 0.0f, 1, 1, 4),
+                PartPose.offset(0.0f, 16.10415f, 0.09098025f));
 
         root.addOrReplaceChild("dorsalFin3",
                 CubeListBuilder.create().texOffs(30, 7)
-                        .addBox(-0.5F, -1F, 0F, 1, 1, 3),
-                PartPose.offset(0F, 15.30191F, 1.255631F));
+                        .addBox(-0.5f, -1.0f, 0.0f, 1, 1, 3),
+                PartPose.offset(0.0f, 15.30191f, 1.255631f));
 
         root.addOrReplaceChild("dorsalFin4",
                 CubeListBuilder.create().texOffs(39, 7)
-                        .addBox(-0.5F, -1F, 0F, 1, 1, 2),
-                PartPose.offset(0F, 14.60895F, 2.48844F));
+                        .addBox(-0.5f, -1.0f, 0.0f, 1, 1, 2),
+                PartPose.offset(0.0f, 14.60895f, 2.48844f));
 
         root.addOrReplaceChild("dorsalFin5",
                 CubeListBuilder.create().texOffs(45, 0)
-                        .addBox(-0.5F, -1F, 0F, 1, 1, 1),
-                PartPose.offset(0F, 14.15063F, 3.826327F));
+                        .addBox(-0.5f, -1.0f, 0.0f, 1, 1, 1),
+                PartPose.offset(0.0f, 14.15063f, 3.826327f));
 
         return LayerDefinition.create(mesh, 64, 64);
     }
@@ -338,140 +338,140 @@ public class TropicraftDolphinModel extends HierarchicalModel<TropicraftDolphinE
             }
         }
 
-        lowerJaw3.xRot = 0.3490658F;
+        lowerJaw3.xRot = 0.3490658f;
         if (mouthOpen) {
-            lowerJaw5.setPos(0F, 23.4F, -15.3F + 0.52f);
-            lowerJaw4.xRot = 0.5F;
+            lowerJaw5.setPos(0.0f, 23.4f, -15.3f + 0.52f);
+            lowerJaw4.xRot = 0.5f;
         } else {
-            lowerJaw5.setPos(0F, 22.4F, -15.3F);
-            lowerJaw4.xRot = 0F;
+            lowerJaw5.setPos(0.0f, 22.4f, -15.3f);
+            lowerJaw4.xRot = 0.0f;
         }
 
-        lowerJaw5.xRot = -0.2275909F;
-        upperJaw2.xRot = 0.3490658F;
-        upperJaw4.xRot = -0.09110618F;
-        upperJaw5.xRot = 0.15132F;
-        head2.xRot = 0.1453859F;
-        head3.xRot = 0.4640831F;
-        head4.xRot = 0.737227F;
-        head5.xRot = 1.055924F;
-        body3.xRot = 0.04555309F;
+        lowerJaw5.xRot = -0.2275909f;
+        upperJaw2.xRot = 0.3490658f;
+        upperJaw4.xRot = -0.09110618f;
+        upperJaw5.xRot = 0.15132f;
+        head2.xRot = 0.1453859f;
+        head3.xRot = 0.4640831f;
+        head4.xRot = 0.737227f;
+        head5.xRot = 1.055924f;
+        body3.xRot = 0.04555309f;
 
-        rightPectoralFin1.xRot = 0.1612329F;
-        rightPectoralFin1.yRot = 0.2214468F;
-        rightPectoralFin1.zRot = -0.6194302F + Mth.sin(ageInTicks * .025F) * .3f;
+        rightPectoralFin1.xRot = 0.1612329f;
+        rightPectoralFin1.yRot = 0.2214468f;
+        rightPectoralFin1.zRot = -0.6194302f + Mth.sin(ageInTicks * 0.025f) * 0.3f;
 
-        rightPectoralFin2.xRot = 0.2393862F;
-        rightPectoralFin2.yRot = 0.3358756F;
-        rightPectoralFin2.zRot = -0.5966207F + Mth.sin(ageInTicks * .025F) * .45f;
+        rightPectoralFin2.xRot = 0.2393862f;
+        rightPectoralFin2.yRot = 0.3358756f;
+        rightPectoralFin2.zRot = -0.5966207f + Mth.sin(ageInTicks * 0.025f) * 0.45f;
 
-        rightPectoralFin3.xRot = 0.3620028F;
-        rightPectoralFin3.yRot = 0.5368112F;
-        rightPectoralFin3.zRot = -0.5368112F + Mth.sin(ageInTicks * .025F) * .5f;
+        rightPectoralFin3.xRot = 0.3620028f;
+        rightPectoralFin3.yRot = 0.5368112f;
+        rightPectoralFin3.zRot = -0.5368112f + Mth.sin(ageInTicks * 0.025f) * 0.5f;
 
-        leftPectoralFin1.xRot = 0.1612329F;
-        leftPectoralFin1.yRot = -0.2214468F;
-        leftPectoralFin1.zRot = 0.6194302F + Mth.sin(ageInTicks * .025F) * .3f;
+        leftPectoralFin1.xRot = 0.1612329f;
+        leftPectoralFin1.yRot = -0.2214468f;
+        leftPectoralFin1.zRot = 0.6194302f + Mth.sin(ageInTicks * 0.025f) * 0.3f;
 
-        leftPectoralFin2.xRot = 0.2393862F;
-        leftPectoralFin2.yRot = -0.3358756F;
-        leftPectoralFin2.zRot = 0.5966207F + Mth.sin(ageInTicks * .025F) * .35f;
+        leftPectoralFin2.xRot = 0.2393862f;
+        leftPectoralFin2.yRot = -0.3358756f;
+        leftPectoralFin2.zRot = 0.5966207f + Mth.sin(ageInTicks * 0.025f) * 0.35f;
 
-        leftPectoralFin3.xRot = 0.3620028F;
-        leftPectoralFin3.yRot = -0.5368112F;
-        leftPectoralFin3.zRot = 0.5368112F + Mth.sin(ageInTicks * .025F) * .4f;
+        leftPectoralFin3.xRot = 0.3620028f;
+        leftPectoralFin3.yRot = -0.5368112f;
+        leftPectoralFin3.zRot = 0.5368112f + Mth.sin(ageInTicks * 0.025f) * 0.4f;
 
-        tail1.xRot = -0.04555309F + Mth.sin(ageInTicks * tailVertSpeed) * .1f;
-        tail1.yRot = Mth.sin(ageInTicks * tailHorzSpeed) * .135F;
-        tail1.zRot = 0F;
+        tail1.xRot = -0.04555309f + Mth.sin(ageInTicks * tailVertSpeed) * 0.1f;
+        tail1.yRot = Mth.sin(ageInTicks * tailHorzSpeed) * 0.135f;
+        tail1.zRot = 0.0f;
 
         tail2.x = Mth.sin(ageInTicks * tailHorzSpeed) * 1;
 
-        tail2.y = 20 - Mth.sin(ageInTicks * tailVertSpeed) * 0.8F;
+        tail2.y = 20 - Mth.sin(ageInTicks * tailVertSpeed) * 0.8f;
 
-        tail2.xRot = -0.1366593F + Mth.sin(ageInTicks * tailVertSpeed) * .1f;
-        tail2.yRot = Mth.sin(ageInTicks * tailHorzSpeed) * .135F;
-        tail2.zRot = 0F;
+        tail2.xRot = -0.1366593f + Mth.sin(ageInTicks * tailVertSpeed) * 0.1f;
+        tail2.yRot = Mth.sin(ageInTicks * tailHorzSpeed) * 0.135f;
+        tail2.zRot = 0.0f;
 
         tail3.x = Mth.sin(ageInTicks * tailHorzSpeed) * 1.85f;
 
-        tail3.y = 20.5f - Mth.sin(ageInTicks * tailVertSpeed) * 1.5F;
+        tail3.y = 20.5f - Mth.sin(ageInTicks * tailVertSpeed) * 1.5f;
 
-        tail3.xRot = -0.2733185F + Mth.sin(ageInTicks * tailVertSpeed) * .2f;
-        tail3.yRot = Mth.sin(ageInTicks * tailHorzSpeed) * .135F;
-        tail3.zRot = 0F;
+        tail3.xRot = -0.2733185f + Mth.sin(ageInTicks * tailVertSpeed) * 0.2f;
+        tail3.yRot = Mth.sin(ageInTicks * tailHorzSpeed) * 0.135f;
+        tail3.zRot = 0.0f;
 
         tail4.x = Mth.sin(ageInTicks * tailHorzSpeed) * 2.4f;
-        tail4.y = 21.5f - Mth.sin(ageInTicks * tailVertSpeed) * 2.5F;
+        tail4.y = 21.5f - Mth.sin(ageInTicks * tailVertSpeed) * 2.5f;
 
-        tail4.xRot = -0.3644247F + Mth.sin(ageInTicks * tailVertSpeed) * .5f;
-        tail4.yRot = Mth.sin(ageInTicks * tailHorzSpeed) * .35F;
-        tail4.zRot = 0F;
+        tail4.xRot = -0.3644247f + Mth.sin(ageInTicks * tailVertSpeed) * 0.5f;
+        tail4.yRot = Mth.sin(ageInTicks * tailHorzSpeed) * 0.35f;
+        tail4.zRot = 0.0f;
 
         fluke1.x = Mth.sin(ageInTicks * tailHorzSpeed) * 2.8f;
-        fluke1.y = 22f - Mth.sin(ageInTicks * tailVertSpeed) * 4F;
+        fluke1.y = 22.0f - Mth.sin(ageInTicks * tailVertSpeed) * 4.0f;
 
-        fluke1.xRot = -0.09128072F;
-        fluke1.yRot = Mth.sin(ageInTicks * tailHorzSpeed) * .35F;
-        fluke1.zRot = 0F;
+        fluke1.xRot = -0.09128072f;
+        fluke1.yRot = Mth.sin(ageInTicks * tailHorzSpeed) * 0.35f;
+        fluke1.zRot = 0.0f;
 
-        fluke2.y = 22f - Mth.sin(ageInTicks * tailVertSpeed) * 4F;
+        fluke2.y = 22.0f - Mth.sin(ageInTicks * tailVertSpeed) * 4.0f;
 
         fluke2.x = Mth.sin(ageInTicks * tailHorzSpeed) * 2.8f;
 
-        fluke2.xRot = -0.09128071F;
-        fluke2.yRot = Mth.sin(ageInTicks * tailHorzSpeed) * .35F;
-        fluke2.zRot = 0F;
+        fluke2.xRot = -0.09128071f;
+        fluke2.yRot = Mth.sin(ageInTicks * tailHorzSpeed) * 0.35f;
+        fluke2.zRot = 0.0f;
 
         fluke3.x = Mth.sin(ageInTicks * tailHorzSpeed) * 2.8f;
-        fluke3.y = 22f - Mth.sin(ageInTicks * tailVertSpeed) * 4F;
+        fluke3.y = 22.0f - Mth.sin(ageInTicks * tailVertSpeed) * 4.0f;
 
-        fluke3.xRot = -0.09118575F;
-        fluke3.yRot = -0.04574326F + Mth.sin(ageInTicks * tailHorzSpeed) * .35F;
-        fluke3.zRot = 0.00416824F;
+        fluke3.xRot = -0.09118575f;
+        fluke3.yRot = -0.04574326f + Mth.sin(ageInTicks * tailHorzSpeed) * 0.35f;
+        fluke3.zRot = 0.00416824f;
 
-        fluke4.y = 22f - Mth.sin(ageInTicks * tailVertSpeed) * 4F;
+        fluke4.y = 22.0f - Mth.sin(ageInTicks * tailVertSpeed) * 4.0f;
 
         fluke4.x = Mth.sin(ageInTicks * tailHorzSpeed) * 2.8f;
 
-        fluke4.xRot = -0.08892051F + Mth.sin(ageInTicks * tailVertSpeed) * .8f;
+        fluke4.xRot = -0.08892051f + Mth.sin(ageInTicks * tailVertSpeed) * 0.8f;
 
-        fluke4.yRot = -0.2285096F + Mth.sin(ageInTicks * tailHorzSpeed) * .35F;
-        fluke4.zRot = 0.02065023F;
+        fluke4.yRot = -0.2285096f + Mth.sin(ageInTicks * tailHorzSpeed) * 0.35f;
+        fluke4.zRot = 0.02065023f;
 
         fluke5.x = Mth.sin(ageInTicks * tailHorzSpeed) * 2.8f;
-        fluke5.y = 22f - Mth.sin(ageInTicks * tailVertSpeed) * 4F;
+        fluke5.y = 22.0f - Mth.sin(ageInTicks * tailVertSpeed) * 4.0f;
 
-        fluke5.xRot = -0.09118575F;
-        fluke5.yRot = 0.04574326F + Mth.sin(ageInTicks * tailHorzSpeed) * .35F;
-        fluke5.zRot = -0.00416824F;
+        fluke5.xRot = -0.09118575f;
+        fluke5.yRot = 0.04574326f + Mth.sin(ageInTicks * tailHorzSpeed) * 0.35f;
+        fluke5.zRot = -0.00416824f;
 
         fluke6.x = Mth.sin(ageInTicks * tailHorzSpeed) * 2.8f;
-        fluke6.y = 22f - Mth.sin(ageInTicks * tailVertSpeed) * 4F;
+        fluke6.y = 22.0f - Mth.sin(ageInTicks * tailVertSpeed) * 4.0f;
 
-        fluke6.xRot = -0.08892051F + Mth.sin(ageInTicks * tailVertSpeed) * .8f;
-        fluke6.yRot = 0.2285096F + Mth.sin(ageInTicks * tailHorzSpeed) * .35F;
-        fluke6.zRot = -0.02065023F;
+        fluke6.xRot = -0.08892051f + Mth.sin(ageInTicks * tailVertSpeed) * 0.8f;
+        fluke6.yRot = 0.2285096f + Mth.sin(ageInTicks * tailHorzSpeed) * 0.35f;
+        fluke6.zRot = -0.02065023f;
 
         fluke7.x = Mth.sin(ageInTicks * tailHorzSpeed) * 2.8f;
-        fluke7.y = 22f - Mth.sin(ageInTicks * tailVertSpeed) * 4F;
+        fluke7.y = 22.0f - Mth.sin(ageInTicks * tailVertSpeed) * 4.0f;
 
-        fluke7.xRot = -0.09042732F + Mth.sin(ageInTicks * tailVertSpeed) * .8f;
-        fluke7.yRot = -0.1372235F + Mth.sin(ageInTicks * tailHorzSpeed) * .35F;
-        fluke7.zRot = 0.01246957F;
+        fluke7.xRot = -0.09042732f + Mth.sin(ageInTicks * tailVertSpeed) * 0.8f;
+        fluke7.yRot = -0.1372235f + Mth.sin(ageInTicks * tailHorzSpeed) * 0.35f;
+        fluke7.zRot = 0.01246957f;
 
         fluke8.x = Mth.sin(ageInTicks * tailHorzSpeed) * 2.8f;
-        fluke8.y = 22f - Mth.sin(ageInTicks * tailVertSpeed) * 4F;
+        fluke8.y = 22.0f - Mth.sin(ageInTicks * tailVertSpeed) * 4.0f;
 
-        fluke8.xRot = -0.09042732F + Mth.sin(ageInTicks * tailVertSpeed) * .8f;
+        fluke8.xRot = -0.09042732f + Mth.sin(ageInTicks * tailVertSpeed) * 0.8f;
 
-        fluke8.yRot = 0.1372235F + Mth.sin(ageInTicks * tailHorzSpeed) * .35F;
-        fluke8.zRot = -0.01246957F;
+        fluke8.yRot = 0.1372235f + Mth.sin(ageInTicks * tailHorzSpeed) * 0.35f;
+        fluke8.zRot = -0.01246957f;
 
-        dorsalFin1.xRot = -0.09110619F;
-        dorsalFin2.xRot = -0.1822124F;
-        dorsalFin3.xRot = -0.2733186F;
-        dorsalFin4.xRot = -0.4553564F;
-        dorsalFin5.xRot = -0.7285004F;
+        dorsalFin1.xRot = -0.09110619f;
+        dorsalFin2.xRot = -0.1822124f;
+        dorsalFin3.xRot = -0.2733186f;
+        dorsalFin4.xRot = -0.4553564f;
+        dorsalFin5.xRot = -0.7285004f;
     }
 }

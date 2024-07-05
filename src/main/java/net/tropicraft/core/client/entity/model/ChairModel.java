@@ -20,14 +20,14 @@ public class ChairModel extends HierarchicalModel<ChairEntity> {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
 
-        root.addOrReplaceChild("seat", CubeListBuilder.create().texOffs(0, 0).addBox(-7F, 0F, -8F, 16, 1, 16), PartPose.offset(-1F, 0F, 0F));
-        root.addOrReplaceChild("back", CubeListBuilder.create().texOffs(0, 0).addBox(-7F, 0F, 0F, 16, 1, 16), PartPose.offsetAndRotation(-1F, 0F, 8F, 1.169371F, 0F, 0F));
-        root.addOrReplaceChild("backRightLeg", CubeListBuilder.create().texOffs(0, 0).addBox(-1F, -1F, 0F, 1, 10, 1), PartPose.offsetAndRotation(-8F, -3F, 6F, 0.4537856F, 0F, 0F));
-        root.addOrReplaceChild("backLeftLeg", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 1, 10, 1), PartPose.offsetAndRotation(8F, -4F, 5F, 0.4537856F, 0F, 0F));
-        root.addOrReplaceChild("frontLeftLeg", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, -1F, 1, 10, 1), PartPose.offsetAndRotation(8F, -4F, 0F, -0.4537856F, 0F, 0F));
-        root.addOrReplaceChild("frontRightLeg", CubeListBuilder.create().texOffs(0, 0).addBox(-1F, 0F, -1F, 1, 10, 1), PartPose.offsetAndRotation(-8F, -4F, 0F, -0.4537856F, 0F, 0F));
-        root.addOrReplaceChild("rightArm", CubeListBuilder.create().texOffs(0, 29).addBox(0F, -1F, 0F, 14, 1, 2), PartPose.offsetAndRotation(-10F, -4F, 11F, 0F, 1.570796F, 0F));
-        root.addOrReplaceChild("leftArm", CubeListBuilder.create().texOffs(0, 29).addBox(0F, 0F, 0F, 14, 1, 2), PartPose.offsetAndRotation(8F, -5F, 11F, 0F, 1.570796F, 0F));
+        root.addOrReplaceChild("seat", CubeListBuilder.create().texOffs(0, 0).addBox(-7.0f, 0.0f, -8.0f, 16, 1, 16), PartPose.offset(-1.0f, 0.0f, 0.0f));
+        root.addOrReplaceChild("back", CubeListBuilder.create().texOffs(0, 0).addBox(-7.0f, 0.0f, 0.0f, 16, 1, 16), PartPose.offsetAndRotation(-1.0f, 0.0f, 8.0f, 1.169371f, 0.0f, 0.0f));
+        root.addOrReplaceChild("backRightLeg", CubeListBuilder.create().texOffs(0, 0).addBox(-1.0f, -1.0f, 0.0f, 1, 10, 1), PartPose.offsetAndRotation(-8.0f, -3.0f, 6.0f, 0.4537856f, 0.0f, 0.0f));
+        root.addOrReplaceChild("backLeftLeg", CubeListBuilder.create().texOffs(0, 0).addBox(0.0f, 0.0f, 0.0f, 1, 10, 1), PartPose.offsetAndRotation(8.0f, -4.0f, 5.0f, 0.4537856f, 0.0f, 0.0f));
+        root.addOrReplaceChild("frontLeftLeg", CubeListBuilder.create().texOffs(0, 0).addBox(0.0f, 0.0f, -1.0f, 1, 10, 1), PartPose.offsetAndRotation(8.0f, -4.0f, 0.0f, -0.4537856f, 0.0f, 0.0f));
+        root.addOrReplaceChild("frontRightLeg", CubeListBuilder.create().texOffs(0, 0).addBox(-1.0f, 0.0f, -1.0f, 1, 10, 1), PartPose.offsetAndRotation(-8.0f, -4.0f, 0.0f, -0.4537856f, 0.0f, 0.0f));
+        root.addOrReplaceChild("rightArm", CubeListBuilder.create().texOffs(0, 29).addBox(0.0f, -1.0f, 0.0f, 14, 1, 2), PartPose.offsetAndRotation(-10.0f, -4.0f, 11.0f, 0.0f, 1.570796f, 0.0f));
+        root.addOrReplaceChild("leftArm", CubeListBuilder.create().texOffs(0, 29).addBox(0.0f, 0.0f, 0.0f, 14, 1, 2), PartPose.offsetAndRotation(8.0f, -5.0f, 11.0f, 0.0f, 1.570796f, 0.0f));
 
         return LayerDefinition.create(mesh, 64, 32);
     }

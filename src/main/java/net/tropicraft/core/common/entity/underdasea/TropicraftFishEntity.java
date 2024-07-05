@@ -13,29 +13,29 @@ import net.minecraft.world.phys.Vec3;
 
 public abstract class TropicraftFishEntity extends WaterAnimal {
 
-    public float swimPitch = 0f;
-    public float swimYaw = 0f;
+    public float swimPitch = 0.0f;
+    public float swimYaw = 0.0f;
 
     public Vec2 targetVectorHeading;
     public Vec3 targetVector;
 
     public int outOfWaterTime = 0;
-    public float outOfWaterAngle = 0f;
+    public float outOfWaterAngle = 0.0f;
 
-    public float fallVelocity = 0f;
+    public float fallVelocity = 0.0f;
     public float fallGravity = 0.0625f;
 
-    public float prevSwimPitch = 0f;
-    public float prevSwimYaw = 0f;
+    public float prevSwimPitch = 0.0f;
+    public float prevSwimYaw = 0.0f;
 
-    private float swimSpeedDefault = 1f;
-    protected float swimSpeedCurrent = 0f;
-    private float swimSpeedPanic = 2f;
+    private float swimSpeedDefault = 1.0f;
+    protected float swimSpeedCurrent = 0.0f;
+    private float swimSpeedPanic = 2.0f;
 
     private final float swimAccelRate = 0.02f;
     private final float swimDecelRate = 0.02f;
 
-    private float swimSpeedTurn = 5f;
+    private float swimSpeedTurn = 5.0f;
     public boolean isMovingAwayFromWall = false;
 
     public boolean isPanicking = false;
@@ -48,7 +48,7 @@ public abstract class TropicraftFishEntity extends WaterAnimal {
 
     public int eatenFishAmount = 0;
     public final int maximumEatAmount = 5;
-    private float swimSpeedChasing = 2f;
+    private float swimSpeedChasing = 2.0f;
     private float swimSpeedCharging = 2.5f;
 
     public Entity aggressTarget = null;
@@ -86,12 +86,12 @@ public abstract class TropicraftFishEntity extends WaterAnimal {
             if (getX() == xo && getZ() == zo) {
                 yaw = swimYaw;
             } else {
-                yaw = (float) ((Math.atan2(z, x) * 180D) / Math.PI) - 90f;
+                yaw = (float) ((Math.atan2(z, x) * 180) / Math.PI) - 90.0f;
             }
             if (getY() == yo) {
                 pitch = swimPitch;
             } else {
-                pitch = (float) (-((Math.atan2(y, Mth.sqrt((float) (x * x + z * z))) * 180D) / Math.PI));
+                pitch = (float) (-((Math.atan2(y, Mth.sqrt((float) (x * x + z * z))) * 180) / Math.PI));
             }
 
             swimYaw = lerp(swimYaw, (int) -yaw, swimSpeedTurn * 4);
@@ -100,7 +100,7 @@ public abstract class TropicraftFishEntity extends WaterAnimal {
             setDeltaMovement(getDeltaMovement().multiply(0.98, 0.98, 0.98));
 
             if (isNoAi() && isInWater()) {
-                fallVelocity = 0f;
+                fallVelocity = 0.0f;
                 swimSpeedCurrent = 0;
                 setDeltaMovement(Vec3.ZERO);
             }
@@ -128,7 +128,7 @@ public abstract class TropicraftFishEntity extends WaterAnimal {
         float desiredSpeed = swimSpeedDefault;
 
         if (aggressTarget != null) {
-            if (distanceToSqr(aggressTarget) < 10f) {
+            if (distanceToSqr(aggressTarget) < 10.0f) {
                 desiredSpeed = swimSpeedCharging;
             } else {
                 desiredSpeed = swimSpeedChasing;
@@ -165,11 +165,11 @@ public abstract class TropicraftFishEntity extends WaterAnimal {
                     currentSpeed * Math.sin(swimPitch * (Math.PI / 180.0)),
                     currentSpeed * Math.cos(swimYaw * (Math.PI / 180.0))
             );
-            fallVelocity = 0f;
+            fallVelocity = 0.0f;
         }
         if (isNoAi() && isInWater()) {
             setDeltaMovement(0, 0, 0);
-            fallVelocity = 0f;
+            fallVelocity = 0.0f;
             swimSpeedCurrent = 0;
         }
 
@@ -189,20 +189,20 @@ public abstract class TropicraftFishEntity extends WaterAnimal {
 //
 //                if(rand.nextInt(20) == 0 || this.hurtTime > 0) {
 //                    this.fallVelocity = -.03f;
-//                    this.swimPitch = 25f;
+//                    this.swimPitch = 25.0f;
 //                }
 //            }
 //
-//            if(this.swimPitch > 0f) {
-//                this.swimPitch -= 5f;
+//            if(this.swimPitch > 0.0f) {
+//                this.swimPitch -= 5.0f;
 //            }
 //            if(this.ticksExisted % 20 == 0) {
 //                this.outOfWaterAngle = rand.nextInt(360);
 //            }
 //
-//            float turnSpeed = 5f;
+//            float turnSpeed = 5.0f;
 //            if(this.hurtTime > 0) {
-//                turnSpeed = 15f;
+//                turnSpeed = 15.0f;
 //            }
 //            if(this.swimYaw > this.outOfWaterAngle) {
 //                this.swimYaw-= turnSpeed;
@@ -221,8 +221,8 @@ public abstract class TropicraftFishEntity extends WaterAnimal {
 //            this.fallVelocity += (this.fallGravity / 10);
 //        }
 
-        if (swimPitch > 45f) {
-            swimPitch = 45f;
+        if (swimPitch > 45.0f) {
+            swimPitch = 45.0f;
         }
     }
 
@@ -271,8 +271,8 @@ public abstract class TropicraftFishEntity extends WaterAnimal {
         double x = (int) (posX - getX());
         double y = (int) (posY - getY());
         double z = (int) (posZ - getZ());
-        float yaw = (float) ((Math.atan2(z, x) * 180D) / Math.PI) - 90f;
-        float pitch = (float) (-((Math.atan2(y, Mth.sqrt((float) (x * x + z * z))) * 180D) / Math.PI));
+        float yaw = (float) ((Math.atan2(z, x) * 180.0) / Math.PI) - 90.0f;
+        float pitch = (float) (-((Math.atan2(y, Mth.sqrt((float) (x * x + z * z))) * 180) / Math.PI));
         targetVector = new Vec3((int) posX, (int) posY, (int) posZ);
         targetVectorHeading = new Vec2(yaw, pitch);
         return true;
@@ -300,7 +300,7 @@ public abstract class TropicraftFishEntity extends WaterAnimal {
         // Try to move towards a player
         if (approachPlayers) {
             if (random.nextInt(50) == 0) {
-                Player closest = level().getNearestPlayer(this, 32D);
+                Player closest = level().getNearestPlayer(this, 32.0);
                 if (closest != null) {
                     if (closest.isInWater())
                         result = setTargetHeading(closest.getX(), closest.getY(), closest.getZ(), true);
@@ -315,8 +315,8 @@ public abstract class TropicraftFishEntity extends WaterAnimal {
         double x = ent.getX() - getX();
         double y = ent.getY() - getY();
         double z = ent.getZ() - getZ();
-        float yaw = (float) ((Math.atan2(z, x) * 180D) / Math.PI) - 90F;
-        float pitch = (float) (-((Math.atan2(y, Mth.sqrt((float) (x * x + z * z))) * 180D) / Math.PI));
+        float yaw = (float) ((Math.atan2(z, x) * 180.0) / Math.PI) - 90.0f;
+        float pitch = (float) (-((Math.atan2(y, Mth.sqrt((float) (x * x + z * z))) * 180) / Math.PI));
 
         if (targetVector == null) {
             targetVector = new Vec3(ent.getX(), ent.getY() - 5 + random.nextInt(10), ent.getZ());

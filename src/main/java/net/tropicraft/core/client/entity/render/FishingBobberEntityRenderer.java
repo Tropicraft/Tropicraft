@@ -35,15 +35,15 @@ public class FishingBobberEntityRenderer extends EntityRenderer<FishingBobberEnt
         }
 
         poseStack.pushPose();
-        poseStack.scale(0.5F, 0.5F, 0.5F);
+        poseStack.scale(0.5f, 0.5f, 0.5f);
         poseStack.mulPose(entityRenderDispatcher.cameraOrientation());
-        poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
+        poseStack.mulPose(Axis.YP.rotationDegrees(180.0f));
         PoseStack.Pose pose = poseStack.last();
         VertexConsumer consumer = bufferSource.getBuffer(RENDER_TYPE);
-        vertex(consumer, pose, packedLight, 0.0F, 0, 0, 1);
-        vertex(consumer, pose, packedLight, 1.0F, 0, 1, 1);
-        vertex(consumer, pose, packedLight, 1.0F, 1, 1, 0);
-        vertex(consumer, pose, packedLight, 0.0F, 1, 0, 0);
+        vertex(consumer, pose, packedLight, 0.0f, 0, 0, 1);
+        vertex(consumer, pose, packedLight, 1.0f, 0, 1, 1);
+        vertex(consumer, pose, packedLight, 1.0f, 1, 1, 0);
+        vertex(consumer, pose, packedLight, 0.0f, 1, 0, 0);
         poseStack.popPose();
 
         float handOffset = koa.getMainArm() == HumanoidArm.RIGHT ? 0.35f : -0.35f;
@@ -57,7 +57,7 @@ public class FishingBobberEntityRenderer extends EntityRenderer<FishingBobberEnt
         double rodX = Mth.lerp(partialTicks, koa.xo, koa.getX()) - cos * handOffset - sin * 0.8;
         double rodY = koa.yo + koa.getEyeHeight() + (koa.getY() - koa.yo) * partialTicks - 0.45;
         double rodZ = Mth.lerp(partialTicks, koa.zo, koa.getZ()) - sin * handOffset + cos * 0.8;
-        float offset = koa.isCrouching() ? -0.1875F : 0.0F;
+        float offset = koa.isCrouching() ? -0.1875f : 0.0f;
 
         double bobberX = Mth.lerp(partialTicks, entity.xo, entity.getX());
         double bobberY = Mth.lerp(partialTicks, entity.yo, entity.getY()) + 0.25;
@@ -74,15 +74,15 @@ public class FishingBobberEntityRenderer extends EntityRenderer<FishingBobberEnt
     }
 
     private static void vertex(VertexConsumer consumer, PoseStack.Pose pose, int p_114715_, float p_114716_, int p_114717_, int p_114718_, int p_114719_) {
-        consumer.addVertex(pose, p_114716_ - 0.5F, p_114717_ - 0.5F, 0.0F).setColor(CommonColors.WHITE).setUv((float) p_114718_, (float) p_114719_).setOverlay(OverlayTexture.NO_OVERLAY).setLight(p_114715_).setNormal(pose, 0.0F, 1.0F, 0.0F);
+        consumer.addVertex(pose, p_114716_ - 0.5f, p_114717_ - 0.5f, 0.0f).setColor(CommonColors.WHITE).setUv((float) p_114718_, (float) p_114719_).setOverlay(OverlayTexture.NO_OVERLAY).setLight(p_114715_).setNormal(pose, 0.0f, 1.0f, 0.0f);
     }
 
     private static void stringVertex(float deltaX, float deltaY, float deltaZ, VertexConsumer consumer, PoseStack.Pose pose, float start, float end) {
         float x = deltaX * start;
-        float y = deltaY * (start * start + start) * 0.5F + 0.25F;
+        float y = deltaY * (start * start + start) * 0.5f + 0.25f;
         float z = deltaZ * start;
         float normalX = deltaX * end - x;
-        float normalY = deltaY * (end * end + end) * 0.5F + 0.25F - y;
+        float normalY = deltaY * (end * end + end) * 0.5f + 0.25f - y;
         float normalZ = deltaZ * end - z;
         float length = Mth.sqrt(normalX * normalX + normalY * normalY + normalZ * normalZ);
         normalX = normalX / length;

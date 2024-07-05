@@ -104,7 +104,7 @@ public class CocktailItem extends Item {
     }
 
     public ItemStack onFoodEaten(ItemStack itemstack, Level world, Player player) {
-        world.playSound(player, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_BURP, SoundSource.PLAYERS, 0.5F, world.random.nextFloat() * 0.1F + 0.9F);
+        world.playSound(player, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_BURP, SoundSource.PLAYERS, 0.5f, world.random.nextFloat() * 0.1f + 0.9f);
 
         for (Ingredient ingredient : getIngredients(itemstack)) {
             ingredient.onDrink(player);

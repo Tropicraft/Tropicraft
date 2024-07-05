@@ -44,35 +44,35 @@ public class BambooItemFrameRenderer extends EntityRenderer<BambooItemFrame> {
         Direction direction = entityIn.getDirection();
         Vec3 Vector3d = getRenderOffset(entityIn, partialTicks);
         matrixStackIn.translate(-Vector3d.x, -Vector3d.y, -Vector3d.z);
-        double d0 = 0.46875D;
-        matrixStackIn.translate((double) direction.getStepX() * 0.46875D, (double) direction.getStepY() * 0.46875D, (double) direction.getStepZ() * 0.46875D);
+        double d0 = 0.46875;
+        matrixStackIn.translate((double) direction.getStepX() * 0.46875, (double) direction.getStepY() * 0.46875, (double) direction.getStepZ() * 0.46875);
         matrixStackIn.mulPose(Axis.XP.rotationDegrees(entityIn.getXRot()));
-        matrixStackIn.mulPose(Axis.YP.rotationDegrees(180.0F - entityIn.getYRot()));
+        matrixStackIn.mulPose(Axis.YP.rotationDegrees(180.0f - entityIn.getYRot()));
         BlockRenderDispatcher blockrendererdispatcher = mc.getBlockRenderer();
         ModelManager modelmanager = blockrendererdispatcher.getBlockModelShaper().getModelManager();
         ModelResourceLocation modelresourcelocation = entityIn.getItem().getItem() instanceof MapItem ? LOCATION_MODEL_MAP : LOCATION_MODEL;
         matrixStackIn.pushPose();
-        matrixStackIn.translate(-0.5D, -0.5D, -0.5D);
-        blockrendererdispatcher.getModelRenderer().renderModel(matrixStackIn.last(), bufferIn.getBuffer(Sheets.solidBlockSheet()), null, modelmanager.getModel(modelresourcelocation), 1.0F, 1.0F, 1.0F, packedLightIn, OverlayTexture.NO_OVERLAY);
+        matrixStackIn.translate(-0.5, -0.5, -0.5);
+        blockrendererdispatcher.getModelRenderer().renderModel(matrixStackIn.last(), bufferIn.getBuffer(Sheets.solidBlockSheet()), null, modelmanager.getModel(modelresourcelocation), 1.0f, 1.0f, 1.0f, packedLightIn, OverlayTexture.NO_OVERLAY);
         matrixStackIn.popPose();
         ItemStack itemstack = entityIn.getItem();
         if (!itemstack.isEmpty()) {
             MapItemSavedData mapdata = MapItem.getSavedData(itemstack, entityIn.level());
-            matrixStackIn.translate(0.0D, 0.0D, 0.4375D);
+            matrixStackIn.translate(0.0, 0.0, 0.4375);
             int i = mapdata != null ? entityIn.getRotation() % 4 * 2 : entityIn.getRotation();
-            matrixStackIn.mulPose(Axis.ZP.rotationDegrees((float) i * 360.0F / 8.0F));
+            matrixStackIn.mulPose(Axis.ZP.rotationDegrees((float) i * 360.0f / 8.0f));
             if (mapdata != null) {
-                matrixStackIn.mulPose(Axis.ZP.rotationDegrees(180.0F));
-                float f = 0.0078125F;
-                matrixStackIn.scale(0.0078125F, 0.0078125F, 0.0078125F);
-                matrixStackIn.translate(-64.0D, -64.0D, 0.0D);
-                matrixStackIn.translate(0.0D, 0.0D, -1.0D);
+                matrixStackIn.mulPose(Axis.ZP.rotationDegrees(180.0f));
+                float f = 0.0078125f;
+                matrixStackIn.scale(0.0078125f, 0.0078125f, 0.0078125f);
+                matrixStackIn.translate(-64.0, -64.0, 0.0);
+                matrixStackIn.translate(0.0, 0.0, -1.0);
                 MapId id = itemstack.get(DataComponents.MAP_ID);
                 if (mapdata != null && id != null) {
                     mc.gameRenderer.getMapRenderer().render(matrixStackIn, bufferIn, id, mapdata, true, packedLightIn);
                 }
             } else {
-                matrixStackIn.scale(0.5F, 0.5F, 0.5F);
+                matrixStackIn.scale(0.5f, 0.5f, 0.5f);
                 itemRenderer.renderStatic(itemstack, ItemDisplayContext.FIXED, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, entityIn.level(), entityIn.getId());
             }
         }
@@ -82,7 +82,7 @@ public class BambooItemFrameRenderer extends EntityRenderer<BambooItemFrame> {
 
     @Override
     public Vec3 getRenderOffset(BambooItemFrame entityIn, float partialTicks) {
-        return new Vec3((float) entityIn.getDirection().getStepX() * 0.3F, -0.25D, (float) entityIn.getDirection().getStepZ() * 0.3F);
+        return new Vec3((float) entityIn.getDirection().getStepX() * 0.3f, -0.25, (float) entityIn.getDirection().getStepZ() * 0.3f);
     }
 
     @Override
@@ -94,7 +94,7 @@ public class BambooItemFrameRenderer extends EntityRenderer<BambooItemFrame> {
     protected boolean shouldShowName(BambooItemFrame entity) {
         if (Minecraft.renderNames() && !entity.getItem().isEmpty() && entity.getItem().has(DataComponents.CUSTOM_NAME) && entityRenderDispatcher.crosshairPickEntity == entity) {
             double dist = entityRenderDispatcher.distanceToSqr(entity);
-            float f = entity.isDiscrete() ? 32.0F : 64.0F;
+            float f = entity.isDiscrete() ? 32.0f : 64.0f;
             return dist < (double) (f * f);
         } else {
             return false;

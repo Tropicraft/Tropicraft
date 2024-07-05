@@ -62,7 +62,7 @@ public class EntityAIEatToHeal extends Goal {
         if (hasFoodSource(entityObj.inventory)) {
             consumeOneStackSizeOfFood(entityObj.inventory);
             entityObj.heal(5);
-            entityObj.level().playSound(null, entityObj.blockPosition(), SoundEvents.PLAYER_BURP, SoundSource.NEUTRAL, 1F, 1F);
+            entityObj.level().playSound(null, entityObj.blockPosition(), SoundEvents.PLAYER_BURP, SoundSource.NEUTRAL, 1.0f, 1.0f);
             return;
         }
 
@@ -80,7 +80,7 @@ public class EntityAIEatToHeal extends Goal {
             if (dist < 5D) {
                 consumeOneStackSizeOfFoodAtHome();
                 entityObj.heal(5);
-                entityObj.level().playSound(null, entityObj.blockPosition(), SoundEvents.PLAYER_BURP, SoundSource.NEUTRAL, 1F, 1F);
+                entityObj.level().playSound(null, entityObj.blockPosition(), SoundEvents.PLAYER_BURP, SoundSource.NEUTRAL, 1.0f, 1.0f);
                 return;
             }
 
@@ -93,14 +93,14 @@ public class EntityAIEatToHeal extends Goal {
 
                     boolean success = false;
 
-                    if (entityObj.distanceToSqr(Vec3.atCenterOf(blockposGoal)) > 256.0D) {
-                        Vec3 Vector3d = DefaultRandomPos.getPosTowards(entityObj, 14, 3, new Vec3((double) i + 0.5D, j, (double) k + 0.5D), (float) Math.PI / 2F);
+                    if (entityObj.distanceToSqr(Vec3.atCenterOf(blockposGoal)) > 256.0) {
+                        Vec3 Vector3d = DefaultRandomPos.getPosTowards(entityObj, 14, 3, new Vec3((double) i + 0.5, j, (double) k + 0.5), (float) Math.PI / 2.0f);
 
                         if (Vector3d != null) {
-                            success = entityObj.getNavigation().moveTo(Vector3d.x, Vector3d.y, Vector3d.z, 1.0D);
+                            success = entityObj.getNavigation().moveTo(Vector3d.x, Vector3d.y, Vector3d.z, 1.0);
                         }
                     } else {
-                        success = entityObj.getNavigation().moveTo((double) i + 0.5D, (double) j, (double) k + 0.5D, 1.0D);
+                        success = entityObj.getNavigation().moveTo((double) i + 0.5, (double) j, (double) k + 0.5, 1.0);
                     }
 
                     if (!success) {

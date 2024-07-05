@@ -76,7 +76,7 @@ public class ToucanEntity extends Animal implements FlyingAnimal {
     protected void registerGoals() {
         goalSelector.addGoal(0, new PanicGoal(this, 1.25));
         goalSelector.addGoal(0, new FloatGoal(this));
-        goalSelector.addGoal(1, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        goalSelector.addGoal(1, new LookAtPlayerGoal(this, Player.class, 8.0f));
         goalSelector.addGoal(2, new TemptGoal(this, 1.25, Ingredient.of(TropicraftTags.Items.FRUITS), false));
         goalSelector.addGoal(3, new WanderGoal(this, 1.0));
     }

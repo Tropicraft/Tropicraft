@@ -53,7 +53,7 @@ public abstract class FurnitureEntity extends Entity {
         this.itemLookup = itemLookup;
         blocksBuilding = true;
         //TODO this will result in pushing acting weird - but the variable is gone in 1.17 (apparently)
-        // this.pushthrough = .95F;
+        // this.pushthrough = 0.95f;
     }
 
     @Override
@@ -103,7 +103,7 @@ public abstract class FurnitureEntity extends Entity {
         //updateRocking();
 
         checkInsideBlocks();
-        List<Entity> list = level().getEntities(this, getBoundingBox().inflate((double) 0.2F, (double) -0.01F, (double) 0.2F), EntitySelector.pushableBy(this));
+        List<Entity> list = level().getEntities(this, getBoundingBox().inflate((double) 0.2f, (double) -0.01f, (double) 0.2f), EntitySelector.pushableBy(this));
         if (!list.isEmpty()) {
             for (Entity entity : list) {
                 if (!entity.hasPassenger(this)) {
@@ -180,7 +180,7 @@ public abstract class FurnitureEntity extends Entity {
         if (!level().isClientSide && isAlive()) {
             setForwardDirection(-getForwardDirection());
             setTimeSinceHit(10);
-            setDamage(getDamage() + amount * 10.0F);
+            setDamage(getDamage() + amount * 10.0f);
             markHurt();
             boolean flag = damageSource.getEntity() instanceof Player && ((Player) damageSource.getEntity()).getAbilities().instabuild;
 
@@ -191,7 +191,7 @@ public abstract class FurnitureEntity extends Entity {
                 }
 
                 if (!flag) {
-                    spawnAtLocation(getItemStack(), 0.0F);
+                    spawnAtLocation(getItemStack(), 0.0f);
                 }
 
                 remove(RemovalReason.KILLED);
@@ -209,7 +209,7 @@ public abstract class FurnitureEntity extends Entity {
     public void animateHurt(float direction) {
         setForwardDirection(-1 * getForwardDirection());
         setTimeSinceHit(10);
-        setDamage(getDamage() * 10.0F);
+        setDamage(getDamage() * 10.0f);
     }
 
     @Override

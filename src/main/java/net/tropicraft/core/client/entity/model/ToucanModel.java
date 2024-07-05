@@ -44,23 +44,23 @@ public class ToucanModel extends HierarchicalModel<ToucanEntity> {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
 
-        PartDefinition body = root.addOrReplaceChild("body_base", CubeListBuilder.create().texOffs(0, 0).addBox(-1.0F, -1.5F, -4.0F, 2.0F, 2.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 23.0F, 2.0F, -0.4363F, 0.0F, 0.0F));
+        PartDefinition body = root.addOrReplaceChild("body_base", CubeListBuilder.create().texOffs(0, 0).addBox(-1.0f, -1.5f, -4.0f, 2.0f, 2.0f, 4.0f, new CubeDeformation(0.0f)), PartPose.offsetAndRotation(0.0f, 23.0f, 2.0f, -0.4363f, 0.0f, 0.0f));
 
-        body.addOrReplaceChild("leg_left", CubeListBuilder.create().texOffs(5, 26).addBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.25F, 0.5F, -1.0F, 0.1309F, 0.0F, 0.0F));
-        body.addOrReplaceChild("leg_right", CubeListBuilder.create().texOffs(5, 24).addBox(-1.0F, 0.0F, 0.0F, 1.0F, 1.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.25F, 0.5F, -1.0F, 0.1309F, 0.0F, 0.0F));
+        body.addOrReplaceChild("leg_left", CubeListBuilder.create().texOffs(5, 26).addBox(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, new CubeDeformation(0.0f)), PartPose.offsetAndRotation(0.25f, 0.5f, -1.0f, 0.1309f, 0.0f, 0.0f));
+        body.addOrReplaceChild("leg_right", CubeListBuilder.create().texOffs(5, 24).addBox(-1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, new CubeDeformation(0.0f)), PartPose.offsetAndRotation(-0.25f, 0.5f, -1.0f, 0.1309f, 0.0f, 0.0f));
 
-        body.addOrReplaceChild("wing_left", CubeListBuilder.create().texOffs(9, 12).addBox(0.0F, 0.0F, 0.0F, 0.0F, 2.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(1.0F, -1.5F, -3.0F, 0.0F, 0.0436F, 0.0F));
-        body.addOrReplaceChild("wing_right", CubeListBuilder.create().texOffs(0, 12).addBox(0.0F, 0.0F, 0.0F, 0.0F, 2.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.0F, -1.5F, -3.0F, 0.0F, -0.0436F, 0.0F));
+        body.addOrReplaceChild("wing_left", CubeListBuilder.create().texOffs(9, 12).addBox(0.0f, 0.0f, 0.0f, 0.0f, 2.0f, 4.0f, new CubeDeformation(0.0f)), PartPose.offsetAndRotation(1.0f, -1.5f, -3.0f, 0.0f, 0.0436f, 0.0f));
+        body.addOrReplaceChild("wing_right", CubeListBuilder.create().texOffs(0, 12).addBox(0.0f, 0.0f, 0.0f, 0.0f, 2.0f, 4.0f, new CubeDeformation(0.0f)), PartPose.offsetAndRotation(-1.0f, -1.5f, -3.0f, 0.0f, -0.0436f, 0.0f));
 
-        body.addOrReplaceChild("tail_top", CubeListBuilder.create().texOffs(13, 7).addBox(-1.0F, 0.0F, 0.0F, 2.0F, 0.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -1.0F, -0.5F, 0.7854F, 0.0F, 0.0F));
-        body.addOrReplaceChild("tail_bottom_left", CubeListBuilder.create().texOffs(0, 7).addBox(0.0F, 0.0F, 0.0F, 2.0F, 0.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.0F, -0.5F, 0.0F, 0.9163F, 0.0F, 0.0F));
-        body.addOrReplaceChild("tail_bottom_right", CubeListBuilder.create().texOffs(13, 0).addBox(-2.0F, 0.0F, 0.0F, 2.0F, 0.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(1.0F, -0.48F, 0.0F, 0.9163F, 0.0F, 0.0F));
+        body.addOrReplaceChild("tail_top", CubeListBuilder.create().texOffs(13, 7).addBox(-1.0f, 0.0f, 0.0f, 2.0f, 0.0f, 4.0f, new CubeDeformation(0.0f)), PartPose.offsetAndRotation(0.0f, -1.0f, -0.5f, 0.7854f, 0.0f, 0.0f));
+        body.addOrReplaceChild("tail_bottom_left", CubeListBuilder.create().texOffs(0, 7).addBox(0.0f, 0.0f, 0.0f, 2.0f, 0.0f, 4.0f, new CubeDeformation(0.0f)), PartPose.offsetAndRotation(-1.0f, -0.5f, 0.0f, 0.9163f, 0.0f, 0.0f));
+        body.addOrReplaceChild("tail_bottom_right", CubeListBuilder.create().texOffs(13, 0).addBox(-2.0f, 0.0f, 0.0f, 2.0f, 0.0f, 4.0f, new CubeDeformation(0.0f)), PartPose.offsetAndRotation(1.0f, -0.48f, 0.0f, 0.9163f, 0.0f, 0.0f));
 
-        PartDefinition neck = body.addOrReplaceChild("neck_base", CubeListBuilder.create().texOffs(9, 19).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 2.0F, 1.0F, new CubeDeformation(0.002F)), PartPose.offsetAndRotation(0.0F, 0.5F, -4.0F, -1.1345F, 0.0F, 0.0F));
-        PartDefinition head = neck.addOrReplaceChild("head_base", CubeListBuilder.create().texOffs(0, 19).addBox(-1.0F, -2.0F, -2.0F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.004F)), PartPose.offset(0.0F, 0.0F, -1.0F));
+        PartDefinition neck = body.addOrReplaceChild("neck_base", CubeListBuilder.create().texOffs(9, 19).addBox(-1.0f, -2.0f, -1.0f, 2.0f, 2.0f, 1.0f, new CubeDeformation(0.002f)), PartPose.offsetAndRotation(0.0f, 0.5f, -4.0f, -1.1345f, 0.0f, 0.0f));
+        PartDefinition head = neck.addOrReplaceChild("head_base", CubeListBuilder.create().texOffs(0, 19).addBox(-1.0f, -2.0f, -2.0f, 2.0f, 2.0f, 2.0f, new CubeDeformation(0.004f)), PartPose.offset(0.0f, 0.0f, -1.0f));
 
-        head.addOrReplaceChild("beak_top", CubeListBuilder.create().texOffs(0, 24).addBox(-0.5F, 0.0F, -1.0F, 1.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, -1.0F));
-        head.addOrReplaceChild("beak_bottom", CubeListBuilder.create().texOffs(16, 19).addBox(-0.5F, 0.0F, 0.0F, 1.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, -1.0F));
+        head.addOrReplaceChild("beak_top", CubeListBuilder.create().texOffs(0, 24).addBox(-0.5f, 0.0f, -1.0f, 1.0f, 3.0f, 1.0f, new CubeDeformation(0.0f)), PartPose.offset(0.0f, 0.0f, -1.0f));
+        head.addOrReplaceChild("beak_bottom", CubeListBuilder.create().texOffs(16, 19).addBox(-0.5f, 0.0f, 0.0f, 1.0f, 3.0f, 1.0f, new CubeDeformation(0.0f)), PartPose.offset(0.0f, 0.0f, -1.0f));
 
         return LayerDefinition.create(mesh, 32, 32);
     }

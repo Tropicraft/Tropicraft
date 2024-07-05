@@ -119,7 +119,7 @@ public class TropicraftRenderUtils {
 
             // TODO what is this now?
             if (/*!Minecraft.getInstance().getItemRenderer().shouldRenderItemIn3D(stack) || */itemStack.getItem() instanceof PlayerHeadItem) {
-                stack.mulPose(Axis.YP.rotationDegrees(180.0F));
+                stack.mulPose(Axis.YP.rotationDegrees(180.0f));
             }
             Minecraft.getInstance().getItemRenderer().renderStatic(itemStack, ItemDisplayContext.FIXED, combinedLightIn, combinedOverlayIn, stack, buffer, level, seed);
             stack.popPose();

@@ -28,10 +28,10 @@ public class VMonkeyHeldItemLayer<T extends VMonkeyEntity, M extends EntityModel
     public void render(PoseStack stack, MultiBufferSource buffer, int packedLightIn, T monkey, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if (monkey.isOrderedToSit() && !monkey.getMainHandItem().isEmpty()) {
             stack.pushPose();
-            stack.translate(0.0F, 1.30F, -0.425F);
+            stack.translate(0.0f, 1.30f, -0.425f);
             stack.mulPose(Axis.ZP.rotationDegrees(180));
-            stack.scale(0.5F, 0.5F, 0.5F);
-            itemRenderer.renderStatic(monkey.getMainHandItem(), ItemDisplayContext.NONE, packedLightIn, LivingEntityRenderer.getOverlayCoords(monkey, 0.0F), stack, buffer, monkey.level(), monkey.getId());
+            stack.scale(0.5f, 0.5f, 0.5f);
+            itemRenderer.renderStatic(monkey.getMainHandItem(), ItemDisplayContext.NONE, packedLightIn, LivingEntityRenderer.getOverlayCoords(monkey, 0.0f), stack, buffer, monkey.level(), monkey.getId());
             stack.popPose();
         }
     }

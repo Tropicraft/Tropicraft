@@ -148,7 +148,7 @@ public final class HugePlantBlock extends BushBlock {
 
             // Play break sound
             SoundType soundtype = state.getSoundType(world, pos, null);
-            world.playSound(null, pos, soundtype.getBreakSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
+            world.playSound(null, pos, soundtype.getBreakSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0f) / 2.0f, soundtype.getPitch() * 0.8f);
 
             for (BlockPos plantPos : shape) {
                 world.setBlock(plantPos, Blocks.AIR.defaultBlockState(), flags);

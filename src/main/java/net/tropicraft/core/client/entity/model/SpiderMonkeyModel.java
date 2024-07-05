@@ -48,77 +48,77 @@ public class SpiderMonkeyModel<T extends SpiderMonkeyEntity> extends Hierarchica
         PartDefinition body = root.addOrReplaceChild("body_base",
                 CubeListBuilder.create()
                         .texOffs(0, 0)
-                        .addBox(-2.5F, -9.0F, -2.0F, 5.0F, 10.0F, 3.0F, false),
-                PartPose.offsetAndRotation(0.0F, 15.0F, 4.0F, 80.0F, 0.0F, 0.0F));
+                        .addBox(-2.5f, -9.0f, -2.0f, 5.0f, 10.0f, 3.0f, false),
+                PartPose.offsetAndRotation(0.0f, 15.0f, 4.0f, 80.0f, 0.0f, 0.0f));
 
         PartDefinition head = body.addOrReplaceChild("head_base",
                 CubeListBuilder.create()
                         .texOffs(17, 0)
-                        .addBox(-2.0F, -4.0F, -3.0F, 4.0F, 4.0F, 4.0F, false),
-                PartPose.offsetAndRotation(0.0F, -9.0F, 0.0F, -75.0F, 0.0F, 0.0F));
+                        .addBox(-2.0f, -4.0f, -3.0f, 4.0f, 4.0f, 4.0f, false),
+                PartPose.offsetAndRotation(0.0f, -9.0f, 0.0f, -75.0f, 0.0f, 0.0f));
 
         head.addOrReplaceChild("monke",
                 CubeListBuilder.create()
                         .texOffs(9, 39)
-                        .addBox(-1.0F, 0.0F, -1.0F, 2.0F, 2.0F, 2.0F, false),
-                PartPose.offset(0.0F, -1.5F, -2.5F));
+                        .addBox(-1.0f, 0.0f, -1.0f, 2.0f, 2.0f, 2.0f, false),
+                PartPose.offset(0.0f, -1.5f, -2.5f));
 
         PartDefinition tail = body.addOrReplaceChild("tail_a",
                 CubeListBuilder.create()
                         .texOffs(0, 28)
-                        .addBox(-1.0F, -0.5F, -1.0F, 2.0F, 8.0F, 2.0F, false),
-                PartPose.offsetAndRotation(0.0F, 1.0F, 0.0F, 65.0F, 0.0F, 0.0F));
+                        .addBox(-1.0f, -0.5f, -1.0f, 2.0f, 8.0f, 2.0f, false),
+                PartPose.offsetAndRotation(0.0f, 1.0f, 0.0f, 65.0f, 0.0f, 0.0f));
 
         tail.addOrReplaceChild("tail_b",
                 CubeListBuilder.create()
                         .texOffs(0, 39)
-                        .addBox(-0.99F, 0.0F, -2.0F, 2.0F, 6.0F, 2.0F, false),
-                PartPose.offsetAndRotation(0.0F, 7.5F, 1.0F, -35.0F, 0.0F, 0.0F));
+                        .addBox(-0.99f, 0.0f, -2.0f, 2.0f, 6.0f, 2.0f, false),
+                PartPose.offsetAndRotation(0.0f, 7.5f, 1.0f, -35.0f, 0.0f, 0.0f));
 
         body.addOrReplaceChild("arm_left_a",
                 CubeListBuilder.create()
                         .texOffs(9, 14)
-                        .addBox(-1.0F, -1.0F, -1.0F, 2.0F, 11.0F, 2.0F, false),
-                PartPose.offsetAndRotation(-2.5F, -7.5F, -0.5F, -82.5F, 2.5F, 2.5F));
+                        .addBox(-1.0f, -1.0f, -1.0f, 2.0f, 11.0f, 2.0f, false),
+                PartPose.offsetAndRotation(-2.5f, -7.5f, -0.5f, -82.5f, 2.5f, 2.5f));
 
         body.addOrReplaceChild("arm_right_a",
                 CubeListBuilder.create()
                         .texOffs(0, 14)
-                        .addBox(-1.0F, -1.0F, -1.0F, 2.0F, 11.0F, 2.0F, false),
-                PartPose.offsetAndRotation(2.5F, -7.5F, -0.5F, -82.5F, -2.5F, -2.5F));
+                        .addBox(-1.0f, -1.0f, -1.0f, 2.0f, 11.0f, 2.0f, false),
+                PartPose.offsetAndRotation(2.5f, -7.5f, -0.5f, -82.5f, -2.5f, -2.5f));
 
         PartDefinition legLeft = body.addOrReplaceChild("leg_left_a",
                 CubeListBuilder.create(),
-                PartPose.offset(-2.0F, 1.0F, -1.5F));
+                PartPose.offset(-2.0f, 1.0f, -1.5f));
 
         legLeft.addOrReplaceChild("leg_left_a_r1",
                 CubeListBuilder.create()
                         .texOffs(18, 28)
-                        .addBox(-0.5F, -0.5F, -1.0F, 2.0F, 8.0F, 2.0F, false),
-                PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -75.0F, 5.0F, -2.5F));
+                        .addBox(-0.5f, -0.5f, -1.0f, 2.0f, 8.0f, 2.0f, false),
+                PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, -75.0f, 5.0f, -2.5f));
 
         PartDefinition legRight = body.addOrReplaceChild("leg_right_a",
                 CubeListBuilder.create(),
-                PartPose.offset(2.0F, 1.0F, -1.5F));
+                PartPose.offset(2.0f, 1.0f, -1.5f));
 
         legRight.addOrReplaceChild("leg_right_a_r1",
                 CubeListBuilder.create()
                         .texOffs(9, 28)
-                        .addBox(-1.5F, -0.5F, -1.0F, 2.0F, 8.0F, 2.0F, false),
-                PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -75.0F, -5.0F, 2.5F));
+                        .addBox(-1.5f, -0.5f, -1.0f, 2.0f, 8.0f, 2.0f, false),
+                PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, -75.0f, -5.0f, 2.5f));
 
         return LayerDefinition.create(mesh, 64, 64);
     }
 
     private void setDefaultRotationAngles() {
-        setRotationAngle(body_base, 80.0F, 0.0F, 0.0F);
-        setRotationAngle(head_base, -75.0F, 0.0F, 0.0F);
-        setRotationAngle(tail_a, 65.0F, 0.0F, 0.0F);
-        setRotationAngle(tail_b, -35.0F, 0.0F, 0.0F);
-        setRotationAngle(arm_left_a, -82.5F, 2.5F, 2.5F);
-        setRotationAngle(leg_left_a_r1, -75.0F, 5.0F, -2.5F);
-        setRotationAngle(leg_right_a_r1, -75.0F, -5.0F, 2.5F);
-        setRotationAngle(arm_right_a, -82.5F, -2.5F, -2.5F);
+        setRotationAngle(body_base, 80.0f, 0.0f, 0.0f);
+        setRotationAngle(head_base, -75.0f, 0.0f, 0.0f);
+        setRotationAngle(tail_a, 65.0f, 0.0f, 0.0f);
+        setRotationAngle(tail_b, -35.0f, 0.0f, 0.0f);
+        setRotationAngle(arm_left_a, -82.5f, 2.5f, 2.5f);
+        setRotationAngle(leg_left_a_r1, -75.0f, 5.0f, -2.5f);
+        setRotationAngle(leg_right_a_r1, -75.0f, -5.0f, 2.5f);
+        setRotationAngle(arm_right_a, -82.5f, -2.5f, -2.5f);
     }
 
     @Override
@@ -126,9 +126,9 @@ public class SpiderMonkeyModel<T extends SpiderMonkeyEntity> extends Hierarchica
         head_base.xRot += headPitch * ModelAnimator.DEG_TO_RAD;
         head_base.zRot -= headYaw * ModelAnimator.DEG_TO_RAD;
 
-        try (ModelAnimator.Cycle idle = ModelAnimator.cycle(age * 0.025F, 0.05F)) {
-            tail_a.xRot += idle.eval(1.0F, 1.0F, 0.0F, 0.0F);
-            tail_b.xRot += idle.eval(1.0F, 1.0F, 0.2F, 0.0F);
+        try (ModelAnimator.Cycle idle = ModelAnimator.cycle(age * 0.025f, 0.05f)) {
+            tail_a.xRot += idle.eval(1.0f, 1.0f, 0.0f, 0.0f);
+            tail_b.xRot += idle.eval(1.0f, 1.0f, 0.2f, 0.0f);
         }
     }
 
@@ -137,7 +137,7 @@ public class SpiderMonkeyModel<T extends SpiderMonkeyEntity> extends Hierarchica
         setDefaultRotationAngles();
 
         float standAnimation = entity.getStandAnimation(partialTicks);
-        float standAngle = standAnimation * 70.0F * ModelAnimator.DEG_TO_RAD;
+        float standAngle = standAnimation * 70.0f * ModelAnimator.DEG_TO_RAD;
 
         body_base.xRot -= standAngle;
         head_base.xRot += standAngle;
@@ -146,11 +146,11 @@ public class SpiderMonkeyModel<T extends SpiderMonkeyEntity> extends Hierarchica
         leg_left_a_r1.xRot += standAngle;
         leg_right_a_r1.xRot += standAngle;
 
-        try (ModelAnimator.Cycle walk = ModelAnimator.cycle(limbSwing * 0.2F, limbSwingAmount)) {
-            arm_left_a.xRot += walk.eval(1.0F, 1.0F);
-            arm_right_a.xRot += walk.eval(-1.0F, 1.0F);
-            leg_left_a_r1.xRot += walk.eval(-1.0F, 1.0F);
-            leg_right_a_r1.xRot += walk.eval(1.0F, 1.0F);
+        try (ModelAnimator.Cycle walk = ModelAnimator.cycle(limbSwing * 0.2f, limbSwingAmount)) {
+            arm_left_a.xRot += walk.eval(1.0f, 1.0f);
+            arm_right_a.xRot += walk.eval(-1.0f, 1.0f);
+            leg_left_a_r1.xRot += walk.eval(-1.0f, 1.0f);
+            leg_right_a_r1.xRot += walk.eval(1.0f, 1.0f);
         }
     }
 

@@ -116,7 +116,7 @@ public class VolcanoBlockEntity extends BlockEntity {
                         raiseLavaLevels();
                     } else {
                         ticksUntilEruption = 0;
-                        getLevel().playLocalSound(worldPosition.getX(), 73, worldPosition.getY(), SoundEvents.GENERIC_EXPLODE.value(), SoundSource.NEUTRAL, 1.0F, getLevel().random.nextFloat() / 4 + 0.825F, false);
+                        getLevel().playLocalSound(worldPosition.getX(), 73, worldPosition.getY(), SoundEvents.GENERIC_EXPLODE.value(), SoundSource.NEUTRAL, 1.0f, getLevel().random.nextFloat() / 4 + 0.825f, false);
                         int balls = getLevel().random.nextInt(25) + 15;
 
                         for (int i = 0; i < balls; i++) {
@@ -227,7 +227,7 @@ public class VolcanoBlockEntity extends BlockEntity {
             double x = worldPosition.getX() + getLevel().random.nextInt(radius) * (getLevel().random.nextBoolean() ? -1 : 1);
             double y = lavaLevel + getLevel().random.nextInt(6);
             double z = worldPosition.getZ() + getLevel().random.nextInt(radius) * (getLevel().random.nextBoolean() ? -1 : 1);
-            getLevel().addParticle(ParticleTypes.LARGE_SMOKE, true, x, y, z, 0.0D, 0.7, 0.0D);
+            getLevel().addParticle(ParticleTypes.LARGE_SMOKE, true, x, y, z, 0.0, 0.7, 0.0);
             //System.out.println("Spewing smoke " + x + " " + z);
         }
     }

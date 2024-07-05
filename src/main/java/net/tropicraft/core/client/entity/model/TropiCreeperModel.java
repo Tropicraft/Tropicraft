@@ -34,48 +34,48 @@ public class TropiCreeperModel extends HierarchicalModel<TropiCreeperEntity> {
 
         PartDefinition modelPartHead = root.addOrReplaceChild("head",
                 CubeListBuilder.create().texOffs(0, 0)
-                        .addBox(-4F, -8F, -4F, 8, 8, 8),
-                PartPose.offsetAndRotation(0F, 6F, 0F, 0F, 0F, 0F));
+                        .addBox(-4.0f, -8.0f, -4.0f, 8, 8, 8),
+                PartPose.offsetAndRotation(0.0f, 6.0f, 0.0f, 0.0f, 0.0f, 0.0f));
 
         root.addOrReplaceChild("body",
                 CubeListBuilder.create().texOffs(16, 16)
-                        .addBox(-4F, 0F, -2F, 8, 12, 4),
-                PartPose.offset(0F, 6F, 0F));
+                        .addBox(-4.0f, 0.0f, -2.0f, 8, 12, 4),
+                PartPose.offset(0.0f, 6.0f, 0.0f));
 
         root.addOrReplaceChild("leg3",
                 CubeListBuilder.create().texOffs(0, 16)
-                        .addBox(-2F, 2F, -2F, 4, 6, 4),
-                PartPose.offset(-2F, 16, -4F));
+                        .addBox(-2.0f, 2.0f, -2.0f, 4, 6, 4),
+                PartPose.offset(-2.0f, 16, -4.0f));
 
         root.addOrReplaceChild("leg4",
                 CubeListBuilder.create().texOffs(0, 16)
-                        .addBox(-2F, 2F, -2F, 4, 6, 4),
-                PartPose.offset(2.0F, 16, -4F));
+                        .addBox(-2.0f, 2.0f, -2.0f, 4, 6, 4),
+                PartPose.offset(2.0f, 16, -4.0f));
 
         root.addOrReplaceChild("leg1",
                 CubeListBuilder.create().texOffs(0, 16)
-                        .addBox(-2F, 2F, -2F, 4, 6, 4),
-                PartPose.offset(-2F, 16, 4F));
+                        .addBox(-2.0f, 2.0f, -2.0f, 4, 6, 4),
+                PartPose.offset(-2.0f, 16, 4.0f));
 
         root.addOrReplaceChild("leg2",
                 CubeListBuilder.create().texOffs(0, 16)
-                        .addBox(-2F, 2F, -2F, 4, 6, 4),
-                PartPose.offset(2.0F, 16, 4F));
+                        .addBox(-2.0f, 2.0f, -2.0f, 4, 6, 4),
+                PartPose.offset(2.0f, 16, 4.0f));
 
         modelPartHead.addOrReplaceChild("hat1",
                 CubeListBuilder.create().texOffs(24, 0).mirror()
-                        .addBox(-5F, -6F, -5F, 12, 1, 6),
-                PartPose.offset(-1F, -3F, -1F));
+                        .addBox(-5.0f, -6.0f, -5.0f, 12, 1, 6),
+                PartPose.offset(-1.0f, -3.0f, -1.0f));
 
         modelPartHead.addOrReplaceChild("hat2",
                 CubeListBuilder.create().texOffs(40, 24)
-                        .addBox(0F, -6F, 0F, 6, 2, 6),
-                PartPose.offset(-3F, -5F, -3F));
+                        .addBox(0.0f, -6.0f, 0.0f, 6, 2, 6),
+                PartPose.offset(-3.0f, -5.0f, -3.0f));
 
         modelPartHead.addOrReplaceChild("hat3",
                 CubeListBuilder.create().texOffs(24, 0)
-                        .addBox(-5F, -6F, 0F, 12, 1, 6),
-                PartPose.offset(-1F, -3F, 0F));
+                        .addBox(-5.0f, -6.0f, 0.0f, 12, 1, 6),
+                PartPose.offset(-1.0f, -3.0f, 0.0f));
 
         return LayerDefinition.create(mesh, 64, 32);
     }
@@ -84,10 +84,10 @@ public class TropiCreeperModel extends HierarchicalModel<TropiCreeperEntity> {
     public void setupAnim(TropiCreeperEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
         head.xRot = headPitch * Mth.DEG_TO_RAD;
-        leg1.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-        leg2.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount;
-        leg3.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount;
-        leg4.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+        leg1.xRot = Mth.cos(limbSwing * 0.6662f) * 1.4f * limbSwingAmount;
+        leg2.xRot = Mth.cos(limbSwing * 0.6662f + Mth.PI) * 1.4f * limbSwingAmount;
+        leg3.xRot = Mth.cos(limbSwing * 0.6662f + Mth.PI) * 1.4f * limbSwingAmount;
+        leg4.xRot = Mth.cos(limbSwing * 0.6662f) * 1.4f * limbSwingAmount;
     }
 
     @Override

@@ -77,8 +77,8 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityWithComp
             rotationSpeed += rot * 0.25f;
 
             float ang = getYRot();
-            float moveX = Mth.sin(-ang * 0.017453292F) * move * 0.0035f;
-            float moveZ = Mth.cos(ang * 0.017453292F) * move * 0.0035f;
+            float moveX = Mth.sin(-ang * 0.017453292f) * move * 0.0035f;
+            float moveZ = Mth.cos(ang * 0.017453292f) * move * 0.0035f;
             setDeltaMovement(getDeltaMovement().add(moveX, 0, moveZ));
         }
 
@@ -100,7 +100,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityWithComp
 
         double water = getWaterLevel();
         double center = getCenterY();
-        double eps = 1 / 16D;
+        double eps = 1 / 16;
         if (water < center - eps) { // Gravity
             setDeltaMovement(getDeltaMovement().add(0, -Mth.clamp(center - water, 0, 0.04), 0));
         } else if (water > center + eps) {
@@ -123,7 +123,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityWithComp
         rotationSpeed *= 0.9f;
 
         if (!level().isClientSide) {
-            List<Entity> list = level().getEntities(this, getBoundingBox().inflate(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+            List<Entity> list = level().getEntities(this, getBoundingBox().inflate(0.20000000298023224, 0.0, 0.20000000298023224));
             for (Entity entity : list) {
                 if (entity != getControllingPassenger() && entity.isPushable()) {
                     entity.push(this);
@@ -143,7 +143,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityWithComp
 
     private double getCenterY() {
         AABB bb = getBoundingBox();
-        return bb.minY + (bb.maxY - bb.minY) * 0.5D;
+        return bb.minY + (bb.maxY - bb.minY) * 0.5;
     }
 
     @Override
@@ -156,7 +156,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityWithComp
     protected boolean updateInWaterStateAndDoFluidPushing() {
         fluidHeight.clear();
         updateWaterState();
-        boolean lava = updateFluidHeightAndDoFluidPushing(FluidTags.LAVA, level().dimensionType().ultraWarm() ? 0.007 : 0.0023333333333333335D);
+        boolean lava = updateFluidHeightAndDoFluidPushing(FluidTags.LAVA, level().dimensionType().ultraWarm() ? 0.007 : 0.0023333333333333335);
         return isInWater() || lava;
     }
 
@@ -165,12 +165,12 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityWithComp
         setBoundingBox(temp.contract(1, 0, 1).contract(-1, 0.125, -1));
 
         try {
-            if (updateFluidHeightAndDoFluidPushing(FluidTags.WATER, 0.014D)) {
+            if (updateFluidHeightAndDoFluidPushing(FluidTags.WATER, 0.014)) {
                 if (!wasTouchingWater && !firstTick) {
                     doWaterSplashEffect();
                 }
 
-                fallDistance = 0.0F;
+                fallDistance = 0.0f;
                 wasTouchingWater = true;
                 clearFire();
             } else {
@@ -218,8 +218,8 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityWithComp
             entityToUpdate.setYBodyRot(getYRot());
             float yaw = Mth.wrapDegrees(entityToUpdate.getYRot() - getYRot());
             float pitch = Mth.wrapDegrees(entityToUpdate.getXRot() - getXRot());
-            float clampedYaw = Mth.clamp(yaw, -105.0F, 105.0F);
-            float clampedPitch = Mth.clamp(pitch, -100F, 0F);
+            float clampedYaw = Mth.clamp(yaw, -105.0f, 105.0f);
+            float clampedPitch = Mth.clamp(pitch, -100.0f, 0.0f);
             float yawClampDelta = clampedYaw - yaw;
             float pitchClampDelta = clampedPitch - pitch;
             entityToUpdate.yRotO += yawClampDelta;

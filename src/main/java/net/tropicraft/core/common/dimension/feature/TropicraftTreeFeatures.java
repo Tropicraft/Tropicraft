@@ -49,8 +49,8 @@ import java.util.function.Supplier;
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.*;
 
 public final class TropicraftTreeFeatures {
-    private static final BeehiveDecorator BEEHIVE_002 = new BeehiveDecorator(0.02F);
-    private static final BeehiveDecorator BEEHIVE_005 = new BeehiveDecorator(0.05F);
+    private static final BeehiveDecorator BEEHIVE_002 = new BeehiveDecorator(0.02f);
+    private static final BeehiveDecorator BEEHIVE_005 = new BeehiveDecorator(0.05f);
 
     public static final ResourceKey<ConfiguredFeature<?, ?>> GRAPEFRUIT_TREE = createKey("grapefruit_tree");
     public static final ResourceKey<ConfiguredFeature<?, ?>> ORANGE_TREE = createKey("orange_tree");

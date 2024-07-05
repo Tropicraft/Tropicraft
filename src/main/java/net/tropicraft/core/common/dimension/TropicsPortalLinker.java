@@ -48,7 +48,7 @@ public class TropicsPortalLinker {
             portalInfo = findExistingPortal(entity);
         }
         long finishTime = System.currentTimeMillis();
-        LOGGER.debug("It took {} seconds for TeleporterTropics.placeInPortal to complete", (finishTime - startTime) / 1000.0F);
+        LOGGER.debug("It took {} seconds for TeleporterTropics.placeInPortal to complete", (finishTime - startTime) / 1000.0f);
         return portalInfo;
     }
 
@@ -65,10 +65,10 @@ public class TropicsPortalLinker {
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
 
         for (int x = entityX - searchArea; x <= entityX + searchArea; x++) {
-            double distX = x + 0.5D - entity.getOnPos().getX();
+            double distX = x + 0.5 - entity.getOnPos().getX();
 
             for (int z = entityZ - searchArea; z <= entityZ + searchArea; z++) {
-                double distZ = z + 0.5D - entity.getOnPos().getZ();
+                double distZ = z + 0.5 - entity.getOnPos().getZ();
 
                 LevelChunk chunk = world.getChunk(SectionPos.blockToSectionCoord(x), SectionPos.blockToSectionCoord(z));
 
@@ -81,9 +81,9 @@ public class TropicsPortalLinker {
                             mutablePos.move(Direction.DOWN);
                         }
 
-                        double distY = y + 0.5D - mutablePos.getY();
+                        double distY = y + 0.5 - mutablePos.getY();
                         double distance = distX * distX + distY * distY + distZ * distZ;
-                        if (closestPortalDistance < 0.0D || distance < closestPortalDistance) {
+                        if (closestPortalDistance < 0.0 || distance < closestPortalDistance) {
                             closestPortalDistance = distance;
                             foundX = x;
                             foundY = y;
@@ -94,17 +94,17 @@ public class TropicsPortalLinker {
             }
         }
 
-        if (closestPortalDistance >= 0.0D) {
-            double newLocX = foundX + 0.5D;
-            double newLocY = foundY + 0.5D;
-            double newLocZ = foundZ + 0.5D;
+        if (closestPortalDistance >= 0.0) {
+            double newLocX = foundX + 0.5;
+            double newLocY = foundY + 0.5;
+            double newLocZ = foundZ + 0.5;
 
             BlockPos pos = new BlockPos(foundX, foundY, foundZ);
 
-            if (world.getBlockState(pos.west()).getBlock() == PORTAL_BLOCK) newLocX -= 0.5D;
-            if (world.getBlockState(pos.east()).getBlock() == PORTAL_BLOCK) newLocX += 0.5D;
-            if (world.getBlockState(pos.north()).getBlock() == PORTAL_BLOCK) newLocZ -= 0.5D;
-            if (world.getBlockState(pos.south()).getBlock() == PORTAL_BLOCK) newLocZ += 0.5D;
+            if (world.getBlockState(pos.west()).getBlock() == PORTAL_BLOCK) newLocX -= 0.5;
+            if (world.getBlockState(pos.east()).getBlock() == PORTAL_BLOCK) newLocX += 0.5;
+            if (world.getBlockState(pos.north()).getBlock() == PORTAL_BLOCK) newLocZ -= 0.5;
+            if (world.getBlockState(pos.south()).getBlock() == PORTAL_BLOCK) newLocZ += 0.5;
 
             return new PortalInfo(new Vec3(newLocX, newLocY + 2, newLocZ), entity.getYRot(), entity.getXRot());
         } else {
@@ -123,10 +123,10 @@ public class TropicsPortalLinker {
         int foundZ = entityZ;
 
         for (int x = entityX - searchArea; x <= entityX + searchArea; x++) {
-            double distX = (x + 0.5D) - entity.getX();
+            double distX = (x + 0.5) - entity.getX();
             nextCoords:
             for (int z = entityZ - searchArea; z <= entityZ + searchArea; z++) {
-                double distZ = (z + 0.5D) - entity.getZ();
+                double distZ = (z + 0.5) - entity.getZ();
 
                 // Find topmost solid block at this x,z location
                 int y = world.getMaxBuildHeight() - 1;
@@ -161,9 +161,9 @@ public class TropicsPortalLinker {
                         }
                     }
 
-                    double distY = (y + 0.5D) - entity.getY();
+                    double distY = (y + 0.5) - entity.getY();
                     double distance = distX * distX + distY * distY + distZ * distZ;
-                    if (closestSpot < 0.0D || distance < closestSpot) {
+                    if (closestSpot < 0.0 || distance < closestSpot) {
                         closestSpot = distance;
                         foundX = x;
                         foundY = y;
@@ -182,7 +182,7 @@ public class TropicsPortalLinker {
 
         // If we can't find a spot (e.g. we're in the middle of the ocean),
         // just put the portal at sea level
-        if (closestSpot < 0.0D) {
+        if (closestSpot < 0.0) {
             // Perhaps this was the culprit
             RandomSource r = RandomSource.create();
             foundX += r.nextInt(16) - 8;

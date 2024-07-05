@@ -67,9 +67,9 @@ public class TropiSpiderEntity extends Spider {
     @Override
     protected void registerGoals() {
         goalSelector.addGoal(0, new FloatGoal(this));
-        goalSelector.addGoal(2, new MeleeAttackGoal(this, 0.8D, false));
-        goalSelector.addGoal(7, new EntityAIWanderNotLazy(this, 0.8D, 40));
-        goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        goalSelector.addGoal(2, new MeleeAttackGoal(this, 0.8, false));
+        goalSelector.addGoal(7, new EntityAIWanderNotLazy(this, 0.8, 40));
+        goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0f));
         goalSelector.addGoal(8, new RandomLookAroundGoal(this));
     }
 
@@ -101,14 +101,14 @@ public class TropiSpiderEntity extends Spider {
         fallDistance = 0;
         // TODO port to new getSize() method
 //        if (this.getType() == Type.CHILD) {
-//            this.setSize(0.9F, 0.7F);
+//            this.setSize(0.9f, 0.7f);
 //        } else {
-//            this.setSize(1.4F, 0.9F);
+//            this.setSize(1.4f, 0.9f);
 //        }
         super.tick();
         LivingEntity attackTarget = getTarget();
         if (attackTarget != null) {
-            if (distanceToSqr(attackTarget) < 128D) {
+            if (distanceToSqr(attackTarget) < 128) {
                 Util.tryMoveToEntityLivingLongDist(this, attackTarget, 0.8f);
             }
         }
@@ -125,7 +125,7 @@ public class TropiSpiderEntity extends Spider {
                     setSpiderType(Type.ADULT);
                 }
                 if (mother != null) {
-                    if (distanceToSqr(mother) > 16D) {
+                    if (distanceToSqr(mother) > 16) {
                         Util.tryMoveToEntityLivingLongDist(this, mother, 0.8f);
                     } else {
                         getNavigation().stop();

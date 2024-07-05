@@ -19,14 +19,14 @@ public class UmbrellaRenderer extends FurnitureRenderer<UmbrellaEntity> {
 //    @Override
 //    public void doRenderShadowAndFire(Entity entityIn, double x, double y, double z, float yaw, float partialTicks) {
 //        if (this.renderManager.options != null) {
-//            if (this.renderManager.options.entityShadows && this.shadowSize > 0.0F && !entityIn.isInvisible() && this.renderManager.isRenderShadow()) {
+//            if (this.renderManager.options.entityShadows && this.shadowSize > 0.0f && !entityIn.isInvisible() && this.renderManager.isRenderShadow()) {
 //                // Don't do distance culling for umbrella shadows
 //                UmbrellaEntity entityUmbrella = (UmbrellaEntity) entityIn;
 //
 //                // Calculate which direction the umbrella is "shaking"
 //                Vector3d offsetVec = Vector3d.ZERO;
-//                float offset = getRockingAngle(entityUmbrella, partialTicks) / 10f;
-//                if (offset != 0.0F) {
+//                float offset = getRockingAngle(entityUmbrella, partialTicks) / 10.0f;
+//                if (offset != 0.0f) {
 //                    offsetVec = offsetVec.add(offset, 0, 0).rotateYaw((float) Math.toRadians(90 - yaw));
 //                }
 //

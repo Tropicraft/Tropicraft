@@ -5,7 +5,7 @@ import net.minecraft.util.Mth;
 
 public final class ModelAnimator {
     static final float PI = (float) Math.PI;
-    static final float DEG_TO_RAD = (float) (Math.PI / 180.0F);
+    static final float DEG_TO_RAD = (float) (Math.PI / 180.0f);
     static final float TAU = 2 * PI;
 
     static Cycle cycle;
@@ -35,7 +35,7 @@ public final class ModelAnimator {
         }
 
         public float eval(float speed, float scale) {
-            return eval(speed, scale, 0.0F, 0.0F);
+            return eval(speed, scale, 0.0f, 0.0f);
         }
 
         public float eval(float speed, float scale, float delay, float offset) {

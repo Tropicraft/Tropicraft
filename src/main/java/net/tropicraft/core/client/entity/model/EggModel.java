@@ -24,17 +24,17 @@ public class EggModel extends ListModel<EggEntity> {
         PartDefinition root = mesh.getRoot();
         root.addOrReplaceChild("body", CubeListBuilder.create().mirror(true)
                 .texOffs(0, 16)
-                .addBox(-3F, -10F, -3F, 6, 10, 6)
+                .addBox(-3.0f, -10.0f, -3.0f, 6, 10, 6)
                 .texOffs(0, 0)
-                .addBox(-1.5F, -11F, -1.5F, 3, 1, 3)
+                .addBox(-1.5f, -11.0f, -1.5f, 3, 1, 3)
                 .texOffs(0, 7)
-                .addBox(3F, -7F, -1.5F, 1, 6, 3)
+                .addBox(3.0f, -7.0f, -1.5f, 1, 6, 3)
                 .texOffs(24, 9)
-                .addBox(-1.5F, -7F, 3F, 3, 6, 1)
+                .addBox(-1.5f, -7.0f, 3.0f, 3, 6, 1)
                 .texOffs(16, 7)
-                .addBox(-4F, -7F, -1.5F, 1, 6, 3)
+                .addBox(-4.0f, -7.0f, -1.5f, 1, 6, 3)
                 .texOffs(8, 9)
-                .addBox(-1.5F, -7F, -4F, 3, 6, 1), PartPose.offset(0F, 24F, 0F));
+                .addBox(-1.5f, -7.0f, -4.0f, 3, 6, 1), PartPose.offset(0.0f, 24.0f, 0.0f));
         return LayerDefinition.create(mesh, 64, 32);
     }
 
@@ -51,14 +51,14 @@ public class EggModel extends ListModel<EggEntity> {
     public void prepareMobModel(EggEntity egg, float limbSwing, float limbSwingAmount, float partialTick) {
         boolean hatching = egg.isNearHatching();
         float randRotator = (float) egg.rotationRand;
-        body.yRot = 0F;
+        body.yRot = 0.0f;
         if (hatching) {
-            body.yRot = Mth.sin((egg.tickCount + partialTick) * .6f) * .6f;
-            body.xRot = Mth.sin(randRotator * 4) * .6f;
-            body.zRot = Mth.cos(randRotator * 4) * .6f;
+            body.yRot = Mth.sin((egg.tickCount + partialTick) * 0.6f) * 0.6f;
+            body.xRot = Mth.sin(randRotator * 4) * 0.6f;
+            body.zRot = Mth.cos(randRotator * 4) * 0.6f;
         } else {
-            body.xRot = 0F;
-            body.zRot = 0F;
+            body.xRot = 0.0f;
+            body.zRot = 0.0f;
         }
     }
 }

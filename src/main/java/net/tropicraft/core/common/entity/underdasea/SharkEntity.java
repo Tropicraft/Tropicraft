@@ -42,7 +42,7 @@ public class SharkEntity extends WaterAnimal {
     public SharkEntity(EntityType<? extends WaterAnimal> type, Level world) {
         super(type, world);
         xpReward = 20;
-        moveControl = new SmoothSwimmingMoveControl(this, 85, 10, 0.02F, 0.1F, true);
+        moveControl = new SmoothSwimmingMoveControl(this, 85, 10, 0.02f, 0.1f, true);
         lookControl = new SmoothSwimmingLookControl(this, 10);
 //        this.setApproachesPlayers(true);
         // TODO - this.setDropStack(ItemRegistry.fertilizer, 3);
@@ -55,12 +55,12 @@ public class SharkEntity extends WaterAnimal {
 //        goalSelector.addGoal(0, new AvoidWallsGoal(EnumSet.of(Goal.Flag.MOVE), this));
         goalSelector.addGoal(0, new BreathAirGoal(this));
         goalSelector.addGoal(0, new TryFindWaterGoal(this));
-        goalSelector.addGoal(4, new RandomSwimmingGoal(this, 1.0D, 10));
+        goalSelector.addGoal(4, new RandomSwimmingGoal(this, 1.0, 10));
         goalSelector.addGoal(4, new RandomLookAroundGoal(this));
-        goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0f));
 
 //        if (fleeFromPlayers) {
-//            goalSelector.addGoal(0, new SwimToAvoidEntityGoal(EnumSet.of(Goal.Flag.MOVE), this, 5F, new Class[] {Player.class}));
+//            goalSelector.addGoal(0, new SwimToAvoidEntityGoal(EnumSet.of(Goal.Flag.MOVE), this, 5.0f, new Class[] {Player.class}));
 //        }
 //        goalSelector.addGoal(2, new TargetPreyGoal(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK), this));
 //        goalSelector.addGoal(2, new RandomSwimGoal(EnumSet.of(Goal.Flag.MOVE), this));
@@ -99,7 +99,7 @@ public class SharkEntity extends WaterAnimal {
         //TODO this.setDropStack(ItemRegistry.yellowFlippers, 1);
         setCustomName(Component.literal("Elder Hammerhead"));
         setCustomNameVisible(true);
-//        setSwimSpeeds(1.1f, 2.2f, 1.5f, 3f, 5f);
+//        setSwimSpeeds(1.1f, 2.2f, 1.5f, 3.0f, 5.0f);
         getAttribute(Attributes.MAX_HEALTH).setBaseValue(20);
         // TODO in renderer - this.setTexture("hammerhead4");
         if (!level().isClientSide) {
@@ -119,7 +119,7 @@ public class SharkEntity extends WaterAnimal {
 //
 //            if (!level.isClientSide) {
 //                // Search for suitable target
-//                Player nearest = level.getNearestPlayer(this, 64D);
+//                Player nearest = level.getNearestPlayer(this, 64.0);
 //                if (nearest != null) {
 //                    if (hasLineOfSight(nearest) && nearest.isInWater() && !nearest.isCreative() && nearest.isAlive()) {
 //                        aggressTarget = nearest;
@@ -140,7 +140,7 @@ public class SharkEntity extends WaterAnimal {
 //
 //                // Heal if no target
 //                if (this.getHealth() < this.getMaxHealth() && this.tickCount % 80 == 0 && this.aggressTarget == null) {
-//                    this.heal(1f);
+//                    this.heal(1.0f);
 //                    this.spawnAnim();
 //                }
 //                // Update health bar

@@ -121,7 +121,7 @@ public class EntityAIChillAtFire extends Goal {
                 entityObj.heal(1);
             }
             entityObj.getLookControl().setLookAt(blockposGoal.getX() + randXPos, blockposGoal.getY() + randYPos + 1D, blockposGoal.getZ() + randZPos,
-                    8F, 8F);
+                    8.0f, 8.0f);
         } else {
             entityObj.setSitting(false);
         }
@@ -135,16 +135,16 @@ public class EntityAIChillAtFire extends Goal {
 
                 boolean success = false;
 
-                if (entityObj.distanceToSqr(Vec3.atCenterOf(blockposGoal)) > 256.0D) {
-                    Vec3 Vector3d = DefaultRandomPos.getPosTowards(entityObj, 14, 3, new Vec3((double) i + 0.5D, (double) j, (double) k + 0.5D), (float) Math.PI / 2F);
+                if (entityObj.distanceToSqr(Vec3.atCenterOf(blockposGoal)) > 256.0) {
+                    Vec3 Vector3d = DefaultRandomPos.getPosTowards(entityObj, 14, 3, new Vec3((double) i + 0.5, (double) j, (double) k + 0.5), (float) Math.PI / 2.0f);
 
                     if (Vector3d != null) {
-                        success = entityObj.getNavigation().moveTo(Vector3d.x, Vector3d.y, Vector3d.z, 1.0D);
+                        success = entityObj.getNavigation().moveTo(Vector3d.x, Vector3d.y, Vector3d.z, 1.0);
                     } else {
                         success = Util.tryMoveToXYZLongDist(entityObj, new BlockPos(i, j, k), 1);
                     }
                 } else {
-                    success = entityObj.getNavigation().moveTo((double) i + 0.5D, (double) j, (double) k + 0.5D, 1.0D);
+                    success = entityObj.getNavigation().moveTo((double) i + 0.5, (double) j, (double) k + 0.5, 1.0);
                 }
 
                 if (!success) {

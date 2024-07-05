@@ -13,12 +13,12 @@ public class WhiteLippedPeccaryRenderer extends MobRenderer<WhiteLippedPeccaryEn
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/white_lipped_peccary.png");
 
     public WhiteLippedPeccaryRenderer(EntityRendererProvider.Context context) {
-        super(context, new WhiteLippedPeccaryModel<>(context.bakeLayer(TropicraftRenderLayers.WHITE_LIPPED_PECCARY_LAYER)), 0.5F);
+        super(context, new WhiteLippedPeccaryModel<>(context.bakeLayer(TropicraftRenderLayers.WHITE_LIPPED_PECCARY_LAYER)), 0.5f);
     }
 
     @Override
     protected void scale(WhiteLippedPeccaryEntity entity, PoseStack matrixStack, float partialTicks) {
-        matrixStack.scale(0.9F, 0.9F, 0.9F);
+        matrixStack.scale(0.9f, 0.9f, 0.9f);
     }
 
     @Override

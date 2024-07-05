@@ -12,7 +12,7 @@ public class SlenderHarvestMouseRenderer extends MobRenderer<SlenderHarvestMouse
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/slender_harvest_mouse.png");
 
     public SlenderHarvestMouseRenderer(EntityRendererProvider.Context context) {
-        super(context, new SlenderHarvestMouseModel<>(context.bakeLayer(TropicraftRenderLayers.SLENDER_HARVEST_MOUSE_LAYER)), 0.15F);
+        super(context, new SlenderHarvestMouseModel<>(context.bakeLayer(TropicraftRenderLayers.SLENDER_HARVEST_MOUSE_LAYER)), 0.15f);
     }
 
     @Override

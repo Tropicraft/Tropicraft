@@ -29,7 +29,7 @@ public class WaterWandItem extends Item {
         if (!world.isClientSide) {
             for (double lat = 0; lat < 2 * Math.PI; lat += inc) {
                 for (double lng = 0; lng < 2 * Math.PI; lng += inc) {
-                    for (double len = 1; len < 3; len += 0.5D) {
+                    for (double len = 1; len < 3; len += 0.5) {
                         int x1 = (int) (Math.cos(lat) * len);
                         int z1 = (int) (Math.sin(lat) * len);
                         int y1 = (int) (Math.sin(lng) * len);

@@ -28,7 +28,7 @@ public class EagleRayModel extends HierarchicalModel<EagleRayEntity> {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
 
-        root.addOrReplaceChild("body", CubeListBuilder.create().texOffs(32, 0).mirror().addBox(-2F, 0F, 0F, 5, 3, 32), PartPose.offset(0F, 0F, -8F));
+        root.addOrReplaceChild("body", CubeListBuilder.create().texOffs(32, 0).mirror().addBox(-2.0f, 0.0f, 0.0f, 5, 3, 32), PartPose.offset(0.0f, 0.0f, -8.0f));
 
         return LayerDefinition.create(mesh, 128, 64);
     }
@@ -56,9 +56,9 @@ public class EagleRayModel extends HierarchicalModel<EagleRayEntity> {
         float maxV = 0.5f;
 
         stack.pushPose();
-        stack.translate(0.55f, 0f, 1.5f);
-        stack.mulPose(Axis.YP.rotationDegrees(-90f));
-        stack.scale(1.5f, 1f, 1f);
+        stack.translate(0.55f, 0.0f, 1.5f);
+        stack.mulPose(Axis.YP.rotationDegrees(-90.0f));
+        stack.scale(1.5f, 1.0f, 1.0f);
         vertex(buffer, stack.last(), 0, 0, 0, color, minU, minV, packedLightIn, packedOverlayIn);
         vertex(buffer, stack.last(), 0, 0, 1, color, minU, maxV, packedLightIn, packedOverlayIn);
         vertex(buffer, stack.last(), 1, 0, 1, color, maxU, maxV, packedLightIn, packedOverlayIn);
@@ -67,19 +67,19 @@ public class EagleRayModel extends HierarchicalModel<EagleRayEntity> {
     }
 
     private static void vertex(VertexConsumer bufferIn, PoseStack.Pose pose, float x, float y, float z, int color, float texU, float texV, int packedLight, int packedOverlay) {
-        bufferIn.addVertex(pose, x, y, z).setColor(color).setUv(texU, texV).setOverlay(packedOverlay).setLight(packedLight).setNormal(pose, 0.0F, -1.0F, 0.0F);
+        bufferIn.addVertex(pose, x, y, z).setColor(color).setUv(texU, texV).setOverlay(packedOverlay).setLight(packedLight).setNormal(pose, 0.0f, -1.0f, 0.0f);
     }
 
     private void renderWings(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, int color) {
         matrixStackIn.pushPose();
-        matrixStackIn.translate(0.5f / 16f, 0, -0.5f); // Center on body
-        matrixStackIn.scale(2f, 0.5f, 2f); // Scale to correct size
+        matrixStackIn.translate(0.5f / 16.0f, 0, -0.5f); // Center on body
+        matrixStackIn.scale(2.0f, 0.5f, 2.0f); // Scale to correct size
 
         renderWing(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, color, false);
 
         // Rotate around center
         matrixStackIn.translate(0, 0, 0.5f);
-        matrixStackIn.mulPose(Axis.YP.rotationDegrees(180f));
+        matrixStackIn.mulPose(Axis.YP.rotationDegrees(180.0f));
         matrixStackIn.translate(0, 0, -0.5f);
 
         renderWing(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, color, true);
@@ -88,25 +88,25 @@ public class EagleRayModel extends HierarchicalModel<EagleRayEntity> {
     }
 
     private void renderWing(PoseStack stack, VertexConsumer buffer, int packedLightIn, int packedOverlayIn, int color, boolean reverse) {
-        float minUFront = 0f;
+        float minUFront = 0.0f;
         float maxUFront = 0.25f;
-        float minVFront = 0f;
+        float minVFront = 0.0f;
         float maxVFront = 0.5f;
 
-        float minUBack = 0f;
+        float minUBack = 0.0f;
         float maxUBack = 0.25f;
         float minVBack = 0.5f;
-        float maxVBack = 1f;
+        float maxVBack = 1.0f;
 
         stack.pushPose();
-        stack.translate(1.25f / 16f, 0, 0); // Translate out to body edge
+        stack.translate(1.25f / 16.0f, 0, 0); // Translate out to body edge
 
         for (int i = 1; i < EagleRayEntity.WING_JOINTS; i++) {
             float prevAmplitude = interpolatedWingAmplitudes[i - 1];
             float amplitude = interpolatedWingAmplitudes[i];
 
-            float prevX = (i - 1) / (EagleRayEntity.WING_JOINTS - 1f);
-            float x = i / (EagleRayEntity.WING_JOINTS - 1f);
+            float prevX = (i - 1) / (EagleRayEntity.WING_JOINTS - 1.0f);
+            float x = i / (EagleRayEntity.WING_JOINTS - 1.0f);
 
             float prevUFront = minUFront + (maxUFront - minUFront) * prevX;
             float uFront = minUFront + (maxUFront - minUFront) * x;

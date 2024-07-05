@@ -72,159 +72,159 @@ public class FiddlerCrabModel<T extends Entity> extends HierarchicalModel<T> {
         PartDefinition body = root.addOrReplaceChild("body_base",
                 CubeListBuilder.create()
                         .texOffs(0, 0)
-                        .addBox(-2.0F, -2.0F, -2.0F, 4.0F, 2.0F, 3.0F, false),
-                PartPose.offsetAndRotation(0.0F, 23.0F, 0.0F, -7.5F, 0.0F, 0.0F));
+                        .addBox(-2.0f, -2.0f, -2.0f, 4.0f, 2.0f, 3.0f, false),
+                PartPose.offsetAndRotation(0.0f, 23.0f, 0.0f, -7.5f, 0.0f, 0.0f));
 
         body.addOrReplaceChild("eyestalk_right",
                 CubeListBuilder.create()
                         .texOffs(0, 21)
-                        .addBox(0.0F, -2.0F, 0.0F, 1.0F, 2.0F, 0.0F, false),
-                PartPose.offsetAndRotation(-1.5F, -1.0F, -2.0F, 7.5F, 0.0F, 0.0F));
+                        .addBox(0.0f, -2.0f, 0.0f, 1.0f, 2.0f, 0.0f, false),
+                PartPose.offsetAndRotation(-1.5f, -1.0f, -2.0f, 7.5f, 0.0f, 0.0f));
 
         body.addOrReplaceChild("eyestalk_left",
                 CubeListBuilder.create()
                         .texOffs(3, 21)
-                        .addBox(-1.0F, -2.0F, 0.0F, 1.0F, 2.0F, 0.0F, false),
-                PartPose.offsetAndRotation(1.5F, -1.0F, -2.0F, 7.5F, 0.0F, 0.0F));
+                        .addBox(-1.0f, -2.0f, 0.0f, 1.0f, 2.0f, 0.0f, false),
+                PartPose.offsetAndRotation(1.5f, -1.0f, -2.0f, 7.5f, 0.0f, 0.0f));
 
         PartDefinition modelPartClawRightA = body.addOrReplaceChild("claw_right_a",
                 CubeListBuilder.create(),
-                PartPose.offset(-2.0F, -0.5F, -2.0F));
+                PartPose.offset(-2.0f, -0.5f, -2.0f));
 
         modelPartClawRightA.addOrReplaceChild("claw_right_a_r1",
                 CubeListBuilder.create()
                         .texOffs(7, 6)
-                        .addBox(-0.75F, -0.5F, -1.0F, 2.0F, 1.0F, 1.0F, false),
-                PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 5.0F, 12.5F));
+                        .addBox(-0.75f, -0.5f, -1.0f, 2.0f, 1.0f, 1.0f, false),
+                PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, 0.0f, 5.0f, 12.5f));
 
         PartDefinition modelPartClawLeftA = body.addOrReplaceChild("claw_left_a",
                 CubeListBuilder.create()
                         .texOffs(0, 6)
-                        .addBox(-1.0F, -1.0F, -1.0F, 2.0F, 2.0F, 1.0F, false),
-                PartPose.offsetAndRotation(2.0F, -0.5F, -2.0F, 0.0F, -17.5F, -7.5F));
+                        .addBox(-1.0f, -1.0f, -1.0f, 2.0f, 2.0f, 1.0f, false),
+                PartPose.offsetAndRotation(2.0f, -0.5f, -2.0f, 0.0f, -17.5f, -7.5f));
 
         PartDefinition modelPartClawLeftC = modelPartClawLeftA.addOrReplaceChild("claw_left_c",
                 CubeListBuilder.create(),
-                PartPose.offset(-1.0F, 0.0F, 0.0F));
+                PartPose.offset(-1.0f, 0.0f, 0.0f));
 
         modelPartClawLeftC.addOrReplaceChild("claw_left_c_r1",
                 CubeListBuilder.create()
                         .texOffs(14, 6)
-                        .addBox(-2.0F, 0.0F, -0.99F, 2.0F, 1.0F, 1.0F, false),
-                PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, -10.0F));
+                        .addBox(-2.0f, 0.0f, -0.99f, 2.0f, 1.0f, 1.0f, false),
+                PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -10.0f));
 
         modelPartClawLeftA.addOrReplaceChild("claw_left_b",
                 CubeListBuilder.create()
                         .texOffs(15, 0)
-                        .addBox(-3.0F, 0.0F, -1.0F, 3.0F, 1.0F, 1.0F, false),
-                PartPose.offset(-1.0F, -1.0F, 0.0F));
+                        .addBox(-3.0f, 0.0f, -1.0f, 3.0f, 1.0f, 1.0f, false),
+                PartPose.offset(-1.0f, -1.0f, 0.0f));
 
         PartDefinition modelPartLegLeftFra = body.addOrReplaceChild("leg_left_fra",
                 CubeListBuilder.create()
                         .texOffs(15, 17)
-                        .addBox(-0.5F, 0.0F, -0.5F, 1.0F, 2.0F, 1.0F, false),
-                PartPose.offsetAndRotation(1.5F, 0.0F, -1.5F, -25.0F, -7.5F, -122.5F));
+                        .addBox(-0.5f, 0.0f, -0.5f, 1.0f, 2.0f, 1.0f, false),
+                PartPose.offsetAndRotation(1.5f, 0.0f, -1.5f, -25.0f, -7.5f, -122.5f));
 
         modelPartLegLeftFra.addOrReplaceChild("leg_left_frb",
                 CubeListBuilder.create()
                         .texOffs(7, 13)
-                        .addBox(-2.0F, -1.0F, -0.5F, 2.0F, 1.0F, 1.0F, false),
-                PartPose.offset(-0.5F, 2.0F, 0.0F));
+                        .addBox(-2.0f, -1.0f, -0.5f, 2.0f, 1.0f, 1.0f, false),
+                PartPose.offset(-0.5f, 2.0f, 0.0f));
 
         PartDefinition modelPartLegLeftMia = body.addOrReplaceChild("leg_left_mia",
                 CubeListBuilder.create()
                         .texOffs(10, 17)
-                        .addBox(-0.5F, 0.0F, -0.5F, 1.0F, 2.0F, 1.0F, false),
-                PartPose.offsetAndRotation(1.5F, 0.0F, -0.5F, -2.5F, 5.0F, -120.0F));
+                        .addBox(-0.5f, 0.0f, -0.5f, 1.0f, 2.0f, 1.0f, false),
+                PartPose.offsetAndRotation(1.5f, 0.0f, -0.5f, -2.5f, 5.0f, -120.0f));
 
         modelPartLegLeftMia.addOrReplaceChild("leg_left_mib",
                 CubeListBuilder.create()
                         .texOffs(0, 13)
-                        .addBox(-2.0F, -1.0F, -0.5F, 2.0F, 1.0F, 1.0F, false),
-                PartPose.offset(-0.5F, 2.0F, 0.0F));
+                        .addBox(-2.0f, -1.0f, -0.5f, 2.0f, 1.0f, 1.0f, false),
+                PartPose.offset(-0.5f, 2.0f, 0.0f));
 
         PartDefinition modelPartLegLeftBaa = body.addOrReplaceChild("leg_left_baa",
                 CubeListBuilder.create()
                         .texOffs(5, 17)
-                        .addBox(-0.5F, 0.0F, -0.5F, 1.0F, 2.0F, 1.0F, false),
-                PartPose.offsetAndRotation(1.5F, 0.0F, 0.5F, 37.5F, 45.0F, -92.5F));
+                        .addBox(-0.5f, 0.0f, -0.5f, 1.0f, 2.0f, 1.0f, false),
+                PartPose.offsetAndRotation(1.5f, 0.0f, 0.5f, 37.5f, 45.0f, -92.5f));
 
         modelPartLegLeftBaa.addOrReplaceChild("leg_left_bab",
                 CubeListBuilder.create()
                         .texOffs(21, 10)
-                        .addBox(-2.0F, -1.0F, -0.5F, 2.0F, 1.0F, 1.0F, false),
-                PartPose.offset(-0.5F, 2.0F, 0.0F));
+                        .addBox(-2.0f, -1.0f, -0.5f, 2.0f, 1.0f, 1.0f, false),
+                PartPose.offset(-0.5f, 2.0f, 0.0f));
 
         PartDefinition modelPartLegRightFra = body.addOrReplaceChild("leg_right_fra",
                 CubeListBuilder.create()
                         .texOffs(0, 17)
-                        .addBox(-0.5F, 0.0F, -0.5F, 1.0F, 2.0F, 1.0F, false),
-                PartPose.offsetAndRotation(-1.5F, 0.0F, -1.5F, -25.0F, 7.5F, 122.5F));
+                        .addBox(-0.5f, 0.0f, -0.5f, 1.0f, 2.0f, 1.0f, false),
+                PartPose.offsetAndRotation(-1.5f, 0.0f, -1.5f, -25.0f, 7.5f, 122.5f));
 
         modelPartLegRightFra.addOrReplaceChild("leg_right_frb",
                 CubeListBuilder.create()
                         .texOffs(14, 10)
-                        .addBox(0.0F, -1.0F, -0.5F, 2.0F, 1.0F, 1.0F, false),
-                PartPose.offset(0.5F, 2.0F, 0.0F));
+                        .addBox(0.0f, -1.0f, -0.5f, 2.0f, 1.0f, 1.0f, false),
+                PartPose.offset(0.5f, 2.0f, 0.0f));
 
         PartDefinition modelPartLegRightMia = body.addOrReplaceChild("leg_right_mia",
                 CubeListBuilder.create()
                         .texOffs(19, 13)
-                        .addBox(-0.5F, 0.0F, -0.5F, 1.0F, 2.0F, 1.0F, false),
-                PartPose.offsetAndRotation(-1.5F, 0.0F, -0.5F, -2.5F, -5.0F, 120.0F));
+                        .addBox(-0.5f, 0.0f, -0.5f, 1.0f, 2.0f, 1.0f, false),
+                PartPose.offsetAndRotation(-1.5f, 0.0f, -0.5f, -2.5f, -5.0f, 120.0f));
 
         modelPartLegRightMia.addOrReplaceChild("leg_right_mib",
                 CubeListBuilder.create()
                         .texOffs(7, 10)
-                        .addBox(0.0F, -1.0F, -0.5F, 2.0F, 1.0F, 1.0F, false),
-                PartPose.offset(0.5F, 2.0F, 0.0F));
+                        .addBox(0.0f, -1.0f, -0.5f, 2.0f, 1.0f, 1.0f, false),
+                PartPose.offset(0.5f, 2.0f, 0.0f));
 
         PartDefinition modelPartLegRightBaa = body.addOrReplaceChild("leg_right_baa",
                 CubeListBuilder.create()
                         .texOffs(14, 13)
-                        .addBox(-0.5F, 0.0F, -0.5F, 1.0F, 2.0F, 1.0F, false),
-                PartPose.offsetAndRotation(-1.5F, 0.0F, 0.5F, 37.5F, -45.0F, 92.5F));
+                        .addBox(-0.5f, 0.0f, -0.5f, 1.0f, 2.0f, 1.0f, false),
+                PartPose.offsetAndRotation(-1.5f, 0.0f, 0.5f, 37.5f, -45.0f, 92.5f));
 
         modelPartLegRightBaa.addOrReplaceChild("leg_right_bab",
                 CubeListBuilder.create()
                         .texOffs(0, 10)
-                        .addBox(0.0F, -1.0F, -0.5F, 2.0F, 1.0F, 1.0F, false),
-                PartPose.offset(0.5F, 2.0F, 0.0F));
+                        .addBox(0.0f, -1.0f, -0.5f, 2.0f, 1.0f, 1.0f, false),
+                PartPose.offset(0.5f, 2.0f, 0.0f));
 
         return LayerDefinition.create(mesh, 32, 32);
     }
 
     private void setDefaultRotationAngles() {
-        setRotationAngle(body_base, -7.5F, 0.0F, 0.0F);
-        setRotationAngle(eyestalk_right, 7.5F, 0.0F, 0.0F);
-        setRotationAngle(eyestalk_left, 7.5F, 0.0F, 0.0F);
-        setRotationAngle(claw_right_a_r1, 0.0F, 5.0F, 12.5F);
-        setRotationAngle(claw_left_a, 0.0F, -17.5F, -7.5F);
-        setRotationAngle(claw_left_c_r1, 0.0F, 0.0F, -10.0F);
-        setRotationAngle(leg_left_fra, -25.0F, -7.5F, -122.5F);
-        setRotationAngle(leg_left_mia, -2.5F, 5.0F, -120.0F);
-        setRotationAngle(leg_left_baa, 37.5F, 45.0F, -92.5F);
-        setRotationAngle(leg_right_fra, -25.0F, 7.5F, 122.5F);
-        setRotationAngle(leg_right_mia, -2.5F, -5.0F, 120.0F);
-        setRotationAngle(leg_right_baa, 37.5F, -45.0F, 92.5F);
+        setRotationAngle(body_base, -7.5f, 0.0f, 0.0f);
+        setRotationAngle(eyestalk_right, 7.5f, 0.0f, 0.0f);
+        setRotationAngle(eyestalk_left, 7.5f, 0.0f, 0.0f);
+        setRotationAngle(claw_right_a_r1, 0.0f, 5.0f, 12.5f);
+        setRotationAngle(claw_left_a, 0.0f, -17.5f, -7.5f);
+        setRotationAngle(claw_left_c_r1, 0.0f, 0.0f, -10.0f);
+        setRotationAngle(leg_left_fra, -25.0f, -7.5f, -122.5f);
+        setRotationAngle(leg_left_mia, -2.5f, 5.0f, -120.0f);
+        setRotationAngle(leg_left_baa, 37.5f, 45.0f, -92.5f);
+        setRotationAngle(leg_right_fra, -25.0f, 7.5f, 122.5f);
+        setRotationAngle(leg_right_mia, -2.5f, -5.0f, 120.0f);
+        setRotationAngle(leg_right_baa, 37.5f, -45.0f, 92.5f);
     }
 
     @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float age, float headYaw, float headPitch) {
         setDefaultRotationAngles();
 
-        try (ModelAnimator.Cycle walk = ModelAnimator.cycle(limbSwing * 0.6F, limbSwingAmount)) {
-            leg_right_fra.zRot += walk.eval(1.0F, 1.5F, 0.0F, 1.5F);
-            leg_right_mia.zRot += walk.eval(1.0F, 1.5F, 0.4F, 1.5F);
-            leg_right_baa.zRot += walk.eval(1.0F, 1.5F, 0.0F, 1.5F);
+        try (ModelAnimator.Cycle walk = ModelAnimator.cycle(limbSwing * 0.6f, limbSwingAmount)) {
+            leg_right_fra.zRot += walk.eval(1.0f, 1.5f, 0.0f, 1.5f);
+            leg_right_mia.zRot += walk.eval(1.0f, 1.5f, 0.4f, 1.5f);
+            leg_right_baa.zRot += walk.eval(1.0f, 1.5f, 0.0f, 1.5f);
 
-            leg_left_fra.zRot -= walk.eval(1.0F, 1.5F, 0.4F, 1.5F);
-            leg_left_mia.zRot -= walk.eval(1.0F, 1.5F, 0.0F, 1.5F);
-            leg_left_baa.zRot -= walk.eval(1.0F, 1.5F, 0.4F, 1.5F);
+            leg_left_fra.zRot -= walk.eval(1.0f, 1.5f, 0.4f, 1.5f);
+            leg_left_mia.zRot -= walk.eval(1.0f, 1.5f, 0.0f, 1.5f);
+            leg_left_baa.zRot -= walk.eval(1.0f, 1.5f, 0.4f, 1.5f);
         }
 
-        try (ModelAnimator.Cycle idle = ModelAnimator.cycle(age * 0.025F, 0.05F)) {
-            claw_left_c_r1.zRot += idle.eval(1.0F, 1.0F, 0.0F, -0.5F);
+        try (ModelAnimator.Cycle idle = ModelAnimator.cycle(age * 0.025f, 0.05f)) {
+            claw_left_c_r1.zRot += idle.eval(1.0f, 1.0f, 0.0f, -0.5f);
         }
     }
 

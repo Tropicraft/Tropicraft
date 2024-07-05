@@ -43,8 +43,8 @@ public class ChairEntity extends FurnitureEntity {
 
     private float rotationDelta = 0;
 
-    private static final float ROTATION_SPEED = 2.5F;
-    private static final float FRICTION = 0.05F;
+    private static final float ROTATION_SPEED = 2.5f;
+    private static final float FRICTION = 0.05f;
 
     public ChairEntity(EntityType<ChairEntity> type, Level world) {
         super(type, world, TropicraftItems.CHAIRS);
@@ -67,26 +67,26 @@ public class ChairEntity extends FurnitureEntity {
             double forwardX = Math.cos(getYRot() * Mth.DEG_TO_RAD);
             double forwardZ = Math.sin(getYRot() * Mth.DEG_TO_RAD);
 
-            for (int i = 0; i < 1.0D + speed * 60.0D; ++i) {
-                double d5 = random.nextFloat() * 2.0F - 1.0F;
-                double d6 = (double) (random.nextInt(2) * 2 - 1) * 0.7D;
+            for (int i = 0; i < 1.0 + speed * 60.0; ++i) {
+                double d5 = random.nextFloat() * 2.0f - 1.0f;
+                double d6 = (double) (random.nextInt(2) * 2 - 1) * 0.7;
                 double particleX;
                 double particleZ;
 
                 if (random.nextBoolean()) {
-                    particleX = getX() - forwardX * d5 * 0.8D + forwardZ * d6;
-                    particleZ = getZ() - forwardZ * d5 * 0.8D - forwardX * d6;
+                    particleX = getX() - forwardX * d5 * 0.8 + forwardZ * d6;
+                    particleZ = getZ() - forwardZ * d5 * 0.8 - forwardX * d6;
                 } else {
-                    particleX = getX() + forwardX + forwardZ * d5 * 0.7D;
-                    particleZ = getZ() + forwardZ - forwardX * d5 * 0.7D;
+                    particleX = getX() + forwardX + forwardZ * d5 * 0.7;
+                    particleZ = getZ() + forwardZ - forwardX * d5 * 0.7;
                 }
-                level().addParticle(ParticleTypes.SPLASH, particleX, getY() - 0.125D, particleZ, getDeltaMovement().x, getDeltaMovement().y, getDeltaMovement().z);
+                level().addParticle(ParticleTypes.SPLASH, particleX, getY() - 0.125, particleZ, getDeltaMovement().x, getDeltaMovement().y, getDeltaMovement().z);
             }
         }
 
         LivingEntity passenger = getControllingPassenger();
         if (!level().isClientSide || getComeSailAway()) {
-            if (waterHeight < 1.0D) {
+            if (waterHeight < 1.0) {
                 double d2 = waterHeight * 2.0 - 1.0;
                 setDeltaMovement(getDeltaMovement().add(0, 0.04 * d2, 0));
             } else {
@@ -98,7 +98,7 @@ public class ChairEntity extends FurnitureEntity {
             }
 
             if (getComeSailAway() && passenger != null) {
-                float yRot = passenger.getYRot() + -passenger.xxa * 90.0F;
+                float yRot = passenger.getYRot() + -passenger.xxa * 90.0f;
                 double moveX = -Math.sin(yRot * Mth.DEG_TO_RAD) * speedMultiplier * passenger.zza * 0.05;
                 double moveZ = Math.cos(yRot * Mth.DEG_TO_RAD) * speedMultiplier * passenger.zza * 0.05;
                 setDeltaMovement(getDeltaMovement().add(moveX, 0, moveZ));
@@ -111,24 +111,24 @@ public class ChairEntity extends FurnitureEntity {
                 newSpeed = 0.45;
             }
 
-            if (newSpeed > speed && speedMultiplier < 0.45D) {
-                speedMultiplier += (0.45D - speedMultiplier) / 45.0D;
+            if (newSpeed > speed && speedMultiplier < 0.45) {
+                speedMultiplier += (0.45 - speedMultiplier) / 45.0;
 
-                if (speedMultiplier > 0.45D) {
-                    speedMultiplier = 0.45D;
+                if (speedMultiplier > 0.45) {
+                    speedMultiplier = 0.45;
                 }
             } else {
-                speedMultiplier -= (speedMultiplier - 0.10D) / 45.0D;
+                speedMultiplier -= (speedMultiplier - 0.10) / 45.0;
 
-                if (speedMultiplier < 0.10D) {
-                    speedMultiplier = 0.10D;
+                if (speedMultiplier < 0.10) {
+                    speedMultiplier = 0.10;
                 }
             }
 
             if (getComeSailAway())
                 for (int i = 0; i < 4; ++i) {
-                    int x = Mth.floor(getX() + ((double) (i % 2) - 0.5D) * 0.8D);
-                    int z = Mth.floor(getZ() + ((double) (i / 2) - 0.5D) * 0.8D);
+                    int x = Mth.floor(getX() + ((double) (i % 2) - 0.5) * 0.8);
+                    int z = Mth.floor(getZ() + ((double) (i / 2) - 0.5) * 0.8);
                     for (int j1 = 0; j1 < 2; ++j1) {
                         int k = Mth.floor(getY()) + j1;
                         BlockPos pos = new BlockPos(x, k, z);
@@ -155,13 +155,13 @@ public class ChairEntity extends FurnitureEntity {
                 setDeltaMovement(getDeltaMovement().multiply(0.99, 0.95, 0.99));
             }
 
-            setXRot(0.0F);
+            setXRot(0.0f);
             float targetYRot = getYRot();
             double deltaX = xo - getX();
             double deltaZ = zo - getZ();
 
-            if (deltaX * deltaX + deltaZ * deltaZ > 0.001D) {
-                targetYRot = (float) (Math.atan2(deltaZ, deltaX) * 180.0D / Math.PI);
+            if (deltaX * deltaX + deltaZ * deltaZ > 0.001) {
+                targetYRot = (float) (Math.atan2(deltaZ, deltaX) * 180.0 / Math.PI);
             }
 
             double yRotStep = Mth.wrapDegrees(targetYRot - (double) getYRot());

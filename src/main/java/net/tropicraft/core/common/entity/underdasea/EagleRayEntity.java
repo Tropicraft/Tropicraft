@@ -61,7 +61,7 @@ public class EagleRayEntity extends AbstractFish {
     @Override
     public void tick() {
         super.tick();
-        //this.setSwimSpeeds(1f, 0.2f, 0.2f);
+        //this.setSwimSpeeds(1.0f, 0.2f, 0.2f);
 
         if (level().isClientSide) {
             if (animationTicks < WING_CYCLE_TICKS) {
@@ -86,11 +86,11 @@ public class EagleRayEntity extends AbstractFish {
     }
 
     private float decayFunc(float n) {
-        return n / (WING_JOINTS - 1f);
+        return n / (WING_JOINTS - 1.0f);
     }
 
     private float amplitudeFunc(float n) {
-        double angle = 2 * PI * -n / (WING_JOINTS - 1f);
+        double angle = 2 * PI * -n / (WING_JOINTS - 1.0f);
         return decayFunc(n) * Mth.sin((float) (getAnimationProgress() * 2 * PI + PHASES * angle));
     }
 

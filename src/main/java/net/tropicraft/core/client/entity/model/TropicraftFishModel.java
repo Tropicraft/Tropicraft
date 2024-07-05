@@ -23,8 +23,8 @@ public class TropicraftFishModel<T extends AbstractFish> extends HierarchicalMod
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
 
-        PartDefinition body = root.addOrReplaceChild("body", CubeListBuilder.create().addBox(0, 0, 0, 0, 1, 1), PartPose.offset(0F, 16F, 0F));
-        body.addOrReplaceChild("tail", CubeListBuilder.create().addBox(0, 0, 0, 0, 1, 1), PartPose.offset(0F, 0F, -1F));
+        PartDefinition body = root.addOrReplaceChild("body", CubeListBuilder.create().addBox(0, 0, 0, 0, 1, 1), PartPose.offset(0.0f, 16.0f, 0.0f));
+        body.addOrReplaceChild("tail", CubeListBuilder.create().addBox(0, 0, 0, 0, 1, 1), PartPose.offset(0.0f, 0.0f, -1.0f));
         return LayerDefinition.create(mesh, 0, 0);
     }
 
@@ -35,6 +35,6 @@ public class TropicraftFishModel<T extends AbstractFish> extends HierarchicalMod
 
     @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        tail.yRot = Mth.sin(ageInTicks * 0.25F) * 0.25F;
+        tail.yRot = Mth.sin(ageInTicks * 0.25f) * 0.25f;
     }
 }

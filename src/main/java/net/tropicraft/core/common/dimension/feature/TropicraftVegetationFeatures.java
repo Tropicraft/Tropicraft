@@ -86,9 +86,9 @@ public final class TropicraftVegetationFeatures {
         registerRandomPlaced(context, TREES_PALM, TropicraftTreePlacements.PALM_TREE_CHECKED);
         registerRandomPlaced(context, TREES_MANGROVE, TropicraftTreePlacements.RED_MANGROVE_CHECKED, TropicraftTreePlacements.LIGHT_MANGROVES_CHECKED);
         registerRandom(context, TREES_RAINFOREST, List.of(
-                Pair.of(TropicraftTreePlacements.RAINFOREST_UP_TREE_CHECKED, 0.2F),
-                Pair.of(TropicraftTreePlacements.RAINFOREST_SMALL_TUALUNG_CHECKED, 0.25F),
-                Pair.of(TropicraftTreePlacements.RAINFOREST_LARGE_TUALUNG_CHECKED, 0.5F)
+                Pair.of(TropicraftTreePlacements.RAINFOREST_UP_TREE_CHECKED, 0.2f),
+                Pair.of(TropicraftTreePlacements.RAINFOREST_SMALL_TUALUNG_CHECKED, 0.25f),
+                Pair.of(TropicraftTreePlacements.RAINFOREST_LARGE_TUALUNG_CHECKED, 0.5f)
         ), TropicraftTreePlacements.RAINFOREST_TALL_TREE_CHECKED);
         registerRandomPlaced(context, TREES_PAPAYA, TropicraftTreePlacements.PAPAYA_CHECKED);
         registerRandomPlaced(context, TREES_PLEODENDRON, TropicraftTreePlacements.PLEODENDRON_CHECKED);
@@ -105,7 +105,7 @@ public final class TropicraftVegetationFeatures {
         register(context, PATCH_PINEAPPLE, Feature.RANDOM_PATCH, randomPatch(TropicraftBlocks.PINEAPPLE));
         register(context, PATCH_IRIS, Feature.RANDOM_PATCH, randomPatch(TropicraftBlocks.IRIS));
 
-        register(context, BAMBOO, Feature.BAMBOO, new ProbabilityFeatureConfiguration(0.15F));
+        register(context, BAMBOO, Feature.BAMBOO, new ProbabilityFeatureConfiguration(0.15f));
 
         register(context, FLOWERS_TROPICS, Feature.FLOWER, randomPatch(new NoiseFromTagBlockStateProvider(TropicraftTags.Blocks.TROPICS_FLOWERS)));
         register(context, FLOWERS_RAINFOREST, Feature.FLOWER, randomPatch(new NoiseFromTagBlockStateProvider(TropicraftTags.Blocks.RAINFOREST_FLOWERS)));

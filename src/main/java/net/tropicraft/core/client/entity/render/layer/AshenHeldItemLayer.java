@@ -40,7 +40,7 @@ public class AshenHeldItemLayer<T extends AshenEntity, M extends EntityModel<T> 
             stack.pushPose();
 
             if (model.young) {
-                stack.translate(0.0F, 0.625F, 0.0F);
+                stack.translate(0.0f, 0.625f, 0.0f);
                 stack.mulPose(Axis.XN.rotationDegrees(-20));
                 stack.scale(0.5f, 0.5f, 0.5f);
             }
@@ -60,15 +60,15 @@ public class AshenHeldItemLayer<T extends AshenEntity, M extends EntityModel<T> 
         }
 
         if (entity.getActionState() == AshenEntity.AshenState.HOSTILE) {
-            float scale = 0.5F;
+            float scale = 0.5f;
             if (handSide == HumanoidArm.LEFT) {
                 stack.pushPose();
                 model.leftArm.translateAndRotate(stack);
 
-                stack.translate(0.3F, -0.30F, -0.045F);
-                stack.mulPose(Axis.XP.rotationDegrees(180F));
-                stack.mulPose(Axis.YP.rotationDegrees(180F));
-                stack.mulPose(Axis.ZP.rotationDegrees(10F));
+                stack.translate(0.3f, -0.3f, -0.045f);
+                stack.mulPose(Axis.XP.rotationDegrees(180.0f));
+                stack.mulPose(Axis.YP.rotationDegrees(180.0f));
+                stack.mulPose(Axis.ZP.rotationDegrees(10.0f));
 
                 stack.scale(scale, scale, scale);
                 Minecraft.getInstance().getItemRenderer().renderStatic(entity, itemstack, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, false, stack, buffer, entity.level(), combinedLightIn, OverlayTexture.NO_OVERLAY, entity.getId());
@@ -77,8 +77,8 @@ public class AshenHeldItemLayer<T extends AshenEntity, M extends EntityModel<T> 
                 stack.pushPose();
                 model.rightArm.translateAndRotate(stack);
 
-                stack.translate(-0.375F, -0.35F, -0.125F);
-                stack.mulPose(Axis.YP.rotationDegrees(90F));
+                stack.translate(-0.375f, -0.35f, -0.125f);
+                stack.mulPose(Axis.YP.rotationDegrees(90.0f));
                 stack.scale(scale, scale, scale);
 
                 Minecraft.getInstance().getItemRenderer().renderStatic(entity, itemstack, ItemDisplayContext.THIRD_PERSON_LEFT_HAND, false, stack, buffer, entity.level(), combinedLightIn, OverlayTexture.NO_OVERLAY, entity.getId());

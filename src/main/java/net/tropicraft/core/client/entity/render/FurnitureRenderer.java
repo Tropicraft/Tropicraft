@@ -42,7 +42,7 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
         setupTransforms(stack);
 
         float rockingAngle = getRockingAngle(furniture, partialTicks);
-        if (!Mth.equal(rockingAngle, 0.0F)) {
+        if (!Mth.equal(rockingAngle, 0.0f)) {
             stack.mulPose(getRockingAxis().rotationDegrees(rockingAngle));
         }
 
@@ -50,7 +50,7 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
 
         // Draw uncolored layer
         VertexConsumer ivertexbuilder = buffer.getBuffer(model.renderType(TropicraftRenderUtils.getTextureEntity(textureName + "_base_layer")));
-        stack.scale(-1.0F, -1.0F, 1.0F);
+        stack.scale(-1.0f, -1.0f, 1.0f);
         model.renderToBuffer(stack, ivertexbuilder, getPackedLightCoords(furniture, partialTicks), OverlayTexture.NO_OVERLAY);
 
         // Draw the colored part
@@ -72,10 +72,10 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
     protected float getRockingAngle(T entity, float partialTicks) {
         float f2 = entity.getTimeSinceHit() - partialTicks;
         float f3 = entity.getDamage() - partialTicks;
-        if (f3 < 0.0F) {
-            f3 = 0.0F;
+        if (f3 < 0.0f) {
+            f3 = 0.0f;
         }
-        if (f2 > 0.0F) {
+        if (f2 > 0.0f) {
             return ((Mth.sin(f2) * f2 * f3) / getRockAmount()) * (float) entity.getForwardDirection();
         }
         return 0;

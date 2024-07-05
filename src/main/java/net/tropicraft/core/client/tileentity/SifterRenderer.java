@@ -22,26 +22,26 @@ public class SifterRenderer implements BlockEntityRenderer<SifterBlockEntity> {
     @Override
     public void render(SifterBlockEntity sifter, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
         matrixStackIn.pushPose();
-        matrixStackIn.translate(0.5D, 0.0D, 0.5D);
+        matrixStackIn.translate(0.5, 0.0, 0.5);
 
         if (!sifter.isSifting()) {
             item = null;
         } else if (!sifter.getSiftItem().isEmpty()) {
             Level level = sifter.getLevel();
-            final float itemRenderSize = 0.4375F;
+            final float itemRenderSize = 0.4375f;
 
             if (item == null) {
                 item = new ItemEntity(EntityType.ITEM, level);
                 item.setItem(sifter.getSiftItem().copy());
             }
 
-            matrixStackIn.translate(0.0D, 0.4F, 0.0D);
-            matrixStackIn.mulPose(Axis.YP.rotationDegrees((float) (sifter.yaw2 + (sifter.yaw - sifter.yaw2) * (double) partialTicks) * 10.0F));
-            matrixStackIn.translate(0.0D, -0.4F, 0.0D);
-            matrixStackIn.mulPose(Axis.XP.rotationDegrees(-20.0F));
+            matrixStackIn.translate(0.0, 0.4f, 0.0);
+            matrixStackIn.mulPose(Axis.YP.rotationDegrees((float) (sifter.yaw2 + (sifter.yaw - sifter.yaw2) * (double) partialTicks) * 10.0f));
+            matrixStackIn.translate(0.0, -0.4f, 0.0);
+            matrixStackIn.mulPose(Axis.XP.rotationDegrees(-20.0f));
             matrixStackIn.scale(itemRenderSize * 3, itemRenderSize * 3, itemRenderSize * 3);
             int light = LevelRenderer.getLightColor(level, sifter.getBlockPos().above());
-            Minecraft.getInstance().getEntityRenderDispatcher().render(item, 0.0D, 0.0D, 0.0D, 0.0F, partialTicks, matrixStackIn, bufferIn, light);
+            Minecraft.getInstance().getEntityRenderDispatcher().render(item, 0.0, 0.0, 0.0, 0.0f, partialTicks, matrixStackIn, bufferIn, light);
         }
 
         matrixStackIn.popPose();

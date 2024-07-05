@@ -44,7 +44,7 @@ public final class TropicraftNoiseRouterData {
         DensityFunctions.Spline.Coordinate weirdness = new DensityFunctions.Spline.Coordinate(densityFunctions.getOrThrow(NoiseRouterData.RIDGES));
 
         Holder.Reference<DensityFunction> offset = context.register(OFFSET, splineWithBlending(DensityFunctions.add(
-                DensityFunctions.constant(-0.50375F),
+                DensityFunctions.constant(-0.50375f),
                 DensityFunctions.spline(TropicraftTerrainProvider.offset(
                         continents,
                         erosion,
@@ -103,7 +103,7 @@ public final class TropicraftNoiseRouterData {
         DensityFunction veinToggle = yLimitedInterpolatable(y, DensityFunctions.noise(noiseParameters.getOrThrow(Noises.ORE_VEININESS), 1.5, 1.5), j, k, 0);
         DensityFunction oreVeinA = yLimitedInterpolatable(y, DensityFunctions.noise(noiseParameters.getOrThrow(Noises.ORE_VEIN_A), 4.0, 4.0), j, k, 0).abs();
         DensityFunction oreVeinB = yLimitedInterpolatable(y, DensityFunctions.noise(noiseParameters.getOrThrow(Noises.ORE_VEIN_B), 4.0, 4.0), j, k, 0).abs();
-        DensityFunction veinRidged = DensityFunctions.add(DensityFunctions.constant(-0.08F), DensityFunctions.max(oreVeinA, oreVeinB));
+        DensityFunction veinRidged = DensityFunctions.add(DensityFunctions.constant(-0.08f), DensityFunctions.max(oreVeinA, oreVeinB));
         DensityFunction veinGap = DensityFunctions.noise(noiseParameters.getOrThrow(Noises.ORE_GAP));
         return new NoiseRouter(
                 aquiferBarrier,

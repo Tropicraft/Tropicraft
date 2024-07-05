@@ -25,7 +25,7 @@ public class AshenMaskEntity extends Entity {
     }
 
     public void dropItemStack() {
-        spawnAtLocation(new ItemStack(TropicraftItems.ASHEN_MASKS.get(AshenMasks.VALUES[getMaskType()]).get()), 1.0F);
+        spawnAtLocation(new ItemStack(TropicraftItems.ASHEN_MASKS.get(AshenMasks.VALUES[getMaskType()]).get()), 1.0f);
     }
 
     @Override

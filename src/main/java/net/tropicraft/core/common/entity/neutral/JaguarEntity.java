@@ -37,13 +37,13 @@ public class JaguarEntity extends Animal {
     @Override
     protected void registerGoals() {
         goalSelector.addGoal(1, new FloatGoal(this));
-        goalSelector.addGoal(2, new LeapAtTargetGoal(this, 0.5F));
+        goalSelector.addGoal(2, new LeapAtTargetGoal(this, 0.5f));
         goalSelector.addGoal(3, new OcelotAttackGoal(this));
         goalSelector.addGoal(4, new TemptGoal(this, 1.25, BREEDING_ITEMS.get(), false));
         goalSelector.addGoal(5, new BreedGoal(this, 0.8));
         goalSelector.addGoal(6, new FollowParentGoal(this, 1.25));
         goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 0.8, 1e-5f));
-        goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 10.0F));
+        goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 10.0f));
 
         targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, WhiteLippedPeccaryEntity.class, 20, true, true, null));
     }
@@ -51,7 +51,7 @@ public class JaguarEntity extends Animal {
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 10.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.3F)
+                .add(Attributes.MOVEMENT_SPEED, 0.3f)
                 .add(Attributes.ATTACK_DAMAGE, 3.0);
     }
 

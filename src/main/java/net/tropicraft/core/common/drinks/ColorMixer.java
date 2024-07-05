@@ -11,10 +11,10 @@ public final class ColorMixer {
     }
 
     public void normalizeRGBA(int[] rgba, float[] result) {
-        result[0] = rgba[0] / 255f;
-        result[1] = rgba[1] / 255f;
-        result[2] = rgba[2] / 255f;
-        result[3] = rgba[3] / 255f;
+        result[0] = rgba[0] / 255.0f;
+        result[1] = rgba[1] / 255.0f;
+        result[2] = rgba[2] / 255.0f;
+        result[3] = rgba[3] / 255.0f;
     }
 
     public void denormalizeRGBA(float[] rgba, int[] result) {
@@ -36,9 +36,9 @@ public final class ColorMixer {
     }
 
     public void normalizeRGB(int[] rgb, float[] result) {
-        result[0] = rgb[0] / 255f;
-        result[1] = rgb[1] / 255f;
-        result[2] = rgb[2] / 255f;
+        result[0] = rgb[0] / 255.0f;
+        result[1] = rgb[1] / 255.0f;
+        result[2] = rgb[2] / 255.0f;
     }
 
     public void denormalizeRGB(float[] rgb, int[] result) {
@@ -160,8 +160,8 @@ public final class ColorMixer {
 
         // if both blue and green then cut in half to preserve range
         if (b != 0 && g != 0) {
-            b /= 2f;
-            g /= 2f;
+            b /= 2.0f;
+            g /= 2.0f;
         }
 
         // redistribute the green
@@ -203,15 +203,15 @@ public final class ColorMixer {
             return;
         }
 
-        float cTotal = 0f;
-        float mTotal = 0f;
-        float yTotal = 0f;
-        float kTotal = 0f;
+        float cTotal = 0.0f;
+        float mTotal = 0.0f;
+        float yTotal = 0.0f;
+        float kTotal = 0.0f;
 
-        float cMax = 0f;
-        float mMax = 0f;
-        float yMax = 0f;
-        float kMax = 0f;
+        float cMax = 0.0f;
+        float mMax = 0.0f;
+        float yMax = 0.0f;
+        float kMax = 0.0f;
 
         for (float[] cmyk : cmyks) {
             float c = cmyk[0];
@@ -321,23 +321,23 @@ public final class ColorMixer {
     }
 
     public int alphaBlendRGBA(int bg, int fg, float fgAlpha) {
-        float bgRed = ((bg >> 16) & 0xff) / 255f;
-        float bgGreen = ((bg >> 8) & 0xff) / 255f;
-        float bgBlue = (bg & 0xff) / 255f;
+        float bgRed = ((bg >> 16) & 0xff) / 255.0f;
+        float bgGreen = ((bg >> 8) & 0xff) / 255.0f;
+        float bgBlue = (bg & 0xff) / 255.0f;
 
-        float fgRed = ((fg >> 16) & 0xff) / 255f;
-        float fgGreen = ((fg >> 8) & 0xff) / 255f;
-        float fgBlue = (fg & 0xff) / 255f;
+        float fgRed = ((fg >> 16) & 0xff) / 255.0f;
+        float fgGreen = ((fg >> 8) & 0xff) / 255.0f;
+        float fgBlue = (fg & 0xff) / 255.0f;
 
         float outRed, outGreen, outBlue;
 
-        outRed = fgRed * fgAlpha + bgRed * (1f - fgAlpha);
-        outGreen = fgGreen * fgAlpha + bgGreen * (1f - fgAlpha);
-        outBlue = fgBlue * fgAlpha + bgBlue * (1f - fgAlpha);
+        outRed = fgRed * fgAlpha + bgRed * (1.0f - fgAlpha);
+        outGreen = fgGreen * fgAlpha + bgGreen * (1.0f - fgAlpha);
+        outBlue = fgBlue * fgAlpha + bgBlue * (1.0f - fgAlpha);
 
-        int outRedi = (int) (outRed * 255f);
-        int outGreeni = (int) (outGreen * 255f);
-        int outBluei = (int) (outBlue * 255f);
+        int outRedi = (int) (outRed * 255.0f);
+        int outGreeni = (int) (outGreen * 255.0f);
+        int outBluei = (int) (outBlue * 255.0f);
 
         return ((outRedi & 0xff) << 16) | ((outGreeni & 0xff) << 8) | (outBluei & 0xff);
     }

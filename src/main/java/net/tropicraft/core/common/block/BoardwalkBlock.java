@@ -139,7 +139,7 @@ public final class BoardwalkBlock extends Block implements SimpleWaterloggedBloc
     @Override
     @OnlyIn(Dist.CLIENT)
     public float getShadeBrightness(BlockState state, BlockGetter world, BlockPos pos) {
-        return 1.0F;
+        return 1.0f;
     }
 
     @Override

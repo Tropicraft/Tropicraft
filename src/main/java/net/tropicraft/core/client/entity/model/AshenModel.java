@@ -42,16 +42,16 @@ public class AshenModel extends ListModel<AshenEntity> implements ArmedModel {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
 
-        root.addOrReplaceChild("right_leg", CubeListBuilder.create().texOffs(25, 0).mirror().addBox(0F, 0F, 0F, 1, 7, 1), PartPose.offsetAndRotation(1F, 17F, 0F, 0F, 0F, 0F));
-        root.addOrReplaceChild("left_leg", CubeListBuilder.create().texOffs(25, 0).mirror().addBox(-1F, 0F, 0F, 1, 7, 1), PartPose.offsetAndRotation(-1F, 17F, 0F, 0F, 0F, 0F));
-        root.addOrReplaceChild("body", CubeListBuilder.create().texOffs(24, 8).mirror().addBox(-2F, -3F, 0F, 4, 7, 3), PartPose.offsetAndRotation(0F, 13F, 2F, 0F, 3.141593F, 0F));
-        root.addOrReplaceChild("head", CubeListBuilder.create().texOffs(24, 18).mirror().addBox(-2F, -3F, -1F, 4, 3, 4), PartPose.offsetAndRotation(0F, 10F, 1F, 0F, 3.141593F, 0F));
+        root.addOrReplaceChild("right_leg", CubeListBuilder.create().texOffs(25, 0).mirror().addBox(0.0f, 0.0f, 0.0f, 1, 7, 1), PartPose.offsetAndRotation(1.0f, 17.0f, 0.0f, 0.0f, 0.0f, 0.0f));
+        root.addOrReplaceChild("left_leg", CubeListBuilder.create().texOffs(25, 0).mirror().addBox(-1.0f, 0.0f, 0.0f, 1, 7, 1), PartPose.offsetAndRotation(-1.0f, 17.0f, 0.0f, 0.0f, 0.0f, 0.0f));
+        root.addOrReplaceChild("body", CubeListBuilder.create().texOffs(24, 8).mirror().addBox(-2.0f, -3.0f, 0.0f, 4, 7, 3), PartPose.offsetAndRotation(0.0f, 13.0f, 2.0f, 0.0f, 3.141593f, 0.0f));
+        root.addOrReplaceChild("head", CubeListBuilder.create().texOffs(24, 18).mirror().addBox(-2.0f, -3.0f, -1.0f, 4, 3, 4), PartPose.offsetAndRotation(0.0f, 10.0f, 1.0f, 0.0f, 3.141593f, 0.0f));
 
-        PartDefinition rightArm = root.addOrReplaceChild("right_arm", CubeListBuilder.create().texOffs(0, 24).mirror().addBox(-6F, -0.5F, -0.5F, 6, 1, 1), PartPose.offsetAndRotation(-2F, 10.5F, 0.5F, 0F, 0F, 0F));
-        rightArm.addOrReplaceChild("right_arm_sub", CubeListBuilder.create().texOffs(31, 0).mirror().addBox(-0.5F, -6F, -0.5F, 1, 6, 1), PartPose.offsetAndRotation(-5.5F, 0F, 0F, 0F, 0F, 0F));
+        PartDefinition rightArm = root.addOrReplaceChild("right_arm", CubeListBuilder.create().texOffs(0, 24).mirror().addBox(-6.0f, -0.5f, -0.5f, 6, 1, 1), PartPose.offsetAndRotation(-2.0f, 10.5f, 0.5f, 0.0f, 0.0f, 0.0f));
+        rightArm.addOrReplaceChild("right_arm_sub", CubeListBuilder.create().texOffs(31, 0).mirror().addBox(-0.5f, -6.0f, -0.5f, 1, 6, 1), PartPose.offsetAndRotation(-5.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f));
 
-        PartDefinition leftArm = root.addOrReplaceChild("left_arm", CubeListBuilder.create().texOffs(0, 24).mirror().addBox(0F, -0.5F, -0.5F, 6, 1, 1), PartPose.offsetAndRotation(2F, 10.46667F, 0.5F, 0F, 0F, 0F));
-        leftArm.addOrReplaceChild("left_arm_sub", CubeListBuilder.create().mirror(true).texOffs(31, 0).addBox(-0.5F, -6F, -0.5F, 1, 6, 1), PartPose.offsetAndRotation(5.5F, 0F, 0F, 0F, 0F, 0F));
+        PartDefinition leftArm = root.addOrReplaceChild("left_arm", CubeListBuilder.create().texOffs(0, 24).mirror().addBox(0.0f, -0.5f, -0.5f, 6, 1, 1), PartPose.offsetAndRotation(2.0f, 10.46667f, 0.5f, 0.0f, 0.0f, 0.0f));
+        leftArm.addOrReplaceChild("left_arm_sub", CubeListBuilder.create().mirror(true).texOffs(31, 0).addBox(-0.5f, -6.0f, -0.5f, 1, 6, 1), PartPose.offsetAndRotation(5.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f));
         return LayerDefinition.create(mesh, 64, 32);
     }
 
@@ -63,29 +63,29 @@ public class AshenModel extends ListModel<AshenEntity> implements ArmedModel {
 
         switch (entity.getActionState()) {
             case LOST_MASK -> {
-                headAngle = -0.4F;
+                headAngle = -0.4f;
                 rightArm.zRot = -armRotater;
-                rightArmSub.zRot = -5.1F;
+                rightArmSub.zRot = -5.1f;
                 leftArm.zRot = armRotater;
-                leftArmSub.zRot = 5.1F;
+                leftArmSub.zRot = 5.1f;
                 leftArm.xRot = subStraight;
                 rightArm.xRot = subStraight;
-                rightArm.yRot = -.5F;
-                leftArm.yRot = .5F;
+                rightArm.yRot = -0.5f;
+                leftArm.yRot = 0.5f;
             }
             case HOSTILE -> {
-                headAngle = 0.0F;
-                leftArm.xRot = 1.65F + limbSwing / 125F;
-                leftArm.yRot = .9F + limbSwingAmount / 125F;
+                headAngle = 0.0f;
+                leftArm.xRot = 1.65f + limbSwing / 125.0f;
+                leftArm.yRot = 0.9f + limbSwingAmount / 125.0f;
                 leftArm.zRot = armRotater;
-                leftArmSub.zRot = 6.2F;
-                rightArm.zRot = 0.0F - Mth.sin(limbSwingAmount * 0.75F) * 0.0220F;
-                rightArm.yRot = 0.0F;
-                rightArmSub.zRot = 0.0F;
+                leftArmSub.zRot = 6.2f;
+                rightArm.zRot = 0.0f - Mth.sin(limbSwingAmount * 0.75f) * 0.0220f;
+                rightArm.yRot = 0.0f;
+                rightArmSub.zRot = 0.0f;
                 if (swinging) {
-                    rightArm.xRot += Mth.sin(limbSwingAmount * 0.75F) * 0.0520F;
+                    rightArm.xRot += Mth.sin(limbSwingAmount * 0.75f) * 0.0520f;
                 } else {
-                    rightArm.xRot = 0.0F;
+                    rightArm.xRot = 0.0f;
                 }
             }
             default -> {
@@ -94,16 +94,16 @@ public class AshenModel extends ListModel<AshenEntity> implements ArmedModel {
                 rightArmSub.zRot = -subStraight;
                 leftArm.zRot = armRotater;
                 leftArmSub.zRot = subStraight;
-                rightArm.yRot = 0F;
-                leftArm.yRot = 0F;
+                rightArm.yRot = 0.0f;
+                leftArm.yRot = 0.0f;
             }
         }
 
-        head.xRot = headPitch / 125F + headAngle;
-        head.yRot = netHeadYaw / 125F + Mth.PI;
+        head.xRot = headPitch / 125.0f + headAngle;
+        head.yRot = netHeadYaw / 125.0f + Mth.PI;
 
-        leftArm.zRot += Mth.sin(ageInTicks * 0.25F) * 0.020F;
-        rightArm.zRot -= Mth.sin(ageInTicks * 0.25F) * 0.020F;
+        leftArm.zRot += Mth.sin(ageInTicks * 0.25f) * 0.020f;
+        rightArm.zRot -= Mth.sin(ageInTicks * 0.25f) * 0.020f;
     }
 
     @Override
@@ -113,12 +113,12 @@ public class AshenModel extends ListModel<AshenEntity> implements ArmedModel {
 
     @Override
     public void prepareMobModel(AshenEntity entity, float limbSwing, float limbSwingAmount, float partialTick) {
-        rightLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.25F * limbSwingAmount;
-        leftLeg.xRot = Mth.cos(limbSwing * 0.6662F + 3.141593F) * 1.25F * limbSwingAmount;
+        rightLeg.xRot = Mth.cos(limbSwing * 0.6662f) * 1.25f * limbSwingAmount;
+        leftLeg.xRot = Mth.cos(limbSwing * 0.6662f + 3.141593f) * 1.25f * limbSwingAmount;
     }
 
     @Override
     public void translateToHand(HumanoidArm side, PoseStack stack) {
-        stack.translate(0.09375F, 0.1875F, 0.0F);
+        stack.translate(0.09375f, 0.1875f, 0.0f);
     }
 }

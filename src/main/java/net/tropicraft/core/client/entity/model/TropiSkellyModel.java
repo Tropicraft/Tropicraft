@@ -20,34 +20,34 @@ public class TropiSkellyModel extends AbstractZombieModel<TropiSkellyEntity> imp
     }
 
     public static LayerDefinition create() {
-        MeshDefinition mesh = createMesh(CubeDeformation.NONE, 0.0F);
+        MeshDefinition mesh = createMesh(CubeDeformation.NONE, 0.0f);
         PartDefinition root = mesh.getRoot();
 
         root.addOrReplaceChild("right_arm",
                 CubeListBuilder.create().texOffs(40, 16)
-                        .addBox(-1.0F, -2.0F, -1.0F, 2, 12, 2),
-                PartPose.offset(-5.0F, 2.0F, 0.0F));
+                        .addBox(-1.0f, -2.0f, -1.0f, 2, 12, 2),
+                PartPose.offset(-5.0f, 2.0f, 0.0f));
 
         root.addOrReplaceChild("left_arm",
                 CubeListBuilder.create().texOffs(40, 16).mirror()
-                        .addBox(-1.0F, -2.0F, -1.0F, 2, 12, 2),
-                PartPose.offset(5.0F, 2.0F, 0.0F));
+                        .addBox(-1.0f, -2.0f, -1.0f, 2, 12, 2),
+                PartPose.offset(5.0f, 2.0f, 0.0f));
 
         root.addOrReplaceChild("right_leg",
                 CubeListBuilder.create().texOffs(0, 16)
-                        .addBox(-1.0F, 0.0F, -1.0F, 2, 12, 2),
-                PartPose.offset(-2.0F, 12.0F, 0.0F));
+                        .addBox(-1.0f, 0.0f, -1.0f, 2, 12, 2),
+                PartPose.offset(-2.0f, 12.0f, 0.0f));
 
         root.addOrReplaceChild("left_leg",
                 CubeListBuilder.create().texOffs(0, 16)
-                        .addBox(-1.0F, 0.0F, -1.0F, 2, 12, 2),
-                PartPose.offset(2.0F, 12.0F, 0.0F));
+                        .addBox(-1.0f, 0.0f, -1.0f, 2, 12, 2),
+                PartPose.offset(2.0f, 12.0f, 0.0f));
 
         PartDefinition body = root.getChild("body");
 
         body.addOrReplaceChild("skirt",
                 CubeListBuilder.create().texOffs(40, 0)
-                        .addBox(-4.0F, 12.0F, -2.0F, 8, 3, 4),
+                        .addBox(-4.0f, 12.0f, -2.0f, 8, 3, 4),
                 PartPose.ZERO);
 
         return LayerDefinition.create(mesh, 64, 64);
@@ -56,7 +56,7 @@ public class TropiSkellyModel extends AbstractZombieModel<TropiSkellyEntity> imp
     @Override
     public void translateToHand(HumanoidArm side, PoseStack stack) {
         super.translateToHand(side, stack);
-        stack.translate((side == HumanoidArm.LEFT ? -1 : 1) * 0.1f, 0, 0.0F);
+        stack.translate((side == HumanoidArm.LEFT ? -1 : 1) * 0.1f, 0, 0.0f);
     }
 
     @Override

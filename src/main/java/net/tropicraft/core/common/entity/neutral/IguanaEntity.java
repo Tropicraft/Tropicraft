@@ -38,7 +38,7 @@ public class IguanaEntity extends TropicraftCreatureEntity {
     private int angerLevel;
     private UUID angerTargetUUID;
 
-    private static final AttributeModifier ATTACK_SPEED_BOOST_MODIFIER = new AttributeModifier(ResourceLocation.fromNamespaceAndPath(Constants.MODID, "attack_speed_boost"), 0.05D, AttributeModifier.Operation.ADD_VALUE);
+    private static final AttributeModifier ATTACK_SPEED_BOOST_MODIFIER = new AttributeModifier(ResourceLocation.fromNamespaceAndPath(Constants.MODID, "attack_speed_boost"), 0.05, AttributeModifier.Operation.ADD_VALUE);
 
     public IguanaEntity(EntityType<? extends PathfinderMob> type, Level world) {
         super(type, world);
@@ -67,10 +67,10 @@ public class IguanaEntity extends TropicraftCreatureEntity {
     @Override
     protected void registerGoals() {
         goalSelector.addGoal(0, new FloatGoal(this));
-        goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, false));
-        goalSelector.addGoal(5, new MoveTowardsRestrictionGoal(this, 1.0D));
-        goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0, false));
+        goalSelector.addGoal(5, new MoveTowardsRestrictionGoal(this, 1.0));
+        goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0));
+        goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0f));
         goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         targetSelector.addGoal(1, new HurtByAggressorGoal(this));
         targetSelector.addGoal(2, new TargetAggressorGoal(this));

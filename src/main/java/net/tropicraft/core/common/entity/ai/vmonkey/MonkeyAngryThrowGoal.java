@@ -31,8 +31,8 @@ public class MonkeyAngryThrowGoal extends Goal {
     public MonkeyAngryThrowGoal(VMonkeyEntity monkeyEntity) {
         entity = monkeyEntity;
         setFlags(EnumSet.of(Flag.LOOK, Flag.MOVE));
-        speedModifier = 1.2F;
-        stopDistance = 1.0F;
+        speedModifier = 1.2f;
+        stopDistance = 1.0f;
         navigation = monkeyEntity.getNavigation();
     }
 
@@ -50,7 +50,7 @@ public class MonkeyAngryThrowGoal extends Goal {
         timeToRecalcPath = 0;
         madMeter = 100;
         oldWaterCost = entity.getPathfindingMalus(PathType.WATER);
-        entity.setPathfindingMalus(PathType.WATER, 0.0F);
+        entity.setPathfindingMalus(PathType.WATER, 0.0f);
         trackedMug = null;
         trackedPlayer = null;
     }
@@ -71,7 +71,7 @@ public class MonkeyAngryThrowGoal extends Goal {
             trackedPlayer = nearbyPlayer();
 
             if (trackedPlayer != null) {
-                entity.getLookControl().setLookAt(trackedPlayer, 10.0F, (float) entity.getMaxHeadXRot());
+                entity.getLookControl().setLookAt(trackedPlayer, 10.0f, (float) entity.getMaxHeadXRot());
 
                 if (entity.distanceToSqr(trackedPlayer) < 4) {
                     leapTowardTarget(trackedPlayer);
@@ -86,7 +86,7 @@ public class MonkeyAngryThrowGoal extends Goal {
         }
 
         if (trackedMug != null && trackedMug.isAlive()) {
-            entity.getLookControl().setLookAt(trackedMug, 10.0F, (float) entity.getMaxHeadXRot());
+            entity.getLookControl().setLookAt(trackedMug, 10.0f, (float) entity.getMaxHeadXRot());
 
             if (entity.distanceToSqr(trackedMug) > (double) (stopDistance * stopDistance)) {
                 moveTowardsEntity(trackedMug);
@@ -105,7 +105,7 @@ public class MonkeyAngryThrowGoal extends Goal {
     }
 
     private LivingEntity nearbyPlayer() {
-        List<Player> list = entity.level().getEntitiesOfClass(Player.class, entity.getBoundingBox().inflate(20.0D));
+        List<Player> list = entity.level().getEntitiesOfClass(Player.class, entity.getBoundingBox().inflate(20.0));
 
         if (!list.isEmpty()) {
             for (Player entityliving : list) {
@@ -149,14 +149,14 @@ public class MonkeyAngryThrowGoal extends Goal {
         Vec3 motion = entity.getDeltaMovement();
 
         if ((double) f >= 1.0E-4D) {
-            entity.setDeltaMovement(motion.add(d0 / (double) f * 0.5D * 0.800000011920929D + motion.x * 0.20000000298023224D, 0, d1 / (double) f * 0.5D * 0.800000011920929D + motion.z * 0.20000000298023224D));
+            entity.setDeltaMovement(motion.add(d0 / (double) f * 0.5 * 0.800000011920929 + motion.x * 0.20000000298023224, 0, d1 / (double) f * 0.5 * 0.800000011920929 + motion.z * 0.20000000298023224));
         }
 
         entity.setDeltaMovement(new Vec3(motion.x, 0.25, motion.z));
     }
 
     private ItemEntity nearbyMug() {
-        List<ItemEntity> list = entity.level().getEntitiesOfClass(ItemEntity.class, entity.getBoundingBox().inflate(10.0D));
+        List<ItemEntity> list = entity.level().getEntitiesOfClass(ItemEntity.class, entity.getBoundingBox().inflate(10.0));
 
         if (!list.isEmpty()) {
             for (ItemEntity item : list) {

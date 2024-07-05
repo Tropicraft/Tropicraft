@@ -24,7 +24,7 @@ public class AIAshenShootDart extends Goal {
         this.entity = entity;
         attackCooldown = 60;
         maxAttackDistance = 15 * 15;
-        moveSpeedAmplifier = 1.0F;
+        moveSpeedAmplifier = 1.0f;
     }
 
     public void setAttackCooldown(int attackCooldown) {
@@ -97,11 +97,11 @@ public class AIAshenShootDart extends Goal {
             }
 
             if (strafingTime >= 20) {
-                if ((double) entity.getRandom().nextFloat() < 0.3D) {
+                if ((double) entity.getRandom().nextFloat() < 0.3) {
                     strafingClockwise = !strafingClockwise;
                 }
 
-                if ((double) entity.getRandom().nextFloat() < 0.3D) {
+                if ((double) entity.getRandom().nextFloat() < 0.3) {
                     strafingBackwards = !strafingBackwards;
                 }
 
@@ -109,16 +109,16 @@ public class AIAshenShootDart extends Goal {
             }
 
             if (strafingTime > -1) {
-                if (d0 > (double) (maxAttackDistance * 0.75F)) {
+                if (d0 > (double) (maxAttackDistance * 0.75f)) {
                     strafingBackwards = false;
-                } else if (d0 < (double) (maxAttackDistance * 0.25F)) {
+                } else if (d0 < (double) (maxAttackDistance * 0.25f)) {
                     strafingBackwards = true;
                 }
 
-                entity.getMoveControl().strafe(strafingBackwards ? -0.5F : 0.5F, strafingClockwise ? 0.5F : -0.5F);
-                entity.lookAt(target, 30.0F, 30.0F);
+                entity.getMoveControl().strafe(strafingBackwards ? -0.5f : 0.5f, strafingClockwise ? 0.5f : -0.5f);
+                entity.lookAt(target, 30.0f, 30.0f);
             } else {
-                entity.getLookControl().setLookAt(target, 30.0F, 30.0F);
+                entity.getLookControl().setLookAt(target, 30.0f, 30.0f);
             }
 
             if (entity.isUsingItem()) {

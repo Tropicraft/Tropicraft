@@ -87,7 +87,7 @@ public class EntityAITemptHelmet extends Goal {
             --delayTemptCounter;
             return false;
         } else {
-            temptingPlayer = temptedEntity.level().getNearestPlayer(temptedEntity, 10.0D);
+            temptingPlayer = temptedEntity.level().getNearestPlayer(temptedEntity, 10.0);
 
             if (temptingPlayer == null) {
                 return false;
@@ -113,12 +113,12 @@ public class EntityAITemptHelmet extends Goal {
     @Override
     public boolean canContinueToUse() {
         if (scaredByPlayerMovement) {
-            if (temptedEntity.distanceToSqr(temptingPlayer) < 36.0D) {
-                if (temptingPlayer.distanceToSqr(targetX, targetY, targetZ) > 0.010000000000000002D) {
+            if (temptedEntity.distanceToSqr(temptingPlayer) < 36.0) {
+                if (temptingPlayer.distanceToSqr(targetX, targetY, targetZ) > 0.010000000000000002) {
                     return false;
                 }
 
-                if (Math.abs((double) temptingPlayer.getXRot() - pitch) > 5.0D || Math.abs((double) temptingPlayer.getYRot() - yaw) > 5.0D) {
+                if (Math.abs((double) temptingPlayer.getXRot() - pitch) > 5.0 || Math.abs((double) temptingPlayer.getYRot() - yaw) > 5.0) {
                     return false;
                 }
             } else {
@@ -163,7 +163,7 @@ public class EntityAITemptHelmet extends Goal {
     public void tick() {
         temptedEntity.getLookControl().setLookAt(temptingPlayer, (float) (temptedEntity.getMaxHeadYRot() + 20), (float) temptedEntity.getMaxHeadXRot());
 
-        if (temptedEntity.distanceToSqr(temptingPlayer) < 6.25D) {
+        if (temptedEntity.distanceToSqr(temptingPlayer) < 6.25) {
             temptedEntity.getNavigation().stop();
         } else {
             temptedEntity.getNavigation().moveTo(temptingPlayer, speed);

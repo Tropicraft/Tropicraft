@@ -19,7 +19,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public final class CoconutBlock extends DirectionalBlock {
     public static final MapCodec<CoconutBlock> CODEC = simpleCodec(CoconutBlock::new);
 
-    private static final VoxelShape COCONUT_AABB = Block.box(4, 0.0D, 4, 12, 10, 12);
+    private static final VoxelShape COCONUT_AABB = Block.box(4, 0.0, 4, 12, 10, 12);
 
     public CoconutBlock(Properties properties) {
         super(properties);

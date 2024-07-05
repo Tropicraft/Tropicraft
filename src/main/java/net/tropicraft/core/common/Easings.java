@@ -7,6 +7,6 @@ public final class Easings {
 
     // https://easings.net/#easeInOutSine
     public static float inOutSine(float x) {
-        return -(Mth.cos(PI * x) - 1.0F) / 2.0F;
+        return -(Mth.cos(PI * x) - 1.0f) / 2.0f;
     }
 }

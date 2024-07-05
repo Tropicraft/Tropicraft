@@ -60,7 +60,7 @@ public class TropicraftArmorMaterials {
                     ResourceLocation.fromNamespaceAndPath(Constants.MODID, "scale")
             )),
             0.5f,
-            0.0F
+            0.0f
     ));
     public static final DeferredHolder<ArmorMaterial, ArmorMaterial> FIRE_ARMOR = REGISTER.register("fire_armor", () -> new ArmorMaterial(
             Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
@@ -76,7 +76,7 @@ public class TropicraftArmorMaterials {
                     ResourceLocation.fromNamespaceAndPath(Constants.MODID, "fire")
             )),
             0.1f,
-            0.0F
+            0.0f
     ));
     public static final DeferredHolder<ArmorMaterial, ArmorMaterial> SCUBA = REGISTER.register("scuba", () -> new ArmorMaterial(
             Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
@@ -90,6 +90,6 @@ public class TropicraftArmorMaterials {
             () -> Ingredient.of(TropicraftTags.Items.REPAIRS_SCUBA_GEAR),
             DUMMY_LAYERS,
             0,
-            0.0F
+            0.0f
     ));
 }

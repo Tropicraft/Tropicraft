@@ -19,7 +19,7 @@ public class TapirRenderer extends MobRenderer<TapirEntity, TapirModel<TapirEnti
     private static final ResourceLocation BABY_TEXTURE = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/tapir_baby.png");
 
     public TapirRenderer(EntityRendererProvider.Context context) {
-        super(context, new TapirModel<>(context.bakeLayer(TropicraftRenderLayers.TAPIR_LAYER)), 0.6F);
+        super(context, new TapirModel<>(context.bakeLayer(TropicraftRenderLayers.TAPIR_LAYER)), 0.6f);
         addLayer(new SunglassesLayer<>(this, TapirEntity::isUndercover, (poseStack, entity, model) -> {
             ModelPart head = model.getHead();
             head.translateAndRotate(poseStack);
@@ -31,7 +31,7 @@ public class TapirRenderer extends MobRenderer<TapirEntity, TapirModel<TapirEnti
 
     @Override
     protected void scale(TapirEntity entity, PoseStack matrixStack, float partialTicks) {
-        matrixStack.scale(0.8F, 0.8F, 0.8F);
+        matrixStack.scale(0.8f, 0.8f, 0.8f);
     }
 
     @Override

@@ -193,7 +193,7 @@ public class TropicraftBlocks {
         return loot.getRegistries().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FORTUNE);
     }
 
-    private static final float[] FRUIT_SAPLING_RATES = new float[]{1 / 10F, 1 / 8F, 1 / 6F, 1 / 5F};
+    private static final float[] FRUIT_SAPLING_RATES = new float[]{1 / 10.0f, 1 / 8.0f, 1 / 6.0f, 1 / 5.0f};
     private static final float[] SAPLING_RATES = new float[]{1.0f / 20.0f, 1.0f / 16.0f, 1.0f / 12.0f, 1.0f / 10.0f};
     private static final float[] RARE_SAPLING_RATES = new float[]{1.0f / 40.0f, 1.0f / 36.0f, 1.0f / 32.0f, 1.0f / 24.0f, 1.0f / 10.0f};
 
@@ -225,7 +225,7 @@ public class TropicraftBlocks {
 
     public static final BlockEntry<Block> CHUNK = REGISTRATE.block("chunk", Block::new)
             .initialProperties(() -> Blocks.STONE)
-            .properties(p -> p.mapColor(MapColor.COLOR_BLACK).strength(6.0F).explosionResistance(30.0F))
+            .properties(p -> p.mapColor(MapColor.COLOR_BLACK).strength(6.0f).explosionResistance(30.0f))
             .blockstate(TropicraftBlocks::simpleBlockAllRotations)
             .tag(BlockTags.MINEABLE_WITH_PICKAXE)
             .lang("Chunk O' Head")
@@ -266,7 +266,7 @@ public class TropicraftBlocks {
     private static BlockBuilder<DropExperienceBlock, Registrate> ore(String name, MapColor color) {
         return REGISTRATE.block(name, p -> new DropExperienceBlock(UniformInt.of(0, 2), p))
                 .initialProperties(() -> Blocks.STONE)
-                .properties(p -> p.strength(3.0F).mapColor(color))
+                .properties(p -> p.strength(3.0f).mapColor(color))
                 .tag(BlockTags.MINEABLE_WITH_PICKAXE, Tags.Blocks.ORES)
                 .item()
                 .tag(Tags.Items.ORES)
@@ -276,7 +276,7 @@ public class TropicraftBlocks {
     private static BlockBuilder<DropExperienceBlock, Registrate> ore(String name, Supplier<Item> gem, MapColor color) {
         return REGISTRATE.block(name, p -> new DropExperienceBlock(UniformInt.of(0, 2), p))
                 .initialProperties(() -> Blocks.STONE)
-                .properties(p -> p.strength(3.0F).mapColor(color))
+                .properties(p -> p.strength(3.0f).mapColor(color))
                 .loot((loot, block) -> loot.add(block,
                         loot.createSilkTouchDispatchTable(block,
                                 loot.applyExplosionDecay(block, lootTableItem(gem.get())
@@ -306,7 +306,7 @@ public class TropicraftBlocks {
 
     private static BlockBuilder<Block, Registrate> oreStorageBlock(String name, MapColor color, ItemEntry<Item> ingredient) {
         return REGISTRATE.block(name, Block::new)
-                .properties(p -> p.requiresCorrectToolForDrops().mapColor(color).sound(SoundType.METAL).destroyTime(5.0F).explosionResistance(6.0F))
+                .properties(p -> p.requiresCorrectToolForDrops().mapColor(color).sound(SoundType.METAL).destroyTime(5.0f).explosionResistance(6.0f))
                 .tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .recipe((ctx, prov) -> prov.storage(ingredient, RecipeCategory.BUILDING_BLOCKS, ctx))
                 .simpleItem();
@@ -363,7 +363,7 @@ public class TropicraftBlocks {
 
     public static final BlockEntry<Block> PACKED_PURIFIED_SAND = REGISTRATE.block("packed_purified_sand", Block::new)
             .initialProperties(() -> Blocks.SAND)
-            .properties(p -> p.mapColor(MapColor.STONE).strength(0.8F).requiresCorrectToolForDrops())
+            .properties(p -> p.mapColor(MapColor.STONE).strength(0.8f).requiresCorrectToolForDrops())
             .blockstate(TropicraftBlocks::simpleBlockAllRotations)
             .tag(BlockTags.SAND, BlockTags.MINEABLE_WITH_SHOVEL, TropicraftTags.Blocks.CARVER_REPLACEABLES)
             .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ctx.get())
@@ -419,7 +419,7 @@ public class TropicraftBlocks {
 
     public static final BlockEntry<MudBlock> MUD = REGISTRATE.block("mud", MudBlock::new)
             .initialProperties(() -> Blocks.DIRT)
-            .properties(p -> p.speedFactor(0.5F).isValidSpawn((s, w, pa, e) -> true).isRedstoneConductor((s, w, pa) -> true).isViewBlocking((s, w, pa) -> true).isSuffocating((s, w, pa) -> true))
+            .properties(p -> p.speedFactor(0.5f).isValidSpawn((s, w, pa, e) -> true).isRedstoneConductor((s, w, pa) -> true).isViewBlocking((s, w, pa) -> true).isSuffocating((s, w, pa) -> true))
             .tag(TropicraftTags.Blocks.MUD, BlockTags.MINEABLE_WITH_SHOVEL, TropicraftTags.Blocks.CARVER_REPLACEABLES, BlockTags.BAMBOO_PLANTABLE_ON, BlockTags.DIRT, BlockTags.SNOW_LAYER_CAN_SURVIVE_ON, BlockTags.SNIFFER_DIGGABLE_BLOCK)
             .blockstate((ctx, prov) -> prov.simpleBlock(ctx.get(),
                     ArrayUtils.addAll(
@@ -453,14 +453,14 @@ public class TropicraftBlocks {
             .register();
 
     public static final BlockEntry<RotatedPillarBlock> BAMBOO_BUNDLE = REGISTRATE.block("bamboo_bundle", RotatedPillarBlock::new)
-            .properties(p -> p.mapColor(MapColor.PLANT).sound(SoundType.BAMBOO).strength(0.2F, 5.0F))
+            .properties(p -> p.mapColor(MapColor.PLANT).sound(SoundType.BAMBOO).strength(0.2f, 5.0f))
             .blockstate((ctx, prov) -> prov.axisBlock(ctx.get(), prov.modLoc("block/bamboo")))
             .recipe((ctx, prov) -> prov.singleItem(DataIngredient.items((NonNullSupplier<? extends ItemLike>) BAMBOO_STICK), RecipeCategory.BUILDING_BLOCKS, ctx, 9, 2))
             .simpleItem()
             .register();
 
     public static final BlockEntry<RotatedPillarBlock> THATCH_BUNDLE = REGISTRATE.block("thatch_bundle", RotatedPillarBlock::new)
-            .properties(p -> p.mapColor(MapColor.PLANT).sound(SoundType.BAMBOO).strength(0.2F, 5.0F).ignitedByLava().pushReaction(PushReaction.DESTROY))
+            .properties(p -> p.mapColor(MapColor.PLANT).sound(SoundType.BAMBOO).strength(0.2f, 5.0f).ignitedByLava().pushReaction(PushReaction.DESTROY))
             .blockstate((ctx, prov) -> prov.axisBlock(ctx.get(), prov.modLoc("block/thatch")))
             .recipe((ctx, prov) -> prov.singleItem(DataIngredient.items(Items.SUGAR_CANE), RecipeCategory.BUILDING_BLOCKS, ctx, 4, 1))
             .simpleItem()
@@ -510,7 +510,7 @@ public class TropicraftBlocks {
     public static final BlockEntry<StairBlock> CHUNK_STAIRS = stoneStairs("chunk_stairs", CHUNK).register();
 
     public static final BlockEntry<CoconutBlock> COCONUT = REGISTRATE.block("coconut", CoconutBlock::new)
-            .properties(p -> p.mapColor(MapColor.PLANT).strength(2.0F).sound(SoundType.STONE).pushReaction(PushReaction.DESTROY))
+            .properties(p -> p.mapColor(MapColor.PLANT).strength(2.0f).sound(SoundType.STONE).pushReaction(PushReaction.DESTROY))
             .loot((loot, block) -> loot.add(block, droppingChunks(loot, block, TropicraftItems.COCONUT_CHUNK)))
             .tag(BlockTags.MINEABLE_WITH_AXE)
             .addLayer(() -> RenderType::cutout)
@@ -735,7 +735,7 @@ public class TropicraftBlocks {
 
     // TODO: register with food
     public static final BlockEntry<PapayaBlock> PAPAYA = REGISTRATE.block("papaya", PapayaBlock::new)
-            .properties(p -> p.mapColor(MapColor.PLANT).randomTicks().strength(0.2F, 3.0F).sound(SoundType.WOOD).noOcclusion().pushReaction(PushReaction.DESTROY))
+            .properties(p -> p.mapColor(MapColor.PLANT).randomTicks().strength(0.2f, 3.0f).sound(SoundType.WOOD).noOcclusion().pushReaction(PushReaction.DESTROY))
             .loot((loot, block) -> loot.add(block, LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
                     .add(loot.applyExplosionDecay(block, LootItem.lootTableItem(block.asItem()).apply(SetItemCountFunction.setCount(ConstantValue.exactly(2))
                             .when(hasBlockStateProperties(block).setProperties(properties().hasProperty(PapayaBlock.AGE, 1)))))))))
@@ -833,7 +833,7 @@ public class TropicraftBlocks {
 
     private static BlockBuilder<BongoDrumBlock, Registrate> bongoDrum(String name, BongoDrumBlock.Size size) {
         return REGISTRATE.block(name, p -> new BongoDrumBlock(size, p))
-                .properties(p -> p.mapColor(MapColor.TERRACOTTA_WHITE).strength(2.0F).sound(SoundType.WOOD).ignitedByLava().instrument(NoteBlockInstrument.BASS))
+                .properties(p -> p.mapColor(MapColor.TERRACOTTA_WHITE).strength(2.0f).sound(SoundType.WOOD).ignitedByLava().instrument(NoteBlockInstrument.BASS))
                 .tag(TropicraftTags.Blocks.BONGOS)
                 .blockstate((ctx, prov) -> {
                     AABB bb = size.shape.bounds();
@@ -893,7 +893,7 @@ public class TropicraftBlocks {
 
     public static final BlockEntry<BambooChestBlock> BAMBOO_CHEST = REGISTRATE.block("bamboo_chest", BambooChestBlock::new)
             .initialProperties(BAMBOO_BUNDLE)
-            .properties(p -> p.strength(1.0F))
+            .properties(p -> p.strength(1.0f))
             .blockstate((ctx, prov) -> noModelBlock(ctx, prov, prov.modLoc("block/bamboo_side")))
             .blockEntity(BambooChestBlockEntity::new)
             .renderer(() -> BambooChestRenderer::new)
@@ -945,7 +945,7 @@ public class TropicraftBlocks {
     public static final BlockEntityEntry<SifterBlockEntity> SIFTER_ENTITY = BlockEntityEntry.cast(SIFTER.getSibling(Registries.BLOCK_ENTITY_TYPE));
 
     public static final BlockEntry<DrinkMixerBlock> DRINK_MIXER = REGISTRATE.block("drink_mixer", DrinkMixerBlock::new)
-            .properties(p -> p.mapColor(MapColor.STONE).strength(2.0F, 30.0F).noOcclusion().instrument(NoteBlockInstrument.BASEDRUM))
+            .properties(p -> p.mapColor(MapColor.STONE).strength(2.0f, 30.0f).noOcclusion().instrument(NoteBlockInstrument.BASEDRUM))
             .blockstate((ctx, prov) -> noModelBlock(ctx, prov, prov.modLoc("block/chunk")))
             .blockEntity(DrinkMixerBlockEntity::new)
             .renderer(() -> DrinkMixerRenderer::new)
@@ -967,7 +967,7 @@ public class TropicraftBlocks {
     public static final BlockEntityEntry<DrinkMixerBlockEntity> DRINK_MIXER_ENTITY = BlockEntityEntry.cast(DRINK_MIXER.getSibling(Registries.BLOCK_ENTITY_TYPE));
 
     public static final BlockEntry<AirCompressorBlock> AIR_COMPRESSOR = REGISTRATE.block("air_compressor", AirCompressorBlock::new)
-            .properties(p -> p.mapColor(MapColor.STONE).strength(2.0F, 30.0F).noOcclusion().instrument(NoteBlockInstrument.BASEDRUM))
+            .properties(p -> p.mapColor(MapColor.STONE).strength(2.0f, 30.0f).noOcclusion().instrument(NoteBlockInstrument.BASEDRUM))
             .blockstate((ctx, prov) -> noModelBlock(ctx, prov, prov.modLoc("block/chunk")))
             .blockEntity(AirCompressorBlockEntity::new)
             .renderer(() -> AirCompressorRenderer::new)
@@ -1022,7 +1022,7 @@ public class TropicraftBlocks {
             .register();
 
     public static final BlockEntry<FlowerPotBlock> BAMBOO_FLOWER_POT = REGISTRATE.block("bamboo_flower_pot", p -> new FlowerPotBlock(null, () -> Blocks.AIR, p))
-            .properties(p -> p.strength(0.2F, 5.0F).sound(SoundType.BAMBOO).pushReaction(PushReaction.DESTROY))
+            .properties(p -> p.strength(0.2f, 5.0f).sound(SoundType.BAMBOO).pushReaction(PushReaction.DESTROY))
             .addLayer(() -> RenderType::cutout)
             .blockstate((ctx, prov) -> flowerPot(ctx, prov, ctx, prov.modLoc("block/bamboo_side")))
             .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ctx.get())
@@ -1187,7 +1187,7 @@ public class TropicraftBlocks {
 
     private static BlockEntry<FlowerPotBlock> bambooPot(String name, Supplier<? extends Block> plant) {
         return REGISTRATE.block(name, p -> new FlowerPotBlock(BAMBOO_FLOWER_POT, plant, p))
-                .properties(p -> p.strength(0.2F, 5.0F).sound(SoundType.BAMBOO).pushReaction(PushReaction.DESTROY))
+                .properties(p -> p.strength(0.2f, 5.0f).sound(SoundType.BAMBOO).pushReaction(PushReaction.DESTROY))
                 .loot((loot, block) -> loot.add(block, pottedPlantLoot(loot, block)))
                 .addLayer(() -> RenderType::cutout)
                 .tag(BlockTags.FLOWER_POTS)
@@ -1330,7 +1330,7 @@ public class TropicraftBlocks {
     private static BlockBuilder<ButtonBlock, Registrate> woodButton(String name, BlockEntry<? extends Block> block, String texture) {
         return REGISTRATE.block(name, p -> new ButtonBlock(BlockSetType.OAK, 30, p))
                 .initialProperties(block)
-                .properties(p -> p.noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY))
+                .properties(p -> p.noCollission().strength(0.5f).pushReaction(PushReaction.DESTROY))
                 .tag(BlockTags.WOODEN_BUTTONS, BlockTags.MINEABLE_WITH_AXE)
                 .blockstate((ctx, prov) -> prov.buttonBlock(ctx.get(), prov.modLoc("block/" + texture)))
                 .recipe((ctx, prov) -> RegistrateRecipeProvider.buttonBuilder(ctx.get(), Ingredient.of(block.asItem()))
@@ -1346,7 +1346,7 @@ public class TropicraftBlocks {
     private static BlockBuilder<PressurePlateBlock, Registrate> pressurePlate(String name, BlockEntry<? extends Block> block, String texture) {
         return REGISTRATE.block(name, p -> new PressurePlateBlock(BlockSetType.OAK, p))
                 .initialProperties(block)
-                .properties(p -> p.forceSolidOn().instrument(NoteBlockInstrument.BASS).noCollission().strength(0.5F).ignitedByLava().pushReaction(PushReaction.DESTROY))
+                .properties(p -> p.forceSolidOn().instrument(NoteBlockInstrument.BASS).noCollission().strength(0.5f).ignitedByLava().pushReaction(PushReaction.DESTROY))
                 .tag(BlockTags.WOODEN_PRESSURE_PLATES, BlockTags.MINEABLE_WITH_AXE)
                 .recipe((ctx, prov) -> RegistrateRecipeProvider.pressurePlateBuilder(RecipeCategory.REDSTONE, ctx.get(), Ingredient.of(block.asItem()))
                         .unlockedBy("has_" + prov.safeName(block.get()), has(block.get()))
@@ -1435,8 +1435,8 @@ public class TropicraftBlocks {
                         .setRolls(ConstantValue.exactly(1))
                         .when(hasNoShearsOrSilkTouch(loot))
                         .add(loot.applyExplosionDecay(block, lootTableItem(Items.STICK)
-                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F))))
-                                .when(BonusLevelTableCondition.bonusLevelFlatChance(fortune(loot), 0.02F, 0.022222223F, 0.025F, 0.033333335F, 0.1F))))))
+                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0f, 2.0f))))
+                                .when(BonusLevelTableCondition.bonusLevelFlatChance(fortune(loot), 0.02f, 0.022222223f, 0.025f, 0.033333335f, 0.1f))))))
                 .tag(BlockTags.LEAVES, BlockTags.MINEABLE_WITH_HOE)
                 .item()
                 .tag(ItemTags.LEAVES)
@@ -1478,7 +1478,7 @@ public class TropicraftBlocks {
 
     private static BlockBuilder<RotatedPillarBlock, Registrate> wood(String name, MapColor color, BlockEntry<? extends RotatedPillarBlock> bark, @Nullable Supplier<? extends RotatedPillarBlock> stripped) {
         return REGISTRATE.block(name, p -> stripped != null ? new TropicraftLogBlock(p, stripped) : new RotatedPillarBlock(p))
-                .properties(p -> p.sound(SoundType.WOOD).mapColor(color).strength(2.0F).ignitedByLava().instrument(NoteBlockInstrument.BASS))
+                .properties(p -> p.sound(SoundType.WOOD).mapColor(color).strength(2.0f).ignitedByLava().instrument(NoteBlockInstrument.BASS))
                 .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN, BlockTags.MINEABLE_WITH_AXE)
                 .blockstate((ctx, prov) -> {
                     ResourceLocation barkTexture = prov.blockTexture(bark.get());
@@ -1502,7 +1502,7 @@ public class TropicraftBlocks {
                                 .sound(SoundType.WOOD)
                                 .ignitedByLava()
                                 .instrument(NoteBlockInstrument.BASS)
-                                .strength(2.0F)
+                                .strength(2.0f)
                                 .noOcclusion()
                                 .isRedstoneConductor((state, world, pos) -> false)
                                 .hasPostProcess((state, world, pos) -> true)
@@ -1573,8 +1573,8 @@ public class TropicraftBlocks {
                         .setRolls(ConstantValue.exactly(1))
                         .when(hasNoShearsOrSilkTouch(loot))
                         .add(loot.applyExplosionDecay(block, lootTableItem(Items.STICK)
-                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F))))
-                                .when(BonusLevelTableCondition.bonusLevelFlatChance(fortune(loot), 0.02F, 0.022222223F, 0.025F, 0.033333335F, 0.1F))))))
+                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0f, 2.0f))))
+                                .when(BonusLevelTableCondition.bonusLevelFlatChance(fortune(loot), 0.02f, 0.022222223f, 0.025f, 0.033333335f, 0.1f))))))
                 .tag(BlockTags.LEAVES)
                 .item()
                 .tag(ItemTags.LEAVES)
@@ -1723,13 +1723,13 @@ public class TropicraftBlocks {
     }
 
     protected static <T extends Comparable<T> & StringRepresentable> LootTable.Builder createSinglePropConditionTable(RegistrateBlockLootTables loot, Block block, Property<T> property, T value) {
-        return LootTable.lootTable().withPool(loot.applyExplosionCondition(block, LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(LootItem.lootTableItem(block).when(hasBlockStateProperties(block).setProperties(properties().hasProperty(property, value))))));
+        return LootTable.lootTable().withPool(loot.applyExplosionCondition(block, LootPool.lootPool().setRolls(ConstantValue.exactly(1.0f)).add(LootItem.lootTableItem(block).when(hasBlockStateProperties(block).setProperties(properties().hasProperty(property, value))))));
     }
 
     private static LootPool.Builder droppingChunksPool(RegistrateBlockLootTables loot, Block block, Supplier<? extends ItemLike> chunk) {
         return LootPool.lootPool().add(LootItem.lootTableItem(chunk.get())
                 .when(MatchTool.toolMatches(ItemPredicate.Builder.item().of(ItemTags.SWORDS)))
-                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 4.0F)))
+                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0f, 4.0f)))
                 .otherwise(loot.applyExplosionCondition(block, LootItem.lootTableItem(block))));
     }
 

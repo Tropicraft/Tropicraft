@@ -17,7 +17,7 @@ import net.tropicraft.core.common.entity.egg.EggEntity;
 public class EggRenderer extends LivingEntityRenderer<EggEntity, EggModel> {
 
     public EggRenderer(EntityRendererProvider.Context context, ModelLayerLocation modelLayerLocation) {
-        super(context, new EggModel(context.bakeLayer(modelLayerLocation)), 1f);
+        super(context, new EggModel(context.bakeLayer(modelLayerLocation)), 1.0f);
         shadowStrength = 0.5f;
     }
 
@@ -40,7 +40,7 @@ public class EggRenderer extends LivingEntityRenderer<EggEntity, EggModel> {
         stack.pushPose();
 
         stack.mulPose(entityRenderDispatcher.cameraOrientation());
-        stack.mulPose(Axis.YP.rotationDegrees(180.0F));
+        stack.mulPose(Axis.YP.rotationDegrees(180.0f));
 
         stack.scale(0.25f, 0.25f, 0.25f);
 
@@ -48,10 +48,10 @@ public class EggRenderer extends LivingEntityRenderer<EggEntity, EggModel> {
         int overlay = getOverlayCoords(ent, getWhiteOverlayProgress(ent, partialTicks));
 
         PoseStack.Pose pose = stack.last();
-        TropicraftSpecialRenderHelper.vertex(buffer, pose, -.5, -.25, 0, 1, 1, 1, 1, 0, 1, Direction.UP, packedLightIn, overlay);
-        TropicraftSpecialRenderHelper.vertex(buffer, pose, .5, -.25, 0, 1, 1, 1, 1, 1, 1, Direction.UP, packedLightIn, overlay);
-        TropicraftSpecialRenderHelper.vertex(buffer, pose, .5, .75, 0, 1, 1, 1, 1, 1, 0, Direction.UP, packedLightIn, overlay);
-        TropicraftSpecialRenderHelper.vertex(buffer, pose, -.5, .75, 0, 1, 1, 1, 1, 0, 0, Direction.UP, packedLightIn, overlay);
+        TropicraftSpecialRenderHelper.vertex(buffer, pose, -0.5, -0.25, 0, 1, 1, 1, 1, 0, 1, Direction.UP, packedLightIn, overlay);
+        TropicraftSpecialRenderHelper.vertex(buffer, pose, 0.5, -0.25, 0, 1, 1, 1, 1, 1, 1, Direction.UP, packedLightIn, overlay);
+        TropicraftSpecialRenderHelper.vertex(buffer, pose, 0.5, 0.75, 0, 1, 1, 1, 1, 1, 0, Direction.UP, packedLightIn, overlay);
+        TropicraftSpecialRenderHelper.vertex(buffer, pose, -0.5, 0.75, 0, 1, 1, 1, 1, 0, 0, Direction.UP, packedLightIn, overlay);
 
         stack.popPose();
     }

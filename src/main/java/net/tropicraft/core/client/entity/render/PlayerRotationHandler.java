@@ -50,8 +50,8 @@ public class PlayerRotationHandler {
             p.yHeadRotO = p.yBodyRotO;
             rotationPitch = p.getXRot();
             prevRotationPitch = p.xRotO;
-            p.setXRot(10f);
-            p.xRotO = 10f;
+            p.setXRot(10.0f);
+            p.xRotO = 10.0f;
 
             // Cancel limb swing
             p.walkAnimation.setSpeed(0.0f);
@@ -71,14 +71,14 @@ public class PlayerRotationHandler {
             Vec3 sitOffset = p.getAttachments().getClamped(EntityAttachment.VEHICLE, 0, 0);
             stack.rotateAround(rotation, (float) sitOffset.x, (float) sitOffset.y - 0.1f, (float) sitOffset.z);
 
-            Vec3 passengerOffset = (new Vec3(-0.25f, 0.0D, 0.0D)).yRot((float) (-Math.toRadians(yaw) - (Math.PI / 2)));
+            Vec3 passengerOffset = (new Vec3(-0.25f, 0.0, 0.0)).yRot((float) (-Math.toRadians(yaw) - (Math.PI / 2)));
             stack.translate(passengerOffset.x(), 0, passengerOffset.z());
 
             // Lock in head
             rotationPitch = p.getXRot();
             prevRotationPitch = p.xRotO;
-            p.setXRot(10f);
-            p.xRotO = 10f;
+            p.setXRot(10.0f);
+            p.xRotO = 10.0f;
         }
     }
 

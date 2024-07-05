@@ -299,14 +299,14 @@ public class EntityKoaBase extends Villager {
             this.sellCount = sellCount;
             this.maxUses = maxUses;
             this.givenXP = givenXP;
-            priceMultiplier = 0.05F;
+            priceMultiplier = 0.05f;
         }
 
         @Override
         @Nullable
         public MerchantOffer getOffer(Entity entity, RandomSource random) {
             int enchantLevel = random.nextInt(10) + 5;
-            int cost = Mth.floor(enchantLevel / 1.5F);
+            int cost = Mth.floor(enchantLevel / 1.5f);
 
             RegistryAccess registries = entity.registryAccess();
             ItemStack stack = new ItemStack(item, 1);
@@ -330,7 +330,7 @@ public class EntityKoaBase extends Villager {
             this.sellCount = sellCount;
             this.maxUses = maxUses;
             this.givenXP = givenXP;
-            priceMultiplier = 0.05F;
+            priceMultiplier = 0.05f;
         }
 
         @Override
@@ -352,7 +352,7 @@ public class EntityKoaBase extends Villager {
             this.count = count;
             this.maxUses = maxUses;
             this.givenXP = givenXP;
-            priceMultiplier = 0.05F;
+            priceMultiplier = 0.05f;
         }
 
         @Override
@@ -474,7 +474,7 @@ public class EntityKoaBase extends Villager {
 
     /*public void addTradeForCurrencies(MerchantRecipeList list, ItemStack sell) {
         double pearlWhiteWorth = 1;
-        double pearlBlackWorth = 1.5D;
+        double pearlBlackWorth = 1.5;
 
         List<Double> listTradeCosts = new ArrayList<>();
 
@@ -517,13 +517,13 @@ public class EntityKoaBase extends Villager {
         goalSelector.addGoal(curPri++, new FloatGoal(this));
 
         goalSelector.addGoal(curPri++, new EntityAIAvoidEntityOnLowHealth<>(this, LivingEntity.class, ENEMY_PREDICATE,
-                12.0F, 1.4D, 1.4D, 15F));
+                12.0f, 1.4, 1.4, 15.0f));
 
         goalSelector.addGoal(curPri++, new EntityAIEatToHeal(this));
 
         goalSelector.addGoal(curPri++, new TradeWithPlayerGoal(this));
 
-        goalSelector.addGoal(curPri++, new MeleeAttackGoal(this, 1F, true) {
+        goalSelector.addGoal(curPri++, new MeleeAttackGoal(this, 1.0f, true) {
             @Override
             public void start() {
                 super.start();
@@ -533,7 +533,7 @@ public class EntityKoaBase extends Villager {
             }
         });
 
-        goalSelector.addGoal(curPri++, new EntityAITemptHelmet(this, 1.0D, false, TEMPTATION_ITEMS));
+        goalSelector.addGoal(curPri++, new EntityAITemptHelmet(this, 1.0, false, TEMPTATION_ITEMS));
 
         goalSelector.addGoal(curPri++, new MoveTowardsRestrictionGoal(this, 1D));
         goalSelector.addGoal(curPri++, new EntityAIKoaMate(this));
@@ -545,12 +545,12 @@ public class EntityKoaBase extends Villager {
         }
 
         if (isBaby()) {
-            goalSelector.addGoal(curPri++, new EntityAIPlayKoa(this, 1.2D));
+            goalSelector.addGoal(curPri++, new EntityAIPlayKoa(this, 1.2));
         }
 
-        goalSelector.addGoal(curPri, new LookAtPlayerGoal(this, Player.class, 3.0F, 1.0F));
+        goalSelector.addGoal(curPri, new LookAtPlayerGoal(this, Player.class, 3.0f, 1.0f));
         goalSelector.addGoal(curPri++, new EntityAIWanderNotLazy(this, 1D, 40));
-        goalSelector.addGoal(curPri++, new LookAtPlayerGoal(this, Mob.class, 8.0F));
+        goalSelector.addGoal(curPri++, new LookAtPlayerGoal(this, Mob.class, 8.0f));
 
         targetSelector.addGoal(1, new HurtByTargetGoal(this));
         //i dont think this one works, change to predicate
@@ -655,9 +655,9 @@ public class EntityKoaBase extends Villager {
         boolean didHurt = entity.hurt(source, damage);
         if (didHurt) {
             float knockback = getKnockback(entity, source);
-            if (knockback > 0.0F && entity instanceof LivingEntity livingentity) {
+            if (knockback > 0.0f && entity instanceof LivingEntity livingentity) {
                 livingentity.knockback(
-                        knockback * 0.5F,
+                        knockback * 0.5f,
                         Mth.sin(getYRot() * Mth.DEG_TO_RAD),
                         -Mth.cos(getYRot() * Mth.DEG_TO_RAD)
                 );
@@ -1316,7 +1316,7 @@ public class EntityKoaBase extends Villager {
         if (wasInWater) {
             if (!isInWater()) {
                 if (horizontalCollision) {
-                    setDeltaMovement(getDeltaMovement().add(0, 0.4F, 0));
+                    setDeltaMovement(getDeltaMovement().add(0, 0.4f, 0));
                     jumpingOutOfWater = true;
                 }
             }
@@ -1337,19 +1337,19 @@ public class EntityKoaBase extends Villager {
             //children have different hitbox size, use different values to keep them from getting stuck under docks and drowning
             //changing this doesnt derp up their pathing like it does for adults
             if (isBaby()) {
-                if (getDeltaMovement().y < -0.1F) {
-                    getDeltaMovement().add(0, 0.25F, 0);
+                if (getDeltaMovement().y < -0.1f) {
+                    getDeltaMovement().add(0, 0.25f, 0);
                 }
             } else {
-                if (getDeltaMovement().y < -0.2F) {
-                    getDeltaMovement().add(0, 0.15F, 0);
+                if (getDeltaMovement().y < -0.2f) {
+                    getDeltaMovement().add(0, 0.15f, 0);
                 }
             }
-            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.60D);
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.6);
 
             setPathfindingMalus(PathType.WATER, 8);
         } else {
-            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.28D);
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.28);
 
             setPathfindingMalus(PathType.WATER, -1);
         }

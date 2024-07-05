@@ -37,7 +37,7 @@ public final class TropicraftBiomes {
     public static final int TROPICS_WATER_FOG_COLOR = 0x041f33;
     public static final int TROPICS_FOG_COLOR = 0xC0D8FF;
     public static final int RAINFOREST_FOG_COLOR = 0xbae6c3;
-    public static final int TROPICS_SKY_COLOR = getSkyColor(0.8F);
+    public static final int TROPICS_SKY_COLOR = getSkyColor(0.8f);
 
     public static final ResourceKey<Biome> TROPICS = createKey("tropics");
     public static final ResourceKey<Biome> BEACH = createKey("beach");
@@ -127,11 +127,11 @@ public final class TropicraftBiomes {
         spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(TropicraftEntities.COWKTAIL.get(), 10, 4, 4));
         spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(TropicraftEntities.TREE_FROG.get(), 4, 4, 4));
 
-        spawns.creatureGenerationProbability(0.2F);
+        spawns.creatureGenerationProbability(0.2f);
 
         return new Biome.BiomeBuilder()
                 .hasPrecipitation(true)
-                .temperature(2.0F).downfall(1.5F)
+                .temperature(2.0f).downfall(1.5f)
                 .generationSettings(generation.build())
                 .mobSpawnSettings(spawns.build())
                 .specialEffects(defaultAmbience(true).build())
@@ -149,7 +149,7 @@ public final class TropicraftBiomes {
 
         return new Biome.BiomeBuilder()
                 .hasPrecipitation(true)
-                .temperature(1.5F).downfall(1.25F)
+                .temperature(1.5f).downfall(1.25f)
                 .generationSettings(generation.build())
                 .mobSpawnSettings(spawns.build())
                 .specialEffects(defaultAmbience(false).build())
@@ -193,11 +193,11 @@ public final class TropicraftBiomes {
         spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(TropicraftEntities.SPIDER_MONKEY.get(), 15, 6, 8));
         spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(TropicraftEntities.TOUCAN.get(), 8, 1, 2));
 
-        spawns.creatureGenerationProbability(0.3F);
+        spawns.creatureGenerationProbability(0.3f);
 
         return new Biome.BiomeBuilder()
                 .hasPrecipitation(true)
-                .temperature(1.5F).downfall(2.0F)
+                .temperature(1.5f).downfall(2.0f)
                 .generationSettings(generation.build())
                 .mobSpawnSettings(spawns.build())
                 .specialEffects(defaultAmbience(true).build())
@@ -237,11 +237,11 @@ public final class TropicraftBiomes {
         spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(TropicraftEntities.SPIDER_MONKEY.get(), 15, 5, 8));
         spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(TropicraftEntities.TOUCAN.get(), 8, 1, 2));
 
-        spawns.creatureGenerationProbability(0.3F);
+        spawns.creatureGenerationProbability(0.3f);
 
         return new Biome.BiomeBuilder()
                 .hasPrecipitation(true)
-                .temperature(1.5F).downfall(2.0F)
+                .temperature(1.5f).downfall(2.0f)
                 .generationSettings(generation.build())
                 .mobSpawnSettings(spawns.build())
                 .specialEffects(defaultAmbience(true).build())
@@ -271,7 +271,7 @@ public final class TropicraftBiomes {
 
         return new Biome.BiomeBuilder()
                 .hasPrecipitation(true)
-                .temperature(1.5F).downfall(1.25F)
+                .temperature(1.5f).downfall(1.25f)
                 .generationSettings(generation.build())
                 .mobSpawnSettings(spawns.build())
                 .specialEffects(defaultAmbience(false).build())
@@ -293,7 +293,7 @@ public final class TropicraftBiomes {
 
         return new Biome.BiomeBuilder()
                 .hasPrecipitation(true)
-                .temperature(1.5F).downfall(1.25F)
+                .temperature(1.5f).downfall(1.25f)
                 .generationSettings(generation.build())
                 .mobSpawnSettings(spawns.build())
                 .specialEffects(defaultAmbience(false).build())
@@ -312,7 +312,7 @@ public final class TropicraftBiomes {
 
         return new Biome.BiomeBuilder()
                 .hasPrecipitation(true)
-                .temperature(1.5F).downfall(1.25F)
+                .temperature(1.5f).downfall(1.25f)
                 .generationSettings(generation.build())
                 .mobSpawnSettings(spawns.build())
                 .specialEffects(defaultAmbience(false).build())
@@ -337,7 +337,7 @@ public final class TropicraftBiomes {
 
         return new Biome.BiomeBuilder()
                 .hasPrecipitation(true)
-                .temperature(1.5F).downfall(1.25F)
+                .temperature(1.5f).downfall(1.25f)
                 .generationSettings(generation.build())
                 .mobSpawnSettings(spawns.build())
                 .specialEffects(defaultAmbience(true).build())
@@ -384,11 +384,11 @@ public final class TropicraftBiomes {
         ambience.waterColor(0x66C197).waterFogColor(0x0C3522);
         ambience.grassColorOverride(0x6FB21C);
 
-        spawns.creatureGenerationProbability(0.3F);
+        spawns.creatureGenerationProbability(0.3f);
 
         return new Biome.BiomeBuilder()
                 .hasPrecipitation(true)
-                .temperature(2.0F).downfall(1.5F)
+                .temperature(2.0f).downfall(1.5f)
                 .generationSettings(generation.build())
                 .mobSpawnSettings(spawns.build())
                 .specialEffects(ambience.build())
@@ -470,8 +470,8 @@ public final class TropicraftBiomes {
     }
 
     private static int getSkyColor(float temperature) {
-        float shift = Mth.clamp(temperature / 3.0F, -1.0F, 1.0F);
-        return Mth.hsvToRgb((224.0F / 360.0F) - shift * 0.05F, 0.5F + shift * 0.1F, 1.0F);
+        float shift = Mth.clamp(temperature / 3.0f, -1.0f, 1.0f);
+        return Mth.hsvToRgb((224.0f / 360.0f) - shift * 0.05f, 0.5f + shift * 0.1f, 1.0f);
     }
 
     private static ResourceKey<Biome> createKey(String name) {

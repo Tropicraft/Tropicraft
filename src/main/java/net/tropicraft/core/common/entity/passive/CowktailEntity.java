@@ -52,7 +52,7 @@ public class CowktailEntity extends Cow implements IShearable {
 
     @Override
     public float getWalkTargetValue(BlockPos pos, LevelReader worldIn) {
-        return worldIn.getBlockState(pos.below()).getBlock() == Blocks.MYCELIUM ? 10.0F : worldIn.getPathfindingCostFromLightLevels(pos);
+        return worldIn.getBlockState(pos.below()).getBlock() == Blocks.MYCELIUM ? 10.0f : worldIn.getPathfindingCostFromLightLevels(pos);
     }
 
     @Override
@@ -80,7 +80,7 @@ public class CowktailEntity extends Cow implements IShearable {
                 player.drop(cocktailItem, false);
             }
 
-            playSound(SoundEvents.MOOSHROOM_MILK_SUSPICIOUSLY, 1.0F, 1.0F);
+            playSound(SoundEvents.MOOSHROOM_MILK_SUSPICIOUSLY, 1.0f, 1.0f);
             return InteractionResult.SUCCESS;
         }
 
@@ -138,7 +138,7 @@ public class CowktailEntity extends Cow implements IShearable {
     @Override
     public List<ItemStack> onSheared(@Nullable Player player, ItemStack item, Level level, BlockPos pos) {
         java.util.List<ItemStack> ret = new java.util.ArrayList<>();
-        level().addParticle(ParticleTypes.EXPLOSION, getX(), getY(0.5D), getZ(), 0.0D, 0.0D, 0.0D);
+        level().addParticle(ParticleTypes.EXPLOSION, getX(), getY(0.5), getZ(), 0.0, 0.0, 0.0);
         if (!level().isClientSide) {
             remove(RemovalReason.DISCARDED);
             Cow cowentity = EntityType.COW.create(level());
@@ -153,7 +153,7 @@ public class CowktailEntity extends Cow implements IShearable {
             for (int i = 0; i < 5; ++i) {
                 ret.add(new ItemStack(getCowktailType().renderState.getBlock()));
             }
-            playSound(SoundEvents.MOOSHROOM_SHEAR, 1.0F, 1.0F);
+            playSound(SoundEvents.MOOSHROOM_SHEAR, 1.0f, 1.0f);
         }
         return ret;
     }

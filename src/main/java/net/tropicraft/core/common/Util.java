@@ -70,16 +70,16 @@ public class Util {
                 int y = MathHelper.floor(player.posY);
                 int z = MathHelper.floor(player.posZ);*/
 
-                double d = x + 0.5F - ent.getX();
-                double d2 = z + 0.5F - ent.getZ();
+                double d = x + 0.5f - ent.getX();
+                double d2 = z + 0.5f - ent.getZ();
                 double d1;
-                d1 = y + 0.5F - (ent.getY() + (double) ent.getEyeHeight());
+                d1 = y + 0.5f - (ent.getY() + (double) ent.getEyeHeight());
 
                 double d3 = Mth.sqrt((float) (d * d + d2 * d2));
-                float f2 = (float) ((Math.atan2(d2, d) * 180D) / 3.1415927410125732D) - 90F;
-                float f3 = (float) (-((Math.atan2(d1, d3) * 180D) / 3.1415927410125732D));
-                float rotationPitch = -f3;//-ent.updateRotation(rotationPitch, f3, 180D);
-                float rotationYaw = f2;//updateRotation(rotationYaw, f2, 180D);
+                float f2 = (float) ((Math.atan2(d2, d) * 180) / 3.1415927410125732) - 90.0f;
+                float f3 = (float) (-((Math.atan2(d1, d3) * 180) / 3.1415927410125732));
+                float rotationPitch = -f3;//-ent.updateRotation(rotationPitch, f3, 180);
+                float rotationYaw = f2;//updateRotation(rotationYaw, f2, 180);
 
                 LivingEntity center = ent;
 
@@ -87,10 +87,10 @@ public class Util {
 
                 float randLook = rand.nextInt(90) - 45;
                 //int height = 10;
-                double dist = (followDist * 0.75D) + rand.nextInt((int) followDist / 2);//rand.nextInt(26)+(queue.get(0).retryState * 6);
-                int gatherX = (int) Math.floor(center.getX() + ((double) (-Math.sin((rotationYaw + randLook) / 180.0F * 3.1415927F)/* * Math.cos(center.rotationPitch / 180.0F * 3.1415927F)*/) * dist));
-                int gatherY = (int) center.getY();//Math.floor(center.posY-0.5 + (double)(-MathHelper.sin(center.rotationPitch / 180.0F * 3.1415927F) * dist) - 0D); //center.posY - 0D;
-                int gatherZ = (int) Math.floor(center.getZ() + ((double) (Math.cos((rotationYaw + randLook) / 180.0F * 3.1415927F)/* * Math.cos(center.rotationPitch / 180.0F * 3.1415927F)*/) * dist));
+                double dist = (followDist * 0.75) + rand.nextInt((int) followDist / 2);//rand.nextInt(26)+(queue.get(0).retryState * 6);
+                int gatherX = (int) Math.floor(center.getX() + ((double) (-Math.sin((rotationYaw + randLook) / 180.0f * 3.1415927f)/* * Math.cos(center.rotationPitch / 180.0f * 3.1415927f)*/) * dist));
+                int gatherY = (int) center.getY();//Math.floor(center.posY-0.5 + (double)(-MathHelper.sin(center.rotationPitch / 180.0f * 3.1415927f) * dist) - 0D); //center.posY - 0D;
+                int gatherZ = (int) Math.floor(center.getZ() + ((double) (Math.cos((rotationYaw + randLook) / 180.0f * 3.1415927f)/* * Math.cos(center.rotationPitch / 180.0f * 3.1415927f)*/) * dist));
 
                 BlockPos pos = new BlockPos(gatherX, gatherY, gatherZ);
 

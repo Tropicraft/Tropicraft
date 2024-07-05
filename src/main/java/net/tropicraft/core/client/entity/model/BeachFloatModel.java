@@ -23,19 +23,19 @@ public class BeachFloatModel extends HierarchicalModel<BeachFloatEntity> {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
 
-        root.addOrReplaceChild("floatCross4", CubeListBuilder.create().texOffs(0, 0).addBox(0F, -1F, -1F, 16, 2, 2), PartPose.offset(0F, 23F, -6F));
-        root.addOrReplaceChild("floatCross3", CubeListBuilder.create().texOffs(0, 0).addBox(0F, -1F, -1F, 16, 2, 2), PartPose.offset(0F, 23F, -2F));
-        root.addOrReplaceChild("floatCross2", CubeListBuilder.create().texOffs(0, 0).addBox(0F, -1F, -1F, 16, 2, 2), PartPose.offset(0F, 23F, 2F));
-        root.addOrReplaceChild("floatCross1", CubeListBuilder.create().texOffs(0, 0).addBox(0F, -1F, -1F, 16, 2, 2), PartPose.offset(0F, 23F, 6F));
-        root.addOrReplaceChild("topFloatCross4", CubeListBuilder.create().texOffs(0, 0).addBox(0F, -1F, -1F, 16, 2, 2), PartPose.offsetAndRotation(0F, 23F, -6F, 0F, 0F, 3.141593F));
-        root.addOrReplaceChild("topFloatCross3", CubeListBuilder.create().texOffs(0, 0).addBox(0F, -1F, -1F, 16, 2, 2), PartPose.offsetAndRotation(0F, 23F, -2F, 0F, 0F, 3.141593F));
-        root.addOrReplaceChild("topFloatCross2", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 1F, 16, 2, 2), PartPose.offsetAndRotation(0F, 24F, 0F, 0F, 0F, 3.141593F));
-        root.addOrReplaceChild("topFloatCross1", CubeListBuilder.create().texOffs(0, 0).addBox(0F, -1F, -1F, 16, 2, 2), PartPose.offsetAndRotation(0F, 23F, 6F, 0F, 0F, 3.141593F));
-        root.addOrReplaceChild("floatFoot", CubeListBuilder.create().texOffs(0, 4).addBox(-7F, -1F, 0F, 14, 2, 2), PartPose.offsetAndRotation(16F, 23F, 0F, 0F, 1.570796F, 0F));
-        root.addOrReplaceChild("floatTop", CubeListBuilder.create().texOffs(0, 4).addBox(-7F, -1F, 0F, 14, 2, 2), PartPose.offsetAndRotation(-17F, 24F, 0F, 1.570796F, -1.570796F, 0F));
-        root.addOrReplaceChild("headPillow", CubeListBuilder.create().texOffs(0, 13).addBox(-6F, -1.5F, -4F, 12, 2, 4), PartPose.offsetAndRotation(-12F, 22F, 0F, 0F, 1.570796F, 0F));
-        root.addOrReplaceChild("topBed", CubeListBuilder.create().texOffs(0, 19).addBox(-6F, -0.5F, -6F, 14, 1, 12), PartPose.offset(-6F, 22F, 0F));
-        root.addOrReplaceChild("bottomBed", CubeListBuilder.create().texOffs(0, 19).addBox(-6F, -0.5F, -6F, 14, 1, 12), PartPose.offset(8F, 22F, 0F));
+        root.addOrReplaceChild("floatCross4", CubeListBuilder.create().texOffs(0, 0).addBox(0.0f, -1.0f, -1.0f, 16, 2, 2), PartPose.offset(0.0f, 23.0f, -6.0f));
+        root.addOrReplaceChild("floatCross3", CubeListBuilder.create().texOffs(0, 0).addBox(0.0f, -1.0f, -1.0f, 16, 2, 2), PartPose.offset(0.0f, 23.0f, -2.0f));
+        root.addOrReplaceChild("floatCross2", CubeListBuilder.create().texOffs(0, 0).addBox(0.0f, -1.0f, -1.0f, 16, 2, 2), PartPose.offset(0.0f, 23.0f, 2.0f));
+        root.addOrReplaceChild("floatCross1", CubeListBuilder.create().texOffs(0, 0).addBox(0.0f, -1.0f, -1.0f, 16, 2, 2), PartPose.offset(0.0f, 23.0f, 6.0f));
+        root.addOrReplaceChild("topFloatCross4", CubeListBuilder.create().texOffs(0, 0).addBox(0.0f, -1.0f, -1.0f, 16, 2, 2), PartPose.offsetAndRotation(0.0f, 23.0f, -6.0f, 0.0f, 0.0f, 3.141593f));
+        root.addOrReplaceChild("topFloatCross3", CubeListBuilder.create().texOffs(0, 0).addBox(0.0f, -1.0f, -1.0f, 16, 2, 2), PartPose.offsetAndRotation(0.0f, 23.0f, -2.0f, 0.0f, 0.0f, 3.141593f));
+        root.addOrReplaceChild("topFloatCross2", CubeListBuilder.create().texOffs(0, 0).addBox(0.0f, 0.0f, 1.0f, 16, 2, 2), PartPose.offsetAndRotation(0.0f, 24.0f, 0.0f, 0.0f, 0.0f, 3.141593f));
+        root.addOrReplaceChild("topFloatCross1", CubeListBuilder.create().texOffs(0, 0).addBox(0.0f, -1.0f, -1.0f, 16, 2, 2), PartPose.offsetAndRotation(0.0f, 23.0f, 6.0f, 0.0f, 0.0f, 3.141593f));
+        root.addOrReplaceChild("floatFoot", CubeListBuilder.create().texOffs(0, 4).addBox(-7.0f, -1.0f, 0.0f, 14, 2, 2), PartPose.offsetAndRotation(16.0f, 23.0f, 0.0f, 0.0f, 1.570796f, 0.0f));
+        root.addOrReplaceChild("floatTop", CubeListBuilder.create().texOffs(0, 4).addBox(-7.0f, -1.0f, 0.0f, 14, 2, 2), PartPose.offsetAndRotation(-17.0f, 24.0f, 0.0f, 1.570796f, -1.570796f, 0.0f));
+        root.addOrReplaceChild("headPillow", CubeListBuilder.create().texOffs(0, 13).addBox(-6.0f, -1.5f, -4.0f, 12, 2, 4), PartPose.offsetAndRotation(-12.0f, 22.0f, 0.0f, 0.0f, 1.570796f, 0.0f));
+        root.addOrReplaceChild("topBed", CubeListBuilder.create().texOffs(0, 19).addBox(-6.0f, -0.5f, -6.0f, 14, 1, 12), PartPose.offset(-6.0f, 22.0f, 0.0f));
+        root.addOrReplaceChild("bottomBed", CubeListBuilder.create().texOffs(0, 19).addBox(-6.0f, -0.5f, -6.0f, 14, 1, 12), PartPose.offset(8.0f, 22.0f, 0.0f));
 
         return LayerDefinition.create(mesh, 64, 32);
     }
