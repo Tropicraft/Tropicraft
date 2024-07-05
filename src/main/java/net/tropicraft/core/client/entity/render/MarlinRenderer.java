@@ -15,7 +15,7 @@ import javax.annotation.Nullable;
 @OnlyIn(Dist.CLIENT)
 public class MarlinRenderer extends MobRenderer<MarlinEntity, MarlinModel> {
     public MarlinRenderer(EntityRendererProvider.Context context) {
-        super(context, new MarlinModel(context.bakeLayer(TropicraftRenderLayers.MARLIN_LAYER)), 0.5F);
+        super(context, new MarlinModel(context.bakeLayer(TropicraftRenderLayers.MARLIN_LAYER)), 0.5f);
         shadowStrength = 0.5f;
     }
 

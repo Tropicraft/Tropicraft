@@ -68,7 +68,7 @@ public class MonkeyFollowNearestPinaColadaHolderGoal extends Goal {
     public void start() {
         timeToRecalcPath = 0;
         oldWaterCost = monkey.getPathfindingMalus(PathType.WATER);
-        monkey.setPathfindingMalus(PathType.WATER, 0.0F);
+        monkey.setPathfindingMalus(PathType.WATER, 0.0f);
     }
 
     @Override
@@ -82,7 +82,7 @@ public class MonkeyFollowNearestPinaColadaHolderGoal extends Goal {
     public void tick() {
         LivingEntity following = monkey.getFollowing();
         if (following != null && !monkey.isLeashed()) {
-            monkey.getLookControl().setLookAt(following, 10.0F, (float) monkey.getMaxHeadXRot());
+            monkey.getLookControl().setLookAt(following, 10.0f, (float) monkey.getMaxHeadXRot());
             if (--timeToRecalcPath <= 0) {
                 timeToRecalcPath = 10;
                 double xDist = monkey.getX() - following.getX();

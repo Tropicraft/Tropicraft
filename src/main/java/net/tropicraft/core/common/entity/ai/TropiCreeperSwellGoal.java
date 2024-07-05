@@ -18,7 +18,7 @@ public class TropiCreeperSwellGoal extends Goal {
     @Override
     public boolean canUse() {
         LivingEntity lvt_1_1_ = creeper.getTarget();
-        return creeper.getCreeperState() > 0 || lvt_1_1_ != null && creeper.distanceToSqr(lvt_1_1_) < 9.0D;
+        return creeper.getCreeperState() > 0 || lvt_1_1_ != null && creeper.distanceToSqr(lvt_1_1_) < 9.0;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class TropiCreeperSwellGoal extends Goal {
     public void tick() {
         if (target == null) {
             creeper.setCreeperState(-1);
-        } else if (creeper.distanceToSqr(target) > 49.0D) {
+        } else if (creeper.distanceToSqr(target) > 49.0) {
             creeper.setCreeperState(-1);
         } else if (!creeper.getSensing().hasLineOfSight(target)) {
             creeper.setCreeperState(-1);

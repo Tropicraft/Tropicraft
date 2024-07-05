@@ -75,7 +75,7 @@ public class Ingredient implements Comparable<Ingredient> {
     /**
      * Alpha channel used in color blending. Typically 1 for primary ingredients and lower for additives.
      */
-    private float alpha = 1f;
+    private float alpha = 1.0f;
 
     /**
      * DrinkActions to trigger when a cocktail containing this ingredient is ingested.

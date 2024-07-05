@@ -53,7 +53,7 @@ public class AvoidWallsGoal extends Goal {
         // Near surface check
         bp = entity.blockPosition();
         if (!entity.level().getBlockState(bp).liquid()) {
-            if (entity.swimPitch > 0f) {
+            if (entity.swimPitch > 0.0f) {
                 entity.isPanicking = false;
                 entity.setRandomTargetHeadingForce(32);
             }
@@ -63,8 +63,8 @@ public class AvoidWallsGoal extends Goal {
 
         // Hitting bottom check
         if (!entity.level().getBlockState(bp).liquid()) {
-            if (entity.swimPitch < 0f) {
-                entity.swimPitch += 2f;
+            if (entity.swimPitch < 0.0f) {
+                entity.swimPitch += 2.0f;
             }
         }
     }

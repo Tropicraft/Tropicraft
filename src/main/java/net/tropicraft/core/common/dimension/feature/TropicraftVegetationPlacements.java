@@ -158,7 +158,7 @@ public final class TropicraftVegetationPlacements {
         register(context, TREES_MANGROVE, TropicraftVegetationFeatures.TREES_MANGROVE, mangrovePlacement(7, 200.0, 1.5));
         register(context, TREES_MANGROVE_SPARSE, TropicraftVegetationFeatures.TREES_MANGROVE, mangrovePlacement(3, 200.0, 1.));
 
-        register(context, TREES_FRUIT, TropicraftVegetationFeatures.TREES_FRUIT, sparseTreePlacement(0.1F));
+        register(context, TREES_FRUIT, TropicraftVegetationFeatures.TREES_FRUIT, sparseTreePlacement(0.1f));
         register(context, TREES_PALM, TropicraftVegetationFeatures.TREES_PALM, sparseTreePlacement(1.0f / 2.0f));
         register(context, TREES_PALM_OVERWORLD, TropicraftVegetationFeatures.TREES_PALM, sparseTreePlacement(1.0f / 10.0f));
         register(context, TREES_RAINFOREST, TropicraftVegetationFeatures.TREES_RAINFOREST, treePlacement(1, 1.0f / 2.0f, 1));
@@ -172,7 +172,7 @@ public final class TropicraftVegetationPlacements {
         register(context, TROPICS_GRASS, TropicraftVegetationFeatures.PATCH_GRASS_TROPICS, worldSurfaceSquaredWithCount(10));
 
         register(context, BAMBOO, TropicraftVegetationFeatures.BAMBOO, List.of(
-                NoiseBasedCountPlacement.of(50, 140.0D, 0.5D),
+                NoiseBasedCountPlacement.of(50, 140.0, 0.5),
                 InSquarePlacement.spread(),
                 PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
                 BiomeFilter.biome()
@@ -247,7 +247,7 @@ public final class TropicraftVegetationPlacements {
         ));
 
         register(context, KELP, AquaticFeatures.KELP, List.of(
-                NoiseBasedCountPlacement.of(75, 80.0D, 0.55D),
+                NoiseBasedCountPlacement.of(75, 80.0, 0.55),
                 InSquarePlacement.spread(),
                 PlacementUtils.HEIGHTMAP_TOP_SOLID,
                 BiomeFilter.biome()

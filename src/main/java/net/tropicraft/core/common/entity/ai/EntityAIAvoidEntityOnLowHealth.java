@@ -36,7 +36,7 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal {
      */
     private final Class<T> classToAvoid;
     private final Predicate<Entity> avoidTargetSelector;
-    private float healthToAvoid = 0F;
+    private float healthToAvoid = 0.0f;
 
     public EntityAIAvoidEntityOnLowHealth(PathfinderMob theEntityIn, Class<T> classToAvoidIn, float avoidDistanceIn, double farSpeedIn, double nearSpeedIn, float healthToAvoid) {
         this(theEntityIn, classToAvoidIn, (entity) -> true, avoidDistanceIn, farSpeedIn, nearSpeedIn, healthToAvoid);
@@ -64,7 +64,7 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal {
         if (theEntity.getHealth() > healthToAvoid) return false;
 
         List<T> list = theEntity.level().getEntitiesOfClass(classToAvoid,
-                theEntity.getBoundingBox().expandTowards((double) avoidDistance, 3.0D, (double) avoidDistance),
+                theEntity.getBoundingBox().expandTowards((double) avoidDistance, 3.0, (double) avoidDistance),
                 EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(canBeSeenSelector).and(avoidTargetSelector)
         );
 
@@ -114,7 +114,7 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal {
      */
     @Override
     public void tick() {
-        if (theEntity.distanceToSqr(closestLivingEntity) < 49.0D) {
+        if (theEntity.distanceToSqr(closestLivingEntity) < 49.0) {
             theEntity.getNavigation().setSpeedModifier(nearSpeed);
         } else {
             theEntity.getNavigation().setSpeedModifier(farSpeed);

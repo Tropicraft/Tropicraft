@@ -124,32 +124,32 @@ public class CuberaModel<T extends CuberaEntity> extends HierarchicalModel<T> {
     @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float age, float headYaw, float headPitch) {
         if (entity.isInWater()) {
-            body_base.zRot = 0.0F;
-            body_base.y = 20.0F;
+            body_base.zRot = 0.0f;
+            body_base.y = 20.0f;
         } else {
-            body_base.zRot = 90.0F * ModelAnimator.DEG_TO_RAD;
-            body_base.y = 22.0F;
+            body_base.zRot = 90.0f * ModelAnimator.DEG_TO_RAD;
+            body_base.y = 22.0f;
         }
 
-        try (ModelAnimator.Cycle swim = ModelAnimator.cycle(limbSwing * 0.4F, limbSwingAmount)) {
-            tail_base.yRot = swim.eval(1.0F, 1.0F, 0.0F, 0.0F);
-            tail_main.yRot = swim.eval(1.0F, 1.0F, 0.25F, 0.0F);
-            fin_tail.yRot = swim.eval(1.0F, 1.0F, 0.5F, 0.0F);
+        try (ModelAnimator.Cycle swim = ModelAnimator.cycle(limbSwing * 0.4f, limbSwingAmount)) {
+            tail_base.yRot = swim.eval(1.0f, 1.0f, 0.0f, 0.0f);
+            tail_main.yRot = swim.eval(1.0f, 1.0f, 0.25f, 0.0f);
+            fin_tail.yRot = swim.eval(1.0f, 1.0f, 0.5f, 0.0f);
 
-            fin_dorsal.yRot = swim.eval(1.0F, 0.125F);
-            fin_anal.yRot = swim.eval(1.0F, 0.125F);
+            fin_dorsal.yRot = swim.eval(1.0f, 0.125f);
+            fin_anal.yRot = swim.eval(1.0f, 0.125f);
         }
 
-        try (ModelAnimator.Cycle idle = ModelAnimator.cycle(age * 0.05F, 0.1F)) {
-            body_base.y += idle.eval(0.5F, 2.0F);
+        try (ModelAnimator.Cycle idle = ModelAnimator.cycle(age * 0.05f, 0.1f)) {
+            body_base.y += idle.eval(0.5f, 2.0f);
 
-            jaw_lower.xRot = -7.5F * ModelAnimator.DEG_TO_RAD - idle.eval(1.0F, 0.5F, 0.0F, 1.0F);
+            jaw_lower.xRot = -7.5f * ModelAnimator.DEG_TO_RAD - idle.eval(1.0f, 0.5f, 0.0f, 1.0f);
 
-            fin_pectoral_left.yRot = 32.5F * ModelAnimator.DEG_TO_RAD + idle.eval(0.5F, 1.0F);
-            fin_pectoral_right.yRot = -32.5F * ModelAnimator.DEG_TO_RAD + idle.eval(0.5F, -1.0F);
+            fin_pectoral_left.yRot = 32.5f * ModelAnimator.DEG_TO_RAD + idle.eval(0.5f, 1.0f);
+            fin_pectoral_right.yRot = -32.5f * ModelAnimator.DEG_TO_RAD + idle.eval(0.5f, -1.0f);
 
-            fin_pelvic_left_r1.zRot = idle.eval(0.5F, -1.0F, 0.2F, 0.0F);
-            fin_pelvic_right_r1.zRot = idle.eval(0.5F, 1.0F, 0.2F, 0.0F);
+            fin_pelvic_left_r1.zRot = idle.eval(0.5f, -1.0f, 0.2f, 0.0f);
+            fin_pelvic_right_r1.zRot = idle.eval(0.5f, 1.0f, 0.2f, 0.0f);
         }
     }
 

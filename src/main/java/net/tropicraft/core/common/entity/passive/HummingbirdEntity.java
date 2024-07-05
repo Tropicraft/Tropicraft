@@ -54,11 +54,11 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
         super(type, world);
 
         moveControl = new FlyingMoveControl(this, 20, true);
-        setPathfindingMalus(PathType.DANGER_FIRE, -1.0F);
-        setPathfindingMalus(PathType.DAMAGE_FIRE, -1.0F);
-        setPathfindingMalus(PathType.COCOA, -1.0F);
-        setPathfindingMalus(PathType.WATER, -1.0F);
-        setPathfindingMalus(PathType.FENCE, -1.0F);
+        setPathfindingMalus(PathType.DANGER_FIRE, -1.0f);
+        setPathfindingMalus(PathType.DAMAGE_FIRE, -1.0f);
+        setPathfindingMalus(PathType.COCOA, -1.0f);
+        setPathfindingMalus(PathType.WATER, -1.0f);
+        setPathfindingMalus(PathType.FENCE, -1.0f);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -82,7 +82,7 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
         goalSelector.addGoal(0, new FloatGoal(this));
         goalSelector.addGoal(1, new FlyAwayInPanicGoal());
         goalSelector.addGoal(2, new TemptGoal(this, 1.25, Ingredient.of(Items.SUGAR), false));
-        goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0f));
         goalSelector.addGoal(4, new FeedFromPlantsGoal());
         goalSelector.addGoal(5, new FlyAroundRandomlyGoal());
     }
@@ -170,7 +170,7 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
         private boolean foundFood;
 
         FeedFromPlantsGoal() {
-            super(1.0F);
+            super(1.0f);
         }
 
         @Override
@@ -271,7 +271,7 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
 
     final class FlyAwayInPanicGoal extends FlyingGoal {
         FlyAwayInPanicGoal() {
-            super(1.25F);
+            super(1.25f);
         }
 
         @Override
@@ -295,7 +295,7 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
 
     final class FlyAroundRandomlyGoal extends FlyingGoal {
         FlyAroundRandomlyGoal() {
-            super(1.0F);
+            super(1.0f);
         }
 
         @Override
@@ -307,7 +307,7 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
         @Nullable
         @Override
         Vec3 generateTarget() {
-            Vec3 direction = getViewVector(1.0F);
+            Vec3 direction = getViewVector(1.0f);
             return generateTargetInDirection(direction, Math.PI / 2.0);
         }
     }

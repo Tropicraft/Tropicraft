@@ -61,7 +61,7 @@ public class SeagrassFeature extends Feature<NoneFeatureConfiguration> {
         }
 
         WorldgenRandom worldgenrandom = new WorldgenRandom(new LegacyRandomSource(level.getSeed()));
-        NormalNoise seagrassSelector = NormalNoise.create(worldgenrandom, -6, 1.0D);
+        NormalNoise seagrassSelector = NormalNoise.create(worldgenrandom, -6, 1.0);
 
         int rad = random.nextInt(4) + 8;
 
@@ -85,7 +85,7 @@ public class SeagrassFeature extends Feature<NoneFeatureConfiguration> {
                     continue;
                 }
 
-                boolean selection = seagrassSelector.getValue(local.getX(), pos.getY(), local.getZ()) > 0.0D;
+                boolean selection = seagrassSelector.getValue(local.getX(), pos.getY(), local.getZ()) > 0.0;
 
                 SeagrassData data = SEAGRASS_DATA.apply(deep, selection);
                 Block matted = data.matted;

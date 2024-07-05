@@ -18,19 +18,19 @@ public class TropiCreeperRenderer extends MobRenderer<TropiCreeperEntity, TropiC
     private static final ResourceLocation CREEPER_TEXTURE = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/tropicreeper.png");
 
     public TropiCreeperRenderer(EntityRendererProvider.Context context) {
-        super(context, new TropiCreeperModel(context.bakeLayer(TropicraftRenderLayers.TROPI_CREEPER_LAYER)), 0.5F);
+        super(context, new TropiCreeperModel(context.bakeLayer(TropicraftRenderLayers.TROPI_CREEPER_LAYER)), 0.5f);
     }
 
     // From CreperRenderer
     @Override
     protected void scale(TropiCreeperEntity entitylivingbaseIn, PoseStack matrixStackIn, float partialTickTime) {
         float f = entitylivingbaseIn.getCreeperFlashIntensity(partialTickTime);
-        float f1 = 1.0F + Mth.sin(f * 100.0F) * f * 0.01F;
-        f = Mth.clamp(f, 0.0F, 1.0F);
+        float f1 = 1.0f + Mth.sin(f * 100.0f) * f * 0.01f;
+        f = Mth.clamp(f, 0.0f, 1.0f);
         f = f * f;
         f = f * f;
-        float f2 = (1.0F + f * 0.4F) * f1;
-        float f3 = (1.0F + f * 0.1F) / f1;
+        float f2 = (1.0f + f * 0.4f) * f1;
+        float f3 = (1.0f + f * 0.1f) / f1;
         matrixStackIn.scale(f2, f3, f2);
     }
 
@@ -38,7 +38,7 @@ public class TropiCreeperRenderer extends MobRenderer<TropiCreeperEntity, TropiC
     @Override
     protected float getWhiteOverlayProgress(TropiCreeperEntity livingEntityIn, float partialTicks) {
         float f = livingEntityIn.getCreeperFlashIntensity(partialTicks);
-        return (int) (f * 10.0F) % 2 == 0 ? 0.0F : Mth.clamp(f, 0.5F, 1.0F);
+        return (int) (f * 10.0f) % 2 == 0 ? 0.0f : Mth.clamp(f, 0.5f, 1.0f);
     }
 
     @Override

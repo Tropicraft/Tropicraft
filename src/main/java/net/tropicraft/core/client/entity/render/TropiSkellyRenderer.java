@@ -16,7 +16,7 @@ public class TropiSkellyRenderer extends HumanoidMobRenderer<TropiSkellyEntity, 
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/tropiskeleton.png");
 
     public TropiSkellyRenderer(EntityRendererProvider.Context context) {
-        super(context, new TropiSkellyModel(context.bakeLayer(TropicraftRenderLayers.TROPI_SKELLY_LAYER)), 0.5F);
+        super(context, new TropiSkellyModel(context.bakeLayer(TropicraftRenderLayers.TROPI_SKELLY_LAYER)), 0.5f);
 
         layers.clear();
 

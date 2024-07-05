@@ -9,7 +9,7 @@ import net.minecraft.world.entity.Entity;
 public abstract class TropicraftAgeableModel<T extends Entity> extends EntityModel<T> {
     private static final double MODEL_OFFSET = 1.501;
 
-    static final float CHILD_SCALE = 0.5F;
+    static final float CHILD_SCALE = 0.5f;
 
     @Override
     public void renderToBuffer(PoseStack matrixStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
@@ -26,7 +26,7 @@ public abstract class TropicraftAgeableModel<T extends Entity> extends EntityMod
     }
 
     protected void renderChild(PoseStack matrixStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
-        float reciprocalScale = 1.0F - CHILD_SCALE;
+        float reciprocalScale = 1.0f - CHILD_SCALE;
 
         ModelPart head = getHead();
         matrixStack.pushPose();

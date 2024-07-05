@@ -89,11 +89,11 @@ public class AshenEntity extends TropicraftCreatureEntity implements RangedAttac
     @Override
     protected void registerGoals() {
         goalSelector.addGoal(1, new FloatGoal(this));
-        goalSelector.addGoal(2, new AIAshenChaseAndPickupLostMask(this, 1.0D));
+        goalSelector.addGoal(2, new AIAshenChaseAndPickupLostMask(this, 1.0));
         goalSelector.addGoal(3, new AIAshenShootDart(this));
-        goalSelector.addGoal(4, new RandomStrollGoal(this, 1.0D));
-        goalSelector.addGoal(5, new EntityAIMeleeAndRangedAttack(this, 1.0D, 20 * 2, 20 * 10, 5F));
-        goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        goalSelector.addGoal(4, new RandomStrollGoal(this, 1.0));
+        goalSelector.addGoal(5, new EntityAIMeleeAndRangedAttack(this, 1.0, 20 * 2, 20 * 10, 5.0f));
+        goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0f));
         goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         targetSelector.addGoal(1, new HurtByTargetGoal(this));
         // TODO: Change predicate in last parameter below?
@@ -142,14 +142,14 @@ public class AshenEntity extends TropicraftCreatureEntity implements RangedAttac
 
         Arrow tippedArrow = BlowGunItem.createArrow(level(), this, BlowGunItem.getProjectile(), new ItemStack(TropicraftItems.BLOW_GUN.get()));
         double d0 = target.getX() - getX();
-        double d1 = target.getBoundingBox().minY + (double) (target.getBbHeight() / 3.0F) - tippedArrow.getY();
+        double d1 = target.getBoundingBox().minY + (double) (target.getBbHeight() / 3.0f) - tippedArrow.getY();
         double d2 = target.getZ() - getZ();
         double d3 = Mth.sqrt((float) (d0 * d0 + d2 * d2));
-        tippedArrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, velocity);
+        tippedArrow.shoot(d0, d1 + d3 * 0.20000000298023224, d2, 1.6f, velocity);
 
         tippedArrow.setBaseDamage(1);
 
-        playSound(SoundEvents.CROSSBOW_SHOOT, 1.0F, 1.0F / (getRandom().nextFloat() * 0.4F + 0.8F));
+        playSound(SoundEvents.CROSSBOW_SHOOT, 1.0f, 1.0f / (getRandom().nextFloat() * 0.4f + 0.8f));
         level().addFreshEntity(tippedArrow);
     }
 

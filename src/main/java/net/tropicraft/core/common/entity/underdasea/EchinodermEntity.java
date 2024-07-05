@@ -113,7 +113,7 @@ public abstract class EchinodermEntity extends WaterAnimal {
     private EchinodermEntity findMate() {
         int neighbors = 0;
         EchinodermEntity closestMate = null;
-        double closestSqDist = -1f;
+        double closestSqDist = -1.0f;
 
         AABB aabb = getBoundingBox().inflate(NEIGHBORHOOD_SIZE, NEIGHBORHOOD_SIZE, NEIGHBORHOOD_SIZE);
         for (Object obj : level().getEntitiesOfClass(getClass(), aabb)) {
@@ -132,7 +132,7 @@ public abstract class EchinodermEntity extends WaterAnimal {
 
             double sqDist = distanceToSqr(other);
 
-            if (sqDist < BREEDING_PROXIMITY && (closestSqDist == -1f || sqDist < closestSqDist)) {
+            if (sqDist < BREEDING_PROXIMITY && (closestSqDist == -1.0f || sqDist < closestSqDist)) {
                 closestMate = other;
                 closestSqDist = sqDist;
             }
@@ -171,7 +171,7 @@ public abstract class EchinodermEntity extends WaterAnimal {
      */
     public float getGrowthProgress() {
         int growingAge = getGrowingAge();
-        return growingAge < 0 ? 1f + ((float) growingAge) / GROWTH_TICKS : 1f;
+        return growingAge < 0 ? 1.0f + ((float) growingAge) / GROWTH_TICKS : 1.0f;
     }
 
     private void setEchinodermSize() {

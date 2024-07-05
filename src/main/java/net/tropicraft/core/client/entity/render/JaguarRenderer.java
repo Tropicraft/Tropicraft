@@ -15,7 +15,7 @@ public class JaguarRenderer extends MobRenderer<JaguarEntity, JaguarModel<Jaguar
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/jaguar.png");
 
     public JaguarRenderer(EntityRendererProvider.Context context) {
-        super(context, new JaguarModel<>(context.bakeLayer(TropicraftRenderLayers.JAGUAR_LAYER)), 0.7F);
+        super(context, new JaguarModel<>(context.bakeLayer(TropicraftRenderLayers.JAGUAR_LAYER)), 0.7f);
     }
 
     @Override

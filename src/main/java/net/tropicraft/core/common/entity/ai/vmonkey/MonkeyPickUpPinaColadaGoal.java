@@ -27,8 +27,8 @@ public class MonkeyPickUpPinaColadaGoal extends Goal {
     public MonkeyPickUpPinaColadaGoal(VMonkeyEntity monkey) {
         entity = monkey;
         setFlags(EnumSet.of(Flag.LOOK, Flag.MOVE));
-        speedModifier = 1.0F;
-        stopDistance = 1.0F;
+        speedModifier = 1.0f;
+        stopDistance = 1.0f;
         navigation = entity.getNavigation();
         drinkEntity = null;
     }
@@ -57,13 +57,13 @@ public class MonkeyPickUpPinaColadaGoal extends Goal {
     public void start() {
         timeToRecalcPath = 0;
         oldWaterCost = entity.getPathfindingMalus(PathType.WATER);
-        entity.setPathfindingMalus(PathType.WATER, 0.0F);
+        entity.setPathfindingMalus(PathType.WATER, 0.0f);
     }
 
     private boolean hasNearbyDrink(Drink drink) {
         ItemStack stack = MixerRecipes.getItemStack(drink);
 
-        List<ItemEntity> list = entity.level().getEntitiesOfClass(ItemEntity.class, entity.getBoundingBox().inflate(10.0D));
+        List<ItemEntity> list = entity.level().getEntitiesOfClass(ItemEntity.class, entity.getBoundingBox().inflate(10.0));
 
         if (!list.isEmpty()) {
             for (ItemEntity item : list) {
@@ -85,7 +85,7 @@ public class MonkeyPickUpPinaColadaGoal extends Goal {
     @Override
     public void tick() {
         if (drinkEntity != null && !entity.isLeashed()) {
-            entity.getLookControl().setLookAt(drinkEntity, 10.0F, (float) entity.getMaxHeadXRot());
+            entity.getLookControl().setLookAt(drinkEntity, 10.0f, (float) entity.getMaxHeadXRot());
 
             if (!drinkEntity.isAlive()) {
                 drinkEntity = null;

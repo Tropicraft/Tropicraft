@@ -56,97 +56,97 @@ public class IguanaModel extends HierarchicalModel<IguanaEntity> {
         root.addOrReplaceChild("head",
                 CubeListBuilder.create()
                         .texOffs(36, 23)
-                        .addBox(-2.5F, -2F, -6F, 5, 3, 6),
-                PartPose.offset(0F, 20F, -6F));
+                        .addBox(-2.5f, -2.0f, -6.0f, 5, 3, 6),
+                PartPose.offset(0.0f, 20.0f, -6.0f));
 
         root.addOrReplaceChild("body",
                 CubeListBuilder.create()
                         .texOffs(0, 16)
-                        .addBox(-2.5F, -1.5F, -7.5F, 5, 3, 13),
-                PartPose.offset(0F, 21.5F, 1F));
+                        .addBox(-2.5f, -1.5f, -7.5f, 5, 3, 13),
+                PartPose.offset(0.0f, 21.5f, 1.0f));
 
         root.addOrReplaceChild("frontLeftLeg",
                 CubeListBuilder.create()
                         .texOffs(24, 21)
-                        .addBox(0F, 0F, -1.5F, 2, 3, 3),
-                PartPose.offset(2.5F, 21F, -4F));
+                        .addBox(0.0f, 0.0f, -1.5f, 2, 3, 3),
+                PartPose.offset(2.5f, 21.0f, -4.0f));
 
         root.addOrReplaceChild("rearLeftLeg",
                 CubeListBuilder.create()
                         .texOffs(24, 21)
-                        .addBox(0F, 0F, -1.5F, 2, 3, 3),
-                PartPose.offset(2.5F, 21F, 4F));
+                        .addBox(0.0f, 0.0f, -1.5f, 2, 3, 3),
+                PartPose.offset(2.5f, 21.0f, 4.0f));
 
         root.addOrReplaceChild("frontRightLeg",
                 CubeListBuilder.create()
                         .texOffs(0, 21)
-                        .addBox(-2F, 0F, -1.5F, 2, 3, 3),
-                PartPose.offset(-2.5F, 21F, -4F));
+                        .addBox(-2.0f, 0.0f, -1.5f, 2, 3, 3),
+                PartPose.offset(-2.5f, 21.0f, -4.0f));
 
         root.addOrReplaceChild("rearRightLeg",
                 CubeListBuilder.create()
                         .texOffs(0, 21)
-                        .addBox(-2F, 0F, -1.5F, 2, 3, 3),
-                PartPose.offset(-2.5F, 21F, 4F));
+                        .addBox(-2.0f, 0.0f, -1.5f, 2, 3, 3),
+                PartPose.offset(-2.5f, 21.0f, 4.0f));
 
         root.addOrReplaceChild("back1",
                 CubeListBuilder.create()
                         .texOffs(0, 0)
-                        .addBox(-1.5F, -1F, 0F, 3, 1, 10),
-                PartPose.offset(0F, 20F, -5F));
+                        .addBox(-1.5f, -1.0f, 0.0f, 3, 1, 10),
+                PartPose.offset(0.0f, 20.0f, -5.0f));
 
         root.addOrReplaceChild("back2",
                 CubeListBuilder.create()
                         .texOffs(32, 0)
-                        .addBox(-0.5F, -1F, -3F, 1, 1, 6),
-                PartPose.offset(0F, 19F, 0F));
+                        .addBox(-0.5f, -1.0f, -3.0f, 1, 1, 6),
+                PartPose.offset(0.0f, 19.0f, 0.0f));
 
         root.addOrReplaceChild("headTop2",
                 CubeListBuilder.create()
                         .texOffs(0, 0)
-                        .addBox(-0.5F, -4F, -4F, 1, 1, 2),
-                PartPose.offset(0F, 20F, -6F));
+                        .addBox(-0.5f, -4.0f, -4.0f, 1, 1, 2),
+                PartPose.offset(0.0f, 20.0f, -6.0f));
 
         root.addOrReplaceChild("headTop1",
                 CubeListBuilder.create()
                         .texOffs(32, 7)
-                        .addBox(-0.5F, -3F, -5F, 1, 1, 4),
-                PartPose.offset(0F, 20F, -6F));
+                        .addBox(-0.5f, -3.0f, -5.0f, 1, 1, 4),
+                PartPose.offset(0.0f, 20.0f, -6.0f));
 
         root.addOrReplaceChild("jaw",
                 CubeListBuilder.create()
                         .texOffs(0, 11)
-                        .addBox(-1F, 1F, -4F, 2, 1, 4),
-                PartPose.offset(0F, 20F, -6F));
+                        .addBox(-1.0f, 1.0f, -4.0f, 2, 1, 4),
+                PartPose.offset(0.0f, 20.0f, -6.0f));
 
         root.addOrReplaceChild("back3",
                 CubeListBuilder.create()
                         .texOffs(32, 7)
-                        .addBox(-0.5F, 0F, -2F, 1, 1, 4),
-                PartPose.offset(0F, 17F, 0F));
+                        .addBox(-0.5f, 0.0f, -2.0f, 1, 1, 4),
+                PartPose.offset(0.0f, 17.0f, 0.0f));
 
         root.addOrReplaceChild("dewLap",
                 CubeListBuilder.create()
                         .texOffs(0, 4)
-                        .addBox(-0.5F, 2F, -3F, 1, 1, 3),
-                PartPose.offset(0F, 20F, -6F));
+                        .addBox(-0.5f, 2.0f, -3.0f, 1, 1, 3),
+                PartPose.offset(0.0f, 20.0f, -6.0f));
 
         root.addOrReplaceChild("tailBase",
                 CubeListBuilder.create()
                         .texOffs(46, 0)
-                        .addBox(-1.5F, -0.5F, 0F, 3, 1, 6),
-                PartPose.offset(0F, 21.5F, 6F));
+                        .addBox(-1.5f, -0.5f, 0.0f, 3, 1, 6),
+                PartPose.offset(0.0f, 21.5f, 6.0f));
 
         root.addOrReplaceChild("tailMid",
                 CubeListBuilder.create()
                         .texOffs(48, 7)
-                        .addBox(-1F, -0.5F, 0F, 2, 1, 6),
+                        .addBox(-1.0f, -0.5f, 0.0f, 2, 1, 6),
                 PartPose.ZERO);
 
         root.addOrReplaceChild("miscPart",
                 CubeListBuilder.create()
                         .texOffs(52, 14)
-                        .addBox(-0.5F, -0.5F, 0F, 1, 1, 5),
+                        .addBox(-0.5f, -0.5f, 0.0f, 1, 1, 5),
                 PartPose.ZERO);
 
         return LayerDefinition.create(mesh, 64, 32);
@@ -154,7 +154,7 @@ public class IguanaModel extends HierarchicalModel<IguanaEntity> {
 
     @Override
     public void setupAnim(IguanaEntity iguana, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        final float magicHeadRotationAmt = 57.29578F;
+        final float magicHeadRotationAmt = 57.29578f;
         head.xRot = headPitch / magicHeadRotationAmt;
         head.yRot = netHeadYaw / magicHeadRotationAmt;
         jaw.xRot = head.xRot;
@@ -168,29 +168,29 @@ public class IguanaModel extends HierarchicalModel<IguanaEntity> {
 
         // Animate iguana tail ambiently
         // The call in prepareMobModel animates it when swinging limbs
-        try (ModelAnimator.Cycle idle = ModelAnimator.cycle(ageInTicks * 0.025F, 0.1F)) {
-            tailBase.yRot += idle.eval(1.0F, 1.0F, 0.0F, 0.0F);
+        try (ModelAnimator.Cycle idle = ModelAnimator.cycle(ageInTicks * 0.025f, 0.1f)) {
+            tailBase.yRot += idle.eval(1.0f, 1.0f, 0.0f, 0.0f);
 
             // The positions need to be set to ensure the tail parts move in tandem
-            tailMid.setPos(0F - (Mth.cos(tailBase.yRot + 1.570796F) * 6), 21.5F, 12F + Mth.sin(tailBase.xRot + 3.14159F) * 6);
-            tailMid.yRot += idle.eval(1.0F, 1.0F, 0.05F, 0.0F);
+            tailMid.setPos(0.0f - (Mth.cos(tailBase.yRot + 1.570796f) * 6), 21.5f, 12.0f + Mth.sin(tailBase.xRot + 3.14159f) * 6);
+            tailMid.yRot += idle.eval(1.0f, 1.0f, 0.05f, 0.0f);
 
-            miscPart.setPos(0F - (Mth.cos(tailMid.yRot + 1.570796F) * 6), 21.5F, 18F + Mth.sin(tailMid.xRot + 3.14159F) * 6);
-            miscPart.yRot += idle.eval(1.0F, 1.0F, 0.075F, 0.0F);
+            miscPart.setPos(0.0f - (Mth.cos(tailMid.yRot + 1.570796f) * 6), 21.5f, 18.0f + Mth.sin(tailMid.xRot + 3.14159f) * 6);
+            miscPart.yRot += idle.eval(1.0f, 1.0f, 0.075f, 0.0f);
         }
     }
 
     @Override
     public void prepareMobModel(IguanaEntity iggy, float limbSwing, float limbSwingAmount, float partialTicks) {
-        frontRightLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.75F * limbSwingAmount;
-        frontLeftLeg.xRot = Mth.cos(limbSwing * 0.6662F + 3.141593F) * 1.75F * limbSwingAmount;
-        rearRightLeg.xRot = Mth.cos(limbSwing * 0.6662F + 3.141593F) * 1.75F * limbSwingAmount;
-        rearLeftLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.75F * limbSwingAmount;
-        tailBase.yRot = Mth.cos(limbSwing * 0.6662F) * .25F * limbSwingAmount;
-        tailMid.setPos(0F - (Mth.cos(tailBase.yRot + 1.570796F) * 6), 21.5F, 12F + Mth.sin(tailBase.xRot + 3.14159F) * 6);
-        tailMid.yRot = tailBase.yRot + Mth.cos(limbSwing * 0.6662F) * .50F * limbSwingAmount;
-        miscPart.setPos(0F - (Mth.cos(tailMid.yRot + 1.570796F) * 6), 21.5F, 18F + Mth.sin(tailMid.xRot + 3.14159F) * 6);
-        miscPart.yRot = tailMid.yRot + Mth.cos(limbSwing * 0.6662F) * .75F * limbSwingAmount;
+        frontRightLeg.xRot = Mth.cos(limbSwing * 0.6662f) * 1.75f * limbSwingAmount;
+        frontLeftLeg.xRot = Mth.cos(limbSwing * 0.6662f + 3.141593f) * 1.75f * limbSwingAmount;
+        rearRightLeg.xRot = Mth.cos(limbSwing * 0.6662f + 3.141593f) * 1.75f * limbSwingAmount;
+        rearLeftLeg.xRot = Mth.cos(limbSwing * 0.6662f) * 1.75f * limbSwingAmount;
+        tailBase.yRot = Mth.cos(limbSwing * 0.6662f) * 0.25f * limbSwingAmount;
+        tailMid.setPos(0.0f - (Mth.cos(tailBase.yRot + 1.570796f) * 6), 21.5f, 12.0f + Mth.sin(tailBase.xRot + 3.14159f) * 6);
+        tailMid.yRot = tailBase.yRot + Mth.cos(limbSwing * 0.6662f) * 0.50f * limbSwingAmount;
+        miscPart.setPos(0.0f - (Mth.cos(tailMid.yRot + 1.570796f) * 6), 21.5f, 18.0f + Mth.sin(tailMid.xRot + 3.14159f) * 6);
+        miscPart.yRot = tailMid.yRot + Mth.cos(limbSwing * 0.6662f) * 0.75f * limbSwingAmount;
     }
 
     @Override

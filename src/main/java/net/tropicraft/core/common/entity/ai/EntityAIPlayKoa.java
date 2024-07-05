@@ -31,7 +31,7 @@ public class EntityAIPlayKoa extends Goal {
         } else if (villagerObj.getRandom().nextInt(200) != 0) {
             return false;
         } else {
-            List<EntityKoaBase> list = villagerObj.level().getEntitiesOfClass(EntityKoaBase.class, villagerObj.getBoundingBox().inflate(6.0D, 3.0D, 6.0D));
+            List<EntityKoaBase> list = villagerObj.level().getEntitiesOfClass(EntityKoaBase.class, villagerObj.getBoundingBox().inflate(6.0, 3.0, 6.0));
             double d0 = Double.MAX_VALUE;
 
             for (EntityKoaBase entityvillager : list) {
@@ -95,7 +95,7 @@ public class EntityAIPlayKoa extends Goal {
         }
 
         if (targetVillager != null) {
-            if (villagerObj.distanceToSqr(targetVillager) > 4.0D) {
+            if (villagerObj.distanceToSqr(targetVillager) > 4.0) {
                 villagerObj.getNavigation().moveTo(targetVillager, speed);
             }
         } else if (villagerObj.getNavigation().isDone()) {

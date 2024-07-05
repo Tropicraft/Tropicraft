@@ -60,7 +60,7 @@ public class TreeFrogEntity extends TropicraftCreatureEntity implements Enemy, R
 
     public TreeFrogEntity(EntityType<? extends PathfinderMob> type, Level world) {
         super(type, world);
-        //TODO 1.17 fix - pushthrough = 0.8F;
+        //TODO 1.17 fix - pushthrough = 0.8f;
         xpReward = 5;
     }
 
@@ -72,8 +72,8 @@ public class TreeFrogEntity extends TropicraftCreatureEntity implements Enemy, R
     @Override
     public void registerGoals() {
         goalSelector.addGoal(0, new FloatGoal(this));
-        goalSelector.addGoal(1, new RangedAttackGoal(this, 1.0D, 60, 10.0F));
-        goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        goalSelector.addGoal(1, new RangedAttackGoal(this, 1.0, 60, 10.0f));
+        goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -93,11 +93,11 @@ public class TreeFrogEntity extends TropicraftCreatureEntity implements Enemy, R
                     jumpDelay = 5 + random.nextInt(4);
 
                     // this.jump();
-                    // this.motionY += -0.01D + rand.nextDouble() * 0.1D;
+                    // this.motionY += -0.01 + rand.nextDouble() * 0.1;
                     Vec3 motion = getDeltaMovement();
 
                     double speed = Math.sqrt(motion.x * motion.x + motion.z * motion.z);
-                    if (speed > 0.02D) {
+                    if (speed > 0.02) {
                         double motionY = motion.y + 0.4d;
                         double motionX = motion.x * 1.1d;
                         double motionZ = motion.z * 1.1d;
@@ -157,19 +157,19 @@ public class TreeFrogEntity extends TropicraftCreatureEntity implements Enemy, R
 
     @Override
     public void performRangedAttack(LivingEntity entity, float dist) {
-        if (dist < 4F && !level().isClientSide && attackTime == 0 && level().getDifficulty() != Difficulty.PEACEFUL) {
+        if (dist < 4.0f && !level().isClientSide && attackTime == 0 && level().getDifficulty() != Difficulty.PEACEFUL) {
             double d = entity.getX() - getX();
             double d1 = entity.getZ() - getZ();
 
             PoisonBlotEntity poison = new PoisonBlotEntity(TropicraftEntities.POISON_BLOT.get(), this, level());
-            poison.setPos(poison.getX(), poison.getY() + 1.3999999761581421D, poison.getZ());
-            double shotHeight = (entity.getY() + (double) entity.getEyeHeight()) - 0.20000000298023224D - poison.getY();
-            float f1 = Mth.sqrt((float) (d * d + d1 * d1)) * 0.2F;
+            poison.setPos(poison.getX(), poison.getY() + 1.3999999761581421, poison.getZ());
+            double shotHeight = (entity.getY() + (double) entity.getEyeHeight()) - 0.20000000298023224 - poison.getY();
+            float f1 = Mth.sqrt((float) (d * d + d1 * d1)) * 0.2f;
             entity.getCommandSenderWorld().playSound(null, entity.blockPosition(), Sounds.FROG_SPIT.get(), SoundSource.HOSTILE, 1, 1);
             level().addFreshEntity(poison);
-            poison.shoot(d, shotHeight + (double) f1, d1, 0.6F, 12F);
+            poison.shoot(d, shotHeight + (double) f1, d1, 0.6f, 12.0f);
             attackTime = 50;
-            setYRot((float) ((Math.atan2(d1, d) * 180D) / 3.1415927410125732D) - 90F);
+            setYRot((float) ((Math.atan2(d1, d) * 180) / 3.1415927410125732) - 90.0f);
         }
     }
 }

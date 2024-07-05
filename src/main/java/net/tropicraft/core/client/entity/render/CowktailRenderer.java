@@ -23,7 +23,7 @@ public class CowktailRenderer extends MobRenderer<CowktailEntity, CowModel<Cowkt
     });
 
     public CowktailRenderer(EntityRendererProvider.Context context) {
-        super(context, new CowModel<>(context.bakeLayer(TropicraftRenderLayers.COWKTAIL_LAYER)), 0.7F);
+        super(context, new CowModel<>(context.bakeLayer(TropicraftRenderLayers.COWKTAIL_LAYER)), 0.7f);
         addLayer(new CowktailLayer<>(this));
     }
 

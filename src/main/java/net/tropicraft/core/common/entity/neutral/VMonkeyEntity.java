@@ -94,18 +94,18 @@ public class VMonkeyEntity extends TamableAnimal {
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(1, new FloatGoal(this));
-        goalSelector.addGoal(3, new MonkeyFollowNearestPinaColadaHolderGoal(this, 1.0D, 2.0F, 10.0F));
-        goalSelector.addGoal(3, new LeapAtTargetGoal(this, 0.4F));
+        goalSelector.addGoal(3, new MonkeyFollowNearestPinaColadaHolderGoal(this, 1.0, 2.0f, 10.0f));
+        goalSelector.addGoal(3, new LeapAtTargetGoal(this, 0.4f));
         goalSelector.addGoal(3, new MonkeyPickUpPinaColadaGoal(this));
         goalSelector.addGoal(2, new MonkeyStealDrinkGoal(this));
         goalSelector.addGoal(2, new MonkeySitAndDrinkGoal(this));
         goalSelector.addGoal(2, new MonkeyAngryThrowGoal(this));
         goalSelector.addGoal(4, new MonkeySitInChairGoal(this));
         goalSelector.addGoal(4, new SitWhenOrderedToGoal(this));
-        goalSelector.addGoal(6, new MeleeAttackGoal(this, 1.0D, true));
-        goalSelector.addGoal(7, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F));
-        goalSelector.addGoal(8, new RandomStrollGoal(this, 1.0D));
-        goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        goalSelector.addGoal(6, new MeleeAttackGoal(this, 1.0, true));
+        goalSelector.addGoal(7, new FollowOwnerGoal(this, 1.0, 10.0f, 2.0f));
+        goalSelector.addGoal(8, new RandomStrollGoal(this, 1.0));
+        goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 8.0f));
         goalSelector.addGoal(9, new RandomLookAroundGoal(this));
         targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
@@ -190,7 +190,7 @@ public class VMonkeyEntity extends TamableAnimal {
                     navigation.stop();
                     setTarget(null);
                     setOrderedToSit(true);
-                    setHealth(20.0F);
+                    setHealth(20.0f);
                     setOwnerUUID(player.getUUID());
                     level().broadcastEntityEvent(this, (byte) 7);
                 } else {
@@ -231,7 +231,7 @@ public class VMonkeyEntity extends TamableAnimal {
             setOrderedToSit(false);
 
             if (entity != null && entity.getType() != EntityType.PLAYER && !(entity instanceof Arrow)) {
-                amount = (amount + 1.0F) / 2.0F;
+                amount = (amount + 1.0f) / 2.0f;
             }
 
             return super.hurt(source, amount);

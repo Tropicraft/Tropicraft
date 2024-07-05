@@ -45,7 +45,7 @@ public class PlayerHeadpieceModel extends HumanoidModel<LivingEntity> {
 
         CubeDeformation dilation_hat = new CubeDeformation(0.5f);
         root.addOrReplaceChild(PartNames.HAT,
-                CubeListBuilder.create().texOffs(32, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, dilation_hat),
+                CubeListBuilder.create().texOffs(32, 0).addBox(-4.0f, -8.0f, -4.0f, 8.0f, 8.0f, 8.0f, dilation_hat),
                 PartPose.ZERO);
 
         return LayerDefinition.create(mesh, 64, 32);
@@ -67,7 +67,7 @@ public class PlayerHeadpieceModel extends HumanoidModel<LivingEntity> {
         stack.mulPose(Axis.YP.rotationDegrees(180));
 
         // put it in the middle in front of the face
-        stack.translate(0.0F - xOffset, 0.112f + 0.0625f - yOffset, 0.2501F);
+        stack.translate(0.0f - xOffset, 0.112f + 0.0625f - yOffset, 0.2501f);
 
         // renderMask handles the rendering of the mask model, but it doesn't set the texture.
         // Setting the texture is handled in the item class.

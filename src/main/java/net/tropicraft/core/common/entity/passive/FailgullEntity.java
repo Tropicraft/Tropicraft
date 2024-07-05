@@ -47,9 +47,9 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
         super(type, world);
         xpReward = 1;
         moveControl = new FlyingMoveControl(this, 5, true);
-        setPathfindingMalus(PathType.WATER, -1.0F);
-        setPathfindingMalus(PathType.COCOA, -1.0F);
-        setPathfindingMalus(PathType.FENCE, -1.0F);
+        setPathfindingMalus(PathType.WATER, -1.0f);
+        setPathfindingMalus(PathType.COCOA, -1.0f);
+        setPathfindingMalus(PathType.FENCE, -1.0f);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -91,7 +91,7 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
 
     @Override
     public float getWalkTargetValue(BlockPos pos, LevelReader worldIn) {
-        return worldIn.getBlockState(pos).isAir() ? 10.0F : 0.0F;
+        return worldIn.getBlockState(pos).isAir() ? 10.0f : 0.0f;
     }
 
     @Override
@@ -140,7 +140,7 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
 
     @Override
     protected float getSoundVolume() {
-        return 0.4F;
+        return 0.4f;
     }
 
     @Nullable
@@ -179,17 +179,17 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
         RandomSource random = getRandom();
         for (int i = 0; i < 20; i++) {
             BlockPos pos = BlockPos.containing(
-                    getX() + (random.nextFloat() * 2.0F - 1.0F) * 48,
-                    getY() + (random.nextFloat() * 2.0F - 1.0F) * 3,
-                    getZ() + (random.nextFloat() * 2.0F - 1.0F) * 48
+                    getX() + (random.nextFloat() * 2.0f - 1.0f) * 48,
+                    getY() + (random.nextFloat() * 2.0f - 1.0f) * 3,
+                    getZ() + (random.nextFloat() * 2.0f - 1.0f) * 48
             );
             if (level().isEmptyBlock(pos)) {
                 return pos;
             }
         }
 
-        Vec3 direction = getViewVector(0.0F);
-        final float maxAngle = ((float) Math.PI / 2F);
+        Vec3 direction = getViewVector(0.0f);
+        final float maxAngle = ((float) Math.PI / 2.0f);
 
         Vec3 target = HoverRandomPos.getPos(this, 40, 3, direction.x, direction.z, maxAngle, 2, 1);
         Vec3 groundPos = AirAndWaterRandomPos.getPos(this, 40, 4, -2, direction.x, direction.z, maxAngle);
@@ -225,12 +225,12 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
             Entity flockLeader = getFlockLeader();
             PathNavigation navigator = getNavigation();
             if (flockLeader != null && flockLeader.getType() == TropicraftEntities.FAILGULL.get()) {
-                navigator.moveTo(navigator.createPath(flockLeader.blockPosition(), 1), 1.0D);
+                navigator.moveTo(navigator.createPath(flockLeader.blockPosition(), 1), 1.0);
                 return;
             }
             BlockPos Vector3d = getRandomLocation();
             if (Vector3d != null) {
-                navigator.moveTo(navigator.createPath(Vector3d, 1), 1.0D);
+                navigator.moveTo(navigator.createPath(Vector3d, 1), 1.0);
             }
         }
     }
@@ -259,7 +259,7 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
             BlockPos Vector3d = getRandomLocation();
             if (Vector3d != null) {
                 PathNavigation navigator = getNavigation();
-                navigator.moveTo(navigator.createPath(Vector3d, 1), 1.0D);
+                navigator.moveTo(navigator.createPath(Vector3d, 1), 1.0);
             }
         }
     }
@@ -301,7 +301,7 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
 
         @Override
         public void start() {
-            List<FailgullEntity> list = mob.level().getEntitiesOfClass(FailgullEntity.class, mob.getBoundingBox().inflate(10D, 10D, 10D));
+            List<FailgullEntity> list = mob.level().getEntitiesOfClass(FailgullEntity.class, mob.getBoundingBox().inflate(10, 10, 10));
             list.remove(mob);
 
             Optional<FailgullEntity> oldest = list.stream().min(Comparator.comparingInt(FailgullEntity::getId));

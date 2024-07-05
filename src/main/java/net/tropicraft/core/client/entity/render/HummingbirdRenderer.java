@@ -15,7 +15,7 @@ public class HummingbirdRenderer extends MobRenderer<HummingbirdEntity, Hummingb
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/hummingbird.png");
 
     public HummingbirdRenderer(EntityRendererProvider.Context context) {
-        super(context, new HummingbirdModel<>(context.bakeLayer(TropicraftRenderLayers.HUMMINGBIRD_LAYER)), 0.2F);
+        super(context, new HummingbirdModel<>(context.bakeLayer(TropicraftRenderLayers.HUMMINGBIRD_LAYER)), 0.2f);
     }
 
     @Override

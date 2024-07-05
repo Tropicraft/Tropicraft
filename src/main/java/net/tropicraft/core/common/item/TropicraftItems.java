@@ -206,7 +206,7 @@ public class TropicraftItems {
             .model((ctx, prov) -> prov.handheld(ctx))
             .register();
 
-    public static final ItemEntry<SpearItem> BAMBOO_SPEAR = REGISTRATE.item("bamboo_spear", p -> new SpearItem(TropicraftToolTiers.BAMBOO, 3, -2.4F, p))
+    public static final ItemEntry<SpearItem> BAMBOO_SPEAR = REGISTRATE.item("bamboo_spear", p -> new SpearItem(TropicraftToolTiers.BAMBOO, 3, -2.4f, p))
             .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ctx.get())
                     .pattern("X ").pattern(" X")
                     .define('X', BAMBOO_STICK.get())
@@ -809,16 +809,16 @@ public class TropicraftItems {
     }
 
     private static final List<TrimMaterial> GENERATED_TRIM_MATERIALS = List.of(
-            new TrimMaterial("quartz", 0.1F),
-            new TrimMaterial("iron", 0.2F),
-            new TrimMaterial("netherite", 0.3F),
-            new TrimMaterial("redstone", 0.4F),
-            new TrimMaterial("copper", 0.5F),
+            new TrimMaterial("quartz", 0.1f),
+            new TrimMaterial("iron", 0.2f),
+            new TrimMaterial("netherite", 0.3f),
+            new TrimMaterial("redstone", 0.4f),
+            new TrimMaterial("copper", 0.5f),
             new TrimMaterial("gold", 0.6f),
-            new TrimMaterial("emerald", 0.7F),
-            new TrimMaterial("diamond", 0.8F),
-            new TrimMaterial("lapis", 0.9F),
-            new TrimMaterial("amethyst", 1.0F)
+            new TrimMaterial("emerald", 0.7f),
+            new TrimMaterial("diamond", 0.8f),
+            new TrimMaterial("lapis", 0.9f),
+            new TrimMaterial("amethyst", 1.0f)
     );
 
     private static void trimmableArmor(DataGenContext<Item, ArmorItem> ctx, RegistrateItemModelProvider prov) {

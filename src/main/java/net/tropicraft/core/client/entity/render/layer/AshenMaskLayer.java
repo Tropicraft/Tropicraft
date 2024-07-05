@@ -30,7 +30,7 @@ public class AshenMaskLayer extends RenderLayer<AshenEntity, AshenModel> {
             modelAshen.setupAnim(ashen, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
             modelAshen.head.translateAndRotate(stack);
 
-            stack.translate(-0.03125F, 0.0625f * 3, .18F);
+            stack.translate(-0.03125f, 0.0625f * 3, 0.18f);
             stack.scale(0.75f, 0.75f, 0.75f);
             VertexConsumer ivertexbuilder = bufferIn.getBuffer(RenderType.entityCutoutNoCull(TropicraftRenderUtils.getTextureEntity("ashen/mask")));
             mask.renderMask(stack, ivertexbuilder, ashen.getMaskType(), packedLightIn, OverlayTexture.NO_OVERLAY);

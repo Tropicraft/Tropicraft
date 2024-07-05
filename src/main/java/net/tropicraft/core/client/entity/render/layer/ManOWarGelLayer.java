@@ -28,7 +28,7 @@ public class ManOWarGelLayer extends RenderLayer<ManOWarEntity, ManOWarModel> {
             mowModel.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
             mowModel.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
             VertexConsumer ivertexbuilder = bufferIn.getBuffer(RenderType.entityTranslucent(getTextureLocation(entity)));
-            mowModel.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, LivingEntityRenderer.getOverlayCoords(entity, 0.0F));
+            mowModel.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, LivingEntityRenderer.getOverlayCoords(entity, 0.0f));
         }
     }
 }

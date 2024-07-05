@@ -22,58 +22,58 @@ public class UmbrellaModel extends HierarchicalModel<UmbrellaEntity> {
 
         root.addOrReplaceChild("base",
                 CubeListBuilder.create().texOffs(0, 0)
-                        .addBox(-0.5F, 0F, -0.5F, 1, 14, 1),
-                PartPose.offset(0F, -13F, 0F));
+                        .addBox(-0.5f, 0.0f, -0.5f, 1, 14, 1),
+                PartPose.offset(0.0f, -13.0f, 0.0f));
 
         root.addOrReplaceChild("shape2",
                 CubeListBuilder.create().texOffs(0, 0)
-                        .addBox(-7.5F, -2F, -7.5F, 15, 1, 15),
-                PartPose.offset(0F, -12F, 0F));
+                        .addBox(-7.5f, -2.0f, -7.5f, 15, 1, 15),
+                PartPose.offset(0.0f, -12.0f, 0.0f));
 
         root.addOrReplaceChild("shape4",
                 CubeListBuilder.create().texOffs(25, 25)
-                        .addBox(-1F, -1F, -1F, 2, 1, 2),
-                PartPose.offset(0F, -14F, 0F));
+                        .addBox(-1.0f, -1.0f, -1.0f, 2, 1, 2),
+                PartPose.offset(0.0f, -14.0f, 0.0f));
 
         root.addOrReplaceChild("shape3",
                 CubeListBuilder.create().texOffs(0, 20)
-                        .addBox(-4F, -1F, 0F, 9, 1, 3),
-                PartPose.offsetAndRotation(-0.5F, -13F, 7.5F, -0.2443461F, 0F, 0F));
+                        .addBox(-4.0f, -1.0f, 0.0f, 9, 1, 3),
+                PartPose.offsetAndRotation(-0.5f, -13.0f, 7.5f, -0.2443461f, 0.0f, 0.0f));
 
         root.addOrReplaceChild("shape31",
                 CubeListBuilder.create().texOffs(0, 24)
-                        .addBox(-4.5F, -1F, 0F, 9, 1, 3),
-                PartPose.offsetAndRotation(7.5F, -13F, 0F, -0.2443461F, 1.570796F, 0F));
+                        .addBox(-4.5f, -1.0f, 0.0f, 9, 1, 3),
+                PartPose.offsetAndRotation(7.5f, -13.0f, 0.0f, -0.2443461f, 1.570796f, 0.0f));
 
         root.addOrReplaceChild("shape32",
                 CubeListBuilder.create().texOffs(0, 28)
-                        .addBox(-4.5F, -1F, -1F, 9, 1, 3),
-                PartPose.offsetAndRotation(0F, -12.75F, -8.45F, -0.2443461F, 3.141593F, 0F));
+                        .addBox(-4.5f, -1.0f, -1.0f, 9, 1, 3),
+                PartPose.offsetAndRotation(0.0f, -12.75f, -8.45f, -0.2443461f, 3.141593f, 0.0f));
 
         root.addOrReplaceChild("shape33",
                 CubeListBuilder.create().texOffs(24, 28)
-                        .addBox(-4.5F, -1F, 1F, 9, 1, 3),
-                PartPose.offsetAndRotation(-6.5F, -13.25F, 0F, -0.2443461F, -1.570796F, 0F));
+                        .addBox(-4.5f, -1.0f, 1.0f, 9, 1, 3),
+                PartPose.offsetAndRotation(-6.5f, -13.25f, 0.0f, -0.2443461f, -1.570796f, 0.0f));
 
         root.addOrReplaceChild("shape11",
                 CubeListBuilder.create().texOffs(0, 0)
-                        .addBox(-0.5F, 0F, -0.5F, 1, 9, 1),
-                PartPose.offsetAndRotation(0F, -10F, 0F, 1.902409F, 0F, 0F));
+                        .addBox(-0.5f, 0.0f, -0.5f, 1, 9, 1),
+                PartPose.offsetAndRotation(0.0f, -10.0f, 0.0f, 1.902409f, 0.0f, 0.0f));
 
         root.addOrReplaceChild("shape12",
                 CubeListBuilder.create().texOffs(0, 0)
-                        .addBox(-0.5F, 0F, -0.5F, 1, 9, 1),
-                PartPose.offsetAndRotation(0F, -10F, 0F, -1.902409F, 0F, 0F));
+                        .addBox(-0.5f, 0.0f, -0.5f, 1, 9, 1),
+                PartPose.offsetAndRotation(0.0f, -10.0f, 0.0f, -1.902409f, 0.0f, 0.0f));
 
         root.addOrReplaceChild("shape111",
                 CubeListBuilder.create().texOffs(0, 0)
-                        .addBox(-0.5F, 0F, -0.5F, 1, 9, 1),
-                PartPose.offsetAndRotation(0F, -10F, 0F, 1.902409F, 1.570796F, 0F));
+                        .addBox(-0.5f, 0.0f, -0.5f, 1, 9, 1),
+                PartPose.offsetAndRotation(0.0f, -10.0f, 0.0f, 1.902409f, 1.570796f, 0.0f));
 
         root.addOrReplaceChild("shape112",
                 CubeListBuilder.create().texOffs(0, 0)
-                        .addBox(-0.5F, 0F, -0.5F, 1, 9, 1),
-                PartPose.offsetAndRotation(0F, -10F, 0F, 1.902409F, -1.570796F, 0F));
+                        .addBox(-0.5f, 0.0f, -0.5f, 1, 9, 1),
+                PartPose.offsetAndRotation(0.0f, -10.0f, 0.0f, 1.902409f, -1.570796f, 0.0f));
 
         return LayerDefinition.create(mesh, 64, 32);
     }

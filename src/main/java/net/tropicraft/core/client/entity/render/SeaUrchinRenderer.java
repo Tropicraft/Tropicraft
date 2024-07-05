@@ -18,7 +18,7 @@ public class SeaUrchinRenderer extends MobRenderer<SeaUrchinEntity, SeaUrchinMod
     /**
      * Amount mature sea urchins are scaled down while rendering.
      */
-    public static final float ADULT_RENDER_SCALE = 1f;
+    public static final float ADULT_RENDER_SCALE = 1.0f;
     public static final ResourceLocation SEA_URCHIN_TEXTURE = TropicraftRenderUtils.bindTextureEntity("seaurchin");
 
     public SeaUrchinRenderer(EntityRendererProvider.Context context) {

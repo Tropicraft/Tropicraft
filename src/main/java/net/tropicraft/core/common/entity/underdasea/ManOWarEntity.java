@@ -47,7 +47,7 @@ public class ManOWarEntity extends WaterAnimal {
     public ManOWarEntity(EntityType<? extends ManOWarEntity> type, Level world) {
         super(type, world);
         random.setSeed(getId());
-        rotationVelocity = 1.0F / (random.nextFloat() + 1.0F) * 0.2F;
+        rotationVelocity = 1.0f / (random.nextFloat() + 1.0f) * 0.2f;
         xpReward = 7;
     }
 
@@ -65,7 +65,7 @@ public class ManOWarEntity extends WaterAnimal {
 
     @Override
     protected float getSoundVolume() {
-        return 0.4F;
+        return 0.4f;
     }
 
     @Override
@@ -81,13 +81,13 @@ public class ManOWarEntity extends WaterAnimal {
         prevSquidRotation = squidRotation;
         lastTentacleAngle = tentacleAngle;
         squidRotation += rotationVelocity;
-        if ((double) squidRotation > 6.283185307179586D) {
+        if ((double) squidRotation > 6.283185307179586) {
             if (level().isClientSide) {
-                squidRotation = 6.2831855F;
+                squidRotation = 6.2831855f;
             } else {
-                squidRotation = (float) ((double) squidRotation - 6.283185307179586D);
+                squidRotation = (float) ((double) squidRotation - 6.283185307179586);
                 if (random.nextInt(10) == 0) {
-                    rotationVelocity = 1.0F / (random.nextFloat() + 1.0F) * 0.2F;
+                    rotationVelocity = 1.0f / (random.nextFloat() + 1.0f) * 0.2f;
                 }
 
                 level().broadcastEntityEvent(this, (byte) 19);
@@ -100,7 +100,7 @@ public class ManOWarEntity extends WaterAnimal {
 
         if (isInWaterOrBubble()) {
             if (random.nextInt(5) == 0 && attackTimer <= 0) {
-                List<LivingEntity> list = level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(2D, 4D, 2D).move(0.0D, -2.0D, 0.0D), EntitySelector.NO_CREATIVE_OR_SPECTATOR);
+                List<LivingEntity> list = level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(2D, 4D, 2D).move(0.0, -2.0, 0.0), EntitySelector.NO_CREATIVE_OR_SPECTATOR);
                 for (LivingEntity ent : list) {
                     if (ent.getType() != TropicraftEntities.MAN_O_WAR.get()) {
                         if (ent.isInWater()) {
@@ -111,19 +111,19 @@ public class ManOWarEntity extends WaterAnimal {
                 }
             }
 
-            if (squidRotation < 3.1415927F) {
-                float lvt_1_1_ = squidRotation / 3.1415927F;
-                tentacleAngle = Mth.sin(lvt_1_1_ * lvt_1_1_ * 3.1415927F) * 3.1415927F * 0.25F;
-                if ((double) lvt_1_1_ > 0.75D) {
-                    randomMotionSpeed = 1.0F;
-                    rotateSpeed = 1.0F;
+            if (squidRotation < 3.1415927f) {
+                float lvt_1_1_ = squidRotation / 3.1415927f;
+                tentacleAngle = Mth.sin(lvt_1_1_ * lvt_1_1_ * 3.1415927f) * 3.1415927f * 0.25f;
+                if ((double) lvt_1_1_ > 0.75) {
+                    randomMotionSpeed = 1.0f;
+                    rotateSpeed = 1.0f;
                 } else {
-                    rotateSpeed *= 0.8F;
+                    rotateSpeed *= 0.8f;
                 }
             } else {
-                tentacleAngle = 0.0F;
-                randomMotionSpeed *= 0.9F;
-                rotateSpeed *= 0.99F;
+                tentacleAngle = 0.0f;
+                randomMotionSpeed *= 0.9f;
+                rotateSpeed *= 0.99f;
             }
 
             if (!level().isClientSide) {
@@ -132,24 +132,24 @@ public class ManOWarEntity extends WaterAnimal {
 
             Vec3 motion = getDeltaMovement();
             double horizontalDistance = motion.horizontalDistance();
-            yBodyRot += (-((float) Mth.atan2(motion.x, motion.z)) * 57.295776F - yBodyRot) * 0.1F;
+            yBodyRot += (-((float) Mth.atan2(motion.x, motion.z)) * 57.295776f - yBodyRot) * 0.1f;
             setYRot(yBodyRot);
-            squidYaw = (float) ((double) squidYaw + 3.141592653589793D * (double) rotateSpeed * 1.5D);
-            squidPitch += (-((float) Mth.atan2(horizontalDistance, motion.y)) * 57.295776F - squidPitch) * 0.1F;
+            squidYaw = (float) ((double) squidYaw + 3.141592653589793 * (double) rotateSpeed * 1.5);
+            squidPitch += (-((float) Mth.atan2(horizontalDistance, motion.y)) * 57.295776f - squidPitch) * 0.1f;
         } else {
-            tentacleAngle = Mth.abs(Mth.sin(squidRotation)) * 3.1415927F * 0.25F;
+            tentacleAngle = Mth.abs(Mth.sin(squidRotation)) * 3.1415927f * 0.25f;
             if (!level().isClientSide) {
                 double lvt_1_3_ = getDeltaMovement().y;
                 if (hasEffect(MobEffects.LEVITATION)) {
-                    lvt_1_3_ = 0.05D * (double) (getEffect(MobEffects.LEVITATION).getAmplifier() + 1);
+                    lvt_1_3_ = 0.05 * (double) (getEffect(MobEffects.LEVITATION).getAmplifier() + 1);
                 } else if (!isNoGravity()) {
-                    lvt_1_3_ -= 0.08D;
+                    lvt_1_3_ -= 0.08;
                 }
 
-                setDeltaMovement(0.0D, lvt_1_3_ * 0.9800000190734863D, 0.0D);
+                setDeltaMovement(0.0, lvt_1_3_ * 0.9800000190734863, 0.0);
             }
 
-            squidPitch = (float) ((double) squidPitch + (double) (-90.0F - squidPitch) * 0.02D);
+            squidPitch = (float) ((double) squidPitch + (double) (-90.0f - squidPitch) * 0.02);
         }
     }
 
@@ -189,7 +189,7 @@ public class ManOWarEntity extends WaterAnimal {
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
         if (id == 19) {
-            squidRotation = 0.0F;
+            squidRotation = 0.0f;
         } else {
             super.handleEntityEvent(id);
         }
@@ -202,7 +202,7 @@ public class ManOWarEntity extends WaterAnimal {
     }
 
     public boolean hasMovementVector() {
-        return randomMotionVecX != 0.0F || randomMotionVecY != 0.0F || randomMotionVecZ != 0.0F;
+        return randomMotionVecX != 0.0f || randomMotionVecY != 0.0f || randomMotionVecZ != 0.0f;
     }
 
     class FleeGoal extends Goal {
@@ -215,7 +215,7 @@ public class ManOWarEntity extends WaterAnimal {
         public boolean canUse() {
             LivingEntity lvt_1_1_ = getLastHurtByMob();
             if (isInWater() && lvt_1_1_ != null) {
-                return distanceToSqr(lvt_1_1_) < 100.0D;
+                return distanceToSqr(lvt_1_1_) < 100.0;
             } else {
                 return false;
             }
@@ -236,27 +236,27 @@ public class ManOWarEntity extends WaterAnimal {
                 FluidState fluid = level().getFluidState(BlockPos.containing(getX() + lvt_2_1_.x, getY() + lvt_2_1_.y, getZ() + lvt_2_1_.z));
                 if (fluid.is(FluidTags.WATER) || block.isAir()) {
                     double lvt_5_1_ = lvt_2_1_.length();
-                    if (lvt_5_1_ > 0.0D) {
+                    if (lvt_5_1_ > 0.0) {
                         lvt_2_1_.normalize();
-                        float lvt_7_1_ = 3.0F;
-                        if (lvt_5_1_ > 5.0D) {
-                            lvt_7_1_ = (float) ((double) lvt_7_1_ - (lvt_5_1_ - 5.0D) / 5.0D);
+                        float lvt_7_1_ = 3.0f;
+                        if (lvt_5_1_ > 5.0) {
+                            lvt_7_1_ = (float) ((double) lvt_7_1_ - (lvt_5_1_ - 5.0) / 5.0);
                         }
 
-                        if (lvt_7_1_ > 0.0F) {
+                        if (lvt_7_1_ > 0.0f) {
                             lvt_2_1_ = lvt_2_1_.scale(lvt_7_1_);
                         }
                     }
 
                     if (block.isAir()) {
-                        lvt_2_1_ = lvt_2_1_.subtract(0.0D, lvt_2_1_.y, 0.0D);
+                        lvt_2_1_ = lvt_2_1_.subtract(0.0, lvt_2_1_.y, 0.0);
                     }
 
-                    setMovementVector((float) lvt_2_1_.x / 20.0F, (float) lvt_2_1_.y / 20.0F, (float) lvt_2_1_.z / 20.0F);
+                    setMovementVector((float) lvt_2_1_.x / 20.0f, (float) lvt_2_1_.y / 20.0f, (float) lvt_2_1_.z / 20.0f);
                 }
 
                 if (tickCounter % 10 == 5) {
-                    level().addParticle(ParticleTypes.BUBBLE, getX(), getY(), getZ(), 0.0D, 0.0D, 0.0D);
+                    level().addParticle(ParticleTypes.BUBBLE, getX(), getY(), getZ(), 0.0, 0.0, 0.0);
                 }
             }
         }
@@ -278,12 +278,12 @@ public class ManOWarEntity extends WaterAnimal {
         public void tick() {
             int lvt_1_1_ = manOWarEntity.getNoActionTime();
             if (lvt_1_1_ > 100) {
-                manOWarEntity.setMovementVector(0.0F, 0.0F, 0.0F);
+                manOWarEntity.setMovementVector(0.0f, 0.0f, 0.0f);
             } else if (manOWarEntity.getRandom().nextInt(50) == 0 || !manOWarEntity.isInWater() || !manOWarEntity.hasMovementVector()) {
-                float lvt_2_1_ = manOWarEntity.getRandom().nextFloat() * 6.2831855F;
-                float lvt_3_1_ = Mth.cos(lvt_2_1_) * 0.2F;
-                float lvt_4_1_ = -0.1F + manOWarEntity.getRandom().nextFloat() * 0.2F;
-                float lvt_5_1_ = Mth.sin(lvt_2_1_) * 0.2F;
+                float lvt_2_1_ = manOWarEntity.getRandom().nextFloat() * 6.2831855f;
+                float lvt_3_1_ = Mth.cos(lvt_2_1_) * 0.2f;
+                float lvt_4_1_ = -0.1f + manOWarEntity.getRandom().nextFloat() * 0.2f;
+                float lvt_5_1_ = Mth.sin(lvt_2_1_) * 0.2f;
                 manOWarEntity.setMovementVector(lvt_3_1_, lvt_4_1_, lvt_5_1_);
             }
         }

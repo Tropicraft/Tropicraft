@@ -40,10 +40,10 @@ public class FurnitureItem<T extends FurnitureEntity> extends Item {
         if (rayTraceResult.getType() == net.minecraft.world.phys.HitResult.Type.MISS) {
             return new InteractionResultHolder<>(InteractionResult.PASS, heldItem);
         } else {
-            Vec3 lookvec = placer.getViewVector(1.0F);
-            List<Entity> nearbyEntities = world.getEntities(placer, placer.getBoundingBox().expandTowards(lookvec.scale(5.0D)).inflate(1.0D), EntitySelector.NO_SPECTATORS);
+            Vec3 lookvec = placer.getViewVector(1.0f);
+            List<Entity> nearbyEntities = world.getEntities(placer, placer.getBoundingBox().expandTowards(lookvec.scale(5.0)).inflate(1.0), EntitySelector.NO_SPECTATORS);
             if (!nearbyEntities.isEmpty()) {
-                Vec3 eyePosition = placer.getEyePosition(1.0F);
+                Vec3 eyePosition = placer.getEyePosition(1.0f);
                 for (Entity nearbyEnt : nearbyEntities) {
                     AABB nearbyBB = nearbyEnt.getBoundingBox().inflate(nearbyEnt.getPickRadius());
                     if (nearbyBB.contains(eyePosition)) {
@@ -61,7 +61,7 @@ public class FurnitureItem<T extends FurnitureEntity> extends Item {
                 entity.setRotation(placer.getYRot() + 180);
                 entity.setColor(color);
 
-                if (!world.noCollision(entity, entity.getBoundingBox().inflate(-0.1D))) {
+                if (!world.noCollision(entity, entity.getBoundingBox().inflate(-0.1))) {
                     return new InteractionResultHolder<>(InteractionResult.FAIL, heldItem);
                 } else {
                     if (!world.isClientSide) {

@@ -28,10 +28,10 @@ public class SpearRenderer<T extends SpearEntity> extends EntityRenderer<T> {
 
         poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot())));
         poseStack.mulPose(Axis.XP.rotationDegrees(-Mth.lerp(partialTicks, entity.xRotO, entity.getXRot())));
-        poseStack.mulPose(Axis.YP.rotationDegrees(-45.0F));
-        poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
+        poseStack.mulPose(Axis.YP.rotationDegrees(-45.0f));
+        poseStack.mulPose(Axis.XP.rotationDegrees(90.0f));
 
-        poseStack.scale(2.5F, 2.5F, 2.5F);
+        poseStack.scale(2.5f, 2.5f, 2.5f);
 
         BakedModel model = itemRenderer.getModel(entity.getPickupItemStackOrigin(), entity.level(), null, entity.getId());
         itemRenderer.render(entity.getPickupItemStackOrigin(), ItemDisplayContext.GROUND, false, poseStack, bufferSource, packedLight, OverlayTexture.NO_OVERLAY, model);

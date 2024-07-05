@@ -13,12 +13,12 @@ public class SpiderMonkeyRenderer extends MobRenderer<SpiderMonkeyEntity, Spider
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/spider_monkey.png");
 
     public SpiderMonkeyRenderer(EntityRendererProvider.Context context) {
-        super(context, new SpiderMonkeyModel<>(context.bakeLayer(TropicraftRenderLayers.SPIDER_MONKEY_LAYER)), 0.4F);
+        super(context, new SpiderMonkeyModel<>(context.bakeLayer(TropicraftRenderLayers.SPIDER_MONKEY_LAYER)), 0.4f);
     }
 
     @Override
     protected void scale(SpiderMonkeyEntity entity, PoseStack matrixStack, float partialTicks) {
-        matrixStack.scale(0.7F, 0.7F, 0.7F);
+        matrixStack.scale(0.7f, 0.7f, 0.7f);
     }
 
     @Override

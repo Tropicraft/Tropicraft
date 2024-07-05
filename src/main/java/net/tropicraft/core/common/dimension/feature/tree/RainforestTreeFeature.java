@@ -93,9 +93,9 @@ public abstract class RainforestTreeFeature extends Feature<NoneFeatureConfigura
         int[] ai3 = {0, 0, 0};
         int k = 0;
         for (int l = ai2[j] + byte3; k != l; k += byte3) {
-            ai3[j] = Mth.floor((double) (ai[j] + k) + 0.5D);
-            ai3[byte1] = Mth.floor((double) ai[byte1] + (double) k * d + 0.5D);
-            ai3[byte2] = Mth.floor((double) ai[byte2] + (double) k * d1 + 0.5D);
+            ai3[j] = Mth.floor((double) (ai[j] + k) + 0.5);
+            ai3[byte1] = Mth.floor((double) ai[byte1] + (double) k * d + 0.5);
+            ai3[byte2] = Mth.floor((double) ai[byte2] + (double) k * d1 + 0.5);
             BlockPos pos = new BlockPos(ai3[0], ai3[1], ai3[2]);
             setState(world, pos, state);
             places.add(new int[]{ai3[0], ai3[1], ai3[2]});

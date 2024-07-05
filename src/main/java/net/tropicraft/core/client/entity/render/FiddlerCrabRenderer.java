@@ -12,7 +12,7 @@ public class FiddlerCrabRenderer extends MobRenderer<FiddlerCrabEntity, FiddlerC
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/fiddler_crab.png");
 
     public FiddlerCrabRenderer(EntityRendererProvider.Context context) {
-        super(context, new FiddlerCrabModel<>(context.bakeLayer(TropicraftRenderLayers.FIDDLER_CRAB_LAYER)), 0.3F);
+        super(context, new FiddlerCrabModel<>(context.bakeLayer(TropicraftRenderLayers.FIDDLER_CRAB_LAYER)), 0.3f);
     }
 
     @Override

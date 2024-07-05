@@ -30,10 +30,10 @@ public final class PapayaBlock extends HorizontalDirectionalBlock implements Bon
     public static final MapCodec<PapayaBlock> CODEC = simpleCodec(PapayaBlock::new);
 
     public static final IntegerProperty AGE = BlockStateProperties.AGE_1;
-    protected static final VoxelShape EAST_AABB = Block.box(7.0D, 3.0D, 4.0D, 15.0D, 12.0D, 12.0D);
-    protected static final VoxelShape WEST_AABB = Block.box(1.0D, 3.0D, 4.0D, 9.0D, 12.0D, 12.0D);
-    protected static final VoxelShape NORTH_AABB = Block.box(4.0D, 3.0D, 1.0D, 12.0D, 12.0D, 9.0D);
-    protected static final VoxelShape SOUTH_AABB = Block.box(4.0D, 3.0D, 7.0D, 12.0D, 12.0D, 15.0D);
+    protected static final VoxelShape EAST_AABB = Block.box(7.0, 3.0, 4.0, 15.0, 12.0, 12.0);
+    protected static final VoxelShape WEST_AABB = Block.box(1.0, 3.0, 4.0, 9.0, 12.0, 12.0);
+    protected static final VoxelShape NORTH_AABB = Block.box(4.0, 3.0, 1.0, 12.0, 12.0, 9.0);
+    protected static final VoxelShape SOUTH_AABB = Block.box(4.0, 3.0, 7.0, 12.0, 12.0, 15.0);
 
     public PapayaBlock(Block.Properties properties) {
         super(properties);

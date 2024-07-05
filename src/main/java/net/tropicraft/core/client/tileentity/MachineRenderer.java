@@ -58,14 +58,14 @@ public abstract class MachineRenderer<T extends BlockEntity & IMachineBlock> imp
             renderIngredients(te, stack, buffer, combinedLightIn, combinedOverlayIn);
         }
 
-        //GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        //GlStateManager.color4f(1.0f, 1.0f, 1.0f, 1.0f);
         stack.popPose();
     }
 
     protected abstract Material getMaterial();
 
     protected void animationTransform(T te, PoseStack stack, float partialTicks) {
-        float angle = Mth.sin((float) (25f * 2f * Math.PI * te.getProgress(partialTicks))) * 15f;
+        float angle = Mth.sin((float) (25.0f * 2.0f * Math.PI * te.getProgress(partialTicks))) * 15.0f;
         stack.mulPose(Axis.YP.rotationDegrees(angle));
     }
 

@@ -268,36 +268,36 @@ public class SeaTurtleEntity extends Turtle {
         if (hasPassenger(passenger)) {
             if (passenger instanceof Player p) {
                 if (isInWater()) {
-                    if (p.zza > 0f) {
-                        setXRot(lerp(getXRot(), -(passenger.getXRot() * 0.5f), 6f));
-                        setYRot(lerp(getYRot(), -passenger.getYRot(), 6f));
+                    if (p.zza > 0.0f) {
+                        setXRot(lerp(getXRot(), -(passenger.getXRot() * 0.5f), 6.0f));
+                        setYRot(lerp(getYRot(), -passenger.getYRot(), 6.0f));
 //                        this.targetVector = null;
 //                        this.targetVectorHeading = null;
                         swimSpeedCurrent += 0.05f;
-                        if (swimSpeedCurrent > 4f) {
-                            swimSpeedCurrent = 4f;
+                        if (swimSpeedCurrent > 4.0f) {
+                            swimSpeedCurrent = 4.0f;
                         }
                     }
-                    if (p.zza < 0f) {
+                    if (p.zza < 0.0f) {
                         swimSpeedCurrent *= 0.89f;
                         if (swimSpeedCurrent < 0.1f) {
                             swimSpeedCurrent = 0.1f;
                         }
                     }
-                    if (p.zza == 0f) {
-                        if (swimSpeedCurrent > 1f) {
+                    if (p.zza == 0.0f) {
+                        if (swimSpeedCurrent > 1.0f) {
                             swimSpeedCurrent *= 0.94f;
-                            if (swimSpeedCurrent <= 1f) {
-                                swimSpeedCurrent = 1f;
+                            if (swimSpeedCurrent <= 1.0f) {
+                                swimSpeedCurrent = 1.0f;
                             }
                         }
-                        if (swimSpeedCurrent < 1f) {
+                        if (swimSpeedCurrent < 1.0f) {
                             swimSpeedCurrent *= 1.06f;
-                            if (swimSpeedCurrent >= 1f) {
-                                swimSpeedCurrent = 1f;
+                            if (swimSpeedCurrent >= 1.0f) {
+                                swimSpeedCurrent = 1.0f;
                             }
                         }
-                        //this.swimSpeedCurrent = 1f;
+                        //this.swimSpeedCurrent = 1.0f;
                     }
                     //    this.swimYaw = -passenger.rotationYaw;
                 }
@@ -347,9 +347,9 @@ public class SeaTurtleEntity extends Turtle {
             Vec3 travel = input.scale(getAttribute(Attributes.MOVEMENT_SPEED).getValue())
                     // This scale controls max speed. We reduce it significantly here so that the range of speed is higher
                     // This is compensated for by the high value passed to moveRelative
-                    .scale(0.025F);
+                    .scale(0.025f);
             // This is the effective speed modifier, controls the post-scaling of the movement vector
-            moveRelative(1F, travel);
+            moveRelative(1.0f, travel);
             move(MoverType.SELF, getDeltaMovement());
             // This value controls how much speed is "dampened" which effectively controls how much drift there is, and the max speed
             setDeltaMovement(getDeltaMovement().scale(input.z > 0 || !isInWater() ? 0.975 : 0.9));
@@ -379,7 +379,7 @@ public class SeaTurtleEntity extends Turtle {
          */
         @Override
         public boolean canUse() {
-            return turtle.hasEgg() && turtle.getHomePos().closerToCenterThan(turtle.position(), 9.0D) && super.canUse();
+            return turtle.hasEgg() && turtle.getHomePos().closerToCenterThan(turtle.position(), 9.0) && super.canUse();
         }
 
         /**
@@ -387,7 +387,7 @@ public class SeaTurtleEntity extends Turtle {
          */
         @Override
         public boolean canContinueToUse() {
-            return super.canContinueToUse() && turtle.hasEgg() && turtle.getHomePos().closerToCenterThan(turtle.position(), 9.0D);
+            return super.canContinueToUse() && turtle.hasEgg() && turtle.getHomePos().closerToCenterThan(turtle.position(), 9.0);
         }
 
         /**
@@ -402,7 +402,7 @@ public class SeaTurtleEntity extends Turtle {
                     turtle.setDigging(true);
                 } else if (turtle.digCounter > 200) {
                     Level world = turtle.level();
-                    world.playSound(null, blockpos, SoundEvents.TURTLE_LAY_EGG, SoundSource.BLOCKS, 0.3F, 0.9F + world.random.nextFloat() * 0.2F);
+                    world.playSound(null, blockpos, SoundEvents.TURTLE_LAY_EGG, SoundSource.BLOCKS, 0.3f, 0.9f + world.random.nextFloat() * 0.2f);
                     //world.setBlockState(this.destinationBlock.up(), Blocks.TURTLE_EGG.defaultBlockState().with(TurtleEggBlock.EGGS, Integer.valueOf(this.turtle.rand.nextInt(4) + 1)), 3);
                     SeaTurtleEggEntity egg = TropicraftEntities.SEA_TURTLE_EGG.get().create(world);
                     BlockPos spawnPos = blockPos.above();

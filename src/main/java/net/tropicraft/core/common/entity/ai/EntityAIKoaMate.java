@@ -49,7 +49,7 @@ public class EntityAIKoaMate extends Goal {
             return false;
         } else {
             if (canTownHandleMoreVillagers() && villagerObj.getIsWillingToMate(true)) {
-                List<EntityKoaBase> listEntities = world.getEntitiesOfClass(EntityKoaBase.class, villagerObj.getBoundingBox().inflate(8.0D, 3.0D, 8.0D));
+                List<EntityKoaBase> listEntities = world.getEntitiesOfClass(EntityKoaBase.class, villagerObj.getBoundingBox().inflate(8.0, 3.0, 8.0));
                 EntityKoaBase clEnt = null;
                 double clDist = 9999;
                 for (EntityKoaBase ent : listEntities) {
@@ -111,10 +111,10 @@ public class EntityAIKoaMate extends Goal {
     @Override
     public void tick() {
         --matingTimeout;
-        villagerObj.getLookControl().setLookAt(mate, 10.0F, 30.0F);
+        villagerObj.getLookControl().setLookAt(mate, 10.0f, 30.0f);
 
-        if (villagerObj.distanceToSqr(mate) > 2.25D) {
-            villagerObj.getNavigation().moveTo(mate, 0.75D);
+        if (villagerObj.distanceToSqr(mate) > 2.25) {
+            villagerObj.getNavigation().moveTo(mate, 0.75);
         } else if (matingTimeout == 0 && mate.isMating()) {
             mate.setMating(false);
             //System.out.println("mate complete");
@@ -179,7 +179,7 @@ public class EntityAIKoaMate extends Goal {
         //if (net.neoforged.common.MinecraftForge.EVENT_BUS.post(event) || event.getChild() == null) { return; }
         //entityvillager = event.getChild();
         entityvillager.setAge(-24000);
-        entityvillager.moveTo(villagerObj.getX(), villagerObj.getY(), villagerObj.getZ(), 0.0F, 0.0F);
+        entityvillager.moveTo(villagerObj.getX(), villagerObj.getY(), villagerObj.getZ(), 0.0f, 0.0f);
         if (entityvillager instanceof EntityKoaBase) {
             ((EntityKoaBase) entityvillager).setVillageAndDimID(villagerObj.getVillageID(), villagerObj.getVillageDimension());
             entityvillager.restrictTo(villagerObj.getRestrictCenter(), EntityKoaBase.MAX_HOME_DISTANCE);

@@ -41,10 +41,10 @@ public class VolcanicSandBlock extends BlockTropicraftSand {
 
                 // If entity isn't wearing anything on their feetsies
                 if (stack.isEmpty()) {
-                    living.hurt(entity.damageSources().lava(), 0.5F);
+                    living.hurt(entity.damageSources().lava(), 0.5f);
                 }
             } else {
-                entity.hurt(entity.damageSources().lava(), 0.5F);
+                entity.hurt(entity.damageSources().lava(), 0.5f);
             }
         }
     }

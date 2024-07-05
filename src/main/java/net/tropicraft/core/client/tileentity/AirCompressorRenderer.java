@@ -43,7 +43,7 @@ public class AirCompressorRenderer extends MachineRenderer<AirCompressorBlockEnt
         stack.scale(sc, sc, sc);
         stack.translate(0, -1.5f, 0);
         if (progress < Math.PI) {
-            float shake = Mth.sin(te.getBreatheProgress(partialTicks) * 10) * 8f;
+            float shake = Mth.sin(te.getBreatheProgress(partialTicks) * 10) * 8.0f;
             stack.mulPose(Axis.YP.rotationDegrees(shake));
         }
     }

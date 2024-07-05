@@ -19,7 +19,7 @@ public class AshenMaskRenderer extends EntityRenderer<AshenMaskEntity> {
 
     public AshenMaskRenderer(EntityRendererProvider.Context context) {
         super(context);
-        shadowRadius = 0.5F;
+        shadowRadius = 0.5f;
         shadowStrength = 0.5f;
         mask = new TropicraftSpecialRenderHelper();
     }

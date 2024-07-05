@@ -56,7 +56,7 @@ public final class MudBlock extends Block implements BonemealableBlock {
     @Deprecated
     @OnlyIn(Dist.CLIENT)
     public float getShadeBrightness(BlockState state, BlockGetter world, BlockPos pos) {
-        return 0.2F;
+        return 0.2f;
     }
 
     @Override

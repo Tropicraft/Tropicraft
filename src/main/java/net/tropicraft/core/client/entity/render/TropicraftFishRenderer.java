@@ -46,7 +46,7 @@ public class TropicraftFishRenderer<T extends AbstractFish> extends MobRenderer<
         stack.mulPose(Axis.YP.rotationDegrees(-(Mth.lerp(partialTicks, entity.yHeadRotO, entity.yHeadRot))));
         stack.mulPose(Axis.XP.rotationDegrees(180));
         stack.scale(0.3f, 0.3f, 0.5f);
-        stack.translate(.85F, -0.3F, 0.0F);
+        stack.translate(0.85f, -0.3f, 0.0f);
 
         int fishTex = 0;
         if (entity instanceof IAtlasFish) {
@@ -56,7 +56,7 @@ public class TropicraftFishRenderer<T extends AbstractFish> extends MobRenderer<
         renderHelper.renderFish(stack, buffer, fishTex, light, overlay);
 
         stack.translate(-1.7f, 0, 0);
-        stack.translate(.85f, 0, 0.025f);
+        stack.translate(0.85f, 0, 0.025f);
         stack.mulPose(Axis.YP.rotation(model.tail.yRot));
         stack.translate(-.85f, 0, -0.025f);
         renderHelper.renderFish(stack, buffer, fishTex + 1, light, overlay);
@@ -66,7 +66,7 @@ public class TropicraftFishRenderer<T extends AbstractFish> extends MobRenderer<
 
     @Override
     protected void scale(T entity, PoseStack stack, float partialTickTime) {
-        stack.scale(.75F, .20F, .20F);
+        stack.scale(0.75f, 0.20f, 0.20f);
     }
 
     @Override

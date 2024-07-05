@@ -33,7 +33,7 @@ import net.tropicraft.core.common.Easings;
 public final class BasiliskLizardEntity extends Animal {
     private static final EntityDataAccessor<Boolean> RUNNING = SynchedEntityData.defineId(BasiliskLizardEntity.class, EntityDataSerializers.BOOLEAN);
 
-    private static final float WATER_WALK_SPEED_BOOST = 1.6F;
+    private static final float WATER_WALK_SPEED_BOOST = 1.6f;
     private static final int WATER_WALK_TIME = 10;
 
     private static final int RUNNING_ANIMATION_LENGTH = 10;
@@ -46,14 +46,14 @@ public final class BasiliskLizardEntity extends Animal {
 
     public BasiliskLizardEntity(EntityType<? extends BasiliskLizardEntity> type, Level world) {
         super(type, world);
-        setPathfindingMalus(PathType.WATER, 0.0F);
-        setPathfindingMalus(PathType.WATER_BORDER, 0.0F);
+        setPathfindingMalus(PathType.WATER, 0.0f);
+        setPathfindingMalus(PathType.WATER_BORDER, 0.0f);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 6.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.25F);
+                .add(Attributes.MOVEMENT_SPEED, 0.25f);
     }
 
     @Override
@@ -65,7 +65,7 @@ public final class BasiliskLizardEntity extends Animal {
     protected void registerGoals() {
         goalSelector.addGoal(0, new PanicGoal(this, 1.25));
         goalSelector.addGoal(1, new RandomStrollGoal(this, 1.0));
-        goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 8.0f));
         goalSelector.addGoal(3, new RandomLookAroundGoal(this));
     }
 
@@ -126,7 +126,7 @@ public final class BasiliskLizardEntity extends Animal {
             level().addParticle(
                     random.nextBoolean() ? ParticleTypes.BUBBLE : ParticleTypes.SPLASH,
                     getX() + dx, surfaceY, getZ() + dz,
-                    motion.x, motion.y - random.nextDouble() * 0.2F, motion.z
+                    motion.x, motion.y - random.nextDouble() * 0.2f, motion.z
             );
         }
     }
@@ -134,17 +134,17 @@ public final class BasiliskLizardEntity extends Animal {
     @Override
     protected void doWaterSplashEffect() {
         // duplicating vanilla logic to add splash sounds but disable the particles
-        float volume = (float) (getDeltaMovement().multiply(0.5, 1.0, 0.5).length() * 0.2F);
-        volume = Math.min(volume, 1.0F);
+        float volume = (float) (getDeltaMovement().multiply(0.5, 1.0, 0.5).length() * 0.2f);
+        volume = Math.min(volume, 1.0f);
 
-        float pitch = 1.0F + (random.nextFloat() - random.nextFloat()) * 0.4F;
+        float pitch = 1.0f + (random.nextFloat() - random.nextFloat()) * 0.4f;
 
         SoundEvent sound = volume < 0.25 ? getSwimSplashSound() : getSwimHighSpeedSplashSound();
         playSound(sound, volume, pitch);
     }
 
     private void tickMovementTimer() {
-        if (zza != 0.0F) {
+        if (zza != 0.0f) {
             movingTimer = WATER_WALK_TIME;
         } else {
             if (movingTimer > 0) {
@@ -156,7 +156,7 @@ public final class BasiliskLizardEntity extends Animal {
     private void tickSwimming() {
         if (!onWaterSurface && isInWater() && getFluidHeight(FluidTags.WATER) > getFluidJumpThreshold()) {
             boolean shouldWaterWalk = shouldWaterWalk();
-            if (shouldWaterWalk || random.nextFloat() < 0.8F) {
+            if (shouldWaterWalk || random.nextFloat() < 0.8f) {
                 setDeltaMovement(getDeltaMovement().scale(0.5).add(0.0, 0.1, 0.0));
             }
         }

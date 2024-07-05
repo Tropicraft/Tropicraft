@@ -12,15 +12,15 @@ import net.tropicraft.core.common.entity.TropiBeeEntity;
 public class TropiBeeRenderer extends MobRenderer<TropiBeeEntity, TropiBeeModel> {
 
     public TropiBeeRenderer(EntityRendererProvider.Context context) {
-        super(context, new TropiBeeModel(context.bakeLayer(TropicraftRenderLayers.TROPI_BEE_LAYER)), 0.4F);
+        super(context, new TropiBeeModel(context.bakeLayer(TropicraftRenderLayers.TROPI_BEE_LAYER)), 0.4f);
 
         addLayer(new SunglassesLayer<>(this, entity -> true, (poseStack, entity, model) -> {
             model.body().translateAndRotate(poseStack);
             if (!entity.isBaby()) {
-                poseStack.translate(0.03125F, 1.350F, -.313F);
+                poseStack.translate(0.03125f, 1.350f, -0.313f);
             } else {
-                poseStack.translate(0.025F, 1.450F, -.163F);
-                poseStack.scale(0.55F, 0.55F, 0.55F);
+                poseStack.translate(0.025f, 1.450f, -0.163f);
+                poseStack.scale(0.55f, 0.55f, 0.55f);
             }
         }));
     }

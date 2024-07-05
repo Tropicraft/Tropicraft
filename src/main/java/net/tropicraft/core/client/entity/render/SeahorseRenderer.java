@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
 
 public class SeahorseRenderer extends MobRenderer<SeahorseEntity, SeahorseModel> {
     public SeahorseRenderer(EntityRendererProvider.Context context) {
-        super(context, new SeahorseModel(context.bakeLayer(TropicraftRenderLayers.SEAHORSE_LAYER)), 0.5F);
+        super(context, new SeahorseModel(context.bakeLayer(TropicraftRenderLayers.SEAHORSE_LAYER)), 0.5f);
         shadowStrength = 0.5f;
     }
 
@@ -22,7 +22,7 @@ public class SeahorseRenderer extends MobRenderer<SeahorseEntity, SeahorseModel>
     public void render(SeahorseEntity seahorse, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
         matrixStackIn.pushPose();
 
-        matrixStackIn.translate(0, -1f, 0);
+        matrixStackIn.translate(0, -1.0f, 0);
         matrixStackIn.scale(0.5f, 0.5f, 0.5f);
 
         super.render(seahorse, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);

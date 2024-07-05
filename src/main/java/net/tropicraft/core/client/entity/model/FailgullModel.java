@@ -32,76 +32,76 @@ public class FailgullModel extends HierarchicalModel<FailgullEntity> {
         root.addOrReplaceChild("baseFootLeft",
                 CubeListBuilder.create()
                         .texOffs(0, 0)
-                        .addBox(0F, 0F, 0F, 1, 0, 1),
-                PartPose.offset(-1F, 23F, 0F));
+                        .addBox(0.0f, 0.0f, 0.0f, 1, 0, 1),
+                PartPose.offset(-1.0f, 23.0f, 0.0f));
 
         root.addOrReplaceChild("baseFootRight",
                 CubeListBuilder.create()
                         .texOffs(0, 0)
-                        .addBox(0F, 0F, 0F, 1, 0, 1),
-                PartPose.offset(1F, 23F, 0F));
+                        .addBox(0.0f, 0.0f, 0.0f, 1, 0, 1),
+                PartPose.offset(1.0f, 23.0f, 0.0f));
 
         root.addOrReplaceChild("lowerLeg1",
                 CubeListBuilder.create()
                         .texOffs(0, 0)
-                        .addBox(0F, -1F, 0F, 1, 2, 0),
-                PartPose.offset(1F, 22F, 1F));
+                        .addBox(0.0f, -1.0f, 0.0f, 1, 2, 0),
+                PartPose.offset(1.0f, 22.0f, 1.0f));
 
         root.addOrReplaceChild("lowestBody",
                 CubeListBuilder.create()
                         .texOffs(0, 0)
-                        .addBox(0F, 0F, 0F, 3, 1, 4),
-                PartPose.offset(-1F, 20F, 0F));
+                        .addBox(0.0f, 0.0f, 0.0f, 3, 1, 4),
+                PartPose.offset(-1.0f, 20.0f, 0.0f));
 
         root.addOrReplaceChild("lowerLeg2",
                 CubeListBuilder.create()
                         .texOffs(0, 0)
-                        .addBox(0F, 0F, 0F, 1, 2, 0),
-                PartPose.offset(-1F, 21F, 1F));
+                        .addBox(0.0f, 0.0f, 0.0f, 1, 2, 0),
+                PartPose.offset(-1.0f, 21.0f, 1.0f));
 
         root.addOrReplaceChild("lowerBody1",
                 CubeListBuilder.create()
                         .texOffs(0, 0)
-                        .addBox(0F, 0F, 0F, 3, 1, 8),
-                PartPose.offset(-1F, 19F, -1F));
+                        .addBox(0.0f, 0.0f, 0.0f, 3, 1, 8),
+                PartPose.offset(-1.0f, 19.0f, -1.0f));
 
         root.addOrReplaceChild("lowerBody2",
                 CubeListBuilder.create()
                         .texOffs(0, 0)
-                        .addBox(0F, 0F, 0F, 3, 1, 7),
-                PartPose.offset(-1F, 18F, -2F));
+                        .addBox(0.0f, 0.0f, 0.0f, 3, 1, 7),
+                PartPose.offset(-1.0f, 18.0f, -2.0f));
 
         root.addOrReplaceChild("rightWing",
                 CubeListBuilder.create()
                         .texOffs(0, 0)
-                        .addBox(0F, 0F, 0F, 0, 2, 5),
-                PartPose.offsetAndRotation(-1F, 18F, 0F, -0.06981F, -0.06981F, 0));
+                        .addBox(0.0f, 0.0f, 0.0f, 0, 2, 5),
+                PartPose.offsetAndRotation(-1.0f, 18.0f, 0.0f, -0.06981f, -0.06981f, 0));
 
         root.addOrReplaceChild("leftWing",
                 CubeListBuilder.create()
                         .texOffs(0, 0)
-                        .addBox(0F, 0F, 0F, 0, 2, 5),
-                PartPose.offsetAndRotation(2F, 18F, 0F, -0.06981F, 0.06981F, 0));
+                        .addBox(0.0f, 0.0f, 0.0f, 0, 2, 5),
+                PartPose.offsetAndRotation(2.0f, 18.0f, 0.0f, -0.06981f, 0.06981f, 0));
 
         root.addOrReplaceChild("neck",
                 CubeListBuilder.create()
                         .texOffs(0, 0)
-                        .addBox(0F, 0F, 0F, 3, 2, 2),
-                PartPose.offset(-1F, 16F, -3F));
+                        .addBox(0.0f, 0.0f, 0.0f, 3, 2, 2),
+                PartPose.offset(-1.0f, 16.0f, -3.0f));
 
         root.addOrReplaceChild("beak",
                 CubeListBuilder.create()
                         .texOffs(14, 0)
-                        .addBox(0F, 0F, 0F, 1, 1, 2),
-                PartPose.offset(0F, 17F, -5F));
+                        .addBox(0.0f, 0.0f, 0.0f, 1, 1, 2),
+                PartPose.offset(0.0f, 17.0f, -5.0f));
 
         return LayerDefinition.create(mesh, 64, 32);
     }
 
     @Override
     public void setupAnim(FailgullEntity failgull, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        lowerLeg1.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-        lowerLeg2.xRot = Mth.cos(limbSwing * 0.6662F + 3.141593F) * 1.4F * limbSwingAmount;
+        lowerLeg1.xRot = Mth.cos(limbSwing * 0.6662f) * 1.4f * limbSwingAmount;
+        lowerLeg2.xRot = Mth.cos(limbSwing * 0.6662f + 3.141593f) * 1.4f * limbSwingAmount;
         rightWing.zRot = ageInTicks;
         leftWing.zRot = -ageInTicks;
     }

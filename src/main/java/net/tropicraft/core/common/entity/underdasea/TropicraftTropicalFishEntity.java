@@ -158,7 +158,7 @@ public class TropicraftTropicalFishEntity extends AbstractSchoolingFish implemen
                 }
                 saveToBucketTag(fishHolder);
                 player.swing(hand);
-                level().playSound(player, blockPosition(), SoundEvents.GENERIC_SWIM, SoundSource.PLAYERS, 0.25f, 1f + (random.nextFloat() * 0.4f));
+                level().playSound(player, blockPosition(), SoundEvents.GENERIC_SWIM, SoundSource.PLAYERS, 0.25f, 1.0f + (random.nextFloat() * 0.4f));
                 remove(RemovalReason.DISCARDED);
                 return InteractionResult.SUCCESS;
             }

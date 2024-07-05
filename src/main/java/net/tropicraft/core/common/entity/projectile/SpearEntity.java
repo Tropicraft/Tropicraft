@@ -69,22 +69,22 @@ public class SpearEntity extends AbstractArrow {
         if (i > 0 && (dealtDamage || isNoPhysics()) && entity != null) {
             if (!isAcceptibleReturnOwner()) {
                 if (!level().isClientSide && pickup == AbstractArrow.Pickup.ALLOWED) {
-                    spawnAtLocation(getPickupItem(), 0.1F);
+                    spawnAtLocation(getPickupItem(), 0.1f);
                 }
 
                 discard();
             } else {
                 setNoPhysics(true);
                 Vec3 vec3 = entity.getEyePosition().subtract(position());
-                setPosRaw(getX(), getY() + vec3.y * 0.015D * (double) i, getZ());
+                setPosRaw(getX(), getY() + vec3.y * 0.015 * (double) i, getZ());
                 if (level().isClientSide) {
                     yOld = getY();
                 }
 
-                double d0 = 0.05D * (double) i;
-                setDeltaMovement(getDeltaMovement().scale(0.95D).add(vec3.normalize().scale(d0)));
+                double d0 = 0.05 * (double) i;
+                setDeltaMovement(getDeltaMovement().scale(0.95).add(vec3.normalize().scale(d0)));
                 if (clientSideReturnSpearTickCount == 0) {
-                    playSound(SoundEvents.TRIDENT_RETURN, 10.0F, 1.0F);
+                    playSound(SoundEvents.TRIDENT_RETURN, 10.0f, 1.0f);
                 }
 
                 ++clientSideReturnSpearTickCount;
@@ -119,7 +119,7 @@ public class SpearEntity extends AbstractArrow {
     @Override
     protected void onHitEntity(EntityHitResult pResult) {
         Entity entity = pResult.getEntity();
-        float f = 8.0F;
+        float f = 8.0f;
         Entity entity1 = getOwner();
         DamageSource damagesource = damageSources().trident(this, (Entity) (entity1 == null ? this : entity1));
         if (level() instanceof ServerLevel serverlevel) {
@@ -143,7 +143,7 @@ public class SpearEntity extends AbstractArrow {
         }
 
         setDeltaMovement(getDeltaMovement().multiply(-0.01, -0.1, -0.01));
-        playSound(SoundEvents.TRIDENT_HIT, 1.0F, 1.0F);
+        playSound(SoundEvents.TRIDENT_HIT, 1.0f, 1.0f);
     }
 
     @Override
@@ -220,7 +220,7 @@ public class SpearEntity extends AbstractArrow {
 
     @Override
     protected float getWaterInertia() {
-        return 0.99F;
+        return 0.99f;
     }
 
     @Override

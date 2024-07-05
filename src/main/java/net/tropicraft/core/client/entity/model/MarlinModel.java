@@ -47,95 +47,95 @@ public class MarlinModel extends HierarchicalModel<MarlinEntity> {
 
         root.addOrReplaceChild("body",
                 CubeListBuilder.create().texOffs(0, 22).mirror()
-                        .addBox(-5F, -3F, -2F, 7, 6, 4),
-                PartPose.offsetAndRotation(0F, 19F, 0F, 0F, -1.570796F, 0F));
+                        .addBox(-5.0f, -3.0f, -2.0f, 7, 6, 4),
+                PartPose.offsetAndRotation(0.0f, 19.0f, 0.0f, 0.0f, -1.570796f, 0.0f));
 
         root.addOrReplaceChild("dorsalFin1",
                 CubeListBuilder.create().texOffs(24, 20).mirror()
-                        .addBox(-0.5F, -0.5F, -0.5F, 1, 2, 10),
-                PartPose.offset(0F, 15.5F, -5F));
+                        .addBox(-0.5f, -0.5f, -0.5f, 1, 2, 10),
+                PartPose.offset(0.0f, 15.5f, -5.0f));
 
         root.addOrReplaceChild("leftFin",
                 CubeListBuilder.create().texOffs(12, 10).mirror()
-                        .addBox(0F, -0.5F, -2F, 4, 1, 2),
-                PartPose.offset(2F, 21F, -3F));
+                        .addBox(0.0f, -0.5f, -2.0f, 4, 1, 2),
+                PartPose.offset(2.0f, 21.0f, -3.0f));
 
         root.addOrReplaceChild("rightFin",
                 CubeListBuilder.create().texOffs(12, 7).mirror()
-                        .addBox(-4F, -0.5F, -2F, 4, 1, 2),
-                PartPose.offset(-2F, 21F, -3F));
+                        .addBox(-4.0f, -0.5f, -2.0f, 4, 1, 2),
+                PartPose.offset(-2.0f, 21.0f, -3.0f));
 
         root.addOrReplaceChild("bottomFin",
                 CubeListBuilder.create().texOffs(52, 0).mirror()
-                        .addBox(-0.5F, 2F, -2.5F, 1, 3, 2),
-                PartPose.offsetAndRotation(0F, 19F, 0F, 0.6981317F, 0F, 0F));
+                        .addBox(-0.5f, 2.0f, -2.5f, 1, 3, 2),
+                PartPose.offsetAndRotation(0.0f, 19.0f, 0.0f, 0.6981317f, 0.0f, 0.0f));
 
         PartDefinition head = root.addOrReplaceChild("head",
                 CubeListBuilder.create().mirror()
                         .texOffs(46, 24)
-                        .addBox(-1.5F, -3F, -3F, 3, 5, 3)
+                        .addBox(-1.5f, -3.0f, -3.0f, 3, 5, 3)
                         .texOffs(28, 0)
-                        .addBox(-1F, -1.5F, -4F, 2, 3, 1)
+                        .addBox(-1.0f, -1.5f, -4.0f, 2, 3, 1)
                         .texOffs(22, 0)
-                        .addBox(-0.5F, -0.5F, -6F, 1, 2, 2)
+                        .addBox(-0.5f, -0.5f, -6.0f, 1, 2, 2)
                         .texOffs(23, 24)
-                        .addBox(-0.5F, -6F, -2.5F, 1, 3, 2),
-                PartPose.offset(0F, 20F, -5F));
+                        .addBox(-0.5f, -6.0f, -2.5f, 1, 3, 2),
+                PartPose.offset(0.0f, 20.0f, -5.0f));
 
         head.addOrReplaceChild("sword",
                 CubeListBuilder.create().texOffs(0, 0).mirror()
-                        .addBox(4F, -1.5F, -0.5F, 10, 1, 1),
-                PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 1.5707F, 0F));
+                        .addBox(4.0f, -1.5f, -0.5f, 10, 1, 1),
+                PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, 0.0f, 1.5707f, 0.0f));
 
         PartDefinition tail1 = root.addOrReplaceChild("tail1",
                 CubeListBuilder.create().texOffs(0, 13).mirror()
-                        .addBox(-1.5F, -2F, 0F, 3, 5, 4),
-                PartPose.offset(0F, 19F, 2F));
+                        .addBox(-1.5f, -2.0f, 0.0f, 3, 5, 4),
+                PartPose.offset(0.0f, 19.0f, 2.0f));
 
         PartDefinition tail2 = tail1.addOrReplaceChild("tail2",
                 CubeListBuilder.create().texOffs(0, 5).mirror()
-                        .addBox(-1F, -1.5F, 0F, 2, 4, 4),
-                PartPose.offset(0F, 0F, 4F));
+                        .addBox(-1.0f, -1.5f, 0.0f, 2, 4, 4),
+                PartPose.offset(0.0f, 0.0f, 4.0f));
 
         PartDefinition tail3 = tail2.addOrReplaceChild("tail3",
                 CubeListBuilder.create().texOffs(46, 0).mirror()
-                        .addBox(-0.5F, -1.5F, 0F, 1, 3, 2),
-                PartPose.offset(0F, 1F, 4F));
+                        .addBox(-0.5f, -1.5f, 0.0f, 1, 3, 2),
+                PartPose.offset(0.0f, 1.0f, 4.0f));
 
         tail3.addOrReplaceChild("tailEndB",
                 CubeListBuilder.create().texOffs(40, 0).mirror()
-                        .addBox(-0.5F, 1F, -1F, 1, 5, 2),
-                PartPose.offsetAndRotation(0F, 0F, 0F, 0.593411F, 0F, 0F));
+                        .addBox(-0.5f, 1.0f, -1.0f, 1, 5, 2),
+                PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, 0.593411f, 0.0f, 0.0f));
 
         tail3.addOrReplaceChild("tailEndT",
                 CubeListBuilder.create().texOffs(34, 0).mirror()
-                        .addBox(-0.5F, 1F, -1F, 1, 5, 2),
-                PartPose.offsetAndRotation(0F, 0F, 0F, 2.548179F, 0F, 0F));
+                        .addBox(-0.5f, 1.0f, -1.0f, 1, 5, 2),
+                PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, 2.548179f, 0.0f, 0.0f));
 
         return LayerDefinition.create(mesh, 64, 32);
     }
 
     @Override
     public void setupAnim(MarlinEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        float yAngleRot = Mth.sin(ageInTicks * .25F);
-        float zWaveFloat = yAngleRot * .165F;
+        float yAngleRot = Mth.sin(ageInTicks * 0.25f);
+        float zWaveFloat = yAngleRot * 0.165f;
         if (!entity.isInWater()) {
-            float yWaveRot = Mth.sin(ageInTicks * .55F) * .260F;
+            float yWaveRot = Mth.sin(ageInTicks * 0.55f) * 0.260f;
             head.yRot = yWaveRot;
             tail1.yRot = yWaveRot;
             tail3.yRot = yWaveRot;
-            leftFin.zRot = zWaveFloat + 0.523598F;
-            rightFin.zRot = -yAngleRot * .165F - 0.523598F;
-            leftFin.yRot = -1.5F;
-            rightFin.yRot = 1.5F - zWaveFloat - 0.523598F;
+            leftFin.zRot = zWaveFloat + 0.523598f;
+            rightFin.zRot = -yAngleRot * 0.165f - 0.523598f;
+            leftFin.yRot = -1.5f;
+            rightFin.yRot = 1.5f - zWaveFloat - 0.523598f;
         } else {
-            head.yRot = yAngleRot * .135F;
-            tail1.yRot = Mth.sin(ageInTicks * .35F) * .150F;
-            tail3.yRot = Mth.sin(ageInTicks * .45F) * .160F;
-            leftFin.zRot = zWaveFloat + 0.523598F;
-            rightFin.zRot = -yAngleRot * .165F - 0.523598F;
-            leftFin.yRot = -0.392699F;
-            rightFin.yRot = 0.392699F;
+            head.yRot = yAngleRot * 0.135f;
+            tail1.yRot = Mth.sin(ageInTicks * 0.35f) * 0.15f;
+            tail3.yRot = Mth.sin(ageInTicks * 0.45f) * 0.16f;
+            leftFin.zRot = zWaveFloat + 0.523598f;
+            rightFin.zRot = -yAngleRot * 0.165f - 0.523598f;
+            leftFin.yRot = -0.392699f;
+            rightFin.yRot = 0.392699f;
         }
     }
 

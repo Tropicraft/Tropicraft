@@ -13,7 +13,7 @@ import net.tropicraft.core.common.entity.SeaTurtleEntity;
 public class SeaTurtleRenderer extends MobRenderer<SeaTurtleEntity, SeaTurtleModel> {
 
     public SeaTurtleRenderer(EntityRendererProvider.Context context) {
-        super(context, new SeaTurtleModel(context.bakeLayer(TropicraftRenderLayers.SEA_TURTLE_LAYER)), 0.7F);
+        super(context, new SeaTurtleModel(context.bakeLayer(TropicraftRenderLayers.SEA_TURTLE_LAYER)), 0.7f);
         shadowRadius = 0.5f;
         shadowStrength = 0.5f;
     }
@@ -30,12 +30,12 @@ public class SeaTurtleRenderer extends MobRenderer<SeaTurtleEntity, SeaTurtleMod
             }
         } else {
             scale = 0.3f + existingTime;
-            if (scale > 1f) {
-                scale = 1f;
+            if (scale > 1.0f) {
+                scale = 1.0f;
             }
         }
         if (turtle.isMature()) {
-            scale = 1f;
+            scale = 1.0f;
         }
         stack.pushPose();
         stack.scale(scale, scale, scale);

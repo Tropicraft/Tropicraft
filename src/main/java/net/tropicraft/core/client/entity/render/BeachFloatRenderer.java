@@ -11,7 +11,7 @@ public class BeachFloatRenderer extends FurnitureRenderer<BeachFloatEntity> {
 
     public BeachFloatRenderer(EntityRendererProvider.Context context) {
         super(context, "beach_float", new BeachFloatModel(context.bakeLayer(TropicraftRenderLayers.BEACH_FLOAT_LAYER)));
-        shadowRadius = .5F;
+        shadowRadius = 0.5f;
     }
 
     @Override

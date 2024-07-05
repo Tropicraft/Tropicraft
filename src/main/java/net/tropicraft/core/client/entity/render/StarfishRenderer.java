@@ -26,7 +26,7 @@ public class StarfishRenderer extends EntityRenderer<StarfishEntity> {
     /**
      * Amount mature starfish are scaled down while rendering.
      */
-    public static final float ADULT_RENDER_SCALE = 1f;
+    public static final float ADULT_RENDER_SCALE = 1.0f;
 
     public StarfishRenderer(EntityRendererProvider.Context context) {
         super(context);
@@ -36,10 +36,10 @@ public class StarfishRenderer extends EntityRenderer<StarfishEntity> {
     public void render(StarfishEntity starfish, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int packedLightIn) {
         StarfishType type = starfish.getStarfishType();
 
-        float f = 0f;
-        float f1 = 1f;
-        float f2 = 0f;
-        float f3 = 1f;
+        float f = 0.0f;
+        float f1 = 1.0f;
+        float f2 = 0.0f;
+        float f3 = 1.0f;
         float f1shifted = 1;
         float f3shifted = 1;
 
@@ -58,7 +58,7 @@ public class StarfishRenderer extends EntityRenderer<StarfishEntity> {
             final float alpha = 1;
             float layerHeight = type.getLayerHeights()[i];
             TropicraftSpecialRenderHelper.popper(f1, f2, f, f3, f1shifted, f3shifted, layerHeight, stack, ivertexbuilder, packedLightIn, LivingEntityRenderer.getOverlayCoords(starfish, 0), red, green, blue, alpha);
-            stack.translate(0f, 0f, -layerHeight);
+            stack.translate(0.0f, 0.0f, -layerHeight);
         }
 
         stack.popPose();

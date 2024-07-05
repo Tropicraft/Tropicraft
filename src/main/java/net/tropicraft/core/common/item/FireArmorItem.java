@@ -51,7 +51,7 @@ public class FireArmorItem extends ArmorItem {
             if (player.isOnFire()) player.clearFire();
 
             // Repair in the sun?
-            int factor = (int) (40D / (0.001D + world.getLightLevelDependentMagicValue(player.blockPosition())));
+            int factor = (int) (40 / (0.001 + world.getLightLevelDependentMagicValue(player.blockPosition())));
             if (world.getGameTime() % (factor) == 0 && world.canSeeSkyFromBelowWater(new BlockPos(Mth.floor(player.getX()), Mth.floor(player.getY() + 1), Mth.floor(player.getZ())))) {
                 //repair!
                 stack.hurtAndBreak(-1, player, slot);
@@ -73,8 +73,8 @@ public class FireArmorItem extends ArmorItem {
         // Don't show fire particles underwater
         if (player.isInWater()) return;
 
-        float range = 0.2F;
-        float speed = 0.08F;
+        float range = 0.2f;
+        float speed = 0.08f;
 
         RandomSource rand = RandomSource.create();
 
@@ -83,7 +83,7 @@ public class FireArmorItem extends ArmorItem {
         Vec3 motion = player.getDeltaMovement();
         double plSpeed = Math.sqrt(motion.x * motion.x + motion.z * motion.z);
 
-        if (plSpeed < 0.1F) {
+        if (plSpeed < 0.1f) {
             extraRand = 7;
         }
 
@@ -115,13 +115,13 @@ public class FireArmorItem extends ArmorItem {
 
             // why do we do this on the client???????
             if (inLava) {
-                if (plSpeed < 0.4D) {
-                    player.setDeltaMovement(motion.multiply(1.5D, 1.5D, 1.5D));
+                if (plSpeed < 0.4) {
+                    player.setDeltaMovement(motion.multiply(1.5, 1.5, 1.5));
                 }
             }
 
             float look = player.level().getGameTime() * (10 + (onLava ? 10 : 0));
-            double dist = 1F;
+            double dist = 1.0f;
 
             double gatherX = player.getX();
             double gatherY = player.getBoundingBox().minY;
@@ -133,8 +133,8 @@ public class FireArmorItem extends ArmorItem {
             int numFeetParticles = particles == ParticleStatus.DECREASED ? 2 : 11;
 
             for (int i = 0; i < numFeetParticles + (onLava ? 5 : 0); i++) {
-                motionX = (-Math.sin((look) / 180.0F * 3.1415927F) * Math.cos(0 / 180.0F * 3.1415927F) * (speed + (0.1 * rand.nextDouble())));
-                motionZ = (Math.cos((look) / 180.0F * 3.1415927F) * Math.cos(0 / 180.0F * 3.1415927F) * (speed + (0.1 * rand.nextDouble())));
+                motionX = (-Math.sin((look) / 180.0f * 3.1415927f) * Math.cos(0 / 180.0f * 3.1415927f) * (speed + (0.1 * rand.nextDouble())));
+                motionZ = (Math.cos((look) / 180.0f * 3.1415927f) * Math.cos(0 / 180.0f * 3.1415927f) * (speed + (0.1 * rand.nextDouble())));
 
                 SimpleParticleType particle = ParticleTypes.FLAME;
                 if (rand.nextInt(22) == 0) particle = ParticleTypes.LARGE_SMOKE;
@@ -146,7 +146,7 @@ public class FireArmorItem extends ArmorItem {
                             gatherY + ((rand.nextFloat() * range) - (range / 2)),
                             gatherZ + ((rand.nextFloat() * range) - (range / 2)),
                             motion1.x + motionX,
-                            0.01F,
+                            0.01f,
                             motion1.z + motionZ);
 
                     player.level().addParticle(particle,
@@ -154,7 +154,7 @@ public class FireArmorItem extends ArmorItem {
                             (double) gatherY + ((rand.nextFloat() * range) - (range / 2)),
                             (double) gatherZ + ((rand.nextFloat() * range) - (range / 2)),
                             motion1.x - motionX,
-                            0.01F,
+                            0.01f,
                             motion1.z - motionZ);
                 }
             }
@@ -165,18 +165,18 @@ public class FireArmorItem extends ArmorItem {
             if (rand.nextInt(3 + extraRand) == 0) {
                 player.level().addParticle(particle,
                         player.getX() + ((rand.nextFloat() * range) - (range / 2)),
-                        player.getY() - 0.8F + ((rand.nextFloat() * range) - (range / 2)),
+                        player.getY() - 0.8f + ((rand.nextFloat() * range) - (range / 2)),
                         player.getZ() + ((rand.nextFloat() * range) - (range / 2)),
                         ((rand.nextFloat() * speed) - (speed / 2)),
-                        -0.05F,
+                        -0.05f,
                         ((rand.nextFloat() * speed) - (speed / 2)));
             }
         } else if (this == TropicraftItems.FIRE_CHESTPLATE.get()) {
-            float look = -180F;
-            double dist = 0.5F;
+            float look = -180.0f;
+            double dist = 0.5f;
 
-            double gatherX = player.getX() + (-Math.sin((player.getYRot() + look) / 180.0F * 3.1415927F) * Math.cos(player.getXRot() / 180.0F * 3.1415927F) * dist);
-            double gatherZ = player.getZ() + (Math.cos((player.getYRot() + look) / 180.0F * 3.1415927F) * Math.cos(player.getXRot() / 180.0F * 3.1415927F) * dist);
+            double gatherX = player.getX() + (-Math.sin((player.getYRot() + look) / 180.0f * 3.1415927f) * Math.cos(player.getXRot() / 180.0f * 3.1415927f) * dist);
+            double gatherZ = player.getZ() + (Math.cos((player.getYRot() + look) / 180.0f * 3.1415927f) * Math.cos(player.getXRot() / 180.0f * 3.1415927f) * dist);
 
             SimpleParticleType particle = ParticleTypes.FLAME;
             if (rand.nextInt(2) == 0) particle = ParticleTypes.LARGE_SMOKE;
@@ -184,20 +184,20 @@ public class FireArmorItem extends ArmorItem {
             if (rand.nextInt(1 + extraRand) == 0) {
                 player.level().addParticle(particle,
                         gatherX + ((rand.nextFloat() * range) - (range / 2)),
-                        player.getY() - 0.4F + ((rand.nextFloat() * range) - (range / 2)),
+                        player.getY() - 0.4f + ((rand.nextFloat() * range) - (range / 2)),
                         gatherZ + ((rand.nextFloat() * range) - (range / 2)),
                         ((rand.nextFloat() * speed) - (speed / 2)),
-                        -0.01F,
+                        -0.01f,
                         ((rand.nextFloat() * speed) - (speed / 2)));
             }
         } else if (this == TropicraftItems.FIRE_HELMET.get()) {
-            float look = -180F;
-            double dist = 0.5F;
+            float look = -180.0f;
+            double dist = 0.5f;
 
-            range = 2F;
+            range = 2.0f;
 
-            double gatherX = player.getX() + (-Math.sin((player.getYRot() + look) / 180.0F * 3.1415927F) * Math.cos(player.getXRot() / 180.0F * 3.1415927F) * dist);
-            double gatherZ = player.getZ() + (Math.cos((player.getYRot() + look) / 180.0F * 3.1415927F) * Math.cos(player.getXRot() / 180.0F * 3.1415927F) * dist);
+            double gatherX = player.getX() + (-Math.sin((player.getYRot() + look) / 180.0f * 3.1415927f) * Math.cos(player.getXRot() / 180.0f * 3.1415927f) * dist);
+            double gatherZ = player.getZ() + (Math.cos((player.getYRot() + look) / 180.0f * 3.1415927f) * Math.cos(player.getXRot() / 180.0f * 3.1415927f) * dist);
 
             SimpleParticleType particle = ParticleTypes.FLAME;
             if (rand.nextInt(2) == 0) particle = ParticleTypes.LARGE_SMOKE;
@@ -205,10 +205,10 @@ public class FireArmorItem extends ArmorItem {
             if (rand.nextInt(2) == 0) {
                 player.level().addParticle(particle,
                         gatherX + ((rand.nextFloat() * range) - (range / 2)),
-                        player.getY() + 0.7F,
+                        player.getY() + 0.7f,
                         gatherZ + ((rand.nextFloat() * range) - (range / 2)),
                         ((rand.nextFloat() * speed) - (speed / 2)),
-                        -0.01F,
+                        -0.01f,
                         ((rand.nextFloat() * speed) - (speed / 2)));
             }
         }

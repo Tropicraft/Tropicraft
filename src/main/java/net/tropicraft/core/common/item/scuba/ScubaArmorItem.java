@@ -94,7 +94,7 @@ public class ScubaArmorItem extends ArmorItem {
 
             @SuppressWarnings("unchecked")
             private <E extends LivingEntity> void prepareModel(HumanoidModel<E> armorModel, LivingEntity entity) {
-                armorModel.prepareMobModel((E) entity, 0.0F, 0.0F, 1.0F);
+                armorModel.prepareMobModel((E) entity, 0.0f, 0.0f, 1.0f);
                 armorModel.crouching = entity.isShiftKeyDown();
                 armorModel.young = entity.isBaby();
                 armorModel.rightArmPose = entity.getMainHandItem() != null ? HumanoidModel.ArmPose.BLOCK : HumanoidModel.ArmPose.EMPTY;

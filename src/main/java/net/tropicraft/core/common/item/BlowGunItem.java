@@ -64,7 +64,7 @@ public class BlowGunItem extends ProjectileWeaponItem {
         ItemStack heldStack = player.getItemInHand(hand);
         ItemStack ammo = getAmmo(player, heldStack);
         if (!ammo.isEmpty()) {
-            fireProjectile(world, player, hand, heldStack, ammo, 1.0F, player.getAbilities().instabuild, 10, 0);
+            fireProjectile(world, player, hand, heldStack, ammo, 1.0f, player.getAbilities().instabuild, 10, 0);
             return new InteractionResultHolder<>(InteractionResult.SUCCESS, heldStack);
         } else {
             return new InteractionResultHolder<>(InteractionResult.FAIL, heldStack);
@@ -96,7 +96,7 @@ public class BlowGunItem extends ProjectileWeaponItem {
                 arrowEntity.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
             }
 
-            Vector3f look = shooter.getViewVector(1.0F).toVector3f();
+            Vector3f look = shooter.getViewVector(1.0f).toVector3f();
             arrowEntity.shoot(look.x(), look.y(), look.z(), dmg, pitch);
 
             heldItem.hurtAndBreak(1, shooter, LivingEntity.getSlotForHand(hand));
@@ -107,7 +107,7 @@ public class BlowGunItem extends ProjectileWeaponItem {
             }
 
             world.addFreshEntity(arrowEntity);
-            world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), SoundEvents.CROSSBOW_SHOOT, SoundSource.PLAYERS, 1.0F, soundPitch);
+            world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), SoundEvents.CROSSBOW_SHOOT, SoundSource.PLAYERS, 1.0f, soundPitch);
         }
     }
 

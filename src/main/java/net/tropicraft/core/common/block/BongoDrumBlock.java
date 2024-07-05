@@ -127,14 +127,14 @@ public final class BongoDrumBlock extends Block {
     }
 
     public void playBongoSound(Level world, BlockPos pos, BlockState state) {
-        playBongoSound(world, pos, state, 1F);
+        playBongoSound(world, pos, state, 1.0f);
     }
 
     /**
      * Play the bongo sound in game. Sound played determined by the size
      */
     public void playBongoSound(Level world, BlockPos pos, BlockState state, float pitch) {
-        world.playSound(null, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, size.soundEvent.get(), SoundSource.BLOCKS, 1.0F, pitch);
+        world.playSound(null, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, size.soundEvent.get(), SoundSource.BLOCKS, 1.0f, pitch);
     }
 
     @Override
@@ -143,22 +143,22 @@ public final class BongoDrumBlock extends Block {
     }
 
     private float getAdjustedPitch(HitResult hitVec) {
-        if (hitVec == null || hitVec.getLocation() == null) return 1F;
+        if (hitVec == null || hitVec.getLocation() == null) return 1.0f;
         double distX = Math.abs(hitVec.getLocation().x - Math.floor(hitVec.getLocation().x) - 0.5);
         double distZ = Math.abs(hitVec.getLocation().z - Math.floor(hitVec.getLocation().z) - 0.5);
         double dist = (float) Math.sqrt(distX * distX + distZ * distZ);
-        double radiusMax = 1F;
+        double radiusMax = 1.0f;
         if (size == Size.SMALL) {
-            radiusMax = 8D / 16D / 2D;
+            radiusMax = 8D / 16 / 2D;
         } else if (size == Size.MEDIUM) {
-            radiusMax = 10D / 16D / 2D;
+            radiusMax = 10 / 16 / 2D;
         } else if (size == Size.LARGE) {
-            radiusMax = 12D / 16D / 2D;
+            radiusMax = 12 / 16 / 2D;
         }
         double adjPitch = dist / radiusMax;
         //adjust to auto tuned nths
-        /*float noteCount = 18F;
+        /*float noteCount = 18.0f;
         adjPitch = ((int)(adjPitch * noteCount)) / noteCount;*/
-        return 1F + (float) adjPitch;
+        return 1.0f + (float) adjPitch;
     }
 }

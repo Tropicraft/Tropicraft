@@ -72,7 +72,7 @@ public class EIHEntity extends TropicraftCreatureEntity {
     @Override
     public void registerGoals() {
         goalSelector.addGoal(0, new FloatGoal(this));
-        goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, false) {
+        goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0, false) {
             @Override
             public boolean canUse() {
                 if (!isAngry()) return false;
@@ -80,11 +80,11 @@ public class EIHEntity extends TropicraftCreatureEntity {
             }
         });
 
-        LeapAtTargetGoal leap = new LeapAtTargetGoal(this, 0.4F);
+        LeapAtTargetGoal leap = new LeapAtTargetGoal(this, 0.4f);
         //leap.setMutexFlags();
         goalSelector.addGoal(3, leap);
 
-        goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.8D) {
+        goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.8) {
             @Override
             public boolean canUse() {
                 if (!isAngry()) return false;
@@ -92,7 +92,7 @@ public class EIHEntity extends TropicraftCreatureEntity {
             }
         });
 
-        goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0f));
 //        goalSelector.addGoal(8, new LookRandomlyGoal(this));
         targetSelector.addGoal(1, new HurtByTargetGoal(this));
         targetSelector.addGoal(2, new TargetAggressorGoal(this));
@@ -146,7 +146,7 @@ public class EIHEntity extends TropicraftCreatureEntity {
                 if (attackTarget instanceof Player player) {
                     if (!player.getAbilities().instabuild && !player.isSpectator()) {
                         float distance = distanceTo(player);
-                        if (distance < 10F) {
+                        if (distance < 10.0f) {
                             setAwake(true);
                             ItemStack itemstack = player.getInventory().getSelected();
 
@@ -240,7 +240,7 @@ public class EIHEntity extends TropicraftCreatureEntity {
 
     @Override
     protected float getSoundVolume() {
-        return 0.4F;
+        return 0.4f;
     }
 
     @Override

@@ -36,10 +36,10 @@ public class EntityAIMeleeAndRangedAttack extends Goal {
     private final int maxRangedAttackTime;
     private final float shootCutoffRange;
     private final float shootCutoffRangeSqr;
-    private float meleeHitRange = 2F;
+    private float meleeHitRange = 2.0f;
 
     public EntityAIMeleeAndRangedAttack(AshenEntity attacker, double movespeed, int maxMeleeAttackTime, int maxRangedAttackTime, float maxAttackDistanceIn) {
-        this(attacker, movespeed, maxMeleeAttackTime, maxRangedAttackTime, maxAttackDistanceIn, 2F);
+        this(attacker, movespeed, maxMeleeAttackTime, maxRangedAttackTime, maxAttackDistanceIn, 2.0f);
     }
 
     public EntityAIMeleeAndRangedAttack(AshenEntity attacker, double movespeed, int maxMeleeAttackTime, int maxRangedAttackTime, float maxAttackDistanceIn, float meleeHitRange) {
@@ -118,7 +118,7 @@ public class EntityAIMeleeAndRangedAttack extends Goal {
             entityHost.getNavigation().moveTo(attackTarget, entityMoveSpeed);
         }
 
-        entityHost.getLookControl().setLookAt(attackTarget, 30.0F, 30.0F);
+        entityHost.getLookControl().setLookAt(attackTarget, 30.0f, 30.0f);
         float f;
 
         //System.out.println(rangedAttackTime);
@@ -127,12 +127,12 @@ public class EntityAIMeleeAndRangedAttack extends Goal {
             f = Mth.sqrt((float) d0) / shootCutoffRange;
             float f1 = f;
 
-            if (f < 0.1F) {
-                f1 = 0.1F;
+            if (f < 0.1f) {
+                f1 = 0.1f;
             }
 
-            if (f1 > 1.0F) {
-                f1 = 1.0F;
+            if (f1 > 1.0f) {
+                f1 = 1.0f;
             }
 
             if (d0 >= (double) shootCutoffRange * (double) shootCutoffRange) {

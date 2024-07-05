@@ -37,7 +37,7 @@ public class SharkRenderer extends MobRenderer<SharkEntity, SharkModel> {
 
     @Override
     protected void scale(SharkEntity shark, PoseStack stack, float partialTickTime) {
-        float scale = 1f;
+        float scale = 1.0f;
 
         if (shark.isBoss()) {
             scale = 1.5f;

@@ -71,20 +71,20 @@ public class FishingBobberEntity extends Entity implements IEntityWithComplexSpa
         this(p_i50220_2_, p_i50220_1_, p_i50220_3_, p_i50220_4_);
         float f = angler.getXRot();
         float f1 = angler.getYRot();
-        float f2 = Mth.cos(-f1 * ((float) Math.PI / 180F) - (float) Math.PI);
-        float f3 = Mth.sin(-f1 * ((float) Math.PI / 180F) - (float) Math.PI);
-        float f4 = -Mth.cos(-f * ((float) Math.PI / 180F));
-        float f5 = Mth.sin(-f * ((float) Math.PI / 180F));
-        double d0 = angler.getX() - (double) f3 * 0.3D;
+        float f2 = Mth.cos(-f1 * ((float) Math.PI / 180.0f) - (float) Math.PI);
+        float f3 = Mth.sin(-f1 * ((float) Math.PI / 180.0f) - (float) Math.PI);
+        float f4 = -Mth.cos(-f * ((float) Math.PI / 180.0f));
+        float f5 = Mth.sin(-f * ((float) Math.PI / 180.0f));
+        double d0 = angler.getX() - (double) f3 * 0.3;
         double d1 = angler.getY() + (double) angler.getEyeHeight();
-        double d2 = angler.getZ() - (double) f2 * 0.3D;
+        double d2 = angler.getZ() - (double) f2 * 0.3;
         moveTo(d0, d1, d2, f1, f);
-        Vec3 Vector3d = new Vec3(-f3, Mth.clamp(-(f5 / f4), -5.0F, 5.0F), -f2);
+        Vec3 Vector3d = new Vec3(-f3, Mth.clamp(-(f5 / f4), -5.0f, 5.0f), -f2);
         double d3 = Vector3d.length();
-        Vector3d = Vector3d.multiply(0.6D / d3 + 0.5D + random.nextGaussian() * 0.0045D, 0.6D / d3 + 0.5D + random.nextGaussian() * 0.0045D, 0.6D / d3 + 0.5D + random.nextGaussian() * 0.0045D);
+        Vector3d = Vector3d.multiply(0.6 / d3 + 0.5 + random.nextGaussian() * 0.0045, 0.6 / d3 + 0.5 + random.nextGaussian() * 0.0045, 0.6 / d3 + 0.5 + random.nextGaussian() * 0.0045);
         setDeltaMovement(Vector3d);
-        setYRot((float) (Mth.atan2(Vector3d.x, Vector3d.z) * (double) (180F / (float) Math.PI)));
-        setXRot((float) (Mth.atan2(Vector3d.y, Mth.sqrt((float) distanceToSqr(Vector3d))) * (double) (180F / (float) Math.PI)));
+        setYRot((float) (Mth.atan2(Vector3d.x, Vector3d.z) * (double) (180.0f / (float) Math.PI)));
+        setXRot((float) (Mth.atan2(Vector3d.y, Mth.sqrt((float) distanceToSqr(Vector3d))) * (double) (180.0f / (float) Math.PI)));
         yRotO = getYRot();
         xRotO = getXRot();
     }
@@ -111,8 +111,8 @@ public class FishingBobberEntity extends Entity implements IEntityWithComplexSpa
     @Override
     @OnlyIn(Dist.CLIENT)
     public boolean shouldRenderAtSqrDistance(double distance) {
-        double d0 = 64.0D;
-        return distance < 4096.0D;
+        double d0 = 64.0;
+        return distance < 4096.0;
     }
 
     /**
@@ -122,7 +122,7 @@ public class FishingBobberEntity extends Entity implements IEntityWithComplexSpa
      */
     @Override
     public AABB getBoundingBoxForCulling() {
-        return getBoundingBox().inflate(8, 5.0D, 8);
+        return getBoundingBox().inflate(8, 5.0, 8);
     }
 
     @Override
@@ -151,7 +151,7 @@ public class FishingBobberEntity extends Entity implements IEntityWithComplexSpa
                 }
             }
 
-            float f = 0.0F;
+            float f = 0.0f;
             BlockPos blockpos = blockPosition();
             FluidState ifluidstate = level().getFluidState(blockpos);
             if (ifluidstate.is(FluidTags.WATER)) {
@@ -165,8 +165,8 @@ public class FishingBobberEntity extends Entity implements IEntityWithComplexSpa
                     return;
                 }
 
-                if (f > 0.0F) {
-                    setDeltaMovement(getDeltaMovement().multiply(0.3D, 0.2D, 0.3D));
+                if (f > 0.0f) {
+                    setDeltaMovement(getDeltaMovement().multiply(0.3, 0.2, 0.3));
                     currentState = FishingBobberEntity.State.BOBBING;
                     return;
                 }
@@ -188,7 +188,7 @@ public class FishingBobberEntity extends Entity implements IEntityWithComplexSpa
                             caughtEntity = null;
                             currentState = FishingBobberEntity.State.FLYING;
                         } else {
-                            setPos(caughtEntity.getX(), caughtEntity.getBoundingBox().minY + (double) caughtEntity.getBbHeight() * 0.8D, caughtEntity.getZ());
+                            setPos(caughtEntity.getX(), caughtEntity.getBoundingBox().minY + (double) caughtEntity.getBbHeight() * 0.8, caughtEntity.getZ());
                             setPos(getX(), getY(), getZ());
                         }
                     }
@@ -199,25 +199,25 @@ public class FishingBobberEntity extends Entity implements IEntityWithComplexSpa
                 if (currentState == FishingBobberEntity.State.BOBBING) {
                     Vec3 Vector3d = getDeltaMovement();
                     double d0 = getY() + Vector3d.y - (double) blockpos.getY() - (double) f;
-                    if (Math.abs(d0) < 0.01D) {
-                        d0 += Math.signum(d0) * 0.1D;
+                    if (Math.abs(d0) < 0.01) {
+                        d0 += Math.signum(d0) * 0.1;
                     }
 
-                    setDeltaMovement(Vector3d.x * 0.9D, Vector3d.y - d0 * (double) random.nextFloat() * 0.2D, Vector3d.z * 0.9D);
-                    if (!level().isClientSide && f > 0.0F) {
+                    setDeltaMovement(Vector3d.x * 0.9, Vector3d.y - d0 * (double) random.nextFloat() * 0.2, Vector3d.z * 0.9);
+                    if (!level().isClientSide && f > 0.0f) {
                         catchingFish(blockpos);
                     }
                 }
             }
 
             if (!ifluidstate.is(FluidTags.WATER)) {
-                setDeltaMovement(getDeltaMovement().add(0.0D, -0.03D, 0.0D));
+                setDeltaMovement(getDeltaMovement().add(0.0, -0.03, 0.0));
             }
 
             move(MoverType.SELF, getDeltaMovement());
             updateRotation();
-            double d1 = 0.92D;
-            setDeltaMovement(getDeltaMovement().scale(0.92D));
+            double d1 = 0.92;
+            setDeltaMovement(getDeltaMovement().scale(0.92));
             setPos(getX(), getY(), getZ());
         }
     }
@@ -227,7 +227,7 @@ public class FishingBobberEntity extends Entity implements IEntityWithComplexSpa
         ItemStack itemstack1 = angler.getOffhandItem();
         boolean flag = itemstack.getItem() instanceof net.minecraft.world.item.FishingRodItem;
         boolean flag1 = itemstack1.getItem() instanceof net.minecraft.world.item.FishingRodItem;
-        if (!angler.isRemoved() && angler.isAlive() && (flag || flag1) && !(distanceToSqr(angler) > 1024.0D)) {
+        if (!angler.isRemoved() && angler.isAlive() && (flag || flag1) && !(distanceToSqr(angler) > 1024.0)) {
             return false;
         } else {
             remove(RemovalReason.DISCARDED);
@@ -238,25 +238,25 @@ public class FishingBobberEntity extends Entity implements IEntityWithComplexSpa
     private void updateRotation() {
         Vec3 Vector3d = getDeltaMovement();
         float f = Mth.sqrt((float) distanceToSqr(Vector3d));
-        setYRot((float) (Mth.atan2(Vector3d.x, Vector3d.z) * (double) (180F / (float) Math.PI)));
+        setYRot((float) (Mth.atan2(Vector3d.x, Vector3d.z) * (double) (180.0f / (float) Math.PI)));
 
-        for (setXRot((float) (Mth.atan2(Vector3d.y, f) * (double) (180F / (float) Math.PI))); getXRot() - xRotO < -180.0F; xRotO -= 360.0F) {
+        for (setXRot((float) (Mth.atan2(Vector3d.y, f) * (double) (180.0f / (float) Math.PI))); getXRot() - xRotO < -180.0f; xRotO -= 360.0f) {
         }
 
-        while (getXRot() - xRotO >= 180.0F) {
-            xRotO += 360.0F;
+        while (getXRot() - xRotO >= 180.0f) {
+            xRotO += 360.0f;
         }
 
-        while (getYRot() - yRotO < -180.0F) {
-            yRotO -= 360.0F;
+        while (getYRot() - yRotO < -180.0f) {
+            yRotO -= 360.0f;
         }
 
-        while (getYRot() - yRotO >= 180.0F) {
-            yRotO += 360.0F;
+        while (getYRot() - yRotO >= 180.0f) {
+            yRotO += 360.0f;
         }
 
-        setXRot(Mth.lerp(0.2F, xRotO, getXRot()));
-        setYRot(Mth.lerp(0.2F, yRotO, getYRot()));
+        setXRot(Mth.lerp(0.2f, xRotO, getXRot()));
+        setYRot(Mth.lerp(0.2f, yRotO, getYRot()));
     }
 
     private void checkCollision() {
@@ -281,11 +281,11 @@ public class FishingBobberEntity extends Entity implements IEntityWithComplexSpa
         ServerLevel level = (ServerLevel) level();
         int i = 1;
         BlockPos blockpos = p_190621_1_.above();
-        if (random.nextFloat() < 0.25F && level().isRainingAt(blockpos)) {
+        if (random.nextFloat() < 0.25f && level().isRainingAt(blockpos)) {
             ++i;
         }
 
-        if (random.nextFloat() < 0.5F && !level().canSeeSkyFromBelowWater(blockpos)) {
+        if (random.nextFloat() < 0.5f && !level().canSeeSkyFromBelowWater(blockpos)) {
             --i;
         }
 
@@ -295,61 +295,61 @@ public class FishingBobberEntity extends Entity implements IEntityWithComplexSpa
                 ticksCaughtDelay = 0;
                 ticksCatchableDelay = 0;
             } else {
-                setDeltaMovement(getDeltaMovement().add(0.0D, -0.2D * (double) random.nextFloat() * (double) random.nextFloat(), 0.0D));
+                setDeltaMovement(getDeltaMovement().add(0.0, -0.2 * (double) random.nextFloat() * (double) random.nextFloat(), 0.0));
             }
         } else if (ticksCatchableDelay > 0) {
             ticksCatchableDelay -= i;
             if (ticksCatchableDelay > 0) {
-                fishApproachAngle = (float) ((double) fishApproachAngle + random.nextGaussian() * 4.0D);
-                float f = fishApproachAngle * ((float) Math.PI / 180F);
+                fishApproachAngle = (float) ((double) fishApproachAngle + random.nextGaussian() * 4.0);
+                float f = fishApproachAngle * ((float) Math.PI / 180.0f);
                 float f1 = Mth.sin(f);
                 float f2 = Mth.cos(f);
-                double d0 = getX() + (double) (f1 * (float) ticksCatchableDelay * 0.1F);
-                double d1 = (float) Mth.floor(getBoundingBox().minY) + 1.0F;
-                double d2 = getX() + (double) (f2 * (float) ticksCatchableDelay * 0.1F);
+                double d0 = getX() + (double) (f1 * (float) ticksCatchableDelay * 0.1f);
+                double d1 = (float) Mth.floor(getBoundingBox().minY) + 1.0f;
+                double d2 = getX() + (double) (f2 * (float) ticksCatchableDelay * 0.1f);
                 if (level.getFluidState(BlockPos.containing(d0, d1 - 1, d2)).is(FluidTags.WATER)) {
-                    if (random.nextFloat() < 0.15F) {
-                        level.sendParticles(ParticleTypes.BUBBLE, d0, d1 - (double) 0.1F, d2, 1, f1, 0.1D, f2, 0.0D);
+                    if (random.nextFloat() < 0.15f) {
+                        level.sendParticles(ParticleTypes.BUBBLE, d0, d1 - (double) 0.1f, d2, 1, f1, 0.1, f2, 0.0);
                     }
 
-                    float f3 = f1 * 0.04F;
-                    float f4 = f2 * 0.04F;
-                    level.sendParticles(ParticleTypes.FISHING, d0, d1, d2, 0, f4, 0.01D, -f3, 1.0D);
-                    level.sendParticles(ParticleTypes.FISHING, d0, d1, d2, 0, -f4, 0.01D, f3, 1.0D);
+                    float f3 = f1 * 0.04f;
+                    float f4 = f2 * 0.04f;
+                    level.sendParticles(ParticleTypes.FISHING, d0, d1, d2, 0, f4, 0.01, -f3, 1.0);
+                    level.sendParticles(ParticleTypes.FISHING, d0, d1, d2, 0, -f4, 0.01, f3, 1.0);
                 }
             } else {
                 Vec3 Vector3d = getDeltaMovement();
-                setDeltaMovement(Vector3d.x, -0.4F * Mth.nextFloat(random, 0.6F, 1.0F), Vector3d.z);
-                playSound(SoundEvents.FISHING_BOBBER_SPLASH, 0.25F, 1.0F + (random.nextFloat() - random.nextFloat()) * 0.4F);
-                double d3 = getBoundingBox().minY + 0.5D;
-                level.sendParticles(ParticleTypes.BUBBLE, getX(), d3, getZ(), (int) (1.0F + getBbWidth() * 20.0F), getBbWidth(), 0.0D, getBbWidth(), 0.2F);
-                level.sendParticles(ParticleTypes.FISHING, getX(), d3, getZ(), (int) (1.0F + getBbWidth() * 20.0F), getBbWidth(), 0.0D, getBbWidth(), 0.2F);
+                setDeltaMovement(Vector3d.x, -0.4f * Mth.nextFloat(random, 0.6f, 1.0f), Vector3d.z);
+                playSound(SoundEvents.FISHING_BOBBER_SPLASH, 0.25f, 1.0f + (random.nextFloat() - random.nextFloat()) * 0.4f);
+                double d3 = getBoundingBox().minY + 0.5;
+                level.sendParticles(ParticleTypes.BUBBLE, getX(), d3, getZ(), (int) (1.0f + getBbWidth() * 20.0f), getBbWidth(), 0.0, getBbWidth(), 0.2f);
+                level.sendParticles(ParticleTypes.FISHING, getX(), d3, getZ(), (int) (1.0f + getBbWidth() * 20.0f), getBbWidth(), 0.0, getBbWidth(), 0.2f);
                 ticksCatchable = Mth.nextInt(random, 20, 40);
             }
         } else if (ticksCaughtDelay > 0) {
             ticksCaughtDelay -= i;
-            float f5 = 0.15F;
+            float f5 = 0.15f;
             if (ticksCaughtDelay < 20) {
-                f5 = (float) ((double) f5 + (double) (20 - ticksCaughtDelay) * 0.05D);
+                f5 = (float) ((double) f5 + (double) (20 - ticksCaughtDelay) * 0.05);
             } else if (ticksCaughtDelay < 40) {
-                f5 = (float) ((double) f5 + (double) (40 - ticksCaughtDelay) * 0.02D);
+                f5 = (float) ((double) f5 + (double) (40 - ticksCaughtDelay) * 0.02);
             } else if (ticksCaughtDelay < 60) {
-                f5 = (float) ((double) f5 + (double) (60 - ticksCaughtDelay) * 0.01D);
+                f5 = (float) ((double) f5 + (double) (60 - ticksCaughtDelay) * 0.01);
             }
 
             if (random.nextFloat() < f5) {
-                float f6 = Mth.nextFloat(random, 0.0F, 360.0F) * ((float) Math.PI / 180F);
-                float f7 = Mth.nextFloat(random, 25.0F, 60.0F);
-                double d4 = getX() + (double) (Mth.sin(f6) * f7 * 0.1F);
-                double d5 = (float) Mth.floor(getBoundingBox().minY) + 1.0F;
-                double d6 = getZ() + (double) (Mth.cos(f6) * f7 * 0.1F);
-                if (level.getFluidState(BlockPos.containing(d4, d5 - 1.0D, d6)).is(FluidTags.WATER)) {
-                    level.sendParticles(ParticleTypes.SPLASH, d4, d5, d6, 2 + random.nextInt(2), 0.1F, 0.0D, 0.1F, 0.0D);
+                float f6 = Mth.nextFloat(random, 0.0f, 360.0f) * ((float) Math.PI / 180.0f);
+                float f7 = Mth.nextFloat(random, 25.0f, 60.0f);
+                double d4 = getX() + (double) (Mth.sin(f6) * f7 * 0.1f);
+                double d5 = (float) Mth.floor(getBoundingBox().minY) + 1.0f;
+                double d6 = getZ() + (double) (Mth.cos(f6) * f7 * 0.1f);
+                if (level.getFluidState(BlockPos.containing(d4, d5 - 1.0, d6)).is(FluidTags.WATER)) {
+                    level.sendParticles(ParticleTypes.SPLASH, d4, d5, d6, 2 + random.nextInt(2), 0.1f, 0.0, 0.1f, 0.0);
                 }
             }
 
             if (ticksCaughtDelay <= 0) {
-                fishApproachAngle = Mth.nextFloat(random, 0.0F, 360.0F);
+                fishApproachAngle = Mth.nextFloat(random, 0.0f, 360.0f);
                 ticksCatchableDelay = Mth.nextInt(random, 20, 80);
             }
         } else {
@@ -381,7 +381,7 @@ public class FishingBobberEntity extends Entity implements IEntityWithComplexSpa
 
     protected void bringInHookedEntity() {
         if (angler != null) {
-            Vec3 Vector3d = (new Vec3(angler.getX() - getX(), angler.getY() - getY(), angler.getZ() - getZ())).scale(0.1D);
+            Vec3 Vector3d = (new Vec3(angler.getX() - getX(), angler.getY() - getY(), angler.getZ() - getZ())).scale(0.1);
             caughtEntity.setDeltaMovement(caughtEntity.getDeltaMovement().add(Vector3d));
         }
     }

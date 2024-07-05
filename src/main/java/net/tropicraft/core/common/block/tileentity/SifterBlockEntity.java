@@ -49,7 +49,7 @@ public class SifterBlockEntity extends BlockEntity {
     private final RandomSource rand;
 
     public double yaw;
-    public double yaw2 = 0.0D;
+    public double yaw2 = 0.0;
 
     @Nonnull
     private ItemStack siftItem = ItemStack.EMPTY;
@@ -77,8 +77,8 @@ public class SifterBlockEntity extends BlockEntity {
 
         // Rotation animation
         if (level.isClientSide) {
-            yaw2 = yaw % 360.0D;
-            yaw += 4.545454502105713D;
+            yaw2 = yaw % 360.0;
+            yaw += 4.545454502105713;
         }
 
         // Done sifting

@@ -70,11 +70,11 @@ public class TropiCreeperEntity extends PathfinderMob {
     protected void registerGoals() {
         goalSelector.addGoal(1, new FloatGoal(this));
         goalSelector.addGoal(2, new TropiCreeperSwellGoal(this));
-        goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Ocelot.class, 6.0F, 1.0D, 1.2D));
-        goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Cat.class, 6.0F, 1.0D, 1.2D));
-        goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));
-        goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.8D));
-        goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Ocelot.class, 6.0f, 1.0, 1.2));
+        goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Cat.class, 6.0f, 1.0, 1.2));
+        goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0, false));
+        goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.8));
+        goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0f));
         goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
         targetSelector.addGoal(2, new HurtByTargetGoal(this));
@@ -92,13 +92,13 @@ public class TropiCreeperEntity extends PathfinderMob {
      */
     @Override
     public int getMaxFallDistance() {
-        return getTarget() == null ? 3 : 3 + (int) (getHealth() - 1.0F);
+        return getTarget() == null ? 3 : 3 + (int) (getHealth() - 1.0f);
     }
 
     @Override
     public boolean causeFallDamage(float distance, float pMultiplier, DamageSource pSource) {
         boolean fall = super.causeFallDamage(distance, pMultiplier, pSource);
-        timeSinceIgnited = (int) ((float) timeSinceIgnited + distance * 1.5F);
+        timeSinceIgnited = (int) ((float) timeSinceIgnited + distance * 1.5f);
         if (timeSinceIgnited > fuseTime - 5) {
             timeSinceIgnited = fuseTime - 5;
         }
@@ -146,7 +146,7 @@ public class TropiCreeperEntity extends PathfinderMob {
 
             int i = getCreeperState();
             if (i > 0 && timeSinceIgnited == 0) {
-                playSound(SoundEvents.CREEPER_PRIMED, 1.0F, 0.5F);
+                playSound(SoundEvents.CREEPER_PRIMED, 1.0f, 0.5f);
             }
 
             timeSinceIgnited += i;
@@ -191,7 +191,7 @@ public class TropiCreeperEntity extends PathfinderMob {
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         if (itemstack.getItem() == Items.FLINT_AND_STEEL) {
-            level().playSound(player, getX(), getY(), getZ(), SoundEvents.FLINTANDSTEEL_USE, getSoundSource(), 1.0F, random.nextFloat() * 0.4F + 0.8F);
+            level().playSound(player, getX(), getY(), getZ(), SoundEvents.FLINTANDSTEEL_USE, getSoundSource(), 1.0f, random.nextFloat() * 0.4f + 0.8f);
             player.swing(hand);
             if (!level().isClientSide) {
                 ignite();
@@ -233,7 +233,7 @@ public class TropiCreeperEntity extends PathfinderMob {
             remove(RemovalReason.KILLED);
             spawnLingeringCloud();
         } else {
-            level().addParticle(ParticleTypes.EXPLOSION_EMITTER, getX(), getY() + 1F, getZ(), 1.0D, 0.0D, 0.0D);
+            level().addParticle(ParticleTypes.EXPLOSION_EMITTER, getX(), getY() + 1.0f, getZ(), 1.0, 0.0, 0.0);
         }
     }
 
@@ -241,8 +241,8 @@ public class TropiCreeperEntity extends PathfinderMob {
         Collection<MobEffectInstance> collection = getActiveEffects();
         if (!collection.isEmpty()) {
             AreaEffectCloud areaeffectcloudentity = new AreaEffectCloud(level(), getX(), getY(), getZ());
-            areaeffectcloudentity.setRadius(2.5F);
-            areaeffectcloudentity.setRadiusOnUse(-0.5F);
+            areaeffectcloudentity.setRadius(2.5f);
+            areaeffectcloudentity.setRadiusOnUse(-0.5f);
             areaeffectcloudentity.setWaitTime(10);
             areaeffectcloudentity.setDuration(areaeffectcloudentity.getDuration() / 2);
             areaeffectcloudentity.setRadiusPerTick(-areaeffectcloudentity.getRadius() / (float) areaeffectcloudentity.getDuration());

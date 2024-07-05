@@ -13,12 +13,12 @@ public class CuberaRenderer extends MobRenderer<CuberaEntity, CuberaModel<Cubera
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/cubera.png");
 
     public CuberaRenderer(EntityRendererProvider.Context context) {
-        super(context, new CuberaModel<>(context.bakeLayer(TropicraftRenderLayers.CUBERA_LAYER)), 0.6F);
+        super(context, new CuberaModel<>(context.bakeLayer(TropicraftRenderLayers.CUBERA_LAYER)), 0.6f);
     }
 
     @Override
     protected void scale(CuberaEntity entity, PoseStack matrixStack, float partialTicks) {
-        matrixStack.scale(1.25F, 1.25F, 1.25F);
+        matrixStack.scale(1.25f, 1.25f, 1.25f);
     }
 
     @Override

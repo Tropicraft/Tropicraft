@@ -15,7 +15,7 @@ public class IguanaRenderer extends MobRenderer<IguanaEntity, IguanaModel> {
     private static final ResourceLocation IGOR_TEXTURE = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/iggy_igor.png");
 
     public IguanaRenderer(EntityRendererProvider.Context context) {
-        super(context, new IguanaModel(context.bakeLayer(TropicraftRenderLayers.IGUANA_LAYER)), 0.5F);
+        super(context, new IguanaModel(context.bakeLayer(TropicraftRenderLayers.IGUANA_LAYER)), 0.5f);
         shadowStrength = 0.5f;
     }
 

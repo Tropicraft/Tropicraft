@@ -34,12 +34,12 @@ public class ExplodingCoconutItem extends Item {
         if (!player.isCreative()) {
             item.shrink(1);
         }
-        world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (player.getRandom().nextFloat() * 0.4F + 0.8F));
+        world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5f, 0.4f / (player.getRandom().nextFloat() * 0.4f + 0.8f));
         if (!world.isClientSide) {
             float explosionRadius = item.getOrDefault(TropicraftDataComponents.EXPLOSION_RADIUS, ExplodingCoconutEntity.DEFAULT_EXPLOSION_RADIUS);
             ExplodingCoconutEntity coconut = new ExplodingCoconutEntity(world, player, explosionRadius);
             coconut.setItem(item);
-            coconut.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);
+            coconut.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0f, 1.5f, 1.0f);
             world.addFreshEntity(coconut);
         }
 

@@ -154,13 +154,13 @@ import net.tropicraft.core.common.item.TropicraftItems;
 public class TropicraftEntities {
     public static final Registrate REGISTRATE = Tropicraft.registrate();
 
-    private static final float EGG_WIDTH = 0.4F;
-    private static final float EGG_HEIGHT = 0.5F;
+    private static final float EGG_WIDTH = 0.4f;
+    private static final float EGG_HEIGHT = 0.5f;
 
     // TODO review -- tracking range is in chunks...these values seem way too high
 
     public static final EntityEntry<EntityKoaHunter> KOA = REGISTRATE.entity("koa", EntityKoaHunter::new, MobCategory.MISC)
-            .properties(b -> b.sized(0.6F, 1.95F)
+            .properties(b -> b.sized(0.6f, 1.95f)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
                     .fireImmune()
@@ -170,7 +170,7 @@ public class TropicraftEntities {
             .renderer(() -> KoaRenderer::new)
             .register();
     public static final EntityEntry<TropiCreeperEntity> TROPICREEPER = REGISTRATE.entity("tropicreeper", TropiCreeperEntity::new, MobCategory.CREATURE)
-            .properties(b -> b.sized(0.6F, 1.7F)
+            .properties(b -> b.sized(0.6f, 1.7f)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true))
@@ -183,7 +183,7 @@ public class TropicraftEntities {
             .renderer(() -> TropiCreeperRenderer::new)
             .register();
     public static final EntityEntry<IguanaEntity> IGUANA = REGISTRATE.entity("iguana", IguanaEntity::new, MobCategory.CREATURE)
-            .properties(b -> b.sized(1.0F, 0.4F)
+            .properties(b -> b.sized(1.0f, 0.4f)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
                     .fireImmune()
@@ -194,14 +194,14 @@ public class TropicraftEntities {
             .renderer(() -> IguanaRenderer::new)
             .register();
     public static final EntityEntry<UmbrellaEntity> UMBRELLA = REGISTRATE.entity("umbrella", UmbrellaEntity::new, MobCategory.MISC)
-            .properties(b -> b.sized(1.0F, 4.0F)
+            .properties(b -> b.sized(1.0f, 4.0f)
                     .setTrackingRange(10)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(false))
             .renderer(() -> UmbrellaRenderer::new)
             .register();
     public static final EntityEntry<ChairEntity> CHAIR = REGISTRATE.entity("chair", ChairEntity::new, MobCategory.MISC)
-            .properties(b -> b.sized(1.5F, 0.5F)
+            .properties(b -> b.sized(1.5f, 0.5f)
                     .setTrackingRange(10)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(false)
@@ -209,7 +209,7 @@ public class TropicraftEntities {
             .renderer(() -> ChairRenderer::new)
             .register();
     public static final EntityEntry<BeachFloatEntity> BEACH_FLOAT = REGISTRATE.entity("beach_float", BeachFloatEntity::new, MobCategory.MISC)
-            .properties(b -> b.sized(2F, 0.175F)
+            .properties(b -> b.sized(2.0f, 0.175f)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(false)
@@ -217,7 +217,7 @@ public class TropicraftEntities {
             .renderer(() -> BeachFloatRenderer::new)
             .register();
     public static final EntityEntry<TropiSkellyEntity> TROPISKELLY = REGISTRATE.entity("tropiskelly", TropiSkellyEntity::new, MobCategory.MONSTER)
-            .properties(b -> b.sized(0.7F, 1.95F)
+            .properties(b -> b.sized(0.7f, 1.95f)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true))
@@ -227,7 +227,7 @@ public class TropicraftEntities {
             .renderer(() -> TropiSkellyRenderer::new)
             .register();
     public static final EntityEntry<EIHEntity> EIH = REGISTRATE.entity("eih", EIHEntity::new, MobCategory.CREATURE)
-            .properties(b -> b.sized(1.2F, 3.25F)
+            .properties(b -> b.sized(1.2f, 3.25f)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true))
@@ -238,14 +238,14 @@ public class TropicraftEntities {
             .renderer(() -> EIHRenderer::new)
             .register();
     public static final EntityEntry<WallItemEntity> WALL_ITEM = REGISTRATE.entity("wall_item", (EntityType.EntityFactory<WallItemEntity>) WallItemEntity::new, MobCategory.MISC)
-            .properties(b -> b.sized(0.5F, 0.5F)
+            .properties(b -> b.sized(0.5f, 0.5f)
                     .setTrackingRange(8)
                     .setUpdateInterval(Integer.MAX_VALUE)
                     .setShouldReceiveVelocityUpdates(false))
             .renderer(() -> WallItemRenderer::new)
             .register();
     public static final EntityEntry<BambooItemFrame> BAMBOO_ITEM_FRAME = REGISTRATE.entity("bamboo_item_frame", (EntityType.EntityFactory<BambooItemFrame>) BambooItemFrame::new, MobCategory.MISC)
-            .properties(b -> b.sized(0.5F, 0.5F)
+            .properties(b -> b.sized(0.5f, 0.5f)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(false))
@@ -254,7 +254,7 @@ public class TropicraftEntities {
     // TODO: Register again when volcano eruption is finished
     public static final EntityEntry<LavaBallEntity> LAVA_BALL = null;//register("lava_ball", TropicraftEntities::lavaBall);
     public static final EntityEntry<SeaTurtleEntity> SEA_TURTLE = REGISTRATE.entity("turtle", SeaTurtleEntity::new, MobCategory.WATER_CREATURE)
-            .properties(b -> b.sized(0.8F, 0.35F)
+            .properties(b -> b.sized(0.8f, 0.35f)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true)
@@ -268,7 +268,7 @@ public class TropicraftEntities {
             .renderer(() -> SeaTurtleRenderer::new)
             .register();
     public static final EntityEntry<MarlinEntity> MARLIN = REGISTRATE.entity("marlin", MarlinEntity::new, MobCategory.WATER_CREATURE)
-            .properties(b -> b.sized(1.4F, 0.95F)
+            .properties(b -> b.sized(1.4f, 0.95f)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true))
@@ -279,7 +279,7 @@ public class TropicraftEntities {
             .renderer(() -> MarlinRenderer::new)
             .register();
     public static final EntityEntry<FailgullEntity> FAILGULL = REGISTRATE.entity("failgull", FailgullEntity::new, MobCategory.AMBIENT)
-            .properties(b -> b.sized(0.4F, 0.6F)
+            .properties(b -> b.sized(0.4f, 0.6f)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true)
@@ -290,7 +290,7 @@ public class TropicraftEntities {
             .renderer(() -> FailgullRenderer::new)
             .register();
     public static final EntityEntry<TropicraftDolphinEntity> DOLPHIN = REGISTRATE.entity("dolphin", TropicraftDolphinEntity::new, MobCategory.WATER_CREATURE)
-            .properties(b -> b.sized(1.4F, 0.5F)
+            .properties(b -> b.sized(1.4f, 0.5f)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true))
@@ -300,7 +300,7 @@ public class TropicraftEntities {
             .renderer(() -> DolphinRenderer::new)
             .register();
     public static final EntityEntry<SeahorseEntity> SEAHORSE = REGISTRATE.entity("seahorse", SeahorseEntity::new, MobCategory.WATER_AMBIENT)
-            .properties(b -> b.sized(0.5F, 0.6F)
+            .properties(b -> b.sized(0.5f, 0.6f)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true))
@@ -311,14 +311,14 @@ public class TropicraftEntities {
             .renderer(() -> SeahorseRenderer::new)
             .register();
     public static final EntityEntry<PoisonBlotEntity> POISON_BLOT = REGISTRATE.entity("poison_blot", (EntityType.EntityFactory<PoisonBlotEntity>) PoisonBlotEntity::new, MobCategory.MISC)
-            .properties(b -> b.sized(0.25F, 0.25F)
+            .properties(b -> b.sized(0.25f, 0.25f)
                     .setTrackingRange(4)
                     .setUpdateInterval(20)
                     .setShouldReceiveVelocityUpdates(true))
             .renderer(() -> PoisonBlotRenderer::new)
             .register();
     public static final EntityEntry<TreeFrogEntity> TREE_FROG = REGISTRATE.entity("tree_frog", TreeFrogEntity::new, MobCategory.CREATURE)
-            .properties(b -> b.sized(0.6F, 0.4F)
+            .properties(b -> b.sized(0.6f, 0.4f)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true))
@@ -334,7 +334,7 @@ public class TropicraftEntities {
             .renderer(() -> TreeFrogRenderer::new)
             .register();
     public static final EntityEntry<SeaUrchinEntity> SEA_URCHIN = REGISTRATE.entity("sea_urchin", SeaUrchinEntity::new, MobCategory.WATER_AMBIENT)
-            .properties(b -> b.sized(0.5F, 0.5F)
+            .properties(b -> b.sized(0.5f, 0.5f)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true))
@@ -345,7 +345,7 @@ public class TropicraftEntities {
             .renderer(() -> SeaUrchinRenderer::new)
             .register();
     public static final EntityEntry<SeaUrchinEggEntity> SEA_URCHIN_EGG_ENTITY = REGISTRATE.entity("sea_urchin_egg", SeaUrchinEggEntity::new, MobCategory.WATER_AMBIENT)
-            .properties(b -> b.sized(0.4F, 0.5F)
+            .properties(b -> b.sized(0.4f, 0.5f)
                     .setTrackingRange(6)
                     .setUpdateInterval(15)
                     .setShouldReceiveVelocityUpdates(false))
@@ -356,7 +356,7 @@ public class TropicraftEntities {
             .register();
 
     public static final EntityEntry<StarfishEntity> STARFISH = REGISTRATE.entity("starfish", StarfishEntity::new, MobCategory.WATER_AMBIENT)
-            .properties(b -> b.sized(0.5F, 0.5F)
+            .properties(b -> b.sized(0.5f, 0.5f)
                     .setTrackingRange(4)
                     .setUpdateInterval(15)
                     .setShouldReceiveVelocityUpdates(true))
@@ -368,7 +368,7 @@ public class TropicraftEntities {
             .renderer(() -> StarfishRenderer::new)
             .register();
     public static final EntityEntry<StarfishEggEntity> STARFISH_EGG = REGISTRATE.entity("starfish_egg", StarfishEggEntity::new, MobCategory.WATER_AMBIENT)
-            .properties(b -> b.sized(0.4F, 0.5F)
+            .properties(b -> b.sized(0.4f, 0.5f)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(false))
@@ -378,7 +378,7 @@ public class TropicraftEntities {
             .renderer(() -> ClientSetup::starfishEggRenderer)
             .register();
     public static final EntityEntry<VMonkeyEntity> V_MONKEY = REGISTRATE.entity("v_monkey", VMonkeyEntity::new, MobCategory.CREATURE)
-            .properties(b -> b.sized(0.8F, 0.8F)
+            .properties(b -> b.sized(0.8f, 0.8f)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true))
@@ -389,7 +389,7 @@ public class TropicraftEntities {
             .renderer(() -> VMonkeyRenderer::new)
             .register();
     public static final EntityEntry<SardineEntity> RIVER_SARDINE = REGISTRATE.entity("sardine", SardineEntity::new, MobCategory.WATER_AMBIENT)
-            .properties(b -> b.sized(0.3F, 0.4F)
+            .properties(b -> b.sized(0.3f, 0.4f)
                     .setTrackingRange(4)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true))
@@ -399,7 +399,7 @@ public class TropicraftEntities {
             .renderer(() -> SardineRenderer::new)
             .register();
     public static final EntityEntry<PiranhaEntity> PIRANHA = REGISTRATE.entity("piranha", PiranhaEntity::new, MobCategory.WATER_CREATURE)
-            .properties(b -> b.sized(0.3F, 0.4F)
+            .properties(b -> b.sized(0.3f, 0.4f)
                     .setTrackingRange(4)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true))
@@ -410,7 +410,7 @@ public class TropicraftEntities {
             .renderer(() -> PiranhaRenderer::new)
             .register();
     public static final EntityEntry<TropicraftTropicalFishEntity> TROPICAL_FISH = REGISTRATE.entity("tropical_fish", TropicraftTropicalFishEntity::new, MobCategory.WATER_AMBIENT)
-            .properties(b -> b.sized(0.3F, 0.4F)
+            .properties(b -> b.sized(0.3f, 0.4f)
                     .setTrackingRange(4)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true))
@@ -421,7 +421,7 @@ public class TropicraftEntities {
             .renderer(() -> TropicraftTropicalFishRenderer::new)
             .register();
     public static final EntityEntry<EagleRayEntity> EAGLE_RAY = REGISTRATE.entity("eagle_ray", EagleRayEntity::new, MobCategory.WATER_CREATURE)
-            .properties(b -> b.sized(2F, 0.4F)
+            .properties(b -> b.sized(2.0f, 0.4f)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true))
@@ -432,7 +432,7 @@ public class TropicraftEntities {
             .renderer(() -> EagleRayRenderer::new)
             .register();
     public static final EntityEntry<TropiSpiderEntity> TROPI_SPIDER = REGISTRATE.entity("tropi_spider", TropiSpiderEntity::new, MobCategory.MONSTER)
-            .properties(b -> b.sized(1.4F, 0.9F)
+            .properties(b -> b.sized(1.4f, 0.9f)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true))
@@ -452,14 +452,14 @@ public class TropicraftEntities {
             .renderer(() -> ClientSetup::tropiSpiderEggRenderer)
             .register();
     public static final EntityEntry<AshenMaskEntity> ASHEN_MASK = REGISTRATE.entity("ashen_mask", AshenMaskEntity::new, MobCategory.MISC)
-            .properties(b -> b.sized(0.8F, 0.2F)
+            .properties(b -> b.sized(0.8f, 0.2f)
                     .setTrackingRange(6)
                     .setUpdateInterval(100)
                     .setShouldReceiveVelocityUpdates(true))
             .renderer(() -> AshenMaskRenderer::new)
             .register();
     public static final EntityEntry<AshenEntity> ASHEN = REGISTRATE.entity("ashen", AshenEntity::new, MobCategory.MONSTER)
-            .properties(b -> b.sized(0.5F, 1.3F)
+            .properties(b -> b.sized(0.5f, 1.3f)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true))
@@ -469,14 +469,14 @@ public class TropicraftEntities {
             .renderer(() -> AshenRenderer::new)
             .register();
     public static final EntityEntry<ExplodingCoconutEntity> EXPLODING_COCONUT = REGISTRATE.entity("exploding_coconut", (EntityType.EntityFactory<ExplodingCoconutEntity>) ExplodingCoconutEntity::new, MobCategory.MISC)
-            .properties(b -> b.sized(0.25F, 0.25F)
+            .properties(b -> b.sized(0.25f, 0.25f)
                     .setTrackingRange(4)
                     .setUpdateInterval(10)
                     .setShouldReceiveVelocityUpdates(true))
             .renderer(() -> ThrownItemRenderer::new)
             .register();
     public static final EntityEntry<SharkEntity> HAMMERHEAD = REGISTRATE.entity("hammerhead", SharkEntity::new, MobCategory.WATER_CREATURE)
-            .properties(b -> b.sized(2.4F, 1.4F)
+            .properties(b -> b.sized(2.4f, 1.4f)
                     .setTrackingRange(5)
                     .setUpdateInterval(2)
                     .setShouldReceiveVelocityUpdates(true))
@@ -496,7 +496,7 @@ public class TropicraftEntities {
             .renderer(() -> ClientSetup::seaTurtleEggRenderer)
             .register();
     public static final EntityEntry<TropiBeeEntity> TROPI_BEE = REGISTRATE.entity("tropibee", TropiBeeEntity::new, MobCategory.CREATURE)
-            .properties(b -> b.sized(0.4F, 0.6F)
+            .properties(b -> b.sized(0.4f, 0.6f)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true))
@@ -507,7 +507,7 @@ public class TropicraftEntities {
             .renderer(() -> TropiBeeRenderer::new)
             .register();
     public static final EntityEntry<CowktailEntity> COWKTAIL = REGISTRATE.entity("cowktail", CowktailEntity::new, MobCategory.CREATURE)
-            .properties(b -> b.sized(0.9F, 1.4F)
+            .properties(b -> b.sized(0.9f, 1.4f)
                     .setTrackingRange(10)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true))
@@ -517,7 +517,7 @@ public class TropicraftEntities {
             .renderer(() -> CowktailRenderer::new)
             .register();
     public static final EntityEntry<ManOWarEntity> MAN_O_WAR = REGISTRATE.entity("man_o_war", ManOWarEntity::new, MobCategory.WATER_AMBIENT)
-            .properties(b -> b.sized(0.6F, 0.8F)
+            .properties(b -> b.sized(0.6f, 0.8f)
                     .setTrackingRange(10)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true)
@@ -530,7 +530,7 @@ public class TropicraftEntities {
             .renderer(() -> ManOWarRenderer::new)
             .register();
     public static final EntityEntry<TapirEntity> TAPIR = REGISTRATE.entity("tapir", TapirEntity::new, MobCategory.CREATURE)
-            .properties(b -> b.sized(0.8F, 1.0F)
+            .properties(b -> b.sized(0.8f, 1.0f)
                     .setTrackingRange(10)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true))
@@ -540,7 +540,7 @@ public class TropicraftEntities {
             .renderer(() -> TapirRenderer::new)
             .register();
     public static final EntityEntry<JaguarEntity> JAGUAR = REGISTRATE.entity("jaguar", JaguarEntity::new, MobCategory.CREATURE)
-            .properties(b -> b.sized(0.9F, 1.0F)
+            .properties(b -> b.sized(0.9f, 1.0f)
                     .setTrackingRange(10)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true))
@@ -550,7 +550,7 @@ public class TropicraftEntities {
             .renderer(() -> JaguarRenderer::new)
             .register();
     public static final EntityEntry<BasiliskLizardEntity> BROWN_BASILISK_LIZARD = REGISTRATE.entity("brown_basilisk_lizard", BasiliskLizardEntity::new, MobCategory.CREATURE)
-            .properties(b -> b.sized(0.7F, 0.4F)
+            .properties(b -> b.sized(0.7f, 0.4f)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true))
@@ -560,7 +560,7 @@ public class TropicraftEntities {
             .renderer(() -> BasiliskLizardRenderer::brown)
             .register();
     public static final EntityEntry<BasiliskLizardEntity> GREEN_BASILISK_LIZARD = REGISTRATE.entity("green_basilisk_lizard", BasiliskLizardEntity::new, MobCategory.CREATURE)
-            .properties(b -> b.sized(0.7F, 0.4F)
+            .properties(b -> b.sized(0.7f, 0.4f)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true))
@@ -570,7 +570,7 @@ public class TropicraftEntities {
             .renderer(() -> BasiliskLizardRenderer::green)
             .register();
     public static final EntityEntry<HummingbirdEntity> HUMMINGBIRD = REGISTRATE.entity("hummingbird", HummingbirdEntity::new, MobCategory.CREATURE)
-            .properties(b -> b.sized(0.5F, 0.5F)
+            .properties(b -> b.sized(0.5f, 0.5f)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true))
@@ -580,7 +580,7 @@ public class TropicraftEntities {
             .renderer(() -> HummingbirdRenderer::new)
             .register();
     public static final EntityEntry<FiddlerCrabEntity> FIDDLER_CRAB = REGISTRATE.entity("fiddler_crab", FiddlerCrabEntity::new, MobCategory.CREATURE)
-            .properties(b -> b.sized(0.5F, 0.2F)
+            .properties(b -> b.sized(0.5f, 0.2f)
                     .setTrackingRange(10)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true))
@@ -591,7 +591,7 @@ public class TropicraftEntities {
             .renderer(() -> FiddlerCrabRenderer::new)
             .register();
     public static final EntityEntry<SpiderMonkeyEntity> SPIDER_MONKEY = REGISTRATE.entity("spider_monkey", SpiderMonkeyEntity::new, MobCategory.CREATURE)
-            .properties(b -> b.sized(0.5F, 0.6F)
+            .properties(b -> b.sized(0.5f, 0.6f)
                     .setTrackingRange(10)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true))
@@ -601,7 +601,7 @@ public class TropicraftEntities {
             .renderer(() -> SpiderMonkeyRenderer::new)
             .register();
     public static final EntityEntry<WhiteLippedPeccaryEntity> WHITE_LIPPED_PECCARY = REGISTRATE.entity("white_lipped_peccary", WhiteLippedPeccaryEntity::new, MobCategory.CREATURE)
-            .properties(b -> b.sized(0.7F, 0.8F)
+            .properties(b -> b.sized(0.7f, 0.8f)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true))
@@ -611,7 +611,7 @@ public class TropicraftEntities {
             .renderer(() -> WhiteLippedPeccaryRenderer::new)
             .register();
     public static final EntityEntry<CuberaEntity> CUBERA = REGISTRATE.entity("cubera", CuberaEntity::new, MobCategory.WATER_CREATURE)
-            .properties(b -> b.sized(1.2F, 0.8F)
+            .properties(b -> b.sized(1.2f, 0.8f)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true))
@@ -621,7 +621,7 @@ public class TropicraftEntities {
             .renderer(() -> CuberaRenderer::new)
             .register();
     public static final EntityEntry<FishingBobberEntity> FISHING_BOBBER = REGISTRATE.entity("fishing_bobber", (EntityType.EntityFactory<FishingBobberEntity>) FishingBobberEntity::new, MobCategory.MISC)
-            .properties(b -> b.sized(1.2F, 0.8F)
+            .properties(b -> b.sized(1.2f, 0.8f)
                     /*.setTrackingRange(8)*/
                     .setTrackingRange(128)
                     .setUpdateInterval(3)
@@ -631,7 +631,7 @@ public class TropicraftEntities {
             .register();
 
     public static final EntityEntry<SpearEntity> SPEAR = REGISTRATE.entity("spear", (EntityType.EntityFactory<SpearEntity>) SpearEntity::new, MobCategory.MISC)
-            .properties(b -> b.sized(0.8F, 0.8F)
+            .properties(b -> b.sized(0.8f, 0.8f)
                     .setTrackingRange(4).updateInterval(20)
                     .setShouldReceiveVelocityUpdates(true))
             .renderer(() -> SpearRenderer::new)
@@ -639,14 +639,14 @@ public class TropicraftEntities {
 
     //    private static void lavaBall(EntityType.Builder<LavaBallEntity> b) {
 //        return EntityType.Builder.<LavaBallEntity>of(LavaBallEntity::new, MobCategory.MISC)
-//                .sized(1.0F, 1.0F)
+//                .sized(1.0f, 1.0f)
 //                .setTrackingRange(8)
 //                .setUpdateInterval(3)
 //                .setShouldReceiveVelocityUpdates(true);
 //    }
 
     public static final RegistryEntry<EntityType<?>, EntityType<GibnutEntity>> GIBNUT = REGISTRATE.entity("gibnut", GibnutEntity::new, MobCategory.MONSTER)
-            .properties(b -> b.sized(0.7F, 0.3F)
+            .properties(b -> b.sized(0.7f, 0.3f)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true))
@@ -657,7 +657,7 @@ public class TropicraftEntities {
             .register();
 
     public static final RegistryEntry<EntityType<?>, EntityType<ManateeEntity>> MANATEE = REGISTRATE.entity("manatee", ManateeEntity::new, MobCategory.WATER_CREATURE)
-            .properties(b -> b.sized(2.0F, 1.3F)
+            .properties(b -> b.sized(2.0f, 1.3f)
                     .setTrackingRange(5)
                     .setUpdateInterval(2)
                     .setShouldReceiveVelocityUpdates(true))
@@ -668,7 +668,7 @@ public class TropicraftEntities {
             .register();
 
     public static final RegistryEntry<EntityType<?>, EntityType<SlenderHarvestMouseEntity>> SLENDER_HARVEST_MOUSE = REGISTRATE.entity("slender_harvest_mouse", SlenderHarvestMouseEntity::new, MobCategory.MONSTER)
-            .properties(b -> b.sized(0.5F, 0.2F)
+            .properties(b -> b.sized(0.5f, 0.2f)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true))
@@ -679,7 +679,7 @@ public class TropicraftEntities {
             .register();
 
     public static final RegistryEntry<EntityType<?>, EntityType<ToucanEntity>> TOUCAN = REGISTRATE.entity("toucan", ToucanEntity::new, MobCategory.MONSTER)
-            .properties(b -> b.sized(0.5F, 0.5F)
+            .properties(b -> b.sized(0.5f, 0.5f)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true))
@@ -723,7 +723,7 @@ public class TropicraftEntities {
                 .withPool(LootPool.lootPool()
                         .setRolls(range)
                         .add(LootItem.lootTableItem(multiLoot.get())
-                                .apply(EnchantedCountIncreaseFunction.lootingMultiplier(lootTables.getRegistries(), UniformGenerator.between(0F, 1F / 3F))))
+                                .apply(EnchantedCountIncreaseFunction.lootingMultiplier(lootTables.getRegistries(), UniformGenerator.between(0.0f, 1.0f / 3.0f))))
                 ));
     }
 
@@ -742,7 +742,7 @@ public class TropicraftEntities {
     private static <T extends LivingEntity> void dropItemsWithEnchantBonus(RegistrateEntityLootTables lootTables, EntityType<T> entity, ItemLike loot, NumberProvider range) {
         lootTables.add(entity,
                 LootTable.lootTable().withPool(LootPool.lootPool().setRolls(range).add(LootItem.lootTableItem(loot)
-                        .apply(EnchantedCountIncreaseFunction.lootingMultiplier(lootTables.getRegistries(), UniformGenerator.between(0F, 1F / 3F))))));
+                        .apply(EnchantedCountIncreaseFunction.lootingMultiplier(lootTables.getRegistries(), UniformGenerator.between(0.0f, 1.0f / 3.0f))))));
     }
 
     @SubscribeEvent

@@ -46,37 +46,37 @@ public class GibnutModel extends TropicraftAgeableHierarchicalModel<GibnutEntity
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition body_base = partdefinition.addOrReplaceChild("body_base", CubeListBuilder.create().texOffs(0, 0).addBox(-2.0F, -3.0F, -7.0F, 4.0F, 4.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 21.0F, 4.5F, 0.0436F, 0.0F, 0.0F));
+        PartDefinition body_base = partdefinition.addOrReplaceChild("body_base", CubeListBuilder.create().texOffs(0, 0).addBox(-2.0f, -3.0f, -7.0f, 4.0f, 4.0f, 8.0f, new CubeDeformation(0.0f)), PartPose.offsetAndRotation(0.0f, 21.0f, 4.5f, 0.0436f, 0.0f, 0.0f));
 
-        PartDefinition head_base = body_base.addOrReplaceChild("head_base", CubeListBuilder.create().texOffs(0, 13).addBox(-1.5F, -0.5F, -4.0F, 3.0F, 3.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -3.0F, -7.0F, 0.3054F, 0.0F, 0.0F));
+        PartDefinition head_base = body_base.addOrReplaceChild("head_base", CubeListBuilder.create().texOffs(0, 13).addBox(-1.5f, -0.5f, -4.0f, 3.0f, 3.0f, 4.0f, new CubeDeformation(0.0f)), PartPose.offsetAndRotation(0.0f, -3.0f, -7.0f, 0.3054f, 0.0f, 0.0f));
 
-        PartDefinition ear_right = head_base.addOrReplaceChild("ear_right", CubeListBuilder.create().texOffs(3, 31).addBox(-1.0F, -1.0F, 0.0F, 1.0F, 1.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.5F, -0.5F, -0.75F, -0.0289F, 0.2163F, -0.3958F));
+        PartDefinition ear_right = head_base.addOrReplaceChild("ear_right", CubeListBuilder.create().texOffs(3, 31).addBox(-1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 0.0f, new CubeDeformation(0.0f)), PartPose.offsetAndRotation(-0.5f, -0.5f, -0.75f, -0.0289f, 0.2163f, -0.3958f));
 
-        PartDefinition ear_left = head_base.addOrReplaceChild("ear_left", CubeListBuilder.create().texOffs(0, 31).addBox(0.0F, -1.0F, 0.0F, 1.0F, 1.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.5F, -0.5F, -0.75F, -0.0289F, -0.2163F, 0.3958F));
+        PartDefinition ear_left = head_base.addOrReplaceChild("ear_left", CubeListBuilder.create().texOffs(0, 31).addBox(0.0f, -1.0f, 0.0f, 1.0f, 1.0f, 0.0f, new CubeDeformation(0.0f)), PartPose.offsetAndRotation(0.5f, -0.5f, -0.75f, -0.0289f, -0.2163f, 0.3958f));
 
-        PartDefinition whisker_right1 = head_base.addOrReplaceChild("whisker_right1", CubeListBuilder.create(), PartPose.offset(-1.5F, 0.5F, -4.0F));
+        PartDefinition whisker_right1 = head_base.addOrReplaceChild("whisker_right1", CubeListBuilder.create(), PartPose.offset(-1.5f, 0.5f, -4.0f));
 
-        PartDefinition whisker_right1_r1 = whisker_right1.addOrReplaceChild("whisker_right1_r1", CubeListBuilder.create().texOffs(27, 29).addBox(-3.0F, 0.0F, 0.0F, 3.0F, 0.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.421F, 0.5574F, -0.3532F));
+        PartDefinition whisker_right1_r1 = whisker_right1.addOrReplaceChild("whisker_right1_r1", CubeListBuilder.create().texOffs(27, 29).addBox(-3.0f, 0.0f, 0.0f, 3.0f, 0.0f, 1.0f, new CubeDeformation(0.0f)), PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, -0.421f, 0.5574f, -0.3532f));
 
-        PartDefinition whisker_right2 = head_base.addOrReplaceChild("whisker_right2", CubeListBuilder.create(), PartPose.offsetAndRotation(-1.5F, 0.75F, -4.0F, 0.0F, 0.0F, -0.3054F));
+        PartDefinition whisker_right2 = head_base.addOrReplaceChild("whisker_right2", CubeListBuilder.create(), PartPose.offsetAndRotation(-1.5f, 0.75f, -4.0f, 0.0f, 0.0f, -0.3054f));
 
-        PartDefinition whisker_right2_r1 = whisker_right2.addOrReplaceChild("whisker_right2_r1", CubeListBuilder.create().texOffs(18, 29).addBox(-3.0F, 0.0F, 0.0F, 3.0F, 0.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.421F, 0.5574F, -0.3532F));
+        PartDefinition whisker_right2_r1 = whisker_right2.addOrReplaceChild("whisker_right2_r1", CubeListBuilder.create().texOffs(18, 29).addBox(-3.0f, 0.0f, 0.0f, 3.0f, 0.0f, 1.0f, new CubeDeformation(0.0f)), PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, -0.421f, 0.5574f, -0.3532f));
 
-        PartDefinition whisker_left1 = head_base.addOrReplaceChild("whisker_left1", CubeListBuilder.create(), PartPose.offset(-1.5F, 0.5F, -4.0F));
+        PartDefinition whisker_left1 = head_base.addOrReplaceChild("whisker_left1", CubeListBuilder.create(), PartPose.offset(-1.5f, 0.5f, -4.0f));
 
-        PartDefinition whisker_left1_r1 = whisker_left1.addOrReplaceChild("whisker_left1_r1", CubeListBuilder.create().texOffs(9, 29).addBox(0.0F, 0.0F, 0.0F, 3.0F, 0.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(3.0F, 0.0F, 0.0F, -0.421F, -0.5574F, 0.3532F));
+        PartDefinition whisker_left1_r1 = whisker_left1.addOrReplaceChild("whisker_left1_r1", CubeListBuilder.create().texOffs(9, 29).addBox(0.0f, 0.0f, 0.0f, 3.0f, 0.0f, 1.0f, new CubeDeformation(0.0f)), PartPose.offsetAndRotation(3.0f, 0.0f, 0.0f, -0.421f, -0.5574f, 0.3532f));
 
-        PartDefinition whisker_left2 = head_base.addOrReplaceChild("whisker_left2", CubeListBuilder.create(), PartPose.offsetAndRotation(1.5F, 0.75F, -4.0F, 0.0F, 0.0F, 0.3054F));
+        PartDefinition whisker_left2 = head_base.addOrReplaceChild("whisker_left2", CubeListBuilder.create(), PartPose.offsetAndRotation(1.5f, 0.75f, -4.0f, 0.0f, 0.0f, 0.3054f));
 
-        PartDefinition whisker_left2_r1 = whisker_left2.addOrReplaceChild("whisker_left2_r1", CubeListBuilder.create().texOffs(0, 29).addBox(0.0F, 0.0F, 0.0F, 3.0F, 0.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.421F, -0.5574F, 0.3532F));
+        PartDefinition whisker_left2_r1 = whisker_left2.addOrReplaceChild("whisker_left2_r1", CubeListBuilder.create().texOffs(0, 29).addBox(0.0f, 0.0f, 0.0f, 3.0f, 0.0f, 1.0f, new CubeDeformation(0.0f)), PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, -0.421f, -0.5574f, 0.3532f));
 
-        PartDefinition leg_back_left = body_base.addOrReplaceChild("leg_back_left", CubeListBuilder.create().texOffs(15, 13).addBox(-0.5F, -0.5F, -1.0F, 1.0F, 5.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(2.0F, -1.5F, -0.5F, 0.0436F, 0.0F, 0.0F));
+        PartDefinition leg_back_left = body_base.addOrReplaceChild("leg_back_left", CubeListBuilder.create().texOffs(15, 13).addBox(-0.5f, -0.5f, -1.0f, 1.0f, 5.0f, 2.0f, new CubeDeformation(0.0f)), PartPose.offsetAndRotation(2.0f, -1.5f, -0.5f, 0.0436f, 0.0f, 0.0f));
 
-        PartDefinition leg_back_right = body_base.addOrReplaceChild("leg_back_right", CubeListBuilder.create().texOffs(0, 21).addBox(-0.5F, -0.5F, -1.0F, 1.0F, 5.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-2.0F, -1.5F, -0.5F, 0.0436F, 0.0F, 0.0F));
+        PartDefinition leg_back_right = body_base.addOrReplaceChild("leg_back_right", CubeListBuilder.create().texOffs(0, 21).addBox(-0.5f, -0.5f, -1.0f, 1.0f, 5.0f, 2.0f, new CubeDeformation(0.0f)), PartPose.offsetAndRotation(-2.0f, -1.5f, -0.5f, 0.0436f, 0.0f, 0.0f));
 
-        PartDefinition leg_front_right = body_base.addOrReplaceChild("leg_front_right", CubeListBuilder.create().texOffs(14, 21).addBox(-0.5F, -1.0F, -1.0F, 1.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-2.0F, 0.75F, -6.0F, -0.1745F, 0.0F, 0.0F));
+        PartDefinition leg_front_right = body_base.addOrReplaceChild("leg_front_right", CubeListBuilder.create().texOffs(14, 21).addBox(-0.5f, -1.0f, -1.0f, 1.0f, 3.0f, 2.0f, new CubeDeformation(0.0f)), PartPose.offsetAndRotation(-2.0f, 0.75f, -6.0f, -0.1745f, 0.0f, 0.0f));
 
-        PartDefinition leg_front_left = body_base.addOrReplaceChild("leg_front_left", CubeListBuilder.create().texOffs(7, 21).addBox(-0.5F, -1.0F, -1.0F, 1.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(2.0F, 0.75F, -6.0F, -0.1745F, 0.0F, 0.0F));
+        PartDefinition leg_front_left = body_base.addOrReplaceChild("leg_front_left", CubeListBuilder.create().texOffs(7, 21).addBox(-0.5f, -1.0f, -1.0f, 1.0f, 3.0f, 2.0f, new CubeDeformation(0.0f)), PartPose.offsetAndRotation(2.0f, 0.75f, -6.0f, -0.1745f, 0.0f, 0.0f));
 
         return LayerDefinition.create(meshdefinition, 64, 64);
     }

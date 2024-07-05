@@ -18,12 +18,12 @@ public class MonkeySitInChairGoal extends Goal {
     }
 
     private Optional<ChairEntity> getNearestEmptyChair() {
-        List<ChairEntity> list = entity.level().getEntitiesOfClass(ChairEntity.class, entity.getBoundingBox().inflate(32D));
+        List<ChairEntity> list = entity.level().getEntitiesOfClass(ChairEntity.class, entity.getBoundingBox().inflate(32));
         return list.stream().filter(chair -> !chair.isInvisible() && !chair.isVehicle()).findFirst();
     }
 
     private boolean isOwnerNear() {
-        return entity != null && entity.getOwner() != null && entity.getOwner().distanceToSqr(entity) < 32D;
+        return entity != null && entity.getOwner() != null && entity.getOwner().distanceToSqr(entity) < 32;
     }
 
     private boolean isOwnerNearAndSitting() {

@@ -11,7 +11,7 @@ import net.tropicraft.core.common.entity.neutral.TreeFrogEntity;
 public class TreeFrogRenderer extends MobRenderer<TreeFrogEntity, TreeFrogModel> {
 
     public TreeFrogRenderer(EntityRendererProvider.Context context) {
-        super(context, new TreeFrogModel(context.bakeLayer(TropicraftRenderLayers.TREE_FROG_LAYER)), 0.5F);
+        super(context, new TreeFrogModel(context.bakeLayer(TropicraftRenderLayers.TREE_FROG_LAYER)), 0.5f);
         shadowStrength = 0.5f;
         shadowRadius = 0.3f;
     }

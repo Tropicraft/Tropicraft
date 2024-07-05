@@ -53,83 +53,83 @@ public class WhiteLippedPeccaryModel<T extends Entity> extends TropicraftAgeable
         PartDefinition modelPartBody = root.addOrReplaceChild("body_base",
                 CubeListBuilder.create()
                         .texOffs(0, 0)
-                        .addBox(-3.0F, -1.0F, -9.0F, 6.0F, 7.0F, 12.0F, false),
-                PartPose.offset(0.0F, 12.0F, 4.0F));
+                        .addBox(-3.0f, -1.0f, -9.0f, 6.0f, 7.0f, 12.0f, false),
+                PartPose.offset(0.0f, 12.0f, 4.0f));
 
         PartDefinition modelPartHead = root.addOrReplaceChild("head_base",
                 CubeListBuilder.create()
                         .texOffs(0, 20)
-                        .addBox(-2.5F, -3.0F, -3.0F, 5.0F, 7.0F, 4.0F, false),
-                PartPose.offsetAndRotation(0.0F, 14.0F, -5.5F, 0.0873F, 0.0F, 0.0F));
+                        .addBox(-2.5f, -3.0f, -3.0f, 5.0f, 7.0f, 4.0f, false),
+                PartPose.offsetAndRotation(0.0f, 14.0f, -5.5f, 0.0873f, 0.0f, 0.0f));
 
         modelPartHead.addOrReplaceChild("head_connection",
                 CubeListBuilder.create().mirror(false)
                         .texOffs(0, 32)
-                        .addBox(-1.5F, -1.0F, -5.0F, 3.0F, 3.0F, 5.0F, new CubeDeformation(0.005F)),
-                PartPose.offset(0.0F, 2.0F, -3.0F));
+                        .addBox(-1.5f, -1.0f, -5.0f, 3.0f, 3.0f, 5.0f, new CubeDeformation(0.005f)),
+                PartPose.offset(0.0f, 2.0f, -3.0f));
 
         modelPartHead.addOrReplaceChild("ear_right",
                 CubeListBuilder.create()
                         .texOffs(27, 41)
-                        .addBox(-1.0F, -2.0F, 0.0F, 1.0F, 2.0F, 2.0F, false),
-                PartPose.offsetAndRotation(-1.5F, -3.0F, -1.0F, -0.829F, -0.2618F, -0.3491F));
+                        .addBox(-1.0f, -2.0f, 0.0f, 1.0f, 2.0f, 2.0f, false),
+                PartPose.offsetAndRotation(-1.5f, -3.0f, -1.0f, -0.829f, -0.2618f, -0.3491f));
 
         modelPartHead.addOrReplaceChild("ear_left",
                 CubeListBuilder.create()
                         .texOffs(0, 50)
-                        .addBox(0.0F, -2.0F, 0.0F, 1.0F, 2.0F, 2.0F, false),
-                PartPose.offsetAndRotation(1.5F, -3.0F, -1.0F, -0.829F, 0.2618F, 0.3491F));
+                        .addBox(0.0f, -2.0f, 0.0f, 1.0f, 2.0f, 2.0f, false),
+                PartPose.offsetAndRotation(1.5f, -3.0f, -1.0f, -0.829f, 0.2618f, 0.3491f));
 
         PartDefinition modelPartHeadSnoutBridge = modelPartHead.addOrReplaceChild("head_snout_bridge",
                 CubeListBuilder.create()
                         .texOffs(19, 20)
-                        .addBox(-1.5F, 0.0F, -6.0F, 3.0F, 4.0F, 6.0F, false),
-                PartPose.offsetAndRotation(0.0F, -3.0F, -3.0F, 0.48F, 0.0F, 0.0F));
+                        .addBox(-1.5f, 0.0f, -6.0f, 3.0f, 4.0f, 6.0f, false),
+                PartPose.offsetAndRotation(0.0f, -3.0f, -3.0f, 0.48f, 0.0f, 0.0f));
 
         PartDefinition modelPartHeadSnout = modelPartHeadSnoutBridge.addOrReplaceChild("head_snout",
                 CubeListBuilder.create(),
-                PartPose.offsetAndRotation(0.0F, 0.0F, -6.0F, -0.1309F, 0.0F, 0.0F));
+                PartPose.offsetAndRotation(0.0f, 0.0f, -6.0f, -0.1309f, 0.0f, 0.0f));
 
         modelPartHeadSnout.addOrReplaceChild("head_snout_r1",
                 CubeListBuilder.create().mirror(false)
                         .texOffs(18, 41)
-                        .addBox(-1.5F, 0.0F, -0.5F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.006F)),
-                PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.2182F, 0.0F, 0.0F));
+                        .addBox(-1.5f, 0.0f, -0.5f, 3.0f, 3.0f, 1.0f, new CubeDeformation(0.006f)),
+                PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, -0.2182f, 0.0f, 0.0f));
 
         modelPartBody.addOrReplaceChild("hair_base_right",
                 CubeListBuilder.create()
                         .texOffs(37, 14)
-                        .addBox(-1.5F, -3.0F, 0.0F, 1.0F, 3.0F, 10.0F, false),
-                PartPose.offsetAndRotation(0.0F, -1.0F, -9.0F, -0.1309F, 0.0F, -0.2182F));
+                        .addBox(-1.5f, -3.0f, 0.0f, 1.0f, 3.0f, 10.0f, false),
+                PartPose.offsetAndRotation(0.0f, -1.0f, -9.0f, -0.1309f, 0.0f, -0.2182f));
 
         modelPartBody.addOrReplaceChild("hair_base_left",
                 CubeListBuilder.create()
                         .texOffs(37, 0)
-                        .addBox(0.5F, -3.0F, 0.0F, 1.0F, 3.0F, 10.0F, false),
-                PartPose.offsetAndRotation(0.0F, -1.0F, -9.0F, -0.1309F, 0.0F, 0.2182F));
+                        .addBox(0.5f, -3.0f, 0.0f, 1.0f, 3.0f, 10.0f, false),
+                PartPose.offsetAndRotation(0.0f, -1.0f, -9.0f, -0.1309f, 0.0f, 0.2182f));
 
         modelPartBody.addOrReplaceChild("leg_left_ba",
                 CubeListBuilder.create()
                         .texOffs(26, 32)
-                        .addBox(-1.005F, 0.1F, -1.0F, 2.0F, 6.0F, 2.0F, false),
-                PartPose.offset(2.0F, 5.9F, 2.0F));
+                        .addBox(-1.005f, 0.1f, -1.0f, 2.0f, 6.0f, 2.0f, false),
+                PartPose.offset(2.0f, 5.9f, 2.0f));
 
         modelPartBody.addOrReplaceChild("leg_right_ba",
                 CubeListBuilder.create()
                         .texOffs(17, 32)
-                        .addBox(-0.995F, 0.1F, -1.0F, 2.0F, 6.0F, 2.0F, false),
-                PartPose.offset(-2.0F, 5.9F, 2.0F));
+                        .addBox(-0.995f, 0.1f, -1.0f, 2.0f, 6.0f, 2.0f, false),
+                PartPose.offset(-2.0f, 5.9f, 2.0f));
 
         modelPartBody.addOrReplaceChild("leg_left_fr",
                 CubeListBuilder.create()
                         .texOffs(9, 41)
-                        .addBox(-1.005F, 0.1F, -1.0F, 2.0F, 6.0F, 2.0F, false),
-                PartPose.offset(2.0F, 5.9F, -8.0F));
+                        .addBox(-1.005f, 0.1f, -1.0f, 2.0f, 6.0f, 2.0f, false),
+                PartPose.offset(2.0f, 5.9f, -8.0f));
 
         modelPartBody.addOrReplaceChild("leg_right_fr",
                 CubeListBuilder.create()
-                        .texOffs(0, 41).addBox(-0.995F, 0.1F, -1.0F, 2.0F, 6.0F, 2.0F, false),
-                PartPose.offset(-2.0F, 5.9F, -8.0F));
+                        .texOffs(0, 41).addBox(-0.995f, 0.1f, -1.0f, 2.0f, 6.0f, 2.0f, false),
+                PartPose.offset(-2.0f, 5.9f, -8.0f));
 
         return LayerDefinition.create(mesh, 64, 64);
     }
@@ -138,11 +138,11 @@ public class WhiteLippedPeccaryModel<T extends Entity> extends TropicraftAgeable
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float age, float headYaw, float headPitch) {
         ModelAnimator.look(getHead(), headYaw, headPitch);
 
-        try (ModelAnimator.Cycle walk = ModelAnimator.cycle(limbSwing * 0.2F, limbSwingAmount)) {
-            leg_left_fr.xRot = walk.eval(1.0F, 1.0F);
-            leg_right_fr.xRot = walk.eval(-1.0F, 1.0F);
-            leg_left_ba.xRot = walk.eval(-1.0F, 1.0F);
-            leg_right_ba.xRot = walk.eval(1.0F, 1.0F);
+        try (ModelAnimator.Cycle walk = ModelAnimator.cycle(limbSwing * 0.2f, limbSwingAmount)) {
+            leg_left_fr.xRot = walk.eval(1.0f, 1.0f);
+            leg_right_fr.xRot = walk.eval(-1.0f, 1.0f);
+            leg_left_ba.xRot = walk.eval(-1.0f, 1.0f);
+            leg_right_ba.xRot = walk.eval(1.0f, 1.0f);
         }
     }
 

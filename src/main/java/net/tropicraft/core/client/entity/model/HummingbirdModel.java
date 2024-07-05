@@ -62,15 +62,15 @@ public class HummingbirdModel<T extends HummingbirdEntity> extends HierarchicalM
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float age, float headYaw, float headPitch) {
         ModelAnimator.look(head_base, headYaw, headPitch);
 
-        try (ModelAnimator.Cycle fly = ModelAnimator.cycle(age * 0.25F, 1.0F)) {
-            root.y = 20.0F + fly.eval(1.0F, 0.1F);
+        try (ModelAnimator.Cycle fly = ModelAnimator.cycle(age * 0.25f, 1.0f)) {
+            root.y = 20.0f + fly.eval(1.0f, 0.1f);
 
-            wing_right.yRot = fly.eval(1.0F, 1.0F, 0.0F, 0.0F);
-            wing_left.yRot = fly.eval(1.0F, -1.0F, 0.0F, 0.0F);
-            wing_right.zRot = fly.eval(1.0F, 0.4F, 0.0F, 0.3F);
-            wing_left.zRot = fly.eval(1.0F, -0.4F, 0.0F, -0.3F);
-            wing_right.xRot = fly.eval(1.0F, 0.4F, 0.1F, 0.2F);
-            wing_left.xRot = fly.eval(1.0F, 0.4F, 0.1F, 0.2F);
+            wing_right.yRot = fly.eval(1.0f, 1.0f, 0.0f, 0.0f);
+            wing_left.yRot = fly.eval(1.0f, -1.0f, 0.0f, 0.0f);
+            wing_right.zRot = fly.eval(1.0f, 0.4f, 0.0f, 0.3f);
+            wing_left.zRot = fly.eval(1.0f, -0.4f, 0.0f, -0.3f);
+            wing_right.xRot = fly.eval(1.0f, 0.4f, 0.1f, 0.2f);
+            wing_left.xRot = fly.eval(1.0f, 0.4f, 0.1f, 0.2f);
         }
     }
 
