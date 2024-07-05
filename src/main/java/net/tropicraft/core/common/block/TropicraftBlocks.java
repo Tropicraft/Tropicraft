@@ -564,7 +564,7 @@ public class TropicraftBlocks {
             .recipe((ctx, prov) -> ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, Blocks.JUNGLE_LOG)
                     .requires(ctx.get())
                     .unlockedBy("has_papaya_log", has(ctx.get()))
-                    .save(prov))
+                    .save(prov, ResourceLocation.fromNamespaceAndPath(Constants.MODID, "papaya_log_to_jungle_log")))
             .register();
     public static final BlockEntry<RotatedPillarBlock> PAPAYA_WOOD = wood("papaya_wood", MapColor.COLOR_GRAY, PAPAYA_LOG).register();
 

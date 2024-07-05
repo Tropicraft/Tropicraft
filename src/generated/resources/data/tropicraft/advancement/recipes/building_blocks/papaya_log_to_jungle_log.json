@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:jungle_log"
+        "recipe": "tropicraft:papaya_log_to_jungle_log"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:jungle_log"
+      "tropicraft:papaya_log_to_jungle_log"
     ]
   }
 }
