@@ -34,11 +34,6 @@ public class AshenMaskEntity extends Entity {
     }
 
     @Override
-    public boolean isPushable() {
-        return false;
-    }
-
-    @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         builder.define(MASK_TYPE, (byte) 0);
     }

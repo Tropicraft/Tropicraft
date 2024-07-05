@@ -196,11 +196,6 @@ public class EntityKoaBase extends Villager {
     }
 
     @Override
-    public boolean removeWhenFarAway(double pDistanceToClosestPlayer) {
-        return false;
-    }
-
-    @Override
     public boolean fireImmune() {
         return true;
     }
@@ -1274,11 +1269,6 @@ public class EntityKoaBase extends Villager {
 
     public void setFirelacePos(BlockPos pos) {
         posLastFireplaceFound = pos;
-    }
-
-    @Override
-    public int getAirSupply() {
-        return super.getAirSupply();
     }
 
     @Override

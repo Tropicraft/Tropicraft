@@ -68,16 +68,6 @@ public class SeaTurtleEntity extends Turtle {
         super(type, world);
     }
 
-    @Override
-    public boolean isPushedByFluid() {
-        return false;
-    }
-
-    @Override
-    protected float nextStep() {
-        return moveDist + 0.15F;
-    }
-
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {

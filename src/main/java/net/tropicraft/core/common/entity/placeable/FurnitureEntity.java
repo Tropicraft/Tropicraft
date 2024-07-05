@@ -223,11 +223,6 @@ public abstract class FurnitureEntity extends Entity {
     }
 
     @Override
-    public boolean isPushable() {
-        return false;
-    }
-
-    @Override
     protected void readAdditionalSaveData(CompoundTag nbt) {
         setColor(DyeColor.byId(nbt.getInt("Color")));
 
