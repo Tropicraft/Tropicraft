@@ -166,11 +166,6 @@ public class ManOWarEntity extends WaterAnimal {
     }
 
     @Override
-    public int getAmbientSoundInterval() {
-        return 120;
-    }
-
-    @Override
     protected SoundEvent getAmbientSound() {
         return SoundEvents.SQUID_AMBIENT;
     }
