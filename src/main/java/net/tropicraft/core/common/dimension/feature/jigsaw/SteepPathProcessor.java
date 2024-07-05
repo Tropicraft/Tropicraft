@@ -14,11 +14,13 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 
+import javax.annotation.Nullable;
+
 public class SteepPathProcessor extends PathStructureProcessor {
     public static final MapCodec<SteepPathProcessor> CODEC = MapCodec.unit(new SteepPathProcessor());
 
     @Override
-    public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos seedPos, BlockPos pos2, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo blockInfo, StructurePlaceSettings placementSettingsIn, StructureTemplate template) {
+    public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos seedPos, BlockPos pos2, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo blockInfo, StructurePlaceSettings placementSettingsIn, @Nullable StructureTemplate template) {
         BlockPos pos = blockInfo.pos();
 
         if (originalBlockInfo.pos().getY() != 1 || originalBlockInfo.state().getBlock() == TropicraftBlocks.BAMBOO_STAIRS.get() || originalBlockInfo.state().isAir()) {
@@ -81,6 +83,7 @@ public class SteepPathProcessor extends PathStructureProcessor {
 
     // Check that there is a solid block behind the ladder at this pos, and return the correct ladder state
     // Returns null if placement is not possible
+    @Nullable
     private BlockState canPlaceLadderAt(LevelReader level, BlockPos pos, Direction dir) {
         BlockPos check = pos.relative(dir);
         BlockState state = level.getBlockState(check);

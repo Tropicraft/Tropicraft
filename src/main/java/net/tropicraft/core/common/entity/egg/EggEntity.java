@@ -15,6 +15,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
+import javax.annotation.Nullable;
+
 public abstract class EggEntity extends LivingEntity {
 
     private static final EntityDataAccessor<Integer> HATCH_DELAY = SynchedEntityData.defineId(EggEntity.class, EntityDataSerializers.INT);
@@ -61,6 +63,7 @@ public abstract class EggEntity extends LivingEntity {
     /**
      * Create and return a Entity here
      */
+    @Nullable
     public abstract Entity onHatch();
 
     /**

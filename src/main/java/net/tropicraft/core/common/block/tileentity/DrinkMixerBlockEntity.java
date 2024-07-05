@@ -26,7 +26,6 @@ import net.tropicraft.core.common.item.CocktailItem;
 import net.tropicraft.core.common.network.message.ClientboundMixerInventoryPacket;
 import net.tropicraft.core.common.network.message.ClientboundMixerStartPacket;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
@@ -113,7 +112,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         return ingredients;
     }
 
-    public static List<Ingredient> listIngredients(@Nonnull ItemStack stack) {
+    public static List<Ingredient> listIngredients(ItemStack stack) {
         List<Ingredient> is = new ArrayList<>();
 
         if (Drink.isDrink(stack.getItem())) {
@@ -136,7 +135,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         }
     }
 
-    private void dropItem(@Nonnull ItemStack stack, @Nullable Player at) {
+    private void dropItem(ItemStack stack, @Nullable Player at) {
         if (at == null) {
             BlockPos pos = getBlockPos().relative(getBlockState().getValue(DrinkMixerBlock.FACING));
             Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), stack);
@@ -190,7 +189,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         syncInventory();
     }
 
-    public boolean addToMixer(@Nonnull ItemStack ingredient) {
+    public boolean addToMixer(ItemStack ingredient) {
         if (ingredients.get(0).isEmpty()) {
             if (!Drink.isDrink(ingredient.getItem())) {
                 Ingredient i = Ingredient.findMatchingIngredient(ingredient);

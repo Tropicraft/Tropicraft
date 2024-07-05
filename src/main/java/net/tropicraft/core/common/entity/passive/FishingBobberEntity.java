@@ -38,12 +38,14 @@ public class FishingBobberEntity extends Entity implements IEntityWithComplexSpa
     private static final EntityDataAccessor<Integer> DATA_HOOKED_ENTITY = SynchedEntityData.defineId(FishingBobberEntity.class, EntityDataSerializers.INT);
     private boolean inGround;
     private int ticksInGround;
+    @Nullable
     private EntityKoaBase angler;
     private int ticksInAir;
     private int ticksCatchable;
     private int ticksCaughtDelay;
     private int ticksCatchableDelay;
     private float fishApproachAngle;
+    @Nullable
     public Entity caughtEntity;
     private FishingBobberEntity.State currentState = FishingBobberEntity.State.FLYING;
     private int luck;
@@ -140,9 +142,7 @@ public class FishingBobberEntity extends Entity implements IEntityWithComplexSpa
             return;
         }
 
-        if (angler == null) {
-            remove(RemovalReason.DISCARDED);
-        } else if (level().isClientSide || !shouldStopFishing()) {
+        if (level().isClientSide || !shouldStopFishing()) {
             if (inGround) {
                 ++ticksInGround;
                 if (ticksInGround >= 1200) {
@@ -158,16 +158,16 @@ public class FishingBobberEntity extends Entity implements IEntityWithComplexSpa
                 f = ifluidstate.getHeight(level(), blockpos);
             }
 
-            if (currentState == FishingBobberEntity.State.FLYING) {
+            if (currentState == State.FLYING) {
                 if (caughtEntity != null) {
                     setDeltaMovement(Vec3.ZERO);
-                    currentState = FishingBobberEntity.State.HOOKED_IN_ENTITY;
+                    currentState = State.HOOKED_IN_ENTITY;
                     return;
                 }
 
                 if (f > 0.0f) {
                     setDeltaMovement(getDeltaMovement().multiply(0.3, 0.2, 0.3));
-                    currentState = FishingBobberEntity.State.BOBBING;
+                    currentState = State.BOBBING;
                     return;
                 }
 
@@ -182,11 +182,11 @@ public class FishingBobberEntity extends Entity implements IEntityWithComplexSpa
                     setDeltaMovement(Vec3.ZERO);
                 }
             } else {
-                if (currentState == FishingBobberEntity.State.HOOKED_IN_ENTITY) {
+                if (currentState == State.HOOKED_IN_ENTITY) {
                     if (caughtEntity != null) {
                         if (caughtEntity.isRemoved()) {
                             caughtEntity = null;
-                            currentState = FishingBobberEntity.State.FLYING;
+                            currentState = State.FLYING;
                         } else {
                             setPos(caughtEntity.getX(), caughtEntity.getBoundingBox().minY + (double) caughtEntity.getBbHeight() * 0.8, caughtEntity.getZ());
                             setPos(getX(), getY(), getZ());
@@ -196,7 +196,7 @@ public class FishingBobberEntity extends Entity implements IEntityWithComplexSpa
                     return;
                 }
 
-                if (currentState == FishingBobberEntity.State.BOBBING) {
+                if (currentState == State.BOBBING) {
                     Vec3 Vector3d = getDeltaMovement();
                     double d0 = getY() + Vector3d.y - (double) blockpos.getY() - (double) f;
                     if (Math.abs(d0) < 0.01) {

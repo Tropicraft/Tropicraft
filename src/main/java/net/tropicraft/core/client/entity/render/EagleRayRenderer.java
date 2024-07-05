@@ -10,8 +10,6 @@ import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.EagleRayModel;
 import net.tropicraft.core.common.entity.underdasea.EagleRayEntity;
 
-import javax.annotation.Nullable;
-
 public class EagleRayRenderer extends MobRenderer<EagleRayEntity, EagleRayModel> {
 
     public static final ResourceLocation RAY_TEXTURE_LOC = TropicraftRenderUtils.bindTextureEntity("ray/eagleray");
@@ -28,7 +26,6 @@ public class EagleRayRenderer extends MobRenderer<EagleRayEntity, EagleRayModel>
         matrixStackIn.popPose();
     }
 
-    @Nullable
     @Override
     public ResourceLocation getTextureLocation(EagleRayEntity eagleRayEntity) {
         return RAY_TEXTURE_LOC;

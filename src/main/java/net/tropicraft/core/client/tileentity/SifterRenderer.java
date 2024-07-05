@@ -12,7 +12,10 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.Level;
 import net.tropicraft.core.common.block.tileentity.SifterBlockEntity;
 
+import javax.annotation.Nullable;
+
 public class SifterRenderer implements BlockEntityRenderer<SifterBlockEntity> {
+    @Nullable
     private ItemEntity item;
 
     public SifterRenderer(BlockEntityRendererProvider.Context pContext) {

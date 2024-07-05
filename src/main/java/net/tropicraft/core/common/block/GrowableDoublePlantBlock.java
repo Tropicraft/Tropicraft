@@ -20,11 +20,13 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.HitResult;
 import net.tropicraft.core.common.block.huge_plant.HugePlantBlock;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Supplier;
 
 public final class GrowableDoublePlantBlock extends DoublePlantBlock implements BonemealableBlock {
     private final Supplier<BlockEntry<HugePlantBlock>> growInto;
+    @Nullable
     private Supplier<RegistryEntry<? extends ItemLike, ? extends ItemLike>> pickItem;
 
     public GrowableDoublePlantBlock(Properties properties, Supplier<BlockEntry<HugePlantBlock>> growInto) {

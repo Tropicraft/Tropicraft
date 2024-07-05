@@ -97,7 +97,7 @@ public class ScubaArmorItem extends ArmorItem {
                 armorModel.prepareMobModel((E) entity, 0.0f, 0.0f, 1.0f);
                 armorModel.crouching = entity.isShiftKeyDown();
                 armorModel.young = entity.isBaby();
-                armorModel.rightArmPose = entity.getMainHandItem() != null ? HumanoidModel.ArmPose.BLOCK : HumanoidModel.ArmPose.EMPTY;
+                armorModel.rightArmPose = !entity.getMainHandItem().isEmpty() ? HumanoidModel.ArmPose.BLOCK : HumanoidModel.ArmPose.EMPTY;
             }
 
             @Override

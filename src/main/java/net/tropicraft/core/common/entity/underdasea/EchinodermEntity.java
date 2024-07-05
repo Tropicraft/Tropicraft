@@ -12,6 +12,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.entity.egg.EggEntity;
 
+import javax.annotation.Nullable;
+
 public abstract class EchinodermEntity extends WaterAnimal {
     /**
      * How many ticks it takes for a baby to grow into an adult.
@@ -110,6 +112,7 @@ public abstract class EchinodermEntity extends WaterAnimal {
         return getGrowingAge() == 0;
     }
 
+    @Nullable
     private EchinodermEntity findMate() {
         int neighbors = 0;
         EchinodermEntity closestMate = null;

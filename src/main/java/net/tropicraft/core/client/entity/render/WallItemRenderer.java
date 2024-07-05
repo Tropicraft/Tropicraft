@@ -11,8 +11,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.common.entity.placeable.WallItemEntity;
 
-import javax.annotation.Nullable;
-
 public class WallItemRenderer extends EntityRenderer<WallItemEntity> {
 
     public WallItemRenderer(EntityRendererProvider.Context context) {
@@ -30,7 +28,6 @@ public class WallItemRenderer extends EntityRenderer<WallItemEntity> {
         super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
     }
 
-    @Nullable
     @Override
     public ResourceLocation getTextureLocation(WallItemEntity wallItemEntity) {
         return TextureAtlas.LOCATION_BLOCKS;

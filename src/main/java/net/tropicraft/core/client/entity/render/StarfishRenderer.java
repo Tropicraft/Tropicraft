@@ -8,13 +8,12 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
 import net.tropicraft.core.common.entity.underdasea.StarfishEntity;
 import net.tropicraft.core.common.entity.underdasea.StarfishType;
-
-import javax.annotation.Nullable;
 
 public class StarfishRenderer extends EntityRenderer<StarfishEntity> {
 
@@ -64,9 +63,8 @@ public class StarfishRenderer extends EntityRenderer<StarfishEntity> {
         stack.popPose();
     }
 
-    @Nullable
     @Override
     public ResourceLocation getTextureLocation(StarfishEntity starfishEntity) {
-        return null; // Custom setting this in the render loop
+        return TextureAtlas.LOCATION_BLOCKS; // Custom setting this in the render loop
     }
 }

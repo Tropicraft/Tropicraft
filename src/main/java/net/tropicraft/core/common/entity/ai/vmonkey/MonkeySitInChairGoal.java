@@ -23,7 +23,7 @@ public class MonkeySitInChairGoal extends Goal {
     }
 
     private boolean isOwnerNear() {
-        return entity != null && entity.getOwner() != null && entity.getOwner().distanceToSqr(entity) < 32;
+        return entity.getOwner() != null && entity.getOwner().distanceToSqr(entity) < 32;
     }
 
     private boolean isOwnerNearAndSitting() {
@@ -41,7 +41,7 @@ public class MonkeySitInChairGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (entity == null || !entity.isTame() || entity.getOwner() == null) {
+        if (!entity.isTame() || entity.getOwner() == null) {
             return false;
         }
         return hasNearbyEmptyChair() && isOwnerNearAndSitting();

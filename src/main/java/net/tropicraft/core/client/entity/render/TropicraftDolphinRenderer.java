@@ -10,8 +10,6 @@ import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.TropicraftDolphinModel;
 import net.tropicraft.core.common.entity.underdasea.TropicraftDolphinEntity;
 
-import javax.annotation.Nullable;
-
 @OnlyIn(Dist.CLIENT)
 public class TropicraftDolphinRenderer extends MobRenderer<TropicraftDolphinEntity, TropicraftDolphinModel> {
 
@@ -20,7 +18,6 @@ public class TropicraftDolphinRenderer extends MobRenderer<TropicraftDolphinEnti
         shadowStrength = 0.5f;
     }
 
-    @Nullable
     @Override
     public ResourceLocation getTextureLocation(TropicraftDolphinEntity dolphin) {
         return TropicraftRenderUtils.getTextureEntity(dolphin.getTexture());

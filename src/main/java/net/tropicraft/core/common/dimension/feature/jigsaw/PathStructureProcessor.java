@@ -55,7 +55,7 @@ public abstract class PathStructureProcessor extends CheatyStructureProcessor {
     private static final WeakHashMap<StructurePlaceSettings, List<PathVector>> VECTOR_CACHE = new WeakHashMap<>();
 
     @Nullable
-    protected Direction.Axis getPathDirection(LevelReader level, BlockPos seedPos, StructureTemplate.StructureBlockInfo current, StructurePlaceSettings settings, StructureTemplate template) {
+    protected Direction.Axis getPathDirection(LevelReader level, BlockPos seedPos, StructureTemplate.StructureBlockInfo current, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
         /*
          *  Use special marker jigsaw blocks to represent "vectors" of paths.
          *

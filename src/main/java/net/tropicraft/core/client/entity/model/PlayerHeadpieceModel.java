@@ -18,6 +18,8 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.entity.LivingEntity;
 import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
 
+import javax.annotation.Nullable;
+
 public class PlayerHeadpieceModel extends HumanoidModel<LivingEntity> {
     private final int textureIndex;
     private final double xOffset, yOffset;
@@ -51,7 +53,7 @@ public class PlayerHeadpieceModel extends HumanoidModel<LivingEntity> {
         return LayerDefinition.create(mesh, 64, 32);
     }
 
-    public static PlayerHeadpieceModel createModel(ModelLayerLocation entityModelLayer, EntityModelSet entityModelLoader, int textureIndex, double xOffset, double yOffset) {
+    public static PlayerHeadpieceModel createModel(ModelLayerLocation entityModelLayer, @Nullable EntityModelSet entityModelLoader, int textureIndex, double xOffset, double yOffset) {
         return new PlayerHeadpieceModel(entityModelLoader == null ?
                 create().bakeRoot() :
                 entityModelLoader.bakeLayer(entityModelLayer), textureIndex, xOffset, yOffset);

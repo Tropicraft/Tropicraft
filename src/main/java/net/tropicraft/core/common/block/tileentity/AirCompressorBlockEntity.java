@@ -21,7 +21,6 @@ import net.tropicraft.core.common.block.AirCompressorBlock;
 import net.tropicraft.core.common.item.scuba.ScubaArmorItem;
 import net.tropicraft.core.common.network.message.ClientboundAirCompressorInventoryPacket;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class AirCompressorBlockEntity extends BlockEntity implements IMachineBlock {
@@ -44,9 +43,9 @@ public class AirCompressorBlockEntity extends BlockEntity implements IMachineBlo
     /**
      * The stack that is currently being filled
      */
-    @Nonnull
     private ItemStack stack;
 
+    @Nullable
     private ScubaArmorItem tank;
 
     public AirCompressorBlockEntity(BlockEntityType<AirCompressorBlockEntity> type, BlockPos pos, BlockState state) {
@@ -76,12 +75,11 @@ public class AirCompressorBlockEntity extends BlockEntity implements IMachineBlo
         }
     }
 
-    public void setTank(@Nonnull ItemStack tankItemStack) {
+    public void setTank(ItemStack tankItemStack) {
         stack = tankItemStack;
         tank = !(stack.getItem() instanceof ScubaArmorItem) ? null : (ScubaArmorItem) stack.getItem();
     }
 
-    @Nonnull
     public ItemStack getTankStack() {
         return stack;
     }

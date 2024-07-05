@@ -5,6 +5,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.tropicraft.core.common.item.CocktailItem;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -91,6 +92,7 @@ public final class MixerRecipes {
         return false;
     }
 
+    @Nullable
     public static Drink getDrink(NonNullList<ItemStack> ingredientStacks) {
         Set<Ingredient> ingredients = new HashSet<>();
 

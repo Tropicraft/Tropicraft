@@ -11,12 +11,14 @@ import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
 
+import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
 
 public class MonkeyPickUpPinaColadaGoal extends Goal {
 
     private final VMonkeyEntity entity;
+    @Nullable
     private ItemEntity drinkEntity;
     private final double speedModifier;
     private final PathNavigation navigation;

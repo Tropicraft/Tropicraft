@@ -70,6 +70,7 @@ public class VMonkeyEntity extends TamableAnimal {
     /**
      * Entity this monkey is following around
      */
+    @Nullable
     private LivingEntity following;
     private boolean madAboutStolenAlcohol;
 
@@ -124,6 +125,7 @@ public class VMonkeyEntity extends TamableAnimal {
         setMonkeyFlags(compound.getByte("MonkeyFlags"));
     }
 
+    @Nullable
     public LivingEntity getFollowing() {
         return following;
     }

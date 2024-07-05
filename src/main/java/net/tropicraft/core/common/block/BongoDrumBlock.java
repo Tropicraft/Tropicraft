@@ -143,7 +143,6 @@ public final class BongoDrumBlock extends Block {
     }
 
     private float getAdjustedPitch(HitResult hitVec) {
-        if (hitVec == null || hitVec.getLocation() == null) return 1.0f;
         double distX = Math.abs(hitVec.getLocation().x - Math.floor(hitVec.getLocation().x) - 0.5);
         double distZ = Math.abs(hitVec.getLocation().z - Math.floor(hitVec.getLocation().z) - 0.5);
         double dist = (float) Math.sqrt(distX * distX + distZ * distZ);

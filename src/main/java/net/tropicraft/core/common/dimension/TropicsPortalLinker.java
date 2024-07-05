@@ -52,6 +52,7 @@ public class TropicsPortalLinker {
         return portalInfo;
     }
 
+    @Nullable
     private PortalInfo findExistingPortal(Entity entity) {
         int searchArea = 148;
         double closestPortalDistance = -1D;

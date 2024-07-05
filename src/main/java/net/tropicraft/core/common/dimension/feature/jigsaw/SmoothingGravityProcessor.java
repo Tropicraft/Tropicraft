@@ -16,6 +16,8 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 
+import javax.annotation.Nullable;
+
 public class SmoothingGravityProcessor extends PathStructureProcessor {
 
     public static final MapCodec<SmoothingGravityProcessor> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
@@ -35,7 +37,7 @@ public class SmoothingGravityProcessor extends PathStructureProcessor {
     }
 
     @Override
-    public StructureBlockInfo process(LevelReader level, BlockPos seedPos, BlockPos pos2, StructureBlockInfo originalBlockInfo, StructureBlockInfo blockInfo, StructurePlaceSettings placementSettingsIn, StructureTemplate template) {
+    public StructureBlockInfo process(LevelReader level, BlockPos seedPos, BlockPos pos2, StructureBlockInfo originalBlockInfo, StructureBlockInfo blockInfo, StructurePlaceSettings placementSettingsIn, @Nullable StructureTemplate template) {
         Axis pathDir = getPathDirection(level, seedPos, blockInfo, placementSettingsIn, template);
         if (pathDir == null) {
             pathDir = Axis.X; // Better than nothing

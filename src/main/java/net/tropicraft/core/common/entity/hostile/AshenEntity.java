@@ -57,6 +57,7 @@ public class AshenEntity extends TropicraftCreatureEntity implements RangedAttac
     private static final EntityDataAccessor<Byte> MASK_TYPE = SynchedEntityData.defineId(AshenEntity.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Byte> ACTION_STATE = SynchedEntityData.defineId(AshenEntity.class, EntityDataSerializers.BYTE);
 
+    @Nullable
     public AshenMaskEntity maskToTrack;
 
     public AshenEntity(EntityType<? extends PathfinderMob> type, Level world) {

@@ -14,6 +14,7 @@ import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
 
+import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -25,7 +26,9 @@ public class MonkeyAngryThrowGoal extends Goal {
     private float oldWaterCost;
     private int timeToRecalcPath;
     private int madMeter;
+    @Nullable
     private ItemEntity trackedMug;
+    @Nullable
     private LivingEntity trackedPlayer;
 
     public MonkeyAngryThrowGoal(VMonkeyEntity monkeyEntity) {
@@ -104,6 +107,7 @@ public class MonkeyAngryThrowGoal extends Goal {
         trackedMug = nearbyMug();
     }
 
+    @Nullable
     private LivingEntity nearbyPlayer() {
         List<Player> list = entity.level().getEntitiesOfClass(Player.class, entity.getBoundingBox().inflate(20.0));
 
@@ -140,7 +144,7 @@ public class MonkeyAngryThrowGoal extends Goal {
         }
     }
 
-    private void leapTowardTarget(LivingEntity leapTarget) {
+    private void leapTowardTarget(@Nullable LivingEntity leapTarget) {
         if (leapTarget == null) return;
 
         double d0 = leapTarget.getX() - entity.getX();
@@ -155,6 +159,7 @@ public class MonkeyAngryThrowGoal extends Goal {
         entity.setDeltaMovement(new Vec3(motion.x, 0.25, motion.z));
     }
 
+    @Nullable
     private ItemEntity nearbyMug() {
         List<ItemEntity> list = entity.level().getEntitiesOfClass(ItemEntity.class, entity.getBoundingBox().inflate(10.0));
 

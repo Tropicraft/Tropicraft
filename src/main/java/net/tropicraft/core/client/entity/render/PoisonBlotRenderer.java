@@ -14,8 +14,6 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.common.entity.projectile.PoisonBlotEntity;
 
-import javax.annotation.Nullable;
-
 @OnlyIn(Dist.CLIENT)
 public class PoisonBlotRenderer extends EntityRenderer<PoisonBlotEntity> {
 
@@ -47,7 +45,6 @@ public class PoisonBlotRenderer extends EntityRenderer<PoisonBlotEntity> {
                 .setNormal(pose, 0.0f, 0.0f, 1.0f);
     }
 
-    @Nullable
     @Override
     public ResourceLocation getTextureLocation(PoisonBlotEntity entity) {
         return TropicraftRenderUtils.getTextureEntity("treefrog/blot");
