@@ -14,21 +14,21 @@ import net.tropicraft.core.common.entity.underdasea.ManOWarEntity;
 
 @OnlyIn(Dist.CLIENT)
 public class ManOWarGelLayer extends RenderLayer<ManOWarEntity, ManOWarModel> {
-    private final ManOWarModel mowModel;
+    private final ManOWarModel model;
 
-    public ManOWarGelLayer(ManOWarRenderer manOWarRenderer, ManOWarModel mowModel) {
-        super(manOWarRenderer);
-        this.mowModel = mowModel;
+    public ManOWarGelLayer(ManOWarRenderer renderer, ManOWarModel model) {
+        super(renderer);
+        this.model = model;
     }
 
     @Override
-    public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, ManOWarEntity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, ManOWarEntity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if (!entity.isInvisible()) {
-            getParentModel().copyPropertiesTo(mowModel);
-            mowModel.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
-            mowModel.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-            VertexConsumer ivertexbuilder = bufferIn.getBuffer(RenderType.entityTranslucent(getTextureLocation(entity)));
-            mowModel.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, LivingEntityRenderer.getOverlayCoords(entity, 0.0f));
+            getParentModel().copyPropertiesTo(model);
+            model.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
+            model.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+            VertexConsumer buffer = bufferSource.getBuffer(RenderType.entityTranslucent(getTextureLocation(entity)));
+            model.renderToBuffer(poseStack, buffer, packedLight, LivingEntityRenderer.getOverlayCoords(entity, 0.0f));
         }
     }
 }

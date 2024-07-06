@@ -24,12 +24,9 @@ public class CowktailRenderer extends MobRenderer<CowktailEntity, CowModel<Cowkt
 
     public CowktailRenderer(EntityRendererProvider.Context context) {
         super(context, new CowModel<>(context.bakeLayer(TropicraftRenderLayers.COWKTAIL_LAYER)), 0.7f);
-        addLayer(new CowktailLayer<>(this));
+        addLayer(new CowktailLayer<>(this, context.getBlockRenderDispatcher()));
     }
 
-    /**
-     * Returns the location of an entity's texture.
-     */
     @Override
     public ResourceLocation getTextureLocation(CowktailEntity entity) {
         return textures.get(entity.getCowktailType());
