@@ -117,11 +117,7 @@ public class FishingBobberEntity extends Entity implements IEntityWithComplexSpa
         return distance < 4096.0;
     }
 
-    /**
-     * Inflated so it will still render when looking at koa but not fishing lure
-     *
-     * @return
-     */
+    // Inflated so it will still render when looking at koa but not fishing lure
     @Override
     public AABB getBoundingBoxForCulling() {
         return getBoundingBox().inflate(8, 5.0, 8);
@@ -362,9 +358,6 @@ public class FishingBobberEntity extends Entity implements IEntityWithComplexSpa
     public void addAdditionalSaveData(CompoundTag compound) {
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
     }
@@ -386,18 +379,11 @@ public class FishingBobberEntity extends Entity implements IEntityWithComplexSpa
         }
     }
 
-    /**
-     * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
-     * prevent them from trampling crops
-     */
     @Override
     protected Entity.MovementEmission getMovementEmission() {
         return Entity.MovementEmission.NONE;
     }
 
-    /**
-     * Queues the entity for removal from the world on the next tick.
-     */
     @Override
     public void remove(RemovalReason reason) {
         super.remove(reason);

@@ -51,17 +51,11 @@ public class MonkeySitInChairGoal extends Goal {
         return getNearestEmptyChair().isPresent();
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     @Override
     public boolean canContinueToUse() {
         return isOwnerNearAndSitting();
     }
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
     @Override
     public void start() {
         Optional<ChairEntity> nearbyChair = getNearestEmptyChair();

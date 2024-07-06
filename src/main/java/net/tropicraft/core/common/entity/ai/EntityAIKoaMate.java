@@ -39,9 +39,6 @@ public class EntityAIKoaMate extends Goal {
         setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
     @Override
     public boolean canUse() {
         //adult cooldown
@@ -74,9 +71,6 @@ public class EntityAIKoaMate extends Goal {
         return false;
     }
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
     @Override
     public void start() {
         matingTimeout = 300;
@@ -86,18 +80,12 @@ public class EntityAIKoaMate extends Goal {
         }
     }
 
-    /**
-     * Resets the task
-     */
     @Override
     public void stop() {
         mate = null;
         villagerObj.setMating(false);
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     @Override
     public boolean canContinueToUse() {
         boolean result = matingTimeout >= 0 && canTownHandleMoreVillagers() && villagerObj.getAge() == 0 && villagerObj.getIsWillingToMate(false);
@@ -107,9 +95,6 @@ public class EntityAIKoaMate extends Goal {
         return result;
     }
 
-    /**
-     * Updates the task
-     */
     @Override
     public void tick() {
         --matingTimeout;

@@ -28,9 +28,6 @@ public class EntityAIWanderNotLazy extends Goal {
         setFlags(EnumSet.of(Flag.MOVE));
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
     @Override
     public boolean canUse() {
         if (!mustUpdate) {
@@ -56,17 +53,11 @@ public class EntityAIWanderNotLazy extends Goal {
         }
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     @Override
     public boolean canContinueToUse() {
         return !entity.getNavigation().isDone();
     }
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
     @Override
     public void start() {
         entity.getNavigation().moveTo(xPosition, yPosition, zPosition, speed);

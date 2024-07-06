@@ -123,10 +123,6 @@ public class CocktailItem extends Item {
         return new ItemStack(TropicraftItems.BAMBOO_MUG.get());
     }
 
-    /**
-     * Called when the player finishes using this Item (E.g. finishes eating.). Not called when the player stops using
-     * the Item before the action is complete.
-     */
     @Override
     public ItemStack finishUsingItem(@Nonnull ItemStack stack, @Nonnull Level worldIn, @Nonnull LivingEntity entityLiving) {
         if (entityLiving instanceof Player player) {

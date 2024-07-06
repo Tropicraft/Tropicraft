@@ -55,9 +55,6 @@ public class SpearEntity extends AbstractArrow {
         builder.define(ID_FOIL, false);
     }
 
-    /**
-     * Called to update the entity's position/logic.
-     */
     @Override
     public void tick() {
         if (inGroundTime > 4) {
@@ -113,9 +110,6 @@ public class SpearEntity extends AbstractArrow {
         return dealtDamage ? null : super.findHitEntity(pStartVec, pEndVec);
     }
 
-    /**
-     * Called when the arrow hits an entity
-     */
     @Override
     protected void onHitEntity(EntityHitResult pResult) {
         Entity entity = pResult.getEntity();
@@ -176,17 +170,11 @@ public class SpearEntity extends AbstractArrow {
         return new ItemStack(TropicraftItems.BAMBOO_SPEAR.get());
     }
 
-    /**
-     * The sound made when an entity is hit by this projectile
-     */
     @Override
     protected SoundEvent getDefaultHitGroundSoundEvent() {
         return SoundEvents.ARROW_HIT;
     }
 
-    /**
-     * Called by a player entity when they collide with an entity
-     */
     @Override
     public void playerTouch(Player pEntity) {
         if (ownedBy(pEntity) || getOwner() == null) {
@@ -194,9 +182,6 @@ public class SpearEntity extends AbstractArrow {
         }
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
     @Override
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);

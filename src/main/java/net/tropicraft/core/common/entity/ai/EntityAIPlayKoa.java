@@ -23,9 +23,6 @@ public class EntityAIPlayKoa extends Goal {
         setFlags(EnumSet.of(Flag.MOVE));
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
     @Override
     public boolean canUse() {
         if (villagerObj.getAge() >= 0) {
@@ -56,17 +53,11 @@ public class EntityAIPlayKoa extends Goal {
         }
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     @Override
     public boolean canContinueToUse() {
         return playTime > 0;
     }
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
     @Override
     public void start() {
         if (targetVillager != null) {
@@ -76,18 +67,12 @@ public class EntityAIPlayKoa extends Goal {
         playTime = 1000;
     }
 
-    /**
-     * Resets the task
-     */
     @Override
     public void stop() {
         villagerObj.setPlaying(false);
         targetVillager = null;
     }
 
-    /**
-     * Updates the task
-     */
     @Override
     public void tick() {
         --playTime;

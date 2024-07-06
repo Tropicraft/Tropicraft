@@ -35,9 +35,6 @@ public class EntityAIEatToHeal extends Goal {
         setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
     @Override
     public boolean canUse() {
         if (entityObj.getHealth() < entityObj.getMaxHealth() - missingHealthToHeal) {
@@ -47,9 +44,6 @@ public class EntityAIEatToHeal extends Goal {
         }
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     @Override
     public boolean canContinueToUse() {
         return canUse();
@@ -127,9 +121,6 @@ public class EntityAIEatToHeal extends Goal {
         }
     }
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
     @Override
     public void start() {
         super.start();
@@ -138,9 +129,6 @@ public class EntityAIEatToHeal extends Goal {
         entityObj.getNavigation().stop();
     }
 
-    /**
-     * Resets the task
-     */
     @Override
     public void stop() {
         super.stop();

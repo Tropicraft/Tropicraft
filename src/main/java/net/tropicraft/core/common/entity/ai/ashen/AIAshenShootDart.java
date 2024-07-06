@@ -31,9 +31,6 @@ public class AIAshenShootDart extends Goal {
         this.attackCooldown = attackCooldown;
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
     @Override
     public boolean canUse() {
         if (entity.getTarget() != null) {
@@ -45,17 +42,11 @@ public class AIAshenShootDart extends Goal {
         return entity.getTarget() != null && entity.hasMask();
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     @Override
     public boolean canContinueToUse() {
         return canUse() || !entity.getNavigation().isDone();
     }
 
-    /**
-     * Resets the task
-     */
     @Override
     public void stop() {
         super.stop();

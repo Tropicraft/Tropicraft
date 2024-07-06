@@ -35,9 +35,6 @@ public class AshenMaskItem extends ArmorItem {
         return maskType;
     }
 
-    /**
-     * Called when this item is used when targetting a Block
-     */
     @Override
     public InteractionResult useOn(UseOnContext context) {
         BlockPos pos = context.getClickedPos();
