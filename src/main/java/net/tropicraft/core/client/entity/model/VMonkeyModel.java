@@ -34,7 +34,6 @@ public class VMonkeyModel extends HierarchicalModel<VMonkeyEntity> implements Ar
     private final ModelPart head;
     @Nullable
     protected RandomSource rand;
-    public float herps;
 
     public VMonkeyModel(ModelPart root) {
         this.root = root;
@@ -132,20 +131,12 @@ public class VMonkeyModel extends HierarchicalModel<VMonkeyEntity> implements Ar
     }
 
     @Override
-    public void setupAnim(VMonkeyEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        face.xRot = headPitch * Mth.DEG_TO_RAD + herps;
+    public void setupAnim(VMonkeyEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        float partialTicks = ageInTicks - entity.tickCount;
+
         face.yRot = netHeadYaw * Mth.DEG_TO_RAD + Mth.PI;
-        head.xRot = face.xRot;
-        head.yRot = face.yRot;
-    }
+        face.xRot = headPitch * Mth.DEG_TO_RAD;
 
-    @Override
-    public ModelPart root() {
-        return root;
-    }
-
-    @Override
-    public void prepareMobModel(VMonkeyEntity entity, float f, float f1, float f2) {
         if (entity.isOrderedToSit()) {
             body.setPos(0.0f, 20.0f, 0.0f);
             body.xRot = 0.9320058f;
@@ -180,7 +171,6 @@ public class VMonkeyModel extends HierarchicalModel<VMonkeyEntity> implements Ar
             rLegLower.xRot = -0.9599311f;
             face.setPos(0.0f, 15.0f, -3.0f);
             head.setPos(0.0f, 15.0f, -3.0f);
-            herps = 0;
         } else if (entity.isClimbing()) {
             body.xRot = Mth.HALF_PI;
             body.setPos(0.0f, 16.0f, 0.0f);
@@ -211,14 +201,13 @@ public class VMonkeyModel extends HierarchicalModel<VMonkeyEntity> implements Ar
             rLegLower.setPos(1.0f, 12.0f, -3.0f);
             //rLegLower.rotateAngleX = -2.443461f;
             face.setPos(0.0f, 11.0f, 1.0f);
-            herps = Mth.HALF_PI;
+            face.xRot += Mth.HALF_PI;
             head.setPos(0.0f, 11.0f, 1.0f);
-            head.xRot = Mth.HALF_PI;
 
-            rLegUpper.xRot = Mth.cos(f * 0.5f) * 0.75f * f2 - Mth.HALF_PI;
-            rArmUpper.xRot = Mth.cos(f * 0.5f) * 0.75f * f2 - Mth.HALF_PI;
-            lArmUpper.xRot = Mth.cos(f * 0.5f) * 0.75f * f2 - Mth.HALF_PI;
-            lLegUpper.xRot = Mth.cos(f * 0.5f) * 0.75f * f2 - Mth.HALF_PI;
+            rLegUpper.xRot = Mth.cos(limbSwing * 0.5f) * 0.75f * partialTicks - Mth.HALF_PI;
+            rArmUpper.xRot = Mth.cos(limbSwing * 0.5f) * 0.75f * partialTicks - Mth.HALF_PI;
+            lArmUpper.xRot = Mth.cos(limbSwing * 0.5f) * 0.75f * partialTicks - Mth.HALF_PI;
+            lLegUpper.xRot = Mth.cos(limbSwing * 0.5f) * 0.75f * partialTicks - Mth.HALF_PI;
             rLegLower.setPos(1.0f, 12.0f + (Mth.cos(rLegUpper.xRot) * 5), -3.0f - (5 + Mth.sin(rLegUpper.xRot) * 5));
             rArmLower.setPos(1.0f, 19.5f + (Mth.cos(rArmUpper.xRot) * 5), -3.0f - (5 + Mth.sin(rArmUpper.xRot) * 5));
             lArmLower.setPos(-1.0f, 19.5f + (Mth.cos(lArmUpper.xRot) * 5), -3.0f - (5 + Mth.sin(lArmUpper.xRot) * 5));
@@ -250,10 +239,10 @@ public class VMonkeyModel extends HierarchicalModel<VMonkeyEntity> implements Ar
             face.setPos(0.0f, 15.0f, -5.0f);
             head.setPos(0.0f, 15.0f, -5.0f);
 
-            rLegUpper.xRot = Mth.cos(f * 0.6662f) * 0.75f * f1;
-            rArmUpper.xRot = Mth.cos(f * 0.6662f + Mth.PI) * 0.75f * f1;
-            lLegUpper.xRot = Mth.cos(f * 0.6662f + Mth.PI) * 0.75f * f1;
-            lArmUpper.xRot = Mth.cos(f * 0.6662f) * 0.75f * f1;
+            rLegUpper.xRot = Mth.cos(limbSwing * 0.6662f) * 0.75f * limbSwingAmount;
+            rArmUpper.xRot = Mth.cos(limbSwing * 0.6662f + Mth.PI) * 0.75f * limbSwingAmount;
+            lLegUpper.xRot = Mth.cos(limbSwing * 0.6662f + Mth.PI) * 0.75f * limbSwingAmount;
+            lArmUpper.xRot = Mth.cos(limbSwing * 0.6662f) * 0.75f * limbSwingAmount;
             rLegLower.setPos(1.0f, 19.0f - (5 - Mth.sin(rLegUpper.xRot + 1.570796327f) * 5), -3.5f - (Mth.cos(rLegUpper.xRot + 1.570796327f) * 5));
             rArmLower.setPos(1.0f, 19.0f - (5 - Mth.sin(rArmUpper.xRot + 1.570796327f) * 5), 3.5f - (Mth.cos(rArmUpper.xRot + 1.570796327f) * 5));
             lArmLower.setPos(-1.0f, 19.0f - (5 - Mth.sin(lArmUpper.xRot + 1.570796327f) * 5), 3.5f - (Mth.cos(lArmUpper.xRot + 1.570796327f) * 5));
@@ -263,16 +252,23 @@ public class VMonkeyModel extends HierarchicalModel<VMonkeyEntity> implements Ar
             lLegLower.xRot = lLegUpper.xRot;
             lArmLower.xRot = lArmUpper.xRot;
 
-            tailBase.xRot = Mth.cos(f * 0.6662f) * 0.50f * f1;
-            tailBase.zRot = Mth.cos(f * 0.6662f) * 0.50f * f1;
+            tailBase.xRot = Mth.cos(limbSwing * 0.6662f) * 0.50f * limbSwingAmount;
+            tailBase.zRot = Mth.cos(limbSwing * 0.6662f) * 0.50f * limbSwingAmount;
             tailMid.setPos(0.0f - (Mth.cos(tailBase.zRot + Mth.PI / 2.0f) * 3), 11.0f + (3 - Mth.sin(tailBase.xRot + Mth.PI / 2.0f) * 3), 3.5f - (Mth.cos(tailBase.xRot + Mth.PI / 2.0f) * 3));
-            tailMid.xRot = tailBase.xRot + Mth.cos(f * 0.6662f) * 0.75f * f1;
-            tailMid.zRot = tailBase.zRot + Mth.cos(f * 0.6662f) * 0.75f * f1;
+            tailMid.xRot = tailBase.xRot + Mth.cos(limbSwing * 0.6662f) * 0.75f * limbSwingAmount;
+            tailMid.zRot = tailBase.zRot + Mth.cos(limbSwing * 0.6662f) * 0.75f * limbSwingAmount;
             tailTop.setPos(0.0f - (Mth.cos(tailMid.zRot + Mth.PI / 2.0f) * 2), 9.0f + (2 - Mth.sin(tailMid.xRot + Mth.PI / 2.0f) * 2), 3.5f - (Mth.cos(tailMid.xRot + Mth.PI / 2.0f) * 2));
-            tailTop.xRot = tailMid.xRot + Mth.cos(f * 0.6662f) * 1.75f * f1;
-            tailTop.zRot = tailMid.xRot + Mth.cos(f * 0.6662f) * 1.75f * f1;
-            herps = 0;
+            tailTop.xRot = tailMid.xRot + Mth.cos(limbSwing * 0.6662f) * 1.75f * limbSwingAmount;
+            tailTop.zRot = tailMid.xRot + Mth.cos(limbSwing * 0.6662f) * 1.75f * limbSwingAmount;
         }
+
+        head.xRot = face.xRot;
+        head.yRot = face.yRot;
+    }
+
+    @Override
+    public ModelPart root() {
+        return root;
     }
 
     @Override

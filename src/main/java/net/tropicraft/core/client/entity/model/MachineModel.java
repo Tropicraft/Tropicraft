@@ -5,20 +5,17 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.tropicraft.core.common.block.tileentity.IMachineBlock;
 
-public abstract class MachineModel<T extends BlockEntity & IMachineBlock> extends Model {
-    public MachineModel() {
+public abstract class MachineModel extends Model {
+    protected final ModelPart root;
+
+    public MachineModel(ModelPart root) {
         super(RenderType::entitySolid);
+        this.root = root;
     }
 
-    public abstract Iterable<ModelPart> getParts();
-
     @Override
-    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, int color) {
-        getParts().forEach((part) -> {
-            part.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, color);
-        });
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
+        root.render(poseStack, buffer, packedLight, packedOverlay, color);
     }
 }

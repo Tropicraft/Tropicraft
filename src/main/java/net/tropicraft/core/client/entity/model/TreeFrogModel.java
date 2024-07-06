@@ -14,21 +14,15 @@ public class TreeFrogModel extends HierarchicalModel<TreeFrogEntity> {
     private final ModelPart root;
     private final ModelPart frontLeftLeg;
     private final ModelPart frontRightLeg;
-    private final ModelPart body;
     private final ModelPart rearRightLeg;
     private final ModelPart rearLeftLeg;
-    private final ModelPart rightEye;
-    private final ModelPart leftEye;
 
     public TreeFrogModel(ModelPart root) {
         this.root = root;
         frontLeftLeg = root.getChild("frontLeftLeg");
         frontRightLeg = root.getChild("frontRightLeg");
-        body = root.getChild("body");
         rearRightLeg = root.getChild("rearRightLeg");
         rearLeftLeg = root.getChild("rearLeftLeg");
-        rightEye = root.getChild("rightEye");
-        leftEye = root.getChild("leftEye");
     }
 
     public static LayerDefinition create() {

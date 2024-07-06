@@ -17,9 +17,9 @@ import net.tropicraft.core.common.block.tileentity.IMachineBlock;
 
 public abstract class MachineRenderer<T extends BlockEntity & IMachineBlock> implements BlockEntityRenderer<T> {
     private final Block block;
-    protected final MachineModel<T> model;
+    protected final MachineModel model;
 
-    public MachineRenderer(BlockEntityRendererProvider.Context context, Block block, MachineModel<T> model) {
+    public MachineRenderer(BlockEntityRendererProvider.Context context, Block block, MachineModel model) {
         this.block = block;
         this.model = model;
     }

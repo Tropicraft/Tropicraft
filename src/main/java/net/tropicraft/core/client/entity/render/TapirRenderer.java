@@ -21,7 +21,7 @@ public class TapirRenderer extends MobRenderer<TapirEntity, TapirModel<TapirEnti
     public TapirRenderer(EntityRendererProvider.Context context) {
         super(context, new TapirModel<>(context.bakeLayer(TropicraftRenderLayers.TAPIR_LAYER)), 0.6f);
         addLayer(new SunglassesLayer<>(this, TapirEntity::isUndercover, (poseStack, entity, model) -> {
-            ModelPart head = model.getHead();
+            ModelPart head = model.head();
             head.translateAndRotate(poseStack);
             poseStack.translate(0.5f / 16.0f, 2.0f / 16.0f, -10.0f / 16.0f);
             final float scale = 20.0f / 16.0f;

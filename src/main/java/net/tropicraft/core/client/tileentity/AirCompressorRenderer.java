@@ -25,7 +25,7 @@ public class AirCompressorRenderer extends MachineRenderer<AirCompressorBlockEnt
     //private final ModelScubaGear tankModel = new ModelScubaGear(0, EquipmentSlot.CHEST); // Can't reuse the main one with a different scale
 
     public AirCompressorRenderer(BlockEntityRendererProvider.Context context) {
-        super(context, TropicraftBlocks.AIR_COMPRESSOR.get(), new EIHMachineModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(TropicraftRenderLayers.AIRCOMPRESSOR_LAYER)));
+        super(context, TropicraftBlocks.AIR_COMPRESSOR.get(), new EIHMachineModel(Minecraft.getInstance().getEntityModels().bakeLayer(TropicraftRenderLayers.AIRCOMPRESSOR_LAYER)));
         tankModel = new ModelScubaGear(context.bakeLayer(TropicraftRenderLayers.CHEST_SCUBA_LAYER), EquipmentSlot.CHEST);
     }
 

@@ -9,31 +9,18 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.Entity;
 
-public class TapirModel<T extends Entity> extends TropicraftAgeableModel<T> {
-    private final ModelPart body_base;
+public class TapirModel<T extends Entity> extends TropicraftAgeableHierarchicalModel<T> {
+    private final ModelPart root;
     private final ModelPart head_base;
-    private final ModelPart tail_base;
-    private final ModelPart trunk_base;
-    private final ModelPart trunk_tip;
-    private final ModelPart ear_left;
-    private final ModelPart ear_left_r1;
-    private final ModelPart ear_right;
-    private final ModelPart ear_right_r1;
     private final ModelPart leg_front_left;
     private final ModelPart leg_front_right;
     private final ModelPart leg_back_left;
     private final ModelPart leg_back_right;
 
     public TapirModel(ModelPart root) {
-        body_base = root.getChild("body_base");
+        this.root = root;
+        ModelPart body_base = root.getChild("body_base");
         head_base = root.getChild("head_base");
-        tail_base = body_base.getChild("tail_base");
-        trunk_base = head_base.getChild("trunk_base");
-        trunk_tip = trunk_base.getChild("trunk_tip");
-        ear_left = head_base.getChild("ear_left");
-        ear_left_r1 = ear_left.getChild("ear_left_r1");
-        ear_right = head_base.getChild("ear_right");
-        ear_right_r1 = ear_right.getChild("ear_right_r1");
         leg_front_left = body_base.getChild("leg_front_left");
         leg_front_right = body_base.getChild("leg_front_right");
         leg_back_left = body_base.getChild("leg_back_left");
@@ -134,12 +121,12 @@ public class TapirModel<T extends Entity> extends TropicraftAgeableModel<T> {
     }
 
     @Override
-    public ModelPart getHead() {
-        return head_base;
+    protected ModelPart root() {
+        return root;
     }
 
     @Override
-    protected ModelPart getBody() {
-        return body_base;
+    public ModelPart head() {
+        return head_base;
     }
 }

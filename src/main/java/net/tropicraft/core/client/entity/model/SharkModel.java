@@ -12,51 +12,27 @@ import net.tropicraft.core.common.entity.underdasea.SharkEntity;
 
 public class SharkModel extends HierarchicalModel<SharkEntity> {
     private final ModelPart root;
-    private final ModelPart Head1;
-    private final ModelPart Head3;
-    private final ModelPart Body1Upper;
-    private final ModelPart Body1Lower;
-    private final ModelPart Body2Upper;
-    private final ModelPart Body2Lower;
     private final ModelPart Body3UpperLeft;
     private final ModelPart Body3LowerLeft;
     private final ModelPart Body3LowerRight;
     private final ModelPart FinPectoralLeft;
     private final ModelPart FinPectoralRight;
-    private final ModelPart FinDorsal;
-    private final ModelPart FinPelvicLeft;
-    private final ModelPart FinPelvicRight;
     private final ModelPart FinAdipose;
     private final ModelPart FinAnal;
     private final ModelPart FinCaudalUpper;
     private final ModelPart FinCaudalLower;
-    private final ModelPart Body3Lower;
-    private final ModelPart Body4Lower;
-    private final ModelPart Head2;
 
     public SharkModel(ModelPart root) {
         this.root = root;
-        Head1 = root.getChild("Head1");
-        Head3 = root.getChild("Head3");
-        Body1Upper = root.getChild("Body1Upper");
-        Body1Lower = root.getChild("Body1Lower");
-        Body2Upper = root.getChild("Body2Upper");
-        Body2Lower = root.getChild("Body2Lower");
         Body3UpperLeft = root.getChild("Body3UpperLeft");
         Body3LowerLeft = root.getChild("Body3LowerLeft");
         Body3LowerRight = root.getChild("Body3LowerRight");
         FinPectoralLeft = root.getChild("FinPectoralLeft");
         FinPectoralRight = root.getChild("FinPectoralRight");
-        FinDorsal = root.getChild("FinDorsal");
-        FinPelvicLeft = root.getChild("FinPelvicLeft");
-        FinPelvicRight = root.getChild("FinPelvicRight");
         FinAdipose = root.getChild("FinAdipose");
         FinAnal = root.getChild("FinAnal");
         FinCaudalUpper = root.getChild("FinCaudalUpper");
         FinCaudalLower = root.getChild("FinCaudalLower");
-        Body3Lower = root.getChild("Body3Lower");
-        Body4Lower = root.getChild("Body4Lower");
-        Head2 = root.getChild("Head2");
     }
 
     public static LayerDefinition create() {

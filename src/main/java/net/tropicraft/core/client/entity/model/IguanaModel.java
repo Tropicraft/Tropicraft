@@ -15,14 +15,10 @@ public class IguanaModel extends HierarchicalModel<IguanaEntity> {
     private final ModelPart head;
     private final ModelPart headTop1;
     private final ModelPart headTop2;
-    private final ModelPart body;
     private final ModelPart frontLeftLeg;
     private final ModelPart rearLeftLeg;
     private final ModelPart frontRightLeg;
     private final ModelPart rearRightLeg;
-    private final ModelPart back1;
-    private final ModelPart back2;
-    private final ModelPart back3;
     private final ModelPart jaw;
     private final ModelPart dewLap;
     private final ModelPart tailBase;
@@ -34,14 +30,10 @@ public class IguanaModel extends HierarchicalModel<IguanaEntity> {
         head = root.getChild("head");
         headTop1 = root.getChild("headTop1");
         headTop2 = root.getChild("headTop2");
-        body = root.getChild("body");
         frontLeftLeg = root.getChild("frontLeftLeg");
         rearLeftLeg = root.getChild("rearLeftLeg");
         frontRightLeg = root.getChild("frontRightLeg");
         rearRightLeg = root.getChild("rearRightLeg");
-        back1 = root.getChild("back1");
-        back2 = root.getChild("back2");
-        back3 = root.getChild("back3");
         jaw = root.getChild("jaw");
         dewLap = root.getChild("dewLap");
         tailBase = root.getChild("tailBase");
@@ -154,20 +146,23 @@ public class IguanaModel extends HierarchicalModel<IguanaEntity> {
 
     @Override
     public void setupAnim(IguanaEntity iguana, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        final float magicHeadRotationAmt = 57.29578f;
-        head.xRot = headPitch / magicHeadRotationAmt;
-        head.yRot = netHeadYaw / magicHeadRotationAmt;
-        jaw.xRot = head.xRot;
-        jaw.yRot = head.yRot;
-        headTop2.xRot = head.xRot;
-        headTop2.yRot = head.yRot;
-        headTop1.xRot = head.xRot;
-        headTop1.yRot = head.yRot;
-        dewLap.xRot = head.xRot;
-        dewLap.yRot = head.yRot;
+        frontRightLeg.xRot = Mth.cos(limbSwing * 0.6662f) * 1.75f * limbSwingAmount;
+        frontLeftLeg.xRot = Mth.cos(limbSwing * 0.6662f + Mth.PI) * 1.75f * limbSwingAmount;
+        rearRightLeg.xRot = Mth.cos(limbSwing * 0.6662f + Mth.PI) * 1.75f * limbSwingAmount;
+        rearLeftLeg.xRot = Mth.cos(limbSwing * 0.6662f) * 1.75f * limbSwingAmount;
+        tailBase.yRot = Mth.cos(limbSwing * 0.6662f) * 0.25f * limbSwingAmount;
+        tailMid.setPos(0.0f - (Mth.cos(tailBase.yRot + Mth.HALF_PI) * 6), 21.5f, 12.0f + Mth.sin(tailBase.xRot + Mth.PI) * 6);
+        tailMid.yRot = tailBase.yRot + Mth.cos(limbSwing * 0.6662f) * 0.50f * limbSwingAmount;
+        miscPart.setPos(0.0f - (Mth.cos(tailMid.yRot + Mth.HALF_PI) * 6), 21.5f, 18.0f + Mth.sin(tailMid.xRot + Mth.PI) * 6);
+        miscPart.yRot = tailMid.yRot + Mth.cos(limbSwing * 0.6662f) * 0.75f * limbSwingAmount;
+
+        ModelAnimator.look(head, netHeadYaw, headPitch);
+        ModelAnimator.look(jaw, netHeadYaw, headPitch);
+        ModelAnimator.look(headTop1, netHeadYaw, headPitch);
+        ModelAnimator.look(headTop2, netHeadYaw, headPitch);
+        ModelAnimator.look(dewLap, netHeadYaw, headPitch);
 
         // Animate iguana tail ambiently
-        // The call in prepareMobModel animates it when swinging limbs
         try (ModelAnimator.Cycle idle = ModelAnimator.cycle(ageInTicks * 0.025f, 0.1f)) {
             tailBase.yRot += idle.eval(1.0f, 1.0f, 0.0f, 0.0f);
 
@@ -178,19 +173,6 @@ public class IguanaModel extends HierarchicalModel<IguanaEntity> {
             miscPart.setPos(0.0f - (Mth.cos(tailMid.yRot + Mth.HALF_PI) * 6), 21.5f, 18.0f + Mth.sin(tailMid.xRot + 3.14159f) * 6);
             miscPart.yRot += idle.eval(1.0f, 1.0f, 0.075f, 0.0f);
         }
-    }
-
-    @Override
-    public void prepareMobModel(IguanaEntity iggy, float limbSwing, float limbSwingAmount, float partialTicks) {
-        frontRightLeg.xRot = Mth.cos(limbSwing * 0.6662f) * 1.75f * limbSwingAmount;
-        frontLeftLeg.xRot = Mth.cos(limbSwing * 0.6662f + Mth.PI) * 1.75f * limbSwingAmount;
-        rearRightLeg.xRot = Mth.cos(limbSwing * 0.6662f + Mth.PI) * 1.75f * limbSwingAmount;
-        rearLeftLeg.xRot = Mth.cos(limbSwing * 0.6662f) * 1.75f * limbSwingAmount;
-        tailBase.yRot = Mth.cos(limbSwing * 0.6662f) * 0.25f * limbSwingAmount;
-        tailMid.setPos(0.0f - (Mth.cos(tailBase.yRot + Mth.HALF_PI) * 6), 21.5f, 12.0f + Mth.sin(tailBase.xRot + 3.14159f) * 6);
-        tailMid.yRot = tailBase.yRot + Mth.cos(limbSwing * 0.6662f) * 0.50f * limbSwingAmount;
-        miscPart.setPos(0.0f - (Mth.cos(tailMid.yRot + Mth.HALF_PI) * 6), 21.5f, 18.0f + Mth.sin(tailMid.xRot + 3.14159f) * 6);
-        miscPart.yRot = tailMid.yRot + Mth.cos(limbSwing * 0.6662f) * 0.75f * limbSwingAmount;
     }
 
     @Override

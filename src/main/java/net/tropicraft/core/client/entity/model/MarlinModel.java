@@ -12,33 +12,20 @@ import net.tropicraft.core.common.entity.underdasea.MarlinEntity;
 
 public class MarlinModel extends HierarchicalModel<MarlinEntity> {
     private final ModelPart root;
-    private final ModelPart body;
-    private final ModelPart dorsalFin1;
     private final ModelPart leftFin;
     private final ModelPart rightFin;
-    private final ModelPart bottomFin;
     private final ModelPart head;
     private final ModelPart tail1;
-    private final ModelPart tail2;
-    private final ModelPart sword;
     private final ModelPart tail3;
-    private final ModelPart tailEndB;
-    private final ModelPart tailEndT;
 
     public MarlinModel(ModelPart root) {
         this.root = root;
         head = root.getChild("head");
-        body = root.getChild("body");
-        sword = head.getChild("sword");
         tail1 = root.getChild("tail1");
-        tail2 = tail1.getChild("tail2");
+        ModelPart tail2 = tail1.getChild("tail2");
         tail3 = tail2.getChild("tail3");
-        tailEndB = tail3.getChild("tailEndB");
-        tailEndT = tail3.getChild("tailEndT");
-        dorsalFin1 = root.getChild("dorsalFin1");
         leftFin = root.getChild("leftFin");
         rightFin = root.getChild("rightFin");
-        bottomFin = root.getChild("bottomFin");
     }
 
     public static LayerDefinition create() {

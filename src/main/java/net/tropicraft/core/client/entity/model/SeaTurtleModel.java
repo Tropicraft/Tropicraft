@@ -14,7 +14,6 @@ public class SeaTurtleModel extends HierarchicalModel<SeaTurtleEntity> {
     private final ModelPart body;
     private final ModelPart frFlipper;
     private final ModelPart flFlipper;
-    private final ModelPart head;
     private final ModelPart rlFlipper;
     private final ModelPart rrFlipper;
 
@@ -22,7 +21,6 @@ public class SeaTurtleModel extends HierarchicalModel<SeaTurtleEntity> {
         body = root.getChild("body");
         frFlipper = body.getChild("frFlipper");
         flFlipper = body.getChild("flFlipper");
-        head = body.getChild("head");
         rlFlipper = body.getChild("rlFlipper");
         rrFlipper = body.getChild("rrFlipper");
     }

@@ -82,8 +82,7 @@ public class TropiCreeperModel extends HierarchicalModel<TropiCreeperEntity> {
 
     @Override
     public void setupAnim(TropiCreeperEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
-        head.xRot = headPitch * Mth.DEG_TO_RAD;
+        ModelAnimator.look(head, netHeadYaw, headPitch);
         leg1.xRot = Mth.cos(limbSwing * 0.6662f) * 1.4f * limbSwingAmount;
         leg2.xRot = Mth.cos(limbSwing * 0.6662f + Mth.PI) * 1.4f * limbSwingAmount;
         leg3.xRot = Mth.cos(limbSwing * 0.6662f + Mth.PI) * 1.4f * limbSwingAmount;

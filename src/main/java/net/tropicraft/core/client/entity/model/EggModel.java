@@ -1,6 +1,6 @@
 package net.tropicraft.core.client.entity.model;
 
-import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -10,12 +10,12 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.tropicraft.core.common.entity.egg.EggEntity;
 
-import java.util.List;
-
-public class EggModel extends ListModel<EggEntity> {
+public class EggModel extends HierarchicalModel<EggEntity> {
+    private final ModelPart root;
     private final ModelPart body;
 
     public EggModel(ModelPart root) {
+        this.root = root;
         body = root.getChild("body");
     }
 
@@ -39,26 +39,22 @@ public class EggModel extends ListModel<EggEntity> {
     }
 
     @Override
-    public void setupAnim(EggEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-    }
-
-    @Override
-    public Iterable<ModelPart> parts() {
-        return List.of(body);
-    }
-
-    @Override
-    public void prepareMobModel(EggEntity egg, float limbSwing, float limbSwingAmount, float partialTick) {
+    public void setupAnim(EggEntity egg, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         boolean hatching = egg.isNearHatching();
         float randRotator = (float) egg.rotationRand;
         body.yRot = 0.0f;
         if (hatching) {
-            body.yRot = Mth.sin((egg.tickCount + partialTick) * 0.6f) * 0.6f;
-            body.xRot = Mth.sin(randRotator * 4) * 0.6f;
-            body.zRot = Mth.cos(randRotator * 4) * 0.6f;
+            body.yRot = Mth.sin(ageInTicks * 0.6f) * 0.6f;
+            body.xRot = Mth.sin(randRotator * 4.0f) * 0.6f;
+            body.zRot = Mth.cos(randRotator * 4.0f) * 0.6f;
         } else {
             body.xRot = 0.0f;
             body.zRot = 0.0f;
         }
+    }
+
+    @Override
+    public ModelPart root() {
+        return root;
     }
 }
