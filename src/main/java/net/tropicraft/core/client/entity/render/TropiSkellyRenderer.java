@@ -13,7 +13,7 @@ import net.tropicraft.core.common.entity.hostile.TropiSkellyEntity;
 
 public class TropiSkellyRenderer extends HumanoidMobRenderer<TropiSkellyEntity, TropiSkellyModel> {
 
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "textures/entity/tropiskeleton.png");
+    private static final ResourceLocation TEXTURE = Tropicraft.location("textures/entity/tropiskeleton.png");
 
     public TropiSkellyRenderer(EntityRendererProvider.Context context) {
         super(context, new TropiSkellyModel(context.bakeLayer(TropicraftRenderLayers.TROPI_SKELLY_LAYER)), 0.5f);

@@ -184,6 +184,6 @@ public final class TropicraftNoiseRouterData {
     }
 
     private static ResourceKey<DensityFunction> createKey(String name) {
-        return ResourceKey.create(Registries.DENSITY_FUNCTION, ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, name));
+        return ResourceKey.create(Registries.DENSITY_FUNCTION, Tropicraft.location(name));
     }
 }

@@ -64,7 +64,7 @@ public class TropicraftRenderUtils {
     }
 
     private static ResourceLocation getResLoc(String path) {
-        return ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, path);
+        return Tropicraft.location(path);
     }
 
     public static ResourceLocation getTextureArmor(String path) {

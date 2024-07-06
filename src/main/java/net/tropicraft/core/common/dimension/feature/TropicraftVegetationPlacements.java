@@ -255,7 +255,7 @@ public final class TropicraftVegetationPlacements {
     }
 
     private static ResourceKey<PlacedFeature> createKey(String name) {
-        return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, name));
+        return ResourceKey.create(Registries.PLACED_FEATURE, Tropicraft.location(name));
     }
 
     public static void addFruitTrees(BiomeGenerationSettings.Builder generation) {

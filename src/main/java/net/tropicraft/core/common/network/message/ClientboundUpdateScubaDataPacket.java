@@ -10,7 +10,7 @@ import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.item.scuba.ScubaData;
 
 public record ClientboundUpdateScubaDataPacket(ScubaData data) implements CustomPacketPayload {
-    public static final Type<ClientboundUpdateScubaDataPacket> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "update_scuba_data"));
+    public static final Type<ClientboundUpdateScubaDataPacket> TYPE = new Type<>(Tropicraft.location("update_scuba_data"));
 
     public static final StreamCodec<ByteBuf, ClientboundUpdateScubaDataPacket> STREAM_CODEC = StreamCodec.composite(
             ScubaData.STREAM_CODEC, ClientboundUpdateScubaDataPacket::data,

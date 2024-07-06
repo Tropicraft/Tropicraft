@@ -12,7 +12,7 @@ import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.block.tileentity.DrinkMixerBlockEntity;
 
 public record ClientboundMixerStartPacket(BlockPos pos) implements CustomPacketPayload {
-    public static final Type<ClientboundMixerStartPacket> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "mixer_start"));
+    public static final Type<ClientboundMixerStartPacket> TYPE = new Type<>(Tropicraft.location("mixer_start"));
 
     public static final StreamCodec<ByteBuf, ClientboundMixerStartPacket> STREAM_CODEC = StreamCodec.composite(
             BlockPos.STREAM_CODEC, ClientboundMixerStartPacket::pos,

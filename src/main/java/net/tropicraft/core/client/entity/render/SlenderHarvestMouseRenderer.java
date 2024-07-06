@@ -9,7 +9,7 @@ import net.tropicraft.core.client.entity.model.SlenderHarvestMouseModel;
 import net.tropicraft.core.common.entity.passive.SlenderHarvestMouseEntity;
 
 public class SlenderHarvestMouseRenderer extends MobRenderer<SlenderHarvestMouseEntity, SlenderHarvestMouseModel<SlenderHarvestMouseEntity>> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "textures/entity/slender_harvest_mouse.png");
+    private static final ResourceLocation TEXTURE = Tropicraft.location("textures/entity/slender_harvest_mouse.png");
 
     public SlenderHarvestMouseRenderer(EntityRendererProvider.Context context) {
         super(context, new SlenderHarvestMouseModel<>(context.bakeLayer(TropicraftRenderLayers.SLENDER_HARVEST_MOUSE_LAYER)), 0.15f);

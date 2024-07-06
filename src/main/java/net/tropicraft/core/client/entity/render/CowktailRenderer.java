@@ -18,8 +18,8 @@ import java.util.Map;
 @OnlyIn(Dist.CLIENT)
 public class CowktailRenderer extends MobRenderer<CowktailEntity, CowModel<CowktailEntity>> {
     private static final Map<CowktailEntity.Type, ResourceLocation> textures = Util.make(Maps.newHashMap(), (map) -> {
-        map.put(CowktailEntity.Type.IRIS, ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "textures/entity/cowktail/iris_cowktail.png"));
-        map.put(CowktailEntity.Type.ANEMONE, ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "textures/entity/cowktail/anemone_cowktail.png"));
+        map.put(CowktailEntity.Type.IRIS, Tropicraft.location("textures/entity/cowktail/iris_cowktail.png"));
+        map.put(CowktailEntity.Type.ANEMONE, Tropicraft.location("textures/entity/cowktail/anemone_cowktail.png"));
     });
 
     public CowktailRenderer(EntityRendererProvider.Context context) {

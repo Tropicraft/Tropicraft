@@ -27,7 +27,7 @@ public class BambooChestRenderer extends ChestRenderer<BambooChestBlockEntity> {
     }
 
     private static Material getChestMaterial(String chestName) {
-        return new Material(Sheets.CHEST_SHEET, ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "entity/chest/" + chestName));
+        return new Material(Sheets.CHEST_SHEET, Tropicraft.location("entity/chest/" + chestName));
     }
 
     public BambooChestRenderer(BlockEntityRendererProvider.Context context) {

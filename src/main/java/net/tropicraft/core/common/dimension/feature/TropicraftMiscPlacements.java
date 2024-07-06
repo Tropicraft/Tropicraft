@@ -77,7 +77,7 @@ public final class TropicraftMiscPlacements {
     }
 
     private static ResourceKey<PlacedFeature> createKey(String name) {
-        return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, name));
+        return ResourceKey.create(Registries.PLACED_FEATURE, Tropicraft.location(name));
     }
 
     public static void addMudDisks(BiomeGenerationSettings.Builder generation) {

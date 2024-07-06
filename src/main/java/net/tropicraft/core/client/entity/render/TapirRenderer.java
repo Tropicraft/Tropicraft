@@ -15,8 +15,8 @@ import net.tropicraft.core.common.entity.passive.TapirEntity;
 
 @OnlyIn(Dist.CLIENT)
 public class TapirRenderer extends MobRenderer<TapirEntity, TapirModel<TapirEntity>> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "textures/entity/tapir.png");
-    private static final ResourceLocation BABY_TEXTURE = ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "textures/entity/tapir_baby.png");
+    private static final ResourceLocation TEXTURE = Tropicraft.location("textures/entity/tapir.png");
+    private static final ResourceLocation BABY_TEXTURE = Tropicraft.location("textures/entity/tapir_baby.png");
 
     public TapirRenderer(EntityRendererProvider.Context context) {
         super(context, new TapirModel<>(context.bakeLayer(TropicraftRenderLayers.TAPIR_LAYER)), 0.6f);

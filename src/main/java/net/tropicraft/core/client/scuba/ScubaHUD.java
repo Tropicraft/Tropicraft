@@ -31,7 +31,7 @@ public class ScubaHUD {
 
     @SubscribeEvent
     public static void registerOverlayRenderer(RegisterGuiLayersEvent event) {
-        event.registerBelow(VanillaGuiLayers.DEBUG_OVERLAY, ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "scuba_hud"), ScubaHUD::draw);
+        event.registerBelow(VanillaGuiLayers.DEBUG_OVERLAY, Tropicraft.location("scuba_hud"), ScubaHUD::draw);
     }
 
     private static void draw(GuiGraphics graphics, DeltaTracker deltaTracker) {

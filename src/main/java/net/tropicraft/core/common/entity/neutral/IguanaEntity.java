@@ -39,7 +39,7 @@ public class IguanaEntity extends TropicraftCreatureEntity {
     @Nullable
     private UUID angerTargetUUID;
 
-    private static final AttributeModifier ATTACK_SPEED_BOOST_MODIFIER = new AttributeModifier(ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "attack_speed_boost"), 0.05, AttributeModifier.Operation.ADD_VALUE);
+    private static final AttributeModifier ATTACK_SPEED_BOOST_MODIFIER = new AttributeModifier(Tropicraft.location("attack_speed_boost"), 0.05, AttributeModifier.Operation.ADD_VALUE);
 
     public IguanaEntity(EntityType<? extends PathfinderMob> type, Level world) {
         super(type, world);

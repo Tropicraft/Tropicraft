@@ -24,8 +24,8 @@ import javax.annotation.Nullable;
 @EventBusSubscriber(value = Dist.CLIENT, modid = Tropicraft.ID, bus = EventBusSubscriber.Bus.GAME)
 public class ScubaAmbienceTicker {
 
-    public static final SoundEvent SHALLOW_SCUBA = SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "scuba.shallow"));
-    public static final SoundEvent DEEP_SCUBA = SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "scuba.deep"));
+    public static final SoundEvent SHALLOW_SCUBA = SoundEvent.createVariableRangeEvent(Tropicraft.location("scuba.shallow"));
+    public static final SoundEvent DEEP_SCUBA = SoundEvent.createVariableRangeEvent(Tropicraft.location("scuba.deep"));
 
     @Nullable
     private static SoundEvent currentSound;

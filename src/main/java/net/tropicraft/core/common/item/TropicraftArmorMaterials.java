@@ -21,7 +21,7 @@ public class TropicraftArmorMaterials {
 
     // Ignored, replaced with custom models with IClientItemExtensions
     private static final List<ArmorMaterial.Layer> DUMMY_LAYERS = List.of(new ArmorMaterial.Layer(
-            ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "dummy")
+            Tropicraft.location("dummy")
     ));
 
     public static final DeferredHolder<ArmorMaterial, ArmorMaterial> ASHEN_MASK = REGISTER.register("ashen_mask", () -> new ArmorMaterial(
@@ -57,7 +57,7 @@ public class TropicraftArmorMaterials {
             SoundEvents.ARMOR_EQUIP_CHAIN,
             () -> Ingredient.of(TropicraftItems.SCALE.get()),
             List.of(new ArmorMaterial.Layer(
-                    ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "scale")
+                    Tropicraft.location("scale")
             )),
             0.5f,
             0.0f
@@ -73,7 +73,7 @@ public class TropicraftArmorMaterials {
             SoundEvents.ARMOR_EQUIP_IRON,
             () -> Ingredient.of(TropicraftTags.Items.REPAIRS_FIRE_ARMOR),
             List.of(new ArmorMaterial.Layer(
-                    ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "fire")
+                    Tropicraft.location("fire")
             )),
             0.1f,
             0.0f

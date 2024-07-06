@@ -37,7 +37,7 @@ public class ScubaGogglesItem extends ScubaArmorItem {
             "underwater_visibility",
             () -> new RangedAttribute(TropicraftLangKeys.SCUBA_VISIBILITY_STAT.key(), 0, -1, 1)
     );
-    private static final AttributeModifier VISIBILITY_BOOST = new AttributeModifier(ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "underwater.visibility"), 0.25, Operation.ADD_MULTIPLIED_BASE);
+    private static final AttributeModifier VISIBILITY_BOOST = new AttributeModifier(Tropicraft.location("underwater.visibility"), 0.25, Operation.ADD_MULTIPLIED_BASE);
 
     private final Supplier<ItemAttributeModifiers> boostedModifiers;
 
