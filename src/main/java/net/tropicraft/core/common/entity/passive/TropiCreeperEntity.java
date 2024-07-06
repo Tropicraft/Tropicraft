@@ -87,9 +87,6 @@ public class TropiCreeperEntity extends PathfinderMob {
         builder.define(IGNITED, false);
     }
 
-    /**
-     * The maximum height from where the entity is alowed to jump (used in pathfinder)
-     */
     @Override
     public int getMaxFallDistance() {
         return getTarget() == null ? 3 : 3 + (int) (getHealth() - 1.0f);
@@ -114,9 +111,6 @@ public class TropiCreeperEntity extends PathfinderMob {
         compound.putBoolean("ignited", hasIgnited());
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
@@ -133,9 +127,6 @@ public class TropiCreeperEntity extends PathfinderMob {
         }
     }
 
-    /**
-     * Called to update the entity's position/logic.
-     */
     @Override
     public void tick() {
         if (isAlive()) {

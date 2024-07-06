@@ -43,9 +43,6 @@ public class SwimToAvoidEntityGoal extends Goal {
         }
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     @Override
     public boolean canContinueToUse() {
         return entity.isInWater();

@@ -29,9 +29,6 @@ public class MonkeyFollowNearestPinaColadaHolderGoal extends Goal {
         navigation = monkey.getNavigation();
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
     @Override
     public boolean canUse() {
         if (monkey.isOrderedToSit()) return false;
@@ -52,9 +49,6 @@ public class MonkeyFollowNearestPinaColadaHolderGoal extends Goal {
         return false;
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     @Override
     public boolean canContinueToUse() {
         if (monkey.getFollowing() == null) {

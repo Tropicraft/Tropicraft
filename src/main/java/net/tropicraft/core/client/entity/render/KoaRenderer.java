@@ -24,9 +24,6 @@ public class KoaRenderer extends HumanoidMobRenderer<EntityKoaBase, KoaModel> {
         shadowStrength = 0.5f;
     }
 
-    /**
-     * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
-     */
     @Override
     public ResourceLocation getTextureLocation(EntityKoaBase entity) {
         if (entity.getGender() == EntityKoaBase.Genders.MALE) {

@@ -16,27 +16,15 @@ import java.util.function.Predicate;
 
 public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal {
     private final Predicate<Entity> canBeSeenSelector;
-    /**
-     * The entity we are attached to
-     */
     protected PathfinderMob theEntity;
     private final double farSpeed;
     private final double nearSpeed;
     @Nullable
     protected T closestLivingEntity;
     private final float avoidDistance;
-    /**
-     * The PathEntity of our entity
-     */
     @Nullable
     private Path entityPathEntity;
-    /**
-     * The PathNavigate of our entity
-     */
     private final PathNavigation entityPathNavigate;
-    /**
-     * Class of entity this behavior seeks to avoid
-     */
     private final Class<T> classToAvoid;
     private final Predicate<Entity> avoidTargetSelector;
     private float healthToAvoid = 0.0f;
@@ -58,9 +46,6 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal {
         setFlags(EnumSet.of(Flag.MOVE));
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
     @Override
     public boolean canUse() {
 
@@ -88,33 +73,21 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal {
         }
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     @Override
     public boolean canContinueToUse() {
         return entityPathNavigate.isInProgress();
     }
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
     @Override
     public void start() {
         entityPathNavigate.moveTo(entityPathEntity, farSpeed);
     }
 
-    /**
-     * Resets the task
-     */
     @Override
     public void stop() {
         closestLivingEntity = null;
     }
 
-    /**
-     * Updates the task
-     */
     @Override
     public void tick() {
         if (theEntity.distanceToSqr(closestLivingEntity) < 49.0) {

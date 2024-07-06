@@ -373,26 +373,16 @@ public class SeaTurtleEntity extends Turtle {
             this.turtle = turtle;
         }
 
-        /**
-         * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
-         * method as well.
-         */
         @Override
         public boolean canUse() {
             return turtle.hasEgg() && turtle.getHomePos().closerToCenterThan(turtle.position(), 9.0) && super.canUse();
         }
 
-        /**
-         * Returns whether an in-progress EntityAIBase should continue executing
-         */
         @Override
         public boolean canContinueToUse() {
             return super.canContinueToUse() && turtle.hasEgg() && turtle.getHomePos().closerToCenterThan(turtle.position(), 9.0);
         }
 
-        /**
-         * Keep ticking a continuous task that has already been started
-         */
         @Override
         public void tick() {
             super.tick();
@@ -437,18 +427,11 @@ public class SeaTurtleEntity extends Turtle {
             this.turtle = turtle;
         }
 
-        /**
-         * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
-         * method as well.
-         */
         @Override
         public boolean canUse() {
             return super.canUse() && !turtle.hasEgg();
         }
 
-        /**
-         * Spawns a baby animal of the same type.
-         */
         @Override
         protected void breed() {
             ServerPlayer serverplayerentity = animal.getLoveCause();

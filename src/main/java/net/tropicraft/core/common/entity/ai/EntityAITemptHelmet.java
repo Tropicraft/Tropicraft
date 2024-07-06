@@ -75,9 +75,6 @@ public class EntityAITemptHelmet extends Goal {
         }
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
     @Override
     public boolean canUse() {
 
@@ -109,9 +106,6 @@ public class EntityAITemptHelmet extends Goal {
         return false;
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     @Override
     public boolean canContinueToUse() {
         if (scaredByPlayerMovement) {
@@ -136,9 +130,6 @@ public class EntityAITemptHelmet extends Goal {
         return canUse();
     }
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
     @Override
     public void start() {
         targetX = temptingPlayer.getX();
@@ -147,9 +138,6 @@ public class EntityAITemptHelmet extends Goal {
         isRunning = true;
     }
 
-    /**
-     * Reset the task's internal state. Called when this task is interrupted by another one
-     */
     @Override
     public void stop() {
         temptingPlayer = null;
@@ -158,9 +146,6 @@ public class EntityAITemptHelmet extends Goal {
         isRunning = false;
     }
 
-    /**
-     * Keep ticking a continuous task that has already been started
-     */
     @Override
     public void tick() {
         temptedEntity.getLookControl().setLookAt(temptingPlayer, (float) (temptedEntity.getMaxHeadYRot() + 20), (float) temptedEntity.getMaxHeadXRot());
@@ -172,9 +157,6 @@ public class EntityAITemptHelmet extends Goal {
         }
     }
 
-    /**
-     * @see #isRunning
-     */
     public boolean isRunning() {
         return isRunning;
     }

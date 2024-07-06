@@ -273,9 +273,6 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityWithComp
         return waterHeight;
     }
 
-    /**
-     * Returns true if this entity should push and be pushed by other entities when colliding.
-     */
     @Override
     public boolean isPushable() {
         return true;

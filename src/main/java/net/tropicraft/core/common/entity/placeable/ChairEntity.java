@@ -50,9 +50,6 @@ public class ChairEntity extends FurnitureEntity {
         super(type, world, TropicraftItems.CHAIRS);
     }
 
-    /**
-     * Called to update the entity's position/logic.
-     */
     @Override
     public void tick() {
         super.tick();
@@ -243,9 +240,6 @@ public class ChairEntity extends FurnitureEntity {
         return !player.isPassengerOfSameVehicle(this) ? InteractionResult.SUCCESS : InteractionResult.PASS;
     }
 
-    /**
-     * Returns true if other Entities should be prevented from moving through this Entity.
-     */
     @Override
     public boolean isPickable() {
         return isAlive();

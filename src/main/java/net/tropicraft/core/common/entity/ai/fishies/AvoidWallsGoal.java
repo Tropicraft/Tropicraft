@@ -69,9 +69,6 @@ public class AvoidWallsGoal extends Goal {
         }
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     @Override
     public boolean canContinueToUse() {
         return entity.isInWater();

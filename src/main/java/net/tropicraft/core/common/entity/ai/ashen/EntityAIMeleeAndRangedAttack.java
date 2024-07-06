@@ -57,9 +57,6 @@ public class EntityAIMeleeAndRangedAttack extends Goal {
         setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
     @Override
     public boolean canUse() {
         LivingEntity entitylivingbase = entityHost.getLastHurtByMob();
@@ -72,17 +69,11 @@ public class EntityAIMeleeAndRangedAttack extends Goal {
         }
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     @Override
     public boolean canContinueToUse() {
         return canUse() || !entityHost.getNavigation().isDone();
     }
 
-    /**
-     * Resets the task
-     */
     @Override
     public void stop() {
         attackTarget = null;
@@ -90,9 +81,6 @@ public class EntityAIMeleeAndRangedAttack extends Goal {
         rangedAttackTime = -1;
     }
 
-    /**
-     * Updates the task
-     */
     @Override
     public void tick() {
         if (attackTarget != null) {

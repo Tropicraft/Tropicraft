@@ -93,9 +93,6 @@ public class CowktailEntity extends Cow implements IShearable {
         compound.putString("Type", getCowktailType().name);
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);

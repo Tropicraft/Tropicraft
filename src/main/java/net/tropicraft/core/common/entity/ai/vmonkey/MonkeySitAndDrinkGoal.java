@@ -23,9 +23,6 @@ public class MonkeySitAndDrinkGoal extends Goal {
         setFlags(EnumSet.of(Goal.Flag.LOOK, Flag.MOVE));
     }
 
-    /**
-     * Reset the task's internal state. Called when this task is interrupted by another one
-     */
     @Override
     public void stop() {
         entity.setInSittingPose(false);

@@ -81,9 +81,6 @@ public class MonkeyPickUpPinaColadaGoal extends Goal {
         return false;
     }
 
-    /**
-     * Keep ticking a continuous task that has already been started
-     */
     @Override
     public void tick() {
         if (drinkEntity != null && !entity.isLeashed()) {

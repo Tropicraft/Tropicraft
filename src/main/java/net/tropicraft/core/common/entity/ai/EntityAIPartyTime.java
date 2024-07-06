@@ -44,9 +44,6 @@ public class EntityAIPartyTime extends Goal {
         setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
     @Override
     public boolean canUse() {
 
@@ -71,9 +68,6 @@ public class EntityAIPartyTime extends Goal {
         }
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     @Override
     public boolean canContinueToUse() {
         BlockPos blockpos = entityObj.blockPosition();
@@ -277,9 +271,6 @@ public class EntityAIPartyTime extends Goal {
         }
     }
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
     @Override
     public void start() {
         super.start();
