@@ -71,7 +71,7 @@ public class CowktailEntity extends Cow implements IShearable {
 
             List<RegistryEntry<Item, CocktailItem>> cocktails = new ArrayList<>(TropicraftItems.COCKTAILS.values());
             // Remove generic cocktail from cowktail
-            cocktails.removeIf(cocktail -> cocktail.isBound() && cocktail.get().getDrink() == Drink.COCKTAIL);
+            cocktails.removeIf(cocktail -> cocktail.isBound() && CocktailItem.getDrink(new ItemStack(cocktail)) == Drink.COCKTAIL);
             ItemStack cocktailItem = new ItemStack(cocktails.get(random.nextInt(cocktails.size())).get());
 
             if (itemstack.isEmpty()) {

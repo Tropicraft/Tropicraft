@@ -34,7 +34,7 @@ public class Drinks {
      * @return true if the ItemStack sent in is used in any of the registered recipes
      */
     public static boolean isRegisteredIngredient(ItemStack item) {
-        if (Drink.isDrink(item.getItem())) {
+        if (CocktailItem.isDrink(item)) {
             return true; // assuming we didn't put garbage in
         }
 
@@ -49,11 +49,11 @@ public class Drinks {
         return false;
     }
 
-    public static boolean isRegisteredIngredient(@Nonnull Item item) {
+    public static boolean isRegisteredIngredient(Item item) {
         return isRegisteredIngredient(new ItemStack(item));
     }
 
-    public static @Nonnull ItemStack getResult(NonNullList<ItemStack> ingredients) {
+    public static ItemStack getResult(NonNullList<ItemStack> ingredients) {
         for (MixerRecipe recipe : recipes) {
             int validIngredientsFound = 0;
 

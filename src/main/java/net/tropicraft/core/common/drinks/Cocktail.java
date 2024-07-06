@@ -31,6 +31,10 @@ public record Cocktail(
         this(drink, ingredients, computeColor(ingredients));
     }
 
+    public Cocktail(Drink drink) {
+        this(drink, List.of());
+    }
+
     public static int computeColor(List<Ingredient> ingredients) {
         Ingredient primary = ingredients.stream().filter(Ingredient::isPrimary).findAny().orElse(null);
         int color = primary == null ? DEFAULT_COLOR : primary.getColor();
