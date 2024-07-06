@@ -88,10 +88,6 @@ public class Drink {
         }
     }
 
-    public static boolean isDrink(Item item) {
-        return TropicraftItems.COCKTAILS.values().stream().anyMatch(ri -> ri.get() == item);
-    }
-
     public String getName() {
         return this == PINA_COLADA ? "Pi\u00F1a Colada" : RegistrateLangProvider.toEnglishName(name);
     }

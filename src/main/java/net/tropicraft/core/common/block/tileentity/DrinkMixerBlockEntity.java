@@ -112,21 +112,6 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         return ingredients;
     }
 
-    public static List<Ingredient> listIngredients(ItemStack stack) {
-        List<Ingredient> is = new ArrayList<>();
-
-        if (Drink.isDrink(stack.getItem())) {
-            is.addAll(CocktailItem.getIngredients(stack));
-        } else {
-            Ingredient i = Ingredient.findMatchingIngredient(stack);
-            if (i != null) {
-                is.add(i);
-            }
-        }
-
-        return is;
-    }
-
     public void startMixing() {
         ticks = 0;
         mixing = true;
@@ -191,7 +176,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
 
     public boolean addToMixer(ItemStack ingredient) {
         if (ingredients.get(0).isEmpty()) {
-            if (!Drink.isDrink(ingredient.getItem())) {
+            if (!CocktailItem.isDrink(ingredient)) {
                 Ingredient i = Ingredient.findMatchingIngredient(ingredient);
                 // Ordinarily we check for primary here, but I don't think that feature
                 // is as relevant anymore. Will leave it here just in case!
@@ -203,7 +188,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
             syncInventory();
             return true;
         } else if (ingredients.get(1).isEmpty()) {
-            if (Drink.isDrink(ingredient.getItem())) {
+            if (CocktailItem.isDrink(ingredient)) {
                 // prevent mixing multiple primary ingredients
                 // all cocktails already contain one
                 return false;
@@ -221,7 +206,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
             syncInventory();
             return true;
         } else if (ingredients.get(2).isEmpty()) {
-            if (Drink.isDrink(ingredient.getItem())) {
+            if (CocktailItem.isDrink(ingredient)) {
                 // prevent mixing multiple primary ingredients
                 // all cocktails already contain one
                 return false;

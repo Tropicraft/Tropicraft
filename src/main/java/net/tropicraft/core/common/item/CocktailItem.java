@@ -28,21 +28,15 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class CocktailItem extends Item {
-    private final Drink drink;
-
     public CocktailItem(Drink drink, Properties properties) {
-        super(properties);
-        this.drink = drink;
+        super(properties.component(TropicraftDataComponents.COCKTAIL, new Cocktail(drink)));
     }
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        Drink drink = getDrink(stack);
-        if (drink == Drink.COCKTAIL) {
-            List<Ingredient> ingredients = getIngredients(stack);
-            for (Ingredient ingredient : ingredients) {
-                tooltip.add(ingredient.getDisplayName());
-            }
+        List<Ingredient> ingredients = getIngredients(stack);
+        for (Ingredient ingredient : ingredients) {
+            tooltip.add(ingredient.getDisplayName());
         }
     }
 
@@ -64,7 +58,7 @@ public class CocktailItem extends Item {
         return stack;
     }
 
-    public static @Nonnull ItemStack makeCocktail(NonNullList<ItemStack> itemStacks) {
+    public static ItemStack makeCocktail(NonNullList<ItemStack> itemStacks) {
         // TODO fixme this is so ugly ugh
         ItemStack stack = new ItemStack(TropicraftItems.COCKTAILS.get(Drink.COCKTAIL).get());
         stack.set(TropicraftDataComponents.COCKTAIL, new Cocktail(
@@ -87,10 +81,12 @@ public class CocktailItem extends Item {
 
     @Nullable
     public static Drink getDrink(ItemStack stack) {
-        if (!Drink.isDrink(stack.getItem())) {
-            return null;
-        }
-        return ((CocktailItem) stack.getItem()).drink;
+        Cocktail cocktail = stack.get(TropicraftDataComponents.COCKTAIL);
+        return cocktail != null ? cocktail.drink() : null;
+    }
+
+    public static boolean isDrink(ItemStack itemStack) {
+        return getDrink(itemStack) != null;
     }
 
     @Override
@@ -160,9 +156,5 @@ public class CocktailItem extends Item {
             return super.getName(stack).copy().withStyle(drink.textFormatting).withStyle(ChatFormatting.BOLD);
         }
         return super.getName(stack);
-    }
-
-    public Drink getDrink() {
-        return drink;
     }
 }

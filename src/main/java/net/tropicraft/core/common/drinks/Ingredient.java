@@ -168,15 +168,13 @@ public class Ingredient implements Comparable<Ingredient> {
     }
 
     public static List<Ingredient> listIngredients(ItemStack stack) {
-        List<Ingredient> is = new ArrayList<>();
-
-        if (!stack.isEmpty() && Drink.isDrink(stack.getItem())) {
-            is.addAll(CocktailItem.getIngredients(stack));
-        } else if (!stack.isEmpty()) {
-            is.add(findMatchingIngredient(stack));
+        List<Ingredient> ingredients = CocktailItem.getIngredients(stack);
+        if (!ingredients.isEmpty()) {
+            return ingredients;
         }
 
-        return is;
+        Ingredient matchingIngredient = findMatchingIngredient(stack);
+        return matchingIngredient != null ? List.of(matchingIngredient) : List.of();
     }
 
     public Component getDisplayName() {
