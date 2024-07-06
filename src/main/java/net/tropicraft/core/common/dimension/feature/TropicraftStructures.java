@@ -76,6 +76,6 @@ public final class TropicraftStructures {
     }
 
     private static ResourceKey<Structure> createKey(String name) {
-        return ResourceKey.create(Registries.STRUCTURE, Tropicraft.location(name));
+        return Tropicraft.resourceKey(Registries.STRUCTURE, name);
     }
 }

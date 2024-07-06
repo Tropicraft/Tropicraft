@@ -474,6 +474,6 @@ public final class TropicraftBiomes {
     }
 
     private static ResourceKey<Biome> createKey(String name) {
-        return ResourceKey.create(Registries.BIOME, Tropicraft.location(name));
+        return Tropicraft.resourceKey(Registries.BIOME, name);
     }
 }
