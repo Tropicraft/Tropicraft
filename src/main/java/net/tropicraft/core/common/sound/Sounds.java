@@ -34,6 +34,6 @@ public class Sounds {
     public static final DeferredHolder<SoundEvent, SoundEvent> FROG_SPIT = register("frogspit");
 
     private static DeferredHolder<SoundEvent, SoundEvent> register(String name) {
-        return REGISTER.register(name, () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, name)));
+        return REGISTER.register(name, () -> SoundEvent.createVariableRangeEvent(Tropicraft.location(name)));
     }
 }

@@ -13,7 +13,7 @@ import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.block.tileentity.AirCompressorBlockEntity;
 
 public record ClientboundAirCompressorInventoryPacket(BlockPos pos, ItemStack tank) implements CustomPacketPayload {
-    public static final Type<ClientboundAirCompressorInventoryPacket> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "air_compressor_inventory"));
+    public static final Type<ClientboundAirCompressorInventoryPacket> TYPE = new Type<>(Tropicraft.location("air_compressor_inventory"));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundAirCompressorInventoryPacket> STREAM_CODEC = StreamCodec.composite(
             BlockPos.STREAM_CODEC, ClientboundAirCompressorInventoryPacket::pos,

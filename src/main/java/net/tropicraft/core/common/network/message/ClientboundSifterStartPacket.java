@@ -12,7 +12,7 @@ import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.block.tileentity.SifterBlockEntity;
 
 public record ClientboundSifterStartPacket(BlockPos pos) implements CustomPacketPayload {
-    public static final Type<ClientboundSifterStartPacket> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "sifter_start"));
+    public static final Type<ClientboundSifterStartPacket> TYPE = new Type<>(Tropicraft.location("sifter_start"));
 
     public static final StreamCodec<ByteBuf, ClientboundSifterStartPacket> STREAM_CODEC = StreamCodec.composite(
             BlockPos.STREAM_CODEC, ClientboundSifterStartPacket::pos,

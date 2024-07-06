@@ -33,7 +33,7 @@ import java.util.OptionalLong;
 public class TropicraftDimension {
     private static final Logger LOGGER = LogManager.getLogger(TropicraftDimension.class);
 
-    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "tropics");
+    public static final ResourceLocation ID = Tropicraft.location("tropics");
     public static final ResourceLocation EFFECTS_ID = ID;
 
     public static final ResourceKey<Level> WORLD = ResourceKey.create(Registries.DIMENSION, ID);

@@ -16,7 +16,7 @@ import net.tropicraft.core.common.block.tileentity.DrinkMixerBlockEntity;
 import java.util.List;
 
 public record ClientboundMixerInventoryPacket(BlockPos pos, List<ItemStack> inventory, ItemStack result) implements CustomPacketPayload {
-    public static final Type<ClientboundMixerInventoryPacket> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "mixer_inventory"));
+    public static final Type<ClientboundMixerInventoryPacket> TYPE = new Type<>(Tropicraft.location("mixer_inventory"));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundMixerInventoryPacket> STREAM_CODEC = StreamCodec.composite(
             BlockPos.STREAM_CODEC, ClientboundMixerInventoryPacket::pos,

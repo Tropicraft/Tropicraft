@@ -9,7 +9,7 @@ import net.tropicraft.core.client.entity.model.ToucanModel;
 import net.tropicraft.core.common.entity.passive.ToucanEntity;
 
 public class ToucanRenderer extends MobRenderer<ToucanEntity, ToucanModel> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "textures/entity/toucan.png");
+    private static final ResourceLocation TEXTURE = Tropicraft.location("textures/entity/toucan.png");
 
     public ToucanRenderer(EntityRendererProvider.Context context) {
         super(context, new ToucanModel(context.bakeLayer(TropicraftRenderLayers.TOUCAN_LAYER)), 0.2f);

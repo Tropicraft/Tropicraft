@@ -89,8 +89,8 @@ public class TropicraftRenderLayers {
     public static ModelLayerLocation BAMBOO_CHEST;
     public static ModelLayerLocation BAMBOO_DOUBLE_CHEST_LEFT;
     public static ModelLayerLocation BAMBOO_DOUBLE_CHEST_RIGHT;
-    public static ModelLayerLocation EIHMACHINE_LAYER = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "drink_mixer"), "main");
-    public static ModelLayerLocation AIRCOMPRESSOR_LAYER = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "air_compressor"), "main");
+    public static ModelLayerLocation EIHMACHINE_LAYER = new ModelLayerLocation(Tropicraft.location("drink_mixer"), "main");
+    public static ModelLayerLocation AIRCOMPRESSOR_LAYER = new ModelLayerLocation(Tropicraft.location("air_compressor"), "main");
     public static ModelLayerLocation BASILISK_LIZARD_LAYER;
     public static ModelLayerLocation CUBERA_LAYER;
     public static ModelLayerLocation FIDDLER_CRAB_LAYER;
@@ -173,7 +173,7 @@ public class TropicraftRenderLayers {
     }
 
     private static ModelLayerLocation registerMain(String id, Supplier<LayerDefinition> layerDefinition, EntityRenderersEvent.RegisterLayerDefinitions event) {
-        ModelLayerLocation modelLayer = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, id), "main");
+        ModelLayerLocation modelLayer = new ModelLayerLocation(Tropicraft.location(id), "main");
         event.registerLayerDefinition(modelLayer, layerDefinition);
         return modelLayer;
     }

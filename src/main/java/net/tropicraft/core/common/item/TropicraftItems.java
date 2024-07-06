@@ -701,7 +701,7 @@ public class TropicraftItems {
     private static ItemBuilder<ScubaArmorItem, Registrate> scubaFlippers(String name, ScubaType type, Supplier<? extends Item> source) {
         return REGISTRATE.item(name, p -> new ScubaArmorItem(type, ArmorItem.Type.BOOTS, p))
                 .properties(p -> p.component(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
-                        .add(NeoForgeMod.SWIM_SPEED, new AttributeModifier(ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "scuba"), 0.25, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.FEET)
+                        .add(NeoForgeMod.SWIM_SPEED, new AttributeModifier(Tropicraft.location("scuba"), 0.25, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.FEET)
                         .build()))
                 .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get(), 1)
                         .pattern("XX")

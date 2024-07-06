@@ -39,6 +39,6 @@ public final class TropicraftStructureSets {
     }
 
     private static ResourceKey<StructureSet> createKey(String name) {
-        return ResourceKey.create(Registries.STRUCTURE_SET, ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, name));
+        return ResourceKey.create(Registries.STRUCTURE_SET, Tropicraft.location(name));
     }
 }

@@ -23,7 +23,7 @@ import java.util.function.Consumer;
 
 public class ScubaArmorItem extends ArmorItem {
 
-    private static final ResourceLocation GOGGLES_OVERLAY_TEX_PATH = ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "textures/gui/goggles.png");
+    private static final ResourceLocation GOGGLES_OVERLAY_TEX_PATH = Tropicraft.location("textures/gui/goggles.png");
 
     private final ScubaType type;
 
@@ -61,7 +61,7 @@ public class ScubaArmorItem extends ArmorItem {
     }
 
     public static ResourceLocation getArmorTexture(ScubaType type) {
-        return ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "textures/models/armor/scuba_gear_" + type.getTextureName() + ".png");
+        return Tropicraft.location("textures/models/armor/scuba_gear_" + type.getTextureName() + ".png");
     }
 
     @Override

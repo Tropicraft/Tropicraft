@@ -15,7 +15,7 @@ import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
 @OnlyIn(Dist.CLIENT)
 public class TropiCreeperRenderer extends MobRenderer<TropiCreeperEntity, TropiCreeperModel> {
 
-    private static final ResourceLocation CREEPER_TEXTURE = ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "textures/entity/tropicreeper.png");
+    private static final ResourceLocation CREEPER_TEXTURE = Tropicraft.location("textures/entity/tropicreeper.png");
 
     public TropiCreeperRenderer(EntityRendererProvider.Context context) {
         super(context, new TropiCreeperModel(context.bakeLayer(TropicraftRenderLayers.TROPI_CREEPER_LAYER)), 0.5f);

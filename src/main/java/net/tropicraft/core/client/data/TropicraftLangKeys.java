@@ -22,7 +22,7 @@ public enum TropicraftLangKeys {
     private final Component component;
 
     TropicraftLangKeys(String type, String key, String value) {
-        this.key = Util.makeDescriptionId(type, ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, key));
+        this.key = Util.makeDescriptionId(type, Tropicraft.location(key));
         this.value = value;
         component = Component.translatable(this.key);
     }

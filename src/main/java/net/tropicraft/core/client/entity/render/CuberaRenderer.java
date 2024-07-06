@@ -10,7 +10,7 @@ import net.tropicraft.core.client.entity.model.CuberaModel;
 import net.tropicraft.core.common.entity.underdasea.CuberaEntity;
 
 public class CuberaRenderer extends MobRenderer<CuberaEntity, CuberaModel<CuberaEntity>> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "textures/entity/cubera.png");
+    private static final ResourceLocation TEXTURE = Tropicraft.location("textures/entity/cubera.png");
 
     public CuberaRenderer(EntityRendererProvider.Context context) {
         super(context, new CuberaModel<>(context.bakeLayer(TropicraftRenderLayers.CUBERA_LAYER)), 0.6f);

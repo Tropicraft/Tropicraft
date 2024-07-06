@@ -192,21 +192,21 @@ public final class TropicraftTemplatePools {
 
     private static WeightedPiece noAirSingle(String path, Holder<StructureProcessorList> processors, int weight) {
         return new WeightedPiece(
-                () -> SingleNoAirJigsawPiece.create(ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, path), processors, false),
+                () -> SingleNoAirJigsawPiece.create(Tropicraft.location(path), processors, false),
                 weight
         );
     }
 
     private static WeightedPiece noAirSingle(String path, int weight) {
         return new WeightedPiece(
-                () -> SingleNoAirJigsawPiece.create(ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, path)),
+                () -> SingleNoAirJigsawPiece.create(Tropicraft.location(path)),
                 weight
         );
     }
 
     private static WeightedPiece noRotateSingle(String path, Holder<StructureProcessorList> processors, int weight) {
         return new WeightedPiece(
-                () -> NoRotateSingleJigsawPiece.createNoRotate(ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, path), processors),
+                () -> NoRotateSingleJigsawPiece.createNoRotate(Tropicraft.location(path), processors),
                 weight
         );
     }
@@ -220,7 +220,7 @@ public final class TropicraftTemplatePools {
 
     private static WeightedPiece koaPath(String path, int weight, Holder<StructureProcessorList> processorList) {
         return new WeightedPiece(
-                () -> SingleNoAirJigsawPiece.create(ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, path), processorList, true),
+                () -> SingleNoAirJigsawPiece.create(Tropicraft.location(path), processorList, true),
                 weight
         );
     }
@@ -235,7 +235,7 @@ public final class TropicraftTemplatePools {
     }
 
     private static ResourceKey<StructureTemplatePool> createKey(String name) {
-        return ResourceKey.create(Registries.TEMPLATE_POOL, ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, name));
+        return ResourceKey.create(Registries.TEMPLATE_POOL, Tropicraft.location(name));
     }
 
     private record WeightedPiece(

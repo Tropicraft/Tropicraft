@@ -48,6 +48,6 @@ public final class TropicraftNoiseGenSettings {
     }
 
     private static ResourceKey<NoiseGeneratorSettings> createKey(String name) {
-        return ResourceKey.create(Registries.NOISE_SETTINGS, ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, name));
+        return ResourceKey.create(Registries.NOISE_SETTINGS, Tropicraft.location(name));
     }
 }

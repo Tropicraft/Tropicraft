@@ -36,6 +36,6 @@ public interface TropicraftJukeboxSongs {
     }
 
     private static ResourceKey<JukeboxSong> createKey(String name) {
-        return ResourceKey.create(Registries.JUKEBOX_SONG, ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, name));
+        return ResourceKey.create(Registries.JUKEBOX_SONG, Tropicraft.location(name));
     }
 }
