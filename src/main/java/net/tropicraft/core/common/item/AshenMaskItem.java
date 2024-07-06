@@ -16,14 +16,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.TropicraftRenderLayers;
-import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.PlayerHeadpieceModel;
 import net.tropicraft.core.common.entity.placeable.WallItemEntity;
 
 import java.util.function.Consumer;
 
 public class AshenMaskItem extends ArmorItem {
+    private static final ResourceLocation TEXTURE_LOCATION = Tropicraft.location("textures/entity/ashen/mask.png");
+
     private final AshenMasks maskType;
 
     public AshenMaskItem(Holder<ArmorMaterial> armorMaterial, AshenMasks maskType, Properties properties) {
@@ -78,6 +80,6 @@ public class AshenMaskItem extends ArmorItem {
 
     @Override
     public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
-        return TropicraftRenderUtils.getTextureEntity("ashen/mask");
+        return TEXTURE_LOCATION;
     }
 }

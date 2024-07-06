@@ -9,13 +9,14 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.TropicraftRenderLayers;
-import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.PlayerHeadpieceModel;
 
 import java.util.function.Consumer;
 
 public class NigelStacheItem extends ArmorItem {
+    private static final ResourceLocation TEXTURE_LOCATION = Tropicraft.location("textures/models/armor/nigel_layer_1.png");
 
     public NigelStacheItem(Properties properties) {
         super(TropicraftArmorMaterials.NIGEL_STACHE, Type.HELMET, properties);
@@ -33,6 +34,6 @@ public class NigelStacheItem extends ArmorItem {
 
     @Override
     public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
-        return TropicraftRenderUtils.getTextureArmor("nigel_layer_1");
+        return TEXTURE_LOCATION;
     }
 }

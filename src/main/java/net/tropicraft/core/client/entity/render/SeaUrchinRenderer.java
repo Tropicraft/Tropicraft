@@ -4,8 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.TropicraftRenderLayers;
-import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.SeaUrchinModel;
 import net.tropicraft.core.common.entity.underdasea.SeaUrchinEntity;
 
@@ -19,7 +19,7 @@ public class SeaUrchinRenderer extends MobRenderer<SeaUrchinEntity, SeaUrchinMod
      * Amount mature sea urchins are scaled down while rendering.
      */
     public static final float ADULT_RENDER_SCALE = 1.0f;
-    public static final ResourceLocation SEA_URCHIN_TEXTURE = TropicraftRenderUtils.bindTextureEntity("seaurchin");
+    public static final ResourceLocation SEA_URCHIN_TEXTURE = Tropicraft.location("textures/entity/seaurchin.png");
 
     public SeaUrchinRenderer(EntityRendererProvider.Context context) {
         super(context, new SeaUrchinModel(context.bakeLayer(TropicraftRenderLayers.SEA_URCHIN_LAYER)), 0.5f);

@@ -5,11 +5,12 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.tropicraft.core.client.TropicraftRenderUtils;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
 import net.tropicraft.core.client.entity.model.EggModel;
 import net.tropicraft.core.common.entity.egg.EggEntity;
@@ -44,7 +45,8 @@ public class EggRenderer extends LivingEntityRenderer<EggEntity, EggModel> {
 
         stack.scale(0.25f, 0.25f, 0.25f);
 
-        VertexConsumer buffer = TropicraftRenderUtils.getEntityCutoutBuilder(bufferIn, getTextureLocation(ent));
+        ResourceLocation resourceLocation = getTextureLocation(ent);
+        VertexConsumer buffer = bufferIn.getBuffer(RenderType.entityCutout(resourceLocation));
         int overlay = getOverlayCoords(ent, getWhiteOverlayProgress(ent, partialTicks));
 
         PoseStack.Pose pose = stack.last();
@@ -63,6 +65,6 @@ public class EggRenderer extends LivingEntityRenderer<EggEntity, EggModel> {
 
     @Override
     public ResourceLocation getTextureLocation(EggEntity entity) {
-        return TropicraftRenderUtils.bindTextureEntity(entity.getEggTexture());
+        return Tropicraft.location("textures/entity/" + entity.getEggTexture() + ".png");
     }
 }

@@ -3,6 +3,7 @@ package net.tropicraft.core.client.tileentity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.Material;
@@ -11,7 +12,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.MachineModel;
 import net.tropicraft.core.common.block.tileentity.IMachineBlock;
 
@@ -52,7 +52,8 @@ public abstract class MachineRenderer<T extends BlockEntity & IMachineBlock> imp
 //        model.renderAsBlock(te);
 
         // Get light above, since block is solid
-        TropicraftRenderUtils.renderModel(getMaterial(), model, stack, buffer, combinedLightIn, combinedOverlayIn);
+        RenderType renderType = model.renderType(getMaterial().texture());
+        model.renderToBuffer(stack, buffer.getBuffer(renderType), combinedLightIn, combinedOverlayIn);
 
         if (te != null) {
             renderIngredients(te, stack, buffer, combinedLightIn, combinedOverlayIn);

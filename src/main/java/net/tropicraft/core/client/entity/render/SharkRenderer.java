@@ -5,15 +5,15 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.TropicraftRenderLayers;
-import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.SharkModel;
 import net.tropicraft.core.common.entity.underdasea.SharkEntity;
 
 public class SharkRenderer extends MobRenderer<SharkEntity, SharkModel> {
 
-    public static final ResourceLocation BASIC_SHARK_TEXTURE = TropicraftRenderUtils.getTextureEntity("shark/hammerhead1");
-    public static final ResourceLocation BOSS_SHARK_TEXTURE = TropicraftRenderUtils.getTextureEntity("shark/hammerhead4");
+    public static final ResourceLocation BASIC_SHARK_TEXTURE = Tropicraft.location("textures/entity/shark/hammerhead1.png");
+    public static final ResourceLocation BOSS_SHARK_TEXTURE = Tropicraft.location("textures/entity/shark/hammerhead4.png");
 
     public SharkRenderer(EntityRendererProvider.Context context) {
         super(context, new SharkModel(context.bakeLayer(TropicraftRenderLayers.HAMMERHEAD_LAYER)), 1);

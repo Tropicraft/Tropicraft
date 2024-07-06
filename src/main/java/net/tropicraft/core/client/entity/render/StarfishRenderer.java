@@ -10,7 +10,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
-import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
 import net.tropicraft.core.common.entity.underdasea.StarfishEntity;
 import net.tropicraft.core.common.entity.underdasea.StarfishType;
@@ -50,7 +49,8 @@ public class StarfishRenderer extends EntityRenderer<StarfishEntity> {
         stack.scale(scale, scale, scale);
 
         for (int i = 0; i < type.getLayerCount(); i++) {
-            VertexConsumer ivertexbuilder = buffer.getBuffer(RenderType.entityCutout(TropicraftRenderUtils.getTextureEntity(type.getTexturePaths().get(i))));
+            ResourceLocation texture = type.getTextures().get(i);
+            VertexConsumer ivertexbuilder = buffer.getBuffer(RenderType.entityCutout(texture));
             final float red = 1;
             float green = starfish.hurtTime > 0 ? 0 : 1;
             float blue = starfish.hurtTime > 0 ? 0 : 1;
