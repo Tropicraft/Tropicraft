@@ -9,37 +9,20 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.Entity;
 
-public class WhiteLippedPeccaryModel<T extends Entity> extends TropicraftAgeableModel<T> {
+public class WhiteLippedPeccaryModel<T extends Entity> extends TropicraftAgeableHierarchicalModel<T> {
+    private final ModelPart root;
     private final ModelPart head_base;
-    private final ModelPart head_connection;
-    private final ModelPart ear_right;
-    private final ModelPart ear_left;
-    private final ModelPart head_snout_bridge;
-    private final ModelPart head_snout;
-    private final ModelPart head_snout_r1;
     private final ModelPart body_base;
-    private final ModelPart hair_base_right;
-    private final ModelPart hair_base_left;
     private final ModelPart leg_left_ba;
     private final ModelPart leg_right_ba;
     private final ModelPart leg_left_fr;
     private final ModelPart leg_right_fr;
 
     public WhiteLippedPeccaryModel(ModelPart root) {
-
+        this.root = root;
         body_base = root.getChild("body_base");
         head_base = root.getChild("head_base");
 
-        head_connection = head_base.getChild("head_connection");
-        ear_right = head_base.getChild("ear_right");
-        ear_left = head_base.getChild("ear_left");
-
-        head_snout_bridge = head_base.getChild("head_snout_bridge");
-        head_snout = head_snout_bridge.getChild("head_snout");
-        head_snout_r1 = head_snout.getChild("head_snout_r1");
-
-        hair_base_right = body_base.getChild("hair_base_right");
-        hair_base_left = body_base.getChild("hair_base_left");
         leg_left_ba = body_base.getChild("leg_left_ba");
         leg_right_ba = body_base.getChild("leg_right_ba");
         leg_left_fr = body_base.getChild("leg_left_fr");
@@ -136,7 +119,7 @@ public class WhiteLippedPeccaryModel<T extends Entity> extends TropicraftAgeable
 
     @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float age, float headYaw, float headPitch) {
-        ModelAnimator.look(getHead(), headYaw, headPitch);
+        ModelAnimator.look(head_base, headYaw, headPitch);
 
         try (ModelAnimator.Cycle walk = ModelAnimator.cycle(limbSwing * 0.2f, limbSwingAmount)) {
             leg_left_fr.xRot = walk.eval(1.0f, 1.0f);
@@ -147,12 +130,12 @@ public class WhiteLippedPeccaryModel<T extends Entity> extends TropicraftAgeable
     }
 
     @Override
-    protected ModelPart getHead() {
-        return head_base;
+    protected ModelPart root() {
+        return root;
     }
 
     @Override
-    protected ModelPart getBody() {
-        return body_base;
+    protected ModelPart head() {
+        return head_base;
     }
 }

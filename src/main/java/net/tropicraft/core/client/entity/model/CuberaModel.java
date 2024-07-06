@@ -11,39 +11,30 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.tropicraft.core.common.entity.underdasea.CuberaEntity;
 
 public class CuberaModel<T extends CuberaEntity> extends HierarchicalModel<T> {
-    private final ModelPart body_base;
+    private final ModelPart root;
     private final ModelPart fin_anal;
-    private final ModelPart fin_pelvic_right;
     private final ModelPart fin_pelvic_right_r1;
-    private final ModelPart fin_pelvic_left;
     private final ModelPart fin_pelvic_left_r1;
     private final ModelPart fin_pectoral_left;
     private final ModelPart fin_pectoral_right;
     private final ModelPart fin_dorsal;
-    private final ModelPart body_connection;
     private final ModelPart jaw_lower;
-    private final ModelPart head_base;
-    private final ModelPart head_snout;
-    private final ModelPart head_snout_r1;
     private final ModelPart tail_base;
     private final ModelPart tail_main;
     private final ModelPart fin_tail;
 
     public CuberaModel(ModelPart root) {
-        body_base = root;
+        this.root = root;
         fin_anal = root.getChild("fin_anal");
-        fin_pelvic_right = root.getChild("fin_pelvic_right");
+        ModelPart fin_pelvic_right = root.getChild("fin_pelvic_right");
         fin_pelvic_right_r1 = fin_pelvic_right.getChild("fin_pelvic_right_r1");
-        fin_pelvic_left = root.getChild("fin_pelvic_left");
+        ModelPart fin_pelvic_left = root.getChild("fin_pelvic_left");
         fin_pelvic_left_r1 = fin_pelvic_left.getChild("fin_pelvic_left_r1");
         fin_pectoral_left = root.getChild("fin_pectoral_left");
         fin_pectoral_right = root.getChild("fin_pectoral_right");
         fin_dorsal = root.getChild("fin_dorsal");
-        body_connection = root.getChild("body_connection");
+        ModelPart body_connection = root.getChild("body_connection");
         jaw_lower = body_connection.getChild("jaw_lower");
-        head_base = root.getChild("head_base");
-        head_snout = head_base.getChild("head_snout");
-        head_snout_r1 = head_snout.getChild("head_snout_r1");
         tail_base = root.getChild("tail_base");
         tail_main = tail_base.getChild("tail_main");
         fin_tail = tail_main.getChild("fin_tail");
@@ -124,11 +115,11 @@ public class CuberaModel<T extends CuberaEntity> extends HierarchicalModel<T> {
     @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float age, float headYaw, float headPitch) {
         if (entity.isInWater()) {
-            body_base.zRot = 0.0f;
-            body_base.y = 20.0f;
+            root.zRot = 0.0f;
+            root.y = 20.0f;
         } else {
-            body_base.zRot = 90.0f * ModelAnimator.DEG_TO_RAD;
-            body_base.y = 22.0f;
+            root.zRot = 90.0f * ModelAnimator.DEG_TO_RAD;
+            root.y = 22.0f;
         }
 
         try (ModelAnimator.Cycle swim = ModelAnimator.cycle(limbSwing * 0.4f, limbSwingAmount)) {
@@ -141,7 +132,7 @@ public class CuberaModel<T extends CuberaEntity> extends HierarchicalModel<T> {
         }
 
         try (ModelAnimator.Cycle idle = ModelAnimator.cycle(age * 0.05f, 0.1f)) {
-            body_base.y += idle.eval(0.5f, 2.0f);
+            root.y += idle.eval(0.5f, 2.0f);
 
             jaw_lower.xRot = -7.5f * ModelAnimator.DEG_TO_RAD - idle.eval(1.0f, 0.5f, 0.0f, 1.0f);
 
@@ -155,6 +146,6 @@ public class CuberaModel<T extends CuberaEntity> extends HierarchicalModel<T> {
 
     @Override
     public ModelPart root() {
-        return body_base;
+        return root;
     }
 }

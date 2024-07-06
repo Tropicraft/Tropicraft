@@ -12,18 +12,14 @@ import net.tropicraft.core.common.entity.passive.HummingbirdEntity;
 
 public class HummingbirdModel<T extends HummingbirdEntity> extends HierarchicalModel<T> {
     private final ModelPart root;
-    private final ModelPart tail_base;
     private final ModelPart wing_left;
     private final ModelPart head_base;
-    private final ModelPart beak_base;
     private final ModelPart wing_right;
 
     public HummingbirdModel(ModelPart root) {
         this.root = root;
-        tail_base = root.getChild("tail_base");
         wing_left = root.getChild("wing_left");
         head_base = root.getChild("head_base");
-        beak_base = head_base.getChild("beak_base");
         wing_right = root.getChild("wing_right");
     }
 

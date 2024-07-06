@@ -12,17 +12,10 @@ import net.tropicraft.core.common.entity.underdasea.TropicraftDolphinEntity;
 
 public class TropicraftDolphinModel extends HierarchicalModel<TropicraftDolphinEntity> {
     private final ModelPart root;
-    private final ModelPart body1;
-    private final ModelPart body2;
-    private final ModelPart head1;
-    private final ModelPart lowerJaw1;
-    private final ModelPart lowerJaw2;
     private final ModelPart lowerJaw3;
     private final ModelPart lowerJaw4;
     private final ModelPart lowerJaw5;
-    private final ModelPart upperJaw1;
     private final ModelPart upperJaw2;
-    private final ModelPart upperJaw3;
     private final ModelPart upperJaw4;
     private final ModelPart upperJaw5;
     private final ModelPart head2;
@@ -56,17 +49,10 @@ public class TropicraftDolphinModel extends HierarchicalModel<TropicraftDolphinE
 
     public TropicraftDolphinModel(ModelPart root) {
         this.root = root;
-        body1 = root.getChild("body1");
-        body2 = root.getChild("body2");
-        head1 = root.getChild("head1");
-        lowerJaw1 = root.getChild("lowerJaw1");
-        lowerJaw2 = root.getChild("lowerJaw2");
         lowerJaw3 = root.getChild("lowerJaw3");
         lowerJaw4 = root.getChild("lowerJaw4");
         lowerJaw5 = root.getChild("lowerJaw5");
-        upperJaw1 = root.getChild("upperJaw1");
         upperJaw2 = root.getChild("upperJaw2");
-        upperJaw3 = root.getChild("upperJaw3");
         upperJaw4 = root.getChild("upperJaw4");
         upperJaw5 = root.getChild("upperJaw5");
         head2 = root.getChild("head2");

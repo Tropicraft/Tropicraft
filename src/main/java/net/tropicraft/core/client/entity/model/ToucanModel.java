@@ -20,7 +20,6 @@ public class ToucanModel extends HierarchicalModel<ToucanEntity> {
     private final ModelPart wingRight;
     private final ModelPart neck;
     private final ModelPart head;
-    private final ModelPart beakBottom;
     private final ModelPart tailTop;
     private final ModelPart tailBottomLeft;
     private final ModelPart tailBottomRight;
@@ -34,7 +33,6 @@ public class ToucanModel extends HierarchicalModel<ToucanEntity> {
         wingRight = body.getChild("wing_right");
         neck = body.getChild("neck_base");
         head = neck.getChild("head_base");
-        beakBottom = head.getChild("beak_bottom");
         tailTop = body.getChild("tail_top");
         tailBottomLeft = body.getChild("tail_bottom_left");
         tailBottomRight = body.getChild("tail_bottom_right");

@@ -1,54 +1,15 @@
 package net.tropicraft.core.client.entity.model;
 
-import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.tropicraft.core.common.block.tileentity.IMachineBlock;
 
-public class EIHMachineModel<T extends BlockEntity & IMachineBlock> extends MachineModel<T> {
-    private final ModelPart base;
-    private final ModelPart back;
-    private final ModelPart nose;
-    private final ModelPart forehead;
-    private final ModelPart leftEye;
-    private final ModelPart rightEye;
-    private final ModelPart basinNearBack;
-    private final ModelPart basinSide1;
-    private final ModelPart basinSide2;
-    private final ModelPart basinNearFront;
-    private final ModelPart basinCorner1;
-    private final ModelPart basinCorner2;
-    private final ModelPart basinCorner3;
-    private final ModelPart basinCorner4;
-    private final ModelPart lidBase;
-    private final ModelPart lidTop;
-    private final ModelPart mouth;
-
+public class EIHMachineModel extends MachineModel {
     public EIHMachineModel(ModelPart root) {
-        super();
-
-        base = root.getChild("base");
-        back = root.getChild("back");
-        nose = root.getChild("nose");
-        forehead = root.getChild("forehead");
-        leftEye = root.getChild("leftEye");
-        rightEye = root.getChild("rightEye");
-        basinNearBack = root.getChild("basinNearBack");
-        basinSide1 = root.getChild("basinSide1");
-        basinSide2 = root.getChild("basinSide2");
-        basinNearFront = root.getChild("basinNearFront");
-        basinCorner1 = root.getChild("basinCorner1");
-        basinCorner2 = root.getChild("basinCorner2");
-        basinCorner3 = root.getChild("basinCorner3");
-        basinCorner4 = root.getChild("basinCorner4");
-        lidBase = root.getChild("lidBase");
-        lidTop = root.getChild("lidTop");
-        mouth = root.getChild("mouth");
+        super(root);
     }
 
     public static LayerDefinition create() {
@@ -175,14 +136,5 @@ public class EIHMachineModel<T extends BlockEntity & IMachineBlock> extends Mach
                 PartPose.offset(1.0f, 16.0f, 0.0f));
 
         return LayerDefinition.create(mesh, 64, 64);
-    }
-
-    @Override
-    public Iterable<ModelPart> getParts() {
-        return ImmutableList.of(
-                base, back, nose, forehead, leftEye, rightEye, basinNearBack,
-                basinSide1, basinSide2, basinNearFront, basinCorner1, basinCorner2,
-                basinCorner3, basinCorner4, lidBase, lidTop, mouth
-        );
     }
 }

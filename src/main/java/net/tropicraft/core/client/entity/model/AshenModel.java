@@ -2,7 +2,7 @@ package net.tropicraft.core.client.entity.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.ArmedModel;
-import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -13,10 +13,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import net.tropicraft.core.common.entity.hostile.AshenEntity;
 
-import java.util.List;
-
-public class AshenModel extends ListModel<AshenEntity> implements ArmedModel {
-
+public class AshenModel extends HierarchicalModel<AshenEntity> implements ArmedModel {
+    private final ModelPart root;
     public final ModelPart rightLeg;
     public final ModelPart leftLeg;
     public final ModelPart body;
@@ -28,6 +26,7 @@ public class AshenModel extends ListModel<AshenEntity> implements ArmedModel {
     public boolean swinging;
 
     public AshenModel(ModelPart root) {
+        this.root = root;
         rightLeg = root.getChild("right_leg");
         leftLeg = root.getChild("left_leg");
         body = root.getChild("body");
@@ -57,6 +56,9 @@ public class AshenModel extends ListModel<AshenEntity> implements ArmedModel {
 
     @Override
     public void setupAnim(AshenEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        rightLeg.xRot = Mth.cos(limbSwing * 0.6662f) * 1.25f * limbSwingAmount;
+        leftLeg.xRot = Mth.cos(limbSwing * 0.6662f + Mth.PI) * 1.25f * limbSwingAmount;
+
         final float armRotater = 71.46f * Mth.DEG_TO_RAD;
         final float subStraight = 90.0f * Mth.DEG_TO_RAD;
         float headAngle;
@@ -107,14 +109,8 @@ public class AshenModel extends ListModel<AshenEntity> implements ArmedModel {
     }
 
     @Override
-    public Iterable<ModelPart> parts() {
-        return List.of(body, head, rightArm, leftArm, leftLeg, rightLeg);
-    }
-
-    @Override
-    public void prepareMobModel(AshenEntity entity, float limbSwing, float limbSwingAmount, float partialTick) {
-        rightLeg.xRot = Mth.cos(limbSwing * 0.6662f) * 1.25f * limbSwingAmount;
-        leftLeg.xRot = Mth.cos(limbSwing * 0.6662f + Mth.PI) * 1.25f * limbSwingAmount;
+    public ModelPart root() {
+        return root;
     }
 
     @Override

@@ -1,7 +1,5 @@
 package net.tropicraft.core.client.entity.model;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -14,13 +12,13 @@ import net.minecraft.util.Mth;
 import net.tropicraft.core.common.entity.underdasea.ManateeEntity;
 
 public class ManateeModel extends HierarchicalModel<ManateeEntity> {
+    private final ModelPart root;
     private final ModelPart body;
     private final ModelPart head;
     private final ModelPart tailBase;
     private final ModelPart tailFanMain;
     private final ModelPart armLeft;
     private final ModelPart armRight;
-    private final ModelPart root;
 
     public ManateeModel(ModelPart root) {
         this.root = root;
@@ -87,11 +85,6 @@ public class ManateeModel extends HierarchicalModel<ManateeEntity> {
             armRight.yRot -= swim.eval(0.5f, 2.0f, 0.6f, 2.0f);
             armRight.zRot -= swim.eval(0.5f, -1.5f, 0.4f, -1.5f);
         }
-    }
-
-    @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
-        body.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 
     @Override

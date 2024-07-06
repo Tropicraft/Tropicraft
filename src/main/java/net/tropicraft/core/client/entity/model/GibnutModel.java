@@ -1,7 +1,5 @@
 package net.tropicraft.core.client.entity.model;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -46,7 +44,7 @@ public class GibnutModel extends TropicraftAgeableHierarchicalModel<GibnutEntity
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition body_base = partdefinition.addOrReplaceChild("body_base", CubeListBuilder.create().texOffs(0, 0).addBox(-2.0f, -3.0f, -7.0f, 4.0f, 4.0f, 8.0f, new CubeDeformation(0.0f)), PartPose.offsetAndRotation(0.0f, 21.0f, 4.5f, 0.0436f, 0.0f, 0.0f));
+        PartDefinition body_base = partdefinition.addOrReplaceChild("body_base", CubeListBuilder.create().texOffs(0, 0).addBox(-2.0f, -3.0f, -7.0f, 4.0f, 4.0f, 8.0f, new CubeDeformation(0.0f)), PartPose.offsetAndRotation(0.0f, 21.0f, 3.0f, 0.0436f, 0.0f, 0.0f));
 
         PartDefinition head_base = body_base.addOrReplaceChild("head_base", CubeListBuilder.create().texOffs(0, 13).addBox(-1.5f, -0.5f, -4.0f, 3.0f, 3.0f, 4.0f, new CubeDeformation(0.0f)), PartPose.offsetAndRotation(0.0f, -3.0f, -7.0f, 0.3054f, 0.0f, 0.0f));
 
@@ -117,14 +115,6 @@ public class GibnutModel extends TropicraftAgeableHierarchicalModel<GibnutEntity
             earLeft.xRot += idle.twitch(7.0f, 0.22f, 1.0f);
             earRight.xRot += idle.twitch(7.0f, 0.18f, 1.0f);
         }
-    }
-
-    @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
-        poseStack.pushPose();
-        poseStack.translate(0.0f, 0.0f, -1.5f / 16.0f);
-        super.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay, color);
-        poseStack.popPose();
     }
 
     @Override

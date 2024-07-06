@@ -1,7 +1,5 @@
 package net.tropicraft.core.client.entity.model;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -22,13 +20,10 @@ public class BasiliskLizardModel<T extends BasiliskLizardEntity> extends Hierarc
 
     private final ModelPart root;
     private final ModelPart body_base;
-    private final ModelPart sail_back;
     private final ModelPart leg_back_left;
     private final ModelPart leg_front_left;
     private final ModelPart head_base;
-    private final ModelPart sail_head;
     private final ModelPart tail_base;
-    private final ModelPart sail_tail;
     private final ModelPart tail_tip;
     private final ModelPart leg_back_right;
     private final ModelPart leg_front_right;
@@ -36,13 +31,10 @@ public class BasiliskLizardModel<T extends BasiliskLizardEntity> extends Hierarc
     public BasiliskLizardModel(ModelPart root) {
         this.root = root;
         body_base = root.getChild("body_base");
-        sail_back = body_base.getChild("sail_back");
         leg_back_left = body_base.getChild("leg_back_left");
         leg_front_left = body_base.getChild("leg_front_left");
         head_base = body_base.getChild("head_base");
-        sail_head = head_base.getChild("sail_head");
         tail_base = body_base.getChild("tail_base");
-        sail_tail = tail_base.getChild("sail_tail");
         tail_tip = tail_base.getChild("tail_tip");
         leg_back_right = body_base.getChild("leg_back_right");
         leg_front_right = body_base.getChild("leg_front_right");
@@ -56,7 +48,7 @@ public class BasiliskLizardModel<T extends BasiliskLizardEntity> extends Hierarc
                 CubeListBuilder.create()
                         .texOffs(0, 0)
                         .addBox(-1.0f, -1.0f, -5.0f, 2.0f, 2.0f, 6.0f, false),
-                PartPose.offsetAndRotation(0.0f, 22.5f, 0.0f, -15.0f * ModelAnimator.DEG_TO_RAD, 0.0f, 0.0f));
+                PartPose.offsetAndRotation(0.0f, 22.5f, 1.6f, -15.0f * ModelAnimator.DEG_TO_RAD, 0.0f, 0.0f));
 
         body.addOrReplaceChild("sail_back",
                 CubeListBuilder.create()
@@ -139,14 +131,6 @@ public class BasiliskLizardModel<T extends BasiliskLizardEntity> extends Hierarc
 
             body_base.xRot += walk.eval(0.5f, running * 0.1f);
         }
-    }
-
-    @Override
-    public void renderToBuffer(PoseStack matrixStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
-        matrixStack.pushPose();
-        matrixStack.translate(0.0, 0.0, 0.1);
-        super.renderToBuffer(matrixStack, buffer, packedLight, packedOverlay, color);
-        matrixStack.popPose();
     }
 
     @Override
