@@ -54,24 +54,23 @@ public class Ingredient implements Comparable<Ingredient> {
     /**
      * An ItemStack representing the item this ingredient is
      */
-    @Nonnull
     private final Holder<? extends ItemLike> item;
 
     /**
      * Render color of this Ingredient in a mug
      */
-    private int color;
+    private final int color;
 
     /**
      * Id of this ingredient
      */
-    public int id;
+    public final int id;
 
     /**
      * Whether this ingredient determines the base color of the resulting drink. Primary ingredients cannot be mixed,
      * as opposed to additives.
      */
-    private boolean primary;
+    private final boolean primary;
 
     /**
      * Alpha channel used in color blending. Typically 1 for primary ingredients and lower for additives.
@@ -82,10 +81,6 @@ public class Ingredient implements Comparable<Ingredient> {
      * DrinkActions to trigger when a cocktail containing this ingredient is ingested.
      */
     private final List<DrinkAction> actions = new LinkedList<>();
-
-    public Ingredient() {
-        item = Items.AIR.builtInRegistryHolder();
-    }
 
     public Ingredient(int id, @Nonnull Holder<? extends ItemLike> ingredientItem, boolean primary, int color) {
         if (ingredientsList[id] != null) {
@@ -153,18 +148,20 @@ public class Ingredient implements Comparable<Ingredient> {
     }
 
     @Nullable
-    public static Ingredient findMatchingIngredient(@Nonnull ItemStack stack) {
-        if (stack.isEmpty()) return null;
+    public static Ingredient findMatchingIngredient(ItemStack stack) {
+        if (stack.isEmpty()) {
+            return null;
+        }
         for (Ingredient ingredient : Ingredient.ingredientsList) {
-            if (ingredient == null) {
-                continue;
-            }
-            if (ingredient.getIngredientItem() == stack.getItem()) {
+            if (ingredient != null && ingredient.matches(stack)) {
                 return ingredient;
             }
         }
-
         return null;
+    }
+
+    public boolean matches(ItemStack stack) {
+        return stack.is(item.value().asItem());
     }
 
     public static List<Ingredient> listIngredients(ItemStack stack) {

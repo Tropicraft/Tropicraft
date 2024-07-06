@@ -27,58 +27,12 @@ public class Drinks {
         recipes.add(recipe);
     }
 
-    /**
-     * Returns true if the ItemStack's Item is used in any of the recipes, that way we don't get weird recipes
-     *
-     * @param item ItemStack to check for validity
-     * @return true if the ItemStack sent in is used in any of the registered recipes
-     */
-    public static boolean isRegisteredIngredient(ItemStack item) {
-        if (CocktailItem.isDrink(item)) {
-            return true; // assuming we didn't put garbage in
-        }
-
-        for (MixerRecipe recipe : recipes) {
-            for (Ingredient i : recipe.getIngredients()) {
-                if (i.getIngredientItem() == item.getItem()) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    public static boolean isRegisteredIngredient(Item item) {
-        return isRegisteredIngredient(new ItemStack(item));
-    }
-
     public static ItemStack getResult(NonNullList<ItemStack> ingredients) {
         for (MixerRecipe recipe : recipes) {
-            int validIngredientsFound = 0;
-
-            for (Ingredient recipeIngredient : recipe.getIngredients()) {
-                for (ItemStack mixerIngredient : ingredients) {
-                    if (recipeIngredient.getIngredientItem() == mixerIngredient.getItem()) {
-                        validIngredientsFound++;
-                        break;
-                    }
-                }
-            }
-
-            // If mixer ingredients match those of a valid recipe, we have a proper result
-            // Make sure to only count valid ingredients (non-empty) when getting size
-            if (validIngredientsFound == recipe.getIngredients().length) {
+            if (recipe.matches(ingredients)) {
                 return CocktailItem.makeCocktail(recipe);
             }
         }
-
-        List<Ingredient> is = new ArrayList<>();
-        for (ItemStack ingredientStack : ingredients) {
-            is.addAll(Ingredient.listIngredients(ingredientStack));
-        }
-        Collections.sort(is);
-
         return CocktailItem.makeCocktail(ingredients);
     }
 
