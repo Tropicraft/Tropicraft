@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.util.FastColor;
 
 import java.util.List;
 
@@ -36,7 +37,7 @@ public record Cocktail(
 
         for (Ingredient ingredient : ingredients) {
             if (ingredient != primary) {
-                color = ColorMixer.getInstance().alphaBlendRGBA(color, ingredient.getColor(), ingredient.getAlpha());
+                color = FastColor.ARGB32.lerp(ingredient.getAlpha(), color, ingredient.getColor());
             }
         }
 
