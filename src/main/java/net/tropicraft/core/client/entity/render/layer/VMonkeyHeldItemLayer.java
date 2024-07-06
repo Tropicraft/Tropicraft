@@ -4,23 +4,22 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
-import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
 
 @OnlyIn(Dist.CLIENT)
-public class VMonkeyHeldItemLayer<T extends VMonkeyEntity, M extends EntityModel<T> & ArmedModel> extends ItemInHandLayer<T, M> {
+public class VMonkeyHeldItemLayer<T extends VMonkeyEntity, M extends EntityModel<T> & ArmedModel> extends RenderLayer<T, M> {
     private final ItemRenderer itemRenderer;
 
-    public VMonkeyHeldItemLayer(RenderLayerParent<T, M> renderer, ItemRenderer itemRenderer, ItemInHandRenderer itemInHandRenderer) {
-        super(renderer, itemInHandRenderer);
+    public VMonkeyHeldItemLayer(RenderLayerParent<T, M> renderer, ItemRenderer itemRenderer) {
+        super(renderer);
         this.itemRenderer = itemRenderer;
     }
 

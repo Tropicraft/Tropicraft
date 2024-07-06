@@ -17,7 +17,7 @@ public class VMonkeyRenderer extends MobRenderer<VMonkeyEntity, VMonkeyModel> {
         super(context, new VMonkeyModel(context.bakeLayer(TropicraftRenderLayers.V_MONKEY_LAYER)), 0.5f);
         shadowRadius = 0.3f;
         shadowStrength = 0.5f;
-        addLayer(new VMonkeyHeldItemLayer<>(this, context.getItemRenderer(), context.getItemInHandRenderer()));
+        addLayer(new VMonkeyHeldItemLayer<>(this, context.getItemRenderer()));
     }
 
     @Override
