@@ -9,12 +9,12 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.level.BlockEvent;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 import javax.annotation.Nullable;
 
-@EventBusSubscriber(modid = Constants.MODID)
+@EventBusSubscriber(modid = Tropicraft.ID)
 public final class JigarbovTorchPlacement {
     @SubscribeEvent
     public static void onPlaceBlock(BlockEvent.EntityPlaceEvent event) {

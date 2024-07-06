@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 import java.util.List;
@@ -52,6 +52,6 @@ public final class TropicraftProcessorLists {
     }
 
     private static ResourceKey<StructureProcessorList> createKey(String name) {
-        return ResourceKey.create(Registries.PROCESSOR_LIST, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
+        return ResourceKey.create(Registries.PROCESSOR_LIST, ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, name));
     }
 }

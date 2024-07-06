@@ -6,12 +6,12 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.dimension.feature.tree.mangrove.MangroveFoliagePlacer;
 import net.tropicraft.core.common.dimension.feature.tree.mangrove.SmallMangroveFoliagePlacer;
 
 public final class TropicraftFoliagePlacers {
-    public static final DeferredRegister<FoliagePlacerType<?>> REGISTER = DeferredRegister.create(Registries.FOLIAGE_PLACER_TYPE, Constants.MODID);
+    public static final DeferredRegister<FoliagePlacerType<?>> REGISTER = DeferredRegister.create(Registries.FOLIAGE_PLACER_TYPE, Tropicraft.ID);
 
     public static final DeferredHolder<FoliagePlacerType<?>, FoliagePlacerType<?>> MANGROVE = register("mangrove", MangroveFoliagePlacer.CODEC);
     public static final DeferredHolder<FoliagePlacerType<?>, FoliagePlacerType<?>> SMALL_MANGROVE = register("small_mangrove", SmallMangroveFoliagePlacer.CODEC);

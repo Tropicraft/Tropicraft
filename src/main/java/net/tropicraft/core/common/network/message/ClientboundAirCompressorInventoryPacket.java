@@ -9,11 +9,11 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.block.tileentity.AirCompressorBlockEntity;
 
 public record ClientboundAirCompressorInventoryPacket(BlockPos pos, ItemStack tank) implements CustomPacketPayload {
-    public static final Type<ClientboundAirCompressorInventoryPacket> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(Constants.MODID, "air_compressor_inventory"));
+    public static final Type<ClientboundAirCompressorInventoryPacket> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "air_compressor_inventory"));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundAirCompressorInventoryPacket> STREAM_CODEC = StreamCodec.composite(
             BlockPos.STREAM_CODEC, ClientboundAirCompressorInventoryPacket::pos,

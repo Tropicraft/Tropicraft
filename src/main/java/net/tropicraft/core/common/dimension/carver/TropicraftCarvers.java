@@ -8,11 +8,11 @@ import net.minecraft.world.level.levelgen.carver.CaveWorldCarver;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 
 public class TropicraftCarvers {
 
-    public static final DeferredRegister<WorldCarver<?>> CARVERS = DeferredRegister.create(Registries.CARVER, Constants.MODID);
+    public static final DeferredRegister<WorldCarver<?>> CARVERS = DeferredRegister.create(Registries.CARVER, Tropicraft.ID);
 
     public static final DeferredHolder<WorldCarver<?>, CaveWorldCarver> CAVE = CARVERS.register("cave", () -> new CaveWorldCarver(CaveCarverConfiguration.CODEC));
     public static final DeferredHolder<WorldCarver<?>, CanyonWorldCarver> CANYON = CARVERS.register("canyon", () -> new CanyonWorldCarver(CanyonCarverConfiguration.CODEC));

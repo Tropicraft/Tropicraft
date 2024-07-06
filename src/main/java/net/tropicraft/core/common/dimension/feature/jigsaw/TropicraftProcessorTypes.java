@@ -6,10 +6,10 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 
 public final class TropicraftProcessorTypes {
-    public static final DeferredRegister<StructureProcessorType<?>> REGISTER = DeferredRegister.create(Registries.STRUCTURE_PROCESSOR, Constants.MODID);
+    public static final DeferredRegister<StructureProcessorType<?>> REGISTER = DeferredRegister.create(Registries.STRUCTURE_PROCESSOR, Tropicraft.ID);
 
     public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<?>> ADJUST_BUILDING_HEIGHT = register("adjust_building_height", AdjustBuildingHeightProcessor.CODEC);
     public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<?>> AIR_TO_CAVE_AIR = register("air_to_cave_air", AirToCaveAirProcessor.CODEC);

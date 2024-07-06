@@ -9,7 +9,7 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 
 import java.util.List;
 
@@ -39,6 +39,6 @@ public final class TropicraftStructureSets {
     }
 
     private static ResourceKey<StructureSet> createKey(String name) {
-        return ResourceKey.create(Registries.STRUCTURE_SET, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
+        return ResourceKey.create(Registries.STRUCTURE_SET, ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, name));
     }
 }

@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.placement.CountPlacement;
 import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
 import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 
 import java.util.List;
 
@@ -77,7 +77,7 @@ public final class TropicraftMiscPlacements {
     }
 
     private static ResourceKey<PlacedFeature> createKey(String name) {
-        return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
+        return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, name));
     }
 
     public static void addMudDisks(BiomeGenerationSettings.Builder generation) {

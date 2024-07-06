@@ -15,17 +15,17 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.item.scuba.ScubaArmorItem;
 import net.tropicraft.core.common.item.scuba.ScubaData;
 
 import javax.annotation.Nullable;
 
-@EventBusSubscriber(value = Dist.CLIENT, modid = Constants.MODID, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(value = Dist.CLIENT, modid = Tropicraft.ID, bus = EventBusSubscriber.Bus.GAME)
 public class ScubaAmbienceTicker {
 
-    public static final SoundEvent SHALLOW_SCUBA = SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(Constants.MODID, "scuba.shallow"));
-    public static final SoundEvent DEEP_SCUBA = SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(Constants.MODID, "scuba.deep"));
+    public static final SoundEvent SHALLOW_SCUBA = SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "scuba.shallow"));
+    public static final SoundEvent DEEP_SCUBA = SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "scuba.deep"));
 
     @Nullable
     private static SoundEvent currentSound;

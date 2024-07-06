@@ -21,15 +21,15 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ViewportEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.data.TropicraftLangKeys;
 
 import java.util.function.Supplier;
 
-@EventBusSubscriber(modid = Constants.MODID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
+@EventBusSubscriber(modid = Tropicraft.ID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
 public class ScubaGogglesItem extends ScubaArmorItem {
 
-    public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(Registries.ATTRIBUTE, Constants.MODID);
+    public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(Registries.ATTRIBUTE, Tropicraft.ID);
 
     // This is never registered to any entities, so it's not used in any logic
     // Just here for the nice tooltip
@@ -37,7 +37,7 @@ public class ScubaGogglesItem extends ScubaArmorItem {
             "underwater_visibility",
             () -> new RangedAttribute(TropicraftLangKeys.SCUBA_VISIBILITY_STAT.key(), 0, -1, 1)
     );
-    private static final AttributeModifier VISIBILITY_BOOST = new AttributeModifier(ResourceLocation.fromNamespaceAndPath(Constants.MODID, "underwater.visibility"), 0.25, Operation.ADD_MULTIPLIED_BASE);
+    private static final AttributeModifier VISIBILITY_BOOST = new AttributeModifier(ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "underwater.visibility"), 0.25, Operation.ADD_MULTIPLIED_BASE);
 
     private final Supplier<ItemAttributeModifiers> boostedModifiers;
 

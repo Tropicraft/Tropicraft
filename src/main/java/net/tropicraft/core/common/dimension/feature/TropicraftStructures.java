@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.heightproviders.ConstantHeight;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.dimension.feature.pools.TropicraftTemplatePools;
 import net.tropicraft.core.common.dimension.feature.volcano.VolcanoStructure;
@@ -76,6 +76,6 @@ public final class TropicraftStructures {
     }
 
     private static ResourceKey<Structure> createKey(String name) {
-        return ResourceKey.create(Registries.STRUCTURE, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
+        return ResourceKey.create(Registries.STRUCTURE, ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, name));
     }
 }

@@ -12,7 +12,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.DiskConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.RuleBasedBlockStateProvider;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.ore;
@@ -46,6 +46,6 @@ public final class TropicraftMiscFeatures {
     }
 
     private static ResourceKey<ConfiguredFeature<?, ?>> createKey(String name) {
-        return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
+        return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, name));
     }
 }

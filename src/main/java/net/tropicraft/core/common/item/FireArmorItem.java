@@ -20,9 +20,9 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 
-@EventBusSubscriber(modid = Constants.MODID)
+@EventBusSubscriber(modid = Tropicraft.ID)
 public class FireArmorItem extends ArmorItem {
     public FireArmorItem(ArmorItem.Type slotType, Properties properties) {
         super(TropicraftArmorMaterials.FIRE_ARMOR, slotType, properties);

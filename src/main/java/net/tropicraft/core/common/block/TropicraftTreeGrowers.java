@@ -3,7 +3,7 @@ package net.tropicraft.core.common.block;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.dimension.feature.TropicraftTreeFeatures;
 
 import java.util.Optional;
@@ -26,6 +26,6 @@ public final class TropicraftTreeGrowers {
     public static final TreeGrower BLACK_MANGROVE = create("black_mangrove", TropicraftTreeFeatures.BLACK_MANGROVE);
 
     private static TreeGrower create(String id, ResourceKey<ConfiguredFeature<?, ?>> featureKey) {
-        return new TreeGrower(Constants.MODID + ":" + id, Optional.empty(), Optional.of(featureKey), Optional.empty());
+        return new TreeGrower(Tropicraft.ID + ":" + id, Optional.empty(), Optional.of(featureKey), Optional.empty());
     }
 }

@@ -64,7 +64,6 @@ import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.registries.RegisterEvent;
-import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.Foods;
 import net.tropicraft.core.common.TropicraftTags;
@@ -94,7 +93,7 @@ import java.util.function.Supplier;
 import static com.tterrag.registrate.providers.RegistrateRecipeProvider.has;
 import static net.tropicraft.core.common.block.TropicraftBlocks.CHUNK;
 
-@EventBusSubscriber(modid = Constants.MODID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Tropicraft.ID, bus = EventBusSubscriber.Bus.MOD)
 public class TropicraftItems {
     public static final Registrate REGISTRATE = Tropicraft.registrate();
 
@@ -146,7 +145,7 @@ public class TropicraftItems {
                                 ItemLike wool = Sheep.ITEM_BY_DYE.get(color);
                                 ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get())
                                         .pattern("WWW").pattern(" B ").pattern(" B ")
-                                        .group(Constants.MODID + ":umbrellas")
+                                        .group(Tropicraft.ID + ":umbrellas")
                                         .define('W', wool)
                                         .define('B', TropicraftItems.BAMBOO_STICK.get())
                                         .unlockedBy("has_" + color.getSerializedName() + "_wool", has(wool))
@@ -162,7 +161,7 @@ public class TropicraftItems {
                                 ItemLike wool = Sheep.ITEM_BY_DYE.get(color);
                                 ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get())
                                         .pattern("BWB").pattern("BWB").pattern("BWB")
-                                        .group(Constants.MODID + ":chairs")
+                                        .group(Tropicraft.ID + ":chairs")
                                         .define('W', wool)
                                         .define('B', TropicraftItems.BAMBOO_STICK.get())
                                         .unlockedBy("has_" + color.getSerializedName() + "_wool", has(wool))
@@ -178,7 +177,7 @@ public class TropicraftItems {
                                 ItemLike wool = Sheep.ITEM_BY_DYE.get(color);
                                 ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get())
                                         .pattern("WWW").pattern("BBB")
-                                        .group(Constants.MODID + ":beach_floats")
+                                        .group(Tropicraft.ID + ":beach_floats")
                                         .define('W', wool)
                                         .define('B', Blocks.BAMBOO)
                                         .unlockedBy("has_" + color.getSerializedName() + "_wool", has(wool))
@@ -702,7 +701,7 @@ public class TropicraftItems {
     private static ItemBuilder<ScubaArmorItem, Registrate> scubaFlippers(String name, ScubaType type, Supplier<? extends Item> source) {
         return REGISTRATE.item(name, p -> new ScubaArmorItem(type, ArmorItem.Type.BOOTS, p))
                 .properties(p -> p.component(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
-                        .add(NeoForgeMod.SWIM_SPEED, new AttributeModifier(ResourceLocation.fromNamespaceAndPath(Constants.MODID, "scuba"), 0.25, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.FEET)
+                        .add(NeoForgeMod.SWIM_SPEED, new AttributeModifier(ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "scuba"), 0.25, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.FEET)
                         .build()))
                 .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.get(), 1)
                         .pattern("XX")
@@ -793,7 +792,7 @@ public class TropicraftItems {
                 Block content = flowerPot.getPotted();
                 if (emptyPot.builtInRegistryHolder().is(TropicraftBlocks.BAMBOO_FLOWER_POT.getId()) && emptyPot != flowerPot) {
                     addPlant(TropicraftBlocks.BAMBOO_FLOWER_POT.get(), flowerPot);
-                } else if (content.builtInRegistryHolder().key().location().getNamespace().equals(Constants.MODID)) {
+                } else if (content.builtInRegistryHolder().key().location().getNamespace().equals(Tropicraft.ID)) {
                     addPlant((FlowerPotBlock) Blocks.FLOWER_POT, flowerPot);
                 }
             }

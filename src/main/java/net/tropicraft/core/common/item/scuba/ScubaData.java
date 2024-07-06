@@ -26,7 +26,7 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 import net.tropicraft.core.common.network.message.ClientboundUpdateScubaDataPacket;
 
@@ -35,7 +35,7 @@ import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.function.Supplier;
 
-@EventBusSubscriber(modid = Constants.MODID, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(modid = Tropicraft.ID, bus = EventBusSubscriber.Bus.GAME)
 public class ScubaData {
     public static final Codec<ScubaData> CODEC = RecordCodecBuilder.create(i -> i.group(
             Codec.LONG.fieldOf("diveTime").forGetter(ScubaData::getDiveTime),
@@ -48,7 +48,7 @@ public class ScubaData {
             ScubaData::new
     );
 
-    public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, Constants.MODID);
+    public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, Tropicraft.ID);
 
     public static final Supplier<AttachmentType<ScubaData>> ATTACHMENT = ATTACHMENT_TYPES.register(
             "scuba_data", () -> AttachmentType.builder(ScubaData::new).serialize(CODEC).build()

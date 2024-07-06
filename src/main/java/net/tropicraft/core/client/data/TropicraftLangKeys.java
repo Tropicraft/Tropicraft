@@ -4,7 +4,7 @@ import com.tterrag.registrate.providers.RegistrateLangProvider;
 import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 
 public enum TropicraftLangKeys {
     NA("general", "na", "N/A"),
@@ -22,7 +22,7 @@ public enum TropicraftLangKeys {
     private final Component component;
 
     TropicraftLangKeys(String type, String key, String value) {
-        this.key = Util.makeDescriptionId(type, ResourceLocation.fromNamespaceAndPath(Constants.MODID, key));
+        this.key = Util.makeDescriptionId(type, ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, key));
         this.value = value;
         component = Component.translatable(this.key);
     }

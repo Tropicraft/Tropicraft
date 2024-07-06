@@ -12,7 +12,7 @@ import net.minecraft.world.level.levelgen.NoiseRouter;
 import net.minecraft.world.level.levelgen.NoiseRouterData;
 import net.minecraft.world.level.levelgen.Noises;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.dimension.TropicraftTerrainProvider;
 
 public final class TropicraftNoiseRouterData {
@@ -184,6 +184,6 @@ public final class TropicraftNoiseRouterData {
     }
 
     private static ResourceKey<DensityFunction> createKey(String name) {
-        return ResourceKey.create(Registries.DENSITY_FUNCTION, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
+        return ResourceKey.create(Registries.DENSITY_FUNCTION, ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, name));
     }
 }

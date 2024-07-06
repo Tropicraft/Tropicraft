@@ -20,7 +20,6 @@ import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.neoforged.neoforge.common.Tags;
-import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.dimension.carver.TropicraftConfiguredCarvers;
@@ -56,7 +55,7 @@ public final class TropicraftBiomes {
 
     static {
         REGISTRATE.addDataGenerator(ProviderType.LANG, prov -> {
-            Consumer<String> register = name -> prov.add("biome." + Constants.MODID + "." + name, RegistrateLangProvider.toEnglishName(name));
+            Consumer<String> register = name -> prov.add("biome." + Tropicraft.ID + "." + name, RegistrateLangProvider.toEnglishName(name));
             register.accept("tropics");
             register.accept("beach");
             register.accept("rainforest");
@@ -475,6 +474,6 @@ public final class TropicraftBiomes {
     }
 
     private static ResourceKey<Biome> createKey(String name) {
-        return ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
+        return ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, name));
     }
 }

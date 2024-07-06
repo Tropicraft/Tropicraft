@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.JukeboxSong;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.sound.Sounds;
 
 public interface TropicraftJukeboxSongs {
@@ -36,6 +36,6 @@ public interface TropicraftJukeboxSongs {
     }
 
     private static ResourceKey<JukeboxSong> createKey(String name) {
-        return ResourceKey.create(Registries.JUKEBOX_SONG, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
+        return ResourceKey.create(Registries.JUKEBOX_SONG, ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, name));
     }
 }

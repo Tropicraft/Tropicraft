@@ -75,8 +75,10 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
-@Mod(Constants.MODID)
+@Mod(Tropicraft.ID)
 public class Tropicraft {
+    public static final String ID = "tropicraft";
+
     public static final ProviderType<RegistrateTagsProvider.Impl<Biome>> BIOME_TAGS = ProviderType.register("tags/biome", type -> (p, e) -> {
         // We don't dump from registries through Registrate, so there's some duplicate work building these registries to inject as context
         PackOutput output = e.getGenerator().getPackOutput();
@@ -85,8 +87,8 @@ public class Tropicraft {
         return new RegistrateTagsProvider.Impl<>(p, type, "biome", output, Registries.BIOME, provider, e.getExistingFileHelper());
     });
 
-    private static final Supplier<Registrate> REGISTRATE = Suppliers.memoize(() -> Registrate.create(Constants.MODID)
-            .defaultCreativeTab(Constants.MODID, builder -> builder.icon(() -> new ItemStack(TropicraftBlocks.PALM_SAPLING.get()))).build()
+    private static final Supplier<Registrate> REGISTRATE = Suppliers.memoize(() -> Registrate.create(ID)
+            .defaultCreativeTab(ID, builder -> builder.icon(() -> new ItemStack(TropicraftBlocks.PALM_SAPLING.get()))).build()
             .addDataGenerator(ProviderType.LANG, TropicraftLangKeys::generate)
     );
 
@@ -124,7 +126,7 @@ public class Tropicraft {
     private static final Pattern QUALIFIER = Pattern.compile("-\\w+\\+\\d+");
 
     public static String getCompatVersion() {
-        return getCompatVersion(ModList.get().getModContainerById(Constants.MODID).orElseThrow(IllegalStateException::new).getModInfo().getVersion().toString());
+        return getCompatVersion(ModList.get().getModContainerById(ID).orElseThrow(IllegalStateException::new).getModInfo().getVersion().toString());
     }
 
     private static String getCompatVersion(String fullVersion) {
@@ -146,7 +148,7 @@ public class Tropicraft {
 
     private void gatherData(GatherDataEvent event) {
         PackOutput output = event.getGenerator().getPackOutput();
-        event.getGenerator().addProvider(event.includeServer(), new DatapackBuiltinEntriesProvider(output, event.getLookupProvider(), TropicraftPackRegistries.BUILDER, Set.of(Constants.MODID)));
+        event.getGenerator().addProvider(event.includeServer(), new DatapackBuiltinEntriesProvider(output, event.getLookupProvider(), TropicraftPackRegistries.BUILDER, Set.of(ID)));
     }
 
     private void registerCommands(RegisterCommandsEvent event) {
@@ -159,7 +161,7 @@ public class Tropicraft {
         }
     }
 
-    @EventBusSubscriber(modid = Constants.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
+    @EventBusSubscriber(modid = ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
     private static class ClientHandler {
         @SubscribeEvent
         public static void registerReloadListeners(RegisterClientReloadListenersEvent event) {

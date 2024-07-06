@@ -1,8 +1,6 @@
 package net.tropicraft;
 
 public class Constants {
-    public static final String MODID = "tropicraft";
-
     public static final String[] LT17_NAMES = {
             "Emibelle", "Mark Conrad", "MongoTheElder", "Taelnia", "Direwolf20", "MrRube", "rckymtnrfc", "Drullkus",
             "Herobrineblazing", "PhoenixfireLune", "Cloudy", "tterrag", "iChun", "StellarMC", "Ashinos", "Ali_MC_YT",

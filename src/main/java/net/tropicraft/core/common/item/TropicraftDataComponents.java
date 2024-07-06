@@ -6,11 +6,11 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.util.ExtraCodecs;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.drinks.Cocktail;
 
 public class TropicraftDataComponents {
-    public static final DeferredRegister.DataComponents REGISTER = DeferredRegister.createDataComponents(Constants.MODID);
+    public static final DeferredRegister.DataComponents REGISTER = DeferredRegister.createDataComponents(Tropicraft.ID);
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> SCUBA_AIR = REGISTER.registerComponentType(
             "scuba_air",

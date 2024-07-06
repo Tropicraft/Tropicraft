@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.DoubleBlockCombiner;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.block.tileentity.BambooChestBlockEntity;
 
 import javax.annotation.Nullable;
@@ -49,7 +49,7 @@ public final class BambooChestBlock extends ChestBlock {
                     if (left.hasCustomName()) {
                         return left.getDisplayName();
                     } else {
-                        return right.hasCustomName() ? right.getDisplayName() : Component.translatable(Constants.MODID + ".container.bambooChestDouble");
+                        return right.hasCustomName() ? right.getDisplayName() : Component.translatable(Tropicraft.ID + ".container.bambooChestDouble");
                     }
                 }
             });
