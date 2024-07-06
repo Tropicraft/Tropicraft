@@ -52,6 +52,6 @@ public final class TropicraftProcessorLists {
     }
 
     private static ResourceKey<StructureProcessorList> createKey(String name) {
-        return ResourceKey.create(Registries.PROCESSOR_LIST, Tropicraft.location(name));
+        return Tropicraft.resourceKey(Registries.PROCESSOR_LIST, name);
     }
 }

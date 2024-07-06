@@ -235,7 +235,7 @@ public final class TropicraftTemplatePools {
     }
 
     private static ResourceKey<StructureTemplatePool> createKey(String name) {
-        return ResourceKey.create(Registries.TEMPLATE_POOL, Tropicraft.location(name));
+        return Tropicraft.resourceKey(Registries.TEMPLATE_POOL, name);
     }
 
     private record WeightedPiece(

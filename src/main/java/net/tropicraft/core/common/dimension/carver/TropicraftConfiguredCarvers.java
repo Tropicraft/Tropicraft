@@ -59,6 +59,6 @@ public final class TropicraftConfiguredCarvers {
     }
 
     private static ResourceKey<ConfiguredWorldCarver<?>> createKey(String name) {
-        return ResourceKey.create(Registries.CONFIGURED_CARVER, Tropicraft.location(name));
+        return Tropicraft.resourceKey(Registries.CONFIGURED_CARVER, name);
     }
 }

@@ -68,7 +68,7 @@ public final class TropicraftTreePlacements {
     }
 
     private static ResourceKey<PlacedFeature> createKey(String name) {
-        return ResourceKey.create(Registries.PLACED_FEATURE, Tropicraft.location(name));
+        return Tropicraft.resourceKey(Registries.PLACED_FEATURE, name);
     }
 
     private static List<PlacementModifier> checkTree(BlockEntry<?> sapling) {

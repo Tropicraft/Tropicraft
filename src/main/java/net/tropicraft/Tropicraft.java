@@ -10,9 +10,11 @@ import net.minecraft.Util;
 import net.minecraft.client.resources.model.BlockStateModelLoader;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.Registry;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.biome.Biome;
@@ -99,6 +101,10 @@ public class Tropicraft {
 
     public static ResourceLocation location(String path) {
         return ResourceLocation.fromNamespaceAndPath(ID, path);
+    }
+
+    public static <T> ResourceKey<T> resourceKey(ResourceKey<? extends Registry<T>> registry, String path) {
+        return ResourceKey.create(registry, location(path));
     }
 
     public Tropicraft(ModContainer container, IEventBus modBus) {

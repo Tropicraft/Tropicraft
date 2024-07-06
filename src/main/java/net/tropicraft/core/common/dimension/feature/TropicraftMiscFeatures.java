@@ -46,6 +46,6 @@ public final class TropicraftMiscFeatures {
     }
 
     private static ResourceKey<ConfiguredFeature<?, ?>> createKey(String name) {
-        return ResourceKey.create(Registries.CONFIGURED_FEATURE, Tropicraft.location(name));
+        return Tropicraft.resourceKey(Registries.CONFIGURED_FEATURE, name);
     }
 }
