@@ -18,7 +18,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PlayerHeadItem;
 import net.minecraft.world.level.Level;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 
 import java.util.Locale;
 import java.util.Map;
@@ -64,7 +64,7 @@ public class TropicraftRenderUtils {
     }
 
     private static ResourceLocation getResLoc(String path) {
-        return ResourceLocation.fromNamespaceAndPath(Constants.MODID, path);
+        return ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, path);
     }
 
     public static ResourceLocation getTextureArmor(String path) {

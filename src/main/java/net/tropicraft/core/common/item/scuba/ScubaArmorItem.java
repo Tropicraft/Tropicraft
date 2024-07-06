@@ -14,7 +14,7 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.scuba.ModelScubaGear;
 import net.tropicraft.core.common.item.TropicraftArmorMaterials;
 import org.jetbrains.annotations.Nullable;
@@ -23,7 +23,7 @@ import java.util.function.Consumer;
 
 public class ScubaArmorItem extends ArmorItem {
 
-    private static final ResourceLocation GOGGLES_OVERLAY_TEX_PATH = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/gui/goggles.png");
+    private static final ResourceLocation GOGGLES_OVERLAY_TEX_PATH = ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "textures/gui/goggles.png");
 
     private final ScubaType type;
 
@@ -61,7 +61,7 @@ public class ScubaArmorItem extends ArmorItem {
     }
 
     public static ResourceLocation getArmorTexture(ScubaType type) {
-        return ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/models/armor/scuba_gear_" + type.getTextureName() + ".png");
+        return ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "textures/models/armor/scuba_gear_" + type.getTextureName() + ".png");
     }
 
     @Override

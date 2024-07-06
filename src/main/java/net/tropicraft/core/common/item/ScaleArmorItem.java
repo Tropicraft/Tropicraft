@@ -7,9 +7,9 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 
-@EventBusSubscriber(modid = Constants.MODID)
+@EventBusSubscriber(modid = Tropicraft.ID)
 public class ScaleArmorItem extends ArmorItem {
     public ScaleArmorItem(ArmorItem.Type slotType, Properties properties) {
         super((Holder<ArmorMaterial>) TropicraftArmorMaterials.SCALE_ARMOR, slotType, properties);

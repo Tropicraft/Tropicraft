@@ -9,7 +9,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.entity.model.AshenModel;
 import net.tropicraft.core.client.entity.model.BambooMugModel;
 import net.tropicraft.core.client.entity.model.BasiliskLizardModel;
@@ -52,7 +52,7 @@ import net.tropicraft.core.client.scuba.ModelScubaGear;
 
 import java.util.function.Supplier;
 
-@EventBusSubscriber(modid = Constants.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(modid = Tropicraft.ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class TropicraftRenderLayers {
     public static ModelLayerLocation KOA_HUNTER_LAYER;
     public static ModelLayerLocation TROPI_CREEPER_LAYER;
@@ -89,8 +89,8 @@ public class TropicraftRenderLayers {
     public static ModelLayerLocation BAMBOO_CHEST;
     public static ModelLayerLocation BAMBOO_DOUBLE_CHEST_LEFT;
     public static ModelLayerLocation BAMBOO_DOUBLE_CHEST_RIGHT;
-    public static ModelLayerLocation EIHMACHINE_LAYER = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Constants.MODID, "drink_mixer"), "main");
-    public static ModelLayerLocation AIRCOMPRESSOR_LAYER = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Constants.MODID, "air_compressor"), "main");
+    public static ModelLayerLocation EIHMACHINE_LAYER = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "drink_mixer"), "main");
+    public static ModelLayerLocation AIRCOMPRESSOR_LAYER = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "air_compressor"), "main");
     public static ModelLayerLocation BASILISK_LIZARD_LAYER;
     public static ModelLayerLocation CUBERA_LAYER;
     public static ModelLayerLocation FIDDLER_CRAB_LAYER;
@@ -173,7 +173,7 @@ public class TropicraftRenderLayers {
     }
 
     private static ModelLayerLocation registerMain(String id, Supplier<LayerDefinition> layerDefinition, EntityRenderersEvent.RegisterLayerDefinitions event) {
-        ModelLayerLocation modelLayer = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Constants.MODID, id), "main");
+        ModelLayerLocation modelLayer = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, id), "main");
         event.registerLayerDefinition(modelLayer, layerDefinition);
         return modelLayer;
     }

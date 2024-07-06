@@ -47,7 +47,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.SpawnPlacementRegisterEvent;
 import net.neoforged.neoforge.event.entity.living.MobSpawnEvent;
-import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.ClientSetup;
 import net.tropicraft.core.client.entity.render.AshenMaskRenderer;
@@ -150,7 +149,7 @@ import net.tropicraft.core.common.entity.underdasea.TropicraftTropicalFishEntity
 import net.tropicraft.core.common.item.TropicalFertilizerItem;
 import net.tropicraft.core.common.item.TropicraftItems;
 
-@EventBusSubscriber(modid = Constants.MODID)
+@EventBusSubscriber(modid = Tropicraft.ID)
 public class TropicraftEntities {
     public static final Registrate REGISTRATE = Tropicraft.registrate();
 

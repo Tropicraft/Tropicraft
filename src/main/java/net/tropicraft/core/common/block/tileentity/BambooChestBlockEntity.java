@@ -7,7 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 
 public class BambooChestBlockEntity extends ChestBlockEntity {
 
@@ -22,7 +22,7 @@ public class BambooChestBlockEntity extends ChestBlockEntity {
 
     @Override
     public Component getName() {
-        return Component.translatable(Constants.MODID + ".container.bambooChest");
+        return Component.translatable(Tropicraft.ID + ".container.bambooChest");
     }
 
     @Override

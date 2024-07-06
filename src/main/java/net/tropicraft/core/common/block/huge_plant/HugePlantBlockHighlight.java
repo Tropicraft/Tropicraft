@@ -13,9 +13,9 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RenderHighlightEvent;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 
-@EventBusSubscriber(modid = Constants.MODID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = Tropicraft.ID, value = Dist.CLIENT)
 public final class HugePlantBlockHighlight {
     private static final Minecraft CLIENT = Minecraft.getInstance();
 

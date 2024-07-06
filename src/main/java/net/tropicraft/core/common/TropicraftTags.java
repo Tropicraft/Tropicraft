@@ -6,7 +6,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 
 public class TropicraftTags {
 
@@ -28,7 +28,7 @@ public class TropicraftTags {
         }
 
         static TagKey<Block> modTag(String name) {
-            return tag(Constants.MODID, name);
+            return tag(Tropicraft.ID, name);
         }
 
         static TagKey<Block> compatTag(String name) {
@@ -70,7 +70,7 @@ public class TropicraftTags {
         }
 
         static TagKey<Item> modTag(String name) {
-            return tag(Constants.MODID, name);
+            return tag(Tropicraft.ID, name);
         }
 
         static TagKey<Item> compatTag(String name) {
@@ -89,7 +89,7 @@ public class TropicraftTags {
         }
 
         static TagKey<Biome> modTag(String name) {
-            return tag(Constants.MODID, name);
+            return tag(Tropicraft.ID, name);
         }
     }
 }

@@ -4,16 +4,16 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.entity.model.EIHModel;
 import net.tropicraft.core.common.entity.neutral.EIHEntity;
 
 public class EIHRenderer extends MobRenderer<EIHEntity, EIHModel> {
 
-    private static final ResourceLocation TEXTURE_SLEEP = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/eih/headtext.png");
-    private static final ResourceLocation TEXTURE_AWARE = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/eih/headawaretext.png");
-    private static final ResourceLocation TEXTURE_ANGRY = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "textures/entity/eih/headangrytext.png");
+    private static final ResourceLocation TEXTURE_SLEEP = ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "textures/entity/eih/headtext.png");
+    private static final ResourceLocation TEXTURE_AWARE = ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "textures/entity/eih/headawaretext.png");
+    private static final ResourceLocation TEXTURE_ANGRY = ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "textures/entity/eih/headangrytext.png");
 
     public EIHRenderer(EntityRendererProvider.Context context) {
         super(context, new EIHModel(context.bakeLayer(TropicraftRenderLayers.EIH_LAYER)), 1.2f);

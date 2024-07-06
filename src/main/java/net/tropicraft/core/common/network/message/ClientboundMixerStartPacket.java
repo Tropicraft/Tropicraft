@@ -8,11 +8,11 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.block.tileentity.DrinkMixerBlockEntity;
 
 public record ClientboundMixerStartPacket(BlockPos pos) implements CustomPacketPayload {
-    public static final Type<ClientboundMixerStartPacket> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(Constants.MODID, "mixer_start"));
+    public static final Type<ClientboundMixerStartPacket> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "mixer_start"));
 
     public static final StreamCodec<ByteBuf, ClientboundMixerStartPacket> STREAM_CODEC = StreamCodec.composite(
             BlockPos.STREAM_CODEC, ClientboundMixerStartPacket::pos,

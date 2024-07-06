@@ -4,7 +4,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
-import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.network.message.ClientboundAirCompressorInventoryPacket;
 import net.tropicraft.core.common.network.message.ClientboundMixerInventoryPacket;
@@ -13,7 +12,7 @@ import net.tropicraft.core.common.network.message.ClientboundSifterInventoryPack
 import net.tropicraft.core.common.network.message.ClientboundSifterStartPacket;
 import net.tropicraft.core.common.network.message.ClientboundUpdateScubaDataPacket;
 
-@EventBusSubscriber(modid = Constants.MODID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Tropicraft.ID, bus = EventBusSubscriber.Bus.MOD)
 public class TropicraftPackets {
     @SubscribeEvent
     public static void registerPackets(RegisterPayloadHandlersEvent event) {

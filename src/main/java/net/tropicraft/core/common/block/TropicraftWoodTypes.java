@@ -3,7 +3,7 @@ package net.tropicraft.core.common.block;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.WoodType;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 
 public class TropicraftWoodTypes {
     public static final WoodType MAHOGANY = register("mahogany");
@@ -13,6 +13,6 @@ public class TropicraftWoodTypes {
     public static final WoodType MANGROVE = register("mangrove");
 
     private static WoodType register(String name) {
-        return WoodType.register(new WoodType(ResourceLocation.fromNamespaceAndPath(Constants.MODID, name).toString(), BlockSetType.OAK));
+        return WoodType.register(new WoodType(ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, name).toString(), BlockSetType.OAK));
     }
 }

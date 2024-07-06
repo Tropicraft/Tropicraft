@@ -117,7 +117,6 @@ import net.neoforged.neoforge.client.model.generators.ModelProvider;
 import net.neoforged.neoforge.client.model.generators.MultiPartBlockStateBuilder;
 import net.neoforged.neoforge.client.model.generators.VariantBlockStateBuilder;
 import net.neoforged.neoforge.common.Tags;
-import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.TropicraftItemRenderers;
 import net.tropicraft.core.client.tileentity.AirCompressorRenderer;
@@ -330,7 +329,7 @@ public class TropicraftBlocks {
                 Item dye = flower.getDye();
                 if (dye != null) {
                     builder = builder.recipe((ctx, prov) -> {
-                        prov.singleItemUnfinished(DataIngredient.items(ctx.get()), RecipeCategory.MISC, () -> dye, 1, 2).save(prov, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name(dye)));
+                        prov.singleItemUnfinished(DataIngredient.items(ctx.get()), RecipeCategory.MISC, () -> dye, 1, 2).save(prov, ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, name(dye)));
                     });
                 }
                 return builder.register();
@@ -590,7 +589,7 @@ public class TropicraftBlocks {
             .recipe((ctx, prov) -> ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, Blocks.JUNGLE_LOG)
                     .requires(ctx.get())
                     .unlockedBy("has_papaya_log", has(ctx.get()))
-                    .save(prov, ResourceLocation.fromNamespaceAndPath(Constants.MODID, "papaya_log_to_jungle_log")))
+                    .save(prov, ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "papaya_log_to_jungle_log")))
             .register();
     public static final BlockEntry<RotatedPillarBlock> PAPAYA_WOOD = wood("papaya_wood", MapColor.COLOR_GRAY, PAPAYA_LOG).register();
 
@@ -808,7 +807,7 @@ public class TropicraftBlocks {
             .loot((loot, block) -> loot.add(block, createSinglePropConditionTable(loot, block, DoublePlantBlock.HALF, DoubleBlockHalf.LOWER)))
             .addLayer(() -> RenderType::cutout)
             .blockstate(TropicraftBlocks::doublePlant)
-            .recipe((ctx, prov) -> prov.singleItemUnfinished(DataIngredient.items(ctx.get()), RecipeCategory.MISC, () -> Items.PURPLE_DYE, 1, 4).save(prov, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name(Items.PURPLE_DYE))))
+            .recipe((ctx, prov) -> prov.singleItemUnfinished(DataIngredient.items(ctx.get()), RecipeCategory.MISC, () -> Items.PURPLE_DYE, 1, 4).save(prov, ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, name(Items.PURPLE_DYE))))
             .item()
             .model((ctx, prov) -> prov.blockSprite(ctx, prov.modLoc("block/iris_top")))
             .build()
@@ -886,7 +885,7 @@ public class TropicraftBlocks {
             .build()
             .register();
 
-    public static final BlockEntry<BoardwalkBlock> BAMBOO_BOARDWALK = boardwalk("bamboo_boardwalk", BAMBOO_SLAB, Either.right(ResourceLocation.fromNamespaceAndPath(Constants.MODID, "block/bamboo_side"))).register();
+    public static final BlockEntry<BoardwalkBlock> BAMBOO_BOARDWALK = boardwalk("bamboo_boardwalk", BAMBOO_SLAB, Either.right(ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "block/bamboo_side"))).register();
     public static final BlockEntry<BoardwalkBlock> PALM_BOARDWALK = boardwalk("palm_boardwalk", PALM_SLAB, Either.left(PALM_PLANKS)).register();
     public static final BlockEntry<BoardwalkBlock> MAHOGANY_BOARDWALK = boardwalk("mahogany_boardwalk", MAHOGANY_SLAB, Either.left(MAHOGANY_PLANKS)).register();
     public static final BlockEntry<BoardwalkBlock> MANGROVE_BOARDWALK = boardwalk("mangrove_boardwalk", MANGROVE_SLAB, Either.left(MANGROVE_PLANKS)).register();
@@ -903,8 +902,8 @@ public class TropicraftBlocks {
                     .texture("particle", prov.modLoc("block/bamboo_side")))
             .build()
             .addMiscData(ProviderType.LANG, prov -> {
-                prov.add(Constants.MODID + ".container.bambooChest", "Bamboo Chest");
-                prov.add(Constants.MODID + ".container.bambooChestDouble", "Large Bamboo Chest");
+                prov.add(Tropicraft.ID + ".container.bambooChest", "Bamboo Chest");
+                prov.add(Tropicraft.ID + ".container.bambooChestDouble", "Large Bamboo Chest");
             })
             .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ctx.get())
                     .pattern("BBB").pattern("B B").pattern("BBB")
@@ -937,7 +936,7 @@ public class TropicraftBlocks {
                         .define('I', Tags.Items.GLASS_PANES)
                         .group("tropicraft:sifter")
                         .unlockedBy("has_glass_pane", has(Tags.Items.GLASS_PANES))
-                        .save(prov, ResourceLocation.fromNamespaceAndPath(Constants.MODID, "sifter_with_glass_pane"));
+                        .save(prov, ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "sifter_with_glass_pane"));
             })
             .simpleItem()
             .register();

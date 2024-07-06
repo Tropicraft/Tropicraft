@@ -21,7 +21,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.Vec3;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomeBuilder;
 import net.tropicraft.core.common.dimension.noise.TropicraftNoiseGenSettings;
 import org.apache.logging.log4j.LogManager;
@@ -33,7 +33,7 @@ import java.util.OptionalLong;
 public class TropicraftDimension {
     private static final Logger LOGGER = LogManager.getLogger(TropicraftDimension.class);
 
-    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "tropics");
+    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "tropics");
     public static final ResourceLocation EFFECTS_ID = ID;
 
     public static final ResourceKey<Level> WORLD = ResourceKey.create(Registries.DIMENSION, ID);

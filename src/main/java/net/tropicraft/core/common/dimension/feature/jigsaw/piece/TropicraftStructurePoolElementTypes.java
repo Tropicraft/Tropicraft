@@ -6,10 +6,10 @@ import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElementType;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 
 public final class TropicraftStructurePoolElementTypes {
-    public static final DeferredRegister<StructurePoolElementType<?>> REGISTER = DeferredRegister.create(Registries.STRUCTURE_POOL_ELEMENT, Constants.MODID);
+    public static final DeferredRegister<StructurePoolElementType<?>> REGISTER = DeferredRegister.create(Registries.STRUCTURE_POOL_ELEMENT, Tropicraft.ID);
 
     public static final DeferredHolder<StructurePoolElementType<?>, StructurePoolElementType<NoRotateSingleJigsawPiece>> SINGLE_NO_ROTATE = register("single_no_rotate", NoRotateSingleJigsawPiece.CODEC);
     public static final DeferredHolder<StructurePoolElementType<?>, StructurePoolElementType<SingleNoAirJigsawPiece>> SINGLE_NO_AIR = register("single_no_air", SingleNoAirJigsawPiece.CODEC);

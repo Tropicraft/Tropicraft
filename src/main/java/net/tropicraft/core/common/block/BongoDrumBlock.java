@@ -24,12 +24,12 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.sound.Sounds;
 
 import java.util.function.Supplier;
 
-@EventBusSubscriber(modid = Constants.MODID)
+@EventBusSubscriber(modid = Tropicraft.ID)
 public final class BongoDrumBlock extends Block {
     public static final MapCodec<BongoDrumBlock> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
             Size.CODEC.fieldOf("size").forGetter(b -> b.size),

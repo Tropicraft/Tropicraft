@@ -10,13 +10,13 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.block.tileentity.DrinkMixerBlockEntity;
 
 import java.util.List;
 
 public record ClientboundMixerInventoryPacket(BlockPos pos, List<ItemStack> inventory, ItemStack result) implements CustomPacketPayload {
-    public static final Type<ClientboundMixerInventoryPacket> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(Constants.MODID, "mixer_inventory"));
+    public static final Type<ClientboundMixerInventoryPacket> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "mixer_inventory"));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundMixerInventoryPacket> STREAM_CODEC = StreamCodec.composite(
             BlockPos.STREAM_CODEC, ClientboundMixerInventoryPacket::pos,

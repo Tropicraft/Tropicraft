@@ -12,7 +12,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -68,7 +68,7 @@ public abstract class PathStructureProcessor extends CheatyStructureProcessor {
         infiniteBounds.setBoundingBox(BoundingBox.infinite());
         return VECTOR_CACHE.computeIfAbsent(settings, s ->
                         template.filterBlocks(seedPos, infiniteBounds, Blocks.JIGSAW, true).stream() // Find all jigsaw blocks
-                                .filter(b -> b.nbt().getString("target").equals(Constants.MODID + ":path_center")) // Filter for vector markers
+                                .filter(b -> b.nbt().getString("target").equals(Tropicraft.ID + ":path_center")) // Filter for vector markers
 //                		.peek(bi -> setBlockState(world, world.getHeight(Type.WORLD_SURFACE_WG, bi.pos), bi.state))
                                 .map(bi -> new PathVector(level.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, bi.pos()).subtract(seedPos), JigsawBlock.getFrontFacing(bi.state()))) // Convert pos to structure local, extract facing
                                 .collect(Collectors.toList()))

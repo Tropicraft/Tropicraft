@@ -5,10 +5,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 
 public class Sounds {
-    public static final DeferredRegister<SoundEvent> REGISTER = DeferredRegister.create(Registries.SOUND_EVENT, Constants.MODID);
+    public static final DeferredRegister<SoundEvent> REGISTER = DeferredRegister.create(Registries.SOUND_EVENT, Tropicraft.ID);
 
     public static final DeferredHolder<SoundEvent, SoundEvent> BURIED_TREASURE = register("buried_treasure");
     public static final DeferredHolder<SoundEvent, SoundEvent> EASTERN_ISLES = register("eastern_isles");
@@ -34,6 +34,6 @@ public class Sounds {
     public static final DeferredHolder<SoundEvent, SoundEvent> FROG_SPIT = register("frogspit");
 
     private static DeferredHolder<SoundEvent, SoundEvent> register(String name) {
-        return REGISTER.register(name, () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(Constants.MODID, name)));
+        return REGISTER.register(name, () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, name)));
     }
 }

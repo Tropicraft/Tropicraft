@@ -24,7 +24,7 @@ import net.minecraft.world.level.levelgen.placement.NoiseBasedCountPlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.RarityFilter;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -255,7 +255,7 @@ public final class TropicraftVegetationPlacements {
     }
 
     private static ResourceKey<PlacedFeature> createKey(String name) {
-        return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
+        return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, name));
     }
 
     public static void addFruitTrees(BiomeGenerationSettings.Builder generation) {

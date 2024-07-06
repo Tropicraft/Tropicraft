@@ -9,7 +9,7 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.TropicraftTags;
 
 import java.util.EnumMap;
@@ -17,11 +17,11 @@ import java.util.List;
 import java.util.Map;
 
 public class TropicraftArmorMaterials {
-    public static final DeferredRegister<ArmorMaterial> REGISTER = DeferredRegister.create(Registries.ARMOR_MATERIAL, Constants.MODID);
+    public static final DeferredRegister<ArmorMaterial> REGISTER = DeferredRegister.create(Registries.ARMOR_MATERIAL, Tropicraft.ID);
 
     // Ignored, replaced with custom models with IClientItemExtensions
     private static final List<ArmorMaterial.Layer> DUMMY_LAYERS = List.of(new ArmorMaterial.Layer(
-            ResourceLocation.fromNamespaceAndPath(Constants.MODID, "dummy")
+            ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "dummy")
     ));
 
     public static final DeferredHolder<ArmorMaterial, ArmorMaterial> ASHEN_MASK = REGISTER.register("ashen_mask", () -> new ArmorMaterial(
@@ -57,7 +57,7 @@ public class TropicraftArmorMaterials {
             SoundEvents.ARMOR_EQUIP_CHAIN,
             () -> Ingredient.of(TropicraftItems.SCALE.get()),
             List.of(new ArmorMaterial.Layer(
-                    ResourceLocation.fromNamespaceAndPath(Constants.MODID, "scale")
+                    ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "scale")
             )),
             0.5f,
             0.0f
@@ -73,7 +73,7 @@ public class TropicraftArmorMaterials {
             SoundEvents.ARMOR_EQUIP_IRON,
             () -> Ingredient.of(TropicraftTags.Items.REPAIRS_FIRE_ARMOR),
             List.of(new ArmorMaterial.Layer(
-                    ResourceLocation.fromNamespaceAndPath(Constants.MODID, "fire")
+                    ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "fire")
             )),
             0.1f,
             0.0f

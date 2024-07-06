@@ -15,12 +15,12 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RenderNameTagEvent;
 import net.neoforged.neoforge.client.event.RenderPlayerEvent;
 import net.neoforged.neoforge.common.util.TriState;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.entity.SeaTurtleEntity;
 import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
 import org.joml.Quaternionf;
 
-@EventBusSubscriber(value = Dist.CLIENT, modid = Constants.MODID)
+@EventBusSubscriber(value = Dist.CLIENT, modid = Tropicraft.ID)
 public class PlayerRotationHandler {
 
     private static float rotationYawHead, prevRotationYawHead, rotationPitch, prevRotationPitch;

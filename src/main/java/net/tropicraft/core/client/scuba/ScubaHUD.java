@@ -18,7 +18,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
-import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.data.TropicraftLangKeys;
 import net.tropicraft.core.common.item.scuba.ScubaArmorItem;
 import net.tropicraft.core.common.item.scuba.ScubaData;
@@ -26,12 +26,12 @@ import org.apache.commons.lang3.time.DurationFormatUtils;
 
 import java.util.Locale;
 
-@EventBusSubscriber(value = Dist.CLIENT, modid = Constants.MODID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(value = Dist.CLIENT, modid = Tropicraft.ID, bus = EventBusSubscriber.Bus.MOD)
 public class ScubaHUD {
 
     @SubscribeEvent
     public static void registerOverlayRenderer(RegisterGuiLayersEvent event) {
-        event.registerBelow(VanillaGuiLayers.DEBUG_OVERLAY, ResourceLocation.fromNamespaceAndPath(Constants.MODID, "scuba_hud"), ScubaHUD::draw);
+        event.registerBelow(VanillaGuiLayers.DEBUG_OVERLAY, ResourceLocation.fromNamespaceAndPath(Tropicraft.ID, "scuba_hud"), ScubaHUD::draw);
     }
 
     private static void draw(GuiGraphics graphics, DeltaTracker deltaTracker) {
