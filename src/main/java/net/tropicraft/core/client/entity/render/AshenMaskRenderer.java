@@ -8,12 +8,12 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.tropicraft.core.client.TropicraftRenderUtils;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
 import net.tropicraft.core.common.entity.placeable.AshenMaskEntity;
 
 public class AshenMaskRenderer extends EntityRenderer<AshenMaskEntity> {
-    private static final ResourceLocation TEXTURE = TropicraftRenderUtils.getTextureEntity("ashen/mask");
+    private static final ResourceLocation TEXTURE = Tropicraft.location("textures/entity/ashen/mask.png");
 
     private final TropicraftSpecialRenderHelper mask;
 

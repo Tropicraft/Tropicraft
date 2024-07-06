@@ -5,8 +5,8 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.TropicraftRenderLayers;
-import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.AshenModel;
 import net.tropicraft.core.client.entity.render.layer.AshenHeldItemLayer;
 import net.tropicraft.core.client.entity.render.layer.AshenMaskLayer;
@@ -14,7 +14,7 @@ import net.tropicraft.core.common.entity.hostile.AshenEntity;
 
 public class AshenRenderer extends MobRenderer<AshenEntity, AshenModel> {
 
-    private static final ResourceLocation ASHEN_TEXTURE_LOCATION = TropicraftRenderUtils.bindTextureEntity("ashen/ashen");
+    private static final ResourceLocation ASHEN_TEXTURE_LOCATION = Tropicraft.location("textures/entity/ashen/ashen.png");
 
     public AshenRenderer(EntityRendererProvider.Context context) {
         super(context, new AshenModel(context.bakeLayer(TropicraftRenderLayers.ASHEN_LAYER)), 0.5f);

@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -11,11 +12,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.CommonColors;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import net.tropicraft.core.client.TropicraftRenderUtils;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.entity.projectile.PoisonBlotEntity;
 
 @OnlyIn(Dist.CLIENT)
 public class PoisonBlotRenderer extends EntityRenderer<PoisonBlotEntity> {
+    private static final ResourceLocation TEXTURE_LOCATION = Tropicraft.location("textures/entity/treefrog/blot.png");
 
     public PoisonBlotRenderer(EntityRendererProvider.Context context) {
         super(context);
@@ -26,7 +28,8 @@ public class PoisonBlotRenderer extends EntityRenderer<PoisonBlotEntity> {
         stack.pushPose();
         stack.mulPose(entityRenderDispatcher.cameraOrientation());
         stack.mulPose(Axis.YP.rotationDegrees(180.0f));
-        VertexConsumer buffer = TropicraftRenderUtils.getEntityCutoutBuilder(bufferIn, getTextureLocation(entity));
+        ResourceLocation resourceLocation = getTextureLocation(entity);
+        VertexConsumer buffer = bufferIn.getBuffer(RenderType.entityCutout(resourceLocation));
         PoseStack.Pose pose = stack.last();
         vertex(pose, buffer, -0.5f, -0.5f, 0, 1, packedLightIn);
         vertex(pose, buffer, 0.5f, -0.5f, 1, 1, packedLightIn);
@@ -47,6 +50,6 @@ public class PoisonBlotRenderer extends EntityRenderer<PoisonBlotEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(PoisonBlotEntity entity) {
-        return TropicraftRenderUtils.getTextureEntity("treefrog/blot");
+        return TEXTURE_LOCATION;
     }
 }

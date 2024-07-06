@@ -1,11 +1,12 @@
 package net.tropicraft.core.common.entity.underdasea;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
+import net.tropicraft.Tropicraft;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public enum StarfishType implements StringRepresentable {
@@ -42,9 +43,11 @@ public enum StarfishType implements StringRepresentable {
             layerHeights = heights;
         }
 
-        texturePaths = new ArrayList<>(textures.length);
+        this.textures = new ArrayList<>(textures.length);
 
-        Collections.addAll(texturePaths, textures);
+        for (String texture : textures) {
+            this.textures.add(Tropicraft.location("textures/entity/" + texture + ".png"));
+        }
     }
 
     StarfishType(String unlocalizedName, String displayName, String[] textures) {
@@ -59,7 +62,7 @@ public enum StarfishType implements StringRepresentable {
 
     private final String unlocalizedName;
     private final String displayName;
-    private final List<String> texturePaths;
+    private final List<ResourceLocation> textures;
     private final float[] layerHeights;
 
     public String getUnlocalizedName() {
@@ -70,8 +73,8 @@ public enum StarfishType implements StringRepresentable {
         return displayName;
     }
 
-    public List<String> getTexturePaths() {
-        return texturePaths;
+    public List<ResourceLocation> getTextures() {
+        return textures;
     }
 
     public float[] getLayerHeights() {
@@ -79,7 +82,7 @@ public enum StarfishType implements StringRepresentable {
     }
 
     public int getLayerCount() {
-        return texturePaths.size();
+        return textures.size();
     }
 
     public static StarfishType getRandomType() {

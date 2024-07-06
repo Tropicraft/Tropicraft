@@ -8,11 +8,12 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.TropicraftRenderLayers;
-import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.EIHMachineModel;
 import net.tropicraft.core.client.scuba.ModelScubaGear;
 import net.tropicraft.core.common.block.TropicraftBlocks;
@@ -20,6 +21,7 @@ import net.tropicraft.core.common.block.tileentity.AirCompressorBlockEntity;
 import net.tropicraft.core.common.item.scuba.ScubaArmorItem;
 
 public class AirCompressorRenderer extends MachineRenderer<AirCompressorBlockEntity> {
+    private static final Material MATERIAL = new Material(TextureAtlas.LOCATION_BLOCKS, Tropicraft.location("textures/block/te/drink_mixer.png"));
 
     private final ModelScubaGear tankModel;
     //private final ModelScubaGear tankModel = new ModelScubaGear(0, EquipmentSlot.CHEST); // Can't reuse the main one with a different scale
@@ -31,7 +33,7 @@ public class AirCompressorRenderer extends MachineRenderer<AirCompressorBlockEnt
 
     @Override
     protected Material getMaterial() {
-        return TropicraftRenderUtils.getTEMaterial("drink_mixer");
+        return MATERIAL;
     }
 
     @Override

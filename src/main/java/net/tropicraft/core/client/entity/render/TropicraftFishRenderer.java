@@ -10,13 +10,13 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.animal.AbstractFish;
-import net.tropicraft.core.client.TropicraftRenderUtils;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
 import net.tropicraft.core.client.entity.model.TropicraftFishModel;
 import net.tropicraft.core.common.entity.underdasea.IAtlasFish;
 
 public class TropicraftFishRenderer<T extends AbstractFish> extends MobRenderer<T, TropicraftFishModel<T>> {
-    private static final ResourceLocation TEXTURE = TropicraftRenderUtils.getTextureEntity("tropical_fish");
+    private static final ResourceLocation TEXTURE = Tropicraft.location("textures/entity/tropical_fish.png");
 
     private final TropicraftSpecialRenderHelper renderHelper;
 

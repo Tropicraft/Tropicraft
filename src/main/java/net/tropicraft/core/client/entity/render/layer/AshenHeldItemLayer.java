@@ -10,11 +10,9 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.AshenModel;
 import net.tropicraft.core.common.entity.hostile.AshenEntity;
 
@@ -24,11 +22,6 @@ public class AshenHeldItemLayer<T extends AshenEntity, M extends EntityModel<T> 
     public AshenHeldItemLayer(RenderLayerParent<T, M> renderer, ItemInHandRenderer itemInHandRenderer, AshenModel model) {
         super(renderer, itemInHandRenderer);
         this.model = model;
-    }
-
-    @Override
-    protected ResourceLocation getTextureLocation(AshenEntity entityIn) {
-        return TropicraftRenderUtils.getTextureEntity("ashen/ashen");
     }
 
     @Override

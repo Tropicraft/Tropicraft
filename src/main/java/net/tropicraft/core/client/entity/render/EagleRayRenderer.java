@@ -5,14 +5,13 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.TropicraftRenderLayers;
-import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.EagleRayModel;
 import net.tropicraft.core.common.entity.underdasea.EagleRayEntity;
 
 public class EagleRayRenderer extends MobRenderer<EagleRayEntity, EagleRayModel> {
-
-    public static final ResourceLocation RAY_TEXTURE_LOC = TropicraftRenderUtils.bindTextureEntity("ray/eagleray");
+    public static final ResourceLocation RAY_TEXTURE_LOC = Tropicraft.location("textures/entity/ray/eagleray.png");
 
     public EagleRayRenderer(EntityRendererProvider.Context context) {
         super(context, new EagleRayModel(context.bakeLayer(TropicraftRenderLayers.EAGLE_RAY_LAYER)), 0.8f);

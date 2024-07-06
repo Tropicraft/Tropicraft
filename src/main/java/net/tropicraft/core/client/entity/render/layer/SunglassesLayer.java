@@ -12,13 +12,13 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.tropicraft.core.client.TropicraftRenderUtils;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
 
 import java.util.function.Predicate;
 
 public class SunglassesLayer<T extends Entity, M extends EntityModel<T>> extends RenderLayer<T, M> {
-    private static final ResourceLocation TEXTURE = TropicraftRenderUtils.getTextureEntity("sunglasses");
+    private static final ResourceLocation TEXTURE = Tropicraft.location("textures/entity/sunglasses.png");
 
     private final TropicraftSpecialRenderHelper mask;
     private final M model;

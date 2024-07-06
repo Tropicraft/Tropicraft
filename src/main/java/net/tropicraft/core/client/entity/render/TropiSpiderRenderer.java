@@ -5,10 +5,14 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.SpiderRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.tropicraft.core.client.TropicraftRenderUtils;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.entity.hostile.TropiSpiderEntity;
 
 public class TropiSpiderRenderer extends SpiderRenderer<TropiSpiderEntity> {
+    private static final ResourceLocation ADULT_TEXTURE_LOCATION = Tropicraft.location("textures/entity/spideradult.png");
+    private static final ResourceLocation MOTHER_TEXTURE_LOCATION = Tropicraft.location("textures/entity/spidermother.png");
+    private static final ResourceLocation CHILD_TEXTURE_LOCATION = Tropicraft.location("textures/entity/spiderchild.png");
+
     public TropiSpiderRenderer(EntityRendererProvider.Context context) {
         super(context);
         shadowStrength = 0.5f;
@@ -26,13 +30,11 @@ public class TropiSpiderRenderer extends SpiderRenderer<TropiSpiderEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(TropiSpiderEntity entity) {
-        if (entity.getSpiderType() == TropiSpiderEntity.Type.CHILD) {
-            return TropicraftRenderUtils.bindTextureEntity("spiderchild");
-        }
-        if (entity.getSpiderType() == TropiSpiderEntity.Type.MOTHER) {
-            return TropicraftRenderUtils.bindTextureEntity("spidermother");
-        }
-        return TropicraftRenderUtils.bindTextureEntity("spideradult");
+        return switch (entity.getSpiderType()) {
+            case CHILD -> CHILD_TEXTURE_LOCATION;
+            case MOTHER -> MOTHER_TEXTURE_LOCATION;
+            case ADULT -> ADULT_TEXTURE_LOCATION;
+        };
     }
 
     private float getScale(TropiSpiderEntity spider) {

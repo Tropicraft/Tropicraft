@@ -10,14 +10,15 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.tropicraft.core.client.TropicraftRenderUtils;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.entity.placeable.FurnitureEntity;
 import org.joml.Quaternionf;
 
 public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer<T> {
     private static final Axis DEFAULT_ROCKING_AXIS = angle -> new Quaternionf().rotationAxis(angle, 1.0f, 0.0f, 1.0f);
 
-    private final String textureName;
+    private final ResourceLocation baseTexture;
+    private final ResourceLocation colorTexture;
     private final EntityModel<T> model;
     private final float scale;
 
@@ -27,7 +28,8 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
 
     public FurnitureRenderer(EntityRendererProvider.Context context, String textureName, EntityModel<T> model, float scale) {
         super(context);
-        this.textureName = textureName;
+        baseTexture = Tropicraft.location("textures/entity/" + textureName + "_base_layer.png");
+        colorTexture = Tropicraft.location("textures/entity/" + textureName + "_color_layer.png");
         this.model = model;
         this.scale = scale;
     }
@@ -49,13 +51,13 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
         int color = furniture.getColor().getTextureDiffuseColor();
 
         // Draw uncolored layer
-        VertexConsumer ivertexbuilder = buffer.getBuffer(model.renderType(TropicraftRenderUtils.getTextureEntity(textureName + "_base_layer")));
+        VertexConsumer builder = buffer.getBuffer(model.renderType(baseTexture));
         stack.scale(-1.0f, -1.0f, 1.0f);
-        model.renderToBuffer(stack, ivertexbuilder, getPackedLightCoords(furniture, partialTicks), OverlayTexture.NO_OVERLAY);
+        model.renderToBuffer(stack, builder, getPackedLightCoords(furniture, partialTicks), OverlayTexture.NO_OVERLAY);
 
         // Draw the colored part
-        ivertexbuilder = buffer.getBuffer(model.renderType(TropicraftRenderUtils.getTextureEntity(textureName + "_color_layer")));
-        model.renderToBuffer(stack, ivertexbuilder, getPackedLightCoords(furniture, partialTicks), OverlayTexture.NO_OVERLAY, color);
+        builder = buffer.getBuffer(model.renderType(colorTexture));
+        model.renderToBuffer(stack, builder, getPackedLightCoords(furniture, partialTicks), OverlayTexture.NO_OVERLAY, color);
 
         super.render(furniture, entityYaw, partialTicks, stack, buffer, packedLightIn);
         stack.popPose();
