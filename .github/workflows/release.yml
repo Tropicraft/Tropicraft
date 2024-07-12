@@ -36,6 +36,8 @@ jobs:
         modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
         curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
         github-token: ${{ secrets.GITHUB_TOKEN }}
+        modrinth-id: 20zpzIT1
+        curseforge-id: 254794
         version-type: release
         files: build/libs/!(*-dev|*-slim|*-sources|*-javadoc).jar
         game-versions: |
@@ -48,6 +50,8 @@ jobs:
         modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
         curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
         github-token: ${{ secrets.GITHUB_TOKEN }}
+        modrinth-id: 20zpzIT1
+        curseforge-id: 254794
         version-type: beta
         files: build/libs/!(*-dev|*-slim|*-sources|*-javadoc).jar
         game-versions: |

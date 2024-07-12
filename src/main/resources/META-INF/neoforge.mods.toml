@@ -13,9 +13,6 @@ credits = "Mr_okushama, MrRube, newthead, pablomittens, fotoply, and others who 
 authors = "Cojomax99, Corosus, tterrag"
 description = '''
 This is Tropicraft, the utopian idyllic getaway that you have been waiting for! Craft a pina colada, plop yourself down into a beach chair, take a sip at sunset, and drift away'''
-[projects]
-modrinth = "20zpzIT1"
-curseforge = 254794
 
 [[mixins]]
 config = "tropicraft.mixins.json"
