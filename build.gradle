@@ -90,6 +90,14 @@ tasks.named('processResources', ProcessResources).configure {
     }
 }
 
+tasks.named('jar').configure {
+    archiveClassifier = 'slim'
+}
+
+tasks.named('jarJar').configure {
+    archiveClassifier = ''
+}
+
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
