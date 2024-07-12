@@ -78,7 +78,7 @@ public class SifterBlockEntity extends BlockEntity {
         // Rotation animation
         if (level.isClientSide) {
             yaw2 = yaw % 360.0;
-            yaw += 4.545454502105713;
+            yaw += 45.45454502105713;
         }
 
         // Done sifting

@@ -2,51 +2,43 @@ package net.tropicraft.core.client.tileentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.client.renderer.entity.ItemEntityRenderer;
+import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.util.Mth;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.tropicraft.core.common.block.tileentity.SifterBlockEntity;
 
-import javax.annotation.Nullable;
-
 public class SifterRenderer implements BlockEntityRenderer<SifterBlockEntity> {
-    @Nullable
-    private ItemEntity item;
+    public static final float ITEM_SCALE = 1.3125f;
 
-    public SifterRenderer(BlockEntityRendererProvider.Context pContext) {
+    private final ItemRenderer itemRenderer;
 
+    public SifterRenderer(BlockEntityRendererProvider.Context context) {
+        itemRenderer = context.getItemRenderer();
     }
 
     @Override
-    public void render(SifterBlockEntity sifter, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
-        matrixStackIn.pushPose();
-        matrixStackIn.translate(0.5, 0.0, 0.5);
+    public void render(SifterBlockEntity sifter, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+        Level level = sifter.getLevel();
+        ItemStack item = sifter.getSiftItem();
 
-        if (!sifter.isSifting()) {
-            item = null;
-        } else if (!sifter.getSiftItem().isEmpty()) {
-            Level level = sifter.getLevel();
-            final float itemRenderSize = 0.4375f;
-
-            if (item == null) {
-                item = new ItemEntity(EntityType.ITEM, level);
-                item.setItem(sifter.getSiftItem().copy());
-            }
-
-            matrixStackIn.translate(0.0, 0.4f, 0.0);
-            matrixStackIn.mulPose(Axis.YP.rotationDegrees((float) (sifter.yaw2 + (sifter.yaw - sifter.yaw2) * (double) partialTicks) * 10.0f));
-            matrixStackIn.translate(0.0, -0.4f, 0.0);
-            matrixStackIn.mulPose(Axis.XP.rotationDegrees(-20.0f));
-            matrixStackIn.scale(itemRenderSize * 3, itemRenderSize * 3, itemRenderSize * 3);
-            int light = LevelRenderer.getLightColor(level, sifter.getBlockPos().above());
-            Minecraft.getInstance().getEntityRenderDispatcher().render(item, 0.0, 0.0, 0.0, 0.0f, partialTicks, matrixStackIn, bufferIn, light);
+        if (!sifter.isSifting() || item.isEmpty()) {
+            return;
         }
 
-        matrixStackIn.popPose();
+        poseStack.pushPose();
+        poseStack.translate(0.5, 0.2, 0.5);
+
+        poseStack.rotateAround(Axis.YP.rotationDegrees((float) Mth.rotLerp(partialTicks, sifter.yaw2, sifter.yaw)), 0.0f, -0.4f, 0.0f);
+        poseStack.mulPose(Axis.XP.rotationDegrees(-20.0f));
+        poseStack.scale(ITEM_SCALE, ITEM_SCALE, ITEM_SCALE);
+
+        ItemEntityRenderer.renderMultipleFromCount(itemRenderer, poseStack, bufferSource, packedLight, item, level.random, level);
+
+        poseStack.popPose();
     }
 }
