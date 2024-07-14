@@ -29,6 +29,7 @@ public abstract class EggEntity extends LivingEntity {
         noCulling = true;
 
         setYRot(random.nextInt(360));
+        setHatchDelay(-60 + random.nextInt(120));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -53,7 +54,6 @@ public abstract class EggEntity extends LivingEntity {
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(HATCH_DELAY, 0);
-        setHatchDelay(-60 + random.nextInt(120));
     }
 
     public abstract boolean shouldEggRenderFlat();
