@@ -7,11 +7,15 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.Material;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.EnchantingTableBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.neoforged.neoforge.client.extensions.IBlockEntityRendererExtension;
 import net.tropicraft.core.client.entity.model.MachineModel;
 import net.tropicraft.core.common.block.tileentity.IMachineBlock;
 
@@ -71,4 +75,10 @@ public abstract class MachineRenderer<T extends BlockEntity & IMachineBlock> imp
     }
 
     protected abstract void renderIngredients(T te, PoseStack stack, MultiBufferSource buffer, int packedLightIn, int combinedOverlayIn);
+
+    @Override
+    public AABB getRenderBoundingBox(T blockEntity) {
+        BlockPos pos = blockEntity.getBlockPos();
+        return new AABB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1.0, pos.getY() + 2.0, pos.getZ() + 1.0);
+    }
 }
