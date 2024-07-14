@@ -32,7 +32,7 @@ public class TropicraftTags {
         }
 
         static TagKey<Block> compatTag(String name) {
-            return tag("forge", name);
+            return tag("c", name);
         }
     }
 
@@ -74,7 +74,7 @@ public class TropicraftTags {
         }
 
         static TagKey<Item> compatTag(String name) {
-            return tag("forge", name);
+            return tag("c", name);
         }
     }
 

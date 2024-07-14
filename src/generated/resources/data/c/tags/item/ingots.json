@@ -1,6 +1,6 @@
 {
   "values": [
-    "#forge:ingots/manganese",
-    "#forge:ingots/shaka"
+    "#c:ingots/manganese",
+    "#c:ingots/shaka"
   ]
 }

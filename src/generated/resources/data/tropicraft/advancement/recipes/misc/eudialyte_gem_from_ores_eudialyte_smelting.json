@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#forge:ores/eudialyte"
+            "items": "#c:ores/eudialyte"
           }
         ]
       },

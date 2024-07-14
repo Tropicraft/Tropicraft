@@ -4,7 +4,7 @@
   "cookingtime": 200,
   "experience": 0.5,
   "ingredient": {
-    "tag": "forge:ores/shaka"
+    "tag": "c:ores/shaka"
   },
   "result": {
     "count": 1,

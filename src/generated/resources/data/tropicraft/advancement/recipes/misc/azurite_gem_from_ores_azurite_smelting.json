@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#forge:ores/azurite"
+            "items": "#c:ores/azurite"
           }
         ]
       },

@@ -1,8 +1,8 @@
 {
   "values": [
-    "#forge:gems/azurite",
-    "#forge:gems/eudialyte",
-    "#forge:gems/zircon",
-    "#forge:gems/zirconium"
+    "#c:gems/azurite",
+    "#c:gems/eudialyte",
+    "#c:gems/zircon",
+    "#c:gems/zirconium"
   ]
 }

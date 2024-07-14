@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#forge:ores/zircon"
+            "items": "#c:ores/zircon"
           }
         ]
       },

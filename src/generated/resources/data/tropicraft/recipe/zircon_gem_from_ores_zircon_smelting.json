@@ -4,7 +4,7 @@
   "cookingtime": 200,
   "experience": 0.5,
   "ingredient": {
-    "tag": "forge:ores/zircon"
+    "tag": "c:ores/zircon"
   },
   "result": {
     "count": 1,
