@@ -189,7 +189,7 @@ public class TropicraftItems {
 
     private static <T extends FurnitureEntity> ItemBuilder<FurnitureItem<T>, Registrate> furniture(String name, Supplier<EntityType<T>> type, DyeColor color) {
         return REGISTRATE.item(name, p -> new FurnitureItem<>(p, type, color))
-                .color(() -> () -> (stack, tintIndex) -> tintIndex == 0 ? CommonColors.WHITE : FastColor.ARGB32.opaque(color.getTextColor()));
+                .color(() -> ColorProviders.furnitureColor(color));
     }
 
     public static final ItemEntry<Item> BAMBOO_STICK = simpleItem("bamboo_stick")
@@ -237,7 +237,7 @@ public class TropicraftItems {
     public static final ItemEntry<LoveTropicsShellItem> LOVE_TROPICS_SHELL = REGISTRATE.item("love_tropics_shell", LoveTropicsShellItem::new)
             .initialProperties(Item.Properties::new)
             .model((ctx, prov) -> prov.generated(ctx, prov.modLoc("item/ltshell"), prov.modLoc("item/ltshell_inverted")))
-            .color(() -> () -> LoveTropicsShellItem::getColor)
+            .color(() -> ColorProviders.shellColor())
             .addMiscData(ProviderType.LANG, prov -> {
                 prov.add("item.tropicraft.shell.owned.normal", "%s's Shell");
                 prov.add("item.tropicraft.shell.owned.with_s", "%s' Shell");
@@ -317,12 +317,7 @@ public class TropicraftItems {
                             })
                             .properties(p -> p.durability(0).stacksTo(1).craftRemainder(BAMBOO_MUG.get()))
                             .model((ctx, prov) -> prov.generated(ctx, prov.modLoc("item/cocktail"), prov.modLoc("item/cocktail_contents")))
-                            .color(() -> () -> (ItemColor) (stack, tintIndex) -> {
-                                if (tintIndex == 0) {
-                                    return CommonColors.WHITE;
-                                }
-                                return FastColor.ARGB32.opaque(drink == Drink.COCKTAIL ? CocktailItem.getCocktailColor(stack) : drink.color);
-                            })
+                            .color(() -> ColorProviders.cocktailColor(drink))
                             .lang(drink.getName())
                             .register()
             ));
@@ -842,5 +837,25 @@ public class TropicraftItems {
     }
 
     private record TrimMaterial(String name, float itemModelIndex) {
+    }
+
+    // Inner class to ensure that these don't get loaded on the server
+    private static class ColorProviders {
+        public static Supplier<ItemColor> furnitureColor(DyeColor color) {
+            return () -> (stack, tintIndex) -> tintIndex == 0 ? CommonColors.WHITE : FastColor.ARGB32.opaque(color.getTextColor());
+        }
+
+        public static Supplier<ItemColor> shellColor() {
+            return () -> LoveTropicsShellItem::getColor;
+        }
+
+        public static Supplier<ItemColor> cocktailColor(Drink drink) {
+            return () -> (ItemColor) (stack, tintIndex) -> {
+                if (tintIndex == 0) {
+                    return CommonColors.WHITE;
+                }
+                return FastColor.ARGB32.opaque(drink == Drink.COCKTAIL ? CocktailItem.getCocktailColor(stack) : drink.color);
+            };
+        }
     }
 }
