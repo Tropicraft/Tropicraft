@@ -1728,7 +1728,7 @@ public class TropicraftBlocks {
     private static LootPool.Builder droppingChunksPool(RegistrateBlockLootTables loot, Block block, Supplier<? extends ItemLike> chunk) {
         return LootPool.lootPool().add(LootItem.lootTableItem(chunk.get())
                 .when(MatchTool.toolMatches(ItemPredicate.Builder.item().of(ItemTags.SWORDS)))
-                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0f, 4.0f)))
+                .apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0f, 4.0f)))
                 .otherwise(loot.applyExplosionCondition(block, LootItem.lootTableItem(block))));
     }
 

@@ -263,7 +263,12 @@ public class TropicraftItems {
     public static final ItemEntry<Item> JOCOTE = food("jocote", Foods.JOCOTE)
             .tag(TropicraftTags.Items.FRUITS)
             .register();
-    public static final ItemEntry<Item> PINEAPPLE_CUBES = food("pineapple_cubes", Foods.PINEAPPLE_CUBES).register();
+    public static final ItemEntry<Item> PINEAPPLE_CUBES = food("pineapple_cubes", Foods.PINEAPPLE_CUBES)
+            .recipe((ctx, prov) -> ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, ctx.get(), 2)
+                    .requires(TropicraftBlocks.PINEAPPLE)
+                    .unlockedBy("has_pineapple", has(TropicraftBlocks.PINEAPPLE))
+                    .save(prov))
+            .register();
     public static final ItemEntry<Item> COCONUT_CHUNK = food("coconut_chunk", Foods.COCONUT_CHUNK).register();
 
     public static final ItemEntry<ItemNameBlockItem> RAW_COFFEE_BEAN = REGISTRATE.item("raw_coffee_bean", p -> new ItemNameBlockItem(TropicraftBlocks.COFFEE_BUSH.get(), p))
