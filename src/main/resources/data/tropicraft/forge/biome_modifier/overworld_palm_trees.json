@@ -1,6 +1,0 @@
-{
-  "type": "forge:add_features",
-  "biomes": ["minecraft:beach"],
-  "features": ["tropicraft:trees_palm_overworld"],
-  "step": "vegetal_decoration"
-}

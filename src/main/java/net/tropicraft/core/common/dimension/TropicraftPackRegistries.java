@@ -4,7 +4,9 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.registries.RegistryPatchGenerator;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomeBuilder;
+import net.tropicraft.core.common.dimension.biome.TropicraftBiomeModifiers;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
 import net.tropicraft.core.common.dimension.carver.TropicraftConfiguredCarvers;
 import net.tropicraft.core.common.dimension.feature.TropicraftMiscFeatures;
@@ -46,7 +48,8 @@ public class TropicraftPackRegistries {
             .add(Registries.DIMENSION_TYPE, TropicraftDimension::bootstrapDimensionType)
             .add(Registries.LEVEL_STEM, TropicraftDimension::bootstrapLevelStem)
             .add(Registries.MULTI_NOISE_BIOME_SOURCE_PARAMETER_LIST, TropicraftBiomeBuilder::bootstrap)
-            .add(Registries.JUKEBOX_SONG, TropicraftJukeboxSongs::bootstrap);
+            .add(Registries.JUKEBOX_SONG, TropicraftJukeboxSongs::bootstrap)
+            .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, TropicraftBiomeModifiers::bootstrap);
 
     public static CompletableFuture<RegistrySetBuilder.PatchedRegistries> createLookup(CompletableFuture<HolderLookup.Provider> vanillaProvider) {
         return RegistryPatchGenerator.createLookup(vanillaProvider, BUILDER);
