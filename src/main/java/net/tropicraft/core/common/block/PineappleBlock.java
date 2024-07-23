@@ -113,17 +113,12 @@ public class PineappleBlock extends TallFlowerBlock implements BonemealableBlock
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         if (state.getValue(HALF) == DoubleBlockHalf.UPPER) {
-            return worldIn.getBlockState(pos.below()).getBlock() == TropicraftBlocks.PINEAPPLE.get();
+            return level.getBlockState(pos.below()).is(TropicraftBlocks.PINEAPPLE);
         } else {
-            return canPlaceBlockAt(worldIn, pos, state);
+            return super.canSurvive(state, level, pos);
         }
-    }
-
-    private boolean canPlaceBlockAt(LevelReader worldIn, BlockPos pos, BlockState state) {
-        BlockState belowState = worldIn.getBlockState(pos.below());
-        return belowState.getBlock().canSustainPlant(belowState, worldIn, pos.below(), Direction.UP, state).isTrue();
     }
 
     @Override
