@@ -19,7 +19,7 @@ body:
     id: mc-version
     attributes:
       label: Minecraft Version
-      placeholder: 1.16.5
+      placeholder: 1.20.1
     validations:
       required: true
   - type: input
@@ -45,8 +45,8 @@ body:
       label: Steps to reproduce
       description: Tell us how we can reproduce the issue
       placeholder: |
-        1. Open Mc...
-        2. Get gadget...
+        1. Open Minecraft...
+        2. Grow sapling...
         3. See error...
     validations:
       required: true
