@@ -186,7 +186,7 @@ public final class TropicraftVegetationPlacements {
         ));
 
         register(context, PINEAPPLE, TropicraftVegetationFeatures.PINEAPPLE, List.of(
-                RarityFilter.onAverageOnceEvery(6),
+                CountPlacement.of(3),
                 InSquarePlacement.spread(),
                 PlacementUtils.HEIGHTMAP,
                 BiomeFilter.biome()
