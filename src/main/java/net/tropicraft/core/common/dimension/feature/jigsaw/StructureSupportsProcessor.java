@@ -53,7 +53,7 @@ public class StructureSupportsProcessor extends CheatyStructureProcessor {
                 while (canPassThrough(world, fencePos)) {
                     BlockState state = blockInfo.state();
                     if (state.hasProperty(BlockStateProperties.WATERLOGGED)) {
-                        state = state.setValue(FenceBlock.WATERLOGGED, world.getBlockState(fencePos).getBlock() == Blocks.WATER);
+                        state = state.setValue(FenceBlock.WATERLOGGED, world.getBlockState(fencePos).is(Blocks.WATER));
                     }
                     setBlockState(world, fencePos, state);
                     fencePos = fencePos.below();

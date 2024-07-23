@@ -52,7 +52,7 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
             return false;
         }
 
-        if (world.getBlockState(pos.below()).getBlock() == Blocks.GRASS_BLOCK) {
+        if (world.getBlockState(pos.below()).is(Blocks.GRASS_BLOCK)) {
             world.setBlock(pos.below(), Blocks.DIRT.defaultBlockState(), 3);
         }
 

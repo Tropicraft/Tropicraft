@@ -92,7 +92,7 @@ public final class ReedsBlock extends Block implements SimpleWaterloggedBlock {
         BlockState growOn = world.getBlockState(groundPos);
         TriState result = growOn.canSustainPlant(world, groundPos, Direction.UP, state);
         if (result.isDefault()) {
-            return growOn.getBlock() == this || canGrowOn(growOn);
+            return growOn.is(this) || canGrowOn(growOn);
         }
         return result.isTrue();
     }

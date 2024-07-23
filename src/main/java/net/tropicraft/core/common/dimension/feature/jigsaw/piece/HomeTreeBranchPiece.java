@@ -143,7 +143,7 @@ public final class HomeTreeBranchPiece extends StructurePoolElement implements I
         for (BlockPos pos : BlockPos.betweenClosed(bounds.minX(), bounds.minY(), bounds.minZ(), bounds.maxX(), bounds.maxY(), bounds.maxZ())) {
             double distanceSquared = pos.distSqr(origin);
             if (distanceSquared <= outerRadiusSquared && distanceSquared >= innerRadiusSquared) {
-                if (world.isEmptyBlock(pos) || world.getBlockState(pos).getBlock() == state.getBlock()) {
+                if (world.isEmptyBlock(pos) || world.getBlockState(pos).is(state.getBlock())) {
                     world.setBlock(pos, state, Block.UPDATE_ALL);
                 }
             }

@@ -40,7 +40,7 @@ public final class CoconutBlock extends DirectionalBlock {
     public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
         Direction dir = state.getValue(FACING);
         BlockPos checkPos = pos.relative(dir);
-        return worldIn.getBlockState(checkPos).getBlock() == Blocks.GRINDSTONE // coconut yeeters allowed
+        return worldIn.getBlockState(checkPos).is(Blocks.GRINDSTONE) // coconut yeeters allowed
                 || Block.canSupportCenter(worldIn, checkPos, dir.getOpposite());
     }
 

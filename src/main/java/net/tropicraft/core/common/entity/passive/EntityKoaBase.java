@@ -1084,7 +1084,7 @@ public class EntityKoaBase extends Villager {
                     for (int z = -range; z <= range; z++) {
                         BlockPos pos = blockPosition().offset(x, y, z);
                         BlockState state = level().getBlockState(pos);
-                        if (state.getBlock() == Blocks.CAMPFIRE) {
+                        if (state.is(Blocks.CAMPFIRE)) {
                             dbg("found fire place spot to chill");
                             setFirelacePos(pos);
                             return;
@@ -1098,7 +1098,7 @@ public class EntityKoaBase extends Villager {
             for (EntityKoaBase ent : listEnts) {
                 if (ent.posLastFireplaceFound != null) {
                     BlockState state = level().getBlockState(ent.posLastFireplaceFound);
-                    if (state.getBlock() == Blocks.CAMPFIRE) {
+                    if (state.is(Blocks.CAMPFIRE)) {
                         posLastFireplaceFound = new BlockPos(ent.posLastFireplaceFound);
                         dbg("found fire place spot to chill from entity");
                         return;

@@ -166,7 +166,7 @@ public class MonkeyAngryThrowGoal extends Goal {
         if (!list.isEmpty()) {
             for (ItemEntity item : list) {
                 if (!item.isInvisible()) {
-                    if (item.getItem().is(TropicraftItems.BAMBOO_MUG.get()) && item.isAlive()) {
+                    if (item.getItem().is(TropicraftItems.BAMBOO_MUG) && item.isAlive()) {
                         return item;
                     }
                 }

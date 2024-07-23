@@ -78,7 +78,7 @@ public final class CoffeeBushBlock extends CropBlock {
         if (worldIn.isEmptyBlock(pos.above())) {
             int height;
             BlockPos ground = pos;
-            for (height = 1; worldIn.getBlockState(ground = ground.below()).getBlock() == this; ++height) ;
+            for (height = 1; worldIn.getBlockState(ground = ground.below()).is(this); ++height) ;
 
             BlockState blockState = worldIn.getBlockState(ground);
             if (height < MAX_HEIGHT && worldIn.random.nextInt(blockState.getBlock().isFertile(blockState, worldIn, ground) ? GROWTH_RATE_FERTILE : GROWTH_RATE_INFERTILE) == 0) {
@@ -108,6 +108,6 @@ public final class CoffeeBushBlock extends CropBlock {
 
     @Override
     protected boolean mayPlaceOn(BlockState state, BlockGetter worldIn, BlockPos pos) {
-        return state.getBlock() == Blocks.GRASS_BLOCK || state.is(BlockTags.DIRT) || state.getBlock() == Blocks.FARMLAND || state.getBlock() == this;
+        return state.is(Blocks.GRASS_BLOCK) || state.is(BlockTags.DIRT) || state.is(Blocks.FARMLAND) || state.is(this);
     }
 }

@@ -10,7 +10,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 
 public abstract class CheatyStructureProcessor extends StructureProcessor {
     protected boolean isAirOrWater(LevelReader worldReaderIn, BlockPos pos) {
-        return worldReaderIn.isEmptyBlock(pos) || worldReaderIn.getBlockState(pos).getBlock() == Blocks.WATER;
+        return worldReaderIn.isEmptyBlock(pos) || worldReaderIn.getBlockState(pos).is(Blocks.WATER);
     }
 
     protected boolean setBlockState(LevelReader world, BlockPos pos, BlockState state) {

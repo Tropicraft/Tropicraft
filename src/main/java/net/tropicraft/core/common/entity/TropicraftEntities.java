@@ -691,7 +691,7 @@ public class TropicraftEntities {
 
     public static boolean canAnimalSpawn(EntityType<? extends Mob> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
         BlockState groundState = worldIn.getBlockState(pos.below());
-        return groundState.getBlock() == Blocks.GRASS_BLOCK
+        return groundState.is(Blocks.GRASS_BLOCK)
                 || groundState.is(BlockTags.SAND)
                 || groundState.is(TropicraftTags.Blocks.MUD);
     }

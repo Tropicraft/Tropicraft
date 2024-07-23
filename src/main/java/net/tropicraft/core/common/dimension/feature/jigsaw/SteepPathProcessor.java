@@ -23,7 +23,7 @@ public class SteepPathProcessor extends PathStructureProcessor {
     public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos seedPos, BlockPos pos2, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo blockInfo, StructurePlaceSettings placementSettingsIn, @Nullable StructureTemplate template) {
         BlockPos pos = blockInfo.pos();
 
-        if (originalBlockInfo.pos().getY() != 1 || originalBlockInfo.state().getBlock() == TropicraftBlocks.BAMBOO_STAIRS.get() || originalBlockInfo.state().isAir()) {
+        if (originalBlockInfo.pos().getY() != 1 || originalBlockInfo.state().is(TropicraftBlocks.BAMBOO_STAIRS) || originalBlockInfo.state().isAir()) {
             return blockInfo;
         }
 

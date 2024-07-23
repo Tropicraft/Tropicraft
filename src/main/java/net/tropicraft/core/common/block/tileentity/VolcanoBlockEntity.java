@@ -148,7 +148,7 @@ public class VolcanoBlockEntity extends BlockEntity {
             for (int z = zPos - (radius * 2); z < zPos + (radius * 2); z++) {
                 for (int y = LAVA_BASE_LEVEL + heightOffset; y < 140; y++) {
                     BlockPos outBlockPos = new BlockPos(x, y, z);
-                    if (getLevel().getBlockState(outBlockPos).getBlock() == Blocks.LAVA) {
+                    if (getLevel().getBlockState(outBlockPos).is(Blocks.LAVA)) {
                         getLevel().setBlockAndUpdate(outBlockPos, Blocks.AIR.defaultBlockState());
                     }
                 }
@@ -197,7 +197,7 @@ public class VolcanoBlockEntity extends BlockEntity {
             for (int z = zPos - radius; z < zPos + radius; z++) {
                 if (Math.sqrt(Math.pow(x - xPos, 2) + Math.pow(z - zPos, 2)) < radius + 3) {
                     BlockPos botPos = new BlockPos(x, 10, z);
-                    if (getLevel().getBlockState(botPos).getBlock() == Blocks.LAVA) {
+                    if (getLevel().getBlockState(botPos).is(Blocks.LAVA)) {
                         BlockPos pos2 = new BlockPos(x, lavaLevel, z);
 
                         if (lavaLevel >= MAX_LAVA_LEVEL_DURING_RISE + heightOffset && lavaLevel < MAX_LAVA_LEVEL_DURING_ERUPTION + heightOffset) {

@@ -93,7 +93,7 @@ public final class TikiTorchBlock extends Block {
             return true;
         } else { // if not, is the block underneath a lower 2/3 tiki torch segment?
             BlockState blockstate = world.getBlockState(pos.below());
-            return (blockstate.getBlock() == this && blockstate.getValue(SECTION) != TorchSection.UPPER) && super.canSurvive(state, world, pos);
+            return (blockstate.is(this) && blockstate.getValue(SECTION) != TorchSection.UPPER) && super.canSurvive(state, world, pos);
         }
     }
 
@@ -137,7 +137,7 @@ public final class TikiTorchBlock extends Block {
         for (TorchSection otherSection : TorchSection.values()) {
             BlockPos pos2 = base.above(otherSection.height);
             BlockState state2 = world.getBlockState(pos2);
-            if (state2.getBlock() == this && state2.getValue(SECTION) == otherSection) {
+            if (state2.is(this) && state2.getValue(SECTION) == otherSection) {
                 super.playerDestroy(world, player, pos2, state2, te, stack);
                 world.setBlock(pos2, world.getFluidState(pos2).createLegacyBlock(), world.isClientSide ? 11 : 3);
             }
@@ -152,7 +152,7 @@ public final class TikiTorchBlock extends Block {
         for (TorchSection otherSection : TorchSection.values()) {
             BlockPos pos2 = base.above(otherSection.height);
             BlockState state2 = world.getBlockState(pos2);
-            if (state2.getBlock() == this && state2.getValue(SECTION) == otherSection) {
+            if (state2.is(this) && state2.getValue(SECTION) == otherSection) {
                 if (player.isCreative()) {
                     ret |= super.onDestroyedByPlayer(state2, world, pos2, player, willHarvest, fluid);
                 } else {

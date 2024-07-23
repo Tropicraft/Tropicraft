@@ -29,7 +29,7 @@ public class TropicalFertilizerItem extends BoneMealItem {
     @Override
     public InteractionResult useOn(UseOnContext context) {
         BlockState state = context.getLevel().getBlockState(context.getClickedPos());
-        if (state.getBlock() == Blocks.GRASS_BLOCK) {
+        if (state.is(Blocks.GRASS_BLOCK)) {
             if (!context.getLevel().isClientSide) {
                 // Logic from GrassBlock#grow, with probability for grass significantly reduced
                 BlockPos blockpos = context.getClickedPos().above();
@@ -44,7 +44,7 @@ public class TropicalFertilizerItem extends BoneMealItem {
                     while (true) {
                         if (j >= i / 16) {
                             BlockState blockstate2 = level.getBlockState(blockpos1);
-                            if (blockstate2.getBlock() == blockstate.getBlock() && rand.nextInt(10) == 0) {
+                            if (blockstate2.is(blockstate.getBlock()) && rand.nextInt(10) == 0) {
                                 if (level instanceof ServerLevel) {
                                     ((BonemealableBlock) blockstate.getBlock()).performBonemeal((ServerLevel) level, rand, blockpos1, blockstate2);
                                 }

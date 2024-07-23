@@ -183,7 +183,7 @@ public class SeaTurtleEntity extends Turtle {
     }
 
     public static boolean canSpawnOnLand(EntityType<SeaTurtleEntity> turtle, LevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource rand) {
-        return pos.getY() < TropicraftDimension.getSeaLevel(world) + 4 && world.getBlockState(pos.below()).getBlock() == Blocks.SAND && world.getRawBrightness(pos, 0) > 8;
+        return pos.getY() < TropicraftDimension.getSeaLevel(world) + 4 && world.getBlockState(pos.below()).is(Blocks.SAND) && world.getRawBrightness(pos, 0) > 8;
     }
 
     @Nullable

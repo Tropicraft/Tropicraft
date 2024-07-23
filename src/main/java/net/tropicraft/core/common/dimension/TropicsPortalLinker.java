@@ -102,10 +102,10 @@ public class TropicsPortalLinker {
 
             BlockPos pos = new BlockPos(foundX, foundY, foundZ);
 
-            if (world.getBlockState(pos.west()).getBlock() == PORTAL_BLOCK) newLocX -= 0.5;
-            if (world.getBlockState(pos.east()).getBlock() == PORTAL_BLOCK) newLocX += 0.5;
-            if (world.getBlockState(pos.north()).getBlock() == PORTAL_BLOCK) newLocZ -= 0.5;
-            if (world.getBlockState(pos.south()).getBlock() == PORTAL_BLOCK) newLocZ += 0.5;
+            if (world.getBlockState(pos.west()).is(PORTAL_BLOCK)) newLocX -= 0.5;
+            if (world.getBlockState(pos.east()).is(PORTAL_BLOCK)) newLocX += 0.5;
+            if (world.getBlockState(pos.north()).is(PORTAL_BLOCK)) newLocZ -= 0.5;
+            if (world.getBlockState(pos.south()).is(PORTAL_BLOCK)) newLocZ += 0.5;
 
             return new PortalInfo(new Vec3(newLocX, newLocY + 2, newLocZ), entity.getYRot(), entity.getXRot());
         } else {
@@ -132,7 +132,7 @@ public class TropicsPortalLinker {
                 // Find topmost solid block at this x,z location
                 int y = world.getMaxBuildHeight() - 1;
                 BlockPos pos = new BlockPos(x, y, z);
-                for (; y >= 63 - 1 && (world.getBlockState(pos).getBlock() == Blocks.AIR ||
+                for (; y >= 63 - 1 && (world.getBlockState(pos).is(Blocks.AIR) ||
                         !getValidBuildBlocks().contains(world.getBlockState(pos))); pos = pos.below()) {
                     y = pos.getY();
                 }
@@ -148,7 +148,7 @@ public class TropicsPortalLinker {
                             int otherY = world.getMaxBuildHeight() - 1;
                             BlockPos pos1 = new BlockPos(x + xOffset, otherY, z + zOffset);
                             BlockPos pos2 = tryPos.mutable();
-                            for (; otherY >= 63 && (world.getBlockState(pos1).getBlock() == Blocks.AIR ||
+                            for (; otherY >= 63 && (world.getBlockState(pos1).is(Blocks.AIR) ||
                                     !world.getBlockState(pos2).isAir()); pos1 = pos1.below()) {
                                 otherY = pos1.getY();
                             }

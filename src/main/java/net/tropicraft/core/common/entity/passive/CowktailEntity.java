@@ -52,7 +52,7 @@ public class CowktailEntity extends Cow implements IShearable {
 
     @Override
     public float getWalkTargetValue(BlockPos pos, LevelReader worldIn) {
-        return worldIn.getBlockState(pos.below()).getBlock() == Blocks.MYCELIUM ? 10.0f : worldIn.getPathfindingCostFromLightLevels(pos);
+        return worldIn.getBlockState(pos.below()).is(Blocks.MYCELIUM) ? 10.0f : worldIn.getPathfindingCostFromLightLevels(pos);
     }
 
     @Override

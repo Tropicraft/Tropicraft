@@ -15,6 +15,6 @@ public class TropicraftCreatureEntity extends PathfinderMob {
 
     @Override
     public float getWalkTargetValue(BlockPos pos, LevelReader worldIn) {
-        return worldIn.getBlockState(pos.below()).getBlock() == Blocks.GRASS_BLOCK ? 10.0f : worldIn.getPathfindingCostFromLightLevels(pos);
+        return worldIn.getBlockState(pos.below()).is(Blocks.GRASS_BLOCK) ? 10.0f : worldIn.getPathfindingCostFromLightLevels(pos);
     }
 }

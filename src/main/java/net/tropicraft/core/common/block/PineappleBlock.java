@@ -41,7 +41,7 @@ public class PineappleBlock extends TallFlowerBlock implements BonemealableBlock
 
     @Override
     public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState blockState) {
-        return blockState.getBlock() == TropicraftBlocks.PINEAPPLE.get() && blockState.getValue(PineappleBlock.HALF) == DoubleBlockHalf.LOWER && level.getBlockState(pos.above()).isAir();
+        return blockState.is(TropicraftBlocks.PINEAPPLE) && blockState.getValue(PineappleBlock.HALF) == DoubleBlockHalf.LOWER && level.getBlockState(pos.above()).isAir();
     }
 
     @Override
@@ -59,7 +59,7 @@ public class PineappleBlock extends TallFlowerBlock implements BonemealableBlock
             BlockState above = world.getBlockState(pos.above());
 
             // Don't bother placing if it's already there
-            if (above.getBlock() == this) return;
+            if (above.is(this)) return;
             if (state.getValue(HALF) == DoubleBlockHalf.UPPER) return;
 
             // Place actual pineapple plant above stem
@@ -77,7 +77,7 @@ public class PineappleBlock extends TallFlowerBlock implements BonemealableBlock
         // Current metadata
         int growth = state.getValue(STAGE);
 
-        if (state.getBlock() == this && growth <= TOTAL_GROW_TICKS && world.isEmptyBlock(pos.above()) && state.getValue(HALF) == DoubleBlockHalf.LOWER) {
+        if (state.is(this) && growth <= TOTAL_GROW_TICKS && world.isEmptyBlock(pos.above()) && state.getValue(HALF) == DoubleBlockHalf.LOWER) {
             if (growth >= TOTAL_GROW_TICKS - 1) {
                 // Set current state
                 BlockState growthState = state.setValue(STAGE, TOTAL_GROW_TICKS);
