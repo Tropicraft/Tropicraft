@@ -31,3 +31,6 @@ forge*changelog.txt
 Thumbs.db
 
 .vscode/
+
+# Imported structure files
+/src/main/**/data/tropicraft/structure/**/*.nbt

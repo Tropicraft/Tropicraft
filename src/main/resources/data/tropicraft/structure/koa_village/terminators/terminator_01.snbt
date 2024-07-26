@@ -1,0 +1,36 @@
+{
+    DataVersion: 1976,
+    size: [4, 4, 3],
+    data: [
+        {pos: [0, 0, 0], state: "tropicraft:bamboo_fence{east:false,north:false,south:false,waterlogged:false,west:false}"},
+        {pos: [0, 0, 1], state: "minecraft:air"},
+        {pos: [0, 0, 2], state: "tropicraft:bamboo_fence{east:false,north:false,south:false,waterlogged:false,west:false}"},
+        {pos: [1, 0, 0], state: "tropicraft:bamboo_stairs{facing:east,half:top,shape:straight,waterlogged:false}"},
+        {pos: [1, 0, 1], state: "tropicraft:thatch_stairs{facing:east,half:top,shape:straight,waterlogged:false}"},
+        {pos: [1, 0, 2], state: "tropicraft:bamboo_stairs{facing:east,half:top,shape:straight,waterlogged:false}"},
+        {pos: [2, 0, 0], state: "tropicraft:bamboo_stairs{facing:west,half:bottom,shape:straight,waterlogged:false}"},
+        {pos: [2, 0, 1], state: "tropicraft:thatch_stairs{facing:west,half:bottom,shape:straight,waterlogged:false}"},
+        {pos: [2, 0, 2], state: "tropicraft:bamboo_stairs{facing:west,half:bottom,shape:straight,waterlogged:false}"},
+        {pos: [0, 1, 0], state: "tropicraft:thatch_bundle{axis:y}"},
+        {pos: [0, 1, 1], state: "tropicraft:thatch_slab{type:top,waterlogged:false}"},
+        {pos: [0, 1, 2], state: "tropicraft:thatch_bundle{axis:y}"},
+        {pos: [1, 1, 0], state: "tropicraft:bamboo_stairs{facing:west,half:bottom,shape:straight,waterlogged:false}"},
+        {pos: [1, 1, 1], state: "tropicraft:thatch_stairs{facing:west,half:bottom,shape:straight,waterlogged:false}"},
+        {pos: [1, 1, 2], state: "tropicraft:bamboo_stairs{facing:west,half:bottom,shape:straight,waterlogged:false}"},
+        {pos: [0, 2, 0], state: "tropicraft:bamboo_fence{east:false,north:false,south:false,waterlogged:false,west:false}"},
+        {pos: [0, 2, 1], state: "minecraft:jigsaw{facing:west}", nbt: {attachement_type: "minecraft:street", final_state: "minecraft:structure_void", id: "minecraft:jigsaw", target_pool: "tropicraft:koa_village/streets"}},
+        {pos: [0, 2, 2], state: "tropicraft:bamboo_fence{east:false,north:false,south:false,waterlogged:false,west:false}"}
+    ],
+    entities: [],
+    palette: [
+        "tropicraft:thatch_bundle{axis:y}",
+        "minecraft:jigsaw{facing:west}",
+        "tropicraft:bamboo_fence{east:false,north:false,south:false,waterlogged:false,west:false}",
+        "tropicraft:bamboo_stairs{facing:east,half:top,shape:straight,waterlogged:false}",
+        "tropicraft:bamboo_stairs{facing:west,half:bottom,shape:straight,waterlogged:false}",
+        "minecraft:air",
+        "tropicraft:thatch_stairs{facing:east,half:top,shape:straight,waterlogged:false}",
+        "tropicraft:thatch_stairs{facing:west,half:bottom,shape:straight,waterlogged:false}",
+        "tropicraft:thatch_slab{type:top,waterlogged:false}"
+    ]
+}

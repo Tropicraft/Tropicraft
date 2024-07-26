@@ -45,7 +45,9 @@ runs {
     }
 
     data {
-        programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+        def inputResourcesPath = file('src/main/resources/').getAbsolutePath()
+        def generatedResourcesPath = file('src/generated/resources/').getAbsolutePath()
+        programArguments.addAll '--mod', project.mod_id, '--all', '--output', generatedResourcesPath, '--existing', inputResourcesPath, '--input', inputResourcesPath
     }
 }
 
@@ -92,6 +94,8 @@ tasks.named('processResources', ProcessResources).configure {
 
 tasks.named('jar').configure {
     archiveClassifier = 'slim'
+    // Don't include plaintext source structure files, as we ship converted ones from data generators
+    exclude '**/*.snbt'
 }
 
 tasks.named('jarJar').configure {

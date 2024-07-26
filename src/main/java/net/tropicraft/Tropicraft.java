@@ -13,6 +13,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -43,6 +44,7 @@ import net.tropicraft.core.common.TropicsConfigs;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.command.TropicraftCommands;
 import net.tropicraft.core.common.command.debug.MapBiomesCommand;
+import net.tropicraft.core.common.data.StructureConverter;
 import net.tropicraft.core.common.dimension.TropicraftPackRegistries;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomeBuilder;
 import net.tropicraft.core.common.dimension.carver.TropicraftCarvers;
@@ -158,8 +160,10 @@ public class Tropicraft {
     }
 
     private void gatherData(GatherDataEvent event) {
-        PackOutput output = event.getGenerator().getPackOutput();
-        event.getGenerator().addProvider(event.includeServer(), new DatapackBuiltinEntriesProvider(output, event.getLookupProvider(), TropicraftPackRegistries.BUILDER, Set.of(ID)));
+        DataGenerator generator = event.getGenerator();
+        PackOutput output = generator.getPackOutput();
+        generator.addProvider(event.includeServer(), new DatapackBuiltinEntriesProvider(output, event.getLookupProvider(), TropicraftPackRegistries.BUILDER, Set.of(ID)));
+        generator.addProvider(event.includeServer(), new StructureConverter(ID, output, event.getInputs()));
     }
 
     private void registerCommands(RegisterCommandsEvent event) {

@@ -1,0 +1,16 @@
+{
+    DataVersion: 1976,
+    size: [1, 3, 1],
+    data: [
+        {pos: [0, 0, 0], state: "minecraft:jigsaw{facing:down}", nbt: {attachement_type: "minecraft:bottom", final_state: "minecraft:structure_void", id: "minecraft:jigsaw", target_pool: "minecraft:empty"}},
+        {pos: [0, 1, 0], state: "minecraft:air"},
+        {pos: [0, 2, 0], state: "minecraft:air"}
+    ],
+    entities: [
+        {blockPos: [0, 2, 0], pos: [0.5d, 2.5d, 0.5d], nbt: {AbsorptionAmount: 0.0f, Age: 0, Air: 300s, ArmorDropChances: [0.085f, 0.085f, 0.085f, 0.085f], ArmorItems: [{}, {}, {}, {}], Attributes: [{Base: 30.0d, Name: "generic.max_health"}, {Base: 0.0d, Name: "generic.knockback_resistance"}, {Base: 0.28d, Name: "generic.movement_speed"}, {Base: 2.0d, Name: "generic.armor"}, {Base: 0.0d, Name: "generic.armor_toughness"}, {Base: 1.0d, Name: "forge:swim_speed"}, {Base: 64.0d, Name: "forge:nametag_distance"}, {Base: 0.08d, Name: "forge:entity_gravity"}, {Base: 16.0d, Modifiers: [{Amount: -0.14778340960523362d, Name: "Random spawn bonus", Operation: 1, UUIDLeast: -6443931747969332500L, UUIDMost: -4442449298598768916L}], Name: "generic.follow_range"}, {Base: 0.0d, Name: "generic.attack_knockback"}, {Base: 5.0d, Name: "generic.attack_damage"}], Brain: {memories: {}}, CanPickUpLoot: 1b, CanUpdate: 1b, DeathTime: 0s, Dimension: 0, FallDistance: 0.0f, FallFlying: 0b, Fire: -1s, FoodLevel: 0b, ForcedAge: 0, Gossips: [], HandDropChances: [0.085f, 0.085f], HandItems: [{}, {}], Health: 30.0f, HurtByTimestamp: 0, HurtTime: 0s, Inventory: [], Invulnerable: 0b, LastGossipDecay: 329459L, LastRestock: 0L, LeftHanded: 0b, Motion: [0.0d, -0.0784000015258789d, 0.0d], OnGround: 1b, PersistenceRequired: 0b, PortalCooldown: 0, Pos: [-204.69999998807907d, 3.5d, -165.69999998807907d], RestocksToday: 0, Rotation: [0.0f, 0.0f], UUIDLeast: -7247420008019744637L, UUIDMost: -8530686130752240833L, VillagerData: {level: 1, profession: "minecraft:none", type: "minecraft:plains"}, Xp: 0, druggedTime: 0, id: "tropicraft:koa", lastTimeFished: 0L, lastTradeTime: 0L, village_id: -1}}
+    ],
+    palette: [
+        "minecraft:jigsaw{facing:down}",
+        "minecraft:air"
+    ]
+}
