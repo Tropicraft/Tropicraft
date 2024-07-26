@@ -1,5 +1,5 @@
 {
-    DataVersion: 1976,
+    DataVersion: 3953,
     size: [16, 3, 17],
     data: [
         {pos: [0, 0, 0], state: "minecraft:air"},
@@ -561,7 +561,7 @@
         {pos: [0, 2, 12], state: "minecraft:air"},
         {pos: [0, 2, 13], state: "minecraft:air"},
         {pos: [0, 2, 14], state: "minecraft:air"},
-        {pos: [0, 2, 15], state: "minecraft:jigsaw{facing:west}", nbt: {attachement_type: "minecraft:street", final_state: "minecraft:structure_void", id: "minecraft:jigsaw", target_pool: "tropicraft:koa_village/streets"}},
+        {pos: [0, 2, 15], state: "minecraft:jigsaw{orientation:west_up}", nbt: {final_state: "minecraft:structure_void", id: "minecraft:jigsaw", name: "minecraft:street", pool: "tropicraft:koa_village/streets", target: "minecraft:street"}},
         {pos: [0, 2, 16], state: "minecraft:air"},
         {pos: [1, 2, 0], state: "minecraft:air"},
         {pos: [1, 2, 1], state: "minecraft:air"},
@@ -773,7 +773,7 @@
         {pos: [13, 2, 3], state: "tropicraft:bamboo_fence{east:false,north:false,south:false,waterlogged:false,west:false}"},
         {pos: [13, 2, 4], state: "minecraft:air"},
         {pos: [13, 2, 5], state: "minecraft:air"},
-        {pos: [13, 2, 6], state: "minecraft:jigsaw{facing:west}", nbt: {attachement_type: "minecraft:building_entrance", final_state: "minecraft:structure_void", id: "minecraft:jigsaw", target_pool: "tropicraft:koa_village/huts"}},
+        {pos: [13, 2, 6], state: "minecraft:jigsaw{orientation:west_up}", nbt: {final_state: "minecraft:structure_void", id: "minecraft:jigsaw", name: "minecraft:building_entrance", pool: "tropicraft:koa_village/huts", target: "minecraft:building_entrance"}},
         {pos: [13, 2, 7], state: "minecraft:air"},
         {pos: [13, 2, 8], state: "minecraft:air"},
         {pos: [13, 2, 9], state: "minecraft:air"},
@@ -782,9 +782,9 @@
         {pos: [13, 2, 12], state: "minecraft:air"},
         {pos: [13, 2, 13], state: "minecraft:air"},
         {pos: [13, 2, 14], state: "minecraft:air"},
-        {pos: [13, 2, 15], state: "minecraft:jigsaw{facing:west}", nbt: {attachement_type: "tropicraft:path_center", final_state: "minecraft:structure_void", id: "minecraft:jigsaw", target_pool: "minecraft:empty"}},
+        {pos: [13, 2, 15], state: "minecraft:jigsaw{orientation:west_up}", nbt: {final_state: "minecraft:structure_void", id: "minecraft:jigsaw", name: "tropicraft:path_center", pool: "minecraft:empty", target: "tropicraft:path_center"}},
         {pos: [13, 2, 16], state: "minecraft:air"},
-        {pos: [14, 2, 0], state: "minecraft:jigsaw{facing:north}", nbt: {attachement_type: "minecraft:street", final_state: "minecraft:structure_void", id: "minecraft:jigsaw", target_pool: "tropicraft:koa_village/streets"}},
+        {pos: [14, 2, 0], state: "minecraft:jigsaw{orientation:north_up}", nbt: {final_state: "minecraft:structure_void", id: "minecraft:jigsaw", name: "minecraft:street", pool: "tropicraft:koa_village/streets", target: "minecraft:street"}},
         {pos: [14, 2, 1], state: "minecraft:air"},
         {pos: [14, 2, 2], state: "minecraft:air"},
         {pos: [14, 2, 3], state: "minecraft:air"},
@@ -798,7 +798,7 @@
         {pos: [14, 2, 11], state: "minecraft:air"},
         {pos: [14, 2, 12], state: "minecraft:air"},
         {pos: [14, 2, 13], state: "minecraft:air"},
-        {pos: [14, 2, 14], state: "minecraft:jigsaw{facing:north}", nbt: {attachement_type: "tropicraft:path_center", final_state: "minecraft:structure_void", id: "minecraft:jigsaw", target_pool: "minecraft:empty"}},
+        {pos: [14, 2, 14], state: "minecraft:jigsaw{orientation:north_up}", nbt: {final_state: "minecraft:structure_void", id: "minecraft:jigsaw", name: "tropicraft:path_center", pool: "minecraft:empty", target: "tropicraft:path_center"}},
         {pos: [14, 2, 15], state: "tropicraft:bamboo_fence{east:false,north:false,south:false,waterlogged:false,west:false}"},
         {pos: [14, 2, 16], state: "minecraft:air"},
         {pos: [15, 2, 0], state: "minecraft:air"},
@@ -822,10 +822,10 @@
     entities: [],
     palette: [
         "tropicraft:thatch_bundle{axis:y}",
-        "minecraft:jigsaw{facing:north}",
-        "minecraft:jigsaw{facing:west}",
         "minecraft:air",
+        "tropicraft:bamboo_fence{east:false,north:false,south:false,waterlogged:false,west:false}",
         "tropicraft:thatch_slab{type:top,waterlogged:false}",
-        "tropicraft:bamboo_fence{east:false,north:false,south:false,waterlogged:false,west:false}"
+        "minecraft:jigsaw{orientation:west_up}",
+        "minecraft:jigsaw{orientation:north_up}"
     ]
 }

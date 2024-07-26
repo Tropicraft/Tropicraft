@@ -1,5 +1,5 @@
 {
-    DataVersion: 1976,
+    DataVersion: 3953,
     size: [17, 5, 17],
     data: [
         {pos: [0, 0, 8], state: "tropicraft:mahogany_log{axis:y}"},
@@ -100,7 +100,7 @@
         {pos: [8, 0, 5], state: "minecraft:air"},
         {pos: [8, 0, 6], state: "minecraft:air"},
         {pos: [8, 0, 7], state: "minecraft:vine{east:false,north:false,south:true,up:false,west:false}"},
-        {pos: [8, 0, 8], state: "minecraft:jigsaw{facing:down}", nbt: {attachement_type: "minecraft:top_connector", final_state: "tropicraft:mahogany_log", id: "minecraft:jigsaw", target_pool: "minecraft:empty"}},
+        {pos: [8, 0, 8], state: "minecraft:jigsaw{orientation:down_south}", nbt: {final_state: "tropicraft:mahogany_log", id: "minecraft:jigsaw", name: "minecraft:top_connector", pool: "minecraft:empty", target: "minecraft:top_connector"}},
         {pos: [8, 0, 9], state: "minecraft:vine{east:false,north:true,south:false,up:false,west:false}"},
         {pos: [8, 0, 10], state: "minecraft:air"},
         {pos: [8, 0, 11], state: "minecraft:air"},
@@ -796,12 +796,12 @@
     entities: [],
     palette: [
         "tropicraft:mahogany_log{axis:y}",
-        "minecraft:jigsaw{facing:down}",
-        "tropicraft:bamboo_chest{facing:north,type:single,waterlogged:false}",
         "minecraft:air",
-        "minecraft:vine{east:false,north:false,south:true,up:false,west:false}",
         "minecraft:vine{east:true,north:false,south:false,up:false,west:false}",
+        "minecraft:vine{east:false,north:false,south:true,up:false,west:false}",
+        "minecraft:vine{east:false,north:true,south:false,up:false,west:false}",
         "minecraft:vine{east:false,north:false,south:false,up:false,west:true}",
-        "minecraft:vine{east:false,north:true,south:false,up:false,west:false}"
+        "minecraft:jigsaw{orientation:down_south}",
+        "tropicraft:bamboo_chest{facing:north,type:single,waterlogged:false}"
     ]
 }

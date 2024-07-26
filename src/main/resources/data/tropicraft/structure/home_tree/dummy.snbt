@@ -1,17 +1,17 @@
 {
-    DataVersion: 1976,
+    DataVersion: 3953,
     size: [32, 1, 32],
     data: [
-        {pos: [0, 0, 15], state: "minecraft:jigsaw{facing:west}", nbt: {attachement_type: "minecraft:dummy_connector", final_state: "minecraft:structure_void", id: "minecraft:jigsaw", target_pool: "minecraft:empty"}},
-        {pos: [15, 0, 0], state: "minecraft:jigsaw{facing:north}", nbt: {attachement_type: "minecraft:dummy_to_dummy", final_state: "minecraft:structure_void", id: "minecraft:jigsaw", target_pool: "tropicraft:home_tree/dummy"}},
-        {pos: [15, 0, 31], state: "minecraft:jigsaw{facing:south}", nbt: {attachement_type: "minecraft:dummy_to_dummy", final_state: "minecraft:structure_void", id: "minecraft:jigsaw", target_pool: "tropicraft:home_tree/dummy"}},
-        {pos: [31, 0, 15], state: "minecraft:jigsaw{facing:east}", nbt: {attachement_type: "minecraft:dummy_to_dummy", final_state: "minecraft:structure_void", id: "minecraft:jigsaw", target_pool: "tropicraft:home_tree/dummy"}}
+        {pos: [0, 0, 15], state: "minecraft:jigsaw{orientation:west_up}", nbt: {final_state: "minecraft:structure_void", id: "minecraft:jigsaw", name: "minecraft:dummy_connector", pool: "minecraft:empty", target: "minecraft:dummy_connector"}},
+        {pos: [15, 0, 0], state: "minecraft:jigsaw{orientation:north_up}", nbt: {final_state: "minecraft:structure_void", id: "minecraft:jigsaw", name: "minecraft:dummy_to_dummy", pool: "tropicraft:home_tree/dummy", target: "minecraft:dummy_to_dummy"}},
+        {pos: [15, 0, 31], state: "minecraft:jigsaw{orientation:south_up}", nbt: {final_state: "minecraft:structure_void", id: "minecraft:jigsaw", name: "minecraft:dummy_to_dummy", pool: "tropicraft:home_tree/dummy", target: "minecraft:dummy_to_dummy"}},
+        {pos: [31, 0, 15], state: "minecraft:jigsaw{orientation:east_up}", nbt: {final_state: "minecraft:structure_void", id: "minecraft:jigsaw", name: "minecraft:dummy_to_dummy", pool: "tropicraft:home_tree/dummy", target: "minecraft:dummy_to_dummy"}}
     ],
     entities: [],
     palette: [
-        "minecraft:jigsaw{facing:north}",
-        "minecraft:jigsaw{facing:west}",
-        "minecraft:jigsaw{facing:east}",
-        "minecraft:jigsaw{facing:south}"
+        "minecraft:jigsaw{orientation:west_up}",
+        "minecraft:jigsaw{orientation:north_up}",
+        "minecraft:jigsaw{orientation:south_up}",
+        "minecraft:jigsaw{orientation:east_up}"
     ]
 }

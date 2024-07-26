@@ -1,5 +1,5 @@
 {
-    DataVersion: 1976,
+    DataVersion: 3953,
     size: [17, 10, 17],
     data: [
         {pos: [0, 0, 8], state: "tropicraft:mahogany_log{axis:y}"},
@@ -116,7 +116,7 @@
         {pos: [9, 0, 5], state: "minecraft:air"},
         {pos: [9, 0, 6], state: "minecraft:air"},
         {pos: [9, 0, 7], state: "minecraft:vine{east:false,north:false,south:true,up:false,west:false}"},
-        {pos: [9, 0, 8], state: "minecraft:jigsaw{facing:down}", nbt: {attachement_type: "minecraft:middle_bottom_connector", final_state: "tropicraft:mahogany_log", id: "minecraft:jigsaw", target_pool: "minecraft:empty"}},
+        {pos: [9, 0, 8], state: "minecraft:jigsaw{orientation:down_south}", nbt: {final_state: "tropicraft:mahogany_log", id: "minecraft:jigsaw", name: "minecraft:middle_bottom_connector", pool: "minecraft:empty", target: "minecraft:middle_bottom_connector"}},
         {pos: [9, 0, 9], state: "minecraft:vine{east:false,north:true,south:false,up:false,west:false}"},
         {pos: [9, 0, 10], state: "minecraft:air"},
         {pos: [9, 0, 11], state: "minecraft:air"},
@@ -1889,7 +1889,7 @@
         {pos: [9, 9, 5], state: "minecraft:air"},
         {pos: [9, 9, 6], state: "minecraft:air"},
         {pos: [9, 9, 7], state: "minecraft:vine{east:false,north:false,south:true,up:false,west:false}"},
-        {pos: [9, 9, 8], state: "minecraft:jigsaw{facing:up}", nbt: {attachement_type: "minecraft:top_bottom_connector", final_state: "tropicraft:mahogany_log", id: "minecraft:jigsaw", target_pool: "tropicraft:home_tree/trunks/top"}},
+        {pos: [9, 9, 8], state: "minecraft:jigsaw{orientation:up_north}", nbt: {final_state: "tropicraft:mahogany_log", id: "minecraft:jigsaw", name: "minecraft:top_bottom_connector", pool: "tropicraft:home_tree/trunks/top", target: "minecraft:top_bottom_connector"}},
         {pos: [9, 9, 9], state: "minecraft:vine{east:false,north:true,south:false,up:false,west:false}"},
         {pos: [9, 9, 10], state: "minecraft:air"},
         {pos: [9, 9, 11], state: "minecraft:air"},
@@ -1977,17 +1977,17 @@
     palette: [
         "tropicraft:mahogany_log{axis:y}",
         "tropicraft:mahogany_log{axis:x}",
-        "minecraft:spawner",
-        "minecraft:jigsaw{facing:down}",
-        "minecraft:jigsaw{facing:up}",
         "minecraft:vine{east:false,north:true,south:false,up:false,west:true}",
-        "minecraft:vine{east:false,north:true,south:false,up:false,west:false}",
-        "minecraft:air",
-        "minecraft:vine{east:false,north:true,south:false,up:true,west:false}",
         "minecraft:vine{east:false,north:false,south:false,up:false,west:true}",
-        "minecraft:vine{east:false,north:false,south:true,up:false,west:false}",
+        "minecraft:air",
+        "minecraft:vine{east:false,north:true,south:false,up:false,west:false}",
         "minecraft:vine{east:true,north:false,south:false,up:false,west:false}",
+        "minecraft:vine{east:false,north:false,south:true,up:false,west:false}",
+        "minecraft:vine{east:false,north:true,south:false,up:true,west:false}",
         "minecraft:vine{east:false,north:false,south:false,up:true,west:true}",
-        "minecraft:vine{east:true,north:false,south:false,up:true,west:false}"
+        "minecraft:vine{east:true,north:false,south:false,up:true,west:false}",
+        "minecraft:jigsaw{orientation:down_south}",
+        "minecraft:spawner",
+        "minecraft:jigsaw{orientation:up_north}"
     ]
 }

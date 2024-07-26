@@ -4,14 +4,18 @@ import com.google.common.hash.Hashing;
 import com.google.common.hash.HashingOutputStream;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.logging.LogUtils;
+import net.minecraft.SharedConstants;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.structures.NbtToSnbt;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtAccounter;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.util.datafix.DataFixTypes;
+import net.minecraft.util.datafix.DataFixers;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import org.slf4j.Logger;
 
 import java.io.ByteArrayOutputStream;
@@ -89,9 +93,13 @@ public class StructureConverter implements DataProvider {
                         LOGGER.error("Failed to parse SNBT for {}", path, e);
                         return FileVisitResult.CONTINUE;
                     }
+                    CompoundTag upgradedTag = upgradeStructureTag(tag);
+                    if (!tag.equals(upgradedTag)) {
+                        Files.writeString(path, NbtUtils.structureToSnbt(upgradedTag.copy()), StandardCharsets.UTF_8);
+                    }
                     String convertedFileName = replaceExtension(fileName, ".snbt", ".nbt");
                     Path convertedPath = outputRoot.resolve(inputRoot.relativize(path.resolveSibling(convertedFileName)));
-                    writePackedStructure(output, convertedPath, tag);
+                    writePackedStructure(output, convertedPath, upgradedTag);
                     return FileVisitResult.CONTINUE;
                 }
             });
@@ -105,6 +113,20 @@ public class StructureConverter implements DataProvider {
         HashingOutputStream hashingOutput = new HashingOutputStream(Hashing.sha1(), bytes);
         NbtIo.writeCompressed(tag, hashingOutput);
         output.writeIfNeeded(path, bytes.toByteArray(), hashingOutput.hash());
+    }
+
+    private static CompoundTag upgradeStructureTag(CompoundTag tag) {
+        int currentVersion = SharedConstants.getCurrentVersion().getDataVersion().getVersion();
+        int dataVersion = NbtUtils.getDataVersion(tag, 500);
+        if (dataVersion == currentVersion) {
+            return tag;
+        }
+
+        CompoundTag updatedTag = DataFixTypes.STRUCTURE.update(DataFixers.getDataFixer(), tag, dataVersion, currentVersion);
+
+        StructureTemplate template = new StructureTemplate();
+        template.load(BuiltInRegistries.BLOCK.asLookup(), updatedTag);
+        return template.save(new CompoundTag());
     }
 
     private static String replaceExtension(String path, String oldSuffix, String newSuffix) {

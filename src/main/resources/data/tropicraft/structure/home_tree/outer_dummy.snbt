@@ -1,11 +1,11 @@
 {
-    DataVersion: 1976,
+    DataVersion: 3953,
     size: [32, 1, 32],
     data: [
-        {pos: [0, 0, 15], state: "minecraft:jigsaw{facing:west}", nbt: {attachement_type: "minecraft:dummy_to_dummy", final_state: "minecraft:structure_void", id: "minecraft:jigsaw", target_pool: "minecraft:empty"}}
+        {pos: [0, 0, 15], state: "minecraft:jigsaw{orientation:west_up}", nbt: {final_state: "minecraft:structure_void", id: "minecraft:jigsaw", name: "minecraft:dummy_to_dummy", pool: "minecraft:empty", target: "minecraft:dummy_to_dummy"}}
     ],
     entities: [],
     palette: [
-        "minecraft:jigsaw{facing:west}"
+        "minecraft:jigsaw{orientation:west_up}"
     ]
 }

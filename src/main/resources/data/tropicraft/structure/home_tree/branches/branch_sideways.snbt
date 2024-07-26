@@ -1,10 +1,10 @@
 {
-    DataVersion: 1976,
+    DataVersion: 3953,
     size: [3, 8, 21],
     data: [
         {pos: [1, 0, 0], state: "tropicraft:mahogany_log{axis:y}"},
         {pos: [0, 1, 0], state: "tropicraft:mahogany_log{axis:y}"},
-        {pos: [1, 1, 0], state: "minecraft:jigsaw{facing:north}", nbt: {attachement_type: "minecraft:branch_connector", final_state: "tropicraft:mahogany_log", id: "minecraft:jigsaw", target_pool: "minecraft:empty"}},
+        {pos: [1, 1, 0], state: "minecraft:jigsaw{orientation:north_up}", nbt: {final_state: "tropicraft:mahogany_log", id: "minecraft:jigsaw", name: "minecraft:branch_connector", pool: "minecraft:empty", target: "minecraft:branch_connector"}},
         {pos: [1, 1, 1], state: "tropicraft:mahogany_log{axis:y}"},
         {pos: [1, 1, 2], state: "tropicraft:mahogany_log{axis:y}"},
         {pos: [1, 1, 3], state: "tropicraft:mahogany_log{axis:y}"},
@@ -23,7 +23,7 @@
         {pos: [2, 2, 1], state: "tropicraft:mahogany_log{axis:y}"},
         {pos: [2, 2, 2], state: "tropicraft:mahogany_log{axis:y}"},
         {pos: [2, 2, 3], state: "tropicraft:mahogany_log{axis:y}"},
-        {pos: [2, 2, 10], state: "tropicraft:kapok_leaves{distance:7,persistent:false}"},
+        {pos: [2, 2, 10], state: "tropicraft:kapok_leaves{distance:7,persistent:false,waterlogged:false}"},
         {pos: [0, 3, 4], state: "tropicraft:mahogany_log{axis:y}"},
         {pos: [0, 3, 5], state: "tropicraft:mahogany_log{axis:y}"},
         {pos: [0, 3, 6], state: "tropicraft:mahogany_log{axis:y}"},
@@ -94,7 +94,7 @@
     entities: [],
     palette: [
         "tropicraft:mahogany_log{axis:y}",
-        "tropicraft:kapok_leaves{distance:7,persistent:false}",
-        "minecraft:jigsaw{facing:north}"
+        "tropicraft:kapok_leaves{distance:7,persistent:false,waterlogged:false}",
+        "minecraft:jigsaw{orientation:north_up}"
     ]
 }

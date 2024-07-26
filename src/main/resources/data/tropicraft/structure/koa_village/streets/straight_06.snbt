@@ -1,5 +1,5 @@
 {
-    DataVersion: 1976,
+    DataVersion: 3953,
     size: [14, 3, 13],
     data: [
         {pos: [0, 0, 0], state: "minecraft:air"},
@@ -372,7 +372,7 @@
         {pos: [0, 2, 3], state: "minecraft:air"},
         {pos: [0, 2, 4], state: "minecraft:air"},
         {pos: [0, 2, 5], state: "minecraft:air"},
-        {pos: [0, 2, 6], state: "minecraft:jigsaw{facing:west}", nbt: {attachement_type: "minecraft:street", final_state: "minecraft:structure_void", id: "minecraft:jigsaw", target_pool: "tropicraft:koa_village/streets"}},
+        {pos: [0, 2, 6], state: "minecraft:jigsaw{orientation:west_up}", nbt: {final_state: "minecraft:structure_void", id: "minecraft:jigsaw", name: "minecraft:street", pool: "tropicraft:koa_village/streets", target: "minecraft:street"}},
         {pos: [0, 2, 7], state: "minecraft:air"},
         {pos: [0, 2, 8], state: "minecraft:air"},
         {pos: [0, 2, 9], state: "minecraft:air"},
@@ -450,7 +450,7 @@
         {pos: [6, 2, 3], state: "minecraft:air"},
         {pos: [6, 2, 4], state: "minecraft:air"},
         {pos: [6, 2, 5], state: "minecraft:air"},
-        {pos: [6, 2, 6], state: "minecraft:jigsaw{facing:west}", nbt: {attachement_type: "tropicraft:path_center", final_state: "minecraft:structure_void", id: "minecraft:jigsaw", target_pool: "minecraft:empty"}},
+        {pos: [6, 2, 6], state: "minecraft:jigsaw{orientation:west_up}", nbt: {final_state: "minecraft:structure_void", id: "minecraft:jigsaw", name: "tropicraft:path_center", pool: "minecraft:empty", target: "tropicraft:path_center"}},
         {pos: [6, 2, 7], state: "minecraft:air"},
         {pos: [6, 2, 8], state: "minecraft:air"},
         {pos: [6, 2, 9], state: "minecraft:air"},
@@ -463,7 +463,7 @@
         {pos: [7, 2, 3], state: "minecraft:air"},
         {pos: [7, 2, 4], state: "minecraft:air"},
         {pos: [7, 2, 5], state: "minecraft:air"},
-        {pos: [7, 2, 6], state: "minecraft:jigsaw{facing:east}", nbt: {attachement_type: "tropicraft:path_center", final_state: "minecraft:structure_void", id: "minecraft:jigsaw", target_pool: "minecraft:empty"}},
+        {pos: [7, 2, 6], state: "minecraft:jigsaw{orientation:east_up}", nbt: {final_state: "minecraft:structure_void", id: "minecraft:jigsaw", name: "tropicraft:path_center", pool: "minecraft:empty", target: "tropicraft:path_center"}},
         {pos: [7, 2, 7], state: "minecraft:air"},
         {pos: [7, 2, 8], state: "minecraft:air"},
         {pos: [7, 2, 9], state: "minecraft:air"},
@@ -541,7 +541,7 @@
         {pos: [13, 2, 3], state: "minecraft:air"},
         {pos: [13, 2, 4], state: "minecraft:air"},
         {pos: [13, 2, 5], state: "minecraft:air"},
-        {pos: [13, 2, 6], state: "minecraft:jigsaw{facing:east}", nbt: {attachement_type: "minecraft:street", final_state: "minecraft:structure_void", id: "minecraft:jigsaw", target_pool: "tropicraft:koa_village/streets"}},
+        {pos: [13, 2, 6], state: "minecraft:jigsaw{orientation:east_up}", nbt: {final_state: "minecraft:structure_void", id: "minecraft:jigsaw", name: "minecraft:street", pool: "tropicraft:koa_village/streets", target: "minecraft:street"}},
         {pos: [13, 2, 7], state: "minecraft:air"},
         {pos: [13, 2, 8], state: "minecraft:air"},
         {pos: [13, 2, 9], state: "minecraft:air"},
@@ -552,10 +552,10 @@
     entities: [],
     palette: [
         "tropicraft:thatch_bundle{axis:y}",
-        "minecraft:jigsaw{facing:west}",
-        "minecraft:jigsaw{facing:east}",
         "minecraft:air",
         "tropicraft:bamboo_fence{east:false,north:false,south:false,waterlogged:false,west:false}",
-        "tropicraft:thatch_slab{type:top,waterlogged:false}"
+        "tropicraft:thatch_slab{type:top,waterlogged:false}",
+        "minecraft:jigsaw{orientation:west_up}",
+        "minecraft:jigsaw{orientation:east_up}"
     ]
 }
