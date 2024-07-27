@@ -63,18 +63,16 @@ public class CowktailEntity extends Cow implements IShearable {
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        ItemStack itemstack = player.getItemInHand(hand);
-        if (itemstack.getItem() == TropicraftItems.BAMBOO_MUG.get() && !isBaby()) {
-            if (player.getAbilities().instabuild) {
-                itemstack.shrink(1);
-            }
+        ItemStack itemStack = player.getItemInHand(hand);
+        if (itemStack.getItem() == TropicraftItems.BAMBOO_MUG.get() && !isBaby()) {
+            itemStack.consume(1, player);
 
             List<RegistryEntry<Item, CocktailItem>> cocktails = new ArrayList<>(TropicraftItems.COCKTAILS.values());
             // Remove generic cocktail from cowktail
             cocktails.removeIf(cocktail -> cocktail.isBound() && CocktailItem.getDrink(new ItemStack(cocktail)) == Drink.COCKTAIL);
             ItemStack cocktailItem = new ItemStack(cocktails.get(random.nextInt(cocktails.size())).get());
 
-            if (itemstack.isEmpty()) {
+            if (itemStack.isEmpty()) {
                 player.setItemInHand(hand, cocktailItem);
             } else if (!player.getInventory().add(cocktailItem)) {
                 player.drop(cocktailItem, false);
