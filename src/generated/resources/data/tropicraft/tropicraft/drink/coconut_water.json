@@ -1,0 +1,15 @@
+{
+  "actions": [
+    {
+      "type": "tropicraft:potion",
+      "amplifier": 1,
+      "duration": 5,
+      "effect": "minecraft:speed"
+    }
+  ],
+  "color": 14671839,
+  "name": {
+    "color": "white",
+    "translate": "drink.tropicraft.coconut_water"
+  }
+}

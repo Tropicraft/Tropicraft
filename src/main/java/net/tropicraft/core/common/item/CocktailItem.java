@@ -1,9 +1,13 @@
 package net.tropicraft.core.common.item;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentUtils;
+import net.minecraft.network.chat.Style;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -21,72 +25,69 @@ import net.tropicraft.core.common.drinks.Cocktail;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.Ingredient;
 import net.tropicraft.core.common.drinks.MixerRecipe;
-import net.tropicraft.core.common.drinks.MixerRecipes;
+import net.tropicraft.core.common.drinks.action.TropicraftDrinks;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
 public class CocktailItem extends Item {
-    public CocktailItem(Drink drink, Properties properties) {
-        super(properties.component(TropicraftDataComponents.COCKTAIL, new Cocktail(drink)));
+    public CocktailItem(Properties properties) {
+        super(properties.component(TropicraftDataComponents.COCKTAIL, Cocktail.EMPTY));
     }
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        List<Ingredient> ingredients = getIngredients(stack);
+        List<Ingredient> ingredients = getCocktail(stack).ingredients();
         for (Ingredient ingredient : ingredients) {
             tooltip.add(ingredient.getDisplayName());
         }
     }
 
-    public static int getCocktailColor(ItemStack stack) {
-        Cocktail cocktail = stack.get(TropicraftDataComponents.COCKTAIL);
-        if (cocktail == null) {
-            return Cocktail.DEFAULT_COLOR;
-        }
-        return cocktail.color();
+    public static Cocktail getCocktail(ItemStack itemStack) {
+        return itemStack.getOrDefault(TropicraftDataComponents.COCKTAIL, Cocktail.EMPTY);
     }
 
-    public static ItemStack makeCocktail(MixerRecipe recipe) {
-        ItemStack stack = MixerRecipes.getItemStack(recipe.getCraftingResult());
-        Drink drink = recipe.getCraftingResult();
-        stack.set(TropicraftDataComponents.COCKTAIL, new Cocktail(
-                drink,
-                List.of(recipe.getIngredients())
-        ));
+    public static ItemStack makeCocktail(Cocktail cocktail) {
+        ItemStack stack = new ItemStack(TropicraftItems.COCKTAIL.get());
+        stack.set(TropicraftDataComponents.COCKTAIL, cocktail);
         return stack;
     }
 
+    public static ItemStack makeDrink(Holder<Drink> drink) {
+        return makeCocktail(Cocktail.ofDrink(drink));
+    }
+
+    public static ItemStack makeCocktail(HolderLookup.Provider registries, MixerRecipe recipe) {
+        Optional<Holder<Drink>> drink = registries.holder(recipe.getCraftingResult()).map(Function.identity());
+        if (drink.isEmpty()) {
+            return makeCocktail(Cocktail.ofIngredients(List.of(recipe.getIngredients())));
+        }
+        return makeDrink(drink.get());
+    }
+
     public static ItemStack makeCocktail(NonNullList<ItemStack> itemStacks) {
-        // TODO fixme this is so ugly ugh
-        ItemStack stack = new ItemStack(TropicraftItems.COCKTAILS.get(Drink.COCKTAIL).get());
-        stack.set(TropicraftDataComponents.COCKTAIL, new Cocktail(
-                Drink.COCKTAIL,
+        return makeCocktail(Cocktail.ofIngredients(
                 itemStacks.stream()
                         .flatMap(item -> Ingredient.listIngredients(item).stream())
                         .sorted()
                         .toList()
         ));
-        return stack;
-    }
-
-    public static List<Ingredient> getIngredients(ItemStack stack) {
-        Cocktail cocktail = stack.get(TropicraftDataComponents.COCKTAIL);
-        if (cocktail == null) {
-            return List.of();
-        }
-        return cocktail.ingredients();
     }
 
     @Nullable
-    public static Drink getDrink(ItemStack stack) {
-        Cocktail cocktail = stack.get(TropicraftDataComponents.COCKTAIL);
-        return cocktail != null ? cocktail.drink() : null;
+    public static Holder<Drink> getDrink(ItemStack itemStack) {
+        return getCocktail(itemStack).drink().orElse(null);
+    }
+
+    public static boolean hasDrink(ItemStack itemStack, ResourceKey<Drink> drink) {
+        Holder<Drink> actualDrink = getDrink(itemStack);
+        return actualDrink != null && actualDrink.is(drink);
     }
 
     public static boolean isDrink(ItemStack itemStack) {
-        return getDrink(itemStack) != null;
+        return !getCocktail(itemStack).equals(Cocktail.EMPTY);
     }
 
     @Override
@@ -102,17 +103,11 @@ public class CocktailItem extends Item {
     public ItemStack onFoodEaten(ItemStack itemstack, Level world, Player player) {
         world.playSound(player, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_BURP, SoundSource.PLAYERS, 0.5f, world.random.nextFloat() * 0.1f + 0.9f);
 
-        for (Ingredient ingredient : getIngredients(itemstack)) {
-            ingredient.onDrink(player);
-        }
-
-        Drink drink = getDrink(itemstack);
-
-        if (drink != null) {
-            drink.onDrink(player);
-        }
-
         if (player instanceof ServerPlayer serverPlayer) {
+            Cocktail cocktail = itemstack.get(TropicraftDataComponents.COCKTAIL);
+            if (cocktail != null) {
+                cocktail.onDrink(serverPlayer);
+            }
             CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, itemstack);
         }
 
@@ -120,13 +115,11 @@ public class CocktailItem extends Item {
     }
 
     @Override
-    public ItemStack finishUsingItem(@Nonnull ItemStack stack, @Nonnull Level worldIn, @Nonnull LivingEntity entityLiving) {
-        if (entityLiving instanceof Player player) {
-            onFoodEaten(stack, worldIn, player);
+    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
+        if (entity instanceof Player player) {
+            onFoodEaten(stack, level, player);
 
-            Drink drink = getDrink(stack);
-
-            if (worldIn.isRainingAt(player.blockPosition()) && drink == Drink.PINA_COLADA) {
+            if (level.isRainingAt(player.blockPosition()) && hasDrink(stack, TropicraftDrinks.PINA_COLADA)) {
                 // TODO 1.17 advancements player.addStat(AchievementRegistry.drinkPinaColada);
             }
             return player.getAbilities().instabuild ? stack : new ItemStack(TropicraftItems.BAMBOO_MUG.get());
@@ -138,9 +131,7 @@ public class CocktailItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand hand) {
         ItemStack stack = playerIn.getItemInHand(hand);
-        Drink drink = getDrink(stack);
-
-        if (drink == null) {
+        if (!isDrink(stack)) {
             return new InteractionResultHolder<>(InteractionResult.FAIL, stack);
         }
 
@@ -151,9 +142,9 @@ public class CocktailItem extends Item {
 
     @Override
     public Component getName(ItemStack stack) {
-        Drink drink = getDrink(stack);
+        Holder<Drink> drink = getDrink(stack);
         if (drink != null) {
-            return super.getName(stack).copy().withStyle(drink.textFormatting).withStyle(ChatFormatting.BOLD);
+            return ComponentUtils.mergeStyles(drink.value().name().copy(), Style.EMPTY.withBold(true));
         }
         return super.getName(stack);
     }

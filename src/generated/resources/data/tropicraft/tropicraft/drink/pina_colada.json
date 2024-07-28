@@ -1,0 +1,22 @@
+{
+  "actions": [
+    {
+      "type": "tropicraft:potion",
+      "amplifier": 0,
+      "duration": 10,
+      "effect": "minecraft:nausea"
+    },
+    {
+      "type": "tropicraft:portal",
+      "dimension": "tropicraft:tropics",
+      "max_time_of_day": 14000,
+      "min_time_of_day": 12200,
+      "while_riding": "tropicraft:chair"
+    }
+  ],
+  "color": 15724527,
+  "name": {
+    "color": "gold",
+    "translate": "drink.tropicraft.pina_colada"
+  }
+}

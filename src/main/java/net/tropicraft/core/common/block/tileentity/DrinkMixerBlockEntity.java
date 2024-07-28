@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.block.tileentity;
 
+import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -18,8 +19,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.tropicraft.core.common.block.DrinkMixerBlock;
-import net.tropicraft.core.common.drinks.Drink;
-import net.tropicraft.core.common.drinks.Drinks;
 import net.tropicraft.core.common.drinks.Ingredient;
 import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.item.CocktailItem;
@@ -27,8 +26,8 @@ import net.tropicraft.core.common.network.message.ClientboundMixerInventoryPacke
 import net.tropicraft.core.common.network.message.ClientboundMixerStartPacket;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock {
     /**
@@ -174,59 +173,40 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         syncInventory();
     }
 
-    public boolean addToMixer(ItemStack ingredient) {
-        if (ingredients.get(0).isEmpty()) {
-            if (!CocktailItem.isDrink(ingredient)) {
-                Ingredient i = Ingredient.findMatchingIngredient(ingredient);
-                // Ordinarily we check for primary here, but I don't think that feature
-                // is as relevant anymore. Will leave it here just in case!
-                if (i == null/* || !i.isPrimary()*/) {
-                    return false;
-                }
-            }
-            ingredients.set(0, ingredient);
-            syncInventory();
-            return true;
-        } else if (ingredients.get(1).isEmpty()) {
-            if (CocktailItem.isDrink(ingredient)) {
-                // prevent mixing multiple primary ingredients
-                // all cocktails already contain one
-                return false;
-            }
-
-            Ingredient ing0 = Ingredient.findMatchingIngredient(ingredients.getFirst());
-            Ingredient i = Ingredient.findMatchingIngredient(ingredient);
-
-            // See above comment about isPrimary()
-            if (i == null/* || i.isPrimary()*/ || ing0.id == i.id) {
-                return false;
-            }
-
-            ingredients.set(1, ingredient);
-            syncInventory();
-            return true;
-        } else if (ingredients.get(2).isEmpty()) {
-            if (CocktailItem.isDrink(ingredient)) {
-                // prevent mixing multiple primary ingredients
-                // all cocktails already contain one
-                return false;
-            }
-
-            Ingredient ing0 = Ingredient.findMatchingIngredient(ingredients.get(0));
-            Ingredient ing1 = Ingredient.findMatchingIngredient(ingredients.get(1));
-            Ingredient i = Ingredient.findMatchingIngredient(ingredient);
-
-            // See above comment about isPrimary()
-            if (i == null/* || i.isPrimary()*/ || ing0.id == i.id || ing1.id == i.id) {
-                return false;
-            }
-
-            ingredients.set(2, ingredient);
-            syncInventory();
-            return true;
-        } else {
+    public boolean addToMixer(ItemStack itemStack) {
+        boolean isDrink = CocktailItem.isDrink(itemStack);
+        Ingredient ingredient = Ingredient.findMatchingIngredient(itemStack);
+        if (ingredient == null && !isDrink) {
             return false;
         }
+
+        Set<Ingredient> seenIngredients = new ObjectArraySet<>(ingredients.size());
+        seenIngredients.add(ingredient);
+        boolean hasDrink = isDrink;
+
+        for (int i = 0; i < ingredients.size(); i++) {
+            ItemStack otherItemStack = ingredients.get(i);
+            // Found an empty slot and no conflicts, place our new item in
+            if (otherItemStack.isEmpty()) {
+                ingredients.set(i, itemStack);
+                syncInventory();
+                return true;
+            }
+
+            if (CocktailItem.isDrink(otherItemStack)) {
+                if (hasDrink) {
+                    return false;
+                }
+                hasDrink = true;
+            }
+            Ingredient otherIngredient = Ingredient.findMatchingIngredient(otherItemStack);
+            // Cannot repeat the same ingredient
+            if (otherIngredient != null && !seenIngredients.add(otherIngredient)) {
+                return false;
+            }
+        }
+
+        return false;
     }
 
     public boolean isMixing() {
@@ -234,8 +214,12 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
     }
 
     private boolean isMixerFull() {
-        return MixerRecipes.isValidRecipe(ingredients);
-        //return ingredients[0] != null && ingredients[1] != null;
+        for (ItemStack ingredient : ingredients) {
+            if (ingredient.isEmpty()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public boolean canMix() {
@@ -268,6 +252,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         if (level instanceof ServerLevel serverLevel) {
             PacketDistributor.sendToPlayersTrackingChunk(serverLevel, new ChunkPos(getBlockPos()), new ClientboundMixerInventoryPacket(this));
         }
+        setChanged();
     }
 
     @Override
@@ -287,6 +272,6 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
     }
 
     public ItemStack getResult(NonNullList<ItemStack> ingredients2) {
-        return Drinks.getResult(ingredients2);
+        return MixerRecipes.getResult(level.registryAccess(), ingredients2);
     }
 }

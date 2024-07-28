@@ -1,19 +1,19 @@
 package net.tropicraft.core.common.entity.ai.vmonkey;
 
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.tropicraft.core.common.drinks.Drink;
-import net.tropicraft.core.common.drinks.MixerRecipes;
+import net.tropicraft.core.common.drinks.action.TropicraftDrinks;
 import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
+import net.tropicraft.core.common.item.CocktailItem;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
-import java.util.List;
 
 public class MonkeyPickUpPinaColadaGoal extends Goal {
 
@@ -37,7 +37,7 @@ public class MonkeyPickUpPinaColadaGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        return !entity.isTame() && !entity.selfHoldingDrink(Drink.PINA_COLADA) && drinkEntity != null;
+        return !entity.isTame() && !entity.selfHoldingDrink(TropicraftDrinks.PINA_COLADA) && drinkEntity != null;
     }
 
     @Override
@@ -46,7 +46,7 @@ public class MonkeyPickUpPinaColadaGoal extends Goal {
         if (entity.getRandom().nextInt(20) != 0) {
             return false;
         }
-        return !entity.isTame() && !entity.selfHoldingDrink(Drink.PINA_COLADA) && hasNearbyDrink(Drink.PINA_COLADA) && drinkEntity != null;
+        return !entity.isTame() && !entity.selfHoldingDrink(TropicraftDrinks.PINA_COLADA) && hasNearbyDrink(TropicraftDrinks.PINA_COLADA) && drinkEntity != null;
     }
 
     @Override
@@ -62,22 +62,16 @@ public class MonkeyPickUpPinaColadaGoal extends Goal {
         entity.setPathfindingMalus(PathType.WATER, 0.0f);
     }
 
-    private boolean hasNearbyDrink(Drink drink) {
-        ItemStack stack = MixerRecipes.getItemStack(drink);
-
-        List<ItemEntity> list = entity.level().getEntitiesOfClass(ItemEntity.class, entity.getBoundingBox().inflate(10.0));
-
-        if (!list.isEmpty()) {
-            for (ItemEntity item : list) {
-                if (!item.isInvisible()) {
-                    if (ItemStack.isSameItemSameComponents(item.getItem(), stack) && item.isAlive()) {
-                        drinkEntity = item;
-                        return true;
-                    }
-                }
+    private boolean hasNearbyDrink(ResourceKey<Drink> drink) {
+        for (ItemEntity item : entity.level().getEntitiesOfClass(ItemEntity.class, entity.getBoundingBox().inflate(10.0))) {
+            if (item.isInvisible() || !item.isAlive()) {
+                continue;
+            }
+            if (CocktailItem.hasDrink(item.getItem(), drink)) {
+                drinkEntity = item;
+                return true;
             }
         }
-
         return false;
     }
 

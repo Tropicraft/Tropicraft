@@ -1,0 +1,15 @@
+{
+  "actions": [
+    {
+      "type": "tropicraft:potion",
+      "amplifier": 1,
+      "duration": 5,
+      "effect": "minecraft:speed"
+    }
+  ],
+  "color": 8710282,
+  "name": {
+    "color": "green",
+    "translate": "drink.tropicraft.limeade"
+  }
+}

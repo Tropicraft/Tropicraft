@@ -1,10 +1,12 @@
 package net.tropicraft.core.common.entity.neutral;
 
 import com.google.common.base.Predicate;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -32,6 +34,7 @@ import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.tropicraft.core.common.drinks.Drink;
+import net.tropicraft.core.common.drinks.action.TropicraftDrinks;
 import net.tropicraft.core.common.entity.ai.vmonkey.MonkeyAngryThrowGoal;
 import net.tropicraft.core.common.entity.ai.vmonkey.MonkeyFollowNearestPinaColadaHolderGoal;
 import net.tropicraft.core.common.entity.ai.vmonkey.MonkeyPickUpPinaColadaGoal;
@@ -51,20 +54,8 @@ public class VMonkeyEntity extends TamableAnimal {
         if (ent == null) return false;
         if (!(ent instanceof Player player)) return false;
 
-        ItemStack heldMain = player.getMainHandItem();
-        ItemStack heldOff = player.getOffhandItem();
-
-        if (heldMain.getItem() instanceof CocktailItem) {
-            if (CocktailItem.getDrink(heldMain) == Drink.PINA_COLADA) {
-                return true;
-            }
-        }
-
-        if (heldOff.getItem() instanceof CocktailItem) {
-            return CocktailItem.getDrink(heldOff) == Drink.PINA_COLADA;
-        }
-
-        return false;
+        return CocktailItem.hasDrink(player.getMainHandItem(), TropicraftDrinks.PINA_COLADA)
+                || CocktailItem.hasDrink(player.getOffhandItem(), TropicraftDrinks.PINA_COLADA);
     };
 
     /**
@@ -134,12 +125,8 @@ public class VMonkeyEntity extends TamableAnimal {
         this.following = following;
     }
 
-    public boolean selfHoldingDrink(Drink drink) {
-        ItemStack heldItem = getMainHandItem();
-        if (heldItem.getItem() instanceof CocktailItem) {
-            return CocktailItem.getDrink(heldItem) == drink;
-        }
-        return false;
+    public boolean selfHoldingDrink(ResourceKey<Drink> drink) {
+        return CocktailItem.hasDrink(getMainHandItem(), drink);
     }
 
     private void setMonkeyFlags(byte flags) {
@@ -208,7 +195,8 @@ public class VMonkeyEntity extends TamableAnimal {
 
     @Override
     public boolean isFood(ItemStack stack) {
-        return CocktailItem.getDrink(stack) == Drink.PINA_COLADA;
+        Holder<Drink> drink = CocktailItem.getDrink(stack);
+        return drink != null && drink.is(TropicraftDrinks.PINA_COLADA);
     }
 
     @Nullable

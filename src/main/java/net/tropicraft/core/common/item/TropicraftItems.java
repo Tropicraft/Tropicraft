@@ -12,6 +12,8 @@ import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.client.color.item.ItemColor;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.models.ItemModelGenerators;
@@ -38,6 +40,7 @@ import net.minecraft.world.item.EitherHolder;
 import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.JukeboxPlayable;
 import net.minecraft.world.item.JukeboxSong;
@@ -66,12 +69,14 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.Foods;
+import net.tropicraft.core.common.TropicraftRegistries;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.block.TropicraftFlower;
 import net.tropicraft.core.common.block.TropicraftWoodTypes;
+import net.tropicraft.core.common.drinks.Cocktail;
 import net.tropicraft.core.common.drinks.Drink;
-import net.tropicraft.core.common.drinks.MixerRecipes;
+import net.tropicraft.core.common.drinks.action.TropicraftDrinks;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
 import net.tropicraft.core.common.entity.placeable.ChairEntity;
@@ -312,29 +317,29 @@ public class TropicraftItems {
                     .save(prov))
             .register();
 
-    // Cocktails
-    public static final ImmutableMap<Drink, ItemEntry<CocktailItem>> COCKTAILS = Drink.DRINKS.values().stream()
-            .collect(ImmutableMap.toImmutableMap(Function.identity(), drink ->
-                    REGISTRATE.item(drink.name, p -> {
-                                CocktailItem item = new CocktailItem(drink, p);
-                                MixerRecipes.setDrinkItem(drink, item);
-                                return item;
-                            })
-                            .properties(p -> p.durability(0).stacksTo(1).craftRemainder(BAMBOO_MUG.get()))
-                            .model((ctx, prov) -> prov.generated(ctx, prov.modLoc("item/cocktail"), prov.modLoc("item/cocktail_contents")))
-                            .color(() -> ColorProviders.cocktailColor(drink))
-                            .lang(drink.getName())
-                            .register()
-            ));
+    public static final ItemEntry<CocktailItem> COCKTAIL = REGISTRATE.item("cocktail", CocktailItem::new)
+            .properties(p -> p.durability(0).stacksTo(1).craftRemainder(BAMBOO_MUG.get()))
+            .model((ctx, prov) -> prov.generated(ctx, prov.modLoc("item/cocktail"), prov.modLoc("item/cocktail_contents")))
+            .color(() -> ColorProviders.cocktailColor())
+            .tab(Tropicraft.CREATIVE_TAB, (ctx, modifier) -> {
+                HolderLookup.RegistryLookup<Drink> drinks = modifier.getParameters().holders().lookupOrThrow(TropicraftRegistries.DRINK);
+                drinks.listElements().forEach(drink -> {
+                    ItemStack stack = new ItemStack(ctx.get());
+                    stack.set(TropicraftDataComponents.COCKTAIL, Cocktail.ofDrink(drink));
+                    modifier.accept(stack);
+                });
+            })
+            .register();
 
     static {
         REGISTRATE.addDataGenerator(ProviderType.RECIPE, prov -> {
-            ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, COCKTAILS.get(Drink.PINA_COLADA).get())
+            Holder<Drink> pinaColada = prov.getProvider().lookupOrThrow(TropicraftRegistries.DRINK).getOrThrow(TropicraftDrinks.PINA_COLADA);
+            ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, CocktailItem.makeDrink(pinaColada))
                     .requires(BAMBOO_MUG.get())
                     .requires(COCONUT_CHUNK.get())
                     .requires(PINEAPPLE_CUBES.get())
                     .unlockedBy("has_bamboo_mug", has(BAMBOO_MUG.get()))
-                    .save(prov);
+                    .save(prov, Tropicraft.location("pina_colada"));
         });
     }
 
@@ -854,12 +859,12 @@ public class TropicraftItems {
             return () -> LoveTropicsShellItem::getColor;
         }
 
-        public static Supplier<ItemColor> cocktailColor(Drink drink) {
+        public static Supplier<ItemColor> cocktailColor() {
             return () -> (ItemColor) (stack, tintIndex) -> {
                 if (tintIndex == 0) {
                     return CommonColors.WHITE;
                 }
-                return FastColor.ARGB32.opaque(drink == Drink.COCKTAIL ? CocktailItem.getCocktailColor(stack) : drink.color);
+                return FastColor.ARGB32.opaque(CocktailItem.getCocktail(stack).color());
             };
         }
     }

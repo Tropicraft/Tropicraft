@@ -84,7 +84,7 @@ public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerBlockEntity> {
             stack.pushPose();
             stack.translate(-0.2f, -0.25f, 0.0f);
             if (te.isDoneMixing()) {
-                int liquidColor = CocktailItem.getCocktailColor(te.result);
+                int liquidColor = CocktailItem.getCocktail(te.result).color();
                 VertexConsumer consumer = buffer.getBuffer(filledMugModel.renderType(MUG_TEXTURE));
                 filledMugModel.renderToBuffer(stack, consumer, combinedLightIn, combinedOverlayIn, FastColor.ARGB32.opaque(liquidColor));
             } else {

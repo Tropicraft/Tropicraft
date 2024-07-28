@@ -5,7 +5,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.pathfinder.PathType;
-import net.tropicraft.core.common.drinks.Drink;
+import net.tropicraft.core.common.drinks.action.TropicraftDrinks;
 import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
 
 import java.util.List;
@@ -33,7 +33,7 @@ public class MonkeyFollowNearestPinaColadaHolderGoal extends Goal {
     public boolean canUse() {
         if (monkey.isOrderedToSit()) return false;
         if (monkey.isTame()) return false;
-        if (monkey.selfHoldingDrink(Drink.PINA_COLADA)) return false;
+        if (monkey.selfHoldingDrink(TropicraftDrinks.PINA_COLADA)) return false;
 
         List<Player> list = monkey.level().getEntitiesOfClass(Player.class, monkey.getBoundingBox().inflate(areaSize), VMonkeyEntity.FOLLOW_PREDICATE);
 

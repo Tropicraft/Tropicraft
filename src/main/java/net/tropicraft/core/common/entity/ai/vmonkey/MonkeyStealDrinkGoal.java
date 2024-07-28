@@ -6,8 +6,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import net.tropicraft.core.common.drinks.Drink;
-import net.tropicraft.core.common.drinks.MixerRecipes;
+import net.tropicraft.core.common.drinks.action.TropicraftDrinks;
 import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
 import net.tropicraft.core.common.item.CocktailItem;
 
@@ -23,12 +22,12 @@ public class MonkeyStealDrinkGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        return entity.getOwner() == null && VMonkeyEntity.FOLLOW_PREDICATE.test(entity.getFollowing()) && !entity.selfHoldingDrink(Drink.PINA_COLADA);
+        return entity.getOwner() == null && VMonkeyEntity.FOLLOW_PREDICATE.test(entity.getFollowing()) && !entity.selfHoldingDrink(TropicraftDrinks.PINA_COLADA);
     }
 
     @Override
     public boolean canUse() {
-        return entity.getOwner() == null && VMonkeyEntity.FOLLOW_PREDICATE.test(entity.getFollowing()) && !entity.selfHoldingDrink(Drink.PINA_COLADA) && entity.isAggressive();
+        return entity.getOwner() == null && VMonkeyEntity.FOLLOW_PREDICATE.test(entity.getFollowing()) && !entity.selfHoldingDrink(TropicraftDrinks.PINA_COLADA) && entity.isAggressive();
     }
 
     private void leapTowardTarget() {
@@ -52,10 +51,11 @@ public class MonkeyStealDrinkGoal extends Goal {
     public void tick() {
         if (entity.distanceToSqr(entity.getFollowing()) < 4.0f) {
             for (InteractionHand hand : InteractionHand.values()) {
-                if (CocktailItem.getDrink(entity.getFollowing().getItemInHand(hand)) == Drink.PINA_COLADA) {
+                ItemStack heldItem = entity.getFollowing().getItemInHand(hand);
+                if (CocktailItem.hasDrink(heldItem, TropicraftDrinks.PINA_COLADA)) {
                     leapTowardTarget();
+                    entity.setItemInHand(hand, heldItem.split(heldItem.getCount()));
                     entity.getFollowing().setItemInHand(hand, ItemStack.EMPTY);
-                    entity.setItemInHand(hand, MixerRecipes.getItemStack(Drink.PINA_COLADA));
                 }
             }
         }

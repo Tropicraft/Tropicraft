@@ -1,5 +1,7 @@
 package net.tropicraft.core.common.drinks;
 
+import net.minecraft.resources.ResourceKey;
+
 public interface IMixerRecipe {
     /**
      * @return List of ingredients for this recipe in ItemStack form
@@ -9,5 +11,5 @@ public interface IMixerRecipe {
     /**
      * @return Result possible when all the ingredients are in the mixer
      */
-    Drink getCraftingResult();
+    ResourceKey<Drink> getCraftingResult();
 }

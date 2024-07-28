@@ -1,0 +1,15 @@
+{
+  "actions": [
+    {
+      "type": "tropicraft:potion",
+      "amplifier": 0,
+      "duration": 5,
+      "effect": "minecraft:nausea"
+    }
+  ],
+  "color": 16742190,
+  "name": {
+    "color": "gold",
+    "translate": "drink.tropicraft.mai_tai"
+  }
+}

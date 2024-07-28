@@ -1,6 +1,7 @@
 package net.tropicraft.core.common;
 
 import com.tterrag.registrate.providers.DataProviderInitializer;
+import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
@@ -20,6 +21,7 @@ import net.tropicraft.core.common.dimension.feature.jigsaw.TropicraftProcessorLi
 import net.tropicraft.core.common.dimension.feature.pools.TropicraftTemplatePools;
 import net.tropicraft.core.common.dimension.noise.TropicraftNoiseGenSettings;
 import net.tropicraft.core.common.dimension.noise.TropicraftNoiseRouterData;
+import net.tropicraft.core.common.drinks.action.TropicraftDrinks;
 import net.tropicraft.core.common.item.TropicraftJukeboxSongs;
 
 public class TropicraftPackRegistries {
@@ -47,5 +49,6 @@ public class TropicraftPackRegistries {
         initializer.add(Registries.MULTI_NOISE_BIOME_SOURCE_PARAMETER_LIST, TropicraftBiomeBuilder::bootstrap);
         initializer.add(Registries.JUKEBOX_SONG, TropicraftJukeboxSongs::bootstrap);
         initializer.add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, TropicraftBiomeModifiers::bootstrap);
+        initializer.add(TropicraftRegistries.DRINK, TropicraftDrinks::bootstrap);
     }
 }

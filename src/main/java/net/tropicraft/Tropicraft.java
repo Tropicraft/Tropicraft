@@ -16,6 +16,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
@@ -67,6 +68,7 @@ import net.tropicraft.core.common.dimension.feature.tree.TropicraftFoliagePlacer
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftTreeDecorators;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftTrunkPlacers;
 import net.tropicraft.core.common.drinks.MixerRecipes;
+import net.tropicraft.core.common.drinks.action.TropicraftDrinkActions;
 import net.tropicraft.core.common.item.TropicraftArmorMaterials;
 import net.tropicraft.core.common.item.TropicraftDataComponents;
 import net.tropicraft.core.common.item.TropicraftItems;
@@ -83,9 +85,11 @@ public class Tropicraft {
 
     public static final ProviderType<RegistrateTagsProvider.Impl<Biome>> BIOME_TAGS = ProviderType.registerDynamicTag("tags/biome", "biome", Registries.BIOME);
 
+    public static final ResourceKey<CreativeModeTab> CREATIVE_TAB = resourceKey(Registries.CREATIVE_MODE_TAB, ID);
+
     private static final Supplier<Registrate> REGISTRATE = Suppliers.memoize(() -> {
         Registrate registrate = Registrate.create(ID)
-                .defaultCreativeTab(ID, builder -> builder.icon(() -> new ItemStack(TropicraftBlocks.PALM_SAPLING.get()))).build()
+                .defaultCreativeTab(CREATIVE_TAB.location().getPath(), builder -> builder.icon(() -> new ItemStack(TropicraftBlocks.PALM_SAPLING.get()))).build()
                 .addDataGenerator(ProviderType.LANG, TropicraftLangKeys::generate);
         DataProviderInitializer initializer = registrate.getDataGenInitializer();
         TropicraftPackRegistries.addTo(initializer);
@@ -132,6 +136,7 @@ public class Tropicraft {
         ScubaData.ATTACHMENT_TYPES.register(modBus);
         TropicraftDataComponents.REGISTER.register(modBus);
         TropicraftArmorMaterials.REGISTER.register(modBus);
+        TropicraftDrinkActions.REGISTER.register(modBus);
     }
 
     private static final Pattern QUALIFIER = Pattern.compile("-\\w+\\+\\d+");

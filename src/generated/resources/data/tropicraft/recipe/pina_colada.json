@@ -13,7 +13,12 @@
     }
   ],
   "result": {
+    "components": {
+      "tropicraft:cocktail": {
+        "drink": "tropicraft:pina_colada"
+      }
+    },
     "count": 1,
-    "id": "tropicraft:pina_colada"
+    "id": "tropicraft:cocktail"
   }
 }

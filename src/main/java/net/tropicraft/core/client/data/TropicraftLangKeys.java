@@ -1,9 +1,10 @@
 package net.tropicraft.core.client.data;
 
 import com.tterrag.registrate.providers.RegistrateLangProvider;
+import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.MutableComponent;
 import net.tropicraft.Tropicraft;
 
 public enum TropicraftLangKeys {
@@ -15,7 +16,17 @@ public enum TropicraftLangKeys {
     SCUBA_MAX_DEPTH("scuba", "max_depth", "Max Depth: %s"),
     SCUBA_VISIBILITY_STAT("scuba", "scuba.visibility", "Underwater Fog Reduction"),
 
-    EXPLODING_COCONUT_WARNING("item", "exploding_coconut_warning", "You do not have permission to throw this. Change the config option for exploding coconuts to allow this");
+    EXPLODING_COCONUT_WARNING("item", "exploding_coconut_warning", "You do not have permission to throw this. Change the config option for exploding coconuts to allow this"),
+
+    LEMONADE("drink", "lemonade", "Lemonade"),
+    LIMEADE("drink", "limeade", "Limeade"),
+    ORANGEADE("drink", "orangeade", "Orangeade"),
+    CAIPIRINHA("drink", "caipirinha", "Caipirinha"),
+    BLACK_COFFEE("drink", "black_coffee", "Black Coffee"),
+    PINA_COLADA("drink", "pina_colada", "Piña Colada"),
+    COCONUT_WATER("drink", "coconut_water", "Coconut Water"),
+    MAI_TAI("drink", "mai_tai", "Mai Tai"),
+    ;
 
     private final String key;
     private final String value;
@@ -33,6 +44,10 @@ public enum TropicraftLangKeys {
 
     public Component component() {
         return component;
+    }
+
+    public MutableComponent component(ChatFormatting formatting) {
+        return component.copy().withStyle(formatting);
     }
 
     public Component format(Object... args) {

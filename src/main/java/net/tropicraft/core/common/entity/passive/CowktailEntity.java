@@ -1,8 +1,8 @@
 package net.tropicraft.core.common.entity.passive;
 
-import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -20,7 +20,6 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.animal.Cow;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -32,6 +31,7 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.common.IShearable;
+import net.tropicraft.core.common.TropicraftRegistries;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.block.TropicraftFlower;
 import net.tropicraft.core.common.drinks.Drink;
@@ -40,7 +40,6 @@ import net.tropicraft.core.common.item.CocktailItem;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CowktailEntity extends Cow implements IShearable {
@@ -67,10 +66,10 @@ public class CowktailEntity extends Cow implements IShearable {
         if (itemStack.getItem() == TropicraftItems.BAMBOO_MUG.get() && !isBaby()) {
             itemStack.consume(1, player);
 
-            List<RegistryEntry<Item, CocktailItem>> cocktails = new ArrayList<>(TropicraftItems.COCKTAILS.values());
-            // Remove generic cocktail from cowktail
-            cocktails.removeIf(cocktail -> cocktail.isBound() && CocktailItem.getDrink(new ItemStack(cocktail)) == Drink.COCKTAIL);
-            ItemStack cocktailItem = new ItemStack(cocktails.get(random.nextInt(cocktails.size())).get());
+            Registry<Drink> drinks = registryAccess().registryOrThrow(TropicraftRegistries.DRINK);
+            ItemStack cocktailItem = drinks.getRandom(random)
+                    .map(CocktailItem::makeDrink)
+                    .orElse(ItemStack.EMPTY);
 
             if (itemStack.isEmpty()) {
                 player.setItemInHand(hand, cocktailItem);

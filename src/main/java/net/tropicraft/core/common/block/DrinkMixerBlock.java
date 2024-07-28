@@ -5,6 +5,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
@@ -27,6 +28,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.tropicraft.core.common.block.tileentity.DrinkMixerBlockEntity;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.MixerRecipes;
+import net.tropicraft.core.common.drinks.action.TropicraftDrinks;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nullable;
@@ -111,10 +113,9 @@ public final class DrinkMixerBlock extends BaseEntityBlock {
                 player.getInventory().removeItem(player.getInventory().selected, 1);
             }
 
-            Drink craftedDrink = MixerRecipes.getDrink(mixer.ingredients);
-            Drink pinaColada = Drink.PINA_COLADA;
+            ResourceKey<Drink> craftedDrink = MixerRecipes.getDrink(mixer.ingredients);
 
-            if (craftedDrink != null && craftedDrink.drinkId == pinaColada.drinkId) {
+            if (craftedDrink != null && craftedDrink == TropicraftDrinks.PINA_COLADA) {
                 // TODO advancements entityPlayer.addStat(AchievementRegistry.craftPinaColada);
             }
         }

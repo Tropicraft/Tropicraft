@@ -5,7 +5,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.ItemStack;
-import net.tropicraft.core.common.drinks.Drink;
+import net.tropicraft.core.common.drinks.action.TropicraftDrinks;
 import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
 
@@ -33,12 +33,12 @@ public class MonkeySitAndDrinkGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        return entity.selfHoldingDrink(Drink.PINA_COLADA);
+        return entity.selfHoldingDrink(TropicraftDrinks.PINA_COLADA);
     }
 
     @Override
     public boolean canUse() {
-        return entity.selfHoldingDrink(Drink.PINA_COLADA);
+        return entity.selfHoldingDrink(TropicraftDrinks.PINA_COLADA);
     }
 
     @Override

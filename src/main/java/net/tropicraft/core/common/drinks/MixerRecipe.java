@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.drinks;
 
 import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.Arrays;
@@ -10,14 +11,14 @@ public class MixerRecipe implements IMixerRecipe {
     /**
      * Result possible when all ingredients are mixed together
      */
-    private final Drink result;
+    private final ResourceKey<Drink> result;
 
     /**
      * All ingredients that go into creating the result
      */
     private final Ingredient[] ingredients;
 
-    public MixerRecipe(Drink result, Ingredient... ingredients) {
+    public MixerRecipe(ResourceKey<Drink> result, Ingredient... ingredients) {
         this.result = result;
         this.ingredients = ingredients;
         Arrays.sort(ingredients);
@@ -53,7 +54,7 @@ public class MixerRecipe implements IMixerRecipe {
      * @return Result possible when all the ingredients are in the mixer
      */
     @Override
-    public Drink getCraftingResult() {
+    public ResourceKey<Drink> getCraftingResult() {
         return result;
     }
 }
