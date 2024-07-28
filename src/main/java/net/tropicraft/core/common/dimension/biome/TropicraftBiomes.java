@@ -9,7 +9,6 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.placement.AquaticPlacements;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
@@ -30,8 +29,6 @@ import net.tropicraft.core.common.entity.TropicraftEntities;
 import java.util.function.Consumer;
 
 public final class TropicraftBiomes {
-    public static final Registrate REGISTRATE = Tropicraft.registrate();
-
     public static final int TROPICS_WATER_COLOR = 0x4eecdf;
     public static final int TROPICS_WATER_FOG_COLOR = 0x041f33;
     public static final int TROPICS_FOG_COLOR = 0xC0D8FF;
@@ -53,8 +50,8 @@ public final class TropicraftBiomes {
     public static final ResourceKey<Biome> OVERGROWN_MANGROVES = createKey("overgrown_mangroves");
     public static final ResourceKey<Biome> TROPICAL_PEAKS = createKey("tropical_peaks");
 
-    static {
-        REGISTRATE.addDataGenerator(ProviderType.LANG, prov -> {
+    public static void setup(Registrate registrate) {
+        registrate.addDataGenerator(ProviderType.LANG, prov -> {
             Consumer<String> register = name -> prov.add("biome." + Tropicraft.ID + "." + name, RegistrateLangProvider.toEnglishName(name));
             register.accept("tropics");
             register.accept("beach");
@@ -69,7 +66,7 @@ public final class TropicraftBiomes {
             register.accept("tropical_peaks");
         });
 
-        REGISTRATE.addDataGenerator(Tropicraft.BIOME_TAGS, prov -> {
+        registrate.addDataGenerator(Tropicraft.BIOME_TAGS, prov -> {
             prov.addTag(Tags.Biomes.IS_OCEAN).add(OCEAN, KELP_FOREST);
             prov.addTag(Tags.Biomes.IS_AQUATIC).add(OCEAN, KELP_FOREST, RIVER);
 

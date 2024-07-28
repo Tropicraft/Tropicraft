@@ -4,14 +4,13 @@ import com.google.common.base.Suppliers;
 import com.google.common.reflect.Reflection;
 import com.mojang.brigadier.CommandDispatcher;
 import com.tterrag.registrate.Registrate;
+import com.tterrag.registrate.providers.DataProviderInitializer;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateTagsProvider;
 import net.minecraft.Util;
 import net.minecraft.client.resources.model.BlockStateModelLoader;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
-import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -36,17 +35,17 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.tropicraft.core.client.data.TropicraftLangKeys;
+import net.tropicraft.core.common.TropicraftPackRegistries;
 import net.tropicraft.core.common.TropicsConfigs;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.command.TropicraftCommands;
 import net.tropicraft.core.common.command.debug.MapBiomesCommand;
 import net.tropicraft.core.common.data.StructureConverter;
-import net.tropicraft.core.common.dimension.TropicraftPackRegistries;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomeBuilder;
+import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
 import net.tropicraft.core.common.dimension.carver.TropicraftCarvers;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
 import net.tropicraft.core.common.dimension.feature.TropicraftStructureTypes;
@@ -75,8 +74,6 @@ import net.tropicraft.core.common.item.scuba.ScubaData;
 import net.tropicraft.core.common.item.scuba.ScubaGogglesItem;
 import net.tropicraft.core.common.sound.Sounds;
 
-import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
@@ -84,18 +81,20 @@ import java.util.regex.Pattern;
 public class Tropicraft {
     public static final String ID = "tropicraft";
 
-    public static final ProviderType<RegistrateTagsProvider.Impl<Biome>> BIOME_TAGS = ProviderType.register("tags/biome", type -> (p, e) -> {
-        // We don't dump from registries through Registrate, so there's some duplicate work building these registries to inject as context
-        PackOutput output = e.getGenerator().getPackOutput();
-        CompletableFuture<HolderLookup.Provider> provider = TropicraftPackRegistries.createLookup(e.getLookupProvider())
-                .thenApply(RegistrySetBuilder.PatchedRegistries::full);
-        return new RegistrateTagsProvider.Impl<>(p, type, "biome", output, Registries.BIOME, provider, e.getExistingFileHelper());
-    });
+    public static final ProviderType<RegistrateTagsProvider.Impl<Biome>> BIOME_TAGS = ProviderType.registerDynamicTag("tags/biome", "biome", Registries.BIOME);
 
-    private static final Supplier<Registrate> REGISTRATE = Suppliers.memoize(() -> Registrate.create(ID)
-            .defaultCreativeTab(ID, builder -> builder.icon(() -> new ItemStack(TropicraftBlocks.PALM_SAPLING.get()))).build()
-            .addDataGenerator(ProviderType.LANG, TropicraftLangKeys::generate)
-    );
+    private static final Supplier<Registrate> REGISTRATE = Suppliers.memoize(() -> {
+        Registrate registrate = Registrate.create(ID)
+                .defaultCreativeTab(ID, builder -> builder.icon(() -> new ItemStack(TropicraftBlocks.PALM_SAPLING.get()))).build()
+                .addDataGenerator(ProviderType.LANG, TropicraftLangKeys::generate);
+        DataProviderInitializer initializer = registrate.getDataGenInitializer();
+        TropicraftPackRegistries.addTo(initializer);
+        initializer.addDependency(ProviderType.ADVANCEMENT, ProviderType.DYNAMIC);
+        initializer.addDependency(ProviderType.RECIPE, ProviderType.DYNAMIC);
+        initializer.addDependency(BIOME_TAGS, ProviderType.DYNAMIC);
+        TropicraftBiomes.setup(registrate);
+        return registrate;
+    });
 
     public static Registrate registrate() {
         return REGISTRATE.get();
@@ -110,7 +109,6 @@ public class Tropicraft {
     }
 
     public Tropicraft(ModContainer container, IEventBus modBus) {
-        // General mod setup
         modBus.addListener(this::setup);
         modBus.addListener(this::gatherData);
 
@@ -162,7 +160,6 @@ public class Tropicraft {
     private void gatherData(GatherDataEvent event) {
         DataGenerator generator = event.getGenerator();
         PackOutput output = generator.getPackOutput();
-        generator.addProvider(event.includeServer(), new DatapackBuiltinEntriesProvider(output, event.getLookupProvider(), TropicraftPackRegistries.BUILDER, Set.of(ID)));
         generator.addProvider(event.includeServer(), new StructureConverter(ID, output, event.getInputs()));
     }
 
