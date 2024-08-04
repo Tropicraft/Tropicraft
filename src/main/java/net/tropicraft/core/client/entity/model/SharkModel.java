@@ -3,10 +3,7 @@ package net.tropicraft.core.client.entity.model;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.tropicraft.core.common.entity.underdasea.SharkEntity;
 
@@ -85,13 +82,13 @@ public class SharkModel extends HierarchicalModel<SharkEntity> {
                 PartPose.offsetAndRotation(0.0f, 0.0f, 22.0f, 1.692969f, 0.0698132f, 0.0f));
 
         root.addOrReplaceChild("FinPectoralLeft",
-                CubeListBuilder.create().texOffs(88, 57).mirror()
-                        .addBox(0.0f, 0.0f, 0.0f, 14, 7, 0),
+                CubeListBuilder.create().texOffs(88, 57)
+                        .addBox(0.0f, 0.0f, 0.0f, 14, 7, 0, new CubeDeformation(0.001f)),
                 PartPose.offsetAndRotation(4.0f, 4.0f, -7.0f, 2.007129f, -0.7853982f, 0.4363323f));
 
         root.addOrReplaceChild("FinPectoralRight",
                 CubeListBuilder.create().texOffs(88, 57).mirror()
-                        .addBox(-14.0f, 0.0f, 0.0f, 14, 7, 0),
+                        .addBox(-14.0f, 0.0f, 0.0f, 14, 7, 0, new CubeDeformation(0.001f)),
                 PartPose.offsetAndRotation(-4.0f, 4.0f, -7.0f, 2.007129f, 0.7853982f, -0.4363323f));
 
         root.addOrReplaceChild("FinDorsal",
@@ -100,13 +97,13 @@ public class SharkModel extends HierarchicalModel<SharkEntity> {
                 PartPose.offsetAndRotation(0.0f, -4.0f, 4.0f, -0.5235988f, 0.0f, 0.0f));
 
         root.addOrReplaceChild("FinPelvicLeft",
-                CubeListBuilder.create().texOffs(96, 52).mirror()
-                        .addBox(0.0f, 0.0f, 0.0f, 5, 3, 0),
+                CubeListBuilder.create().texOffs(96, 52)
+                        .addBox(0.0f, 0.0f, 0.0f, 5, 3, 0, new CubeDeformation(0.001f)),
                 PartPose.offsetAndRotation(3.0f, 4.0f, 17.0f, 2.181662f, -0.7853982f, 0.6981317f));
 
         root.addOrReplaceChild("FinPelvicRight",
                 CubeListBuilder.create().texOffs(96, 52).mirror()
-                        .addBox(-5.0f, 0.0f, 0.0f, 5, 3, 0),
+                        .addBox(-5.0f, 0.0f, 0.0f, 5, 3, 0, new CubeDeformation(0.001f)),
                 PartPose.offsetAndRotation(-3.0f, 4.0f, 17.0f, 2.181662f, 0.7853982f, -0.6981317f));
 
         root.addOrReplaceChild("FinAdipose",
