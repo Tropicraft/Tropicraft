@@ -17,21 +17,21 @@ import java.util.function.Supplier;
 
 public enum TropicraftFlower implements Supplier<Block> {
 
-    ACAI_VINE(MobEffects.REGENERATION, 0, 7, 16, null, BlockTags.SMALL_FLOWERS, TropicraftTags.Blocks.TROPICS_FLOWERS),
-    ANEMONE(MobEffects.REGENERATION, 0, 9, null, BlockTags.SMALL_FLOWERS, TropicraftTags.Blocks.TROPICS_FLOWERS, TropicraftTags.Blocks.RAINFOREST_FLOWERS, TropicraftTags.Blocks.OVERWORLD_FLOWERS),
+    ACAI_VINE(MobEffects.ABSORPTION, 0, 7, 16, null, BlockTags.SMALL_FLOWERS, TropicraftTags.Blocks.TROPICS_FLOWERS),
+    ANEMONE(MobEffects.WIND_CHARGED, 0, 9, null, BlockTags.SMALL_FLOWERS, TropicraftTags.Blocks.TROPICS_FLOWERS, TropicraftTags.Blocks.RAINFOREST_FLOWERS, TropicraftTags.Blocks.OVERWORLD_FLOWERS),
     BROMELIAD(MobEffects.REGENERATION, 0, 9, null, BlockTags.SMALL_FLOWERS, TropicraftTags.Blocks.TROPICS_FLOWERS, TropicraftTags.Blocks.RAINFOREST_FLOWERS),
-    CANNA(MobEffects.REGENERATION, 0, Items.YELLOW_DYE, BlockTags.SMALL_FLOWERS, TropicraftTags.Blocks.TROPICS_FLOWERS, TropicraftTags.Blocks.RAINFOREST_FLOWERS),
-    COMMELINA_DIFFUSA(MobEffects.REGENERATION, 0, Items.LIGHT_BLUE_DYE, BlockTags.SMALL_FLOWERS, TropicraftTags.Blocks.TROPICS_FLOWERS, TropicraftTags.Blocks.RAINFOREST_FLOWERS, TropicraftTags.Blocks.OVERWORLD_FLOWERS),
-    CROCOSMIA(MobEffects.REGENERATION, 0, null, BlockTags.SMALL_FLOWERS, TropicraftTags.Blocks.TROPICS_FLOWERS, TropicraftTags.Blocks.RAINFOREST_FLOWERS),
-    CROTON(MobEffects.REGENERATION, 0, 13, null, BlockTags.SMALL_FLOWERS, TropicraftTags.Blocks.TROPICS_FLOWERS),
-    DRACAENA(MobEffects.REGENERATION, 0, 13, Items.GREEN_DYE, BlockTags.SMALL_FLOWERS, TropicraftTags.Blocks.TROPICS_FLOWERS, TropicraftTags.Blocks.RAINFOREST_FLOWERS),
-    TROPICAL_FERN(MobEffects.REGENERATION, 0, 13, null, BlockTags.SMALL_FLOWERS, TropicraftTags.Blocks.TROPICS_FLOWERS),
-    FOLIAGE(MobEffects.REGENERATION, 0, 13, null, BlockTags.SMALL_FLOWERS, TropicraftTags.Blocks.TROPICS_FLOWERS),
-    MAGIC_MUSHROOM(MobEffects.REGENERATION, 0, 11, null, BlockTags.SMALL_FLOWERS, TropicraftTags.Blocks.RAINFOREST_FLOWERS),
-    ORANGE_ANTHURIUM(MobEffects.REGENERATION, 0, 11, Items.ORANGE_DYE, BlockTags.SMALL_FLOWERS, TropicraftTags.Blocks.TROPICS_FLOWERS, TropicraftTags.Blocks.RAINFOREST_FLOWERS, TropicraftTags.Blocks.OVERWORLD_FLOWERS),
-    ORCHID(MobEffects.REGENERATION, 0, null, BlockTags.SMALL_FLOWERS, TropicraftTags.Blocks.TROPICS_FLOWERS, TropicraftTags.Blocks.RAINFOREST_FLOWERS, TropicraftTags.Blocks.OVERWORLD_FLOWERS),
-    PATHOS(MobEffects.REGENERATION, 0, 15, 12, null, BlockTags.SMALL_FLOWERS, TropicraftTags.Blocks.TROPICS_FLOWERS, TropicraftTags.Blocks.OVERWORLD_FLOWERS),
-    RED_ANTHURIUM(MobEffects.REGENERATION, 0, 11, Items.RED_DYE, BlockTags.SMALL_FLOWERS, TropicraftTags.Blocks.TROPICS_FLOWERS, TropicraftTags.Blocks.RAINFOREST_FLOWERS, TropicraftTags.Blocks.OVERWORLD_FLOWERS);
+    CANNA(MobEffects.INVISIBILITY, 0, Items.YELLOW_DYE, BlockTags.SMALL_FLOWERS, TropicraftTags.Blocks.TROPICS_FLOWERS, TropicraftTags.Blocks.RAINFOREST_FLOWERS),
+    COMMELINA_DIFFUSA(MobEffects.CONDUIT_POWER, 0, Items.LIGHT_BLUE_DYE, BlockTags.SMALL_FLOWERS, TropicraftTags.Blocks.TROPICS_FLOWERS, TropicraftTags.Blocks.RAINFOREST_FLOWERS, TropicraftTags.Blocks.OVERWORLD_FLOWERS),
+    CROCOSMIA(MobEffects.FIRE_RESISTANCE, 0, null, BlockTags.SMALL_FLOWERS, TropicraftTags.Blocks.TROPICS_FLOWERS, TropicraftTags.Blocks.RAINFOREST_FLOWERS),
+    CROTON(MobEffects.SATURATION, 0, 13, null, BlockTags.SMALL_FLOWERS, TropicraftTags.Blocks.TROPICS_FLOWERS),
+    DRACAENA(MobEffects.OOZING, 0, 13, Items.GREEN_DYE, BlockTags.SMALL_FLOWERS, TropicraftTags.Blocks.TROPICS_FLOWERS, TropicraftTags.Blocks.RAINFOREST_FLOWERS),
+    TROPICAL_FERN(MobEffects.REGENERATION, 0, 13, null, TropicraftTags.Blocks.TROPICS_FLOWERS),
+    FOLIAGE(MobEffects.REGENERATION, 0, 13, null, TropicraftTags.Blocks.TROPICS_FLOWERS),
+    MAGIC_MUSHROOM(MobEffects.BAD_OMEN, 0, 11, null, BlockTags.SMALL_FLOWERS, TropicraftTags.Blocks.RAINFOREST_FLOWERS),
+    ORANGE_ANTHURIUM(MobEffects.LUCK, 0, 11, Items.ORANGE_DYE, BlockTags.SMALL_FLOWERS, TropicraftTags.Blocks.TROPICS_FLOWERS, TropicraftTags.Blocks.RAINFOREST_FLOWERS, TropicraftTags.Blocks.OVERWORLD_FLOWERS),
+    ORCHID(MobEffects.SLOW_FALLING, 0, null, BlockTags.SMALL_FLOWERS, TropicraftTags.Blocks.TROPICS_FLOWERS, TropicraftTags.Blocks.RAINFOREST_FLOWERS, TropicraftTags.Blocks.OVERWORLD_FLOWERS),
+    PATHOS(MobEffects.REGENERATION, 0, 15, 12, null, TropicraftTags.Blocks.TROPICS_FLOWERS, TropicraftTags.Blocks.OVERWORLD_FLOWERS),
+    RED_ANTHURIUM(MobEffects.UNLUCK, 0, 11, Items.RED_DYE, BlockTags.SMALL_FLOWERS, TropicraftTags.Blocks.TROPICS_FLOWERS, TropicraftTags.Blocks.RAINFOREST_FLOWERS, TropicraftTags.Blocks.OVERWORLD_FLOWERS);
 
     private final Holder<MobEffect> effect;
     private final int effectDuration;
