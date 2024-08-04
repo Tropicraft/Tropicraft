@@ -9,7 +9,7 @@ public class Foods {
     public static final FoodProperties ORANGE = new FoodProperties.Builder().nutrition(2).saturationModifier(0.2f).fast().build();
     public static final FoodProperties PASSIONFRUIT = new FoodProperties.Builder().nutrition(2).saturationModifier(0.2f).fast().build();
     public static final FoodProperties JOCOTE = new FoodProperties.Builder().nutrition(2).saturationModifier(0.2f).fast().build();
-    public static final FoodProperties PAPAYA = new FoodProperties.Builder().nutrition(6).saturationModifier(0.5f).build();
+    public static final FoodProperties PAPAYA = new FoodProperties.Builder().nutrition(3).saturationModifier(0.5f).build();
     public static final FoodProperties PINEAPPLE_CUBES = new FoodProperties.Builder().nutrition(1).saturationModifier(0.1f).fast().build();
     public static final FoodProperties PLANTAIN = new FoodProperties.Builder().nutrition(3).saturationModifier(0.2f).build();
     public static final FoodProperties DRIED_PLANTAINS = new FoodProperties.Builder().nutrition(3).saturationModifier(0.2f).fast().build();

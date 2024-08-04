@@ -735,11 +735,10 @@ public class TropicraftBlocks {
             .build()
             .register();
 
-    // TODO: register with food
     public static final BlockEntry<PapayaBlock> PAPAYA = REGISTRATE.block("papaya", PapayaBlock::new)
             .properties(p -> p.mapColor(MapColor.PLANT).randomTicks().strength(0.2f, 3.0f).sound(SoundType.WOOD).noOcclusion().pushReaction(PushReaction.DESTROY))
             .loot((loot, block) -> loot.add(block, LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
-                    .add(loot.applyExplosionDecay(block, LootItem.lootTableItem(block.asItem()).apply(SetItemCountFunction.setCount(ConstantValue.exactly(2))
+                    .add(loot.applyExplosionDecay(block, LootItem.lootTableItem(TropicraftItems.PAPAYA).apply(SetItemCountFunction.setCount(ConstantValue.exactly(2))
                             .when(hasBlockStateProperties(block).setProperties(properties().hasProperty(PapayaBlock.AGE, 1)))))))))
             .addLayer(() -> RenderType::cutout)
             .blockstate((ctx, prov) -> {
@@ -753,7 +752,6 @@ public class TropicraftBlocks {
                     return new ConfiguredModel[]{new ConfiguredModel(modelFile, 0, facing.get2DDataValue() * 90, false)};
                 });
             })
-            .item().defaultModel().build()
             .register();
 
     public static final BlockEntry<FenceBlock> BAMBOO_FENCE = woodenFence("bamboo_fence", BAMBOO_BUNDLE)

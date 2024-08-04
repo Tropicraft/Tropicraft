@@ -268,6 +268,10 @@ public class TropicraftItems {
     public static final ItemEntry<Item> JOCOTE = food("jocote", Foods.JOCOTE)
             .tag(TropicraftTags.Items.FRUITS)
             .register();
+    public static final ItemEntry<ItemNameBlockItem> PAPAYA = REGISTRATE.item("papaya", p -> new ItemNameBlockItem(TropicraftBlocks.PAPAYA.get(), p))
+            .properties(p -> p.food(Foods.PAPAYA))
+            .tag(TropicraftTags.Items.FRUITS)
+            .register();
     public static final ItemEntry<Item> PINEAPPLE_CUBES = food("pineapple_cubes", Foods.PINEAPPLE_CUBES)
             .recipe((ctx, prov) -> ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, ctx.get(), 2)
                     .requires(TropicraftBlocks.PINEAPPLE)
