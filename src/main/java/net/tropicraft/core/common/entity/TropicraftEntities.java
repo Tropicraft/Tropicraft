@@ -502,7 +502,7 @@ public class TropicraftEntities {
             .spawnPlacement(SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE)
             .attributes(TropiBeeEntity::createAttributes)
             .tag(EntityTypeTags.BEEHIVE_INHABITORS)
-            .loot(TropicraftEntities::noDrops)
+            .loot((lootTables, entity) -> dropItemsWithEnchantBonus(lootTables, entity, TropicraftItems.COOL_SHADES.get(), UniformGenerator.between(0, 1)))
             .renderer(() -> TropiBeeRenderer::new)
             .register();
     public static final EntityEntry<CowktailEntity> COWKTAIL = REGISTRATE.entity("cowktail", CowktailEntity::new, MobCategory.CREATURE)
