@@ -199,11 +199,6 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
                 }
                 hasDrink = true;
             }
-            Ingredient otherIngredient = Ingredient.findMatchingIngredient(otherItemStack);
-            // Cannot repeat the same ingredient
-            if (otherIngredient != null && !seenIngredients.add(otherIngredient)) {
-                return false;
-            }
         }
 
         return false;

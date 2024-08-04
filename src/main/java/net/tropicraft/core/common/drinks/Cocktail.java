@@ -52,13 +52,10 @@ public record Cocktail(
             return drink.get().value().color();
         }
 
-        Ingredient primary = ingredients.stream().filter(Ingredient::isPrimary).findAny().orElse(null);
-        int color = primary == null ? DEFAULT_COLOR : primary.getColor();
+        int color = DEFAULT_COLOR;
 
         for (Ingredient ingredient : ingredients) {
-            if (ingredient != primary) {
-                color = FastColor.ARGB32.lerp(ingredient.getAlpha(), color, ingredient.getColor());
-            }
+            color = FastColor.ARGB32.lerp(ingredient.getAlpha(), color, ingredient.getColor());
         }
 
         return color;
