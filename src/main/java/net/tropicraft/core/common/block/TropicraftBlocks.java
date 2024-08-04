@@ -1038,7 +1038,7 @@ public class TropicraftBlocks {
 
     public static final BlockEntry<CoffeeBushBlock> COFFEE_BUSH = REGISTRATE.block("coffee_bush", CoffeeBushBlock::new)
             .properties(p -> p.mapColor(MapColor.GRASS).strength(0.15f).sound(SoundType.GRASS).noOcclusion().pushReaction(PushReaction.DESTROY))
-            .loot((loot, block) -> loot.add(block, dropNumberOfItems(loot, TropicraftBlocks.COFFEE_BUSH.get(), TropicraftItems.RAW_COFFEE_BEAN, 1, 3)))
+            .loot((loot, block) -> loot.add(block, coffee(loot, TropicraftBlocks.COFFEE_BUSH.get(), TropicraftItems.RAW_COFFEE_BEAN)))
             .addLayer(() -> RenderType::cutout)
             .blockstate((ctx, prov) -> prov.getVariantBuilder(ctx.get()).forAllStates(state -> {
                 int age = state.getValue(CoffeeBushBlock.AGE);
@@ -1756,6 +1756,17 @@ public class TropicraftBlocks {
                 .setRolls(ConstantValue.exactly(1))
                 .add(lootTableItem(block))
         );
+    }
+
+    private static LootTable.Builder coffee(RegistrateBlockLootTables loot, Block block, Supplier<? extends ItemLike> drop) {
+        return LootTable.lootTable()
+                .withPool(loot.applyExplosionCondition(block, LootPool.lootPool()
+                        .add(LootItem.lootTableItem(drop.get()))
+                        .apply(SetItemCountFunction.setCount(new ConstantValue(1)))))
+                .withPool(loot.applyExplosionCondition(block, LootPool.lootPool()
+                        .add(LootItem.lootTableItem(drop.get()))
+                        .when(hasBlockStateProperties(block).setProperties(properties().hasProperty(CoffeeBushBlock.AGE, 6)))
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))));
     }
 
     private static ModelFile cubeTop(DataGenContext<Block, BlockTropicraftSand> ctx, RegistrateBlockstateProvider prov, String suffix) {

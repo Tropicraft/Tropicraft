@@ -17,9 +17,38 @@
       "functions": [
         {
           "add": false,
+          "count": 1.0,
+          "function": "minecraft:set_count"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tropicraft:coffee_bush",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "age": "6"
+          }
+        },
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tropicraft:raw_coffee_bean"
+        }
+      ],
+      "functions": [
+        {
+          "add": false,
           "count": {
             "type": "minecraft:uniform",
-            "max": 3.0,
+            "max": 2.0,
             "min": 1.0
           },
           "function": "minecraft:set_count"
