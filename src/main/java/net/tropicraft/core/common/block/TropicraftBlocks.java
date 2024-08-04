@@ -808,6 +808,7 @@ public class TropicraftBlocks {
     public static final BlockEntry<TallFlowerBlock> IRIS = REGISTRATE.block("iris", TallFlowerBlock::new)
             .properties(p -> p.mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS).replaceable().ignitedByLava().pushReaction(PushReaction.DESTROY))
             .loot((loot, block) -> loot.add(block, createSinglePropConditionTable(loot, block, DoublePlantBlock.HALF, DoubleBlockHalf.LOWER)))
+            .tag(BlockTags.TALL_FLOWERS)
             .addLayer(() -> RenderType::cutout)
             .blockstate(TropicraftBlocks::doublePlant)
             .recipe((ctx, prov) -> prov.singleItemUnfinished(DataIngredient.items(ctx.get()), RecipeCategory.MISC, () -> Items.PURPLE_DYE, 1, 4).save(prov, Tropicraft.location(name(Items.PURPLE_DYE))))
