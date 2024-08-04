@@ -4,8 +4,8 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
@@ -27,7 +27,6 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.tropicraft.core.common.block.tileentity.DrinkMixerBlockEntity;
 import net.tropicraft.core.common.drinks.Drink;
-import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.drinks.TropicraftDrinks;
 import net.tropicraft.core.common.item.TropicraftItems;
 
@@ -101,7 +100,7 @@ public final class DrinkMixerBlock extends BaseEntityBlock {
 
         ItemStack ingredientStack = stack.copyWithCount(1);
 
-        if (mixer.addToMixer(ingredientStack)) {
+        if (mixer.addToMixer(level, ingredientStack)) {
             if (!player.isCreative()) {
                 player.getInventory().removeItem(player.getInventory().selected, 1);
             }
@@ -113,9 +112,9 @@ public final class DrinkMixerBlock extends BaseEntityBlock {
                 player.getInventory().removeItem(player.getInventory().selected, 1);
             }
 
-            ResourceKey<Drink> craftedDrink = MixerRecipes.getDrink(mixer.getDrinkIngredients());
+            Holder<Drink> craftedDrink = Drink.getMatchingDrinkByItems(level.registryAccess(), mixer.getDrinkIngredients());
 
-            if (craftedDrink != null && craftedDrink == TropicraftDrinks.PINA_COLADA) {
+            if (craftedDrink != null && craftedDrink.is(TropicraftDrinks.PINA_COLADA)) {
                 // TODO advancements entityPlayer.addStat(AchievementRegistry.craftPinaColada);
             }
         }

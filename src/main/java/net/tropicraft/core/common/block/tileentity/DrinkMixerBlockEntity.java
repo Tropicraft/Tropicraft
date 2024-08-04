@@ -21,9 +21,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.tropicraft.core.common.block.DrinkMixerBlock;
-import net.tropicraft.core.common.drinks.Ingredient;
-import net.tropicraft.core.common.drinks.MixerRecipes;
-import net.tropicraft.core.common.item.CocktailItem;
+import net.tropicraft.core.common.drinks.Drink;
+import net.tropicraft.core.common.drinks.DrinkIngredient;
 import net.tropicraft.core.common.network.message.ClientboundMixerInventoryPacket;
 import net.tropicraft.core.common.network.message.ClientboundMixerStartPacket;
 import org.slf4j.Logger;
@@ -39,7 +38,6 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
      * Number of ticks to mix
      */
     private static final int TICKS_TO_MIX = 4 * 20;
-    private static final int MAX_NUM_INGREDIENTS = 3;
 
     /**
      * Number of ticks the mixer has been mixin'
@@ -166,28 +164,16 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         syncInventory();
     }
 
-    public boolean addToMixer(ItemStack itemStack) {
+    public boolean addToMixer(Level level, ItemStack itemStack) {
         if (isMixerFull()) {
             return false;
         }
-
-        boolean isDrink = CocktailItem.isDrink(itemStack);
-        Ingredient ingredient = Ingredient.findMatchingIngredient(itemStack);
-        if (ingredient == null && !isDrink) {
-            return false;
+        if (DrinkIngredient.findMatchingIngredient(level.registryAccess(), itemStack) != null) {
+            drinkIngredients.add(itemStack);
+            syncInventory();
+            return true;
         }
-
-        if (isDrink) {
-            for (ItemStack otherItemStack : drinkIngredients) {
-                if (CocktailItem.isDrink(otherItemStack)) {
-                    return false;
-                }
-            }
-        }
-
-        drinkIngredients.add(itemStack);
-        syncInventory();
-        return true;
+        return false;
     }
 
     public boolean isMixing() {
@@ -195,7 +181,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
     }
 
     private boolean isMixerFull() {
-        return drinkIngredients.size() >= MAX_NUM_INGREDIENTS;
+        return drinkIngredients.size() >= Drink.MAX_INGREDIENTS;
     }
 
     public boolean canMix() {
@@ -246,6 +232,6 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
     }
 
     public ItemStack getResult() {
-        return MixerRecipes.getResult(level.registryAccess(), drinkIngredients);
+        return Drink.getResult(level.registryAccess(), drinkIngredients);
     }
 }

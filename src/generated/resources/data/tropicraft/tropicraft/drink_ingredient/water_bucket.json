@@ -1,0 +1,7 @@
+{
+  "color": 16777215,
+  "description": {
+    "translate": "item.minecraft.water_bucket"
+  },
+  "items": "minecraft:water_bucket"
+}

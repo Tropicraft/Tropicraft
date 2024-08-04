@@ -8,6 +8,11 @@
     }
   ],
   "color": 8710282,
+  "ingredients": [
+    "tropicraft:lime",
+    "tropicraft:sugar",
+    "tropicraft:water_bucket"
+  ],
   "name": {
     "color": "green",
     "translate": "drink.tropicraft.limeade"

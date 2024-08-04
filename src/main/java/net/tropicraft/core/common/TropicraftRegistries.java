@@ -10,12 +10,14 @@ import net.neoforged.neoforge.registries.NewRegistryEvent;
 import net.neoforged.neoforge.registries.RegistryBuilder;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.drinks.Drink;
+import net.tropicraft.core.common.drinks.DrinkIngredient;
 import net.tropicraft.core.common.drinks.action.DrinkAction;
 
 @EventBusSubscriber(modid = Tropicraft.ID, bus = EventBusSubscriber.Bus.MOD)
 public class TropicraftRegistries {
     public static final ResourceKey<Registry<Drink>> DRINK = createKey("drink");
     public static final ResourceKey<Registry<MapCodec<? extends DrinkAction>>> DRINK_ACTION = createKey("drink_action");
+    public static final ResourceKey<Registry<DrinkIngredient>> DRINK_INGREDIENT = createKey("drink_ingredient");
 
     public static final Registry<MapCodec<? extends DrinkAction>> DRINK_ACTION_REGISTRY = new RegistryBuilder<>(DRINK_ACTION).create();
 
@@ -27,6 +29,7 @@ public class TropicraftRegistries {
     @SubscribeEvent
     public static void registerDatapackRegistries(DataPackRegistryEvent.NewRegistry event) {
         event.dataPackRegistry(DRINK, Drink.DIRECT_CODEC, Drink.NETWORK_CODEC);
+        event.dataPackRegistry(DRINK_INGREDIENT, DrinkIngredient.DIRECT_CODEC, DrinkIngredient.NETWORK_CODEC);
     }
 
     private static <T> ResourceKey<Registry<T>> createKey(String path) {

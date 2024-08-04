@@ -1,0 +1,8 @@
+{
+  "color": 16777215,
+  "description": {
+    "translate": "item.minecraft.milk_bucket"
+  },
+  "items": "minecraft:milk_bucket",
+  "weight": 0.1
+}

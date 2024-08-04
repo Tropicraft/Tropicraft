@@ -8,6 +8,11 @@
     }
   ],
   "color": 16742190,
+  "ingredients": [
+    "tropicraft:orange",
+    "tropicraft:lime",
+    "tropicraft:water_bucket"
+  ],
   "name": {
     "color": "gold",
     "translate": "drink.tropicraft.mai_tai"

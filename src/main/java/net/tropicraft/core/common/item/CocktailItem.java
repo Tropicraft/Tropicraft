@@ -2,8 +2,6 @@ package net.tropicraft.core.common.item;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.network.chat.Style;
@@ -23,14 +21,10 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.tropicraft.core.common.drinks.Cocktail;
 import net.tropicraft.core.common.drinks.Drink;
-import net.tropicraft.core.common.drinks.Ingredient;
-import net.tropicraft.core.common.drinks.MixerRecipe;
 import net.tropicraft.core.common.drinks.TropicraftDrinks;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
 
 public class CocktailItem extends Item {
     public CocktailItem(Properties properties) {
@@ -39,10 +33,7 @@ public class CocktailItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        List<Ingredient> ingredients = getCocktail(stack).ingredients();
-        for (Ingredient ingredient : ingredients) {
-            tooltip.add(ingredient.getDisplayName());
-        }
+        getCocktail(stack).ingredients().forEach(ingredient -> tooltip.add(ingredient.value().getDisplayName()));
     }
 
     public static Cocktail getCocktail(ItemStack itemStack) {
@@ -57,23 +48,6 @@ public class CocktailItem extends Item {
 
     public static ItemStack makeDrink(Holder<Drink> drink) {
         return makeCocktail(Cocktail.ofDrink(drink));
-    }
-
-    public static ItemStack makeCocktail(HolderLookup.Provider registries, MixerRecipe recipe) {
-        Optional<Holder<Drink>> drink = registries.holder(recipe.getCraftingResult()).map(Function.identity());
-        if (drink.isEmpty()) {
-            return makeCocktail(Cocktail.ofIngredients(List.of(recipe.getIngredients())));
-        }
-        return makeDrink(drink.get());
-    }
-
-    public static ItemStack makeCocktail(List<ItemStack> itemStacks) {
-        return makeCocktail(Cocktail.ofIngredients(
-                itemStacks.stream()
-                        .flatMap(item -> Ingredient.listIngredients(item).stream())
-                        .sorted()
-                        .toList()
-        ));
     }
 
     @Nullable

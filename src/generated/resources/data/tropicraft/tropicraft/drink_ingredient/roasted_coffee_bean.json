@@ -1,0 +1,8 @@
+{
+  "color": 6833196,
+  "description": {
+    "translate": "item.tropicraft.roasted_coffee_bean"
+  },
+  "items": "tropicraft:roasted_coffee_bean",
+  "weight": 0.95
+}

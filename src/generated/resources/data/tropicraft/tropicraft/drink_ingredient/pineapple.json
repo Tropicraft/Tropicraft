@@ -1,0 +1,10 @@
+{
+  "color": 15662848,
+  "description": {
+    "translate": "block.tropicraft.pineapple"
+  },
+  "items": [
+    "tropicraft:pineapple_cubes",
+    "tropicraft:pineapple"
+  ]
+}

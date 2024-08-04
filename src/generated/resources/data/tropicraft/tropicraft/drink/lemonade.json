@@ -8,6 +8,11 @@
     }
   ],
   "color": 16440129,
+  "ingredients": [
+    "tropicraft:lemon",
+    "tropicraft:sugar",
+    "tropicraft:water_bucket"
+  ],
   "name": {
     "color": "yellow",
     "translate": "drink.tropicraft.lemonade"
