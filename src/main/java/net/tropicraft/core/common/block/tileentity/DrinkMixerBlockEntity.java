@@ -1,10 +1,7 @@
 package net.tropicraft.core.common.block.tileentity;
 
 import it.unimi.dsi.fastutil.objects.ObjectArraySet;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
+import net.minecraft.core.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -19,14 +16,13 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.tropicraft.core.common.block.DrinkMixerBlock;
-import net.tropicraft.core.common.drinks.Ingredient;
-import net.tropicraft.core.common.drinks.MixerRecipes;
-import net.tropicraft.core.common.item.CocktailItem;
+import net.tropicraft.core.common.drinks.Drink;
+import net.tropicraft.core.common.drinks.DrinkIngredient;
 import net.tropicraft.core.common.network.message.ClientboundMixerInventoryPacket;
 import net.tropicraft.core.common.network.message.ClientboundMixerStartPacket;
 
 import javax.annotation.Nullable;
-import java.util.Objects;
+import java.util.List;
 import java.util.Set;
 
 public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock {
@@ -41,6 +37,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
      */
     private int ticks;
     public NonNullList<ItemStack> ingredients;
+    private List<Holder<DrinkIngredient>> drinkIngredients;
     private boolean mixing;
     public ItemStack result = ItemStack.EMPTY;
 
@@ -48,6 +45,8 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         super(type, pos, state);
         mixing = false;
         ingredients = NonNullList.withSize(MAX_NUM_INGREDIENTS, ItemStack.EMPTY);
+
+        drinkIngredients = List.of();
     }
 
     @Override
@@ -173,16 +172,16 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         syncInventory();
     }
 
-    public boolean addToMixer(ItemStack itemStack) {
-        boolean isDrink = CocktailItem.isDrink(itemStack);
-        Ingredient ingredient = Ingredient.findMatchingIngredient(itemStack);
-        if (ingredient == null && !isDrink) {
+    public boolean addToMixer(final Level level, ItemStack itemStack) {
+        Holder<DrinkIngredient> ingredientHolder = DrinkIngredient.findMatchingIngredient(level.registryAccess(), itemStack);
+        if (ingredientHolder == null) {
             return false;
         }
 
-        Set<Ingredient> seenIngredients = new ObjectArraySet<>(ingredients.size());
+        DrinkIngredient ingredient = ingredientHolder.value();
+
+        Set<DrinkIngredient> seenIngredients = new ObjectArraySet<>(ingredients.size());
         seenIngredients.add(ingredient);
-        boolean hasDrink = isDrink;
 
         for (int i = 0; i < ingredients.size(); i++) {
             ItemStack otherItemStack = ingredients.get(i);
@@ -191,13 +190,6 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
                 ingredients.set(i, itemStack);
                 syncInventory();
                 return true;
-            }
-
-            if (CocktailItem.isDrink(otherItemStack)) {
-                if (hasDrink) {
-                    return false;
-                }
-                hasDrink = true;
             }
         }
 
@@ -220,8 +212,6 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
     public boolean canMix() {
         return !mixing && isMixerFull();
     }
-
-    /* == IMachineTile == */
 
     @Override
     public boolean isActive() {
@@ -266,7 +256,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         return nbt;
     }
 
-    public ItemStack getResult(NonNullList<ItemStack> ingredients2) {
-        return MixerRecipes.getResult(level.registryAccess(), ingredients2);
+    public ItemStack getResult(NonNullList<ItemStack> ingredientList) {
+        return Drink.getResult(level, ingredientList);
     }
 }

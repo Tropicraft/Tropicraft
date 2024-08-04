@@ -67,7 +67,6 @@ import net.tropicraft.core.common.dimension.feature.jigsaw.piece.TropicraftStruc
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftFoliagePlacers;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftTreeDecorators;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftTrunkPlacers;
-import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.drinks.action.TropicraftDrinkActions;
 import net.tropicraft.core.common.item.TropicraftArmorMaterials;
 import net.tropicraft.core.common.item.TropicraftDataComponents;
@@ -122,7 +121,6 @@ public class Tropicraft {
         // Registry objects
         Sounds.REGISTER.register(modBus);
         ScubaGogglesItem.ATTRIBUTES.register(modBus);
-        MixerRecipes.addMixerRecipes();
         TropicraftCarvers.CARVERS.register(modBus);
         TropicraftFoliagePlacers.REGISTER.register(modBus);
         TropicraftTrunkPlacers.REGISTER.register(modBus);

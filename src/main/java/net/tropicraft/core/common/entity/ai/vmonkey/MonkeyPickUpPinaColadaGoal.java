@@ -8,7 +8,7 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.tropicraft.core.common.drinks.Drink;
-import net.tropicraft.core.common.drinks.action.TropicraftDrinks;
+import net.tropicraft.core.common.drinks.TropicraftDrinks;
 import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
 import net.tropicraft.core.common.item.CocktailItem;
 

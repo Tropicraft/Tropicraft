@@ -34,7 +34,7 @@ import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.tropicraft.core.common.drinks.Drink;
-import net.tropicraft.core.common.drinks.action.TropicraftDrinks;
+import net.tropicraft.core.common.drinks.TropicraftDrinks;
 import net.tropicraft.core.common.entity.ai.vmonkey.MonkeyAngryThrowGoal;
 import net.tropicraft.core.common.entity.ai.vmonkey.MonkeyFollowNearestPinaColadaHolderGoal;
 import net.tropicraft.core.common.entity.ai.vmonkey.MonkeyPickUpPinaColadaGoal;
