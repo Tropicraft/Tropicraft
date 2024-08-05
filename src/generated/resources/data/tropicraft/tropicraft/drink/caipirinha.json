@@ -8,6 +8,11 @@
     }
   ],
   "color": 9764662,
+  "ingredients": [
+    "tropicraft:lime",
+    "tropicraft:sugarcane",
+    "tropicraft:water_bucket"
+  ],
   "name": {
     "color": "green",
     "translate": "drink.tropicraft.caipirinha"

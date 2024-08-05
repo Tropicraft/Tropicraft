@@ -8,6 +8,11 @@
     }
   ],
   "color": 15973942,
+  "ingredients": [
+    "tropicraft:orange",
+    "tropicraft:sugar",
+    "tropicraft:water_bucket"
+  ],
   "name": {
     "color": "gold",
     "translate": "drink.tropicraft.orangeade"

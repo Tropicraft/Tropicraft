@@ -69,7 +69,7 @@ public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerBlockEntity> {
         if (dummyEntityItem == null) {
             dummyEntityItem = new ItemEntity(Minecraft.getInstance().level, 0.0, 0.0, 0.0, new ItemStack(Items.SUGAR));
         }
-        NonNullList<ItemStack> ingredients = te.getIngredients();
+        NonNullList<ItemStack> ingredients = te.getIngredientsAsItemStacks();
 
         if (!te.isDoneMixing()) {
             for (int index = 0; index < ingredients.size(); index++) {

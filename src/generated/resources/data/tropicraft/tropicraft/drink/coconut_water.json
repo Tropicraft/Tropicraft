@@ -8,6 +8,10 @@
     }
   ],
   "color": 14671839,
+  "ingredients": [
+    "tropicraft:coconut",
+    "tropicraft:water_bucket"
+  ],
   "name": {
     "color": "white",
     "translate": "drink.tropicraft.coconut_water"

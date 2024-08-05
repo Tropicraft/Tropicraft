@@ -1,8 +1,11 @@
 package net.tropicraft.core.common.block.tileentity;
 
-import it.unimi.dsi.fastutil.objects.ObjectArraySet;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.*;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
@@ -22,8 +25,8 @@ import net.tropicraft.core.common.network.message.ClientboundMixerInventoryPacke
 import net.tropicraft.core.common.network.message.ClientboundMixerStartPacket;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock {
     /**
@@ -36,7 +39,6 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
      * Number of ticks the mixer has been mixin'
      */
     private int ticks;
-    public NonNullList<ItemStack> ingredients;
     private List<Holder<DrinkIngredient>> drinkIngredients;
     private boolean mixing;
     public ItemStack result = ItemStack.EMPTY;
@@ -44,9 +46,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
     public DrinkMixerBlockEntity(BlockEntityType<DrinkMixerBlockEntity> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         mixing = false;
-        ingredients = NonNullList.withSize(MAX_NUM_INGREDIENTS, ItemStack.EMPTY);
-
-        drinkIngredients = List.of();
+        drinkIngredients = new ArrayList<>();
     }
 
     @Override
@@ -55,12 +55,11 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         ticks = nbt.getInt("MixTicks");
         mixing = nbt.getBoolean("Mixing");
 
-        for (int i = 0; i < MAX_NUM_INGREDIENTS; i++) {
-            if (nbt.contains("Ingredient" + i)) {
-                ingredients.set(i, ItemStack.parse(registries, nbt.getCompound("Ingredient" + i)).orElse(ItemStack.EMPTY));
-            } else {
-                ingredients.set(i, ItemStack.EMPTY);
-            }
+        ListTag ingredientsList = nbt.getList("ingredients", Tag.TAG_COMPOUND);
+        for (int i = 0; i < ingredientsList.size(); i++) {
+            CompoundTag ingredientTag = ingredientsList.getCompound(i);
+            Pair<Holder<DrinkIngredient>, Tag> result = DrinkIngredient.CODEC.decode(registries.createSerializationContext(NbtOps.INSTANCE), ingredientTag).getOrThrow();
+            drinkIngredients.add(result.getFirst());
         }
 
         if (nbt.contains("Result")) {
@@ -77,12 +76,11 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         nbt.putInt("MixTicks", ticks);
         nbt.putBoolean("Mixing", mixing);
 
-        for (int i = 0; i < MAX_NUM_INGREDIENTS; i++) {
-            ItemStack item = ingredients.get(i);
-            if (!item.isEmpty()) {
-                nbt.put("Ingredient" + i, item.save(registries, new CompoundTag()));
-            }
+        ListTag ingredients = new ListTag();
+        for (final Holder<DrinkIngredient> ingredient : drinkIngredients) {
+            ingredients.add(DrinkIngredient.CODEC.encodeStart(registries.createSerializationContext(NbtOps.INSTANCE), ingredient).getOrThrow());
         }
+        nbt.put("ingredients", ingredients);
 
         if (!result.isEmpty()) {
             nbt.put("Result", result.save(registries, new CompoundTag()));
@@ -106,8 +104,19 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         return !result.isEmpty();
     }
 
-    public NonNullList<ItemStack> getIngredients() {
+    public NonNullList<ItemStack> getIngredientsAsItemStacks() {
+        NonNullList<ItemStack> ingredients = NonNullList.create();
+        drinkIngredients.forEach(holder -> ingredients.add(holder.value().getStack()));
         return ingredients;
+    }
+
+    public List<Holder<DrinkIngredient>> getDrinkIngredients() {
+        return drinkIngredients;
+    }
+
+    public void setDrinkIngredients(final List<Holder<DrinkIngredient>> ingredients) {
+        drinkIngredients.clear();
+        drinkIngredients.addAll(ingredients);
     }
 
     public void startMixing() {
@@ -128,12 +137,8 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
     }
 
     public void emptyMixer(@Nullable Player at) {
-        for (int i = 0; i < MAX_NUM_INGREDIENTS; i++) {
-            if (!ingredients.get(i).isEmpty()) {
-                dropItem(ingredients.get(i), at);
-                ingredients.set(i, ItemStack.EMPTY);
-            }
-        }
+        drinkIngredients.forEach(drinkIngredientHolder -> dropItem(drinkIngredientHolder.value().getStack(), at));
+        drinkIngredients.clear();
 
         ticks = TICKS_TO_MIX;
         mixing = false;
@@ -147,53 +152,38 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
 
         dropItem(result, at);
 
-        for (int i = 0; i < MAX_NUM_INGREDIENTS; i++) {
-            // If we're not using one of the ingredient slots, just move along
-            if (ingredients.get(i).isEmpty()) {
-                continue;
-            }
-
-            ItemStack container = ingredients.get(i).getItem().getCraftingRemainingItem(ingredients.get(i));
+        for (Holder<DrinkIngredient> drinkIngredient : drinkIngredients) {
+            ItemStack container = new ItemStack(drinkIngredient.value().item().value()).getCraftingRemainingItem();
 
             if (!container.isEmpty()) {
                 dropItem(container, at);
             }
         }
-
-        ingredients.clear();
+        drinkIngredients.clear();
         result = ItemStack.EMPTY;
         syncInventory();
     }
 
     public void finishMixing() {
-        result = getResult(getIngredients());
+        result = getResult();
         mixing = false;
         ticks = 0;
         syncInventory();
     }
 
     public boolean addToMixer(final Level level, ItemStack itemStack) {
+        if (isMixerFull()) {
+            return false;
+        }
+
         Holder<DrinkIngredient> ingredientHolder = DrinkIngredient.findMatchingIngredient(level.registryAccess(), itemStack);
         if (ingredientHolder == null) {
             return false;
         }
-
-        DrinkIngredient ingredient = ingredientHolder.value();
-
-        Set<DrinkIngredient> seenIngredients = new ObjectArraySet<>(ingredients.size());
-        seenIngredients.add(ingredient);
-
-        for (int i = 0; i < ingredients.size(); i++) {
-            ItemStack otherItemStack = ingredients.get(i);
-            // Found an empty slot and no conflicts, place our new item in
-            if (otherItemStack.isEmpty()) {
-                ingredients.set(i, itemStack);
-                syncInventory();
-                return true;
-            }
-        }
-
-        return false;
+        System.out.println(drinkIngredients);
+        drinkIngredients.add(ingredientHolder);
+        syncInventory();
+        return true;
     }
 
     public boolean isMixing() {
@@ -201,12 +191,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
     }
 
     private boolean isMixerFull() {
-        for (ItemStack ingredient : ingredients) {
-            if (ingredient.isEmpty()) {
-                return false;
-            }
-        }
-        return true;
+        return drinkIngredients.size() >= MAX_NUM_INGREDIENTS;
     }
 
     public boolean canMix() {
@@ -256,7 +241,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         return nbt;
     }
 
-    public ItemStack getResult(NonNullList<ItemStack> ingredientList) {
-        return Drink.getResult(level, ingredientList);
+    public ItemStack getResult() {
+        return Drink.getResult(level, drinkIngredients);
     }
 }

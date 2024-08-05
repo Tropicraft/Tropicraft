@@ -4,7 +4,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
@@ -53,11 +52,11 @@ public record Drink(
     }
 
     @Nullable
-    public static ResourceKey<Drink> getDrink(final Level level, NonNullList<ItemStack> ingredientStacks) {
+    public static ResourceKey<Drink> getDrink(final Level level, List<Holder<DrinkIngredient>> ingredientHolders) {
         List<Holder.Reference<Drink>> registeredDrinks = getDrinks(level);
 
         for (Holder.Reference<Drink> drinkReference : registeredDrinks) {
-            if (drinkReference.value().matches(ingredientStacks)) {
+            if (drinkReference.value().matches(ingredientHolders)) {
                 return drinkReference.getKey();
             }
         }
@@ -71,30 +70,50 @@ public record Drink(
         }
     }
 
-    public boolean matches(final List<ItemStack> itemStacks) {
-        List<ItemStack> stacksCopy = new ArrayList<>(itemStacks);
-        int count = 0;
+    public boolean matches(final List<Holder<DrinkIngredient>> matchingAgainst) {
+        List<Holder<DrinkIngredient>> matchingAgainstCopy = new ArrayList<>(matchingAgainst);
         for (Holder<DrinkIngredient> ingredientHolder : ingredients) {
-            final DrinkIngredient ingredient = ingredientHolder.value();
-
-            for (final ItemStack stack : itemStacks) {
-                if (ingredient.matches(stack)) {
-                    stacksCopy.remove(stack);
-                    count++;
-                }
+            if (matchingAgainst.contains(ingredientHolder)) {
+                matchingAgainstCopy.remove(ingredientHolder);
             }
         }
 
-        return count == itemStacks.size();
+        return matchingAgainstCopy.isEmpty();
     }
+//
+//    public boolean matches(final List<ItemStack> itemStacks) {
+//        List<ItemStack> stacksCopy = new ArrayList<>(itemStacks);
+//        int count = 0;
+//        for (Holder<DrinkIngredient> ingredientHolder : ingredients) {
+//            final DrinkIngredient ingredient = ingredientHolder.value();
+//
+//            for (final ItemStack stack : itemStacks) {
+//                if (ingredient.matches(stack)) {
+//                    stacksCopy.remove(stack);
+//                    count++;
+//                }
+//            }
+//        }
+//
+//        return count == itemStacks.size();
+//    }
 
-    public static ItemStack getResult(final Level level, NonNullList<ItemStack> ingredients) {
+    public static ItemStack getResult(final Level level, List<Holder<DrinkIngredient>> drinkIngredients) {
         List<Holder.Reference<Drink>> registeredDrinks = getDrinks(level);
-
-        Optional<Holder.Reference<Drink>> optionalDrinkHolder = registeredDrinks.stream().filter(drink -> drink != null && drink.value().matches(ingredients)).findFirst();
+        Optional<Holder.Reference<Drink>> optionalDrinkHolder = registeredDrinks.stream().filter(drink -> drink.value().matches(drinkIngredients)).findFirst();
         if (optionalDrinkHolder.isPresent()) {
             return CocktailItem.makeDrink(optionalDrinkHolder.get());
         }
-        return CocktailItem.makeCocktail(level.registryAccess(), ingredients);
+        return CocktailItem.makeCocktail(Cocktail.ofIngredients(drinkIngredients));
     }
+//
+//    public static ItemStack getResult(final Level level, NonNullList<ItemStack> ingredients) {
+//        List<Holder.Reference<Drink>> registeredDrinks = getDrinks(level);
+//
+//        Optional<Holder.Reference<Drink>> optionalDrinkHolder = registeredDrinks.stream().filter(drink -> drink != null && drink.value().matches(ingredients)).findFirst();
+//        if (optionalDrinkHolder.isPresent()) {
+//            return CocktailItem.makeDrink(optionalDrinkHolder.get());
+//        }
+//        return CocktailItem.makeCocktail(level.registryAccess(), ingredients);
+//    }
 }

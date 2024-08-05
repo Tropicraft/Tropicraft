@@ -14,6 +14,10 @@
     }
   ],
   "color": 6833196,
+  "ingredients": [
+    "tropicraft:roasted_coffee_bean",
+    "tropicraft:water_bucket"
+  ],
   "name": {
     "color": "white",
     "translate": "drink.tropicraft.black_coffee"
