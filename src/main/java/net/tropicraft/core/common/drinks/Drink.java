@@ -80,23 +80,6 @@ public record Drink(
 
         return matchingAgainstCopy.isEmpty();
     }
-//
-//    public boolean matches(final List<ItemStack> itemStacks) {
-//        List<ItemStack> stacksCopy = new ArrayList<>(itemStacks);
-//        int count = 0;
-//        for (Holder<DrinkIngredient> ingredientHolder : ingredients) {
-//            final DrinkIngredient ingredient = ingredientHolder.value();
-//
-//            for (final ItemStack stack : itemStacks) {
-//                if (ingredient.matches(stack)) {
-//                    stacksCopy.remove(stack);
-//                    count++;
-//                }
-//            }
-//        }
-//
-//        return count == itemStacks.size();
-//    }
 
     public static ItemStack getResult(final Level level, List<Holder<DrinkIngredient>> drinkIngredients) {
         List<Holder.Reference<Drink>> registeredDrinks = getDrinks(level);
@@ -106,14 +89,4 @@ public record Drink(
         }
         return CocktailItem.makeCocktail(Cocktail.ofIngredients(drinkIngredients));
     }
-//
-//    public static ItemStack getResult(final Level level, NonNullList<ItemStack> ingredients) {
-//        List<Holder.Reference<Drink>> registeredDrinks = getDrinks(level);
-//
-//        Optional<Holder.Reference<Drink>> optionalDrinkHolder = registeredDrinks.stream().filter(drink -> drink != null && drink.value().matches(ingredients)).findFirst();
-//        if (optionalDrinkHolder.isPresent()) {
-//            return CocktailItem.makeDrink(optionalDrinkHolder.get());
-//        }
-//        return CocktailItem.makeCocktail(level.registryAccess(), ingredients);
-//    }
 }

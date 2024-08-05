@@ -58,8 +58,8 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         ListTag ingredientsList = nbt.getList("ingredients", Tag.TAG_COMPOUND);
         for (int i = 0; i < ingredientsList.size(); i++) {
             CompoundTag ingredientTag = ingredientsList.getCompound(i);
-            Pair<Holder<DrinkIngredient>, Tag> result = DrinkIngredient.CODEC.decode(registries.createSerializationContext(NbtOps.INSTANCE), ingredientTag).getOrThrow();
-            drinkIngredients.add(result.getFirst());
+            Pair<Holder<DrinkIngredient>, Tag> ingredientResult = DrinkIngredient.CODEC.decode(registries.createSerializationContext(NbtOps.INSTANCE), ingredientTag).getOrThrow();
+            drinkIngredients.add(ingredientResult.getFirst());
         }
 
         if (nbt.contains("Result")) {
