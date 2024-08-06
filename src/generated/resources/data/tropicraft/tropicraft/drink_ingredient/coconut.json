@@ -1,4 +1,7 @@
 {
   "color": 15724527,
-  "item": "tropicraft:coconut"
+  "description": {
+    "translate": "block.tropicraft.coconut"
+  },
+  "items": "tropicraft:coconut"
 }

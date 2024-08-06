@@ -74,9 +74,9 @@ public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerBlockEntity> {
         }
 
         if (!te.isDoneMixing()) {
-            List<Holder<DrinkIngredient>> ingredients = te.getDrinkIngredients();
+            List<ItemStack> ingredients = te.getDrinkIngredients();
             for (int index = 0; index < ingredients.size(); index++) {
-                ItemStack ingredient = ingredients.get(index).value().getStack();
+                ItemStack ingredient = ingredients.get(index);
                 renderIngredient(stack, buffer, combinedOverlayIn, combinedLightIn, ingredient, index);
             }
         }

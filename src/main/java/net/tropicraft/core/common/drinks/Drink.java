@@ -5,7 +5,6 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
@@ -21,6 +20,7 @@ import net.tropicraft.core.common.item.CocktailItem;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public record Drink(
         Component name,
@@ -56,6 +56,15 @@ public record Drink(
                 .orElse(null);
     }
 
+    @Nullable
+    public static Holder<Drink> getMatchingDrinkByItems(HolderLookup.Provider registries, List<ItemStack> itemStacks) {
+        List<Holder<DrinkIngredient>> ingredients = getIngredientsFromItems(registries, itemStacks);
+        if (ingredients.isEmpty()) {
+            return null;
+        }
+        return getMatchingDrink(registries, ingredients);
+    }
+
     public void onDrink(ServerPlayer player) {
         for (DrinkAction action : actions) {
             action.onDrink(player);
@@ -73,11 +82,22 @@ public record Drink(
         return matchingAgainstCopy.isEmpty();
     }
 
-    public static ItemStack getResult(RegistryAccess registries, List<Holder<DrinkIngredient>> drinkIngredients) {
+    public static ItemStack getResult(HolderLookup.Provider registries, List<ItemStack> ingredientItems) {
+        List<Holder<DrinkIngredient>> drinkIngredients = getIngredientsFromItems(registries, ingredientItems);
+        if (drinkIngredients.isEmpty()) {
+            return ItemStack.EMPTY;
+        }
         Holder<Drink> matchingDrink = getMatchingDrink(registries, drinkIngredients);
         if (matchingDrink != null) {
             return CocktailItem.makeDrink(matchingDrink);
         }
         return CocktailItem.makeCocktail(Cocktail.ofIngredients(drinkIngredients));
+    }
+
+    private static List<Holder<DrinkIngredient>> getIngredientsFromItems(HolderLookup.Provider registries, List<ItemStack> ingredientItems) {
+        return ingredientItems.stream()
+                .map(itemStack -> DrinkIngredient.findMatchingIngredient(registries, itemStack))
+                .filter(Objects::nonNull)
+                .toList();
     }
 }

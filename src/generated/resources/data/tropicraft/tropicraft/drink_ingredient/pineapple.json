@@ -1,4 +1,7 @@
 {
   "color": 15662848,
-  "item": "tropicraft:pineapple"
+  "description": {
+    "translate": "block.tropicraft.pineapple"
+  },
+  "items": "tropicraft:pineapple"
 }

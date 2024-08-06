@@ -112,7 +112,7 @@ public final class DrinkMixerBlock extends BaseEntityBlock {
                 player.getInventory().removeItem(player.getInventory().selected, 1);
             }
 
-            Holder<Drink> craftedDrink = Drink.getMatchingDrink(level.registryAccess(), mixer.getDrinkIngredients());
+            Holder<Drink> craftedDrink = Drink.getMatchingDrinkByItems(level.registryAccess(), mixer.getDrinkIngredients());
 
             if (craftedDrink != null && craftedDrink.is(TropicraftDrinks.PINA_COLADA)) {
                 // TODO advancements entityPlayer.addStat(AchievementRegistry.craftPinaColada);

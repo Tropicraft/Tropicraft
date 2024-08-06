@@ -1,4 +1,7 @@
 {
   "color": 15724527,
-  "item": "tropicraft:coconut_chunk"
+  "description": {
+    "translate": "item.tropicraft.coconut_chunk"
+  },
+  "items": "tropicraft:coconut_chunk"
 }
