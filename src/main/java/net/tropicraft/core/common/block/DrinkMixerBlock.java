@@ -4,8 +4,8 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
@@ -112,9 +112,9 @@ public final class DrinkMixerBlock extends BaseEntityBlock {
                 player.getInventory().removeItem(player.getInventory().selected, 1);
             }
 
-            ResourceKey<Drink> craftedDrink = Drink.getDrink(level, mixer.getDrinkIngredients());
+            Holder<Drink> craftedDrink = Drink.getMatchingDrink(level.registryAccess(), mixer.getDrinkIngredients());
 
-            if (craftedDrink != null && craftedDrink == TropicraftDrinks.PINA_COLADA) {
+            if (craftedDrink != null && craftedDrink.is(TropicraftDrinks.PINA_COLADA)) {
                 // TODO advancements entityPlayer.addStat(AchievementRegistry.craftPinaColada);
             }
         }

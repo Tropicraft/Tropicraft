@@ -27,23 +27,21 @@ public record DrinkIngredient (
     int color,
     float alpha
 ) implements Comparable<DrinkIngredient> {
-
     public static final Codec<DrinkIngredient> DIRECT_CODEC = RecordCodecBuilder.create(i -> i.group(
             BuiltInRegistries.ITEM.holderByNameCodec().fieldOf("item").forGetter(DrinkIngredient::item),
             Codec.INT.fieldOf("color").forGetter(DrinkIngredient::color),
-            Codec.FLOAT.fieldOf("alpha").forGetter(DrinkIngredient::alpha)
+            Codec.FLOAT.optionalFieldOf("alpha", 1.0f).forGetter(DrinkIngredient::alpha)
     ).apply(i, DrinkIngredient::new));
 
-    public static final Codec<DrinkIngredient> NETWORK_CODEC = RecordCodecBuilder.create(i -> i.group(
-            BuiltInRegistries.ITEM.holderByNameCodec().fieldOf("item").forGetter(DrinkIngredient::item),
-            Codec.INT.fieldOf("color").forGetter(DrinkIngredient::color),
-            Codec.FLOAT.fieldOf("alpha").forGetter(DrinkIngredient::alpha)
-    ).apply(i, DrinkIngredient::new));
+    public static final Codec<DrinkIngredient> NETWORK_CODEC = DIRECT_CODEC;
 
     public static final Codec<Holder<DrinkIngredient>> CODEC = RegistryFixedCodec.create(TropicraftRegistries.DRINK_INGREDIENT);
     public static final StreamCodec<RegistryFriendlyByteBuf, Holder<DrinkIngredient>> STREAM_CODEC = ByteBufCodecs.holderRegistry(TropicraftRegistries.DRINK_INGREDIENT);
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, Holder<DrinkIngredient>> OPTIONAL_STREAM_CODEC = new StreamCodec<RegistryFriendlyByteBuf, Holder<DrinkIngredient>>() {
+    public static final Codec<List<Holder<DrinkIngredient>>> LIST_CODEC = CODEC.listOf();
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, Holder<DrinkIngredient>> OPTIONAL_STREAM_CODEC = new StreamCodec<>() {
+        @Override
         public Holder<DrinkIngredient> decode(RegistryFriendlyByteBuf buff) {
             int i = buff.readVarInt();
             if (i <= 0) {
@@ -54,6 +52,7 @@ public record DrinkIngredient (
             }
         }
 
+        @Override
         public void encode(RegistryFriendlyByteBuf buff, Holder<DrinkIngredient> ingredient) {
             if (ingredient.is(TropicraftDrinkIngredients.EMPTY)) {
                 buff.writeVarInt(0);
@@ -64,9 +63,7 @@ public record DrinkIngredient (
         }
     };
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, List<Holder<DrinkIngredient>>> OPTIONAL_LIST_STREAM_CODEC = OPTIONAL_STREAM_CODEC.apply(
-            ByteBufCodecs.collection(ArrayList::new)
-    );
+    public static final StreamCodec<RegistryFriendlyByteBuf, List<Holder<DrinkIngredient>>> OPTIONAL_LIST_STREAM_CODEC = OPTIONAL_STREAM_CODEC.apply(ByteBufCodecs.list());
 
     @Nullable
     public static Holder<DrinkIngredient> findMatchingIngredient(HolderLookup.Provider registries, ItemStack stack) {
@@ -91,16 +88,6 @@ public record DrinkIngredient (
 
     public boolean matches(ItemStack stack) {
         return stack.is(item.value().asItem());
-    }
-
-    public static List<Holder<DrinkIngredient>> listIngredients(HolderLookup.Provider registries, ItemStack stack) {
-        List<Holder<DrinkIngredient>> ingredients = CocktailItem.getCocktail(stack).ingredients();
-        if (!ingredients.isEmpty()) {
-            return ingredients;
-        }
-
-        Holder<DrinkIngredient> matchingIngredient = findMatchingIngredient(registries, stack);
-        return matchingIngredient != null ? List.of(matchingIngredient) : List.of();
     }
 
     public Component getDisplayName() {

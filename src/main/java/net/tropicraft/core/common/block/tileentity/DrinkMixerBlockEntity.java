@@ -1,13 +1,13 @@
 package net.tropicraft.core.common.block.tileentity;
 
-import com.mojang.datafixers.util.Pair;
+import com.mojang.logging.LogUtils;
 import net.minecraft.core.*;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Player;
@@ -23,12 +23,15 @@ import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.DrinkIngredient;
 import net.tropicraft.core.common.network.message.ClientboundMixerInventoryPacket;
 import net.tropicraft.core.common.network.message.ClientboundMixerStartPacket;
+import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock {
+    private static final Logger LOGGER = LogUtils.getLogger();
+
     /**
      * Number of ticks to mix
      */
@@ -39,7 +42,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
      * Number of ticks the mixer has been mixin'
      */
     private int ticks;
-    private List<Holder<DrinkIngredient>> drinkIngredients;
+    private final List<Holder<DrinkIngredient>> drinkIngredients;
     private boolean mixing;
     public ItemStack result = ItemStack.EMPTY;
 
@@ -55,12 +58,9 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         ticks = nbt.getInt("MixTicks");
         mixing = nbt.getBoolean("Mixing");
 
-        ListTag ingredientsList = nbt.getList("ingredients", Tag.TAG_COMPOUND);
-        for (int i = 0; i < ingredientsList.size(); i++) {
-            CompoundTag ingredientTag = ingredientsList.getCompound(i);
-            Pair<Holder<DrinkIngredient>, Tag> ingredientResult = DrinkIngredient.CODEC.decode(registries.createSerializationContext(NbtOps.INSTANCE), ingredientTag).getOrThrow();
-            drinkIngredients.add(ingredientResult.getFirst());
-        }
+        DrinkIngredient.LIST_CODEC.parse(registries.createSerializationContext(NbtOps.INSTANCE), nbt.get("ingredients"))
+                .resultOrPartial(error -> LOGGER.error("Failed to parse drink mixer ingredients: '{}'", error))
+                .ifPresent(this::setDrinkIngredients);
 
         if (nbt.contains("Result")) {
             result = ItemStack.parse(registries, nbt.getCompound("Result")).orElse(ItemStack.EMPTY);
@@ -76,11 +76,8 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         nbt.putInt("MixTicks", ticks);
         nbt.putBoolean("Mixing", mixing);
 
-        ListTag ingredients = new ListTag();
-        for (final Holder<DrinkIngredient> ingredient : drinkIngredients) {
-            ingredients.add(DrinkIngredient.CODEC.encodeStart(registries.createSerializationContext(NbtOps.INSTANCE), ingredient).getOrThrow());
-        }
-        nbt.put("ingredients", ingredients);
+        RegistryOps<Tag> registryOps = registries.createSerializationContext(NbtOps.INSTANCE);
+        nbt.put("ingredients", DrinkIngredient.LIST_CODEC.encodeStart(registryOps, drinkIngredients).getOrThrow());
 
         if (!result.isEmpty()) {
             nbt.put("Result", result.save(registries, new CompoundTag()));
@@ -114,7 +111,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         return drinkIngredients;
     }
 
-    public void setDrinkIngredients(final List<Holder<DrinkIngredient>> ingredients) {
+    public void setDrinkIngredients(List<Holder<DrinkIngredient>> ingredients) {
         drinkIngredients.clear();
         drinkIngredients.addAll(ingredients);
     }
@@ -171,7 +168,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         syncInventory();
     }
 
-    public boolean addToMixer(final Level level, ItemStack itemStack) {
+    public boolean addToMixer(Level level, ItemStack itemStack) {
         if (isMixerFull()) {
             return false;
         }
@@ -180,7 +177,6 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         if (ingredientHolder == null) {
             return false;
         }
-        System.out.println(drinkIngredients);
         drinkIngredients.add(ingredientHolder);
         syncInventory();
         return true;
@@ -242,6 +238,6 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
     }
 
     public ItemStack getResult() {
-        return Drink.getResult(level, drinkIngredients);
+        return Drink.getResult(level.registryAccess(), drinkIngredients);
     }
 }

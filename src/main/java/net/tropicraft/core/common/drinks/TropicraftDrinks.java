@@ -1,7 +1,6 @@
 package net.tropicraft.core.common.drinks;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
 import net.minecraft.data.worldgen.BootstrapContext;
@@ -16,10 +15,10 @@ import net.tropicraft.core.common.drinks.action.DrinkAction;
 import net.tropicraft.core.common.drinks.action.PortalDrinkAction;
 import net.tropicraft.core.common.drinks.action.PotionDrinkAction;
 import net.tropicraft.core.common.entity.TropicraftEntities;
-import org.apache.commons.compress.utils.Lists;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public interface TropicraftDrinks {
     ResourceKey<Drink> LEMONADE = createKey("lemonade");
@@ -114,12 +113,16 @@ public interface TropicraftDrinks {
         );
     }
 
-    static void register(BootstrapContext<Drink> context, HolderGetter<DrinkIngredient> lookup, ResourceKey<Drink> drinkResourceKey, Component name,
+    static void register(BootstrapContext<Drink> context, HolderGetter<DrinkIngredient> lookup, ResourceKey<Drink> key, Component name,
                          int color, List<DrinkAction> actions, List<ResourceKey<DrinkIngredient>> ingredients) {
-        List<Holder<DrinkIngredient>> ingredientHolders = Lists.newArrayList();
-        ingredients.forEach(drinkIngredientResourceKey -> ingredientHolders.add(lookup.getOrThrow(drinkIngredientResourceKey)));
-
-        context.register(drinkResourceKey, new Drink(name, color, actions, ingredientHolders));
+        context.register(key, new Drink(
+                name,
+                color,
+                actions,
+                ingredients.stream()
+                        .map(lookup::getOrThrow)
+                        .collect(Collectors.toUnmodifiableList())
+        ));
     }
 
     static ResourceKey<Drink> createKey(String name) {

@@ -53,8 +53,8 @@ public record Cocktail(
 
         int color = DEFAULT_COLOR;
 
-        for (final Holder<DrinkIngredient> ingredientHolder : ingredients) {
-            final DrinkIngredient ingredient = ingredientHolder.value();
+        for (Holder<DrinkIngredient> ingredientHolder : ingredients) {
+            DrinkIngredient ingredient = ingredientHolder.value();
             color = FastColor.ARGB32.lerp(ingredient.alpha(), color, ingredient.color());
         }
 
