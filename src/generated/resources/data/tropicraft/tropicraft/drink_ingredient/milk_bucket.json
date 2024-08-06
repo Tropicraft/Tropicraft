@@ -1,5 +1,5 @@
 {
-  "alpha": 0.1,
   "color": 16777215,
-  "item": "minecraft:milk_bucket"
+  "item": "minecraft:milk_bucket",
+  "weight": 0.1
 }

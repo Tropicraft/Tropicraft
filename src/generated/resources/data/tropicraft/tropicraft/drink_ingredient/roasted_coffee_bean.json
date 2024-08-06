@@ -1,5 +1,5 @@
 {
-  "alpha": 0.95,
   "color": 6833196,
-  "item": "tropicraft:roasted_coffee_bean"
+  "item": "tropicraft:roasted_coffee_bean",
+  "weight": 0.95
 }

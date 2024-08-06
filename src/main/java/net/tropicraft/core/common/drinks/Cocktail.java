@@ -8,6 +8,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.FastColor;
+import net.minecraft.util.Mth;
 
 import java.util.List;
 import java.util.Optional;
@@ -51,14 +52,20 @@ public record Cocktail(
             return drink.get().value().color();
         }
 
-        int color = DEFAULT_COLOR;
+        int red = 0;
+        int green = 0;
+        int blue = 0;
+        float weight = 0.0f;
 
-        for (Holder<DrinkIngredient> ingredientHolder : ingredients) {
-            DrinkIngredient ingredient = ingredientHolder.value();
-            color = FastColor.ARGB32.lerp(ingredient.alpha(), color, ingredient.color());
+        for (Holder<DrinkIngredient> ingredient : ingredients) {
+            int color = ingredient.value().color();
+            red += FastColor.ARGB32.red(color);
+            green += FastColor.ARGB32.green(color);
+            blue += FastColor.ARGB32.blue(color);
+            weight += ingredient.value().weight();
         }
 
-        return color;
+        return FastColor.ARGB32.color(255, Mth.floor(red / weight), Mth.floor(green / weight), Mth.floor(blue / weight));
     }
 
     public void onDrink(ServerPlayer player) {

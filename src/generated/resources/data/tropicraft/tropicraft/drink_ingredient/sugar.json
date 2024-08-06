@@ -1,5 +1,5 @@
 {
-  "alpha": 0.1,
   "color": 16777215,
-  "item": "minecraft:sugar"
+  "item": "minecraft:sugar",
+  "weight": 0.1
 }

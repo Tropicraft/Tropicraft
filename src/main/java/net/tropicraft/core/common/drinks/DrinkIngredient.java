@@ -22,12 +22,12 @@ import java.util.List;
 public record DrinkIngredient (
     Holder<Item> item,
     int color,
-    float alpha
+    float weight
 ) implements Comparable<DrinkIngredient> {
     public static final Codec<DrinkIngredient> DIRECT_CODEC = RecordCodecBuilder.create(i -> i.group(
             BuiltInRegistries.ITEM.holderByNameCodec().fieldOf("item").forGetter(DrinkIngredient::item),
             Codec.INT.fieldOf("color").forGetter(DrinkIngredient::color),
-            Codec.FLOAT.optionalFieldOf("alpha", 1.0f).forGetter(DrinkIngredient::alpha)
+            Codec.FLOAT.optionalFieldOf("weight", 1.0f).forGetter(DrinkIngredient::weight)
     ).apply(i, DrinkIngredient::new));
 
     public static final Codec<DrinkIngredient> NETWORK_CODEC = DIRECT_CODEC;
