@@ -101,12 +101,6 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         return !result.isEmpty();
     }
 
-    public NonNullList<ItemStack> getIngredientsAsItemStacks() {
-        NonNullList<ItemStack> ingredients = NonNullList.create();
-        drinkIngredients.forEach(holder -> ingredients.add(holder.value().getStack()));
-        return ingredients;
-    }
-
     public List<Holder<DrinkIngredient>> getDrinkIngredients() {
         return drinkIngredients;
     }

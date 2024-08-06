@@ -11,8 +11,6 @@ import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 public interface TropicraftDrinkIngredients {
-    ResourceKey<DrinkIngredient> EMPTY = createKey("empty");
-
     ResourceKey<DrinkIngredient> SUGAR = createKey("sugar");
     ResourceKey<DrinkIngredient> LEMON = createKey("lemon");
     ResourceKey<DrinkIngredient> LIME = createKey("lime");
@@ -32,8 +30,6 @@ public interface TropicraftDrinkIngredients {
     ResourceKey<DrinkIngredient> PAPAYA = createKey("papaya");
 
     static void bootstrap(BootstrapContext<DrinkIngredient> context) {
-        context.register(EMPTY, new DrinkIngredient(Items.AIR.builtInRegistryHolder(), 0xffffff, 1.0f));
-
         context.register(SUGAR, new DrinkIngredient(Items.SUGAR.builtInRegistryHolder(), 0xffffff, 0.1f));
         context.register(LEMON, new DrinkIngredient(TropicraftItems.LEMON, 0xffff00, 1.0f));
         context.register(LIME, new DrinkIngredient(TropicraftItems.LIME, 0x7fff00, 1.0f));
@@ -51,10 +47,6 @@ public interface TropicraftDrinkIngredients {
         context.register(PASSIONFRUIT, new DrinkIngredient(TropicraftItems.PASSIONFRUIT, 0x690b2d, 1.0f));
         context.register(JOCOTE, new DrinkIngredient(TropicraftItems.JOCOTE, 0xc1cd02, 1.0f));
         context.register(PAPAYA, new DrinkIngredient(TropicraftItems.PAPAYA, 0x3fbf3f, 1.0f));
-    }
-
-    default Holder<DrinkIngredient> getHolder(HolderGetter<DrinkIngredient> lookup, ResourceKey<DrinkIngredient> resourceKey) {
-        return lookup.getOrThrow(resourceKey);
     }
 
     static ResourceKey<DrinkIngredient> createKey(String name) {

@@ -4,7 +4,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -16,10 +15,8 @@ import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.tropicraft.core.common.TropicraftRegistries;
-import net.tropicraft.core.common.item.CocktailItem;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 
 public record DrinkIngredient (
@@ -39,31 +36,6 @@ public record DrinkIngredient (
     public static final StreamCodec<RegistryFriendlyByteBuf, Holder<DrinkIngredient>> STREAM_CODEC = ByteBufCodecs.holderRegistry(TropicraftRegistries.DRINK_INGREDIENT);
 
     public static final Codec<List<Holder<DrinkIngredient>>> LIST_CODEC = CODEC.listOf();
-
-    public static final StreamCodec<RegistryFriendlyByteBuf, Holder<DrinkIngredient>> OPTIONAL_STREAM_CODEC = new StreamCodec<>() {
-        @Override
-        public Holder<DrinkIngredient> decode(RegistryFriendlyByteBuf buff) {
-            int i = buff.readVarInt();
-            if (i <= 0) {
-                Registry<DrinkIngredient> registry = buff.registryAccess().registryOrThrow(TropicraftRegistries.DRINK_INGREDIENT);
-                return registry.getHolderOrThrow(TropicraftDrinkIngredients.EMPTY);
-            } else {
-                return STREAM_CODEC.decode(buff);
-            }
-        }
-
-        @Override
-        public void encode(RegistryFriendlyByteBuf buff, Holder<DrinkIngredient> ingredient) {
-            if (ingredient.is(TropicraftDrinkIngredients.EMPTY)) {
-                buff.writeVarInt(0);
-            } else {
-                buff.writeVarInt(1);
-                STREAM_CODEC.encode(buff, ingredient);
-            }
-        }
-    };
-
-    public static final StreamCodec<RegistryFriendlyByteBuf, List<Holder<DrinkIngredient>>> OPTIONAL_LIST_STREAM_CODEC = OPTIONAL_STREAM_CODEC.apply(ByteBufCodecs.list());
 
     @Nullable
     public static Holder<DrinkIngredient> findMatchingIngredient(HolderLookup.Provider registries, ItemStack stack) {

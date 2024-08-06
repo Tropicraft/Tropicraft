@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.Material;
+import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
@@ -25,9 +26,11 @@ import net.tropicraft.core.client.entity.model.BambooMugModel;
 import net.tropicraft.core.client.entity.model.EIHMachineModel;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.block.tileentity.DrinkMixerBlockEntity;
+import net.tropicraft.core.common.drinks.DrinkIngredient;
 import net.tropicraft.core.common.item.CocktailItem;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerBlockEntity> {
     private static final ResourceLocation MUG_TEXTURE = Tropicraft.location("textures/block/te/bamboo_mug.png");
@@ -69,14 +72,12 @@ public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerBlockEntity> {
         if (dummyEntityItem == null) {
             dummyEntityItem = new ItemEntity(Minecraft.getInstance().level, 0.0, 0.0, 0.0, new ItemStack(Items.SUGAR));
         }
-        NonNullList<ItemStack> ingredients = te.getIngredientsAsItemStacks();
 
         if (!te.isDoneMixing()) {
+            List<Holder<DrinkIngredient>> ingredients = te.getDrinkIngredients();
             for (int index = 0; index < ingredients.size(); index++) {
-                ItemStack ingredient = ingredients.get(index);
-                if (!ingredient.isEmpty()) {
-                    renderIngredient(stack, buffer, combinedOverlayIn, combinedLightIn, ingredient, index);
-                }
+                ItemStack ingredient = ingredients.get(index).value().getStack();
+                renderIngredient(stack, buffer, combinedOverlayIn, combinedLightIn, ingredient, index);
             }
         }
 

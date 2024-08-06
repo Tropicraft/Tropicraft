@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.item.ItemStack;
@@ -21,7 +22,7 @@ public record ClientboundMixerInventoryPacket(BlockPos pos, List<Holder<DrinkIng
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundMixerInventoryPacket> STREAM_CODEC = StreamCodec.composite(
             BlockPos.STREAM_CODEC, ClientboundMixerInventoryPacket::pos,
-            DrinkIngredient.OPTIONAL_LIST_STREAM_CODEC, ClientboundMixerInventoryPacket::inventory,
+            DrinkIngredient.STREAM_CODEC.apply(ByteBufCodecs.list()), ClientboundMixerInventoryPacket::inventory,
             ItemStack.OPTIONAL_STREAM_CODEC, ClientboundMixerInventoryPacket::result,
             ClientboundMixerInventoryPacket::new
     );
@@ -33,7 +34,7 @@ public record ClientboundMixerInventoryPacket(BlockPos pos, List<Holder<DrinkIng
     public static void handle(ClientboundMixerInventoryPacket packet, IPayloadContext ctx) {
         ClientLevel level = Minecraft.getInstance().level;
         if (level != null && level.getBlockEntity(packet.pos) instanceof DrinkMixerBlockEntity mixer) {
-            mixer.setDrinkIngredients(NonNullList.copyOf(packet.inventory));
+            mixer.setDrinkIngredients(List.copyOf(packet.inventory));
             mixer.result = packet.result;
         }
     }
