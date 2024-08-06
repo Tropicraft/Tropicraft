@@ -1,5 +1,8 @@
 {
   "color": 8411710,
-  "item": "minecraft:cocoa_beans",
+  "description": {
+    "translate": "item.minecraft.cocoa_beans"
+  },
+  "items": "minecraft:cocoa_beans",
   "weight": 0.95
 }

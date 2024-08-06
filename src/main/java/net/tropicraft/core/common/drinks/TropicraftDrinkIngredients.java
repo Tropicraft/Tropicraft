@@ -21,9 +21,7 @@ public interface TropicraftDrinkIngredients {
     ResourceKey<DrinkIngredient> ORANGE = createKey("orange");
     ResourceKey<DrinkIngredient> GRAPEFRUIT = createKey("grapefruit");
     ResourceKey<DrinkIngredient> PINEAPPLE = createKey("pineapple");
-    ResourceKey<DrinkIngredient> PINEAPPLE_CUBES = createKey("pineapple_cubes");
     ResourceKey<DrinkIngredient> COCONUT = createKey("coconut");
-    ResourceKey<DrinkIngredient> COCONUT_CHUNK = createKey("coconut_chunk");
     ResourceKey<DrinkIngredient> SUGAR_CANE = createKey("sugarcane");
     ResourceKey<DrinkIngredient> ROASTED_COFFEE_BEAN = createKey("roasted_coffee_bean");
     ResourceKey<DrinkIngredient> WATER_BUCKET = createKey("water_bucket");
@@ -39,10 +37,8 @@ public interface TropicraftDrinkIngredients {
         register(context, LIME, TropicraftItems.LIME, 0x7fff00, 1.0f);
         register(context, ORANGE, TropicraftItems.ORANGE, 0xffa500, 1.0f);
         register(context, GRAPEFRUIT, TropicraftItems.GRAPEFRUIT, 0xff6347, 1.0f);
-        register(context, PINEAPPLE, TropicraftBlocks.PINEAPPLE.asItem().builtInRegistryHolder(), 0xeeff00, 1.0f);
-        register(context, PINEAPPLE_CUBES, TropicraftItems.PINEAPPLE_CUBES, 0xeeff00, 0.1f);
-        register(context, COCONUT, TropicraftBlocks.COCONUT.asItem().builtInRegistryHolder(), 0xefefef, 1.0f);
-        register(context, COCONUT_CHUNK, TropicraftItems.COCONUT_CHUNK, 0xefefef, 1.0f);
+        register(context, PINEAPPLE, TropicraftBlocks.PINEAPPLE.asItem().builtInRegistryHolder(), 0xeeff00, 1.0f, TropicraftItems.PINEAPPLE_CUBES);
+        register(context, COCONUT, TropicraftBlocks.COCONUT.asItem().builtInRegistryHolder(), 0xefefef, 1.0f, TropicraftItems.COCONUT_CHUNK);
         register(context, SUGAR_CANE, Items.SUGAR_CANE.builtInRegistryHolder(), 0xb1ff6b, 0.1f);
         register(context, ROASTED_COFFEE_BEAN, TropicraftItems.ROASTED_COFFEE_BEAN, 0x68442c, 0.95f);
         register(context, WATER_BUCKET, Items.WATER_BUCKET.builtInRegistryHolder(), 0xffffff, 1.0f);

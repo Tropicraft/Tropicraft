@@ -1,4 +1,7 @@
 {
   "color": 16753920,
-  "item": "tropicraft:orange"
+  "description": {
+    "translate": "item.tropicraft.orange"
+  },
+  "items": "tropicraft:orange"
 }

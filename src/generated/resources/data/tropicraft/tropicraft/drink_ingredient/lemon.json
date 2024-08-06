@@ -1,4 +1,7 @@
 {
   "color": 16776960,
-  "item": "tropicraft:lemon"
+  "description": {
+    "translate": "item.tropicraft.lemon"
+  },
+  "items": "tropicraft:lemon"
 }

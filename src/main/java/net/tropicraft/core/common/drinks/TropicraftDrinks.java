@@ -27,9 +27,6 @@ public interface TropicraftDrinks {
     ResourceKey<Drink> CAIPIRINHA = createKey("caipirinha");
     ResourceKey<Drink> BLACK_COFFEE = createKey("black_coffee");
     ResourceKey<Drink> PINA_COLADA = createKey("pina_colada");
-    ResourceKey<Drink> PINA_COLADA_1 = createKey("pina_colada_1");
-    ResourceKey<Drink> PINA_COLADA_2 = createKey("pina_colada_2");
-    ResourceKey<Drink> PINA_COLADA_3 = createKey("pina_colada_3");
     ResourceKey<Drink> COCONUT_WATER = createKey("coconut_water");
     ResourceKey<Drink> MAI_TAI = createKey("mai_tai");
 
@@ -74,10 +71,21 @@ public interface TropicraftDrinks {
                 ),
                 List.of(TropicraftDrinkIngredients.ROASTED_COFFEE_BEAN, TropicraftDrinkIngredients.WATER_BUCKET)
         );
-        registerPinaColada(context, lookup, PINA_COLADA, List.of(TropicraftDrinkIngredients.PINEAPPLE_CUBES, TropicraftDrinkIngredients.COCONUT_CHUNK));
-        registerPinaColada(context, lookup, PINA_COLADA_1, List.of(TropicraftDrinkIngredients.PINEAPPLE_CUBES, TropicraftDrinkIngredients.COCONUT));
-        registerPinaColada(context, lookup, PINA_COLADA_2, List.of(TropicraftDrinkIngredients.PINEAPPLE, TropicraftDrinkIngredients.COCONUT_CHUNK));
-        registerPinaColada(context, lookup, PINA_COLADA_3, List.of(TropicraftDrinkIngredients.PINEAPPLE, TropicraftDrinkIngredients.COCONUT));
+        register(context, lookup,
+                PINA_COLADA,
+                TropicraftLangKeys.PINA_COLADA.component(ChatFormatting.GOLD),
+                0xefefef,
+                List.of(
+                        new PotionDrinkAction(MobEffects.CONFUSION, 10, 0),
+                        new PortalDrinkAction(
+                                TropicraftDimension.WORLD,
+                                Optional.of(HolderSet.direct(TropicraftEntities.CHAIR)),
+                                12200,
+                                14000
+                        )
+                ),
+                List.of(TropicraftDrinkIngredients.PINEAPPLE, TropicraftDrinkIngredients.COCONUT)
+        );
 
         register(context, lookup,
                 COCONUT_WATER,
@@ -92,24 +100,6 @@ public interface TropicraftDrinks {
                 0xff772e,
                 List.of(new PotionDrinkAction(MobEffects.CONFUSION, 5, 0)),
                 List.of(TropicraftDrinkIngredients.ORANGE, TropicraftDrinkIngredients.LIME, TropicraftDrinkIngredients.WATER_BUCKET)
-        );
-    }
-
-    static void registerPinaColada(BootstrapContext<Drink> context, HolderGetter<DrinkIngredient> lookup, ResourceKey<Drink> drinkResourceKey, List<ResourceKey<DrinkIngredient>> ingredients) {
-        register(context, lookup,
-                drinkResourceKey,
-                TropicraftLangKeys.PINA_COLADA.component(ChatFormatting.GOLD),
-                0xefefef,
-                List.of(
-                        new PotionDrinkAction(MobEffects.CONFUSION, 10, 0),
-                        new PortalDrinkAction(
-                                TropicraftDimension.WORLD,
-                                Optional.of(HolderSet.direct(TropicraftEntities.CHAIR)),
-                                12200,
-                                14000
-                        )
-                ),
-                ingredients
         );
     }
 

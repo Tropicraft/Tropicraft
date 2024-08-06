@@ -1,4 +1,7 @@
 {
   "color": 4177727,
-  "item": "tropicraft:papaya"
+  "description": {
+    "translate": "item.tropicraft.papaya"
+  },
+  "items": "tropicraft:papaya"
 }

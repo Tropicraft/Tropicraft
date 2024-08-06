@@ -1,5 +1,8 @@
 {
   "color": 16777215,
-  "item": "minecraft:sugar",
+  "description": {
+    "translate": "item.minecraft.sugar"
+  },
+  "items": "minecraft:sugar",
   "weight": 0.1
 }

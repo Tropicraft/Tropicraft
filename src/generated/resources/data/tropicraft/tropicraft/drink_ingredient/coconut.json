@@ -3,5 +3,8 @@
   "description": {
     "translate": "block.tropicraft.coconut"
   },
-  "items": "tropicraft:coconut"
+  "items": [
+    "tropicraft:coconut_chunk",
+    "tropicraft:coconut"
+  ]
 }

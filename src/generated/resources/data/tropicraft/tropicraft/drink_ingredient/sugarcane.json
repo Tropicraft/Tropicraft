@@ -1,5 +1,8 @@
 {
   "color": 11665259,
-  "item": "minecraft:sugar_cane",
+  "description": {
+    "translate": "block.minecraft.sugar_cane"
+  },
+  "items": "minecraft:sugar_cane",
   "weight": 0.1
 }

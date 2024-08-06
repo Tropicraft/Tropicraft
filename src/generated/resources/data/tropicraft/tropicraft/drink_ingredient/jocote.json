@@ -1,4 +1,7 @@
 {
   "color": 12700930,
-  "item": "tropicraft:jocote"
+  "description": {
+    "translate": "item.tropicraft.jocote"
+  },
+  "items": "tropicraft:jocote"
 }

@@ -1,4 +1,7 @@
 {
   "color": 6884141,
-  "item": "tropicraft:passionfruit"
+  "description": {
+    "translate": "item.tropicraft.passionfruit"
+  },
+  "items": "tropicraft:passionfruit"
 }
