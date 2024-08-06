@@ -28,11 +28,13 @@ public record Drink(
         List<DrinkAction> actions,
         List<Holder<DrinkIngredient>> ingredients
 ) {
+    public static final int MAX_INGREDIENTS = 3;
+
     public static final Codec<Drink> DIRECT_CODEC = RecordCodecBuilder.create(i -> i.group(
             ComponentSerialization.CODEC.fieldOf("name").forGetter(Drink::name),
             Codec.INT.fieldOf("color").forGetter(Drink::color),
             DrinkAction.CODEC.listOf().optionalFieldOf("actions", List.of()).forGetter(Drink::actions),
-            DrinkIngredient.CODEC.listOf().optionalFieldOf("ingredients", List.of()).forGetter(Drink::ingredients)
+            DrinkIngredient.CODEC.listOf(1, MAX_INGREDIENTS).fieldOf("ingredients").forGetter(Drink::ingredients)
     ).apply(i, Drink::new));
 
     public static final Codec<Drink> NETWORK_CODEC = RecordCodecBuilder.create(i -> i.group(
@@ -40,7 +42,7 @@ public record Drink(
             Codec.INT.fieldOf("color").forGetter(Drink::color),
             // The client does not need to know about drink actions
             MapCodec.unit(List.<DrinkAction>of()).forGetter(Drink::actions),
-            DrinkIngredient.CODEC.listOf().optionalFieldOf("ingredients", List.of()).forGetter(Drink::ingredients)
+            DrinkIngredient.CODEC.listOf(1, MAX_INGREDIENTS).fieldOf("ingredients").forGetter(Drink::ingredients)
     ).apply(i, Drink::new));
 
     public static final Codec<Holder<Drink>> CODEC = RegistryFixedCodec.create(TropicraftRegistries.DRINK);

@@ -36,7 +36,6 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
      * Number of ticks to mix
      */
     private static final int TICKS_TO_MIX = 4 * 20;
-    private static final int MAX_NUM_INGREDIENTS = 3;
 
     /**
      * Number of ticks the mixer has been mixin'
@@ -181,7 +180,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
     }
 
     private boolean isMixerFull() {
-        return drinkIngredients.size() >= MAX_NUM_INGREDIENTS;
+        return drinkIngredients.size() >= Drink.MAX_INGREDIENTS;
     }
 
     public boolean canMix() {
