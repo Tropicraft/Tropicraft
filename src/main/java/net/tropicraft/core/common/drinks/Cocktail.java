@@ -44,7 +44,10 @@ public record Cocktail(
     }
 
     public static Cocktail ofIngredients(List<Holder<DrinkIngredient>> ingredients) {
-        return new Cocktail(Optional.empty(), ingredients);
+        if (ingredients.isEmpty()) {
+            throw new IllegalArgumentException("Cannot create drink with no ingredients");
+        }
+        return new Cocktail(Optional.empty(), List.copyOf(ingredients));
     }
 
     private static int computeColor(Optional<Holder<Drink>> drink, List<Holder<DrinkIngredient>> ingredients) {
