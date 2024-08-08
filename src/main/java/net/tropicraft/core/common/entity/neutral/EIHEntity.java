@@ -252,8 +252,7 @@ public class EIHEntity extends PathfinderMob {
             if (player.getAbilities().instabuild || player.isSpectator()) {
                 return super.hurt(source, amount);
             }
-            ItemStack heldItem = player.getMainHandItem();
-            if (!heldItem.isEmpty() && heldItem.getItem() instanceof PickaxeItem pickaxe && isValidPickaxeTier(pickaxe.getTier())) {
+            if (player.getMainHandItem().isCorrectToolForDrops(TropicraftBlocks.CHUNK.getDefaultState())) {
                 return super.hurt(source, amount);
             } else {
                 playSound(Sounds.HEAD_LAUGHING.get(), getSoundVolume(), getVoicePitch());
@@ -265,10 +264,6 @@ public class EIHEntity extends PathfinderMob {
         }
 
         return true;
-    }
-
-    private static boolean isValidPickaxeTier(Tier tier) {
-        return !TropicraftBlocks.CHUNK.is(tier.getIncorrectBlocksForDrops());
     }
 
     private static class TargetAggressorGoal extends NearestAttackableTargetGoal<Player> {
