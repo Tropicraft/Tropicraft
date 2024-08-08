@@ -40,7 +40,7 @@ public final class TropicraftNoiseRouterData {
 
         DensityFunctions.Spline.Coordinate continents = new DensityFunctions.Spline.Coordinate(densityFunctions.getOrThrow(NoiseRouterData.CONTINENTS));
         DensityFunctions.Spline.Coordinate erosion = new DensityFunctions.Spline.Coordinate(densityFunctions.getOrThrow(NoiseRouterData.EROSION));
-        DensityFunctions.Spline.Coordinate ridges = new DensityFunctions.Spline.Coordinate(densityFunctions.getOrThrow(NoiseRouterData.RIDGES_FOLDED));
+        DensityFunctions.Spline.Coordinate ridgesFolded = new DensityFunctions.Spline.Coordinate(densityFunctions.getOrThrow(NoiseRouterData.RIDGES_FOLDED));
         DensityFunctions.Spline.Coordinate weirdness = new DensityFunctions.Spline.Coordinate(densityFunctions.getOrThrow(NoiseRouterData.RIDGES));
 
         Holder.Reference<DensityFunction> offset = context.register(OFFSET, splineWithBlending(DensityFunctions.add(
@@ -48,7 +48,7 @@ public final class TropicraftNoiseRouterData {
                 DensityFunctions.spline(TropicraftTerrainProvider.offset(
                         continents,
                         erosion,
-                        ridges
+                        ridgesFolded
                 ))
         ), DensityFunctions.blendOffset()));
 
@@ -56,7 +56,7 @@ public final class TropicraftNoiseRouterData {
                 continents,
                 erosion,
                 weirdness,
-                ridges
+                ridgesFolded
         )), BLENDING_FACTOR));
 
         Holder.Reference<DensityFunction> depth = context.register(DEPTH, DensityFunctions.add(DensityFunctions.yClampedGradient(-64, 320, 1.5, -1.5), wrap(offset)));
@@ -65,7 +65,7 @@ public final class TropicraftNoiseRouterData {
                 continents,
                 erosion,
                 weirdness,
-                ridges
+                ridgesFolded
         )), BLENDING_JAGGEDNESS));
 
         DensityFunction jagged = DensityFunctions.mul(wrap(jaggedness), DensityFunctions.noise(context.lookup(Registries.NOISE).getOrThrow(Noises.JAGGED), 1500.0, 0.0).halfNegative());
