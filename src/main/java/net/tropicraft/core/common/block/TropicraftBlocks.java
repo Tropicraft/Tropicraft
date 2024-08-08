@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Either;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.builders.BlockBuilder;
+import com.tterrag.registrate.builders.ItemBuilder;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
@@ -145,6 +146,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -689,7 +691,7 @@ public class TropicraftBlocks {
     public static final BlockEntry<Block> MANGROVE_PLANKS = planks("mangrove_planks", MapColor.COLOR_BROWN, () -> DataIngredient.items((NonNullSupplier<? extends Block>) TropicraftBlocks.LIGHT_MANGROVE_LOG, TropicraftBlocks.RED_MANGROVE_LOG, TropicraftBlocks.BLACK_MANGROVE_LOG)).register();
     public static final BlockEntry<StairBlock> MANGROVE_STAIRS = woodenStairs("mangrove_stairs", MANGROVE_PLANKS).register();
     public static final BlockEntry<SlabBlock> MANGROVE_SLAB = woodenSlab("mangrove_slab", MANGROVE_PLANKS).register();
-    public static final BlockEntry<FenceBlock> MANGROVE_FENCE = woodenFence("mangrove_fence", MANGROVE_PLANKS).register();
+    public static final BlockEntry<FenceBlock> MANGROVE_FENCE = woodenFence("mangrove_fence", MANGROVE_PLANKS, i -> i).register();
     public static final BlockEntry<FenceGateBlock> MANGROVE_FENCE_GATE = fenceGate("mangrove_fence_gate", MANGROVE_PLANKS).register();
     public static final BlockEntry<DoorBlock> MANGROVE_DOOR = woodenDoor("mangrove_door", MANGROVE_PLANKS).register();
     public static final BlockEntry<TrapDoorBlock> MANGROVE_TRAPDOOR = trapdoor("mangrove_trapdoor", MANGROVE_PLANKS).register();
@@ -754,23 +756,21 @@ public class TropicraftBlocks {
             })
             .register();
 
-    public static final BlockEntry<FenceBlock> BAMBOO_FENCE = woodenFence("bamboo_fence", BAMBOO_BUNDLE)
-            .blockstate((ctx, prov) -> prov.fenceBlock(ctx.get(), prov.modLoc("block/bamboo_side")))
-            .item()
+    public static final BlockEntry<FenceBlock> BAMBOO_FENCE = woodenFence("bamboo_fence", BAMBOO_BUNDLE, item -> item
             .tag(ItemTags.WOODEN_FENCES)
             .model((ctx, prov) -> prov.fenceInventory(ctx.getName(), prov.modLoc("block/bamboo_side")))
-            .build()
+    )
+            .blockstate((ctx, prov) -> prov.fenceBlock(ctx.get(), prov.modLoc("block/bamboo_side")))
             .register();
-    public static final BlockEntry<FenceBlock> THATCH_FENCE = woodenFence("thatch_fence", THATCH_BUNDLE)
-            .blockstate((ctx, prov) -> prov.fenceBlock(ctx.get(), prov.modLoc("block/thatch_side")))
-            .item()
+    public static final BlockEntry<FenceBlock> THATCH_FENCE = woodenFence("thatch_fence", THATCH_BUNDLE, item -> item
             .tag(ItemTags.WOODEN_FENCES)
             .model((ctx, prov) -> prov.fenceInventory(ctx.getName(), prov.modLoc("block/thatch_side")))
-            .build()
+    )
+            .blockstate((ctx, prov) -> prov.fenceBlock(ctx.get(), prov.modLoc("block/thatch_side")))
             .register();
-    public static final BlockEntry<FenceBlock> CHUNK_FENCE = woodenFence("chunk_fence", CHUNK).register();
-    public static final BlockEntry<FenceBlock> PALM_FENCE = woodenFence("palm_fence", PALM_PLANKS).register();
-    public static final BlockEntry<FenceBlock> MAHOGANY_FENCE = woodenFence("mahogany_fence", MAHOGANY_PLANKS).register();
+    public static final BlockEntry<FenceBlock> CHUNK_FENCE = woodenFence("chunk_fence", CHUNK, i -> i).register();
+    public static final BlockEntry<FenceBlock> PALM_FENCE = woodenFence("palm_fence", PALM_PLANKS, i -> i).register();
+    public static final BlockEntry<FenceBlock> MAHOGANY_FENCE = woodenFence("mahogany_fence", MAHOGANY_PLANKS, i -> i).register();
 
     public static final BlockEntry<FenceGateBlock> BAMBOO_FENCE_GATE = fenceGate("bamboo_fence_gate", BAMBOO_BUNDLE)
             .blockstate((ctx, prov) -> prov.fenceGateBlock(ctx.get(), prov.modLoc("block/bamboo_side")))
@@ -1612,16 +1612,16 @@ public class TropicraftBlocks {
                 .build();
     }
 
-    private static BlockBuilder<FenceBlock, Registrate> woodenFence(String name, BlockEntry<? extends Block> block) {
-        return REGISTRATE.block(name, FenceBlock::new)
+    private static BlockBuilder<FenceBlock, Registrate> woodenFence(String name, BlockEntry<? extends Block> block, UnaryOperator<ItemBuilder<BlockItem, BlockBuilder<FenceBlock, Registrate>>> itemFunction) {
+        BlockBuilder<FenceBlock, Registrate> builder = REGISTRATE.block(name, FenceBlock::new)
                 .initialProperties(block)
                 .tag(BlockTags.WOODEN_FENCES, BlockTags.MINEABLE_WITH_AXE)
                 .blockstate((ctx, prov) -> prov.fenceBlock(ctx.get(), prov.blockTexture(block.get())))
-                .recipe((ctx, prov) -> prov.fence(DataIngredient.items(block.get()), RecipeCategory.DECORATIONS, ctx, "wooden_fence"))
-                .item()
+                .recipe((ctx, prov) -> prov.fence(DataIngredient.items(block.get()), RecipeCategory.DECORATIONS, ctx, "wooden_fence"));
+        return itemFunction.apply(builder.item()
                 .tag(ItemTags.WOODEN_FENCES)
                 .model((ctx, prov) -> prov.fenceInventory(ctx.getName(), prov.modLoc("block/" + prov.name(block))))
-                .build();
+        ).build();
     }
 
     private static BlockBuilder<FenceGateBlock, Registrate> fenceGate(String name, BlockEntry<? extends Block> block) {
