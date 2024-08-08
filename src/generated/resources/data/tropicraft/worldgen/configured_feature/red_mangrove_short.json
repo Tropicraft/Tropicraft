@@ -4,7 +4,7 @@
     "decorators": [
       {
         "type": "tropicraft:tropibeehive",
-        "probability": 1.0
+        "probability": 0.02
       },
       {
         "type": "tropicraft:replace_in_soil",
