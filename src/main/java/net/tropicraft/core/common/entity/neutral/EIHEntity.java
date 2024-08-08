@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.entity.neutral;
 
+import net.minecraft.SharedConstants;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -37,7 +38,7 @@ public class EIHEntity extends PathfinderMob {
     public final int FLAG_ANGRY = 1 << 2;
 
     public EIHEntity(EntityType<? extends PathfinderMob> type, Level world) {
-        super((EntityType<? extends EIHEntity>) type, world);
+        super(type, world);
         xpReward = 10;
     }
 
@@ -127,14 +128,14 @@ public class EIHEntity extends PathfinderMob {
             xRotO = getXRot();
         }
 
-        if (tickCount % 20 == 0) {
+        if (tickCount % SharedConstants.TICKS_PER_SECOND == 0) {
             LivingEntity attackTarget = getTarget();
             if (attackTarget == null) {
                 Player closestPlayer = level().getNearestPlayer(this, 10);
                 if (closestPlayer != null && !closestPlayer.getAbilities().instabuild && !closestPlayer.isSpectator()) {
                     setTarget(closestPlayer);
                 }
-            } else if (distanceTo(attackTarget) > 16) {
+            } else if (!closerThan(attackTarget, 16.0f)) {
                 setTarget(null);
                 setAwake(false);
                 setImmobile(true);
@@ -144,20 +145,15 @@ public class EIHEntity extends PathfinderMob {
             if (attackTarget != null && !isPathFinding() && !isAngry()) {
                 if (attackTarget instanceof Player player) {
                     if (!player.getAbilities().instabuild && !player.isSpectator()) {
-                        float distance = distanceTo(player);
-                        if (distance < 10.0f) {
+                        if (closerThan(player, 10.0f)) {
                             setAwake(true);
-                            ItemStack itemstack = player.getInventory().getSelected();
-
-                            if (!itemstack.isEmpty()) {
-                                if (isAware() && itemstack.getItem() == TropicraftBlocks.CHUNK.get().asItem()) {
-                                    setAngry(true);
-                                    setImmobile(false);
-                                }
+                            if (isAware() && player.getInventory().getSelected().is(TropicraftBlocks.CHUNK.asItem())) {
+                                setAngry(true);
+                                setImmobile(false);
                             }
                         }
 
-                        if (distanceTo(player) < 3 && level().getDifficulty() != Difficulty.PEACEFUL) {
+                        if (closerThan(player, 3) && level().getDifficulty() != Difficulty.PEACEFUL) {
                             setAwake(false);
                             setImmobile(false);
                             setAngry(true);
