@@ -764,8 +764,18 @@
                                 "points": [
                                   {
                                     "derivative": 0.0,
-                                    "location": -0.2,
+                                    "location": -0.8,
                                     "value": 3.1
+                                  },
+                                  {
+                                    "derivative": 0.0,
+                                    "location": -0.2,
+                                    "value": 6.5
+                                  },
+                                  {
+                                    "derivative": 0.0,
+                                    "location": -0.02,
+                                    "value": 5.5
                                   },
                                   {
                                     "derivative": 0.0,
@@ -797,8 +807,18 @@
                                 "points": [
                                   {
                                     "derivative": 0.0,
-                                    "location": -0.2,
+                                    "location": -0.8,
                                     "value": 3.1
+                                  },
+                                  {
+                                    "derivative": 0.0,
+                                    "location": -0.2,
+                                    "value": 6.5
+                                  },
+                                  {
+                                    "derivative": 0.0,
+                                    "location": -0.02,
+                                    "value": 5.5
                                   },
                                   {
                                     "derivative": 0.0,

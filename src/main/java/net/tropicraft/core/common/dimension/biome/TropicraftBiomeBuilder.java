@@ -57,13 +57,13 @@ public class TropicraftBiomeBuilder {
 
     // 0 is the most shattered, 6 is the most flat
     private final Climate.Parameter[] erosions = new Climate.Parameter[]{
-            Climate.Parameter.span(-1.0f, -0.78f),
-            Climate.Parameter.span(-0.78f, -0.375f),
-            Climate.Parameter.span(-0.375f, -0.2225f),
-            Climate.Parameter.span(-0.2225f, 0.05f),
-            Climate.Parameter.span(0.05f, 0.45f),
-            Climate.Parameter.span(0.45f, 0.55f),
-            Climate.Parameter.span(0.55f, 1.0f)
+            Climate.Parameter.span(-1.0f, -0.78f),      // 0
+            Climate.Parameter.span(-0.78f, -0.375f),    // 1
+            Climate.Parameter.span(-0.375f, -0.2225f),  // 2
+            Climate.Parameter.span(-0.2225f, 0.05f),    // 3
+            Climate.Parameter.span(0.05f, 0.45f),       // 4
+            Climate.Parameter.span(0.45f, 0.55f),       // 5
+            Climate.Parameter.span(0.55f, 1.0f)         // 6
     };
 
     private final Climate.Parameter wet = Climate.Parameter.span(humidities[2], humidities[4]);
