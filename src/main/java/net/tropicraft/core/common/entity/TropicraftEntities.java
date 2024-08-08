@@ -17,13 +17,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnPlacementTypes;
-import net.minecraft.world.entity.animal.WaterAnimal;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.Item;
@@ -49,50 +43,7 @@ import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.event.entity.living.MobSpawnEvent;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.ClientSetup;
-import net.tropicraft.core.client.entity.render.AshenMaskRenderer;
-import net.tropicraft.core.client.entity.render.AshenRenderer;
-import net.tropicraft.core.client.entity.render.BambooItemFrameRenderer;
-import net.tropicraft.core.client.entity.render.BasiliskLizardRenderer;
-import net.tropicraft.core.client.entity.render.BeachFloatRenderer;
-import net.tropicraft.core.client.entity.render.ChairRenderer;
-import net.tropicraft.core.client.entity.render.CowktailRenderer;
-import net.tropicraft.core.client.entity.render.CuberaRenderer;
-import net.tropicraft.core.client.entity.render.EIHRenderer;
-import net.tropicraft.core.client.entity.render.EagleRayRenderer;
-import net.tropicraft.core.client.entity.render.FailgullRenderer;
-import net.tropicraft.core.client.entity.render.FiddlerCrabRenderer;
-import net.tropicraft.core.client.entity.render.FishingBobberEntityRenderer;
-import net.tropicraft.core.client.entity.render.GibnutRenderer;
-import net.tropicraft.core.client.entity.render.HummingbirdRenderer;
-import net.tropicraft.core.client.entity.render.IguanaRenderer;
-import net.tropicraft.core.client.entity.render.JaguarRenderer;
-import net.tropicraft.core.client.entity.render.KoaRenderer;
-import net.tropicraft.core.client.entity.render.ManOWarRenderer;
-import net.tropicraft.core.client.entity.render.ManateeRenderer;
-import net.tropicraft.core.client.entity.render.MarlinRenderer;
-import net.tropicraft.core.client.entity.render.PiranhaRenderer;
-import net.tropicraft.core.client.entity.render.PoisonBlotRenderer;
-import net.tropicraft.core.client.entity.render.SardineRenderer;
-import net.tropicraft.core.client.entity.render.SeaTurtleRenderer;
-import net.tropicraft.core.client.entity.render.SeaUrchinRenderer;
-import net.tropicraft.core.client.entity.render.SeahorseRenderer;
-import net.tropicraft.core.client.entity.render.SharkRenderer;
-import net.tropicraft.core.client.entity.render.SlenderHarvestMouseRenderer;
-import net.tropicraft.core.client.entity.render.SpearRenderer;
-import net.tropicraft.core.client.entity.render.SpiderMonkeyRenderer;
-import net.tropicraft.core.client.entity.render.StarfishRenderer;
-import net.tropicraft.core.client.entity.render.TapirRenderer;
-import net.tropicraft.core.client.entity.render.ToucanRenderer;
-import net.tropicraft.core.client.entity.render.TreeFrogRenderer;
-import net.tropicraft.core.client.entity.render.TropiBeeRenderer;
-import net.tropicraft.core.client.entity.render.TropiCreeperRenderer;
-import net.tropicraft.core.client.entity.render.TropiSkellyRenderer;
-import net.tropicraft.core.client.entity.render.TropiSpiderRenderer;
-import net.tropicraft.core.client.entity.render.TropicraftTropicalFishRenderer;
-import net.tropicraft.core.client.entity.render.UmbrellaRenderer;
-import net.tropicraft.core.client.entity.render.VMonkeyRenderer;
-import net.tropicraft.core.client.entity.render.WallItemRenderer;
-import net.tropicraft.core.client.entity.render.WhiteLippedPeccaryRenderer;
+import net.tropicraft.core.client.entity.render.*;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.TropicsConfigs;
 import net.tropicraft.core.common.block.TropicraftBlocks;
@@ -104,48 +55,16 @@ import net.tropicraft.core.common.entity.egg.TropiSpiderEggEntity;
 import net.tropicraft.core.common.entity.hostile.AshenEntity;
 import net.tropicraft.core.common.entity.hostile.TropiSkellyEntity;
 import net.tropicraft.core.common.entity.hostile.TropiSpiderEntity;
-import net.tropicraft.core.common.entity.neutral.EIHEntity;
-import net.tropicraft.core.common.entity.neutral.IguanaEntity;
-import net.tropicraft.core.common.entity.neutral.JaguarEntity;
-import net.tropicraft.core.common.entity.neutral.TreeFrogEntity;
-import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
-import net.tropicraft.core.common.entity.passive.CowktailEntity;
-import net.tropicraft.core.common.entity.passive.EntityKoaBase;
-import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
-import net.tropicraft.core.common.entity.passive.FailgullEntity;
-import net.tropicraft.core.common.entity.passive.FiddlerCrabEntity;
-import net.tropicraft.core.common.entity.passive.FishingBobberEntity;
-import net.tropicraft.core.common.entity.passive.GibnutEntity;
-import net.tropicraft.core.common.entity.passive.HummingbirdEntity;
-import net.tropicraft.core.common.entity.passive.SlenderHarvestMouseEntity;
-import net.tropicraft.core.common.entity.passive.TapirEntity;
-import net.tropicraft.core.common.entity.passive.ToucanEntity;
-import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
-import net.tropicraft.core.common.entity.passive.WhiteLippedPeccaryEntity;
+import net.tropicraft.core.common.entity.neutral.*;
+import net.tropicraft.core.common.entity.passive.*;
 import net.tropicraft.core.common.entity.passive.basilisk.BasiliskLizardEntity;
 import net.tropicraft.core.common.entity.passive.monkey.SpiderMonkeyEntity;
-import net.tropicraft.core.common.entity.placeable.AshenMaskEntity;
-import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
-import net.tropicraft.core.common.entity.placeable.ChairEntity;
-import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
-import net.tropicraft.core.common.entity.placeable.WallItemEntity;
+import net.tropicraft.core.common.entity.placeable.*;
 import net.tropicraft.core.common.entity.projectile.ExplodingCoconutEntity;
 import net.tropicraft.core.common.entity.projectile.LavaBallEntity;
 import net.tropicraft.core.common.entity.projectile.PoisonBlotEntity;
 import net.tropicraft.core.common.entity.projectile.SpearEntity;
-import net.tropicraft.core.common.entity.underdasea.CuberaEntity;
-import net.tropicraft.core.common.entity.underdasea.EagleRayEntity;
-import net.tropicraft.core.common.entity.underdasea.ManOWarEntity;
-import net.tropicraft.core.common.entity.underdasea.ManateeEntity;
-import net.tropicraft.core.common.entity.underdasea.MarlinEntity;
-import net.tropicraft.core.common.entity.underdasea.PiranhaEntity;
-import net.tropicraft.core.common.entity.underdasea.SardineEntity;
-import net.tropicraft.core.common.entity.underdasea.SeaUrchinEntity;
-import net.tropicraft.core.common.entity.underdasea.SeahorseEntity;
-import net.tropicraft.core.common.entity.underdasea.SharkEntity;
-import net.tropicraft.core.common.entity.underdasea.StarfishEntity;
-import net.tropicraft.core.common.entity.underdasea.TropicraftDolphinEntity;
-import net.tropicraft.core.common.entity.underdasea.TropicraftTropicalFishEntity;
+import net.tropicraft.core.common.entity.underdasea.*;
 import net.tropicraft.core.common.item.TropicalFertilizerItem;
 import net.tropicraft.core.common.item.TropicraftItems;
 
@@ -392,7 +311,7 @@ public class TropicraftEntities {
                     .setTrackingRange(4)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true))
-            .spawnPlacement(SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WaterAnimal::checkSurfaceWaterAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE)
+            .spawnPlacement(SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftFishUtils::checkSurfaceWaterAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE)
             .attributes(SardineEntity::createAttributes)
             .loot((lootTables, entity) -> dropItem(lootTables, entity, TropicraftItems.RAW_FISH))
             .renderer(() -> SardineRenderer::new)
@@ -402,7 +321,7 @@ public class TropicraftEntities {
                     .setTrackingRange(4)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true))
-            .spawnPlacement(SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WaterAnimal::checkSurfaceWaterAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE)
+            .spawnPlacement(SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftFishUtils::checkSurfaceWaterAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE)
             .attributes(PiranhaEntity::createAttributes)
             .tag(EntityTypeTags.AXOLOTL_HUNT_TARGETS)
             .loot((lootTables, entity) -> dropItem(lootTables, entity, TropicraftItems.RAW_FISH))
@@ -413,7 +332,7 @@ public class TropicraftEntities {
                     .setTrackingRange(4)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true))
-            .spawnPlacement(SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WaterAnimal::checkSurfaceWaterAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE)
+            .spawnPlacement(SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftFishUtils::checkSurfaceWaterAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE)
             .attributes(TropicraftTropicalFishEntity::createAttributes)
             .tag(EntityTypeTags.AXOLOTL_HUNT_TARGETS)
             .loot((lootTables, entity) -> dropItem(lootTables, entity, TropicraftItems.RAW_FISH))
