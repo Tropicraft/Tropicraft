@@ -8,11 +8,12 @@
     }
   },
   "pattern": [
-    "XXX",
-    "XXX"
+    "XX",
+    "XX",
+    "XX"
   ],
   "result": {
-    "count": 2,
+    "count": 3,
     "id": "tropicraft:mahogany_door"
   }
 }

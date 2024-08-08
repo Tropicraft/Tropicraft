@@ -1640,7 +1640,7 @@ public class TropicraftBlocks {
                 .addLayer(() -> RenderType::cutout)
                 .tag(BlockTags.WOODEN_DOORS, BlockTags.MINEABLE_WITH_AXE)
                 .blockstate((ctx, prov) -> prov.doorBlock(ctx.get(), prov.modLoc("block/" + ctx.getName() + "_bottom"), prov.modLoc("block/" + ctx.getName() + "_top")))
-                .recipe((ctx, prov) -> prov.trapDoor(DataIngredient.items(material.get()), RecipeCategory.DECORATIONS, ctx, "wooden_door"))
+                .recipe((ctx, prov) -> prov.door(DataIngredient.items(material.get()), RecipeCategory.DECORATIONS, ctx, "wooden_door"))
                 .item()
                 .defaultModel()
                 .tag(ItemTags.WOODEN_DOORS)
