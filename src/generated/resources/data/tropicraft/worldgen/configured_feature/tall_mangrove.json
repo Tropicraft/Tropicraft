@@ -3,8 +3,8 @@
   "config": {
     "decorators": [
       {
-        "type": "minecraft:beehive",
-        "probability": 0.02
+        "type": "tropicraft:tropibeehive",
+        "probability": 1.0
       },
       {
         "type": "tropicraft:replace_in_soil",

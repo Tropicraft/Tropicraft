@@ -4,7 +4,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -23,24 +22,12 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.RandomizedIntSt
 import net.minecraft.world.level.levelgen.feature.stateproviders.RuleBasedBlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import net.minecraft.world.level.levelgen.feature.treedecorators.AttachedToLeavesDecorator;
-import net.minecraft.world.level.levelgen.feature.treedecorators.BeehiveDecorator;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.block.FruitingBranchBlock;
 import net.tropicraft.core.common.block.TropicraftBlocks;
-import net.tropicraft.core.common.dimension.feature.tree.BranchTreeDecorator;
-import net.tropicraft.core.common.dimension.feature.tree.CitrusFoliagePlacer;
-import net.tropicraft.core.common.dimension.feature.tree.CitrusTrunkPlacer;
-import net.tropicraft.core.common.dimension.feature.tree.PapayaFoliagePlacer;
-import net.tropicraft.core.common.dimension.feature.tree.PapayaTreeDecorator;
-import net.tropicraft.core.common.dimension.feature.tree.PleodendronFoliagePlacer;
-import net.tropicraft.core.common.dimension.feature.tree.PleodendronTrunkPlacer;
-import net.tropicraft.core.common.dimension.feature.tree.mangrove.MangroveFoliagePlacer;
-import net.tropicraft.core.common.dimension.feature.tree.mangrove.MangroveTrunkPlacer;
-import net.tropicraft.core.common.dimension.feature.tree.mangrove.PneumatophoresTreeDecorator;
-import net.tropicraft.core.common.dimension.feature.tree.mangrove.ReplaceInSoilDecorator;
-import net.tropicraft.core.common.dimension.feature.tree.mangrove.SmallMangroveFoliagePlacer;
-import net.tropicraft.core.common.dimension.feature.tree.mangrove.SmallMangroveTrunkPlacer;
+import net.tropicraft.core.common.dimension.feature.tree.*;
+import net.tropicraft.core.common.dimension.feature.tree.mangrove.*;
 
 import java.util.List;
 import java.util.OptionalInt;
@@ -49,8 +36,8 @@ import java.util.function.Supplier;
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.*;
 
 public final class TropicraftTreeFeatures {
-    private static final BeehiveDecorator BEEHIVE_002 = new BeehiveDecorator(0.02f);
-    private static final BeehiveDecorator BEEHIVE_005 = new BeehiveDecorator(0.05f);
+    private static final TropibeehiveDecorator BEEHIVE_002 = new TropibeehiveDecorator(0.02f);
+    private static final TropibeehiveDecorator BEEHIVE_005 = new TropibeehiveDecorator(0.05f);
 
     public static final ResourceKey<ConfiguredFeature<?, ?>> GRAPEFRUIT_TREE = createKey("grapefruit_tree");
     public static final ResourceKey<ConfiguredFeature<?, ?>> ORANGE_TREE = createKey("orange_tree");
