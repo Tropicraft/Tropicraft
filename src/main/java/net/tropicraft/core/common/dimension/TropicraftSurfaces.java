@@ -5,6 +5,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Noises;
+import net.minecraft.world.level.levelgen.SurfaceRules;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.tropicraft.core.common.block.BlockTropicraftSand;
 import net.tropicraft.core.common.block.TropicraftBlocks;
@@ -22,6 +23,7 @@ public final class TropicraftSurfaces {
 
     private static final RuleSource PURIFIED_SAND = makeStateRule(TropicraftBlocks.PURIFIED_SAND.get());
     private static final RuleSource UNDERWATER_PURIFIED_SAND = makeStateRule(TropicraftBlocks.PURIFIED_SAND.get().defaultBlockState().setValue(BlockTropicraftSand.UNDERWATER, true));
+    private static final RuleSource SANDSTONE = makeStateRule(Blocks.SANDSTONE);
     private static final RuleSource MUD = makeStateRule(TropicraftBlocks.MUD.get());
 
     private static RuleSource makeStateRule(Block block) {
@@ -36,12 +38,13 @@ public final class TropicraftSurfaces {
         ConditionSource atOrAboveSeaLevel = yBlockCheck(VerticalAnchor.absolute(TropicraftDimension.SEA_LEVEL - 1), 0);
         ConditionSource aboveSeaLevel = yBlockCheck(VerticalAnchor.absolute(TropicraftDimension.SEA_LEVEL), 0);
         ConditionSource notUnderWater = waterBlockCheck(-1, 0);
+        ConditionSource underWater = not(notUnderWater);
 
         ConditionSource isMangrovey = isBiome(TropicraftBiomes.MANGROVES, TropicraftBiomes.OVERGROWN_MANGROVES);
         ConditionSource notUnderDeepWater = waterStartCheck(-6, -1);
 
         RuleSource grassRule = sequence(ifTrue(notUnderWater, GRASS_BLOCK), DIRT);
-        RuleSource sandRule = sequence(ifTrue(not(notUnderWater), UNDERWATER_PURIFIED_SAND), PURIFIED_SAND);
+        RuleSource sandRule = sequence(ifTrue(SurfaceRules.ON_CEILING, SANDSTONE), sequence(ifTrue(underWater, UNDERWATER_PURIFIED_SAND), PURIFIED_SAND));
 
         ConditionSource isSandy = isBiome(TropicraftBiomes.OCEAN, TropicraftBiomes.KELP_FOREST, TropicraftBiomes.RIVER, TropicraftBiomes.BEACH);
         ConditionSource isStony = isBiome(TropicraftBiomes.TROPICAL_PEAKS);

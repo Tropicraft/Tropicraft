@@ -470,32 +470,53 @@
                                     {
                                       "type": "minecraft:condition",
                                       "if_true": {
-                                        "type": "minecraft:not",
-                                        "invert": {
-                                          "type": "minecraft:water",
-                                          "add_stone_depth": false,
-                                          "offset": -1,
-                                          "surface_depth_multiplier": 0
-                                        }
+                                        "type": "minecraft:stone_depth",
+                                        "add_surface_depth": false,
+                                        "offset": 0,
+                                        "secondary_depth_range": 0,
+                                        "surface_type": "ceiling"
                                       },
                                       "then_run": {
                                         "type": "minecraft:block",
                                         "result_state": {
-                                          "Name": "tropicraft:purified_sand",
-                                          "Properties": {
-                                            "underwater": "true"
-                                          }
+                                          "Name": "minecraft:sandstone"
                                         }
                                       }
                                     },
                                     {
-                                      "type": "minecraft:block",
-                                      "result_state": {
-                                        "Name": "tropicraft:purified_sand",
-                                        "Properties": {
-                                          "underwater": "false"
+                                      "type": "minecraft:sequence",
+                                      "sequence": [
+                                        {
+                                          "type": "minecraft:condition",
+                                          "if_true": {
+                                            "type": "minecraft:not",
+                                            "invert": {
+                                              "type": "minecraft:water",
+                                              "add_stone_depth": false,
+                                              "offset": -1,
+                                              "surface_depth_multiplier": 0
+                                            }
+                                          },
+                                          "then_run": {
+                                            "type": "minecraft:block",
+                                            "result_state": {
+                                              "Name": "tropicraft:purified_sand",
+                                              "Properties": {
+                                                "underwater": "true"
+                                              }
+                                            }
+                                          }
+                                        },
+                                        {
+                                          "type": "minecraft:block",
+                                          "result_state": {
+                                            "Name": "tropicraft:purified_sand",
+                                            "Properties": {
+                                              "underwater": "false"
+                                            }
+                                          }
                                         }
-                                      }
+                                      ]
                                     }
                                   ]
                                 }
@@ -518,32 +539,53 @@
                                   {
                                     "type": "minecraft:condition",
                                     "if_true": {
-                                      "type": "minecraft:not",
-                                      "invert": {
-                                        "type": "minecraft:water",
-                                        "add_stone_depth": false,
-                                        "offset": -1,
-                                        "surface_depth_multiplier": 0
-                                      }
+                                      "type": "minecraft:stone_depth",
+                                      "add_surface_depth": false,
+                                      "offset": 0,
+                                      "secondary_depth_range": 0,
+                                      "surface_type": "ceiling"
                                     },
                                     "then_run": {
                                       "type": "minecraft:block",
                                       "result_state": {
-                                        "Name": "tropicraft:purified_sand",
-                                        "Properties": {
-                                          "underwater": "true"
-                                        }
+                                        "Name": "minecraft:sandstone"
                                       }
                                     }
                                   },
                                   {
-                                    "type": "minecraft:block",
-                                    "result_state": {
-                                      "Name": "tropicraft:purified_sand",
-                                      "Properties": {
-                                        "underwater": "false"
+                                    "type": "minecraft:sequence",
+                                    "sequence": [
+                                      {
+                                        "type": "minecraft:condition",
+                                        "if_true": {
+                                          "type": "minecraft:not",
+                                          "invert": {
+                                            "type": "minecraft:water",
+                                            "add_stone_depth": false,
+                                            "offset": -1,
+                                            "surface_depth_multiplier": 0
+                                          }
+                                        },
+                                        "then_run": {
+                                          "type": "minecraft:block",
+                                          "result_state": {
+                                            "Name": "tropicraft:purified_sand",
+                                            "Properties": {
+                                              "underwater": "true"
+                                            }
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "type": "minecraft:block",
+                                        "result_state": {
+                                          "Name": "tropicraft:purified_sand",
+                                          "Properties": {
+                                            "underwater": "false"
+                                          }
+                                        }
                                       }
-                                    }
+                                    ]
                                   }
                                 ]
                               }
@@ -724,32 +766,53 @@
                                     {
                                       "type": "minecraft:condition",
                                       "if_true": {
-                                        "type": "minecraft:not",
-                                        "invert": {
-                                          "type": "minecraft:water",
-                                          "add_stone_depth": false,
-                                          "offset": -1,
-                                          "surface_depth_multiplier": 0
-                                        }
+                                        "type": "minecraft:stone_depth",
+                                        "add_surface_depth": false,
+                                        "offset": 0,
+                                        "secondary_depth_range": 0,
+                                        "surface_type": "ceiling"
                                       },
                                       "then_run": {
                                         "type": "minecraft:block",
                                         "result_state": {
-                                          "Name": "tropicraft:purified_sand",
-                                          "Properties": {
-                                            "underwater": "true"
-                                          }
+                                          "Name": "minecraft:sandstone"
                                         }
                                       }
                                     },
                                     {
-                                      "type": "minecraft:block",
-                                      "result_state": {
-                                        "Name": "tropicraft:purified_sand",
-                                        "Properties": {
-                                          "underwater": "false"
+                                      "type": "minecraft:sequence",
+                                      "sequence": [
+                                        {
+                                          "type": "minecraft:condition",
+                                          "if_true": {
+                                            "type": "minecraft:not",
+                                            "invert": {
+                                              "type": "minecraft:water",
+                                              "add_stone_depth": false,
+                                              "offset": -1,
+                                              "surface_depth_multiplier": 0
+                                            }
+                                          },
+                                          "then_run": {
+                                            "type": "minecraft:block",
+                                            "result_state": {
+                                              "Name": "tropicraft:purified_sand",
+                                              "Properties": {
+                                                "underwater": "true"
+                                              }
+                                            }
+                                          }
+                                        },
+                                        {
+                                          "type": "minecraft:block",
+                                          "result_state": {
+                                            "Name": "tropicraft:purified_sand",
+                                            "Properties": {
+                                              "underwater": "false"
+                                            }
+                                          }
                                         }
-                                      }
+                                      ]
                                     }
                                   ]
                                 }
@@ -772,32 +835,53 @@
                                   {
                                     "type": "minecraft:condition",
                                     "if_true": {
-                                      "type": "minecraft:not",
-                                      "invert": {
-                                        "type": "minecraft:water",
-                                        "add_stone_depth": false,
-                                        "offset": -1,
-                                        "surface_depth_multiplier": 0
-                                      }
+                                      "type": "minecraft:stone_depth",
+                                      "add_surface_depth": false,
+                                      "offset": 0,
+                                      "secondary_depth_range": 0,
+                                      "surface_type": "ceiling"
                                     },
                                     "then_run": {
                                       "type": "minecraft:block",
                                       "result_state": {
-                                        "Name": "tropicraft:purified_sand",
-                                        "Properties": {
-                                          "underwater": "true"
-                                        }
+                                        "Name": "minecraft:sandstone"
                                       }
                                     }
                                   },
                                   {
-                                    "type": "minecraft:block",
-                                    "result_state": {
-                                      "Name": "tropicraft:purified_sand",
-                                      "Properties": {
-                                        "underwater": "false"
+                                    "type": "minecraft:sequence",
+                                    "sequence": [
+                                      {
+                                        "type": "minecraft:condition",
+                                        "if_true": {
+                                          "type": "minecraft:not",
+                                          "invert": {
+                                            "type": "minecraft:water",
+                                            "add_stone_depth": false,
+                                            "offset": -1,
+                                            "surface_depth_multiplier": 0
+                                          }
+                                        },
+                                        "then_run": {
+                                          "type": "minecraft:block",
+                                          "result_state": {
+                                            "Name": "tropicraft:purified_sand",
+                                            "Properties": {
+                                              "underwater": "true"
+                                            }
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "type": "minecraft:block",
+                                        "result_state": {
+                                          "Name": "tropicraft:purified_sand",
+                                          "Properties": {
+                                            "underwater": "false"
+                                          }
+                                        }
                                       }
-                                    }
+                                    ]
                                   }
                                 ]
                               }
@@ -872,32 +956,53 @@
                   {
                     "type": "minecraft:condition",
                     "if_true": {
-                      "type": "minecraft:not",
-                      "invert": {
-                        "type": "minecraft:water",
-                        "add_stone_depth": false,
-                        "offset": -1,
-                        "surface_depth_multiplier": 0
-                      }
+                      "type": "minecraft:stone_depth",
+                      "add_surface_depth": false,
+                      "offset": 0,
+                      "secondary_depth_range": 0,
+                      "surface_type": "ceiling"
                     },
                     "then_run": {
                       "type": "minecraft:block",
                       "result_state": {
-                        "Name": "tropicraft:purified_sand",
-                        "Properties": {
-                          "underwater": "true"
-                        }
+                        "Name": "minecraft:sandstone"
                       }
                     }
                   },
                   {
-                    "type": "minecraft:block",
-                    "result_state": {
-                      "Name": "tropicraft:purified_sand",
-                      "Properties": {
-                        "underwater": "false"
+                    "type": "minecraft:sequence",
+                    "sequence": [
+                      {
+                        "type": "minecraft:condition",
+                        "if_true": {
+                          "type": "minecraft:not",
+                          "invert": {
+                            "type": "minecraft:water",
+                            "add_stone_depth": false,
+                            "offset": -1,
+                            "surface_depth_multiplier": 0
+                          }
+                        },
+                        "then_run": {
+                          "type": "minecraft:block",
+                          "result_state": {
+                            "Name": "tropicraft:purified_sand",
+                            "Properties": {
+                              "underwater": "true"
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "type": "minecraft:block",
+                        "result_state": {
+                          "Name": "tropicraft:purified_sand",
+                          "Properties": {
+                            "underwater": "false"
+                          }
+                        }
                       }
-                    }
+                    ]
                   }
                 ]
               }
