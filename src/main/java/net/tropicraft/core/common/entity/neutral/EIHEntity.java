@@ -27,10 +27,9 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.block.TropicraftBlocks;
-import net.tropicraft.core.common.entity.hostile.TropicraftCreatureEntity;
 import net.tropicraft.core.common.sound.Sounds;
 
-public class EIHEntity extends TropicraftCreatureEntity {
+public class EIHEntity extends PathfinderMob {
 
     private static final EntityDataAccessor<Byte> STATE = SynchedEntityData.defineId(EIHEntity.class, EntityDataSerializers.BYTE);
     public final int FLAG_SLEEP = 1 << 0;
@@ -38,7 +37,7 @@ public class EIHEntity extends TropicraftCreatureEntity {
     public final int FLAG_ANGRY = 1 << 2;
 
     public EIHEntity(EntityType<? extends PathfinderMob> type, Level world) {
-        super(type, world);
+        super((EntityType<? extends EIHEntity>) type, world);
         xpReward = 10;
     }
 

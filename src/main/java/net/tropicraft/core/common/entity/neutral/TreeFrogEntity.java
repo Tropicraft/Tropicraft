@@ -26,13 +26,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.entity.TropicraftEntities;
-import net.tropicraft.core.common.entity.hostile.TropicraftCreatureEntity;
 import net.tropicraft.core.common.entity.projectile.PoisonBlotEntity;
 import net.tropicraft.core.common.sound.Sounds;
 
 import javax.annotation.Nullable;
 
-public class TreeFrogEntity extends TropicraftCreatureEntity implements Enemy, RangedAttackMob {
+public class TreeFrogEntity extends PathfinderMob implements Enemy, RangedAttackMob {
 
     private static final EntityDataAccessor<Integer> TYPE = SynchedEntityData.defineId(TreeFrogEntity.class, EntityDataSerializers.INT);
 
@@ -60,7 +59,7 @@ public class TreeFrogEntity extends TropicraftCreatureEntity implements Enemy, R
     private int attackTime;
 
     public TreeFrogEntity(EntityType<? extends PathfinderMob> type, Level world) {
-        super(type, world);
+        super((EntityType<? extends TreeFrogEntity>) type, world);
         //TODO 1.17 fix - pushthrough = 0.8f;
         xpReward = 5;
     }

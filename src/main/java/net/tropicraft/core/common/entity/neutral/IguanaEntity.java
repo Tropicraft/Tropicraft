@@ -1,7 +1,6 @@
 package net.tropicraft.core.common.entity.neutral;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -24,13 +23,12 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.tropicraft.Tropicraft;
-import net.tropicraft.core.common.entity.hostile.TropicraftCreatureEntity;
 import net.tropicraft.core.common.sound.Sounds;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
 
-public class IguanaEntity extends TropicraftCreatureEntity {
+public class IguanaEntity extends PathfinderMob {
 
     /**
      * Timer for how much longer the iggy will be enraged
@@ -42,7 +40,7 @@ public class IguanaEntity extends TropicraftCreatureEntity {
     private static final AttributeModifier ATTACK_SPEED_BOOST_MODIFIER = new AttributeModifier(Tropicraft.location("attack_speed_boost"), 0.05, AttributeModifier.Operation.ADD_VALUE);
 
     public IguanaEntity(EntityType<? extends PathfinderMob> type, Level world) {
-        super(type, world);
+        super((EntityType<? extends IguanaEntity>) type, world);
     }
 
     @Override

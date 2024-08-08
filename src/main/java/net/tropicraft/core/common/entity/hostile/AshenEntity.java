@@ -44,7 +44,7 @@ import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nullable;
 
-public class AshenEntity extends TropicraftCreatureEntity implements RangedAttackMob {
+public class AshenEntity extends PathfinderMob implements RangedAttackMob {
 
     public enum AshenState {
         PEACEFUL,
@@ -61,7 +61,7 @@ public class AshenEntity extends TropicraftCreatureEntity implements RangedAttac
     public AshenMaskEntity maskToTrack;
 
     public AshenEntity(EntityType<? extends PathfinderMob> type, Level world) {
-        super(type, world);
+        super((EntityType<? extends AshenEntity>) type, world);
         setActionState(AshenState.HOSTILE);
     }
 
