@@ -8,7 +8,7 @@ public final class TropicraftTerrainProvider {
     private static final ToFloatFunction<Float> NO_TRANSFORM = ToFloatFunction.IDENTITY;
 
     public static <C, I extends ToFloatFunction<C>> CubicSpline<C, I> offset(I continents, I erosion, I ridgesFolded) {
-        ToFloatFunction<Float> offsetTransform = ToFloatFunction.createUnlimited(offset -> offset + 0.5f);
+        ToFloatFunction<Float> offsetTransform = ToFloatFunction.createUnlimited(offset -> offset + 0.52f);
 
         CubicSpline<C, I> nearInlandDepth = buildErosionOffsetSpline(erosion, ridgesFolded, -0.15f, 0.0f, 0.0f, 0.1f, 0.0f, -0.03f, false, false, offsetTransform);
         CubicSpline<C, I> midInlandDepth = buildErosionOffsetSpline(erosion, ridgesFolded, -0.1f, 0.03f, 0.1f, 0.1f, 0.01f, -0.03f, false, false, offsetTransform);
@@ -22,7 +22,7 @@ public final class TropicraftTerrainProvider {
                 .addPoint(-1.1f, 0.140f)
                 .addPoint(-0.92f, -0.3222f)
                 .addPoint(-0.38f, -0.3222f)
-                .addPoint(-0.32f, -0.12f)
+                .addPoint(-0.32f, -0.14f)
                 .addPoint(-0.28f, lagoonSpline)
                 .addPoint(-0.20f, lagoonSpline)
                 .addPoint(-0.15f, nearInlandDepth)
@@ -191,9 +191,9 @@ public final class TropicraftTerrainProvider {
 
     private static <C, I extends ToFloatFunction<C>> CubicSpline<C, I> buildLagoonOffset(I erosion, ToFloatFunction<Float> offsetTransform) {
         return CubicSpline.builder(erosion, offsetTransform)
-                .addPoint(-1.0f, -0.12f)
-                .addPoint(0.4f, -0.06f)
-                .addPoint(1.0f, -0.01f)
+                .addPoint(-1.0f, -0.14f)
+                .addPoint(0.4f, -0.08f)
+                .addPoint(1.0f, -0.03f)
                 .build();
     }
 
