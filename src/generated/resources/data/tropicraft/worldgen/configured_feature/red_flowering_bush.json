@@ -4,7 +4,7 @@
     "leaves": {
       "Name": "tropicraft:red_flowering_leaves",
       "Properties": {
-        "distance": "7",
+        "distance": "1",
         "persistent": "false",
         "waterlogged": "false"
       }
