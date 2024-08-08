@@ -52,8 +52,9 @@ public class CowktailLayer<T extends CowktailEntity> extends RenderLayer<T, CowM
     }
 
     private void renderBlock(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, BlockState blockState, int overlayCoords) {
-        poseStack.scale(-1.0f, -1.0f, 1.0f);
-        poseStack.translate(-0.5, -0.5, -0.5);
+        final float scale = 0.6f;
+        poseStack.scale(-scale, -scale, scale);
+        poseStack.translate(-0.5, -0.8, -0.5);
         blockRenderDispatcher.renderSingleBlock(blockState, poseStack, bufferSource, packedLight, overlayCoords);
     }
 }
