@@ -1,7 +1,6 @@
 name: Bug Report
 description: Report a bug or crash
 labels: [bug, new]
-assignees: [NotActuallyTerry]
 body:
   - type: markdown
     attributes:
