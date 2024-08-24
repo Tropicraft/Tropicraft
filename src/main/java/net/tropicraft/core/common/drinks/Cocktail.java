@@ -62,9 +62,6 @@ public record Cocktail(
     }
 
     public void onDrink(ServerPlayer player) {
-        for (Ingredient ingredient : ingredients) {
-            ingredient.onDrink(player);
-        }
         drink.ifPresent(holder -> holder.value().onDrink(player));
     }
 }

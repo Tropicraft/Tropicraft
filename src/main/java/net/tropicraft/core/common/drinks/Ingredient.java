@@ -31,23 +31,23 @@ public class Ingredient implements Comparable<Ingredient> {
 
     // TODO this should be a registry
     public static final Ingredient[] ingredientsList = new Ingredient[24];
-    public static final Ingredient sugar = new Ingredient(0, Items.SUGAR.builtInRegistryHolder(), 0xffffff, 0.1f).addAction(new FoodDrinkAction(1, 0.1f));
-    public static final Ingredient lemon = new Ingredient(5, TropicraftItems.LEMON, 0xffff00).addAction(new FoodDrinkAction(2, 0.2f));
-    public static final Ingredient lime = new Ingredient(6, TropicraftItems.LIME, 0x7fff00).addAction(new FoodDrinkAction(2, 0.2f));
-    public static final Ingredient orange = new Ingredient(7, TropicraftItems.ORANGE, 0xffa500).addAction(new FoodDrinkAction(3, 0.2f));
-    public static final Ingredient grapefruit = new Ingredient(8, TropicraftItems.GRAPEFRUIT, 0xff6347).addAction(new FoodDrinkAction(4, 0.2f));
-    public static final Ingredient pineapple = new Ingredient(9, TropicraftBlocks.PINEAPPLE, 0xeeff00).addAction(new FoodDrinkAction(1, 0.1f));
-    public static final Ingredient pineappleCubes = new Ingredient(10, TropicraftItems.PINEAPPLE_CUBES, 0xeeff00, 0.1f).addAction(new FoodDrinkAction(1, 0.1f));
-    public static final Ingredient coconut = new Ingredient(11, TropicraftBlocks.COCONUT, 0xefefef).addAction(new FoodDrinkAction(1, 0.1f));
-    public static final Ingredient coconutChunk = new Ingredient(12, TropicraftItems.COCONUT_CHUNK, 0xefefef/*, 0.1f*/).addAction(new FoodDrinkAction(1, 0.1f));
+    public static final Ingredient sugar = new Ingredient(0, Items.SUGAR.builtInRegistryHolder(), 0xffffff, 0.1f);
+    public static final Ingredient lemon = new Ingredient(5, TropicraftItems.LEMON, 0xffff00);
+    public static final Ingredient lime = new Ingredient(6, TropicraftItems.LIME, 0x7fff00);
+    public static final Ingredient orange = new Ingredient(7, TropicraftItems.ORANGE, 0xffa500);
+    public static final Ingredient grapefruit = new Ingredient(8, TropicraftItems.GRAPEFRUIT, 0xff6347);
+    public static final Ingredient pineapple = new Ingredient(9, TropicraftBlocks.PINEAPPLE, 0xeeff00);
+    public static final Ingredient pineappleCubes = new Ingredient(10, TropicraftItems.PINEAPPLE_CUBES, 0xeeff00, 0.1f);
+    public static final Ingredient coconut = new Ingredient(11, TropicraftBlocks.COCONUT, 0xefefef);
+    public static final Ingredient coconutChunk = new Ingredient(12, TropicraftItems.COCONUT_CHUNK, 0xefefef/*, 0.1f*/);
     public static final Ingredient sugarcane = new Ingredient(13, Items.SUGAR_CANE.builtInRegistryHolder(), 0xb1ff6b, 0.1f);
-    public static final Ingredient roastedCoffeeBean = new Ingredient(14, TropicraftItems.ROASTED_COFFEE_BEAN, 0x68442c, 0.95f).addAction(new FoodDrinkAction(4, 0.2f)).addAction(new PotionDrinkAction(MobEffects.MOVEMENT_SPEED, 5, 1));
+    public static final Ingredient roastedCoffeeBean = new Ingredient(14, TropicraftItems.ROASTED_COFFEE_BEAN, 0x68442c, 0.95f);
     public static final Ingredient waterBucket = new Ingredient(15, Items.WATER_BUCKET.builtInRegistryHolder(), 0xffffff);
-    public static final Ingredient milkBucket = new Ingredient(16, Items.MILK_BUCKET.builtInRegistryHolder(), 0xffffff, 0.1f).addAction(new FoodDrinkAction(2, 0.2f));
-    public static final Ingredient cocoaBean = new Ingredient(17, Items.COCOA_BEANS.builtInRegistryHolder(), 0x805A3E, 0.95f).addAction(new FoodDrinkAction(4, 0.2f));
-    public static final Ingredient passionfruit = new Ingredient(18, TropicraftItems.PASSIONFRUIT, 0x690b2d).addAction(new FoodDrinkAction(4, 0.2f));
-    public static final Ingredient jocote = new Ingredient(19, TropicraftItems.JOCOTE, 0xc1cd02).addAction(new FoodDrinkAction(4, 0.2f));
-    public static final Ingredient papaya = new Ingredient(20, TropicraftItems.PAPAYA, 0x3fbf3f).addAction(new FoodDrinkAction(4, 0.2f));
+    public static final Ingredient milkBucket = new Ingredient(16, Items.MILK_BUCKET.builtInRegistryHolder(), 0xffffff, 0.1f);
+    public static final Ingredient cocoaBean = new Ingredient(17, Items.COCOA_BEANS.builtInRegistryHolder(), 0x805A3E, 0.95f);
+    public static final Ingredient passionfruit = new Ingredient(18, TropicraftItems.PASSIONFRUIT, 0x690b2d);
+    public static final Ingredient jocote = new Ingredient(19, TropicraftItems.JOCOTE, 0xc1cd02);
+    public static final Ingredient papaya = new Ingredient(20, TropicraftItems.PAPAYA, 0x3fbf3f);
 
     public static final Codec<Ingredient> CODEC = ExtraCodecs.idResolverCodec(value -> value.id, id -> ingredientsList[id], -1);
     public static final StreamCodec<ByteBuf, Ingredient> STREAM_CODEC = ByteBufCodecs.idMapper(id -> ingredientsList[id], value -> value.id);
@@ -72,11 +72,6 @@ public class Ingredient implements Comparable<Ingredient> {
      */
     private float alpha = 1.0f;
 
-    /**
-     * DrinkActions to trigger when a cocktail containing this ingredient is ingested.
-     */
-    private final List<DrinkAction> actions = new LinkedList<>();
-
     public Ingredient(int id, Holder<? extends ItemLike> ingredientItem, int color) {
         if (ingredientsList[id] != null) {
             throw new IllegalArgumentException("Ingredient Id slot " + id + " already occupied by " + ingredientsList[id] + "!");
@@ -91,17 +86,6 @@ public class Ingredient implements Comparable<Ingredient> {
     public Ingredient(int id, Holder<? extends ItemLike> ingredientItem, int color, float alpha) {
         this(id, ingredientItem, color);
         this.alpha = alpha;
-    }
-
-    /**
-     * Adds an action to be performed when a cocktail containing this ingredient is ingested.
-     *
-     * @param action the action to register
-     * @return this Ingredient object
-     */
-    public Ingredient addAction(DrinkAction action) {
-        actions.add(action);
-        return this;
     }
 
     /**
@@ -129,12 +113,6 @@ public class Ingredient implements Comparable<Ingredient> {
     @Override
     public int compareTo(Ingredient other) {
         return Integer.compare(id, other.id);
-    }
-
-    public void onDrink(ServerPlayer player) {
-        for (DrinkAction action : actions) {
-            action.onDrink(player);
-        }
     }
 
     @Nullable
