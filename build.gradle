@@ -47,7 +47,7 @@ neoForge {
             data()
             def inputResourcesPath = file('src/main/resources/').getAbsolutePath()
             def generatedResourcesPath = file('src/generated/resources/').getAbsolutePath()
-            programArguments.addAll '--mod', project.mod_id, '--all', '--output', generatedResourcesPath, '--existing', inputResourcesPath
+            programArguments.addAll '--mod', project.mod_id, '--all', '--output', generatedResourcesPath, '--existing', inputResourcesPath, '--input', inputResourcesPath
         }
 
         configureEach {
