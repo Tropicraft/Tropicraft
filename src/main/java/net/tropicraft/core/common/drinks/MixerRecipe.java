@@ -5,6 +5,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class MixerRecipe implements IMixerRecipe {
 
@@ -24,7 +25,7 @@ public class MixerRecipe implements IMixerRecipe {
         Arrays.sort(ingredients);
     }
 
-    public boolean matches(NonNullList<ItemStack> input) {
+    public boolean matches(List<ItemStack> input) {
         for (Ingredient requiredIngredient : ingredients) {
             if (!hasIngredient(input, requiredIngredient)) {
                 return false;
@@ -33,7 +34,7 @@ public class MixerRecipe implements IMixerRecipe {
         return true;
     }
 
-    private static boolean hasIngredient(NonNullList<ItemStack> input, Ingredient requiredIngredient) {
+    private static boolean hasIngredient(List<ItemStack> input, Ingredient requiredIngredient) {
         for (ItemStack stack : input) {
             if (requiredIngredient.matches(stack)) {
                 return true;

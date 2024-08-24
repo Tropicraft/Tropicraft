@@ -67,7 +67,7 @@ public class CocktailItem extends Item {
         return makeDrink(drink.get());
     }
 
-    public static ItemStack makeCocktail(NonNullList<ItemStack> itemStacks) {
+    public static ItemStack makeCocktail(List<ItemStack> itemStacks) {
         return makeCocktail(Cocktail.ofIngredients(
                 itemStacks.stream()
                         .flatMap(item -> Ingredient.listIngredients(item).stream())

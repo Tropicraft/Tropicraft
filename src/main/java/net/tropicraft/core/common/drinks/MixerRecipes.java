@@ -45,18 +45,18 @@ public final class MixerRecipes {
         recipes.add(new MixerRecipe(result, ingredients));
     }
 
-    public static boolean isValidRecipe(NonNullList<ItemStack> ingredientStacks) {
+    public static boolean isValidRecipe(List<ItemStack> ingredientStacks) {
         return getRecipe(ingredientStacks) != null;
     }
 
     @Nullable
-    public static ResourceKey<Drink> getDrink(NonNullList<ItemStack> ingredientStacks) {
+    public static ResourceKey<Drink> getDrink(List<ItemStack> ingredientStacks) {
         MixerRecipe recipe = getRecipe(ingredientStacks);
         return recipe != null ? recipe.getCraftingResult() : null;
     }
 
     @Nullable
-    public static MixerRecipe getRecipe(NonNullList<ItemStack> ingredientStacks) {
+    public static MixerRecipe getRecipe(List<ItemStack> ingredientStacks) {
         for (MixerRecipe recipe : recipes) {
             if (recipe.matches(ingredientStacks)) {
                 return recipe;
@@ -65,7 +65,7 @@ public final class MixerRecipes {
         return null;
     }
 
-    public static ItemStack getResult(HolderLookup.Provider registries, NonNullList<ItemStack> ingredients) {
+    public static ItemStack getResult(HolderLookup.Provider registries, List<ItemStack> ingredients) {
         MixerRecipe recipe = getRecipe(ingredients);
         if (recipe != null) {
             return CocktailItem.makeCocktail(registries, recipe);

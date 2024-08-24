@@ -1,13 +1,15 @@
 package net.tropicraft.core.common.block.tileentity;
 
-import it.unimi.dsi.fastutil.objects.ObjectArraySet;
+import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Player;
@@ -24,12 +26,15 @@ import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.item.CocktailItem;
 import net.tropicraft.core.common.network.message.ClientboundMixerInventoryPacket;
 import net.tropicraft.core.common.network.message.ClientboundMixerStartPacket;
+import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
-import java.util.Objects;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock {
+    private static final Logger LOGGER = LogUtils.getLogger();
+
     /**
      * Number of ticks to mix
      */
@@ -40,14 +45,14 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
      * Number of ticks the mixer has been mixin'
      */
     private int ticks;
-    public NonNullList<ItemStack> ingredients;
+    private final List<ItemStack> drinkIngredients;
     private boolean mixing;
     public ItemStack result = ItemStack.EMPTY;
 
     public DrinkMixerBlockEntity(BlockEntityType<DrinkMixerBlockEntity> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         mixing = false;
-        ingredients = NonNullList.withSize(MAX_NUM_INGREDIENTS, ItemStack.EMPTY);
+        drinkIngredients = new ArrayList<>();
     }
 
     @Override
@@ -56,13 +61,9 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         ticks = nbt.getInt("MixTicks");
         mixing = nbt.getBoolean("Mixing");
 
-        for (int i = 0; i < MAX_NUM_INGREDIENTS; i++) {
-            if (nbt.contains("Ingredient" + i)) {
-                ingredients.set(i, ItemStack.parse(registries, nbt.getCompound("Ingredient" + i)).orElse(ItemStack.EMPTY));
-            } else {
-                ingredients.set(i, ItemStack.EMPTY);
-            }
-        }
+        ItemStack.SINGLE_ITEM_CODEC.listOf().parse(registries.createSerializationContext(NbtOps.INSTANCE), nbt.get("ingredients"))
+                .resultOrPartial(error -> LOGGER.error("Failed to parse drink mixer ingredients: '{}'", error))
+                .ifPresent(this::setDrinkIngredients);
 
         if (nbt.contains("Result")) {
             result = ItemStack.parse(registries, nbt.getCompound("Result")).orElse(ItemStack.EMPTY);
@@ -78,12 +79,8 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         nbt.putInt("MixTicks", ticks);
         nbt.putBoolean("Mixing", mixing);
 
-        for (int i = 0; i < MAX_NUM_INGREDIENTS; i++) {
-            ItemStack item = ingredients.get(i);
-            if (!item.isEmpty()) {
-                nbt.put("Ingredient" + i, item.save(registries, new CompoundTag()));
-            }
-        }
+        RegistryOps<Tag> registryOps = registries.createSerializationContext(NbtOps.INSTANCE);
+        nbt.put("ingredients", ItemStack.SINGLE_ITEM_CODEC.listOf().encodeStart(registryOps, drinkIngredients).getOrThrow());
 
         if (!result.isEmpty()) {
             nbt.put("Result", result.save(registries, new CompoundTag()));
@@ -107,8 +104,13 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         return !result.isEmpty();
     }
 
-    public NonNullList<ItemStack> getIngredients() {
-        return ingredients;
+    public List<ItemStack> getDrinkIngredients() {
+        return drinkIngredients;
+    }
+
+    public void setDrinkIngredients(List<ItemStack> ingredients) {
+        drinkIngredients.clear();
+        drinkIngredients.addAll(ingredients);
     }
 
     public void startMixing() {
@@ -129,12 +131,10 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
     }
 
     public void emptyMixer(@Nullable Player at) {
-        for (int i = 0; i < MAX_NUM_INGREDIENTS; i++) {
-            if (!ingredients.get(i).isEmpty()) {
-                dropItem(ingredients.get(i), at);
-                ingredients.set(i, ItemStack.EMPTY);
-            }
+        for (ItemStack stack : drinkIngredients) {
+            dropItem(stack, at);
         }
+        drinkIngredients.clear();
 
         ticks = TICKS_TO_MIX;
         mixing = false;
@@ -148,60 +148,46 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
 
         dropItem(result, at);
 
-        for (int i = 0; i < MAX_NUM_INGREDIENTS; i++) {
-            // If we're not using one of the ingredient slots, just move along
-            if (ingredients.get(i).isEmpty()) {
-                continue;
-            }
-
-            ItemStack container = ingredients.get(i).getItem().getCraftingRemainingItem(ingredients.get(i));
-
+        for (ItemStack ingredient : drinkIngredients) {
+            ItemStack container = ingredient.getCraftingRemainingItem();
             if (!container.isEmpty()) {
                 dropItem(container, at);
             }
         }
-
-        ingredients.clear();
+        drinkIngredients.clear();
         result = ItemStack.EMPTY;
         syncInventory();
     }
 
     public void finishMixing() {
-        result = getResult(getIngredients());
+        result = getResult();
         mixing = false;
         ticks = 0;
         syncInventory();
     }
 
     public boolean addToMixer(ItemStack itemStack) {
+        if (isMixerFull()) {
+            return false;
+        }
+
         boolean isDrink = CocktailItem.isDrink(itemStack);
         Ingredient ingredient = Ingredient.findMatchingIngredient(itemStack);
         if (ingredient == null && !isDrink) {
             return false;
         }
 
-        Set<Ingredient> seenIngredients = new ObjectArraySet<>(ingredients.size());
-        seenIngredients.add(ingredient);
-        boolean hasDrink = isDrink;
-
-        for (int i = 0; i < ingredients.size(); i++) {
-            ItemStack otherItemStack = ingredients.get(i);
-            // Found an empty slot and no conflicts, place our new item in
-            if (otherItemStack.isEmpty()) {
-                ingredients.set(i, itemStack);
-                syncInventory();
-                return true;
-            }
-
-            if (CocktailItem.isDrink(otherItemStack)) {
-                if (hasDrink) {
+        if (isDrink) {
+            for (ItemStack otherItemStack : drinkIngredients) {
+                if (CocktailItem.isDrink(otherItemStack)) {
                     return false;
                 }
-                hasDrink = true;
             }
         }
 
-        return false;
+        drinkIngredients.add(itemStack);
+        syncInventory();
+        return true;
     }
 
     public boolean isMixing() {
@@ -209,19 +195,12 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
     }
 
     private boolean isMixerFull() {
-        for (ItemStack ingredient : ingredients) {
-            if (ingredient.isEmpty()) {
-                return false;
-            }
-        }
-        return true;
+        return drinkIngredients.size() >= MAX_NUM_INGREDIENTS;
     }
 
     public boolean canMix() {
         return !mixing && isMixerFull();
     }
-
-    /* == IMachineTile == */
 
     @Override
     public boolean isActive() {
@@ -266,7 +245,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         return nbt;
     }
 
-    public ItemStack getResult(NonNullList<ItemStack> ingredients2) {
-        return MixerRecipes.getResult(level.registryAccess(), ingredients2);
+    public ItemStack getResult() {
+        return MixerRecipes.getResult(level.registryAccess(), drinkIngredients);
     }
 }

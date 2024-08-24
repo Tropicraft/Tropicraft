@@ -3,11 +3,9 @@ package net.tropicraft.core.common.network.message;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.tropicraft.Tropicraft;
@@ -20,19 +18,19 @@ public record ClientboundMixerInventoryPacket(BlockPos pos, List<ItemStack> inve
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundMixerInventoryPacket> STREAM_CODEC = StreamCodec.composite(
             BlockPos.STREAM_CODEC, ClientboundMixerInventoryPacket::pos,
-            ItemStack.OPTIONAL_LIST_STREAM_CODEC, ClientboundMixerInventoryPacket::inventory,
+            ItemStack.LIST_STREAM_CODEC, ClientboundMixerInventoryPacket::inventory,
             ItemStack.OPTIONAL_STREAM_CODEC, ClientboundMixerInventoryPacket::result,
             ClientboundMixerInventoryPacket::new
     );
 
     public ClientboundMixerInventoryPacket(DrinkMixerBlockEntity mixer) {
-        this(mixer.getBlockPos(), mixer.ingredients, mixer.result);
+        this(mixer.getBlockPos(), List.copyOf(mixer.getDrinkIngredients()), mixer.result);
     }
 
     public static void handle(ClientboundMixerInventoryPacket packet, IPayloadContext ctx) {
         ClientLevel level = Minecraft.getInstance().level;
         if (level != null && level.getBlockEntity(packet.pos) instanceof DrinkMixerBlockEntity mixer) {
-            mixer.ingredients = NonNullList.copyOf(packet.inventory);
+            mixer.setDrinkIngredients(List.copyOf(packet.inventory));
             mixer.result = packet.result;
         }
     }
