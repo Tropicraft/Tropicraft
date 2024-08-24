@@ -2,29 +2,22 @@ package net.tropicraft.core.common.drinks;
 
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.ExtraCodecs;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.tropicraft.core.common.block.TropicraftBlocks;
-import net.tropicraft.core.common.drinks.action.DrinkAction;
-import net.tropicraft.core.common.drinks.action.FoodDrinkAction;
-import net.tropicraft.core.common.drinks.action.PotionDrinkAction;
 import net.tropicraft.core.common.item.CocktailItem;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nullable;
-import java.util.LinkedList;
 import java.util.List;
 
 public class Ingredient implements Comparable<Ingredient> {
@@ -70,7 +63,7 @@ public class Ingredient implements Comparable<Ingredient> {
     /**
      * Alpha channel used in color blending. Typically 1 for primary ingredients and lower for additives.
      */
-    private float alpha = 1.0f;
+    private float weight = 1.0f;
 
     public Ingredient(int id, Holder<? extends ItemLike> ingredientItem, int color) {
         if (ingredientsList[id] != null) {
@@ -83,9 +76,9 @@ public class Ingredient implements Comparable<Ingredient> {
         ingredientsList[id] = this;
     }
 
-    public Ingredient(int id, Holder<? extends ItemLike> ingredientItem, int color, float alpha) {
+    public Ingredient(int id, Holder<? extends ItemLike> ingredientItem, int color, float weight) {
         this(id, ingredientItem, color);
-        this.alpha = alpha;
+        this.weight = weight;
     }
 
     /**
@@ -106,8 +99,8 @@ public class Ingredient implements Comparable<Ingredient> {
         return color;
     }
 
-    public float getAlpha() {
-        return alpha;
+    public float getWeight() {
+        return weight;
     }
 
     @Override
