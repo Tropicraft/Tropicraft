@@ -1,10 +1,10 @@
 modLoader = "javafml"
-loaderVersion = "[2,)"
+loaderVersion="${loader_version_range}"
 issueTrackerURL = "https://github.com/Tropicraft/Tropicraft/issues"
 license = "Mozilla Public License Version 2.0"
 
 [[mods]]
-modId = "tropicraft"
+modId = "${mod_id}"
 version = "${mod_version}"
 displayName = "Tropicraft"
 displayURL = "https://tropicraft.net"
@@ -16,3 +16,17 @@ This is Tropicraft, the utopian idyllic getaway that you have been waiting for! 
 
 [[mixins]]
 config = "tropicraft.mixins.json"
+
+[[dependencies.${mod_id}]]
+modId="neoforge"
+type="required"
+versionRange="${neo_version_range}"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.${mod_id}]]
+modId="minecraft"
+type="required"
+versionRange="${minecraft_version_range}"
+ordering="NONE"
+side="BOTH"

@@ -85,7 +85,13 @@ dependencies {
 
 var generateModMetadata = tasks.register('generateModMetadata', ProcessResources) {
     var replaceProperties = [
-            mod_version: mod_version,
+            minecraft_version      : minecraft_version,
+            minecraft_version_range: minecraft_version_range,
+            neo_version            : neo_version,
+            neo_version_range      : neo_version_range,
+            loader_version_range   : loader_version_range,
+            mod_id                 : mod_id,
+            mod_version            : mod_version,
     ]
     inputs.properties replaceProperties
     expand replaceProperties
