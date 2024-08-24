@@ -73,8 +73,6 @@ repositories {
 }
 
 dependencies {
-    implementation "net.neoforged:neoforge:${neo_version}"
-
     jarJar(implementation("com.tterrag.registrate:Registrate:MC1.21-${registrate_version}")) {
         version {
             strictly "[MC1.21-${registrate_version},MC1.22)"
