@@ -899,7 +899,8 @@ public class TropicraftBlocks {
             .blockEntity(BambooChestBlockEntity::new)
             .renderer(() -> BambooChestRenderer::new)
             .build()
-            .item(itemWithRenderer(TropicraftItemRenderers::bambooChest))
+            .item()
+            .clientExtension(() -> TropicraftItemRenderers::bambooChest)
             .model((ctx, prov) -> prov.withExistingParent(ctx.getName(), "item/chest")
                     .texture("particle", prov.modLoc("block/bamboo_side")))
             .build()
@@ -951,7 +952,8 @@ public class TropicraftBlocks {
             .blockEntity(DrinkMixerBlockEntity::new)
             .renderer(() -> DrinkMixerRenderer::new)
             .build()
-            .item(itemWithRenderer(TropicraftItemRenderers::drinkMixer))
+            .item()
+            .clientExtension(() -> TropicraftItemRenderers::drinkMixer)
             .model((ctx, prov) -> prov.withExistingParent(ctx.getName(), prov.modLoc("item/tall_machine"))
                     .texture("particle", prov.modLoc("block/chunk")))
             .build()
@@ -973,7 +975,8 @@ public class TropicraftBlocks {
             .blockEntity(AirCompressorBlockEntity::new)
             .renderer(() -> AirCompressorRenderer::new)
             .build()
-            .item(itemWithRenderer(TropicraftItemRenderers::airCompressor))
+            .item()
+            .clientExtension(() -> TropicraftItemRenderers::airCompressor)
             .model((ctx, prov) -> prov.withExistingParent(ctx.getName(), prov.modLoc("item/tall_machine"))
                     .texture("particle", prov.modLoc("block/chunk")))
             .build()
@@ -1804,15 +1807,6 @@ public class TropicraftBlocks {
 
     private static ItemModelBuilder blockSprite(DataGenContext<Item, ? extends ItemLike> ctx, RegistrateItemModelProvider prov) {
         return prov.blockSprite(ctx);
-    }
-
-    private static NonNullBiFunction<Block, Item.Properties, BlockItem> itemWithRenderer(Supplier<IClientItemExtensions> properties) {
-        return (b, p) -> new BlockItem(b, p) {
-            @Override
-            public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-                consumer.accept(properties.get());
-            }
-        };
     }
 
     private static String name(ItemLike item) {

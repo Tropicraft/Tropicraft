@@ -352,6 +352,7 @@ public class TropicraftItems {
     public static final ItemEntry<Item> SCALE = simpleItem("scale").register();
     public static final ItemEntry<NigelStacheItem> NIGEL_STACHE = REGISTRATE.item("nigel_stache", NigelStacheItem::new)
             .lang("Nigel's Moustache")
+            .clientExtension(() -> NigelStacheItem.ClientExtensions::new)
             .register();
     public static final ItemEntry<SunglassesItem> COOL_SHADES = REGISTRATE.item("cool_shades", SunglassesItem::new)
             .properties(p -> p.stacksTo(1))
@@ -481,9 +482,10 @@ public class TropicraftItems {
 
     public static final ImmutableMap<AshenMasks, ItemEntry<AshenMaskItem>> ASHEN_MASKS = Arrays.stream(AshenMasks.values())
             .collect(Maps.<AshenMasks, AshenMasks, ItemEntry<AshenMaskItem>>toImmutableEnumMap(Function.identity(), type ->
-                    REGISTRATE.item("ashen_mask_" + type.name().toLowerCase(Locale.ROOT), p -> new AshenMaskItem(TropicraftArmorMaterials.ASHEN_MASK, type, p))
+                    REGISTRATE.item("ashen_mask_" + type.name().toLowerCase(Locale.ROOT), p -> new AshenMaskItem(TropicraftArmorMaterials.ASHEN_MASK, p))
                             .tag(TropicraftTags.Items.ASHEN_MASKS)
                             .lang(type.getName())
+                            .clientExtension(() -> () -> new AshenMaskItem.ClientExtensions(type))
                             .register()
             ));
 
@@ -691,7 +693,8 @@ public class TropicraftItems {
                         .define('Z', source.get())
                         .unlockedBy("has_" + prov.safeName(source.get()), has(source.get()))
                         .unlockedBy("has_" + prov.safeName(ZIRCON.get()), has(ZIRCON.get()))
-                        .save(prov));
+                        .save(prov))
+                .clientExtension(() -> ScubaArmorItem.ClientExtensions::new);
     }
 
     private static ItemBuilder<ScubaHarnessItem, Registrate> scubaHarness(String name, ScubaType type, Supplier<? extends Item> source) {
@@ -705,7 +708,8 @@ public class TropicraftItems {
                         .define('Y', Tags.Items.LEATHERS)
                         .define('Z', AZURITE.get())
                         .unlockedBy("has_" + prov.safeName(AZURITE.get()), has(AZURITE.get()))
-                        .save(prov));
+                        .save(prov))
+                .clientExtension(() -> ScubaArmorItem.ClientExtensions::new);
     }
 
     private static ItemBuilder<ScubaArmorItem, Registrate> scubaFlippers(String name, ScubaType type, Supplier<? extends Item> source) {
@@ -721,7 +725,8 @@ public class TropicraftItems {
                         .define('Y', ZIRCON.get())
                         .unlockedBy("has_" + prov.safeName(source.get()), has(source.get()))
                         .unlockedBy("has_" + prov.safeName(ZIRCON.get()), has(ZIRCON.get()))
-                        .save(prov));
+                        .save(prov))
+                .clientExtension(() -> ScubaArmorItem.ClientExtensions::new);
     }
 
     public static final ItemEntry<PonyBottleItem> YELLOW_PONY_BOTTLE = ponyBottle("yellow_pony_bottle", Blocks.YELLOW_STAINED_GLASS_PANE);

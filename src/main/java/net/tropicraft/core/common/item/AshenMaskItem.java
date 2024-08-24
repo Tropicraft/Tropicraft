@@ -21,20 +21,11 @@ import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.entity.model.PlayerHeadpieceModel;
 import net.tropicraft.core.common.entity.placeable.WallItemEntity;
 
-import java.util.function.Consumer;
-
 public class AshenMaskItem extends ArmorItem {
     private static final ResourceLocation TEXTURE_LOCATION = Tropicraft.location("textures/entity/ashen/mask.png");
 
-    private final AshenMasks maskType;
-
-    public AshenMaskItem(Holder<ArmorMaterial> armorMaterial, AshenMasks maskType, Properties properties) {
+    public AshenMaskItem(Holder<ArmorMaterial> armorMaterial, Properties properties) {
         super(armorMaterial, Type.HELMET, properties);
-        this.maskType = maskType;
-    }
-
-    public AshenMasks getMaskType() {
-        return maskType;
     }
 
     @Override
@@ -69,17 +60,20 @@ public class AshenMaskItem extends ArmorItem {
     }
 
     @Override
-    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        consumer.accept(new IClientItemExtensions() {
-            @Override
-            public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlot equipmentSlot, HumanoidModel<?> original) {
-                return type == Type.HELMET ? PlayerHeadpieceModel.createModel(TropicraftRenderLayers.HEADPIECE_LAYER, null, maskType.ordinal(), maskType.getXOffset(), maskType.getYOffset()) : null;
-            }
-        });
-    }
-
-    @Override
     public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
         return TEXTURE_LOCATION;
+    }
+
+    public static class ClientExtensions implements IClientItemExtensions {
+        private final AshenMasks type;
+
+        public ClientExtensions(AshenMasks type) {
+            this.type = type;
+        }
+
+        @Override
+        public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlot equipmentSlot, HumanoidModel<?> original) {
+            return PlayerHeadpieceModel.createModel(TropicraftRenderLayers.HEADPIECE_LAYER, null, type.ordinal(), type.getXOffset(), type.getYOffset());
+        }
     }
 }

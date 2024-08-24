@@ -13,8 +13,6 @@ import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.entity.model.PlayerHeadpieceModel;
 
-import java.util.function.Consumer;
-
 public class NigelStacheItem extends ArmorItem {
     private static final ResourceLocation TEXTURE_LOCATION = Tropicraft.location("textures/models/armor/nigel_layer_1.png");
 
@@ -23,17 +21,14 @@ public class NigelStacheItem extends ArmorItem {
     }
 
     @Override
-    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        consumer.accept(new IClientItemExtensions() {
-            @Override
-            public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlot slot, HumanoidModel<?> original) {
-                return type == Type.HELMET ? PlayerHeadpieceModel.createModel(TropicraftRenderLayers.HEADPIECE_LAYER, null, 0, 0, 0) : null;
-            }
-        });
-    }
-
-    @Override
     public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
         return TEXTURE_LOCATION;
+    }
+
+    static class ClientExtensions implements IClientItemExtensions {
+        @Override
+        public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlot slot, HumanoidModel<?> original) {
+            return PlayerHeadpieceModel.createModel(TropicraftRenderLayers.HEADPIECE_LAYER, null, 0, 0, 0);
+        }
     }
 }

@@ -22,9 +22,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Consumer;
 
 public class ScubaArmorItem extends ArmorItem {
-
-    private static final ResourceLocation GOGGLES_OVERLAY_TEX_PATH = Tropicraft.location("textures/gui/goggles.png");
-
     private final ScubaType type;
 
     public ScubaArmorItem(ScubaType type, ArmorItem.Type slotType, Item.Properties properties) {
@@ -64,56 +61,55 @@ public class ScubaArmorItem extends ArmorItem {
         return Tropicraft.location("textures/models/armor/scuba_gear_" + type.getTextureName() + ".png");
     }
 
-    @Override
-    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        consumer.accept(new IClientItemExtensions() {
-            @Override
-            public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlot slot, HumanoidModel<?> original) {
-                if (stack.isEmpty()) {
-                    return null;
-                }
+    public static class ClientExtensions implements IClientItemExtensions {
+        private static final ResourceLocation GOGGLES_OVERLAY_TEX_PATH = Tropicraft.location("textures/gui/goggles.png");
 
-                HumanoidModel<?> armorModel = getArmorModel(slot);
-                if (armorModel != null) {
-                    prepareModel(armorModel, entity);
-                    return armorModel;
-                } else {
-                    return null;
-                }
+        @Override
+        public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlot slot, HumanoidModel<?> original) {
+            if (stack.isEmpty()) {
+                return original;
             }
 
-            @Nullable
-            private HumanoidModel<?> getArmorModel(EquipmentSlot armorSlot) {
-                return switch (armorSlot) {
-                    case HEAD -> ModelScubaGear.HEAD;
-                    case CHEST -> ModelScubaGear.CHEST;
-                    case FEET -> ModelScubaGear.FEET;
-                    default -> null;
-                };
+            HumanoidModel<?> armorModel = getArmorModel(slot);
+            if (armorModel != null) {
+                prepareModel(armorModel, entity);
+                return armorModel;
+            } else {
+                return original;
             }
+        }
 
-            @SuppressWarnings("unchecked")
-            private <E extends LivingEntity> void prepareModel(HumanoidModel<E> armorModel, LivingEntity entity) {
-                armorModel.prepareMobModel((E) entity, 0.0f, 0.0f, 1.0f);
-                armorModel.crouching = entity.isShiftKeyDown();
-                armorModel.young = entity.isBaby();
-                armorModel.rightArmPose = !entity.getMainHandItem().isEmpty() ? HumanoidModel.ArmPose.BLOCK : HumanoidModel.ArmPose.EMPTY;
-            }
+        @Nullable
+        private HumanoidModel<?> getArmorModel(EquipmentSlot armorSlot) {
+            return switch (armorSlot) {
+                case HEAD -> ModelScubaGear.HEAD;
+                case CHEST -> ModelScubaGear.CHEST;
+                case FEET -> ModelScubaGear.FEET;
+                default -> null;
+            };
+        }
 
-            @Override
-            public void renderHelmetOverlay(ItemStack stack, Player player, int width, int height, float partialTicks) {
-                if (stack.getItem() instanceof ScubaGogglesItem) {
-                    Minecraft mc = Minecraft.getInstance();
-                    GuiGraphics graphics = new GuiGraphics(mc, mc.renderBuffers().bufferSource());
-                    RenderSystem.disableDepthTest();
-                    RenderSystem.depthMask(false);
-                    RenderSystem.defaultBlendFunc();
-                    graphics.blit(GOGGLES_OVERLAY_TEX_PATH, 0, 0, 0, 0, 0, width, height, width, height);
-                    RenderSystem.depthMask(true);
-                    RenderSystem.enableDepthTest();
-                    graphics.flush();
-                }
+        @SuppressWarnings("unchecked")
+        private <E extends LivingEntity> void prepareModel(HumanoidModel<E> armorModel, LivingEntity entity) {
+            armorModel.prepareMobModel((E) entity, 0.0f, 0.0f, 1.0f);
+            armorModel.crouching = entity.isShiftKeyDown();
+            armorModel.young = entity.isBaby();
+            armorModel.rightArmPose = !entity.getMainHandItem().isEmpty() ? HumanoidModel.ArmPose.BLOCK : HumanoidModel.ArmPose.EMPTY;
+        }
+
+        @Override
+        public void renderHelmetOverlay(ItemStack stack, Player player, int width, int height, float partialTicks) {
+            if (stack.getItem() instanceof ScubaGogglesItem) {
+                Minecraft mc = Minecraft.getInstance();
+                GuiGraphics graphics = new GuiGraphics(mc, mc.renderBuffers().bufferSource());
+                RenderSystem.disableDepthTest();
+                RenderSystem.depthMask(false);
+                RenderSystem.defaultBlendFunc();
+                graphics.blit(GOGGLES_OVERLAY_TEX_PATH, 0, 0, 0, 0, 0, width, height, width, height);
+                RenderSystem.depthMask(true);
+                RenderSystem.enableDepthTest();
+                graphics.flush();
             }
-        });
+        }
     }
 }
