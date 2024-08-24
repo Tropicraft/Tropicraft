@@ -7,10 +7,10 @@
         {pos: [0, 2, 0], state: "minecraft:water{level:0}"}
     ],
     entities: [
-        {blockPos: [0, 1, 0], pos: [0.75d, 1.8175662907578345d, 0.5077140476850559d], nbt:{id: "minecraft:tropical_fish"}},
-        {blockPos: [0, 1, 0], pos: [0.25d, 1.9032065684654547d, 0.5088931172942068d], nbt:{id: "minecraft:tropical_fish"}},
-        {blockPos: [0, 1, 0], pos: [0.75d, 1.9173363838469148d, 0.5088934459314203d], nbt:{id: "minecraft:tropical_fish"}},
-        {blockPos: [0, 1, 0], pos: [0.25d, 1.94941492166638d, 0.5080749851155133d], nbt:{id: "minecraft:tropical_fish"}}
+        {blockPos: [0, 1, 0], pos: [0.75d, 1.8175662907578345d, 0.5077140476850559d], nbt:{id: "minecraft:tropical_fish", PersistenceRequired:1b}},
+        {blockPos: [0, 1, 0], pos: [0.25d, 1.9032065684654547d, 0.5088931172942068d], nbt:{id: "minecraft:tropical_fish", PersistenceRequired:1b}},
+        {blockPos: [0, 1, 0], pos: [0.75d, 1.9173363838469148d, 0.5088934459314203d], nbt:{id: "minecraft:tropical_fish", PersistenceRequired:1b}},
+        {blockPos: [0, 1, 0], pos: [0.25d, 1.94941492166638d, 0.5080749851155133d], nbt:{id: "minecraft:tropical_fish", PersistenceRequired:1b}}
     ],
     palette: [
         "minecraft:water{level:0}",
