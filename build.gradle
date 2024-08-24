@@ -2,10 +2,8 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'java-library'
-    id 'net.neoforged.gradle.userdev' version '7.0.145'
+    id 'net.neoforged.moddev' version '1.0.17'
 }
-
-jarJar.enable()
 
 group = 'net.tropicraft'
 base {
@@ -26,41 +24,42 @@ if (System.getenv('GHA_RELEASE_WORKFLOW')) {
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
-runs {
-    configureEach {
-        workingDirectory project.file('run')
+neoForge {
+    version = project.neo_version
 
-        systemProperty 'forge.logging.markers', 'REGISTRIES'
-        systemProperty 'forge.logging.console.level', 'debug'
-
-        modSource project.sourceSets.main
-    }
-
-    client {
-        programArguments.addAll '--username', 'Dev###'
-    }
-
-    server {
-        programArgument '--nogui'
-    }
-
-    data {
-        def inputResourcesPath = file('src/main/resources/').getAbsolutePath()
-        def generatedResourcesPath = file('src/generated/resources/').getAbsolutePath()
-        programArguments.addAll '--mod', project.mod_id, '--all', '--output', generatedResourcesPath, '--existing', inputResourcesPath, '--input', inputResourcesPath
-    }
-}
-
-minecraft {
-    accessTransformers {
-        file('src/main/resources/META-INF/accesstransformer.cfg')
-    }
-}
-
-subsystems {
     parchment {
         minecraftVersion = minecraft_version
         mappingsVersion = parchment_version
+    }
+
+    runs {
+        client {
+            client()
+            programArguments.addAll '--username', 'Dev###'
+        }
+
+        server {
+            server()
+            programArgument '--nogui'
+        }
+
+        data {
+            data()
+            def inputResourcesPath = file('src/main/resources/').getAbsolutePath()
+            def generatedResourcesPath = file('src/generated/resources/').getAbsolutePath()
+            programArguments.addAll '--mod', project.mod_id, '--all', '--output', generatedResourcesPath, '--existing', inputResourcesPath
+        }
+
+        configureEach {
+            logLevel = org.slf4j.event.Level.WARN
+        }
+    }
+
+    mods {
+        "${project.mod_id}" {
+            sourceSet sourceSets.main
+            sourceSet sourceSets.test
+        }
     }
 }
 
@@ -77,11 +76,14 @@ dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
 
     jarJar(implementation("com.tterrag.registrate:Registrate:MC1.21-${registrate_version}")) {
-        jarJar.ranged(it, "[MC1.21-${registrate_version},MC1.22)")
+        version {
+            strictly "[MC1.21-${registrate_version},MC1.22)"
+            prefer "MC1.21-${registrate_version}"
+        }
     }
 }
 
-tasks.named('processResources', ProcessResources).configure {
+tasks.withType(ProcessResources).configureEach {
     var replaceProperties = [
             mod_version: mod_version,
     ]
@@ -90,16 +92,6 @@ tasks.named('processResources', ProcessResources).configure {
     filesMatching(['META-INF/neoforge.mods.toml']) {
         expand replaceProperties
     }
-}
-
-tasks.named('jar').configure {
-    archiveClassifier = 'slim'
-    // Don't include plaintext source structure files, as we ship converted ones from data generators
-    exclude '**/*.snbt'
-}
-
-tasks.named('jarJar').configure {
-    archiveClassifier = ''
 }
 
 tasks.withType(JavaCompile).configureEach {
