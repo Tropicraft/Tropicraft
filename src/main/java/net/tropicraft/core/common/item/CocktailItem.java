@@ -25,7 +25,7 @@ import net.tropicraft.core.common.drinks.Cocktail;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.Ingredient;
 import net.tropicraft.core.common.drinks.MixerRecipe;
-import net.tropicraft.core.common.drinks.action.TropicraftDrinks;
+import net.tropicraft.core.common.drinks.TropicraftDrinks;
 
 import javax.annotation.Nullable;
 import java.util.List;

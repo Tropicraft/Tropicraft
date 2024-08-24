@@ -1,4 +1,4 @@
-package net.tropicraft.core.common.drinks.action;
+package net.tropicraft.core.common.drinks;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.HolderSet;
@@ -9,7 +9,8 @@ import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.data.TropicraftLangKeys;
 import net.tropicraft.core.common.TropicraftRegistries;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
-import net.tropicraft.core.common.drinks.Drink;
+import net.tropicraft.core.common.drinks.action.PortalDrinkAction;
+import net.tropicraft.core.common.drinks.action.PotionDrinkAction;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 
 import java.util.List;

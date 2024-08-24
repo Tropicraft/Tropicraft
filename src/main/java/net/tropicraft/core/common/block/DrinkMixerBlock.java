@@ -28,7 +28,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.tropicraft.core.common.block.tileentity.DrinkMixerBlockEntity;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.MixerRecipes;
-import net.tropicraft.core.common.drinks.action.TropicraftDrinks;
+import net.tropicraft.core.common.drinks.TropicraftDrinks;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nullable;

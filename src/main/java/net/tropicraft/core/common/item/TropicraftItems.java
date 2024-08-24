@@ -76,7 +76,7 @@ import net.tropicraft.core.common.block.TropicraftFlower;
 import net.tropicraft.core.common.block.TropicraftWoodTypes;
 import net.tropicraft.core.common.drinks.Cocktail;
 import net.tropicraft.core.common.drinks.Drink;
-import net.tropicraft.core.common.drinks.action.TropicraftDrinks;
+import net.tropicraft.core.common.drinks.TropicraftDrinks;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
 import net.tropicraft.core.common.entity.placeable.ChairEntity;

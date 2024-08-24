@@ -4,7 +4,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.ItemStack;
-import net.tropicraft.core.common.drinks.action.TropicraftDrinks;
 import net.tropicraft.core.common.item.CocktailItem;
 
 import javax.annotation.Nullable;
