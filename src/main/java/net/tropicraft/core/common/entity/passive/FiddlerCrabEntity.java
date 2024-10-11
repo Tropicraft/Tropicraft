@@ -7,10 +7,8 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
@@ -28,11 +26,19 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
-public final class FiddlerCrabEntity extends Animal {
+import java.util.UUID;
+
+public final class FiddlerCrabEntity extends Animal implements OwnableEntity {
     private boolean rollingDownTown;
 
     private boolean travellingGolf;
+
+    @Nullable
+    private UUID owner = null;
+    private static final String OWNER_UUID_TAG = "Owner";
+    private static final String ROLLING_DOWN_TOWN_TAG = "RollingDownTown";
 
     public FiddlerCrabEntity(EntityType<? extends FiddlerCrabEntity> type, Level world) {
         super(type, world);
@@ -66,6 +72,30 @@ public final class FiddlerCrabEntity extends Animal {
         targetAmount = Math.min(targetAmount, 0.25f);
 
         walkAnimation.update(targetAmount, 0.4f);
+    }
+
+    @Override
+    public boolean hurt(final DamageSource source, final float amount) {
+        if (!rollingDownTown) {
+            return super.hurt(source, amount);
+        }
+
+        if (owner != null && !wasHurtByOwner(source)) {
+            return false;
+        }
+
+        return super.hurt(source, amount);
+    }
+
+    private boolean wasHurtByOwner(final DamageSource source) {
+        final boolean sourceIsEntity = source.getEntity() != null;
+        final boolean sourceHasUuid = sourceIsEntity && source.getEntity().getUUID() != null;
+
+        if (!sourceIsEntity | !sourceHasUuid) {
+            return false;
+        }
+
+        return owner != null && owner.equals(source.getEntity().getUUID());
     }
 
     @Override
@@ -173,13 +203,22 @@ public final class FiddlerCrabEntity extends Animal {
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.putBoolean("RollingDownTown", rollingDownTown);
+        tag.putBoolean(ROLLING_DOWN_TOWN_TAG, rollingDownTown);
+        final UUID ownerUUID = getOwnerUUID();
+        if (ownerUUID != null) {
+            tag.putUUID(OWNER_UUID_TAG, ownerUUID);
+        }
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        rollingDownTown = tag.getBoolean("RollingDownTown");
+        rollingDownTown = tag.getBoolean(ROLLING_DOWN_TOWN_TAG);
+        if (tag.contains(OWNER_UUID_TAG)) {
+            setOwnerUUID(tag.getUUID(OWNER_UUID_TAG));
+        } else {
+            setOwnerUUID(null);
+        }
     }
 
     public boolean isRollingDownTown() {
@@ -209,6 +248,16 @@ public final class FiddlerCrabEntity extends Animal {
         FluidState fluid = world.getFluidState(pos);
         return !block.isCollisionShapeFullBlock(world, pos) && !block.isSignalSource() && !block.is(BlockTags.PREVENT_MOB_SPAWNING_INSIDE)
                 && (fluid.isEmpty() || fluid.is(FluidTags.WATER));
+    }
+
+    @Nullable
+    @Override
+    public UUID getOwnerUUID() {
+        return owner;
+    }
+
+    public void setOwnerUUID(@Nullable UUID uuid) {
+        this.owner = uuid;
     }
 
     static final class CrabMoveController extends MoveControl {
