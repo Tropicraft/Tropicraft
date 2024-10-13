@@ -88,14 +88,8 @@ public final class FiddlerCrabEntity extends Animal implements OwnableEntity {
     }
 
     private boolean wasHurtByOwner(final DamageSource source) {
-        final boolean sourceIsEntity = source.getEntity() != null;
-        final boolean sourceHasUuid = sourceIsEntity && source.getEntity().getUUID() != null;
-
-        if (!sourceIsEntity | !sourceHasUuid) {
-            return false;
-        }
-
-        return owner != null && owner.equals(source.getEntity().getUUID());
+        UUID sourceId = source.getEntity() != null ? source.getEntity().getUUID() : null;
+        return owner != null && owner.equals(sourceId);
     }
 
     @Override
