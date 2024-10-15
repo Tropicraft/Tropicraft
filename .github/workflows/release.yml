@@ -18,12 +18,13 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
 
-    - name: Build with Gradle
+    - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v3
+
+    - name: Build Jarfile
+      run: ./gradlew build
       env:
         GHA_RELEASE_WORKFLOW: True
-      with:
-        arguments: build
 
     - name: Set up Environment Variables
       id: env-vars
