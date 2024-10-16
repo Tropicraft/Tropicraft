@@ -14,7 +14,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
+import java.util.*;
 
 public abstract class RainforestTreeFeature extends Feature<NoneFeatureConfiguration> {
 
@@ -27,12 +27,15 @@ public abstract class RainforestTreeFeature extends Feature<NoneFeatureConfigura
         super(codec);
     }
 
-    protected void setState(LevelWriter world, BlockPos pos, BlockState state) {
+    protected void setState(@Nullable Set<BlockPos> positions, LevelWriter world, BlockPos pos, BlockState state) {
+		if (positions != null) {
+            positions.add(pos);
+        }
         setBlockStateInternally(world, pos, state);
     }
 
     private void setBlockStateInternally(LevelWriter world, BlockPos pos, BlockState state) {
-        world.setBlock(pos, state, 19);
+        world.setBlock(pos, state, Block.UPDATE_ALL | Block.UPDATE_KNOWN_SHAPE);
     }
 
     protected SaplingBlock getSapling() {
@@ -47,12 +50,12 @@ public abstract class RainforestTreeFeature extends Feature<NoneFeatureConfigura
         return TropicraftBlocks.MAHOGANY_LOG.get().defaultBlockState();
     }
 
-    protected void placeLog(LevelSimulatedRW world, int x, int y, int z) {
-        setState(world, new BlockPos(x, y, z), getLog());
+    protected void placeLog(@Nullable Set<BlockPos> positions, LevelSimulatedRW world, int x, int y, int z) {
+        setState(positions, world, new BlockPos(x, y, z), getLog());
     }
 
-    protected boolean genCircle(LevelSimulatedRW world, int x, int y, int z, double outerRadius, double innerRadius, BlockState state, boolean solid) {
-        return genCircle(world, new BlockPos(x, y, z), outerRadius, innerRadius, state, solid);
+    protected boolean genCircle(Set<BlockPos> positions, LevelSimulatedRW world, int x, int y, int z, double outerRadius, double innerRadius, BlockState state, boolean solid) {
+        return genCircle(positions, world, new BlockPos(x, y, z), outerRadius, innerRadius, state, solid);
     }
 
     /**
@@ -64,7 +67,7 @@ public abstract class RainforestTreeFeature extends Feature<NoneFeatureConfigura
      * @return The coords that blocks were placed on
      */
     @Nullable
-    public ArrayList<int[]> placeBlockLine(LevelSimulatedRW world, int[] ai, int[] ai1, BlockState state) {
+    public ArrayList<int[]> placeBlockLine(Set<BlockPos> positions, LevelSimulatedRW world, int[] ai, int[] ai1, BlockState state) {
         ArrayList<int[]> places = new ArrayList<>();
         int[] ai2 = {0, 0, 0};
         byte byte0 = 0;
@@ -99,7 +102,7 @@ public abstract class RainforestTreeFeature extends Feature<NoneFeatureConfigura
             ai3[byte1] = Mth.floor((double) ai[byte1] + (double) k * d + 0.5);
             ai3[byte2] = Mth.floor((double) ai[byte2] + (double) k * d1 + 0.5);
             BlockPos pos = new BlockPos(ai3[0], ai3[1], ai3[2]);
-            setState(world, pos, state);
+            setState(positions, world, pos, state);
             places.add(new int[]{ai3[0], ai3[1], ai3[2]});
         }
         return places;
@@ -115,7 +118,7 @@ public abstract class RainforestTreeFeature extends Feature<NoneFeatureConfigura
      * @param state BlockState to generate
      * @param solid Whether it should place the block if another block is already occupying that space
      */
-    public boolean genCircle(LevelSimulatedRW world, BlockPos pos, double outerRadius, double innerRadius, BlockState state, boolean solid) {
+    public boolean genCircle(Set<BlockPos> positions, LevelSimulatedRW world, BlockPos pos, double outerRadius, double innerRadius, BlockState state, boolean solid) {
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
@@ -128,6 +131,7 @@ public abstract class RainforestTreeFeature extends Feature<NoneFeatureConfigura
                     BlockPos pos2 = new BlockPos(i, y, k);
                     if (world.isStateAtPosition(pos2, BlockBehaviour.BlockStateBase::isAir) || solid) {
                         if (world.setBlock(pos2, state, Block.UPDATE_ALL)) {
+                            positions.add(pos2);
                             hasGenned = true;
                         }
                     }

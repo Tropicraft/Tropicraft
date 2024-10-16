@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.dimension.feature.tree;
 
+import com.google.common.collect.Sets;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -11,6 +12,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
+
+import java.util.Set;
 
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.isBBAvailable;
@@ -56,6 +59,9 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
             world.setBlock(pos.below(), Blocks.DIRT.defaultBlockState(), 3);
         }
 
+        Set<BlockPos> logs = Sets.newHashSet();
+        Set<BlockPos> leaves = Sets.newHashSet();
+
         int x = pos.getX(), y = pos.getY(), z = pos.getZ();
 
         int dir = pickDirection(world, random, x, z);
@@ -85,10 +91,10 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
 
         // generate curved trunk
         for (int xx = 0, yy = 0; yy < height; yy++) {
-            placeBlockWithDir(world, xx, yy + y, 0, getLog());
+            placeBlockWithDir(logs, world, xx, yy + y, 0, getLog());
             if (yy == 0 || yy == 1 || yy == 3) {
                 xx++;
-                placeBlockWithDir(world, xx, yy + y, 0, getLog());
+                placeBlockWithDir(logs, world, xx, yy + y, 0, getLog());
             }
             if (yy == height - 2) {
                 spawnCoconuts(world, getPosWithDir(xx, yy + y, 0), random, 2, getLeaf());
@@ -101,9 +107,9 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
         // inner leaf placement
         for (int yy = 1; yy < 5; yy++) {
             if (yy == 4) {
-                placeBlockWithDir(world, 1, yy + y + height - 1, 0, getLeaf());
+                placeBlockWithDir(leaves, world, 1, yy + y + height - 1, 0, getLeaf());
             } else {
-                placeBlockWithDir(world, 0, yy + y + height - 1, 0, getLeaf());
+                placeBlockWithDir(leaves, world, 0, yy + y + height - 1, 0, getLeaf());
             }
         }
 
@@ -113,24 +119,24 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
 
             int yy = height - 1;
 
-            placeBlockWithDir(world, 1, yy - 1 + y, 1, getLeaf());
-            placeBlockWithDir(world, 2, yy - 2 + y, 1, getLeaf());
-            placeBlockWithDir(world, 1, yy - 2 + y, 2, getLeaf());
-            placeBlockWithDir(world, 2, yy - 3 + y, 2, getLeaf());
-            placeBlockWithDir(world, 1, yy + 1 + y, 1, getLeaf());
-            placeBlockWithDir(world, 2, yy + 2 + y, 1, getLeaf());
-            placeBlockWithDir(world, 1, yy + 2 + y, 2, getLeaf());
-            placeBlockWithDir(world, 2, yy + 3 + y, 2, getLeaf());
+            placeBlockWithDir(leaves, world, 1, yy - 1 + y, 1, getLeaf());
+            placeBlockWithDir(leaves, world, 2, yy - 2 + y, 1, getLeaf());
+            placeBlockWithDir(leaves, world, 1, yy - 2 + y, 2, getLeaf());
+            placeBlockWithDir(leaves, world, 2, yy - 3 + y, 2, getLeaf());
+            placeBlockWithDir(leaves, world, 1, yy + 1 + y, 1, getLeaf());
+            placeBlockWithDir(leaves, world, 2, yy + 2 + y, 1, getLeaf());
+            placeBlockWithDir(leaves, world, 1, yy + 2 + y, 2, getLeaf());
+            placeBlockWithDir(leaves, world, 2, yy + 3 + y, 2, getLeaf());
 
             for (int xx = 1; xx < 5; xx++) {
                 if (xx == 4) {
                     yy--;
                 }
-                placeBlockWithDir(world, xx, yy + y, 0, getLeaf());
+                placeBlockWithDir(leaves, world, xx, yy + y, 0, getLeaf());
             }
         }
 
-        return true;
+        return TropicraftLeavesFixer.updateLeaves(world, logs, leaves);
     }
 
     private int findWater(LevelSimulatedRW world, RandomSource rand, int x, int z) {
@@ -240,18 +246,22 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
         };
     }
 
-    private void placeBlockWithDir(LevelWriter world, int x, int y, int z, BlockState state) {
+    private void placeBlockWithDir(Set<BlockPos> positions, LevelWriter world, int x, int y, int z, BlockState state) {
         switch (dir) {
             case 2:
+                positions.add(pos(originX + x, y, originZ + z).immutable());
                 setBlock(world, pos(originX + x, y, originZ + z), state);
                 return;
             case 0:
+                positions.add(pos(originX + z, y, originZ - x).immutable());
                 setBlock(world, pos(originX + z, y, originZ - x), state);
                 return;
             case 3:
+                positions.add(pos(originX - x, y, originZ - z).immutable());
                 setBlock(world, pos(originX - x, y, originZ - z), state);
                 return;
             case 1:
+                positions.add(pos(originX - z, y, originZ + x).immutable());
                 setBlock(world, pos(originX - z, y, originZ + x), state);
         }
     }

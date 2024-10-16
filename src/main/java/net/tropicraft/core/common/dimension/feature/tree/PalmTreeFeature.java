@@ -16,6 +16,8 @@ import net.tropicraft.core.common.block.CoconutBlock;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.util.Set;
+
 public abstract class PalmTreeFeature extends Feature<NoneFeatureConfiguration> {
 
     public PalmTreeFeature(Codec<NoneFeatureConfiguration> codec) {
@@ -38,24 +40,26 @@ public abstract class PalmTreeFeature extends Feature<NoneFeatureConfiguration> 
         return level.isEmptyBlock(pos);
     }
 
-    protected void placeLeaf(LevelSimulatedRW world, int x, int y, int z) {
-        placeLeaf(world, new BlockPos(x, y, z));
+    protected void placeLeaf(Set<BlockPos> leaves, LevelSimulatedRW world, int x, int y, int z) {
+        placeLeaf(leaves, world, new BlockPos(x, y, z));
     }
 
-    protected void placeLeaf(LevelSimulatedRW world, BlockPos pos) {
+    protected void placeLeaf(Set<BlockPos> leaves, LevelSimulatedRW world, BlockPos pos) {
         // From FoliagePlacer
         if (TreeFeature.validTreePos(world, pos)) {
-            setBlock(world, pos, getLeaf());
+            leaves.add(pos.immutable());
+            world.setBlock(pos, getLeaf(), Block.UPDATE_ALL | Block.UPDATE_KNOWN_SHAPE);
         }
     }
 
-    protected void placeLog(LevelSimulatedRW world, int x, int y, int z) {
-        placeLog(world, new BlockPos(x, y, z));
+    protected void placeLog(Set<BlockPos> logs, LevelSimulatedRW world, int x, int y, int z) {
+        placeLog(logs, world, new BlockPos(x, y, z));
     }
 
-    protected void placeLog(LevelSimulatedRW world, BlockPos pos) {
+    protected void placeLog(Set<BlockPos> logs, LevelSimulatedRW world, BlockPos pos) {
         if (TreeFeature.validTreePos(world, pos)) {
-            setBlock(world, pos, getLog());
+            logs.add(pos.immutable());
+            world.setBlock(pos, getLog(), Block.UPDATE_ALL | Block.UPDATE_KNOWN_SHAPE);
         }
     }
 
