@@ -1422,8 +1422,8 @@ public class TropicraftBlocks {
                 .build();
     }
 
-    private static BlockBuilder<LeavesBlock, Registrate> leaves(String name, BlockEntry<SaplingBlock> sapling, float[] saplingRates, boolean decay) {
-        return REGISTRATE.block(name, decay ? LeavesBlock::new : TropicraftLeavesBlock::new)
+    private static BlockBuilder<LeavesBlock, Registrate> leaves(String name, BlockEntry<SaplingBlock> sapling, float[] saplingRates, boolean normalDecay) {
+        return REGISTRATE.block(name, normalDecay ? LeavesBlock::new : TropicraftLeavesBlock::new)
                 .initialProperties(() -> Blocks.OAK_LEAVES)
                 .loot((loot, block) -> loot.add(block, loot.createLeavesDrops(block, sapling.get(), saplingRates)))
                 .tag(BlockTags.LEAVES, BlockTags.MINEABLE_WITH_HOE)
@@ -1432,8 +1432,8 @@ public class TropicraftBlocks {
                 .build();
     }
 
-    private static BlockBuilder<LeavesBlock, Registrate> leaves(String name, boolean decay) {
-        return REGISTRATE.block(name, decay ? LeavesBlock::new : TropicraftLeavesBlock::new)
+    private static BlockBuilder<LeavesBlock, Registrate> leaves(String name, boolean normalDecay) {
+        return REGISTRATE.block(name, normalDecay ? LeavesBlock::new : TropicraftLeavesBlock::new)
                 .initialProperties(() -> Blocks.OAK_LEAVES)
                 .loot((loot, block) -> loot.add(block, onlyWithSilkTouchOrShears(loot, block).withPool(lootPool()
                         .setRolls(ConstantValue.exactly(1))
