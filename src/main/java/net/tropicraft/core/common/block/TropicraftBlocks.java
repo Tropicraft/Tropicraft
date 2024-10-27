@@ -1112,6 +1112,21 @@ public class TropicraftBlocks {
             .build()
             .register();
 
+    public static final BlockEntry<DuckweedBlock> DUCKWEED = REGISTRATE.block("duckweed", DuckweedBlock::new)
+            .properties(p -> p.mapColor(MapColor.PLANT).noCollission().noOcclusion().instabreak().sound(SoundType.LILY_PAD).pushReaction(PushReaction.DESTROY))
+            .addLayer(() -> RenderType::cutout)
+            .blockstate((ctx, prov) -> {
+                BlockModelBuilder model = prov.models().withExistingParent(ctx.getName(), prov.mcLoc("block/carpet"))
+                        .texture("wool", prov.modLoc("block/duckweed"))
+                        .texture("particle", prov.modLoc("block/duckweed"));
+                prov.simpleBlock(ctx.get(), model);
+            })
+            .tag(BlockTags.SWORD_EFFICIENT)
+            .item(PlaceOnWaterBlockItem::new)
+            .model((ctx, prov) -> prov.generated(ctx, prov.modLoc("block/duckweed")))
+            .build()
+            .register();
+
     // Short and tall seagrass
     public static final BlockEntry<CustomSeagrassBlock> EEL_GRASS = seagrass("eel_grass", "Enhalus acoroides", () -> TropicraftBlocks.TALL_EEL_GRASS).register();
     public static final BlockEntry<CustomTallSeagrassBlock> TALL_EEL_GRASS = tallSeagrass("tall_eel_grass", "Enhalus acoroides", EEL_GRASS).register();
