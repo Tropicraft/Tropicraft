@@ -45,6 +45,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.JukeboxPlayable;
 import net.minecraft.world.item.JukeboxSong;
 import net.minecraft.world.item.PickaxeItem;
+import net.minecraft.world.item.PlaceOnWaterBlockItem;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.SignItem;
@@ -771,6 +772,10 @@ public class TropicraftItems {
     public static final ItemEntry<SignItem> BAMBOO_SIGN = sign(TropicraftWoodTypes.BAMBOO, TropicraftBlocks.BAMBOO_BUNDLE, TropicraftBlocks.BAMBOO_SIGN, TropicraftBlocks.BAMBOO_WALL_SIGN).register();
     public static final ItemEntry<SignItem> THATCH_SIGN = sign(TropicraftWoodTypes.THATCH, TropicraftBlocks.THATCH_BUNDLE, TropicraftBlocks.THATCH_SIGN, TropicraftBlocks.THATCH_WALL_SIGN).register();
     public static final ItemEntry<SignItem> MANGROVE_SIGN = sign(TropicraftWoodTypes.MANGROVE, TropicraftBlocks.MANGROVE_PLANKS, TropicraftBlocks.MANGROVE_SIGN, TropicraftBlocks.MANGROVE_WALL_SIGN).register();
+
+    public static final ItemEntry<PlaceOnWaterBlockItem> FLOWERING_LILY_PAD = REGISTRATE.item("flowering_lily_pad", p -> new PlaceOnWaterBlockItem(TropicraftBlocks.FLOWERING_LILY_PAD.get(), p))
+            .model((ctx, prov) -> prov.generated(ctx, prov.modLoc("block/flowering_lily_pad")))
+            .register();
 
     private static ItemBuilder<Item, Registrate> simpleItem(String name) {
         return REGISTRATE.item(name, Item::new);
