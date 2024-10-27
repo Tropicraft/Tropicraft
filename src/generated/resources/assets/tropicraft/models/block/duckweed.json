@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/carpet",
+  "textures": {
+    "particle": "tropicraft:block/duckweed",
+    "wool": "tropicraft:block/duckweed"
+  }
+}

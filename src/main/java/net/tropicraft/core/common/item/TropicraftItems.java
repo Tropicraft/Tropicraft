@@ -777,6 +777,10 @@ public class TropicraftItems {
             .model((ctx, prov) -> prov.generated(ctx, prov.modLoc("block/flowering_lily_pad")))
             .register();
 
+    public static final ItemEntry<PlaceOnWaterBlockItem> DUCKWEED = REGISTRATE.item("duckweed", p -> new PlaceOnWaterBlockItem(TropicraftBlocks.DUCKWEED.get(), p))
+            .model((ctx, prov) -> prov.generated(ctx, prov.modLoc("block/duckweed")))
+            .register();
+
     private static ItemBuilder<Item, Registrate> simpleItem(String name) {
         return REGISTRATE.item(name, Item::new);
     }

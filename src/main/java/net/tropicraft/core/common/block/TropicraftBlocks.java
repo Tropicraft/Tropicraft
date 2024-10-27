@@ -1092,7 +1092,7 @@ public class TropicraftBlocks {
             .register();
 
     public static final BlockEntry<WaterlilyBlock> FLOWERING_LILY_PAD = REGISTRATE.block("flowering_lily_pad", WaterlilyBlock::new)
-            .properties(p -> p.mapColor(MapColor.PLANT).noOcclusion().noCollission().instabreak().sound(SoundType.LILY_PAD).pushReaction(PushReaction.DESTROY))
+            .properties(p -> p.mapColor(MapColor.PLANT).noOcclusion().instabreak().sound(SoundType.LILY_PAD).pushReaction(PushReaction.DESTROY))
             .addLayer(() -> RenderType::cutout)
             .blockstate((ctx, prov) -> {
                 BlockModelBuilder model = prov.models().withExistingParent(ctx.getName(), prov.modLoc("block/water_lily_with_flower"))
@@ -1103,6 +1103,18 @@ public class TropicraftBlocks {
             })
             .setData(ProviderType.LANG, NonNullBiConsumer.noop())
             .color(NonNullSupplier.of(() -> () -> (BlockColor) (blockState, blockAndTintGetter, blockPos, i) -> blockAndTintGetter != null && blockPos != null ? -14647248 : -9321636))
+            .register();
+
+    public static final BlockEntry<WaterlilyBlock> DUCKWEED = REGISTRATE.block("duckweed", WaterlilyBlock::new)
+            .properties(p -> p.mapColor(MapColor.PLANT).noOcclusion().instabreak().sound(SoundType.LILY_PAD).pushReaction(PushReaction.DESTROY))
+            .addLayer(() -> RenderType::cutout)
+            .blockstate((ctx, prov) -> {
+                BlockModelBuilder model = prov.models().withExistingParent(ctx.getName(), prov.mcLoc("block/carpet"))
+                        .texture("wool", prov.modLoc("block/duckweed"))
+                        .texture("particle", prov.modLoc("block/duckweed"));
+                prov.simpleBlock(ctx.get(), model);
+            })
+            .setData(ProviderType.LANG, NonNullBiConsumer.noop())
             .register();
 
     // Short and tall seagrass
