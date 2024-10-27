@@ -1,0 +1,21 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "tropicraft:block/flowering_lily_pad"
+      },
+      {
+        "model": "tropicraft:block/flowering_lily_pad",
+        "y": 90
+      },
+      {
+        "model": "tropicraft:block/flowering_lily_pad",
+        "y": 180
+      },
+      {
+        "model": "tropicraft:block/flowering_lily_pad",
+        "y": 270
+      }
+    ]
+  }
+}

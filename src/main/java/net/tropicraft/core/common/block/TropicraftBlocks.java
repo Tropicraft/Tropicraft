@@ -25,6 +25,7 @@ import net.minecraft.advancements.critereon.ItemEnchantmentsPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.ItemSubPredicates;
 import net.minecraft.advancements.critereon.MinMaxBounds;
+import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -46,9 +47,11 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.PlaceOnWaterBlockItem;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.LevelReader;
@@ -79,6 +82,7 @@ import net.minecraft.world.level.block.TallSeagrassBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.WallSignBlock;
+import net.minecraft.world.level.block.WaterlilyBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -1089,6 +1093,23 @@ public class TropicraftBlocks {
                         .condition(HugePlantBlock.TYPE, HugePlantBlock.Type.CENTER);
             })
             .lang("Large Golden Leather Fern")
+            .register();
+
+    public static final BlockEntry<WaterlilyBlock> FLOWERING_LILY_PAD = REGISTRATE.block("flowering_lily_pad", WaterlilyBlock::new)
+            .properties(p -> p.mapColor(MapColor.PLANT).noOcclusion().instabreak().sound(SoundType.LILY_PAD).pushReaction(PushReaction.DESTROY))
+            .addLayer(() -> RenderType::cutout)
+            .blockstate((ctx, prov) -> {
+                BlockModelBuilder model = prov.models().withExistingParent(ctx.getName(), prov.modLoc("block/water_lily_with_flower"))
+                        .texture("flower", prov.modLoc("block/flowering_lily_pad"))
+                        .texture("texture", prov.mcLoc("block/lily_pad"))
+                        .texture("particle", prov.mcLoc("block/lily_pad"));
+                prov.simpleBlock(ctx.get(), ConfiguredModel.allYRotations(model, 0, false));
+            })
+            .tag(BlockTags.SWORD_EFFICIENT, BlockTags.INSIDE_STEP_SOUND_BLOCKS, BlockTags.FROG_PREFER_JUMP_TO)
+            .color(NonNullSupplier.of(() -> () -> (BlockColor) (blockState, blockAndTintGetter, blockPos, i) -> blockAndTintGetter != null && blockPos != null ? 0xff208030 : 0xff71c35c))
+            .item(PlaceOnWaterBlockItem::new)
+            .model((ctx, prov) -> prov.generated(ctx, prov.modLoc("block/flowering_lily_pad")))
+            .build()
             .register();
 
     // Short and tall seagrass
