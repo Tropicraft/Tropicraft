@@ -75,13 +75,13 @@ public class FailgullModel extends HierarchicalModel<FailgullEntity> {
         root.addOrReplaceChild("rightWing",
                 CubeListBuilder.create()
                         .texOffs(0, 0)
-                        .addBox(0.0f, 0.0f, 0.0f, 0, 2, 5, new CubeDeformation(0.001f)),
+                        .addBox(0.0f, 0.0f, 0.0f, 0, 2, 5, new CubeDeformation(0.002f)),
                 PartPose.offsetAndRotation(-1.0f, 18.0f, 0.0f, -WING_ROT_BASE, 0, RIGHT_WING_ZROT));
 
         root.addOrReplaceChild("leftWing",
                 CubeListBuilder.create()
                         .texOffs(0, 0)
-                        .addBox(0.0f, 0.0f, 0.0f, 0, 2, 5, new CubeDeformation(0.001f)),
+                        .addBox(0.0f, 0.0f, 0.0f, 0, 2, 5, new CubeDeformation(0.002f)),
                 PartPose.offsetAndRotation(2.0f, 18.0f, -2.0f, WING_ROT_BASE, 0, LEFT_WING_ZROT));
 
         root.addOrReplaceChild("neck",

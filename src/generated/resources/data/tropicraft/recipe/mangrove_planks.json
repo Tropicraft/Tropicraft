@@ -12,6 +12,15 @@
       },
       {
         "item": "tropicraft:black_mangrove_log"
+      },
+      {
+        "item": "tropicraft:light_mangrove_wood"
+      },
+      {
+        "item": "tropicraft:red_mangrove_wood"
+      },
+      {
+        "item": "tropicraft:black_mangrove_wood"
       }
     ]
   ],

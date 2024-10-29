@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_papaya_log": {
+    "has_jocote_log": {
       "conditions": {
         "items": [
           {
-            "items": "tropicraft:papaya_log"
+            "items": "tropicraft:jocote_log"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "tropicraft:papaya_log_to_jungle_log"
+        "recipe": "tropicraft:jungle_planks_from_jocote_log"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_papaya_log"
+      "has_jocote_log"
     ]
   ],
   "rewards": {
     "recipes": [
-      "tropicraft:papaya_log_to_jungle_log"
+      "tropicraft:jungle_planks_from_jocote_log"
     ]
   }
 }

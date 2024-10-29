@@ -1,13 +1,14 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "building",
+  "group": "planks",
   "ingredients": [
     {
       "item": "tropicraft:papaya_log"
     }
   ],
   "result": {
-    "count": 1,
-    "id": "minecraft:jungle_log"
+    "count": 4,
+    "id": "minecraft:jungle_planks"
   }
 }

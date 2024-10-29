@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "planks",
+  "ingredients": [
+    {
+      "item": "tropicraft:stripped_mangrove_log"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "id": "tropicraft:mangrove_planks"
+  }
+}

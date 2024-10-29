@@ -3,9 +3,14 @@
   "category": "building",
   "group": "planks",
   "ingredients": [
-    {
-      "item": "tropicraft:palm_log"
-    }
+    [
+      {
+        "item": "tropicraft:palm_log"
+      },
+      {
+        "item": "tropicraft:palm_wood"
+      }
+    ]
   ],
   "result": {
     "count": 4,

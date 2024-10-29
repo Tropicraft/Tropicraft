@@ -18,7 +18,6 @@ import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
-import com.tterrag.registrate.util.nullness.NonNullBiFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.Util;
 import net.minecraft.advancements.critereon.EnchantmentPredicate;
@@ -35,7 +34,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
-import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
@@ -108,7 +106,6 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
 import net.neoforged.neoforge.client.model.generators.BlockModelProvider;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
@@ -137,13 +134,12 @@ import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.mixin.BlockEntityTypeAccessor;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
@@ -158,7 +154,11 @@ import static net.minecraft.world.level.storage.loot.entries.LootItem.lootTableI
 import static net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition.hasBlockStateProperties;
 import static net.neoforged.neoforge.client.model.generators.ConfiguredModel.allRotations;
 import static net.neoforged.neoforge.client.model.generators.ConfiguredModel.allYRotations;
-import static net.tropicraft.core.common.item.TropicraftItems.*;
+import static net.tropicraft.core.common.item.TropicraftItems.AZURITE;
+import static net.tropicraft.core.common.item.TropicraftItems.BAMBOO_MUG;
+import static net.tropicraft.core.common.item.TropicraftItems.BAMBOO_STICK;
+import static net.tropicraft.core.common.item.TropicraftItems.IGUANA_LEATHER;
+import static net.tropicraft.core.common.item.TropicraftItems.JOCOTE;
 
 public class TropicraftBlocks {
     private static final Registrate REGISTRATE = Tropicraft.registrate();
@@ -212,6 +212,23 @@ public class TropicraftBlocks {
         REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, prov -> {
             prov.addTag(TropicraftTags.Blocks.CARVER_REPLACEABLES).addTags(BlockTags.OVERWORLD_CARVER_REPLACEABLES);
         });
+
+        // Misc recipes
+        REGISTRATE.addDataGenerator(ProviderType.RECIPE, prov -> {
+            registerPlankRecipe(prov, () -> TropicraftBlocks.JOCOTE_LOG, Blocks.JUNGLE_PLANKS);
+            registerPlankRecipe(prov, () -> TropicraftBlocks.PAPAYA_LOG, Blocks.JUNGLE_PLANKS);
+            registerPlankRecipe(prov, () -> TropicraftBlocks.PAPAYA_WOOD, Blocks.JUNGLE_PLANKS);
+            registerPlankRecipe(prov, () -> TropicraftBlocks.STRIPPED_MANGROVE_LOG, TropicraftBlocks.MANGROVE_PLANKS.get());
+            registerPlankRecipe(prov, () -> TropicraftBlocks.STRIPPED_MANGROVE_WOOD, TropicraftBlocks.MANGROVE_PLANKS.get());
+        });
+    }
+
+    private static void registerPlankRecipe(final RegistrateRecipeProvider prov, final Supplier<ItemLike> logOrWood, final Block output) {
+        prov.singleItemUnfinished(
+                DataIngredient.items(logOrWood.get()),
+                RecipeCategory.BUILDING_BLOCKS,
+                () -> output, 1, 4).group("planks").save(prov, prov.safeId(output) + "_from_" + prov.safeName(logOrWood.get())
+        );
     }
 
     public static final BlockEntry<PortalWaterBlock> TELEPORT_WATER = REGISTRATE.block("teleport_water", PortalWaterBlock::new)
@@ -470,8 +487,8 @@ public class TropicraftBlocks {
             .simpleItem()
             .register();
 
-    public static final BlockEntry<Block> MAHOGANY_PLANKS = planks("mahogany_planks", MapColor.COLOR_BROWN, () -> DataIngredient.items(TropicraftBlocks.MAHOGANY_LOG.get())).register();
-    public static final BlockEntry<Block> PALM_PLANKS = planks("palm_planks", MapColor.COLOR_BROWN, () -> DataIngredient.items(TropicraftBlocks.PALM_LOG.get())).register();
+    public static final BlockEntry<Block> MAHOGANY_PLANKS = planks("mahogany_planks", MapColor.COLOR_BROWN, () -> DataIngredient.items(TropicraftBlocks.MAHOGANY_LOG.get(), TropicraftBlocks.MAHOGANY_WOOD.get())).register();
+    public static final BlockEntry<Block> PALM_PLANKS = planks("palm_planks", MapColor.COLOR_BROWN, () -> DataIngredient.items(TropicraftBlocks.PALM_LOG.get(), TropicraftBlocks.PALM_WOOD.get())).register();
 
     public static final BlockEntry<RotatedPillarBlock> MAHOGANY_LOG = log("mahogany_log", MapColor.WOOD, MapColor.COLOR_BROWN).register();
     public static final BlockEntry<RotatedPillarBlock> PALM_LOG = log("palm_log", MapColor.COLOR_GRAY, MapColor.COLOR_BROWN).register();
@@ -590,12 +607,7 @@ public class TropicraftBlocks {
             .build()
             .register();
 
-    public static final BlockEntry<RotatedPillarBlock> PAPAYA_LOG = log("papaya_log", MapColor.COLOR_GRAY, MapColor.COLOR_BROWN)
-            .recipe((ctx, prov) -> ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, Blocks.JUNGLE_LOG)
-                    .requires(ctx.get())
-                    .unlockedBy("has_papaya_log", has(ctx.get()))
-                    .save(prov, Tropicraft.location("papaya_log_to_jungle_log")))
-            .register();
+    public static final BlockEntry<RotatedPillarBlock> PAPAYA_LOG = log("papaya_log", MapColor.COLOR_GRAY, MapColor.COLOR_BROWN).register();
     public static final BlockEntry<RotatedPillarBlock> PAPAYA_WOOD = wood("papaya_wood", MapColor.COLOR_GRAY, PAPAYA_LOG).register();
 
     public static final BlockEntry<SaplingBlock> PLANTAIN_SAPLING = sapling("plantain_sapling", TropicraftTreeGrowers.PLANTAIN).register();
@@ -657,21 +669,15 @@ public class TropicraftBlocks {
             .build()
             .register();
 
-    public static final BlockEntry<RotatedPillarBlock> RED_MANGROVE_LOG = log("red_mangrove_log", MapColor.COLOR_GRAY, MapColor.COLOR_BROWN, () -> TropicraftBlocks.STRIPPED_MANGROVE_LOG.get())
-            .item().tag(TropicraftTags.Items.MANGROVE_LOGS).build()
-            .register();
+    public static final BlockEntry<RotatedPillarBlock> RED_MANGROVE_LOG = mangroveLog("red_mangrove_log", MapColor.COLOR_GRAY, MapColor.COLOR_BROWN, () -> TropicraftBlocks.STRIPPED_MANGROVE_LOG.get()).register();
     public static final BlockEntry<RotatedPillarBlock> RED_MANGROVE_WOOD = wood("red_mangrove_wood", MapColor.COLOR_GRAY, RED_MANGROVE_LOG, () -> TropicraftBlocks.STRIPPED_MANGROVE_WOOD.get()).register();
     public static final BlockEntry<MangroveRootsBlock> RED_MANGROVE_ROOTS = mangroveRoots("red_mangrove_roots").register();
 
-    public static final BlockEntry<RotatedPillarBlock> LIGHT_MANGROVE_LOG = log("light_mangrove_log", MapColor.COLOR_GRAY, MapColor.COLOR_BROWN, () -> TropicraftBlocks.STRIPPED_MANGROVE_LOG.get())
-            .item().tag(TropicraftTags.Items.MANGROVE_LOGS).build()
-            .register();
+    public static final BlockEntry<RotatedPillarBlock> LIGHT_MANGROVE_LOG = mangroveLog("light_mangrove_log", MapColor.COLOR_GRAY, MapColor.COLOR_BROWN, () -> TropicraftBlocks.STRIPPED_MANGROVE_LOG.get()).register();
     public static final BlockEntry<RotatedPillarBlock> LIGHT_MANGROVE_WOOD = wood("light_mangrove_wood", MapColor.COLOR_GRAY, LIGHT_MANGROVE_LOG, () -> TropicraftBlocks.STRIPPED_MANGROVE_WOOD.get()).register();
     public static final BlockEntry<MangroveRootsBlock> LIGHT_MANGROVE_ROOTS = mangroveRoots("light_mangrove_roots").register();
 
-    public static final BlockEntry<RotatedPillarBlock> BLACK_MANGROVE_LOG = log("black_mangrove_log", MapColor.COLOR_GRAY, MapColor.COLOR_BROWN, () -> TropicraftBlocks.STRIPPED_MANGROVE_LOG.get())
-            .item().tag(TropicraftTags.Items.MANGROVE_LOGS).build()
-            .register();
+    public static final BlockEntry<RotatedPillarBlock> BLACK_MANGROVE_LOG = mangroveLog("black_mangrove_log", MapColor.COLOR_GRAY, MapColor.COLOR_BROWN, () -> TropicraftBlocks.STRIPPED_MANGROVE_LOG.get()).register();
     public static final BlockEntry<RotatedPillarBlock> BLACK_MANGROVE_WOOD = wood("black_mangrove_wood", MapColor.COLOR_GRAY, BLACK_MANGROVE_LOG, () -> TropicraftBlocks.STRIPPED_MANGROVE_WOOD.get()).register();
     public static final BlockEntry<MangroveRootsBlock> BLACK_MANGROVE_ROOTS = mangroveRoots("black_mangrove_roots").register();
 
@@ -685,10 +691,10 @@ public class TropicraftBlocks {
     public static final BlockEntry<PropaguleBlock> TEA_MANGROVE_PROPAGULE = propagule("tea_mangrove_propagule", TropicraftTreeGrowers.TEA_MANGROVE, "Pelliciera rhizophorae").register();
     public static final BlockEntry<PropaguleBlock> BLACK_MANGROVE_PROPAGULE = propagule("black_mangrove_propagule", TropicraftTreeGrowers.BLACK_MANGROVE, "Avicennia germinans").register();
 
-    public static final BlockEntry<RotatedPillarBlock> STRIPPED_MANGROVE_LOG = log("stripped_mangrove_log", MapColor.COLOR_RED, MapColor.COLOR_RED).register();
+    public static final BlockEntry<RotatedPillarBlock> STRIPPED_MANGROVE_LOG = mangroveLog("stripped_mangrove_log", MapColor.COLOR_RED, MapColor.COLOR_RED, null).register();
     public static final BlockEntry<RotatedPillarBlock> STRIPPED_MANGROVE_WOOD = wood("stripped_mangrove_wood", MapColor.COLOR_RED, STRIPPED_MANGROVE_LOG).register();
 
-    public static final BlockEntry<Block> MANGROVE_PLANKS = planks("mangrove_planks", MapColor.COLOR_BROWN, () -> DataIngredient.items((NonNullSupplier<? extends Block>) TropicraftBlocks.LIGHT_MANGROVE_LOG, TropicraftBlocks.RED_MANGROVE_LOG, TropicraftBlocks.BLACK_MANGROVE_LOG)).register();
+    public static final BlockEntry<Block> MANGROVE_PLANKS = planks("mangrove_planks", MapColor.COLOR_BROWN, () -> DataIngredient.items((NonNullSupplier<? extends Block>) TropicraftBlocks.LIGHT_MANGROVE_LOG, TropicraftBlocks.RED_MANGROVE_LOG, TropicraftBlocks.BLACK_MANGROVE_LOG, TropicraftBlocks.LIGHT_MANGROVE_WOOD, TropicraftBlocks.RED_MANGROVE_WOOD, TropicraftBlocks.BLACK_MANGROVE_WOOD)).register();
     public static final BlockEntry<StairBlock> MANGROVE_STAIRS = woodenStairs("mangrove_stairs", MANGROVE_PLANKS).register();
     public static final BlockEntry<SlabBlock> MANGROVE_SLAB = woodenSlab("mangrove_slab", MANGROVE_PLANKS).register();
     public static final BlockEntry<FenceBlock> MANGROVE_FENCE = woodenFence("mangrove_fence", MANGROVE_PLANKS, i -> i).register();
@@ -1463,6 +1469,17 @@ public class TropicraftBlocks {
 
     private static BlockBuilder<RotatedPillarBlock, Registrate> log(String name, MapColor topColor, MapColor sideColor) {
         return log(name, topColor, sideColor, null);
+    }
+
+    private static BlockBuilder<RotatedPillarBlock, Registrate> mangroveLog(String name, MapColor topColor, MapColor sideColor, @Nullable Supplier<? extends RotatedPillarBlock> strippedLog) {
+        return REGISTRATE.block(name, p -> strippedLog != null ? new TropicraftLogBlock(p, strippedLog) : new RotatedPillarBlock(p))
+                .initialProperties(() -> Blocks.OAK_LOG)
+                .properties(p -> rotatedPillarProperties(p, topColor, sideColor))
+                .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN, BlockTags.MINEABLE_WITH_AXE)
+                .blockstate((ctx, prov) -> prov.logBlock(ctx.get()))
+                .item()
+                .tag(ItemTags.LOGS, ItemTags.LOGS_THAT_BURN, TropicraftTags.Items.MANGROVE_LOGS)
+                .build();
     }
 
     private static BlockBuilder<RotatedPillarBlock, Registrate> log(String name, MapColor topColor, MapColor sideColor, @Nullable Supplier<? extends RotatedPillarBlock> strippedLog) {
