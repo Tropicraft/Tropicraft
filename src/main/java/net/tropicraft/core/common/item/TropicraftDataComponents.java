@@ -28,4 +28,8 @@ public class TropicraftDataComponents {
             "cocktail",
             builder -> builder.persistent(Cocktail.CODEC).networkSynchronized(Cocktail.STREAM_CODEC)
     );
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> DESTROYS_BLOCKS = REGISTER.registerComponentType(
+            "destroys_blocks",
+            builder -> builder.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL)
+    );
 }

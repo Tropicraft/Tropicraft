@@ -14,22 +14,25 @@ import net.tropicraft.core.common.item.TropicraftItems;
 
 public class ExplodingCoconutEntity extends ThrowableItemProjectile {
     public static final float DEFAULT_EXPLOSION_RADIUS = 2.4f;
+    public static final boolean DEFAULT_DESTROYS_BLOCKS = true;
 
     private float explosionRadius = DEFAULT_EXPLOSION_RADIUS;
+    private Level.ExplosionInteraction explosionInteraction = Level.ExplosionInteraction.BLOCK;
 
     public ExplodingCoconutEntity(EntityType<? extends ExplodingCoconutEntity> type, Level world) {
         super(type, world);
     }
 
-    public ExplodingCoconutEntity(Level world, LivingEntity thrower, float explosionRadius) {
+    public ExplodingCoconutEntity(Level world, LivingEntity thrower, float explosionRadius, boolean destroysBlocks) {
         super(TropicraftEntities.EXPLODING_COCONUT.get(), thrower, world);
         this.explosionRadius = explosionRadius;
+        this.explosionInteraction = destroysBlocks ? Level.ExplosionInteraction.BLOCK : Level.ExplosionInteraction.NONE;
     }
 
     @Override
     protected void onHit(HitResult result) {
         if (!level().isClientSide) {
-            level().explode(this, getX(), getY(), getZ(), Mth.clamp(explosionRadius, 0.0f, 5.0f), Level.ExplosionInteraction.BLOCK);
+            level().explode(this, getX(), getY(), getZ(), Mth.clamp(explosionRadius, 0.0f, 5.0f), explosionInteraction);
             remove(RemovalReason.KILLED);
         }
     }
