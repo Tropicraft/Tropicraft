@@ -867,7 +867,8 @@ public class TropicraftBlocks {
     }
 
     public static final BlockEntry<LadderBlock> BAMBOO_LADDER = REGISTRATE.block("bamboo_ladder", LadderBlock::new)
-            .initialProperties(() -> Blocks.BAMBOO)
+            .initialProperties(() -> Blocks.LADDER)
+            .properties(p -> p.sound(SoundType.BAMBOO))
             .addLayer(() -> RenderType::cutout)
             .tag(BlockTags.CLIMBABLE, BlockTags.MINEABLE_WITH_AXE)
             .blockstate((ctx, prov) -> {
