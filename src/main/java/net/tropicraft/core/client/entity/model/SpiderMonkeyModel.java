@@ -92,7 +92,7 @@ public class SpiderMonkeyModel<T extends SpiderMonkeyEntity> extends Hierarchica
                 CubeListBuilder.create()
                         .texOffs(18, 28)
                         .addBox(-0.5f, -0.5f, -1.0f, 2.0f, 8.0f, 2.0f, false),
-                PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, -75.0f, 5.0f, -2.5f));
+                PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, -75.0f * Mth.DEG_TO_RAD, 5.0f * Mth.DEG_TO_RAD, -2.5f * Mth.DEG_TO_RAD));
 
         PartDefinition legRight = body.addOrReplaceChild("leg_right_a",
                 CubeListBuilder.create(),
@@ -102,7 +102,7 @@ public class SpiderMonkeyModel<T extends SpiderMonkeyEntity> extends Hierarchica
                 CubeListBuilder.create()
                         .texOffs(9, 28)
                         .addBox(-1.5f, -0.5f, -1.0f, 2.0f, 8.0f, 2.0f, false),
-                PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, -75.0f, -5.0f, 2.5f));
+                PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, -75.0f * Mth.DEG_TO_RAD, -5.0f * Mth.DEG_TO_RAD, 2.5f * Mth.DEG_TO_RAD));
 
         return LayerDefinition.create(mesh, 64, 64);
     }
