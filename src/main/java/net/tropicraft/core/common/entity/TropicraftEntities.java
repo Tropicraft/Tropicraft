@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.entity;
 
 import com.tterrag.registrate.Registrate;
+import com.tterrag.registrate.builders.EntityBuilder;
 import com.tterrag.registrate.providers.loot.RegistrateEntityLootTables;
 import com.tterrag.registrate.util.entry.EntityEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
@@ -67,6 +68,7 @@ import net.tropicraft.core.common.entity.projectile.SpearEntity;
 import net.tropicraft.core.common.entity.underdasea.*;
 import net.tropicraft.core.common.item.TropicalFertilizerItem;
 import net.tropicraft.core.common.item.TropicraftItems;
+import org.jetbrains.annotations.NotNull;
 
 @EventBusSubscriber(modid = Tropicraft.ID)
 public class TropicraftEntities {
@@ -606,7 +608,24 @@ public class TropicraftEntities {
             .loot(TropicraftEntities::noDrops)
             .renderer(() -> ToucanRenderer::new)
             .tag(EntityTypeTags.FALL_DAMAGE_IMMUNE)
+            .tag(TropicraftTags.Entities.CAN_STAND_ON_BRANCH)
             .register();
+
+    public static final RegistryEntry<EntityType<?>, EntityType<SmallBirdEntity>> PAPYRUS_CANARY = smallBird("papyrus_canary")
+            .renderer(() -> PapyrusCanaryRenderer::new)
+            .register();
+
+    private static EntityBuilder<SmallBirdEntity, Registrate> smallBird(String name) {
+        return REGISTRATE.entity(name, SmallBirdEntity::new, MobCategory.CREATURE)
+                .properties(b -> b.sized(0.3f, 0.3f)
+                        .setTrackingRange(5)
+                        .setUpdateInterval(3))
+                .spawnPlacement(SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, SmallBirdEntity::canSmallBirdSpawnOn, RegisterSpawnPlacementsEvent.Operation.REPLACE)
+                .attributes(SmallBirdEntity::createAttributes)
+                .loot(TropicraftEntities::noDrops)
+                .tag(EntityTypeTags.FALL_DAMAGE_IMMUNE)
+                .tag(TropicraftTags.Entities.CAN_STAND_ON_BRANCH);
+    }
 
     public static boolean canAnimalSpawn(EntityType<? extends Mob> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
         BlockState groundState = worldIn.getBlockState(pos.below());
