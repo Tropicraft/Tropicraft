@@ -34,16 +34,14 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
+import net.tropicraft.core.common.BinaryAnimation;
 import net.tropicraft.core.common.Easings;
 import net.tropicraft.core.common.TropicraftTags;
 
 import javax.annotation.Nullable;
 
 public class ToucanEntity extends Animal implements FlyingAnimal {
-    private static final int FLIGHT_ANIMATION_LENGTH = SharedConstants.TICKS_PER_SECOND / 4;
-
-    private int flightAnimation;
-    private int lastFlightAnimation;
+    private final BinaryAnimation flightAnimation = new BinaryAnimation(SharedConstants.TICKS_PER_SECOND / 4, Easings::inOutSine);
 
     public ToucanEntity(EntityType<? extends ToucanEntity> type, Level world) {
         super(type, world);
@@ -90,18 +88,13 @@ public class ToucanEntity extends Animal implements FlyingAnimal {
     @Override
     public void tick() {
         super.tick();
-        int targetFlightAnimation = isFlying() ? FLIGHT_ANIMATION_LENGTH : 0;
-        lastFlightAnimation = flightAnimation;
-        if (targetFlightAnimation > flightAnimation) {
-            flightAnimation++;
-        } else if (targetFlightAnimation < flightAnimation) {
-            flightAnimation--;
+        if (level().isClientSide()) {
+            flightAnimation.tick(isFlying());
         }
     }
 
     public float getFlightAnimation(float partialTicks) {
-        float animation = Mth.lerp(partialTicks, lastFlightAnimation, flightAnimation) / FLIGHT_ANIMATION_LENGTH;
-        return Easings.inOutSine(animation);
+        return flightAnimation.get(partialTicks);
     }
 
     @Override
