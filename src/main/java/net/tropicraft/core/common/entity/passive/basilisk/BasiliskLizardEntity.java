@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.entity.passive.basilisk;
 
+import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -28,6 +29,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
+import net.tropicraft.core.common.BinaryAnimation;
 import net.tropicraft.core.common.Easings;
 
 public final class BasiliskLizardEntity extends Animal {
@@ -36,13 +38,14 @@ public final class BasiliskLizardEntity extends Animal {
     private static final float WATER_WALK_SPEED_BOOST = 1.6f;
     private static final int WATER_WALK_TIME = 10;
 
-    private static final int RUNNING_ANIMATION_LENGTH = 10;
-
     private int movingTimer;
     private boolean onWaterSurface;
 
-    private int runningAnimation;
-    private int prevRunningAnimation;
+    private final BinaryAnimation runningAnimation = new BinaryAnimation(
+            SharedConstants.TICKS_PER_SECOND / 2,
+            SharedConstants.TICKS_PER_SECOND / 4,
+            Easings::inOutSine
+    );
 
     public BasiliskLizardEntity(EntityType<? extends BasiliskLizardEntity> type, Level world) {
         super(type, world);
@@ -100,19 +103,11 @@ public final class BasiliskLizardEntity extends Animal {
     }
 
     private void tickRunningAnimation() {
-        prevRunningAnimation = runningAnimation;
-
-        if (entityData.get(RUNNING)) {
-            if (runningAnimation < RUNNING_ANIMATION_LENGTH) {
-                runningAnimation++;
-            }
-
+        boolean running = entityData.get(RUNNING);
+        runningAnimation.tick(running);
+		if (running) {
             spawnRunningParticles();
-        } else {
-            if (runningAnimation > 0) {
-                runningAnimation = Math.max(runningAnimation - 2, 0);
-            }
-        }
+		}
     }
 
     private void spawnRunningParticles() {
@@ -196,7 +191,6 @@ public final class BasiliskLizardEntity extends Animal {
     }
 
     public float getRunningAnimation(float partialTicks) {
-        float animation = Mth.lerp(partialTicks, prevRunningAnimation, runningAnimation);
-        return Easings.inOutSine(animation / RUNNING_ANIMATION_LENGTH);
+        return runningAnimation.get(partialTicks);
     }
 }

@@ -6,7 +6,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -25,6 +24,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.tropicraft.core.common.BinaryAnimation;
 import net.tropicraft.core.common.Easings;
 import net.tropicraft.core.common.TropicraftTags;
 
@@ -33,11 +33,9 @@ import java.util.function.Supplier;
 public class SpiderMonkeyEntity extends Animal {
     private static final Supplier<Ingredient> BREEDING_ITEMS = Suppliers.memoize(() -> Ingredient.of(TropicraftTags.Items.FRUITS));
 
-    private static final int STAND_ANIMATION_LENGTH = 15;
-
     private static final EntityDataAccessor<Boolean> STANDING = SynchedEntityData.defineId(SpiderMonkeyEntity.class, EntityDataSerializers.BOOLEAN);
 
-    private int standAnimation;
+    private final BinaryAnimation standAnimation = new BinaryAnimation(15, Easings::inOutSine);
 
     public SpiderMonkeyEntity(EntityType<? extends SpiderMonkeyEntity> type, Level world) {
         super(type, world);
@@ -74,7 +72,7 @@ public class SpiderMonkeyEntity extends Animal {
         if (!level().isClientSide) {
             tickStandingState();
         } else {
-            tickStandingAnimation();
+            standAnimation.tick(isStanding());
         }
     }
 
@@ -90,21 +88,9 @@ public class SpiderMonkeyEntity extends Animal {
         }
     }
 
-    private void tickStandingAnimation() {
-        if (isStanding()) {
-            if (standAnimation < STAND_ANIMATION_LENGTH) {
-                standAnimation++;
-            }
-        } else {
-            if (standAnimation > 0) {
-                standAnimation--;
-            }
-        }
-    }
-
     public void setStanding(boolean standing) {
         entityData.set(STANDING, standing);
-        standAnimation = standing ? STAND_ANIMATION_LENGTH : 0;
+        standAnimation.setImmediate(standing);
     }
 
     public boolean isStanding() {
@@ -112,8 +98,7 @@ public class SpiderMonkeyEntity extends Animal {
     }
 
     public float getStandAnimation(float partialTicks) {
-        float animation = (standAnimation + (isStanding() ? partialTicks : -partialTicks)) / STAND_ANIMATION_LENGTH;
-        return Easings.inOutSine(Mth.clamp(animation, 0.0f, 1.0f));
+        return standAnimation.get(partialTicks);
     }
 
     @Override
