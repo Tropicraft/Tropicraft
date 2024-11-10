@@ -470,6 +470,9 @@ public class TropicraftItems {
     public static final ItemEntry<Item> SLENDER_HARVEST_MOUSE_SPAWN_EGG = spawnEgg("slender_harvest_mouse_spawn_egg", TropicraftEntities.SLENDER_HARVEST_MOUSE, 0xaf7a41, 0xe6d7bf).register();
     public static final ItemEntry<Item> TOUCAN_SPAWN_EGG = spawnEgg("toucan_spawn_egg", TropicraftEntities.TOUCAN, 0x08060d, 0xe5dc5b).register();
     public static final ItemEntry<Item> PAPYRUS_CANARY_SPAWN_EGG = spawnEgg("papyrus_canary_spawn_egg", TropicraftEntities.PAPYRUS_CANARY, 0xafd342, 0x3e4c19).register();
+    public static final ItemEntry<Item> PAPYRUS_GONOLEK_SPAWN_EGG = spawnEgg("papyrus_gonolek_spawn_egg", TropicraftEntities.PAPYRUS_GONOLEK, 0x0d0c0c, 0xd93500).register();
+    public static final ItemEntry<Item> WHITE_COLLARED_OLIVEBACK_SPAWN_EGG = spawnEgg("white_collared_oliveback_spawn_egg", TropicraftEntities.WHITE_COLLARED_OLIVEBACK, 0x99a09d, 0x8d863f).register();
+    public static final ItemEntry<Item> WHITE_WINGED_WARBLER_SPAWN_EGG = spawnEgg("white_winged_warbler_spawn_egg", TropicraftEntities.WHITE_WINGED_WARBLER, 0xecfaf9, 0x507a93).register();
     public static final ItemEntry<Item> STARFISH_SPAWN_EGG = spawnEgg("starfish_spawn_egg", TropicraftEntities.STARFISH, 0x471779, 0xffb830).register();
 
     private static <T extends Mob> ItemBuilder<Item, Registrate> spawnEgg(String name, RegistryEntry<EntityType<?>, EntityType<T>> entity, int backgroundColor, int highlightColor) {

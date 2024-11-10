@@ -3,6 +3,7 @@ package net.tropicraft.core.client;
 import net.minecraft.client.model.CowModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -30,6 +31,7 @@ import net.tropicraft.core.client.entity.model.ManOWarModel;
 import net.tropicraft.core.client.entity.model.ManateeModel;
 import net.tropicraft.core.client.entity.model.MarlinModel;
 import net.tropicraft.core.client.entity.model.PapyrusCanaryModel;
+import net.tropicraft.core.client.entity.model.PapyrusGonolekModel;
 import net.tropicraft.core.client.entity.model.PlayerHeadpieceModel;
 import net.tropicraft.core.client.entity.model.SeaTurtleModel;
 import net.tropicraft.core.client.entity.model.SeaUrchinModel;
@@ -47,7 +49,9 @@ import net.tropicraft.core.client.entity.model.TropicraftDolphinModel;
 import net.tropicraft.core.client.entity.model.TropicraftFishModel;
 import net.tropicraft.core.client.entity.model.UmbrellaModel;
 import net.tropicraft.core.client.entity.model.VMonkeyModel;
+import net.tropicraft.core.client.entity.model.WhiteCollaredOlivebackModel;
 import net.tropicraft.core.client.entity.model.WhiteLippedPeccaryModel;
+import net.tropicraft.core.client.entity.model.WhiteWingedWarblerModel;
 import net.tropicraft.core.client.scuba.ModelScubaGear;
 
 import java.util.function.Supplier;
@@ -104,6 +108,9 @@ public class TropicraftRenderLayers {
     public static ModelLayerLocation SLENDER_HARVEST_MOUSE_LAYER;
     public static ModelLayerLocation TOUCAN_LAYER;
     public static ModelLayerLocation PAPYRUS_CANARY_LAYER;
+    public static ModelLayerLocation PAPYRUS_GONOLEK_LAYER;
+    public static ModelLayerLocation WHITE_COLLARED_OLIVEBACK_LAYER;
+    public static ModelLayerLocation WHITE_WINGED_WARBLER_LAYER;
 
     // Scuba
     public static ModelLayerLocation CHEST_SCUBA_LAYER;
@@ -164,6 +171,9 @@ public class TropicraftRenderLayers {
         SLENDER_HARVEST_MOUSE_LAYER = registerMain("slender_harvest_mouse", SlenderHarvestMouseModel::create, event);
         TOUCAN_LAYER = registerMain("toucan", ToucanModel::create, event);
 		PAPYRUS_CANARY_LAYER = registerMain("papyrus_canary", PapyrusCanaryModel::createBodyLayer, event);
+		PAPYRUS_GONOLEK_LAYER = registerMain("papyrus_gonolek", PapyrusGonolekModel::createBodyLayer, event);
+		WHITE_COLLARED_OLIVEBACK_LAYER = registerMain("white_collared_oliveback", WhiteCollaredOlivebackModel::createBodyLayer, event);
+		WHITE_WINGED_WARBLER_LAYER = registerMain("white_winged_warbler", WhiteWingedWarblerModel::createBodyLayer, event);
 
         HEADPIECE_LAYER = registerMain("headpiece", PlayerHeadpieceModel::create, event);
         HEAD_SCUBA_LAYER = registerMain("scuba_goggles", ModelScubaGear::create, event);
