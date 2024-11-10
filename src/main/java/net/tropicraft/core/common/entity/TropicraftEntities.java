@@ -614,6 +614,15 @@ public class TropicraftEntities {
     public static final RegistryEntry<EntityType<?>, EntityType<SmallBirdEntity>> PAPYRUS_CANARY = smallBird("papyrus_canary")
             .renderer(() -> PapyrusCanaryRenderer::new)
             .register();
+    public static final RegistryEntry<EntityType<?>, EntityType<SmallBirdEntity>> PAPYRUS_GONOLEK = smallBird("papyrus_gonolek")
+            .renderer(() -> PapyrusGonolekRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<?>, EntityType<SmallBirdEntity>> WHITE_COLLARED_OLIVEBACK = smallBird("white_collared_oliveback")
+            .renderer(() -> WhiteCollaredOlivebackRenderer::new)
+            .register();
+    public static final RegistryEntry<EntityType<?>, EntityType<SmallBirdEntity>> WHITE_WINGED_WARBLER = smallBird("white_winged_warbler")
+            .renderer(() -> WhiteWingedWarblerRenderer::new)
+            .register();
 
     private static EntityBuilder<SmallBirdEntity, Registrate> smallBird(String name) {
         return REGISTRATE.entity(name, SmallBirdEntity::new, MobCategory.CREATURE)
