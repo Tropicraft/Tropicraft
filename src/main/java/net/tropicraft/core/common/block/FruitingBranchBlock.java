@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -20,8 +21,12 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.EntityCollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.tropicraft.core.common.TropicraftTags;
 import org.jetbrains.annotations.Nullable;
 
 public final class FruitingBranchBlock extends Block implements BonemealableBlock {
@@ -36,6 +41,9 @@ public final class FruitingBranchBlock extends Block implements BonemealableBloc
     private static final VoxelShape SOUTH_SHAPE = Block.box(4.0, 4.0, 0.0, 12.0, 12.0, 14.0);
     private static final VoxelShape WEST_SHAPE = Block.box(2.0, 4.0, 4.0, 16.0, 12.0, 12.0);
     private static final VoxelShape EAST_SHAPE = Block.box(0.0, 4.0, 4.0, 14.0, 12.0, 12.0);
+
+    // Give birds a bit more space to sit on here - otherwise they're pretty bad at actually landing on it
+    private static final VoxelShape BIRD_PERCH_SHAPE = Block.box(0.0, 10.0, 0.0, 16.0, 12.0, 16.0);
 
     public FruitingBranchBlock(Properties properties) {
         super(properties);
@@ -56,6 +64,21 @@ public final class FruitingBranchBlock extends Block implements BonemealableBloc
             case EAST -> EAST_SHAPE;
             default -> throw new UnsupportedOperationException();
         };
+    }
+
+    @Override
+    protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        if (context instanceof EntityCollisionContext entityContext && entityContext.getEntity() != null) {
+			if (entityContext.getEntity().getType().is(TropicraftTags.Entities.CAN_STAND_ON_BRANCH)) {
+				return BIRD_PERCH_SHAPE;
+			}
+        }
+        return Shapes.empty();
+    }
+
+    @Override
+    protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType) {
+        return false;
     }
 
     @Override

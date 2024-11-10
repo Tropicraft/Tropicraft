@@ -3,7 +3,6 @@ package net.tropicraft.core.client;
 import net.minecraft.client.model.CowModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -30,6 +29,7 @@ import net.tropicraft.core.client.entity.model.KoaModel;
 import net.tropicraft.core.client.entity.model.ManOWarModel;
 import net.tropicraft.core.client.entity.model.ManateeModel;
 import net.tropicraft.core.client.entity.model.MarlinModel;
+import net.tropicraft.core.client.entity.model.PapyrusCanaryModel;
 import net.tropicraft.core.client.entity.model.PlayerHeadpieceModel;
 import net.tropicraft.core.client.entity.model.SeaTurtleModel;
 import net.tropicraft.core.client.entity.model.SeaUrchinModel;
@@ -103,6 +103,7 @@ public class TropicraftRenderLayers {
     public static ModelLayerLocation MANATEE_LAYER;
     public static ModelLayerLocation SLENDER_HARVEST_MOUSE_LAYER;
     public static ModelLayerLocation TOUCAN_LAYER;
+    public static ModelLayerLocation PAPYRUS_CANARY_LAYER;
 
     // Scuba
     public static ModelLayerLocation CHEST_SCUBA_LAYER;
@@ -162,6 +163,7 @@ public class TropicraftRenderLayers {
         MANATEE_LAYER = registerMain("manatee", ManateeModel::create, event);
         SLENDER_HARVEST_MOUSE_LAYER = registerMain("slender_harvest_mouse", SlenderHarvestMouseModel::create, event);
         TOUCAN_LAYER = registerMain("toucan", ToucanModel::create, event);
+		PAPYRUS_CANARY_LAYER = registerMain("papyrus_canary", PapyrusCanaryModel::createBodyLayer, event);
 
         HEADPIECE_LAYER = registerMain("headpiece", PlayerHeadpieceModel::create, event);
         HEAD_SCUBA_LAYER = registerMain("scuba_goggles", ModelScubaGear::create, event);

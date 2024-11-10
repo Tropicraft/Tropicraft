@@ -211,6 +211,7 @@ public class TropicraftBlocks {
 
         REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, prov -> {
             prov.addTag(TropicraftTags.Blocks.CARVER_REPLACEABLES).addTags(BlockTags.OVERWORLD_CARVER_REPLACEABLES);
+            prov.addTag(TropicraftTags.Blocks.BIRDS_LIKE_TO_STAND_ON).addTags(BlockTags.LOGS).addTags(BlockTags.LEAVES).addTags(TropicraftTags.Blocks.BRANCHES);
         });
 
         // Misc recipes
@@ -630,7 +631,7 @@ public class TropicraftBlocks {
     public static final BlockEntry<RotatedPillarBlock> JOCOTE_LOG = log("jocote_log", MapColor.COLOR_GRAY, MapColor.COLOR_BROWN).register();
     public static final BlockEntry<LeavesBlock> JOCOTE_LEAVES = leaves("jocote_leaves", JOCOTE_SAPLING, SAPLING_RATES, true).register();
     public static final BlockEntry<FruitingBranchBlock> JOCOTE_BRANCH = REGISTRATE.block("jocote_branch", FruitingBranchBlock::new)
-            .properties(p -> p.sound(SoundType.AZALEA).noOcclusion().noCollission().instabreak().randomTicks().pushReaction(PushReaction.DESTROY))
+            .properties(p -> p.sound(SoundType.AZALEA).noOcclusion().instabreak().randomTicks().pushReaction(PushReaction.DESTROY))
             .blockstate((ctx, prov) -> {
                 ResourceLocation fruitingBranch = prov.modLoc("block/fruiting_branch");
                 List<BlockModelBuilder> models = IntStream.rangeClosed(0, FruitingBranchBlock.MAX_AGE).mapToObj(age ->
@@ -640,6 +641,7 @@ public class TropicraftBlocks {
                 ).toList();
                 prov.horizontalBlock(ctx.get(), state -> models.get(state.getValue(FruitingBranchBlock.AGE)));
             })
+            .tag(TropicraftTags.Blocks.BRANCHES)
             .addLayer(() -> RenderType::cutoutMipped)
             .loot((loot, block) -> loot.add(block, lootTable().withPool(loot.applyExplosionCondition(block, lootPool().setRolls(ConstantValue.exactly(1))
                     .add(lootTableItem(block))
