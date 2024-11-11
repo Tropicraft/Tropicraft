@@ -27,14 +27,17 @@ public class ExplodingCoconutItem extends Item {
             return new InteractionResultHolder<>(InteractionResult.CONSUME, item);
         }
 
+        float explosionRadius = item.getOrDefault(TropicraftDataComponents.EXPLOSION_RADIUS, ExplodingCoconutEntity.DEFAULT_EXPLOSION_RADIUS);
+        boolean destroysBlocks = item.getOrDefault(TropicraftDataComponents.DESTROYS_BLOCKS, ExplodingCoconutEntity.DEFAULT_DESTROYS_BLOCKS);
+
+        boolean requiresPermission = explosionRadius > 0.0f && destroysBlocks;
+
         boolean canPlayerThrow = player.isCreative() || player.canUseGameMasterBlocks() || TropicsConfigs.COMMON.allowExplodingCoconutsByNonOPs.get();
-        if (!canPlayerThrow) {
+        if (requiresPermission && !canPlayerThrow) {
             player.displayClientMessage(TropicraftLangKeys.EXPLODING_COCONUT_WARNING.component(), false);
             return new InteractionResultHolder<>(InteractionResult.FAIL, item);
         }
 
-        float explosionRadius = item.getOrDefault(TropicraftDataComponents.EXPLOSION_RADIUS, ExplodingCoconutEntity.DEFAULT_EXPLOSION_RADIUS);
-        boolean destroysBlocks = item.getOrDefault(TropicraftDataComponents.DESTROYS_BLOCKS, ExplodingCoconutEntity.DEFAULT_DESTROYS_BLOCKS);
         ExplodingCoconutEntity coconut = new ExplodingCoconutEntity(level, player, explosionRadius, destroysBlocks);
         coconut.setItem(item);
         coconut.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0f, 1.5f, 1.0f);
