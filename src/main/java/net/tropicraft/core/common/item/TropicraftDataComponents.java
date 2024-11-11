@@ -8,6 +8,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.drinks.Cocktail;
+import net.tropicraft.core.common.entity.projectile.ExplodingCoconutEntity;
 
 public class TropicraftDataComponents {
     public static final DeferredRegister.DataComponents REGISTER = DeferredRegister.createDataComponents(Tropicraft.ID);
@@ -18,7 +19,7 @@ public class TropicraftDataComponents {
     );
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Float>> EXPLOSION_RADIUS = REGISTER.registerComponentType(
             "explosion_radius",
-            builder -> builder.persistent(Codec.floatRange(0.0f, 16.0f)).networkSynchronized(ByteBufCodecs.FLOAT)
+            builder -> builder.persistent(Codec.floatRange(0.0f, ExplodingCoconutEntity.MAX_EXPLOSION_RADIUS)).networkSynchronized(ByteBufCodecs.FLOAT)
     );
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> SHELL_NAME = REGISTER.registerComponentType(
             "shell_name",

@@ -1,7 +1,9 @@
 package net.tropicraft.core.common.entity.projectile;
 
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,10 +16,12 @@ import net.tropicraft.core.common.item.TropicraftItems;
 
 public class ExplodingCoconutEntity extends ThrowableItemProjectile {
     public static final float DEFAULT_EXPLOSION_RADIUS = 2.4f;
+    public static final float MAX_EXPLOSION_RADIUS = 5.0f;
+
     public static final boolean DEFAULT_DESTROYS_BLOCKS = true;
 
     private float explosionRadius = DEFAULT_EXPLOSION_RADIUS;
-    private Level.ExplosionInteraction explosionInteraction = Level.ExplosionInteraction.BLOCK;
+    private boolean destroysBlocks;
 
     public ExplodingCoconutEntity(EntityType<? extends ExplodingCoconutEntity> type, Level world) {
         super(type, world);
@@ -26,13 +30,24 @@ public class ExplodingCoconutEntity extends ThrowableItemProjectile {
     public ExplodingCoconutEntity(Level world, LivingEntity thrower, float explosionRadius, boolean destroysBlocks) {
         super(TropicraftEntities.EXPLODING_COCONUT.get(), thrower, world);
         this.explosionRadius = explosionRadius;
-        this.explosionInteraction = destroysBlocks ? Level.ExplosionInteraction.BLOCK : Level.ExplosionInteraction.NONE;
+        this.destroysBlocks = destroysBlocks;
     }
 
     @Override
     protected void onHit(HitResult result) {
         if (!level().isClientSide) {
-            level().explode(this, getX(), getY(), getZ(), Mth.clamp(explosionRadius, 0.0f, 5.0f), explosionInteraction);
+			level().explode(
+                    this,
+                    level().damageSources().explosion(this, getOwner()),
+                    null,
+                    getX(), getY(), getZ(),
+                    Mth.clamp(explosionRadius, 0.0f, MAX_EXPLOSION_RADIUS),
+                    false,
+                    destroysBlocks ? Level.ExplosionInteraction.BLOCK : Level.ExplosionInteraction.NONE,
+                    ParticleTypes.EXPLOSION,
+                    ParticleTypes.EXPLOSION_EMITTER,
+                    SoundEvents.GENERIC_EXPLODE
+            );
             remove(RemovalReason.KILLED);
         }
     }
@@ -46,6 +61,7 @@ public class ExplodingCoconutEntity extends ThrowableItemProjectile {
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putFloat("explosion_radius", explosionRadius);
+        tag.putBoolean("destroys_blocks", destroysBlocks);
     }
 
     @Override
@@ -54,5 +70,6 @@ public class ExplodingCoconutEntity extends ThrowableItemProjectile {
         if (tag.contains("explosion_radius", Tag.TAG_FLOAT)) {
             explosionRadius = tag.getFloat("explosion_radius");
         }
+        destroysBlocks = tag.getBoolean("destroys_blocks");
     }
 }
