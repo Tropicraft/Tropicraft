@@ -37,6 +37,7 @@ import net.tropicraft.core.client.entity.model.SeaTurtleModel;
 import net.tropicraft.core.client.entity.model.SeaUrchinModel;
 import net.tropicraft.core.client.entity.model.SeahorseModel;
 import net.tropicraft.core.client.entity.model.SharkModel;
+import net.tropicraft.core.client.entity.model.ShoebillStorkModel;
 import net.tropicraft.core.client.entity.model.SlenderHarvestMouseModel;
 import net.tropicraft.core.client.entity.model.SpiderMonkeyModel;
 import net.tropicraft.core.client.entity.model.TapirModel;
@@ -109,6 +110,7 @@ public class TropicraftRenderLayers {
     public static ModelLayerLocation TOUCAN_LAYER;
     public static ModelLayerLocation PAPYRUS_CANARY_LAYER;
     public static ModelLayerLocation PAPYRUS_GONOLEK_LAYER;
+    public static ModelLayerLocation SHOEBILL_STORK_LAYER;
     public static ModelLayerLocation WHITE_COLLARED_OLIVEBACK_LAYER;
     public static ModelLayerLocation WHITE_WINGED_WARBLER_LAYER;
 
@@ -172,6 +174,7 @@ public class TropicraftRenderLayers {
         TOUCAN_LAYER = registerMain("toucan", ToucanModel::create, event);
 		PAPYRUS_CANARY_LAYER = registerMain("papyrus_canary", PapyrusCanaryModel::createBodyLayer, event);
 		PAPYRUS_GONOLEK_LAYER = registerMain("papyrus_gonolek", PapyrusGonolekModel::createBodyLayer, event);
+		SHOEBILL_STORK_LAYER = registerMain("shoebill_stork", ShoebillStorkModel::createBodyLayer, event);
 		WHITE_COLLARED_OLIVEBACK_LAYER = registerMain("white_collared_oliveback", WhiteCollaredOlivebackModel::createBodyLayer, event);
 		WHITE_WINGED_WARBLER_LAYER = registerMain("white_winged_warbler", WhiteWingedWarblerModel::createBodyLayer, event);
 

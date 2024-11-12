@@ -53,6 +53,16 @@ public final class ModelAnimator {
         part.zRot = newAngles.z;
     }
 
+    public static void rotateByInModelSpace(ModelPart[] path, ModelPart part, Quaternionf quaternion) {
+        Quaternionf parentRotation = new Quaternionf();
+        for (ModelPart parent : path) {
+            parentRotation.rotateZYX(parent.zRot, parent.yRot, parent.xRot);
+        }
+        Quaternionf absoluteRotation = parentRotation.rotateZYX(part.zRot, part.yRot, part.xRot, new Quaternionf());
+        Quaternionf newAbsoluteRotation = quaternion.mul(absoluteRotation, new Quaternionf());
+        setRotation(part, newAbsoluteRotation.premul(parentRotation.conjugate()));
+    }
+
     public static final class Cycle implements AutoCloseable {
         private float time;
         private float scale;
@@ -72,13 +82,42 @@ public final class ModelAnimator {
             return (Mth.sin(TAU * x) * scale + offset) * this.scale;
         }
 
-        public float twitch(float interval, float speed, float scale) {
+        public float twitchSymmetric(float interval, float speed, float scale) {
             if (time * speed % interval > 1.0f) {
                 return 0.0f;
             }
             float forward = Mth.square(eval(speed, 1.0f));
             float backward = Mth.square(eval(speed * 0.5f, 1.0f, 0.5f, 0.0f));
             return scale * (forward - 0.5f * backward);
+        }
+
+        public float twitchAsymmetric(float interval, float speed, float scale) {
+            if (time * speed % interval > 1.0f) {
+                return 0.0f;
+            }
+			return scale * Mth.square(eval(speed, 1.0f));
+        }
+
+        public float periodic(float interval, float fade, float length, float scale) {
+            float animationLength = length + fade * 2.0f;
+            float cycleLength = animationLength + interval;
+            float animationTime = (time % cycleLength) - interval;
+            if (animationTime < 0.0f) {
+                return 0.0f;
+            }
+            if (animationTime < fade) {
+                return Mth.sin(animationTime / fade * Mth.HALF_PI) * scale;
+            } else if (animationTime > fade + length) {
+                return Mth.sin((animationLength - animationTime) / fade * Mth.HALF_PI) * scale;
+            }
+            return scale;
+        }
+
+        public float evalSkewed(float speed, float scale, float delay, float offset, float skew, float squareness) {
+            float x = TAU * (time * speed - delay);
+			float modifiedSin = squareness * Mth.sin(x);
+            float value = modifiedSin / Mth.sqrt(Mth.square(skew + Mth.cos(x)) + Mth.square(modifiedSin));
+            return (value * scale + offset) * this.scale;
         }
 
         public float time() {
