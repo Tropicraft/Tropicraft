@@ -93,9 +93,9 @@ public class SlenderHarvestMouseModel<T extends SlenderHarvestMouseEntity> exten
         }
 
         try (ModelAnimator.Cycle idle = ModelAnimator.cycle(ageInTicks, 1.0f)) {
-            earLeft.xRot += idle.twitch(7.0f, 0.22f, 1.0f);
-            earRight.xRot += idle.twitch(7.0f, 0.18f, 1.0f);
-            tail3.xRot += idle.twitch(15.0f, 0.15f, 0.5f);
+            earLeft.xRot += idle.twitchSymmetric(7.0f, 0.22f, 1.0f);
+            earRight.xRot += idle.twitchSymmetric(7.0f, 0.18f, 1.0f);
+            tail3.xRot += idle.twitchSymmetric(15.0f, 0.15f, 0.5f);
         }
     }
 

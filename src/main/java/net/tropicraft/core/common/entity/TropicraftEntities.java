@@ -68,7 +68,6 @@ import net.tropicraft.core.common.entity.projectile.SpearEntity;
 import net.tropicraft.core.common.entity.underdasea.*;
 import net.tropicraft.core.common.item.TropicalFertilizerItem;
 import net.tropicraft.core.common.item.TropicraftItems;
-import org.jetbrains.annotations.NotNull;
 
 @EventBusSubscriber(modid = Tropicraft.ID)
 public class TropicraftEntities {
@@ -635,6 +634,17 @@ public class TropicraftEntities {
                 .tag(EntityTypeTags.FALL_DAMAGE_IMMUNE)
                 .tag(TropicraftTags.Entities.CAN_STAND_ON_BRANCH);
     }
+
+    public static final RegistryEntry<EntityType<?>, EntityType<ShoebillStorkEntity>> SHOEBILL_STORK = REGISTRATE.entity("shoebill_stork", ShoebillStorkEntity::new, MobCategory.CREATURE)
+            .properties(b -> b.sized(0.6f, 1.5f)
+                    .setTrackingRange(8)
+                    .setUpdateInterval(3))
+            .spawnPlacement(SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canAnimalSpawn, RegisterSpawnPlacementsEvent.Operation.REPLACE)
+            .attributes(ShoebillStorkEntity::createAttributes)
+            .loot(TropicraftEntities::noDrops)
+            .tag(EntityTypeTags.FALL_DAMAGE_IMMUNE)
+            .renderer(() -> ShoebillStorkRenderer::new)
+            .register();
 
     public static boolean canAnimalSpawn(EntityType<? extends Mob> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
         BlockState groundState = worldIn.getBlockState(pos.below());

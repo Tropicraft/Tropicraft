@@ -100,7 +100,7 @@ public class GibnutModel extends TropicraftAgeableHierarchicalModel<GibnutEntity
             }
         } else {
             try (ModelAnimator.Cycle sniff = ModelAnimator.cycle(ageInTicks, 1.0f)) {
-                head.xRot += sniff.twitch(40.0f, 0.15f, -0.08f);
+                head.xRot += sniff.twitchSymmetric(40.0f, 0.15f, -0.08f);
             }
         }
 
@@ -112,8 +112,8 @@ public class GibnutModel extends TropicraftAgeableHierarchicalModel<GibnutEntity
         }
 
         try (ModelAnimator.Cycle idle = ModelAnimator.cycle(ageInTicks, 1.0f)) {
-            earLeft.xRot += idle.twitch(7.0f, 0.22f, 1.0f);
-            earRight.xRot += idle.twitch(7.0f, 0.18f, 1.0f);
+            earLeft.xRot += idle.twitchSymmetric(7.0f, 0.22f, 1.0f);
+            earRight.xRot += idle.twitchSymmetric(7.0f, 0.18f, 1.0f);
         }
     }
 

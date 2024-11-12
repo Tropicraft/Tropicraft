@@ -103,13 +103,13 @@ public class PapyrusCanaryModel extends HierarchicalModel<SmallBirdEntity> {
 			}
 
 			try (ModelAnimator.Cycle idle = ModelAnimator.cycle(ageInTicks, 1.0f)) {
-				float wingTwitch = idle.twitch(12.0f, 0.22f, 0.5f);
+				float wingTwitch = idle.twitchSymmetric(12.0f, 0.22f, 0.5f);
 				wingLeft.yRot += wingTwitch;
 				wingLeft.xRot += wingTwitch * 0.5f;
 				wingRight.yRot -= wingTwitch;
 				wingRight.xRot += wingTwitch * 0.5f;
 
-				head.zRot += idle.twitch(9.0f, 0.2f, 0.15f);
+				head.zRot += idle.twitchSymmetric(9.0f, 0.2f, 0.15f);
 			}
 		}
 	}
