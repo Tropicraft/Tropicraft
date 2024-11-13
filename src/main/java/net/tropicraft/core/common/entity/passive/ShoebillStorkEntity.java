@@ -61,14 +61,20 @@ public class ShoebillStorkEntity extends Animal {
 	@Override
 	public void tick() {
 		super.tick();
-		if (level().isClientSide()) {
-			flightAnimation.tick(!onGround());
-			walker.update(this);
-		} else {
+		if (!level().isClientSide()) {
 			Vec3 deltaMovement = getDeltaMovement();
 			if (!moveControl.hasWanted() && !onGround() && deltaMovement.y < 0.0) {
 				setDeltaMovement(deltaMovement.multiply(1.0, 0.8, 1.0));
 			}
+		}
+	}
+
+	@Override
+	public void calculateEntityAnimation(boolean includeHeight) {
+		super.calculateEntityAnimation(includeHeight);
+		if (level().isClientSide()) {
+			flightAnimation.tick(!onGround());
+			walker.update(this);
 		}
 	}
 
