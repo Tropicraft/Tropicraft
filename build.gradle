@@ -2,10 +2,11 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'java-library'
+    id 'maven-publish'
     id 'net.neoforged.moddev' version '1.0.17'
 }
 
-group = 'net.tropicraft'
+group = 'org.lovetropics'
 base {
     archivesName = 'Tropicraft'
 }
@@ -111,5 +112,20 @@ idea {
     module {
         downloadSources = true
         downloadJavadoc = true
+    }
+}
+
+publishing {
+    publications {
+        register('mavenJava', MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        if (project.hasProperty('mavendir')) {
+            maven { url mavendir }
+        } else {
+            mavenLocal()
+        }
     }
 }
