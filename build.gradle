@@ -68,7 +68,10 @@ sourceSets.main.resources {
 }
 
 repositories {
-    maven { url = "https://maven.ithundxr.dev/snapshots/" }
+    maven {
+        url = 'https://mvn.devos.one/snapshots/'
+        content { includeGroup 'com.tterrag.registrate' }
+    }
     mavenLocal()
 }
 
