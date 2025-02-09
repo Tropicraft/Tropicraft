@@ -128,6 +128,6 @@ public class TallRainforestTreeFeature extends RainforestTreeFeature {
             placeBlockLine(logs, world, new int[]{i, j + height - 1, k}, new int[]{endPos.getX(), j + height - 1, endPos.getZ()}, getLog());
         }
 
-        return TropicraftLeavesFixer.updateLeaves(world, logs, leaves);
+        return TropicraftLeavesFixer.updateLeaves(world, logs, leaves, getLeaf());
     }
 }

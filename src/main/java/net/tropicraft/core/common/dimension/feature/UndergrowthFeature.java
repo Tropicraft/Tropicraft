@@ -1,16 +1,22 @@
 package net.tropicraft.core.common.dimension.feature;
 
 import com.mojang.serialization.Codec;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelSimulatedRW;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.tropicraft.core.common.block.TropicraftBlocks;
+import net.tropicraft.core.common.block.TropicraftLeavesBlock;
+import net.tropicraft.core.common.dimension.feature.tree.TropicraftLeavesFixer;
+
+import java.util.Set;
 
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
 
@@ -47,6 +53,9 @@ public class UndergrowthFeature extends Feature<NoneFeatureConfiguration> {
         world.setBlock(pos.below(), Blocks.DIRT.defaultBlockState(), 3);
         setBlock(world, pos, TropicraftBlocks.MAHOGANY_LOG.get().defaultBlockState());
 
+        Set<BlockPos> leaves = new ObjectOpenHashSet<>();
+        BlockState leavesState = TropicraftBlocks.KAPOK_LEAVES.get().defaultBlockState().setValue(TropicraftLeavesBlock.NEW_DECAY, true);
+
         int count = 0;
 
         for (int round = 0; round < 64; ++round) {
@@ -60,7 +69,8 @@ public class UndergrowthFeature extends Feature<NoneFeatureConfiguration> {
                             int zVariance = z - posTemp.getZ();
                             BlockPos newPos = new BlockPos(x, y, z);
                             if ((Math.abs(xVariance) != bushWidth || Math.abs(zVariance) != bushWidth || rand.nextInt(2) != 0) && isValidPosition(world, newPos)) {
-                                setBlock(world, newPos, TropicraftBlocks.KAPOK_LEAVES.get().defaultBlockState());
+                                setBlock(world, newPos, leavesState);
+                                leaves.add(newPos);
                             }
                         }
                     }
@@ -69,7 +79,7 @@ public class UndergrowthFeature extends Feature<NoneFeatureConfiguration> {
             }
         }
 
-        return count > 0;
+        return count > 0 && TropicraftLeavesFixer.updateLeaves(world, Set.of(pos), leaves, leavesState);
     }
 
     protected boolean isValidPosition(LevelSimulatedRW world, BlockPos pos) {

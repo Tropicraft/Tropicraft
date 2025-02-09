@@ -187,6 +187,6 @@ public class LargePalmTreeFeature extends PalmTreeFeature {
             spawnCoconuts(world, new BlockPos(i, j + height + 1, k).relative(Direction.from2DDataValue(i)), random, 2, getLeaf());
         }
 
-        return TropicraftLeavesFixer.updateLeaves(world, logs, leaves);
+        return TropicraftLeavesFixer.updateLeaves(world, logs, leaves, getLeaf());
     }
 }

@@ -90,6 +90,6 @@ public class NormalPalmTreeFeature extends PalmTreeFeature {
 
         spawnCoconuts(world, new BlockPos(i, j + height, k), random, 2, getLeaf());
 
-        return TropicraftLeavesFixer.updateLeaves(world, logs, leaves);
+        return TropicraftLeavesFixer.updateLeaves(world, logs, leaves, getLeaf());
     }
 }

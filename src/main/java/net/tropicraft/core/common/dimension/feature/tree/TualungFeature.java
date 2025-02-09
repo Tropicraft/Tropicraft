@@ -83,7 +83,7 @@ public class TualungFeature extends RainforestTreeFeature {
             genCircle(leaves, world, bx, branchHeight + 1, bz, 3, 2, getLeaf(), false);
         }
 
-        return TropicraftLeavesFixer.updateLeaves(world, logs, leaves);
+        return TropicraftLeavesFixer.updateLeaves(world, logs, leaves, getLeaf());
     }
 
     private int sign(int i) {

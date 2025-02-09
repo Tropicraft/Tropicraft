@@ -2,6 +2,7 @@ package net.tropicraft.core.common.dimension.feature.tree;
 
 import com.google.common.collect.Iterables;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelWriter;
 import net.minecraft.world.level.block.Block;
@@ -15,6 +16,7 @@ import net.minecraft.world.phys.shapes.DiscreteVoxelShape;
 import net.tropicraft.core.common.block.TropicraftLeavesBlock;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -22,15 +24,20 @@ import java.util.OptionalInt;
 import java.util.Set;
 
 public class TropicraftLeavesFixer {
-	public static boolean updateLeaves(LevelAccessor level, Set<BlockPos> logs, Set<BlockPos> leaves) {
+	private static final List<BlockPos> VANILLA_OFFSETS = Arrays.stream(Direction.values())
+			.map(d -> new BlockPos(d.getStepX(), d.getStepY(), d.getStepZ()))
+			.toList();
+
+	public static boolean updateLeaves(LevelAccessor level, Set<BlockPos> logs, Set<BlockPos> leaves, BlockState leavesBlock) {
+		boolean extendedDecay = leavesBlock.getBlock() instanceof TropicraftLeavesBlock;
 		return BoundingBox.encapsulatingPositions(Iterables.concat(logs, leaves)).map(box -> {
-			DiscreteVoxelShape leavesShape = buildShapeAndAssignDistances(level, box, logs);
+			DiscreteVoxelShape leavesShape = buildShapeAndAssignDistances(level, box, logs, extendedDecay ? TropicraftLeavesBlock.AROUND_OFFSETS : VANILLA_OFFSETS);
 			StructureTemplate.updateShapeAtEdge(level, Block.UPDATE_ALL, leavesShape, box.minX(), box.minY(), box.minZ());
 			return true;
 		}).orElse(false);
 	}
 
-	private static DiscreteVoxelShape buildShapeAndAssignDistances(LevelAccessor level, BoundingBox box, Set<BlockPos> logs) {
+	private static DiscreteVoxelShape buildShapeAndAssignDistances(LevelAccessor level, BoundingBox box, Set<BlockPos> logs, List<BlockPos> neighborOffsets) {
 		DiscreteVoxelShape voxelShape = new BitSetDiscreteVoxelShape(box.getXSpan(), box.getYSpan(), box.getZSpan());
 
 		List<Set<BlockPos>> queuesByDistance = new ArrayList<>(LeavesBlock.DECAY_DISTANCE);
@@ -58,7 +65,7 @@ public class TropicraftLeavesFixer {
 				}
 				voxelShape.fill(blockPos.getX() - box.minX(), blockPos.getY() - box.minY(), blockPos.getZ() - box.minZ());
 
-				for (BlockPos offset : TropicraftLeavesBlock.AROUND_OFFSETS) {
+				for (BlockPos offset : neighborOffsets) {
 					mutablePos.setWithOffset(blockPos, offset);
 					if (!box.isInside(mutablePos)) {
 						continue;

@@ -136,7 +136,7 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
             }
         }
 
-        return TropicraftLeavesFixer.updateLeaves(world, logs, leaves);
+        return TropicraftLeavesFixer.updateLeaves(world, logs, leaves, getLeaf());
     }
 
     private int findWater(LevelSimulatedRW world, RandomSource rand, int x, int z) {

@@ -74,6 +74,6 @@ public class UpTreeFeature extends RainforestTreeFeature {
         genCircle(leaves, world, i, j + height + 1, k, radius + 2, radius, getLeaf(), false);
         genCircle(leaves, world, i, j + height + 2, k, radius + 3, radius + 2, getLeaf(), false);
 
-        return TropicraftLeavesFixer.updateLeaves(world, logs, leaves);
+        return TropicraftLeavesFixer.updateLeaves(world, logs, leaves, getLeaf());
     }
 }
