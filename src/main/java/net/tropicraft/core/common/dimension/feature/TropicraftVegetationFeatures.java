@@ -6,7 +6,6 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeavesBlock;
@@ -22,6 +21,7 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStatePr
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.block.TropicraftBlocks;
+import net.tropicraft.core.common.block.TropicraftLeavesBlock;
 import net.tropicraft.core.common.dimension.feature.block_state_provider.NoiseFromTagBlockStateProvider;
 import net.tropicraft.core.common.dimension.feature.config.RainforestVinesConfig;
 
@@ -114,7 +114,7 @@ public final class TropicraftVegetationFeatures {
         register(context, COFFEE_BUSH, TropicraftFeatures.COFFEE_BUSH);
 
         register(context, UNDERGROWTH, TropicraftFeatures.UNDERGROWTH);
-        register(context, SINGLE_UNDERGROWTH, TropicraftFeatures.SINGLE_UNDERGROWTH, new SimpleTreeFeatureConfig(() -> TropicraftBlocks.MAHOGANY_LOG.get().defaultBlockState(), () -> TropicraftBlocks.KAPOK_LEAVES.get().defaultBlockState().setValue(LeavesBlock.DISTANCE, 1)));
+        register(context, SINGLE_UNDERGROWTH, TropicraftFeatures.SINGLE_UNDERGROWTH, new SimpleTreeFeatureConfig(() -> TropicraftBlocks.MAHOGANY_LOG.get().defaultBlockState(), () -> TropicraftBlocks.KAPOK_LEAVES.get().defaultBlockState().setValue(LeavesBlock.DISTANCE, 1).setValue(TropicraftLeavesBlock.NEW_DECAY, true)));
         register(context, RED_FLOWERING_BUSH, TropicraftFeatures.SINGLE_UNDERGROWTH, new SimpleTreeFeatureConfig(() -> TropicraftBlocks.MAHOGANY_LOG.get().defaultBlockState(), () -> TropicraftBlocks.RED_FLOWERING_LEAVES.get().defaultBlockState().setValue(LeavesBlock.DISTANCE, 1)));
         register(context, WHITE_FLOWERING_BUSH, TropicraftFeatures.SINGLE_UNDERGROWTH, new SimpleTreeFeatureConfig(() -> TropicraftBlocks.MAHOGANY_LOG.get().defaultBlockState(), () -> TropicraftBlocks.WHITE_FLOWERING_LEAVES.get().defaultBlockState().setValue(LeavesBlock.DISTANCE, 1)));
         register(context, BLUE_FLOWERING_BUSH, TropicraftFeatures.SINGLE_UNDERGROWTH, new SimpleTreeFeatureConfig(() -> TropicraftBlocks.MAHOGANY_LOG.get().defaultBlockState(), () -> TropicraftBlocks.BLUE_FLOWERING_LEAVES.get().defaultBlockState().setValue(LeavesBlock.DISTANCE, 1)));

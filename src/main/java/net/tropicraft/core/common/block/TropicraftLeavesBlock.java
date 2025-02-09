@@ -5,18 +5,18 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import org.joml.Vector3i;
 
 import java.util.List;
-import java.util.OptionalInt;
 
 public class TropicraftLeavesBlock extends LeavesBlock {
     public static final MapCodec<TropicraftLeavesBlock> CODEC = simpleCodec(TropicraftLeavesBlock::new);
@@ -29,8 +29,12 @@ public class TropicraftLeavesBlock extends LeavesBlock {
             .filter(pos -> pos.distManhattan(BlockPos.ZERO) > 1)
             .toList();
 
-    public TropicraftLeavesBlock(Properties props) {
-        super(props);
+    // TODO: Remove and datafix with a version bump - new_decay=false -> persistent=true
+    public static final BooleanProperty NEW_DECAY = BooleanProperty.create("new_decay");
+
+    public TropicraftLeavesBlock(Properties properties) {
+        super(properties);
+        registerDefaultState(stateDefinition.any().setValue(NEW_DECAY, false).setValue(DISTANCE, DECAY_DISTANCE).setValue(PERSISTENT, false).setValue(WATERLOGGED, false));
     }
 
     @Override
@@ -40,7 +44,7 @@ public class TropicraftLeavesBlock extends LeavesBlock {
 
 	@Override
     protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        level.setBlock(pos, updateDistance(state, level, pos), 3);
+        level.setBlock(pos, updateDistance(state, level, pos), Block.UPDATE_ALL);
     }
 
     @Override
@@ -89,7 +93,24 @@ public class TropicraftLeavesBlock extends LeavesBlock {
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
-        BlockState blockState = defaultBlockState().setValue(PERSISTENT, true).setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
+        BlockState blockState = defaultBlockState().setValue(PERSISTENT, true).setValue(NEW_DECAY, true).setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
         return updateDistance(blockState, context.getLevel(), context.getClickedPos());
+    }
+
+    @Override
+    public boolean isRandomlyTicking(BlockState state) {
+        return state.getValue(NEW_DECAY);
+    }
+
+    @Override
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (state.getValue(NEW_DECAY)) {
+            super.randomTick(state, level, pos, random);
+        }
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(DISTANCE, PERSISTENT, WATERLOGGED, NEW_DECAY);
     }
 }

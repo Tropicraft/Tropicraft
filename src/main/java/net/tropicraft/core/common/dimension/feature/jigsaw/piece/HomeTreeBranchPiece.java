@@ -28,6 +28,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSetting
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.tropicraft.core.common.block.TropicraftBlocks;
+import net.tropicraft.core.common.block.TropicraftLeavesBlock;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -105,7 +106,7 @@ public final class HomeTreeBranchPiece extends StructurePoolElement implements I
         int branchY2 = rand.nextInt(4) + 4;
 
         BlockState wood = TropicraftBlocks.MAHOGANY_LOG.get().defaultBlockState();
-        BlockState leaf = TropicraftBlocks.MAHOGANY_LEAVES.get().defaultBlockState();
+        BlockState leaf = TropicraftBlocks.MAHOGANY_LEAVES.get().defaultBlockState().setValue(TropicraftLeavesBlock.NEW_DECAY, true);
         final int leafCircleSizeConstant = 3;
         int y2 = origin.getY() + branchY2;
 

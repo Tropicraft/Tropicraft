@@ -26,6 +26,7 @@ import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlac
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.block.FruitingBranchBlock;
 import net.tropicraft.core.common.block.TropicraftBlocks;
+import net.tropicraft.core.common.block.TropicraftLeavesBlock;
 import net.tropicraft.core.common.dimension.feature.tree.*;
 import net.tropicraft.core.common.dimension.feature.tree.mangrove.*;
 

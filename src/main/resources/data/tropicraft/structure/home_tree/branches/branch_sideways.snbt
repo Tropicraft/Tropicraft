@@ -23,7 +23,7 @@
         {pos: [2, 2, 1], state: "tropicraft:mahogany_log{axis:y}"},
         {pos: [2, 2, 2], state: "tropicraft:mahogany_log{axis:y}"},
         {pos: [2, 2, 3], state: "tropicraft:mahogany_log{axis:y}"},
-        {pos: [2, 2, 10], state: "tropicraft:kapok_leaves{distance:7,persistent:false,waterlogged:false}"},
+        {pos: [2, 2, 10], state: "tropicraft:kapok_leaves{distance:7,persistent:false,waterlogged:false,new_decay:true}"},
         {pos: [0, 3, 4], state: "tropicraft:mahogany_log{axis:y}"},
         {pos: [0, 3, 5], state: "tropicraft:mahogany_log{axis:y}"},
         {pos: [0, 3, 6], state: "tropicraft:mahogany_log{axis:y}"},
@@ -94,7 +94,7 @@
     entities: [],
     palette: [
         "tropicraft:mahogany_log{axis:y}",
-        "tropicraft:kapok_leaves{distance:7,persistent:false,waterlogged:false}",
+        "tropicraft:kapok_leaves{distance:7,persistent:false,waterlogged:false,new_decay:true}",
         "minecraft:jigsaw{orientation:north_up}"
     ]
 }

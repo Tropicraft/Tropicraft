@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.tropicraft.core.common.block.TropicraftBlocks;
+import net.tropicraft.core.common.block.TropicraftLeavesBlock;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -43,7 +44,7 @@ public abstract class RainforestTreeFeature extends Feature<NoneFeatureConfigura
     }
 
     protected final BlockState getLeaf() {
-        return TropicraftBlocks.KAPOK_LEAVES.get().defaultBlockState();
+        return TropicraftBlocks.KAPOK_LEAVES.get().defaultBlockState().setValue(TropicraftLeavesBlock.NEW_DECAY, true);
     }
 
     protected final BlockState getLog() {
