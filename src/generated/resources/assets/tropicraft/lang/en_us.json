@@ -546,6 +546,8 @@
   "item.tropicraft.zirconium_shovel": "Zirconium Shovel",
   "item.tropicraft.zirconium_sword": "Zirconium Sword",
   "itemGroup.tropicraft.tropicraft": "Tropicraft",
+  "resourcePack.tropicraft.texture_update": "Tropicraft Texture Update",
+  "resourcePack.tropicraft.texture_update.description": "A sneak-peak! By Hexablu and Endergized.",
   "scuba.tropicraft.air_time": "Air Remaining: %s",
   "scuba.tropicraft.depth": "Current Depth: %s",
   "scuba.tropicraft.dive_time": "Dive Time: %s",

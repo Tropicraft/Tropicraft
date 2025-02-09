@@ -14,8 +14,10 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.biome.Biome;
@@ -29,6 +31,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
+import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
@@ -37,7 +40,10 @@ import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforgespi.locating.IModFile;
+import net.tropicraft.core.client.EmbeddedPackSource;
 import net.tropicraft.core.client.data.TropicraftLangKeys;
 import net.tropicraft.core.common.TropicraftPackRegistries;
 import net.tropicraft.core.common.TropicsConfigs;
@@ -135,6 +141,13 @@ public class Tropicraft {
         TropicraftDataComponents.REGISTER.register(modBus);
         TropicraftArmorMaterials.REGISTER.register(modBus);
         TropicraftDrinkActions.REGISTER.register(modBus);
+
+        IModFile modFile = container.getModInfo().getOwningFile().getFile();
+        modBus.addListener((AddPackFindersEvent event) -> {
+            if (event.getPackType() == PackType.CLIENT_RESOURCES) {
+                event.addRepositorySource(new EmbeddedPackSource(modFile, PackType.CLIENT_RESOURCES, "tropicraft_texture_update", TropicraftLangKeys.TEXTURE_UPDATE_PACK.component()));
+            }
+		});
     }
 
     private static final Pattern QUALIFIER = Pattern.compile("-\\w+\\+\\d+");

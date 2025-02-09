@@ -26,6 +26,9 @@ public enum TropicraftLangKeys {
     PINA_COLADA("drink", "pina_colada", "Piña Colada"),
     COCONUT_WATER("drink", "coconut_water", "Coconut Water"),
     MAI_TAI("drink", "mai_tai", "Mai Tai"),
+
+    TEXTURE_UPDATE_PACK("resourcePack", "texture_update", "Tropicraft Texture Update"),
+    TEXTURE_UPDATE_PACK_DESCRIPTION("resourcePack", "texture_update.description", "A sneak-peak! By Hexablu and Endergized."),
     ;
 
     private final String key;
