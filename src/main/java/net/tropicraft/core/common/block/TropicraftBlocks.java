@@ -575,7 +575,7 @@ public class TropicraftBlocks {
     public static final BlockEntry<LeavesBlock> LEMON_LEAVES = fruitLeaves("lemon_leaves", LEMON_SAPLING, TropicraftItems.LEMON).register();
     public static final BlockEntry<LeavesBlock> LIME_LEAVES = fruitLeaves("lime_leaves", LIME_SAPLING, TropicraftItems.LIME).register();
     public static final BlockEntry<LeavesBlock> ORANGE_LEAVES = fruitLeaves("orange_leaves", ORANGE_SAPLING, TropicraftItems.ORANGE).register();
-    public static final BlockEntry<LeavesBlock> PAPAYA_LEAVES = leaves("papaya_leaves", PAPAYA_SAPLING, SAPLING_RATES, false).register();
+    public static final BlockEntry<LeavesBlock> PAPAYA_LEAVES = leaves("papaya_leaves", PAPAYA_SAPLING, SAPLING_RATES, true).register();
     public static final BlockEntry<LeavesBlock> WHITE_FLOWERING_LEAVES = leaves("white_flowering_leaves", true).register();
     public static final BlockEntry<LeavesBlock> RED_FLOWERING_LEAVES = leaves("red_flowering_leaves", true).register();
     public static final BlockEntry<LeavesBlock> BLUE_FLOWERING_LEAVES = leaves("blue_flowering_leaves", true).register();
