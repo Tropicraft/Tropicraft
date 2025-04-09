@@ -6,7 +6,7 @@ plugins {
     id 'net.neoforged.moddev' version '1.0.17'
 }
 
-group = 'org.lovetropics'
+group = 'net.tropicraft'
 base {
     archivesName = 'Tropicraft'
 }
