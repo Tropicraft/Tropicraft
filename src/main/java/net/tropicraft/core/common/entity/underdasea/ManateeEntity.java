@@ -51,7 +51,7 @@ public class ManateeEntity extends WaterAnimal {
 
     @Override
     public void travel(Vec3 vector) {
-        if (isControlledByLocalInstance() && isInWater()) {
+        if (isInWater()) {
             moveRelative(getSpeed(), vector);
             move(MoverType.SELF, getDeltaMovement());
             setDeltaMovement(getDeltaMovement().scale(0.9));

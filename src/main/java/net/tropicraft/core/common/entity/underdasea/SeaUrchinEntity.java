@@ -1,6 +1,9 @@
 package net.tropicraft.core.common.entity.underdasea;
 
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -44,19 +47,14 @@ public class SeaUrchinEntity extends EchinodermEntity {
     }
 
     @Override
-    public boolean hurt(DamageSource source, float amt) {
-        if (source.getMsgId().equals("player")) {
-            Entity ent = source.getEntity();
-
-            if (ent instanceof Player player) {
-
-                if (player.getMainHandItem().isEmpty()) {
-                    player.hurt(damageSources().mobAttack(this), 2);
-                }
+    public boolean hurtServer(ServerLevel level, DamageSource source, float amt) {
+        if (source.is(DamageTypes.PLAYER_ATTACK)) {
+            if (source.getEntity() instanceof Player player && player.getMainHandItem().isEmpty()) {
+                player.hurtServer(level, damageSources().mobAttack(this), 2);
             }
         }
 
-        return super.hurt(source, amt);
+        return super.hurtServer(level, source, amt);
     }
 
     @Override

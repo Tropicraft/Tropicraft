@@ -1,5 +1,6 @@
 package net.tropicraft.core.client.entity.model;
 
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -7,10 +8,9 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.tropicraft.core.common.entity.passive.SlenderHarvestMouseEntity;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 
-public class SlenderHarvestMouseModel<T extends SlenderHarvestMouseEntity> extends TropicraftAgeableHierarchicalModel<T> {
-    private final ModelPart root;
+public class SlenderHarvestMouseModel extends EntityModel<LivingEntityRenderState> {
     private final ModelPart body;
     private final ModelPart head;
     private final ModelPart legBackLeft;
@@ -24,7 +24,7 @@ public class SlenderHarvestMouseModel<T extends SlenderHarvestMouseEntity> exten
     private final ModelPart tail3;
 
     public SlenderHarvestMouseModel(ModelPart root) {
-        this.root = root;
+        super(root);
         body = root.getChild("body_base");
         head = body.getChild("head");
         legBackLeft = body.getChild("leg_back_left");
@@ -69,13 +69,17 @@ public class SlenderHarvestMouseModel<T extends SlenderHarvestMouseEntity> exten
         return LayerDefinition.create(meshdefinition, 32, 32);
     }
 
+    public static LayerDefinition createBaby() {
+        return create().apply(ModelAnimator.hierarchicalBaby("head", 0.5f));
+    }
+
     @Override
-    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch) {
-        body.getAllParts().forEach(ModelPart::resetPose);
+    public void setupAnim(LivingEntityRenderState state) {
+        super.setupAnim(state);
 
-        ModelAnimator.look(head, headYaw, headPitch + 20.0f);
+        ModelAnimator.look(head, state.yRot, state.xRot + 20.0f);
 
-        try (ModelAnimator.Cycle walk = ModelAnimator.cycle(limbSwing * 0.8f, limbSwingAmount * 1.5f)) {
+        try (ModelAnimator.Cycle walk = ModelAnimator.cycle(state.walkAnimationPos * 0.8f, state.walkAnimationSpeed * 1.5f)) {
             legFrontLeft.xRot = walk.eval(1.0f, 1.0f);
             legFrontRight.xRot = walk.eval(-1.0f, 1.0f);
             legBackLeft.xRot = walk.eval(-1.0f, 1.0f);
@@ -88,24 +92,14 @@ public class SlenderHarvestMouseModel<T extends SlenderHarvestMouseEntity> exten
             tail3.yRot += walk.eval(1.0f, 0.4f, 0.5f, 0.0f);
         }
 
-        try (ModelAnimator.Cycle idle = ModelAnimator.cycle(ageInTicks, 1.0f)) {
+        try (ModelAnimator.Cycle idle = ModelAnimator.cycle(state.ageInTicks, 1.0f)) {
             head.xRot += idle.eval(0.3f, 0.0125f);
         }
 
-        try (ModelAnimator.Cycle idle = ModelAnimator.cycle(ageInTicks, 1.0f)) {
+        try (ModelAnimator.Cycle idle = ModelAnimator.cycle(state.ageInTicks, 1.0f)) {
             earLeft.xRot += idle.twitchSymmetric(7.0f, 0.22f, 1.0f);
             earRight.xRot += idle.twitchSymmetric(7.0f, 0.18f, 1.0f);
             tail3.xRot += idle.twitchSymmetric(15.0f, 0.15f, 0.5f);
         }
-    }
-
-    @Override
-    protected ModelPart root() {
-        return root;
-    }
-
-    @Override
-    protected ModelPart head() {
-        return head;
     }
 }

@@ -12,7 +12,6 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -30,7 +29,6 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.BinaryAnimation;
-import net.tropicraft.core.common.Easings;
 
 public final class BasiliskLizardEntity extends Animal {
     private static final EntityDataAccessor<Boolean> RUNNING = SynchedEntityData.defineId(BasiliskLizardEntity.class, EntityDataSerializers.BOOLEAN);
@@ -44,7 +42,7 @@ public final class BasiliskLizardEntity extends Animal {
     private final BinaryAnimation runningAnimation = new BinaryAnimation(
             SharedConstants.TICKS_PER_SECOND / 2,
             SharedConstants.TICKS_PER_SECOND / 4,
-            Easings::inOutSine
+            Mth::easeInOutSine
     );
 
     public BasiliskLizardEntity(EntityType<? extends BasiliskLizardEntity> type, Level world) {
@@ -54,7 +52,7 @@ public final class BasiliskLizardEntity extends Animal {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes()
+        return Animal.createAnimalAttributes()
                 .add(Attributes.MAX_HEALTH, 6.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.25f);
     }

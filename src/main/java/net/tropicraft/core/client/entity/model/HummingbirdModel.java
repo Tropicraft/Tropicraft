@@ -1,6 +1,6 @@
 package net.tropicraft.core.client.entity.model;
 
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -8,16 +8,15 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.tropicraft.core.common.entity.passive.HummingbirdEntity;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 
-public class HummingbirdModel<T extends HummingbirdEntity> extends HierarchicalModel<T> {
-    private final ModelPart root;
+public class HummingbirdModel extends EntityModel<LivingEntityRenderState> {
     private final ModelPart wing_left;
     private final ModelPart head_base;
     private final ModelPart wing_right;
 
     public HummingbirdModel(ModelPart root) {
-        this.root = root;
+        super(root);
         wing_left = root.getChild("wing_left");
         head_base = root.getChild("head_base");
         wing_right = root.getChild("wing_right");
@@ -55,10 +54,11 @@ public class HummingbirdModel<T extends HummingbirdEntity> extends HierarchicalM
     }
 
     @Override
-    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float age, float headYaw, float headPitch) {
-        ModelAnimator.look(head_base, headYaw, headPitch);
+    public void setupAnim(LivingEntityRenderState state) {
+        super.setupAnim(state);
+        ModelAnimator.look(head_base, state);
 
-        try (ModelAnimator.Cycle fly = ModelAnimator.cycle(age * 0.25f, 1.0f)) {
+        try (ModelAnimator.Cycle fly = ModelAnimator.cycle(state.ageInTicks * 0.25f, 1.0f)) {
             root.y = 20.0f + fly.eval(1.0f, 0.1f);
 
             wing_right.yRot = fly.eval(1.0f, 1.0f, 0.0f, 0.0f);
@@ -68,10 +68,5 @@ public class HummingbirdModel<T extends HummingbirdEntity> extends HierarchicalM
             wing_right.xRot = fly.eval(1.0f, 0.4f, 0.1f, 0.2f);
             wing_left.xRot = fly.eval(1.0f, 0.4f, 0.1f, 0.2f);
         }
-    }
-
-    @Override
-    public ModelPart root() {
-        return root;
     }
 }

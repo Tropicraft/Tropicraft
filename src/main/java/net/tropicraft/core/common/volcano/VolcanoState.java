@@ -1,11 +1,16 @@
 package net.tropicraft.core.common.volcano;
 
+import com.mojang.serialization.Codec;
+import net.minecraft.util.ExtraCodecs;
+
 public enum VolcanoState {
     DORMANT(604800),
     SMOKING(600),
     RISING(3000),
     ERUPTING(3000),
     RETREATING(600);
+
+    public static final Codec<VolcanoState> CODEC = ExtraCodecs.legacyEnum(VolcanoState::valueOf);
 
     private final int duration;
 

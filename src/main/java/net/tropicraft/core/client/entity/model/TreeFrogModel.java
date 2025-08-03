@@ -1,24 +1,23 @@
 package net.tropicraft.core.client.entity.model;
 
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
-import net.tropicraft.core.common.entity.neutral.TreeFrogEntity;
 
-public class TreeFrogModel extends HierarchicalModel<TreeFrogEntity> {
-    private final ModelPart root;
+public class TreeFrogModel extends EntityModel<LivingEntityRenderState> {
     private final ModelPart frontLeftLeg;
     private final ModelPart frontRightLeg;
     private final ModelPart rearRightLeg;
     private final ModelPart rearLeftLeg;
 
     public TreeFrogModel(ModelPart root) {
-        this.root = root;
+        super(root);
         frontLeftLeg = root.getChild("frontLeftLeg");
         frontRightLeg = root.getChild("frontRightLeg");
         rearRightLeg = root.getChild("rearRightLeg");
@@ -68,15 +67,11 @@ public class TreeFrogModel extends HierarchicalModel<TreeFrogEntity> {
     }
 
     @Override
-    public void setupAnim(TreeFrogEntity froog, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        frontLeftLeg.xRot = Mth.cos(limbSwing * 0.6662f) * 1.4f * limbSwingAmount;
-        rearLeftLeg.xRot = Mth.cos(limbSwing * 0.6662f + Mth.PI) * 1.4f * limbSwingAmount;
-        rearRightLeg.xRot = Mth.cos(limbSwing * 0.6662f + Mth.PI) * 1.4f * limbSwingAmount;
-        frontRightLeg.xRot = Mth.cos(limbSwing * 0.6662f) * 1.4f * limbSwingAmount;
-    }
-
-    @Override
-    public ModelPart root() {
-        return root;
+    public void setupAnim(LivingEntityRenderState state) {
+        super.setupAnim(state);
+        frontLeftLeg.xRot = Mth.cos(state.walkAnimationPos * 0.6662f) * 1.4f * state.walkAnimationSpeed;
+        rearLeftLeg.xRot = Mth.cos(state.walkAnimationPos * 0.6662f + Mth.PI) * 1.4f * state.walkAnimationSpeed;
+        rearRightLeg.xRot = Mth.cos(state.walkAnimationPos * 0.6662f + Mth.PI) * 1.4f * state.walkAnimationSpeed;
+        frontRightLeg.xRot = Mth.cos(state.walkAnimationPos * 0.6662f) * 1.4f * state.walkAnimationSpeed;
     }
 }

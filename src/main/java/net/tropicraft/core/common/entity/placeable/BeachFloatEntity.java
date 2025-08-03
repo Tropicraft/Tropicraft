@@ -5,7 +5,6 @@ import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
@@ -17,7 +16,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -27,15 +25,13 @@ import net.minecraft.world.level.levelgen.synth.PerlinSimplexNoise;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.HitResult;
-import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BeachFloatEntity extends FurnitureEntity implements IEntityWithComplexSpawn {
+public class BeachFloatEntity extends FurnitureEntity {
 
     @Nonnull
     private static final RandomSource rand = RandomSource.create(298457L);
@@ -108,7 +104,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityWithComp
             setDeltaMovement(getDeltaMovement().add(0, floatpush, 0));
         } else if (Math.abs(getDeltaMovement().y) < 0.02) { // Close enough, just force to the correct spot
             if (getDeltaMovement().y != 0) {
-                lerpY = water - 0.011;
+                setPos(getX(), water - 0.011, getZ());
             }
             setDeltaMovement(getDeltaMovement().multiply(1, 0, 1));
             prevMotionY = 0;
@@ -295,22 +291,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityWithComp
     }
 
     @Override
-    public void writeSpawnData(RegistryFriendlyByteBuf buffer) {
-        buffer.writeDouble(lerpYaw);
-    }
-
-    @Override
-    public void readSpawnData(RegistryFriendlyByteBuf additionalData) {
-        lerpYaw = Mth.wrapDegrees(additionalData.readDouble());
-    }
-
-    @Override
-    public ItemStack getPickedResult(HitResult target) {
-        return new ItemStack(TropicraftItems.BEACH_FLOATS.get(DyeColor.byId(getColor().getId())).get());
-    }
-
-    @Override
-    public AABB getBoundingBoxForCulling() {
-        return getBoundingBox().inflate(0.1, 0.1, 0.1);
+    public ItemStack getPickResult() {
+        return new ItemStack(TropicraftItems.BEACH_FLOATS.get(getColor()).get());
     }
 }

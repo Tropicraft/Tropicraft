@@ -2,7 +2,6 @@ package net.tropicraft.core.common.entity.passive;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -11,7 +10,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -23,12 +24,11 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.phys.AABB;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 
@@ -53,21 +53,11 @@ public class FishingBobberEntity extends Entity implements IEntityWithComplexSpa
 
     private FishingBobberEntity(Level p_i50219_1_, EntityKoaBase koaBase, int luck, int lureSpeed) {
         super(TropicraftEntities.FISHING_BOBBER.get(), p_i50219_1_);
-        noCulling = true;
         angler = koaBase;
         angler.setLure(this);
         this.luck = Math.max(0, luck);
         this.lureSpeed = Math.max(0, lureSpeed);
     }
-
-   /*@OnlyIn(Dist.CLIENT)
-   public FishingBobberEntity(Level worldIn, EntityKoaBase p_i47290_2_, double x, double y, double z) {
-      this(worldIn, p_i47290_2_, 0, 0);
-      this.setPos(x, y, z);
-      this.xo = this.getX();
-      this.yo = this.getY();
-      this.zo = this.getZ();
-   }*/
 
     public FishingBobberEntity(EntityKoaBase p_i50220_1_, Level p_i50220_2_, int p_i50220_3_, int p_i50220_4_) {
         this(p_i50220_2_, p_i50220_1_, p_i50220_3_, p_i50220_4_);
@@ -80,7 +70,7 @@ public class FishingBobberEntity extends Entity implements IEntityWithComplexSpa
         double d0 = angler.getX() - (double) f3 * 0.3;
         double d1 = angler.getY() + (double) angler.getEyeHeight();
         double d2 = angler.getZ() - (double) f2 * 0.3;
-        moveTo(d0, d1, d2, f1, f);
+        snapTo(d0, d1, d2, f1, f);
         Vec3 Vector3d = new Vec3(-f3, Mth.clamp(-(f5 / f4), -5.0f, 5.0f), -f2);
         double d3 = Vector3d.length();
         Vector3d = Vector3d.multiply(0.6 / d3 + 0.5 + random.nextGaussian() * 0.0045, 0.6 / d3 + 0.5 + random.nextGaussian() * 0.0045, 0.6 / d3 + 0.5 + random.nextGaussian() * 0.0045);
@@ -111,20 +101,8 @@ public class FishingBobberEntity extends Entity implements IEntityWithComplexSpa
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
-    public boolean shouldRenderAtSqrDistance(double distance) {
-        double d0 = 64.0;
-        return distance < 4096.0;
-    }
-
-    // Inflated so it will still render when looking at koa but not fishing lure
-    @Override
-    public AABB getBoundingBoxForCulling() {
-        return getBoundingBox().inflate(8, 5.0, 8);
-    }
-
-    @Override
-    public void lerpTo(double x, double y, double z, float yaw, float pitch, int posRotationIncrements) {
+    public boolean shouldRenderAtSqrDistance(double distanceSq) {
+        return distanceSq < Mth.square(64.0);
     }
 
     @Override
@@ -355,17 +333,16 @@ public class FishingBobberEntity extends Entity implements IEntityWithComplexSpa
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag compound) {
+    public void addAdditionalSaveData(ValueOutput output) {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compound) {
+    public void readAdditionalSaveData(ValueInput input) {
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
-        if (id == 31 && level().isClientSide && caughtEntity instanceof Player && ((Player) caughtEntity).isLocalPlayer()) {
+        if (id == EntityEvent.FISHING_ROD_REEL_IN && level().isClientSide && caughtEntity instanceof Player && ((Player) caughtEntity).isLocalPlayer()) {
             bringInHookedEntity();
         }
 
@@ -385,6 +362,11 @@ public class FishingBobberEntity extends Entity implements IEntityWithComplexSpa
     }
 
     @Override
+    public boolean hurtServer(ServerLevel level, DamageSource damageSource, float amount) {
+        return false;
+    }
+
+    @Override
     public void remove(RemovalReason reason) {
         super.remove(reason);
         if (angler != null) {
@@ -398,7 +380,7 @@ public class FishingBobberEntity extends Entity implements IEntityWithComplexSpa
     }
 
     @Override
-    public boolean canChangeDimensions(Level oldLevel, Level newLevel) {
+    public boolean canUsePortal(boolean allowPassengers) {
         return false;
     }
 

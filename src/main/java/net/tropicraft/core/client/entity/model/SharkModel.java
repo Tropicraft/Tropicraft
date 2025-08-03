@@ -1,14 +1,18 @@
 package net.tropicraft.core.client.entity.model;
 
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
 import net.tropicraft.core.common.entity.underdasea.SharkEntity;
 
-public class SharkModel extends HierarchicalModel<SharkEntity> {
-    private final ModelPart root;
+public class SharkModel extends EntityModel<LivingEntityRenderState> {
     private final ModelPart Body3UpperLeft;
     private final ModelPart Body3LowerLeft;
     private final ModelPart Body3LowerRight;
@@ -20,7 +24,7 @@ public class SharkModel extends HierarchicalModel<SharkEntity> {
     private final ModelPart FinCaudalLower;
 
     public SharkModel(ModelPart root) {
-        this.root = root;
+        super(root);
         Body3UpperLeft = root.getChild("Body3UpperLeft");
         Body3LowerLeft = root.getChild("Body3LowerLeft");
         Body3LowerRight = root.getChild("Body3LowerRight");
@@ -145,9 +149,12 @@ public class SharkModel extends HierarchicalModel<SharkEntity> {
     }
 
     @Override
-    public void setupAnim(SharkEntity shark, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        float timeScale = shark.isInWater() ? 0.05f : 0.2f;
+    public void setupAnim(LivingEntityRenderState state) {
+        super.setupAnim(state);
 
+        float timeScale = state.isInWater ? 0.05f : 0.2f;
+
+        float ageInTicks = state.ageInTicks;
         FinPectoralLeft.zRot = (0.4f - Mth.sin(ageInTicks * timeScale) * 0.3f);
         FinPectoralRight.zRot = (-0.4f - Mth.sin(ageInTicks * timeScale) * 0.3f);
 
@@ -159,10 +166,5 @@ public class SharkModel extends HierarchicalModel<SharkEntity> {
         FinCaudalLower.yRot = -Mth.sin(ageInTicks * timeScale) * 0.2f;
         FinAdipose.yRot = -Mth.sin(ageInTicks * timeScale) * 0.2f;
         FinAnal.yRot = -Mth.sin(ageInTicks * timeScale) * 0.2f;
-    }
-
-    @Override
-    public ModelPart root() {
-        return root;
     }
 }

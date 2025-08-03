@@ -16,6 +16,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.tropicraft.core.common.block.AirCompressorBlock;
 import net.tropicraft.core.common.item.scuba.ScubaArmorItem;
@@ -54,24 +56,19 @@ public class AirCompressorBlockEntity extends BlockEntity implements IMachineBlo
     }
 
     @Override
-    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
-        super.loadAdditional(nbt, registries);
-        compressing = nbt.getBoolean("Compressing");
-
-        if (nbt.contains("Tank")) {
-            setTank(ItemStack.parse(registries, nbt.getCompound("Tank")).orElse(ItemStack.EMPTY));
-        } else {
-            setTank(ItemStack.EMPTY);
-        }
+    public void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
+        compressing = input.getBooleanOr("Compressing", false);
+        setTank(input.read("Tank", ItemStack.CODEC).orElse(ItemStack.EMPTY));
     }
 
     @Override
-    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
-        super.saveAdditional(nbt, registries);
-        nbt.putBoolean("Compressing", compressing);
+    public void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
+        output.putBoolean("Compressing", compressing);
 
         if (!stack.isEmpty()) {
-            nbt.put("Tank", stack.save(registries, new CompoundTag()));
+            output.store("Tank", ItemStack.CODEC, stack);
         }
     }
 
@@ -134,6 +131,12 @@ public class AirCompressorBlockEntity extends BlockEntity implements IMachineBlo
         compressing = false;
     }
 
+    @Override
+    public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+        super.preRemoveSideEffects(pos, state);
+        ejectTank();
+    }
+
     public boolean isDoneCompressing() {
         return ticks > 0 && !compressing;
     }
@@ -185,8 +188,8 @@ public class AirCompressorBlockEntity extends BlockEntity implements IMachineBlo
     }
 
     @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider registries) {
-        loadAdditional(pkt.getTag(), registries);
+    public void onDataPacket(Connection net, ValueInput input) {
+        loadAdditional(input);
     }
 
     protected void syncInventory() {
@@ -203,8 +206,6 @@ public class AirCompressorBlockEntity extends BlockEntity implements IMachineBlo
 
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        CompoundTag nbt = new CompoundTag();
-        saveAdditional(nbt, registries);
-        return nbt;
+        return saveCustomOnly(registries);
     }
 }

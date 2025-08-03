@@ -45,9 +45,9 @@ public class VolcanoStructurePiece extends StructurePiece {
 
     public VolcanoStructurePiece(StructurePieceSerializationContext context, CompoundTag tag) {
         super(TropicraftStructurePieceTypes.VOLCANO.get(), tag);
-        radiusX = tag.getInt("radius_x");
-        radiusZ = tag.getInt("radius_z");
-        noiseSeed = tag.getLong("noise_seed");
+        radiusX = tag.getIntOr("radius_x", 1);
+        radiusZ = tag.getIntOr("radius_z", 1);
+        noiseSeed = tag.getLongOr("noise_seed", 0);
         noise = createNoise(noiseSeed);
     }
 
@@ -57,7 +57,7 @@ public class VolcanoStructurePiece extends StructurePiece {
                 pos.getY(),
                 pos.getZ() - radiusZ - 1,
                 pos.getX() + radiusX + 1,
-                heightAccessor.getMaxBuildHeight(),
+                heightAccessor.getMaxY(),
                 pos.getZ() + radiusZ + 1
         );
     }
@@ -80,7 +80,7 @@ public class VolcanoStructurePiece extends StructurePiece {
         int topY = pos.getY() + VOLCANO_TOP;
         int crustY = pos.getY() + VOLCANO_CRUST;
 
-        BlockPos corePos = new BlockPos(pos.getX(), level.getMinBuildHeight() + 1, pos.getZ());
+        BlockPos corePos = new BlockPos(pos.getX(), level.getMinY() + 1, pos.getZ());
         if (chunkBox.isInside(corePos)) {
             level.setBlock(corePos, TropicraftBlocks.VOLCANO.get().defaultBlockState(), Block.UPDATE_CLIENTS);
             if (level.getBlockEntity(corePos) instanceof VolcanoBlockEntity volcano) {
@@ -108,7 +108,7 @@ public class VolcanoStructurePiece extends StructurePiece {
 
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
 
-        for (int y = level.getMaxBuildHeight(); y > level.getMinBuildHeight(); y--) {
+        for (int y = level.getMaxY(); y > level.getMinY(); y--) {
             mutablePos.set(x, y, z);
 
             if (height + terrainY < calderaCutoffY) {

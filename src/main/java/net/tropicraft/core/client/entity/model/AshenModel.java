@@ -2,7 +2,7 @@ package net.tropicraft.core.client.entity.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.ArmedModel;
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -11,10 +11,9 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
-import net.tropicraft.core.common.entity.hostile.AshenEntity;
+import net.tropicraft.core.client.entity.render.state.AshenRenderState;
 
-public class AshenModel extends HierarchicalModel<AshenEntity> implements ArmedModel {
-    private final ModelPart root;
+public class AshenModel extends EntityModel<AshenRenderState> implements ArmedModel {
     public final ModelPart rightLeg;
     public final ModelPart leftLeg;
     public final ModelPart body;
@@ -23,10 +22,9 @@ public class AshenModel extends HierarchicalModel<AshenEntity> implements ArmedM
     public final ModelPart leftArm;
     public final ModelPart rightArmSub;
     public final ModelPart leftArmSub;
-    public boolean swinging;
 
     public AshenModel(ModelPart root) {
-        this.root = root;
+        super(root);
         rightLeg = root.getChild("right_leg");
         leftLeg = root.getChild("left_leg");
         body = root.getChild("body");
@@ -55,15 +53,17 @@ public class AshenModel extends HierarchicalModel<AshenEntity> implements ArmedM
     }
 
     @Override
-    public void setupAnim(AshenEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        rightLeg.xRot = Mth.cos(limbSwing * 0.6662f) * 1.25f * limbSwingAmount;
-        leftLeg.xRot = Mth.cos(limbSwing * 0.6662f + Mth.PI) * 1.25f * limbSwingAmount;
+    public void setupAnim(AshenRenderState state) {
+        super.setupAnim(state);
+
+        rightLeg.xRot = Mth.cos(state.walkAnimationPos * 0.6662f) * 1.25f * state.walkAnimationSpeed;
+        leftLeg.xRot = Mth.cos(state.walkAnimationPos * 0.6662f + Mth.PI) * 1.25f * state.walkAnimationSpeed;
 
         final float armRotater = 71.46f * Mth.DEG_TO_RAD;
         final float subStraight = 90.0f * Mth.DEG_TO_RAD;
         float headAngle;
 
-        switch (entity.getActionState()) {
+        switch (state.actionState) {
             case LOST_MASK -> {
                 headAngle = -0.4f;
                 rightArm.zRot = -armRotater;
@@ -77,15 +77,15 @@ public class AshenModel extends HierarchicalModel<AshenEntity> implements ArmedM
             }
             case HOSTILE -> {
                 headAngle = 0.0f;
-                leftArm.xRot = 1.65f + limbSwing / 125.0f;
-                leftArm.yRot = 0.9f + limbSwingAmount / 125.0f;
+                leftArm.xRot = 1.65f + state.walkAnimationPos / 125.0f;
+                leftArm.yRot = 0.9f + state.walkAnimationSpeed / 125.0f;
                 leftArm.zRot = armRotater;
                 leftArmSub.zRot = 6.2f;
-                rightArm.zRot = 0.0f - Mth.sin(limbSwingAmount * 0.75f) * 0.0220f;
+                rightArm.zRot = 0.0f - Mth.sin(state.walkAnimationSpeed * 0.75f) * 0.0220f;
                 rightArm.yRot = 0.0f;
                 rightArmSub.zRot = 0.0f;
-                if (swinging) {
-                    rightArm.xRot += Mth.sin(limbSwingAmount * 0.75f) * 0.0520f;
+                if (state.swinging) {
+                    rightArm.xRot += Mth.sin(state.walkAnimationSpeed * 0.75f) * 0.0520f;
                 } else {
                     rightArm.xRot = 0.0f;
                 }
@@ -101,16 +101,11 @@ public class AshenModel extends HierarchicalModel<AshenEntity> implements ArmedM
             }
         }
 
-        head.xRot = headPitch / 125.0f + headAngle;
-        head.yRot = netHeadYaw / 125.0f + Mth.PI;
+        head.xRot = state.xRot / 125.0f + headAngle;
+        head.yRot = state.yRot / 125.0f + Mth.PI;
 
-        leftArm.zRot += Mth.sin(ageInTicks * 0.25f) * 0.020f;
-        rightArm.zRot -= Mth.sin(ageInTicks * 0.25f) * 0.020f;
-    }
-
-    @Override
-    public ModelPart root() {
-        return root;
+        leftArm.zRot += Mth.sin(state.ageInTicks * 0.25f) * 0.020f;
+        rightArm.zRot -= Mth.sin(state.ageInTicks * 0.25f) * 0.020f;
     }
 
     @Override

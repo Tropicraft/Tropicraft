@@ -10,6 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
@@ -70,7 +71,7 @@ public class PineappleBlock extends TallFlowerBlock implements BonemealableBlock
 
     @Override
     public void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
-        if (pos.getY() > world.getMaxBuildHeight() - 2) {
+        if (pos.getY() >= world.getMaxY()) {
             return;
         }
 
@@ -105,9 +106,9 @@ public class PineappleBlock extends TallFlowerBlock implements BonemealableBlock
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
-        if (canSurvive(stateIn, worldIn, currentPos)) {
-            return stateIn;
+    protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess scheduledTickAccess, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
+        if (canSurvive(state, level, pos)) {
+            return state;
         }
         return Blocks.AIR.defaultBlockState();
     }

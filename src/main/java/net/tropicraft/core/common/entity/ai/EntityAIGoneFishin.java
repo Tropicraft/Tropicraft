@@ -96,7 +96,7 @@ public class EntityAIGoneFishin extends Goal {
 
         BlockPos blockpos = entity.blockPosition();
 
-        if ((!entity.level().isDay() || entity.level().isRaining() && entity.level().getBiome(blockpos).value().getPrecipitationAt(blockpos) == Biome.Precipitation.RAIN)) {
+        if ((!entity.level().isBrightOutside() || entity.level().isRaining() && entity.level().getBiome(blockpos).value().getPrecipitationAt(blockpos, entity.level().getSeaLevel()) == Biome.Precipitation.RAIN)) {
             return false;
         }
 
@@ -218,7 +218,7 @@ public class EntityAIGoneFishin extends Goal {
                 //debug("walkingTimeout: " + walkingTimeout--);
             }
         } else {
-            BlockPos homePosition = entity.getRestrictCenter();
+            BlockPos homePosition = entity.getHomePosition();
             if (state == FISHING_STATE.FISHING) {
                 //temp visual to replace casting line
                 //entity.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 40));
@@ -292,7 +292,7 @@ public class EntityAIGoneFishin extends Goal {
             } else if (state == FISHING_STATE.RETURN_TO_BASE) {
                 //entity.getRestrictCenter()
 
-                if (homePosition.equals(BlockPos.ZERO)) {
+                if (!entity.hasHome()) {
                     stop();
                 }
 

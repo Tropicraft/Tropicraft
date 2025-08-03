@@ -1,6 +1,5 @@
 package net.tropicraft.core.common.entity.projectile;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -18,6 +17,8 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -65,8 +66,8 @@ public class SpearEntity extends AbstractArrow {
         int i = entityData.get(ID_LOYALTY);
         if (i > 0 && (dealtDamage || isNoPhysics()) && entity != null) {
             if (!isAcceptibleReturnOwner()) {
-                if (!level().isClientSide && pickup == AbstractArrow.Pickup.ALLOWED) {
-                    spawnAtLocation(getPickupItem(), 0.1f);
+                if (level() instanceof ServerLevel serverLevel && pickup == AbstractArrow.Pickup.ALLOWED) {
+                    spawnAtLocation(serverLevel, getPickupItem(), 0.1f);
                 }
 
                 discard();
@@ -111,27 +112,27 @@ public class SpearEntity extends AbstractArrow {
     }
 
     @Override
-    protected void onHitEntity(EntityHitResult pResult) {
-        Entity entity = pResult.getEntity();
-        float f = 8.0f;
-        Entity entity1 = getOwner();
-        DamageSource damagesource = damageSources().trident(this, (Entity) (entity1 == null ? this : entity1));
+    protected void onHitEntity(EntityHitResult hitResult) {
+        Entity hitEntity = hitResult.getEntity();
+        Entity owner = getOwner();
+        DamageSource damageSource = damageSources().trident(this, owner == null ? this : owner);
+        float damage = 8.0f;
         if (level() instanceof ServerLevel serverlevel) {
-            f = EnchantmentHelper.modifyDamage(serverlevel, getWeaponItem(), entity, damagesource, f);
+            damage = EnchantmentHelper.modifyDamage(serverlevel, getWeaponItem(), hitEntity, damageSource, damage);
         }
 
         dealtDamage = true;
-        if (entity.hurt(damagesource, f)) {
-            if (entity.getType() == EntityType.ENDERMAN) {
+        if (hitEntity.hurtOrSimulate(damageSource, damage)) {
+            if (hitEntity.getType() == EntityType.ENDERMAN) {
                 return;
             }
 
             if (level() instanceof ServerLevel serverlevel1) {
-                EnchantmentHelper.doPostAttackEffectsWithItemSource(serverlevel1, entity, damagesource, getWeaponItem());
+                EnchantmentHelper.doPostAttackEffectsWithItemSource(serverlevel1, hitEntity, damageSource, getWeaponItem());
             }
 
-            if (entity instanceof LivingEntity livingentity) {
-                doKnockback(livingentity, damagesource);
+            if (hitEntity instanceof LivingEntity livingentity) {
+                doKnockback(livingentity, damageSource);
                 doPostHurtEffects(livingentity);
             }
         }
@@ -141,17 +142,17 @@ public class SpearEntity extends AbstractArrow {
     }
 
     @Override
-    protected void hitBlockEnchantmentEffects(ServerLevel pLevel, BlockHitResult pHitResult, ItemStack pStack) {
-        Vec3 vec3 = pHitResult.getBlockPos().clampLocationWithin(pHitResult.getLocation());
+    protected void hitBlockEnchantmentEffects(ServerLevel level, BlockHitResult hitResult, ItemStack stack) {
+        Vec3 hitLocation = hitResult.getBlockPos().clampLocationWithin(hitResult.getLocation());
         EnchantmentHelper.onHitBlock(
-                pLevel,
-                pStack,
+                level,
+                stack,
                 getOwner() instanceof LivingEntity livingentity ? livingentity : null,
                 this,
                 null,
-                vec3,
-                pLevel.getBlockState(pHitResult.getBlockPos()),
-                p_348680_ -> kill()
+                hitLocation,
+                level.getBlockState(hitResult.getBlockPos()),
+                item -> kill(level)
         );
     }
 
@@ -183,16 +184,16 @@ public class SpearEntity extends AbstractArrow {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag pCompound) {
-        super.readAdditionalSaveData(pCompound);
-        dealtDamage = pCompound.getBoolean("DealtDamage");
+    public void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        dealtDamage = input.getBooleanOr("DealtDamage", false);
         entityData.set(ID_LOYALTY, getLoyaltyFromItem(getPickupItemStackOrigin()));
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag pCompound) {
-        super.addAdditionalSaveData(pCompound);
-        pCompound.putBoolean("DealtDamage", dealtDamage);
+    public void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putBoolean("DealtDamage", dealtDamage);
     }
 
     @Override

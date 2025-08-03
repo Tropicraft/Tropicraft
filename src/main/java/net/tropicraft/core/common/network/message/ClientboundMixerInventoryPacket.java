@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.item.ItemStack;
@@ -18,7 +19,7 @@ public record ClientboundMixerInventoryPacket(BlockPos pos, List<ItemStack> inve
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundMixerInventoryPacket> STREAM_CODEC = StreamCodec.composite(
             BlockPos.STREAM_CODEC, ClientboundMixerInventoryPacket::pos,
-            ItemStack.LIST_STREAM_CODEC, ClientboundMixerInventoryPacket::inventory,
+            ItemStack.STREAM_CODEC.apply(ByteBufCodecs.list()), ClientboundMixerInventoryPacket::inventory,
             ItemStack.OPTIONAL_STREAM_CODEC, ClientboundMixerInventoryPacket::result,
             ClientboundMixerInventoryPacket::new
     );

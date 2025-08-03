@@ -14,7 +14,6 @@ import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.tropicraft.core.common.block.CoconutBlock;
 import net.tropicraft.core.common.block.TropicraftBlocks;
-import net.tropicraft.core.common.block.TropicraftLeavesBlock;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Set;
@@ -30,7 +29,7 @@ public abstract class PalmTreeFeature extends Feature<NoneFeatureConfiguration> 
     }
 
     protected final BlockState getLeaf() {
-        return TropicraftBlocks.PALM_LEAVES.get().defaultBlockState().setValue(TropicraftLeavesBlock.NEW_DECAY, true);
+        return TropicraftBlocks.PALM_LEAVES.get().defaultBlockState();
     }
 
     protected final BlockState getLog() {

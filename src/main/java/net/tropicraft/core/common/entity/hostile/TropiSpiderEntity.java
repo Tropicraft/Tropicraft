@@ -1,12 +1,13 @@
 package net.tropicraft.core.common.entity.hostile;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -18,6 +19,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.ai.EntityAIWanderNotLazy;
@@ -78,11 +81,11 @@ public class TropiSpiderEntity extends Spider {
     }
 
     @Override
-    protected void actuallyHurt(DamageSource damageSrc, float damageAmount) {
-        if (damageSrc.getEntity() != null && damageSrc.getEntity() instanceof LivingEntity) {
-            setTarget((LivingEntity) damageSrc.getEntity());
+    protected void actuallyHurt(ServerLevel level, DamageSource source, float amount) {
+        if (source.getEntity() instanceof LivingEntity cause) {
+            setTarget(cause);
         }
-        super.actuallyHurt(damageSrc, damageAmount);
+        super.actuallyHurt(level, source, amount);
     }
 
     @Override
@@ -201,8 +204,8 @@ public class TropiSpiderEntity extends Spider {
             }
 
             for (int i = 0; i < r; i++) {
-                TropiSpiderEggEntity egg = TropicraftEntities.TROPI_SPIDER_EGG.get().create(level());
-                egg.setMotherId(getUUID());
+                TropiSpiderEggEntity egg = TropicraftEntities.TROPI_SPIDER_EGG.get().create(level(), EntitySpawnReason.BREEDING);
+                egg.setMother(this);
                 egg.setPos(blockPosition().getX() + random.nextFloat(), blockPosition().getY(), blockPosition().getZ() + random.nextFloat());
                 level().addFreshEntity(egg);
                 ticksSinceLastEgg = 0;
@@ -224,19 +227,19 @@ public class TropiSpiderEntity extends Spider {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag n) {
-        n.putInt("ticks", tickCount);
-        n.putByte("spiderType", (byte) getSpiderType().ordinal());
-        n.putLong("timeSinceLastEgg", ticksSinceLastEgg);
-        super.addAdditionalSaveData(n);
+    public void addAdditionalSaveData(ValueOutput output) {
+        output.putInt("ticks", tickCount);
+        output.putByte("spiderType", (byte) getSpiderType().ordinal());
+        output.putLong("timeSinceLastEgg", ticksSinceLastEgg);
+        super.addAdditionalSaveData(output);
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag n) {
-        tickCount = n.getInt("ticks");
-        setSpiderType(n.getByte("spiderType"));
-        ticksSinceLastEgg = n.getLong("timeSinceLastEgg");
-        super.readAdditionalSaveData(n);
+    public void readAdditionalSaveData(ValueInput input) {
+        tickCount = input.getIntOr("ticks", 0);
+        setSpiderType(input.getByteOr("spiderType", (byte) 0));
+        ticksSinceLastEgg = input.getLongOr("timeSinceLastEgg", 0);
+        super.readAdditionalSaveData(input);
     }
 
     public Type getSpiderType() {

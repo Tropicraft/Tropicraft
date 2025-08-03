@@ -9,50 +9,52 @@ import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
+import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.tropicraft.core.client.entity.model.AshenModel;
+import net.tropicraft.core.client.entity.render.state.AshenRenderState;
 import net.tropicraft.core.common.entity.hostile.AshenEntity;
 
-public class AshenHeldItemLayer<T extends AshenEntity, M extends EntityModel<T> & ArmedModel> extends ItemInHandLayer<T, M> {
+public class AshenHeldItemLayer<T extends AshenRenderState, M extends EntityModel<T> & ArmedModel> extends ItemInHandLayer<T, M> {
     private final AshenModel model;
 
-    public AshenHeldItemLayer(RenderLayerParent<T, M> renderer, ItemInHandRenderer itemInHandRenderer, AshenModel model) {
-        super(renderer, itemInHandRenderer);
+    public AshenHeldItemLayer(RenderLayerParent<T, M> renderer, AshenModel model) {
+        super(renderer);
         this.model = model;
     }
 
     @Override
-    public void render(PoseStack stack, MultiBufferSource buffer, int packedLightIn, T ashen, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        ItemStack blowGunHand = ashen.getMainHandItem();
-        ItemStack daggerHand = ashen.getOffhandItem();
+    public void render(PoseStack stack, MultiBufferSource bufferSource, int lightCoords, T state, float yRot, float xRot) {
+        ItemStackRenderState blowGunHand = state.getMainHandItem();
+        ItemStackRenderState daggerHand = state.mainArm == HumanoidArm.RIGHT ? state.leftHandItem : state.rightHandItem;
 
         if (!blowGunHand.isEmpty() || !daggerHand.isEmpty()) {
             stack.pushPose();
 
-            if (model.young) {
+            if (state.isBaby) {
                 stack.translate(0.0f, 0.625f, 0.0f);
                 stack.mulPose(Axis.XN.rotationDegrees(-20));
                 stack.scale(0.5f, 0.5f, 0.5f);
             }
 
-            HumanoidArm side = ashen.getMainArm();
-            renderHeldItem(ashen, blowGunHand, side, stack, buffer, packedLightIn);
+            HumanoidArm side = state.mainArm;
+            renderHeldItem(state, blowGunHand, side, stack, bufferSource, lightCoords);
             side = side.getOpposite();
-            renderHeldItem(ashen, daggerHand, side, stack, buffer, packedLightIn);
+            renderHeldItem(state, daggerHand, side, stack, bufferSource, lightCoords);
 
             stack.popPose();
         }
     }
 
-    private void renderHeldItem(AshenEntity entity, ItemStack itemstack, HumanoidArm handSide, PoseStack stack, MultiBufferSource buffer, int combinedLightIn) {
-        if (itemstack.isEmpty()) {
+    private void renderHeldItem(AshenRenderState state, ItemStackRenderState item, HumanoidArm handSide, PoseStack stack, MultiBufferSource buffer, int combinedLightIn) {
+        if (item.isEmpty()) {
             return;
         }
 
-        if (entity.getActionState() == AshenEntity.AshenState.HOSTILE) {
+        if (state.actionState == AshenEntity.AshenState.HOSTILE) {
             float scale = 0.5f;
             if (handSide == HumanoidArm.LEFT) {
                 stack.pushPose();
@@ -64,7 +66,7 @@ public class AshenHeldItemLayer<T extends AshenEntity, M extends EntityModel<T> 
                 stack.mulPose(Axis.ZP.rotationDegrees(10.0f));
 
                 stack.scale(scale, scale, scale);
-                Minecraft.getInstance().getItemRenderer().renderStatic(entity, itemstack, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, false, stack, buffer, entity.level(), combinedLightIn, OverlayTexture.NO_OVERLAY, entity.getId());
+                item.render(stack, buffer, combinedLightIn, OverlayTexture.NO_OVERLAY);
                 stack.popPose();
             } else {
                 stack.pushPose();
@@ -74,7 +76,7 @@ public class AshenHeldItemLayer<T extends AshenEntity, M extends EntityModel<T> 
                 stack.mulPose(Axis.YP.rotationDegrees(90.0f));
                 stack.scale(scale, scale, scale);
 
-                Minecraft.getInstance().getItemRenderer().renderStatic(entity, itemstack, ItemDisplayContext.THIRD_PERSON_LEFT_HAND, false, stack, buffer, entity.level(), combinedLightIn, OverlayTexture.NO_OVERLAY, entity.getId());
+                item.render(stack, buffer, combinedLightIn, OverlayTexture.NO_OVERLAY);
                 stack.popPose();
             }
         }

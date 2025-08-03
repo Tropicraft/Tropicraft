@@ -1,12 +1,12 @@
 package net.tropicraft.core.common.block.tileentity;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.tropicraft.Tropicraft;
 
 public class BambooChestBlockEntity extends ChestBlockEntity {
@@ -31,15 +31,15 @@ public class BambooChestBlockEntity extends ChestBlockEntity {
     }
 
     @Override
-    protected void loadAdditional(CompoundTag compound, HolderLookup.Provider registries) {
-        super.loadAdditional(compound, registries);
-        unbreakable = compound.getBoolean("unbreakable");
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
+        unbreakable = input.getBooleanOr("unbreakable", false);
     }
 
     @Override
-    protected void saveAdditional(CompoundTag compound, HolderLookup.Provider registries) {
-        super.saveAdditional(compound, registries);
-        compound.putBoolean("unbreakable", unbreakable);
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
+        output.putBoolean("unbreakable", unbreakable);
     }
 
     /**

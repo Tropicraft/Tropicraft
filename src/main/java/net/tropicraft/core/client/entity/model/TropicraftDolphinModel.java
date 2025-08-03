@@ -1,17 +1,18 @@
 package net.tropicraft.core.client.entity.model;
 
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
+import net.tropicraft.core.client.entity.render.state.TropicraftDolphinRenderState;
 import net.tropicraft.core.common.entity.underdasea.TropicraftDolphinEntity;
 
-public class TropicraftDolphinModel extends HierarchicalModel<TropicraftDolphinEntity> {
-    private final ModelPart root;
+public class TropicraftDolphinModel extends EntityModel<TropicraftDolphinRenderState> {
     private final ModelPart lowerJaw3;
     private final ModelPart lowerJaw4;
     private final ModelPart lowerJaw5;
@@ -48,7 +49,7 @@ public class TropicraftDolphinModel extends HierarchicalModel<TropicraftDolphinE
     private final ModelPart dorsalFin5;
 
     public TropicraftDolphinModel(ModelPart root) {
-        this.root = root;
+        super(root);
         lowerJaw3 = root.getChild("lowerJaw3");
         lowerJaw4 = root.getChild("lowerJaw4");
         lowerJaw5 = root.getChild("lowerJaw5");
@@ -297,26 +298,22 @@ public class TropicraftDolphinModel extends HierarchicalModel<TropicraftDolphinE
         return LayerDefinition.create(mesh, 64, 64);
     }
 
+    // TODO: Move rotations to default pose
     @Override
-    public ModelPart root() {
-        return root;
-    }
-
-    @Override
-    public void setupAnim(TropicraftDolphinEntity dolphin, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        boolean mouthOpen = dolphin.getMouthOpen();
+    public void setupAnim(TropicraftDolphinRenderState state) {
+        super.setupAnim(state);
 
         float tailVertSpeed = 1.0f;
         float tailHorzSpeed;
-        if (dolphin.isInWater()) {
+        if (state.isInWater) {
             tailVertSpeed = 0.5f / 2;
             tailHorzSpeed = 0.25f / 2;
-            if (dolphin.getAirSupply() <= 0) {
+            if (!state.hasAirSupply) {
                 tailVertSpeed = 0.5f;
                 tailHorzSpeed = 0.25f;
             }
         } else {
-            if (dolphin.onGround()) {
+            if (state.onGround) {
                 tailVertSpeed = 0.0f;
                 tailHorzSpeed = 0.05f;
             } else {
@@ -325,7 +322,7 @@ public class TropicraftDolphinModel extends HierarchicalModel<TropicraftDolphinE
         }
 
         lowerJaw3.xRot = 0.3490658f;
-        if (mouthOpen) {
+        if (state.isMouthOpen) {
             lowerJaw5.setPos(0.0f, 23.4f, -15.3f + 0.52f);
             lowerJaw4.xRot = 0.5f;
         } else {
@@ -343,6 +340,7 @@ public class TropicraftDolphinModel extends HierarchicalModel<TropicraftDolphinE
         head5.xRot = 1.055924f;
         body3.xRot = 0.04555309f;
 
+        float ageInTicks = state.ageInTicks;
         rightPectoralFin1.xRot = 0.1612329f;
         rightPectoralFin1.yRot = 0.2214468f;
         rightPectoralFin1.zRot = -0.6194302f + Mth.sin(ageInTicks * 0.025f) * 0.3f;

@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.item.scuba;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
@@ -35,9 +36,9 @@ import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.function.Supplier;
 
-@EventBusSubscriber(modid = Tropicraft.ID, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(modid = Tropicraft.ID)
 public class ScubaData {
-    public static final Codec<ScubaData> CODEC = RecordCodecBuilder.create(i -> i.group(
+    public static final MapCodec<ScubaData> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
             Codec.LONG.fieldOf("diveTime").forGetter(ScubaData::getDiveTime),
             Codec.DOUBLE.fieldOf("maxDepth").forGetter(ScubaData::getMaxDepth)
     ).apply(i, ScubaData::new));

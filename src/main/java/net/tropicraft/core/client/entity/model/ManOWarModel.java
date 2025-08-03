@@ -1,6 +1,6 @@
 package net.tropicraft.core.client.entity.model;
 
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -8,10 +8,10 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
-import net.tropicraft.core.common.entity.underdasea.ManOWarEntity;
 
-public class ManOWarModel extends HierarchicalModel<ManOWarEntity> {
+public class ManOWarModel extends EntityModel<LivingEntityRenderState> {
     private final ModelPart Body;
     private final ModelPart CenterTent;
     private final ModelPart CenterTent2;
@@ -24,6 +24,7 @@ public class ManOWarModel extends HierarchicalModel<ManOWarEntity> {
     private static final CubeDeformation DEFORMATION = new CubeDeformation(0.001f);
 
     public ManOWarModel(ModelPart root) {
+        super(root);
         Body = root.getChild("Body");
         CenterTent = Body.getChild("CenterTent");
         CenterTent2 = CenterTent.getChild("CenterTent2");
@@ -99,36 +100,20 @@ public class ManOWarModel extends HierarchicalModel<ManOWarEntity> {
     }
 
     @Override
-    public void setupAnim(ManOWarEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (entity.onGround()) {
-            Tent3.zRot = 0.0f;
-            Tent3.xRot = 0.0f;
-            Tent1.zRot = 0.0f;
-            Tent1.xRot = 0.0f;
-            Tent4.zRot = 0.0f;
-            Tent4.xRot = 0.0f;
-            Tent2.zRot = 0.0f;
-            Tent2.xRot = 0.0f;
-            CenterTent.xRot = 0.0f;
-            CenterTent2.xRot = 0.0f;
-            CenterTent3.xRot = 0.0f;
-        } else {
-            Tent3.zRot = Mth.sin(ageInTicks * 0.1f) * 0.07f + 0.4f;
-            Tent3.xRot = Mth.sin(ageInTicks * 0.1f) * 0.05f + 0.4f;
-            Tent1.zRot = -Mth.sin(ageInTicks * 0.1f) * 0.06f + 0.4f;
-            Tent1.xRot = -Mth.sin(ageInTicks * 0.1f) * 0.05f + 0.4f;
-            Tent4.zRot = -Mth.sin(ageInTicks * 0.1f) * 0.06f - 0.4f;
-            Tent4.xRot = -Mth.sin(ageInTicks * 0.1f) * 0.04f + 0.4f;
-            Tent2.zRot = Mth.sin(ageInTicks * 0.025f) * 0.05f - 0.4f;
-            Tent2.xRot = Mth.sin(ageInTicks * 0.025f) * 0.05f + 0.4f;
-            CenterTent.xRot = Mth.sin(ageInTicks * 0.0125f) * 0.05f + 0.2f;
-            CenterTent2.xRot = Mth.sin(ageInTicks * 0.0125f) * 0.65f + 1.507f;
-            CenterTent3.xRot = Math.abs(Mth.sin(ageInTicks * 0.0125f) * 0.35f) + -1.25f;
+    public void setupAnim(LivingEntityRenderState state) {
+        super.setupAnim(state);
+        if (state.isInWater) {
+            Tent3.zRot = Mth.sin(state.ageInTicks * 0.1f) * 0.07f + 0.4f;
+            Tent3.xRot = Mth.sin(state.ageInTicks * 0.1f) * 0.05f + 0.4f;
+            Tent1.zRot = -Mth.sin(state.ageInTicks * 0.1f) * 0.06f + 0.4f;
+            Tent1.xRot = -Mth.sin(state.ageInTicks * 0.1f) * 0.05f + 0.4f;
+            Tent4.zRot = -Mth.sin(state.ageInTicks * 0.1f) * 0.06f - 0.4f;
+            Tent4.xRot = -Mth.sin(state.ageInTicks * 0.1f) * 0.04f + 0.4f;
+            Tent2.zRot = Mth.sin(state.ageInTicks * 0.025f) * 0.05f - 0.4f;
+            Tent2.xRot = Mth.sin(state.ageInTicks * 0.025f) * 0.05f + 0.4f;
+            CenterTent.xRot = Mth.sin(state.ageInTicks * 0.0125f) * 0.05f + 0.2f;
+            CenterTent2.xRot = Mth.sin(state.ageInTicks * 0.0125f) * 0.65f + 1.507f;
+            CenterTent3.xRot = Math.abs(Mth.sin(state.ageInTicks * 0.0125f) * 0.35f) + -1.25f;
         }
-    }
-
-    @Override
-    public ModelPart root() {
-        return Body;
     }
 }

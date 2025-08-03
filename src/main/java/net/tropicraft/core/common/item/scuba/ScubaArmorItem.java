@@ -1,31 +1,22 @@
 package net.tropicraft.core.common.item.scuba;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.Model;
+import net.minecraft.client.resources.model.EquipmentClientInfo;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.equipment.Equippable;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
-import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.scuba.ModelScubaGear;
-import net.tropicraft.core.common.item.TropicraftArmorMaterials;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.function.Consumer;
-
-public class ScubaArmorItem extends ArmorItem {
+public class ScubaArmorItem extends Item {
     private final ScubaType type;
 
-    public ScubaArmorItem(ScubaType type, ArmorItem.Type slotType, Item.Properties properties) {
-        super(TropicraftArmorMaterials.SCUBA, slotType, properties.durability(slotType.getDurability(10)));
+    public ScubaArmorItem(ScubaType type, Item.Properties properties) {
+        super(properties);
         this.type = type;
     }
 
@@ -52,64 +43,26 @@ public class ScubaArmorItem extends ArmorItem {
         return 0;
     }
 
-    @Override
-    public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
-        return getArmorTexture(type);
-    }
-
-    public static ResourceLocation getArmorTexture(ScubaType type) {
-        return Tropicraft.location("textures/models/armor/scuba_gear_" + type.getTextureName() + ".png");
-    }
-
     public static class ClientExtensions implements IClientItemExtensions {
-        private static final ResourceLocation GOGGLES_OVERLAY_TEX_PATH = Tropicraft.location("textures/gui/goggles.png");
+        private static final ModelScubaGear HEAD_MODEL = new ModelScubaGear(ModelScubaGear.createGoggles().bakeRoot());
+        private static final ModelScubaGear CHEST_MODEL = new ModelScubaGear(ModelScubaGear.createHarness().bakeRoot());
+        private static final ModelScubaGear FEET_MODEL = new ModelScubaGear(ModelScubaGear.createFlippers().bakeRoot());
 
         @Override
-        public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlot slot, HumanoidModel<?> original) {
-            if (stack.isEmpty()) {
-                return original;
-            }
-
-            HumanoidModel<?> armorModel = getArmorModel(slot);
-            if (armorModel != null) {
-                prepareModel(armorModel, entity);
-                return armorModel;
-            } else {
-                return original;
-            }
-        }
-
-        @Nullable
-        private HumanoidModel<?> getArmorModel(EquipmentSlot armorSlot) {
-            return switch (armorSlot) {
-                case HEAD -> ModelScubaGear.HEAD;
-                case CHEST -> ModelScubaGear.CHEST;
-                case FEET -> ModelScubaGear.FEET;
-                default -> null;
+        public Model getHumanoidArmorModel(ItemStack itemStack, EquipmentClientInfo.LayerType layerType, Model original) {
+            Equippable equippable = itemStack.get(DataComponents.EQUIPPABLE);
+            EquipmentSlot slot = equippable != null ? equippable.slot() : null;
+            return switch (slot) {
+                case HEAD -> HEAD_MODEL;
+                case CHEST -> CHEST_MODEL;
+                case FEET -> FEET_MODEL;
+                case null, default -> original;
             };
         }
 
-        @SuppressWarnings("unchecked")
-        private <E extends LivingEntity> void prepareModel(HumanoidModel<E> armorModel, LivingEntity entity) {
-            armorModel.prepareMobModel((E) entity, 0.0f, 0.0f, 1.0f);
-            armorModel.crouching = entity.isShiftKeyDown();
-            armorModel.young = entity.isBaby();
-            armorModel.rightArmPose = !entity.getMainHandItem().isEmpty() ? HumanoidModel.ArmPose.BLOCK : HumanoidModel.ArmPose.EMPTY;
-        }
-
         @Override
-        public void renderHelmetOverlay(ItemStack stack, Player player, int width, int height, float partialTicks) {
-            if (stack.getItem() instanceof ScubaGogglesItem) {
-                Minecraft mc = Minecraft.getInstance();
-                GuiGraphics graphics = new GuiGraphics(mc, mc.renderBuffers().bufferSource());
-                RenderSystem.disableDepthTest();
-                RenderSystem.depthMask(false);
-                RenderSystem.defaultBlendFunc();
-                graphics.blit(GOGGLES_OVERLAY_TEX_PATH, 0, 0, 0, 0, 0, width, height, width, height);
-                RenderSystem.depthMask(true);
-                RenderSystem.enableDepthTest();
-                graphics.flush();
-            }
+        public ResourceLocation getArmorTexture(ItemStack stack, EquipmentClientInfo.LayerType type, EquipmentClientInfo.Layer layer, ResourceLocation _default) {
+            return layer.textureId();
         }
     }
 }

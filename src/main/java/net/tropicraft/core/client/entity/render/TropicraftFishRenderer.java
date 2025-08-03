@@ -3,24 +3,24 @@ package net.tropicraft.core.client.entity.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.animal.AbstractFish;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
 import net.tropicraft.core.client.entity.model.TropicraftFishModel;
+import net.tropicraft.core.client.entity.render.state.FishRenderState;
 import net.tropicraft.core.common.entity.underdasea.IAtlasFish;
 
-public class TropicraftFishRenderer<T extends AbstractFish> extends MobRenderer<T, TropicraftFishModel<T>> {
+// TODO: Please rework this :(
+public abstract class TropicraftFishRenderer<T extends AbstractFish> extends MobRenderer<T, FishRenderState, TropicraftFishModel> {
     private static final ResourceLocation TEXTURE = Tropicraft.location("textures/entity/tropical_fish.png");
 
     private final TropicraftSpecialRenderHelper renderHelper;
 
-    public TropicraftFishRenderer(EntityRendererProvider.Context context, TropicraftFishModel<T> modelbase, float f) {
+    public TropicraftFishRenderer(EntityRendererProvider.Context context, TropicraftFishModel modelbase, float f) {
         super(context, modelbase, f);
         renderHelper = new TropicraftSpecialRenderHelper();
     }
@@ -29,30 +29,24 @@ public class TropicraftFishRenderer<T extends AbstractFish> extends MobRenderer<
      * This override is a hack
      */
     @Override
-    public void render(T entity, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
-        boolean isVisible = isBodyVisible(entity);
-        boolean shouldRender = !isVisible && !entity.isInvisibleTo(Minecraft.getInstance().player);
+    public void render(FishRenderState state, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+        boolean isVisible = isBodyVisible(state);
+        boolean shouldRender = !isVisible && !state.isInvisibleToPlayer;
         if (isVisible || shouldRender) {
-            boolean glowing = Minecraft.getInstance().shouldEntityAppearGlowing(entity);
-            renderFishy(entity, partialTicks, matrixStackIn, bufferIn.getBuffer(getRenderType(entity, isVisible, shouldRender, glowing)), packedLightIn, getOverlayCoords(entity, getWhiteOverlayProgress(entity, partialTicks)));
+            VertexConsumer buffer = bufferSource.getBuffer(getRenderType(state, isVisible, shouldRender, state.appearsGlowing));
+            renderFishy(state, poseStack, buffer, packedLight, getOverlayCoords(state, 0.0f));
         }
-        super.render(entity, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
+        super.render(state, poseStack, bufferSource, packedLight);
     }
 
-    protected void renderFishy(T entity, float partialTicks, PoseStack stack, VertexConsumer buffer, int light, int overlay) {
+    protected void renderFishy(FishRenderState state, PoseStack stack, VertexConsumer buffer, int light, int overlay) {
         stack.pushPose();
-
-        stack.mulPose(Axis.YP.rotationDegrees(-90));
-        stack.mulPose(Axis.YP.rotationDegrees(-(Mth.lerp(partialTicks, entity.yHeadRotO, entity.yHeadRot))));
+        stack.mulPose(Axis.YP.rotationDegrees(-90.0f - state.yRot));
         stack.mulPose(Axis.XP.rotationDegrees(180));
         stack.scale(0.3f, 0.3f, 0.5f);
         stack.translate(0.85f, -0.3f, 0.0f);
 
-        int fishTex = 0;
-        if (entity instanceof IAtlasFish) {
-            fishTex = ((IAtlasFish) entity).getAtlasSlot() * 2;
-        }
-
+        int fishTex = state.atlasSlot * 2;
         renderHelper.renderFish(stack, buffer, fishTex, light, overlay);
 
         stack.translate(-1.7f, 0, 0);
@@ -65,12 +59,23 @@ public class TropicraftFishRenderer<T extends AbstractFish> extends MobRenderer<
     }
 
     @Override
-    protected void scale(T entity, PoseStack stack, float partialTickTime) {
+    protected void scale(FishRenderState state, PoseStack stack) {
         stack.scale(0.75f, 0.20f, 0.20f);
     }
 
     @Override
-    public ResourceLocation getTextureLocation(T entity) {
+    public FishRenderState createRenderState() {
+        return new FishRenderState();
+    }
+
+    @Override
+    public void extractRenderState(T entity, FishRenderState state, float partialTicks) {
+        super.extractRenderState(entity, state, partialTicks);
+        state.atlasSlot = entity instanceof IAtlasFish fish ? fish.getAtlasSlot() : 0;
+    }
+
+    @Override
+    public ResourceLocation getTextureLocation(FishRenderState state) {
         return TEXTURE;
     }
 }

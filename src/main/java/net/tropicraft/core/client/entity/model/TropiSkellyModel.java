@@ -10,10 +10,10 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.entity.state.ZombieRenderState;
 import net.minecraft.world.entity.HumanoidArm;
-import net.tropicraft.core.common.entity.hostile.TropiSkellyEntity;
 
-public class TropiSkellyModel extends AbstractZombieModel<TropiSkellyEntity> implements ArmedModel {
+public class TropiSkellyModel extends AbstractZombieModel<ZombieRenderState> implements ArmedModel {
 
     public TropiSkellyModel(ModelPart root) {
         super(root);
@@ -57,10 +57,5 @@ public class TropiSkellyModel extends AbstractZombieModel<TropiSkellyEntity> imp
     public void translateToHand(HumanoidArm side, PoseStack stack) {
         super.translateToHand(side, stack);
         stack.translate((side == HumanoidArm.LEFT ? -1 : 1) * 0.1f, 0, 0.0f);
-    }
-
-    @Override
-    public boolean isAggressive(TropiSkellyEntity entityIn) {
-        return entityIn.isAggressive();
     }
 }

@@ -10,14 +10,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BonemealableBlock;
-import net.minecraft.world.level.block.MultifaceBlock;
+import net.minecraft.world.level.block.MultifaceSpreadeableBlock;
 import net.minecraft.world.level.block.MultifaceSpreader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
-public final class FruitingVineBlock extends MultifaceBlock implements BonemealableBlock {
+public final class FruitingVineBlock extends MultifaceSpreadeableBlock implements BonemealableBlock {
     public static final MapCodec<FruitingVineBlock> CODEC = simpleCodec(FruitingVineBlock::new);
 
     public static final IntegerProperty AGE = BlockStateProperties.AGE_2;
@@ -33,7 +33,7 @@ public final class FruitingVineBlock extends MultifaceBlock implements Bonemeala
     }
 
     @Override
-    protected MapCodec<FruitingVineBlock> codec() {
+    public MapCodec<FruitingVineBlock> codec() {
         return CODEC;
     }
 

@@ -1,17 +1,16 @@
 package net.tropicraft.core.client.entity.model;
 
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
-import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
 
-public class TropiCreeperModel extends HierarchicalModel<TropiCreeperEntity> {
-    private final ModelPart root;
+public class TropiCreeperModel extends EntityModel<LivingEntityRenderState> {
     private final ModelPart head;
     private final ModelPart leg3;
     private final ModelPart leg4;
@@ -19,7 +18,7 @@ public class TropiCreeperModel extends HierarchicalModel<TropiCreeperEntity> {
     private final ModelPart leg2;
 
     public TropiCreeperModel(ModelPart root) {
-        this.root = root;
+        super(root);
         head = root.getChild("head");
         leg3 = root.getChild("leg3");
         leg4 = root.getChild("leg4");
@@ -81,16 +80,12 @@ public class TropiCreeperModel extends HierarchicalModel<TropiCreeperEntity> {
     }
 
     @Override
-    public void setupAnim(TropiCreeperEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        ModelAnimator.look(head, netHeadYaw, headPitch);
-        leg1.xRot = Mth.cos(limbSwing * 0.6662f) * 1.4f * limbSwingAmount;
-        leg2.xRot = Mth.cos(limbSwing * 0.6662f + Mth.PI) * 1.4f * limbSwingAmount;
-        leg3.xRot = Mth.cos(limbSwing * 0.6662f + Mth.PI) * 1.4f * limbSwingAmount;
-        leg4.xRot = Mth.cos(limbSwing * 0.6662f) * 1.4f * limbSwingAmount;
-    }
-
-    @Override
-    public ModelPart root() {
-        return root;
+    public void setupAnim(LivingEntityRenderState state) {
+        super.setupAnim(state);
+        ModelAnimator.look(head, state);
+        leg1.xRot = Mth.cos(state.walkAnimationPos * 0.6662f) * 1.4f * state.walkAnimationSpeed;
+        leg2.xRot = Mth.cos(state.walkAnimationPos * 0.6662f + Mth.PI) * 1.4f * state.walkAnimationSpeed;
+        leg3.xRot = Mth.cos(state.walkAnimationPos * 0.6662f + Mth.PI) * 1.4f * state.walkAnimationSpeed;
+        leg4.xRot = Mth.cos(state.walkAnimationPos * 0.6662f) * 1.4f * state.walkAnimationSpeed;
     }
 }

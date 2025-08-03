@@ -1,7 +1,5 @@
 package net.tropicraft.core.common.entity.egg;
 
-import com.google.common.collect.ImmutableList;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -14,6 +12,8 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 import javax.annotation.Nullable;
 
@@ -26,7 +26,6 @@ public abstract class EggEntity extends LivingEntity {
     public EggEntity(EntityType<? extends EggEntity> type, Level w) {
         super(type, w);
         rotationRand = 0;
-        noCulling = true;
 
         setYRot(random.nextInt(360));
         setHatchDelay(-60 + random.nextInt(120));
@@ -37,17 +36,17 @@ public abstract class EggEntity extends LivingEntity {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compound) {
-        tickCount = compound.getInt("ticks");
-        setHatchDelay(compound.getInt("hatchDelay"));
-        super.readAdditionalSaveData(compound);
+    public void readAdditionalSaveData(ValueInput input) {
+        tickCount = input.getIntOr("ticks", 0);
+        setHatchDelay(input.getIntOr("hatchDelay", 0));
+        super.readAdditionalSaveData(input);
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag compound) {
-        compound.putInt("ticks", tickCount);
-        compound.putInt("hatchDelay", getHatchDelay());
-        super.addAdditionalSaveData(compound);
+    public void addAdditionalSaveData(ValueOutput output) {
+        output.putInt("ticks", tickCount);
+        output.putInt("hatchDelay", getHatchDelay());
+        super.addAdditionalSaveData(output);
     }
 
     @Override
@@ -105,7 +104,7 @@ public abstract class EggEntity extends LivingEntity {
             if (tickCount >= getHatchTime()) {
                 if (!level().isClientSide) {
                     Entity ent = onHatch();
-                    ent.moveTo(getX(), getY(), getZ(), 0.0f, 0.0f);
+                    ent.snapTo(getX(), getY(), getZ(), 0.0f, 0.0f);
                     level().addFreshEntity(ent);
                     remove(RemovalReason.DISCARDED);
                 }
@@ -122,8 +121,8 @@ public abstract class EggEntity extends LivingEntity {
     }
 
     @Override
-    public Iterable<ItemStack> getArmorSlots() {
-        return ImmutableList.of();
+    public boolean canUseSlot(EquipmentSlot slot) {
+        return false;
     }
 
     @Override

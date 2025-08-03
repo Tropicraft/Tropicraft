@@ -4,7 +4,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.AbstractFish;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -23,14 +24,14 @@ public class TropicraftFishBucketItem<T extends AbstractFish> extends MobBucketI
     }
 
     @Override
-    public void checkExtraContent(@Nullable Player player, Level level, ItemStack stack, BlockPos pos) {
-        if (!level.isClientSide) {
-            placeFish((ServerLevel) level, stack, pos);
+    public void checkExtraContent(@Nullable LivingEntity user, Level level, ItemStack stack, BlockPos pos) {
+        if (level instanceof ServerLevel serverLevel) {
+            placeFish(serverLevel, stack, pos);
         }
     }
 
     private void placeFish(ServerLevel world, ItemStack stack, BlockPos pos) {
-        T fishy = fishType.spawn(world, stack, null, pos, MobSpawnType.BUCKET, true, false);
+        T fishy = fishType.spawn(world, stack, null, pos, EntitySpawnReason.BUCKET, true, false);
         if (fishy != null) {
             fishy.setFromBucket(true);
         }

@@ -8,10 +8,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.entity.model.SharkModel;
+import net.tropicraft.core.client.entity.render.state.SharkRenderState;
 import net.tropicraft.core.common.entity.underdasea.SharkEntity;
 
-public class SharkRenderer extends MobRenderer<SharkEntity, SharkModel> {
-
+public class SharkRenderer extends MobRenderer<SharkEntity, SharkRenderState, SharkModel> {
     public static final ResourceLocation BASIC_SHARK_TEXTURE = Tropicraft.location("textures/entity/shark/hammerhead1.png");
     public static final ResourceLocation BOSS_SHARK_TEXTURE = Tropicraft.location("textures/entity/shark/hammerhead4.png");
 
@@ -20,30 +20,39 @@ public class SharkRenderer extends MobRenderer<SharkEntity, SharkModel> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(SharkEntity sharkEntity) {
-        if (sharkEntity.isBoss()) {
+    public SharkRenderState createRenderState() {
+        return new SharkRenderState();
+    }
+
+    @Override
+    public void extractRenderState(SharkEntity entity, SharkRenderState state, float partialTicks) {
+        super.extractRenderState(entity, state, partialTicks);
+        state.isBoss = entity.isBoss();
+    }
+
+    @Override
+    public ResourceLocation getTextureLocation(SharkRenderState state) {
+        if (state.isBoss) {
             return BOSS_SHARK_TEXTURE;
         }
         return BASIC_SHARK_TEXTURE;
     }
 
     @Override
-    public void render(SharkEntity shark, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
-        stack.pushPose();
-        stack.translate(0, -1, 0);
-        super.render(shark, yaw, partialTicks, stack, buffer, light);
-        stack.popPose();
+    public void render(SharkRenderState state, PoseStack poseStack, MultiBufferSource bufferSource, int lightCoords) {
+        poseStack.pushPose();
+        poseStack.translate(0, -1, 0);
+        super.render(state, poseStack, bufferSource, lightCoords);
+        poseStack.popPose();
     }
 
     @Override
-    protected void scale(SharkEntity shark, PoseStack stack, float partialTickTime) {
+    protected void scale(SharkRenderState state, PoseStack poseStack) {
         float scale = 1.0f;
-
-        if (shark.isBoss()) {
+        if (state.isBoss) {
             scale = 1.5f;
-            stack.translate(0, 0.3f, 0);
+            poseStack.translate(0, 0.3f, 0);
         }
-
-        stack.scale(scale, scale, scale);
+        poseStack.scale(scale, scale, scale);
     }
 }

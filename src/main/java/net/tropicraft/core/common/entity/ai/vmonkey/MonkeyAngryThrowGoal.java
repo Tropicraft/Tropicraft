@@ -78,7 +78,7 @@ public class MonkeyAngryThrowGoal extends Goal {
 
                 if (entity.distanceToSqr(trackedPlayer) < 4) {
                     leapTowardTarget(trackedPlayer);
-                    entity.spawnAtLocation(entity.getMainHandItem());
+                    entity.spawnAtLocation(getServerLevel(entity), entity.getMainHandItem());
                     entity.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
                     entity.setMadAboutStolenAlcohol(false);
                 } else {

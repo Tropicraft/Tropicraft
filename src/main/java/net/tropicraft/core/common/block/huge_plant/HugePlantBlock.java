@@ -5,6 +5,7 @@ import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -15,6 +16,7 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BushBlock;
@@ -24,7 +26,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.HitResult;
 import net.tropicraft.core.client.ParticleEffects;
 
 import javax.annotation.Nullable;
@@ -45,7 +46,7 @@ public final class HugePlantBlock extends BushBlock {
     }
 
     @Override
-    protected MapCodec<? extends BushBlock> codec() {
+    public MapCodec<BushBlock> codec() {
         throw new UnsupportedOperationException();
     }
 
@@ -83,23 +84,23 @@ public final class HugePlantBlock extends BushBlock {
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos pos, BlockPos facingPos) {
-        Shape shape = Shape.match(this, world, pos);
+    protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess scheduledTickAccess, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
+        Shape shape = Shape.match(this, level, pos);
         if (shape == null) {
             return Blocks.AIR.defaultBlockState();
         }
 
-        if (isValidPosition(world, shape)) {
+        if (isValidPosition(level, shape)) {
             return state;
         } else {
             return Blocks.AIR.defaultBlockState();
         }
     }
 
-    private boolean isValidPosition(LevelAccessor world, Shape shape) {
+    private boolean isValidPosition(LevelReader level, Shape shape) {
         BlockPos seedPos = shape.seed();
-        BlockState seedState = world.getBlockState(seedPos);
-        return super.canSurvive(seedState, world, seedPos);
+        BlockState seedState = level.getBlockState(seedPos);
+        return super.canSurvive(seedState, level, seedPos);
     }
 
     @Override
@@ -142,7 +143,8 @@ public final class HugePlantBlock extends BushBlock {
 
         if (!world.isClientSide) {
             if (!player.isCreative()) {
-                dropResources(state, world, shape.seed(), null, player, player.getMainHandItem());
+                BlockPos seedPos = shape.seed();
+                dropResources(world.getBlockState(seedPos), world, seedPos, null, player, player.getMainHandItem());
             }
 
             int flags = Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_SUPPRESS_DROPS;
@@ -174,11 +176,11 @@ public final class HugePlantBlock extends BushBlock {
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
+    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData, Player player) {
         if (pickItem != null) {
             return new ItemStack(pickItem.get().get());
         }
-        return super.getCloneItemStack(state, target, level, pos, player);
+        return super.getCloneItemStack(level, pos, state, includeData, player);
     }
 
     @Override

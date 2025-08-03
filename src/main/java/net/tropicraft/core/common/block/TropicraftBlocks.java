@@ -9,9 +9,9 @@ import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.builders.ItemBuilder;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.ProviderType;
-import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
-import com.tterrag.registrate.providers.RegistrateItemModelProvider;
-import com.tterrag.registrate.providers.RegistrateRecipeProvider;
+import com.tterrag.registrate.providers.generators.RegistrateBlockModelGenerator;
+import com.tterrag.registrate.providers.generators.RegistrateItemModelGenerator;
+import com.tterrag.registrate.providers.generators.RegistrateRecipeProvider;
 import com.tterrag.registrate.providers.loot.RegistrateBlockLootTables;
 import com.tterrag.registrate.util.DataIngredient;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
@@ -20,18 +20,35 @@ import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.Util;
+import net.minecraft.advancements.critereon.DataComponentMatchers;
 import net.minecraft.advancements.critereon.EnchantmentPredicate;
-import net.minecraft.advancements.critereon.ItemEnchantmentsPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
-import net.minecraft.advancements.critereon.ItemSubPredicates;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.client.color.block.BlockColor;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.data.models.MultiVariant;
+import net.minecraft.client.data.models.blockstates.ConditionBuilder;
+import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
+import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.client.data.models.blockstates.PropertyDispatch;
+import net.minecraft.client.data.models.model.ItemModelUtils;
+import net.minecraft.client.data.models.model.ModelLocationUtils;
+import net.minecraft.client.data.models.model.ModelTemplate;
+import net.minecraft.client.data.models.model.ModelTemplates;
+import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.data.models.model.TexturedModel;
+import net.minecraft.client.renderer.block.model.Variant;
+import net.minecraft.client.renderer.block.model.VariantMutator;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+import net.minecraft.client.renderer.special.ChestSpecialRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.component.predicates.DataComponentPredicates;
+import net.minecraft.core.component.predicates.EnchantmentsPredicate;
+import net.minecraft.core.particles.ColorParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
@@ -41,6 +58,9 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.util.Unit;
+import net.minecraft.util.random.Weighted;
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -51,7 +71,6 @@ import net.minecraft.world.item.PlaceOnWaterBlockItem;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.LevelReader;
@@ -67,8 +86,8 @@ import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.LadderBlock;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.MultifaceBlock;
 import net.minecraft.world.level.block.PressurePlateBlock;
-import net.minecraft.world.level.block.RedstoneTorchBlock;
 import net.minecraft.world.level.block.RedstoneWallTorchBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SaplingBlock;
@@ -80,6 +99,7 @@ import net.minecraft.world.level.block.StandingSignBlock;
 import net.minecraft.world.level.block.TallFlowerBlock;
 import net.minecraft.world.level.block.TallSeagrassBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
+import net.minecraft.world.level.block.UntintedParticleLeavesBlock;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.block.WaterlilyBlock;
@@ -108,23 +128,16 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.HitResult;
-import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
-import net.neoforged.neoforge.client.model.generators.BlockModelProvider;
-import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
-import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
-import net.neoforged.neoforge.client.model.generators.ModelFile;
-import net.neoforged.neoforge.client.model.generators.ModelProvider;
-import net.neoforged.neoforge.client.model.generators.MultiPartBlockStateBuilder;
-import net.neoforged.neoforge.client.model.generators.VariantBlockStateBuilder;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.Tags;
 import net.tropicraft.Tropicraft;
-import net.tropicraft.core.client.TropicraftItemRenderers;
-import net.tropicraft.core.client.tileentity.AirCompressorRenderer;
-import net.tropicraft.core.client.tileentity.BambooChestRenderer;
-import net.tropicraft.core.client.tileentity.DrinkMixerRenderer;
-import net.tropicraft.core.client.tileentity.SifterRenderer;
+import net.tropicraft.core.client.renderer.special.AirCompressorSpecialRenderer;
+import net.tropicraft.core.client.renderer.special.DrinkMixerSpecialRenderer;
+import net.tropicraft.core.client.renderer.tileentity.AirCompressorBlockEntityRenderer;
+import net.tropicraft.core.client.renderer.tileentity.BambooChestRenderer;
+import net.tropicraft.core.client.renderer.tileentity.DrinkMixerBlockEntityRenderer;
+import net.tropicraft.core.client.renderer.tileentity.SifterBlockEntityRenderer;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.block.TikiTorchBlock.TorchSection;
 import net.tropicraft.core.common.block.huge_plant.HugePlantBlock;
@@ -135,8 +148,8 @@ import net.tropicraft.core.common.block.tileentity.DrinkMixerBlockEntity;
 import net.tropicraft.core.common.block.tileentity.SifterBlockEntity;
 import net.tropicraft.core.common.block.tileentity.VolcanoBlockEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
+import net.tropicraft.core.common.item.component.TropicraftDataComponents;
 import net.tropicraft.core.mixin.BlockEntityTypeAccessor;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
@@ -147,38 +160,35 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static com.tterrag.registrate.providers.RegistrateRecipeProvider.has;
 import static net.minecraft.advancements.critereon.StatePropertiesPredicate.Builder.properties;
+import static net.minecraft.client.data.models.BlockModelGenerators.*;
 import static net.minecraft.world.level.storage.loot.LootPool.lootPool;
 import static net.minecraft.world.level.storage.loot.LootTable.lootTable;
 import static net.minecraft.world.level.storage.loot.entries.LootItem.lootTableItem;
 import static net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition.hasBlockStateProperties;
-import static net.neoforged.neoforge.client.model.generators.ConfiguredModel.allRotations;
-import static net.neoforged.neoforge.client.model.generators.ConfiguredModel.allYRotations;
-import static net.tropicraft.core.common.item.TropicraftItems.AZURITE;
-import static net.tropicraft.core.common.item.TropicraftItems.BAMBOO_MUG;
-import static net.tropicraft.core.common.item.TropicraftItems.BAMBOO_STICK;
-import static net.tropicraft.core.common.item.TropicraftItems.IGUANA_LEATHER;
-import static net.tropicraft.core.common.item.TropicraftItems.JOCOTE;
+import static net.tropicraft.core.common.item.TropicraftItems.*;
 
 public class TropicraftBlocks {
     private static final Registrate REGISTRATE = Tropicraft.registrate();
 
-    private static final LootItemCondition.Builder HAS_SHEARS = MatchTool.toolMatches(ItemPredicate.Builder.item().of(Items.SHEARS));
+    private static LootItemCondition.Builder hasShears(RegistrateBlockLootTables loot) {
+        return MatchTool.toolMatches(ItemPredicate.Builder.item().of(loot.itemLookup(), Items.SHEARS));
+    }
 
     private static LootItemCondition.Builder hasSilkTouch(RegistrateBlockLootTables loot) {
         HolderLookup.RegistryLookup<Enchantment> enchantments = loot.getRegistries().lookupOrThrow(Registries.ENCHANTMENT);
         return MatchTool.toolMatches(
-                ItemPredicate.Builder.item()
-                        .withSubPredicate(
-                                ItemSubPredicates.ENCHANTMENTS,
-                                ItemEnchantmentsPredicate.enchantments(
-                                        List.of(new EnchantmentPredicate(enchantments.getOrThrow(Enchantments.SILK_TOUCH), MinMaxBounds.Ints.atLeast(1)))
-                                )
+                ItemPredicate.Builder.item().withComponents(DataComponentMatchers.Builder.components().partial(
+                        DataComponentPredicates.ENCHANTMENTS,
+                        EnchantmentsPredicate.enchantments(
+                                List.of(new EnchantmentPredicate(
+                                        enchantments.getOrThrow(Enchantments.SILK_TOUCH),
+                                        MinMaxBounds.Ints.atLeast(1)
+                                ))
                         )
+                ).build())
         );
     }
 
@@ -187,7 +197,7 @@ public class TropicraftBlocks {
     }
 
     private static LootItemCondition.Builder hasShearsOrSilkTouch(RegistrateBlockLootTables loot) {
-        return HAS_SHEARS.or(hasSilkTouch(loot));
+        return hasShears(loot).or(hasSilkTouch(loot));
     }
 
     private static LootItemCondition.Builder hasNoShearsOrSilkTouch(RegistrateBlockLootTables loot) {
@@ -202,20 +212,17 @@ public class TropicraftBlocks {
     private static final float[] SAPLING_RATES = new float[]{1.0f / 20.0f, 1.0f / 16.0f, 1.0f / 12.0f, 1.0f / 10.0f};
     private static final float[] RARE_SAPLING_RATES = new float[]{1.0f / 40.0f, 1.0f / 36.0f, 1.0f / 32.0f, 1.0f / 24.0f, 1.0f / 10.0f};
 
-    static {
-        REGISTRATE.addDataGenerator(ProviderType.BLOCKSTATE, prov -> {
-            prov.models().withExistingParent("bamboo_item_frame", "item_frame")
-                    .texture("particle", prov.modLoc("block/bamboo_side"))
-                    .texture("wood", prov.modLoc("block/bamboo_side"));
+    private static final ColorParticleOption TROPICS_LEAF_PARTICLE = ColorParticleOption.create(ParticleTypes.TINTED_LEAVES, 0xff199d10);
 
-            prov.models().withExistingParent("bamboo_item_frame_map", "item_frame_map")
-                    .texture("particle", prov.modLoc("block/bamboo_side"))
-                    .texture("wood", prov.modLoc("block/bamboo_side"));
-        });
+    static {
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            //noinspection Convert2MethodRef
+            REGISTRATE.addDataGenerator(ProviderType.BLOCKSTATE, prov -> Models.generateBlockStates(prov));
+        }
 
         REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, prov -> {
-            prov.addTag(TropicraftTags.Blocks.CARVER_REPLACEABLES).addTags(BlockTags.OVERWORLD_CARVER_REPLACEABLES);
-            prov.addTag(TropicraftTags.Blocks.BIRDS_LIKE_TO_STAND_ON).addTags(BlockTags.LOGS).addTags(BlockTags.LEAVES).addTags(TropicraftTags.Blocks.BRANCHES);
+            prov.tag(TropicraftTags.Blocks.CARVER_REPLACEABLES).addTags(BlockTags.OVERWORLD_CARVER_REPLACEABLES);
+            prov.tag(TropicraftTags.Blocks.BIRDS_LIKE_TO_STAND_ON).addTags(BlockTags.LOGS).addTags(BlockTags.LEAVES).addTags(TropicraftTags.Blocks.BRANCHES);
         });
 
         // Misc recipes
@@ -228,7 +235,7 @@ public class TropicraftBlocks {
         });
     }
 
-    private static void registerPlankRecipe(final RegistrateRecipeProvider prov, final Supplier<ItemLike> logOrWood, final Block output) {
+    private static void registerPlankRecipe(RegistrateRecipeProvider prov, Supplier<ItemLike> logOrWood, Block output) {
         prov.singleItemUnfinished(
                 DataIngredient.items(logOrWood.get()),
                 RecipeCategory.BUILDING_BLOCKS,
@@ -238,18 +245,18 @@ public class TropicraftBlocks {
 
     public static final BlockEntry<PortalWaterBlock> TELEPORT_WATER = REGISTRATE.block("teleport_water", PortalWaterBlock::new)
             .initialProperties(() -> Blocks.WATER)
-            .blockstate((ctx, prov) -> prov.simpleBlock(ctx.get(), prov.models().getExistingFile(prov.mcLoc("block/water"))))
+            .blockstate(() -> (ctx, prov) -> prov.create(ctx.get(), prov.mcLoc("block/water")))
             .register();
 
     public static final BlockEntry<LiquidBlock> PORTAL_WATER = REGISTRATE.block("portal_water", p -> new LiquidBlock(Fluids.WATER, p))
             .initialProperties(() -> Blocks.WATER)
-            .blockstate((ctx, prov) -> prov.simpleBlock(ctx.get(), prov.models().getExistingFile(prov.mcLoc("block/water"))))
+            .blockstate(() -> (ctx, prov) -> prov.create(ctx.get(), prov.mcLoc("block/water")))
             .register();
 
     public static final BlockEntry<Block> CHUNK = REGISTRATE.block("chunk", Block::new)
             .initialProperties(() -> Blocks.STONE)
             .properties(p -> p.mapColor(MapColor.COLOR_BLACK).strength(6.0f).explosionResistance(30.0f))
-            .blockstate(TropicraftBlocks::simpleBlockAllRotations)
+            .blockstate(() -> Models::generateAllRotationVariantBlock)
             .tag(BlockTags.MINEABLE_WITH_PICKAXE)
             .lang("Chunk O' Head")
             .simpleItem()
@@ -340,20 +347,19 @@ public class TropicraftBlocks {
                 BlockBuilder<TropicsFlowerBlock, Registrate> builder = REGISTRATE
                         .block(flower.getId(), p -> new TropicsFlowerBlock(flower.getEffect(), flower.getEffectDuration(), flower.getShape(), p))
                         .initialProperties(() -> Blocks.POPPY)
-                        .addLayer(() -> RenderType::cutout)
+                        .addLayer(() -> () -> ChunkSectionLayer.CUTOUT)
                         .tag(flower.getTags())
-                        .blockstate((ctx, prov) -> {
-                            prov.simpleBlock(ctx.get(), prov.models().withExistingParent(ctx.getName(), "block/cross")
-                                    .texture("cross", "tropicraft:block/flower/" + ctx.getName()));
-                        })
+                        .blockstate(() -> Models::generateFlower)
                         .item()
                         .tag(ItemTags.FLOWERS)
-                        .model((ctx, prov) -> prov.generated(ctx, prov.modLoc("block/flower/" + ctx.getName())))
+                        .model(() -> (ctx, prov) ->
+                                prov.generateFlatItem(ctx.get(), prov.modLoc("block/flower/" + ctx.getName()))
+                        )
                         .build();
                 Item dye = flower.getDye();
                 if (dye != null) {
                     builder = builder.recipe((ctx, prov) -> {
-                        prov.singleItemUnfinished(DataIngredient.items(ctx.get()), RecipeCategory.MISC, () -> dye, 1, 2).save(prov, Tropicraft.location(name(dye)));
+                        prov.singleItemUnfinished(DataIngredient.items(ctx.get()), RecipeCategory.MISC, () -> dye, 1, 2).save(prov, Tropicraft.resourceKey(Registries.RECIPE, name(dye)));
                     });
                 }
                 return builder.register();
@@ -362,22 +368,7 @@ public class TropicraftBlocks {
     public static final BlockEntry<BlockTropicraftSand> PURIFIED_SAND = REGISTRATE.block("purified_sand", BlockTropicraftSand::new)
             .initialProperties(() -> Blocks.SAND)
             .tag(BlockTags.SAND, BlockTags.MINEABLE_WITH_SHOVEL, TropicraftTags.Blocks.CARVER_REPLACEABLES)
-            .blockstate((ctx, prov) -> {
-                ModelFile normal = prov.cubeAll(ctx.get());
-                ModelFile calcified = cubeTop(ctx, prov, "calcified");
-                ModelFile dune1 = cubeTop(ctx, prov, "dune1");
-                ModelFile dune2 = cubeTop(ctx, prov, "dune2");
-                ModelFile starfish = cubeTop(ctx, prov, "starfish");
-                prov.getVariantBuilder(ctx.get())
-                        .partialState().with(BlockTropicraftSand.UNDERWATER, false)
-                        .addModels(allRotations(normal, false, 50))
-                        .addModels(allYRotations(calcified, 0, false, 5))
-                        .partialState().with(BlockTropicraftSand.UNDERWATER, true)
-                        .addModels(allRotations(normal, false, 50))
-                        .addModels(allYRotations(dune1, 0, false, 10))
-                        .addModels(allYRotations(dune2, 0, false, 10))
-                        .addModels(allYRotations(starfish, 0, false));
-            })
+            .blockstate(() -> Models::generatePurifiedSand)
             .item()
             .tag(ItemTags.SAND)
             .build()
@@ -390,12 +381,12 @@ public class TropicraftBlocks {
     public static final BlockEntry<Block> PACKED_PURIFIED_SAND = REGISTRATE.block("packed_purified_sand", Block::new)
             .initialProperties(() -> Blocks.SAND)
             .properties(p -> p.mapColor(MapColor.STONE).strength(0.8f).requiresCorrectToolForDrops())
-            .blockstate(TropicraftBlocks::simpleBlockAllRotations)
+            .blockstate(() -> Models::generateAllRotationVariantBlock)
             .tag(BlockTags.SAND, BlockTags.MINEABLE_WITH_SHOVEL, TropicraftTags.Blocks.CARVER_REPLACEABLES)
-            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ctx.get())
+            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(prov.itemLookup(), RecipeCategory.BUILDING_BLOCKS, ctx.get())
                     .pattern("XX").pattern("XX")
                     .define('X', PURIFIED_SAND.get())
-                    .unlockedBy("has_purified_sand", has(PURIFIED_SAND.get()))
+                    .unlockedBy("has_purified_sand", prov.has(PURIFIED_SAND.get()))
                     .save(prov))
             .item()
             .tag(ItemTags.SAND)
@@ -405,7 +396,7 @@ public class TropicraftBlocks {
     public static final BlockEntry<BlockTropicraftSand> CORAL_SAND = REGISTRATE.block("coral_sand", BlockTropicraftSand::new)
             .initialProperties(() -> Blocks.SAND)
             .properties(p -> p.mapColor(MapColor.COLOR_PINK))
-            .blockstate(TropicraftBlocks::simpleBlockAllRotations)
+            .blockstate(() -> Models::generateAllRotationVariantBlock)
             .tag(BlockTags.SAND, BlockTags.MINEABLE_WITH_SHOVEL, TropicraftTags.Blocks.CARVER_REPLACEABLES)
             .item()
             .tag(ItemTags.SAND)
@@ -415,7 +406,7 @@ public class TropicraftBlocks {
     public static final BlockEntry<BlockTropicraftSand> FOAMY_SAND = REGISTRATE.block("foamy_sand", BlockTropicraftSand::new)
             .initialProperties(() -> Blocks.SAND)
             .properties(p -> p.mapColor(MapColor.COLOR_GREEN))
-            .blockstate(TropicraftBlocks::simpleBlockAllRotations)
+            .blockstate(() -> Models::generateAllRotationVariantBlock)
             .tag(BlockTags.SAND, BlockTags.MINEABLE_WITH_SHOVEL, TropicraftTags.Blocks.CARVER_REPLACEABLES)
             .item()
             .tag(ItemTags.SAND)
@@ -425,7 +416,7 @@ public class TropicraftBlocks {
     public static final BlockEntry<VolcanicSandBlock> VOLCANIC_SAND = REGISTRATE.block("volcanic_sand", VolcanicSandBlock::new)
             .initialProperties(() -> Blocks.SAND)
             .properties(p -> p.mapColor(MapColor.COLOR_LIGHT_GRAY))
-            .blockstate(TropicraftBlocks::simpleBlockAllRotations)
+            .blockstate(() -> Models::generateAllRotationVariantBlock)
             .tag(BlockTags.SAND, BlockTags.MINEABLE_WITH_SHOVEL, TropicraftTags.Blocks.CARVER_REPLACEABLES)
             .item()
             .tag(ItemTags.SAND)
@@ -434,9 +425,7 @@ public class TropicraftBlocks {
 
     public static final BlockEntry<BlockTropicraftSand> MINERAL_SAND = REGISTRATE.block("mineral_sand", BlockTropicraftSand::new)
             .initialProperties(() -> Blocks.SAND)
-            .blockstate((ctx, prov) -> prov.simpleBlock(
-                    ctx.get(), ConfiguredModel.allRotations(prov.cubeAll(ctx.get()), false)
-            ))
+            .blockstate(() -> Models::generateAllRotationVariantBlock)
             .tag(BlockTags.SAND, BlockTags.MINEABLE_WITH_SHOVEL, TropicraftTags.Blocks.CARVER_REPLACEABLES)
             .item()
             .tag(ItemTags.SAND)
@@ -447,12 +436,7 @@ public class TropicraftBlocks {
             .initialProperties(() -> Blocks.DIRT)
             .properties(p -> p.speedFactor(0.5f).isValidSpawn((s, w, pa, e) -> true).isRedstoneConductor((s, w, pa) -> true).isViewBlocking((s, w, pa) -> true).isSuffocating((s, w, pa) -> true))
             .tag(TropicraftTags.Blocks.MUD, BlockTags.MINEABLE_WITH_SHOVEL, TropicraftTags.Blocks.CARVER_REPLACEABLES, BlockTags.BAMBOO_PLANTABLE_ON, BlockTags.DIRT, BlockTags.SNOW_LAYER_CAN_SURVIVE_ON, BlockTags.SNIFFER_DIGGABLE_BLOCK)
-            .blockstate((ctx, prov) -> prov.simpleBlock(ctx.get(),
-                    ArrayUtils.addAll(
-                            allYRotations(prov.models().cubeAll("mud", prov.modLoc("block/mud")), 0, false, 5),
-                            allYRotations(prov.models().cubeAll("mud_with_stones", prov.modLoc("block/mud_with_stones")), 0, false, 1)
-                    )
-            ))
+            .blockstate(() -> Models::generateMud)
             .simpleItem()
             .register();
 
@@ -474,20 +458,20 @@ public class TropicraftBlocks {
                             )
             )))
             .tag(TropicraftTags.Blocks.MUD, BlockTags.MINEABLE_WITH_SHOVEL, TropicraftTags.Blocks.CARVER_REPLACEABLES, BlockTags.BAMBOO_PLANTABLE_ON, BlockTags.DIRT, BlockTags.SNOW_LAYER_CAN_SURVIVE_ON, BlockTags.SNIFFER_DIGGABLE_BLOCK)
-            .blockstate((ctx, prov) -> prov.simpleBlock(ctx.get(), model -> ConfiguredModel.allYRotations(model, 0, false)))
+            .blockstate(() -> (ctx, prov) -> prov.createRotatedVariantBlock(ctx.get()))
             .simpleItem()
             .register();
 
     public static final BlockEntry<RotatedPillarBlock> BAMBOO_BUNDLE = REGISTRATE.block("bamboo_bundle", RotatedPillarBlock::new)
             .properties(p -> p.mapColor(MapColor.PLANT).sound(SoundType.BAMBOO).strength(0.2f, 5.0f))
-            .blockstate((ctx, prov) -> prov.axisBlock(ctx.get(), prov.modLoc("block/bamboo")))
+            .blockstate(() -> (ctx, prov) -> prov.generateAxisBlock(ctx.get(), prov.modLoc("block/bamboo")))
             .recipe((ctx, prov) -> prov.singleItem(DataIngredient.items((NonNullSupplier<? extends ItemLike>) BAMBOO_STICK), RecipeCategory.BUILDING_BLOCKS, ctx, 9, 2))
             .simpleItem()
             .register();
 
     public static final BlockEntry<RotatedPillarBlock> THATCH_BUNDLE = REGISTRATE.block("thatch_bundle", RotatedPillarBlock::new)
             .properties(p -> p.mapColor(MapColor.PLANT).sound(SoundType.BAMBOO).strength(0.2f, 5.0f).ignitedByLava().pushReaction(PushReaction.DESTROY))
-            .blockstate((ctx, prov) -> prov.axisBlock(ctx.get(), prov.modLoc("block/thatch")))
+            .blockstate(() -> (ctx, prov) -> prov.generateAxisBlock(ctx.get(), prov.modLoc("block/thatch")))
             .recipe((ctx, prov) -> prov.singleItem(DataIngredient.items(Items.SUGAR_CANE), RecipeCategory.BUILDING_BLOCKS, ctx, 4, 1))
             .simpleItem()
             .register();
@@ -505,32 +489,25 @@ public class TropicraftBlocks {
     public static final BlockEntry<StairBlock> PALM_STAIRS = woodenStairs("palm_stairs", PALM_PLANKS).register();
     public static final BlockEntry<StairBlock> MAHOGANY_STAIRS = woodenStairs("mahogany_stairs", MAHOGANY_PLANKS).register();
     public static final BlockEntry<StairBlock> THATCH_STAIRS = woodenStairs("thatch_stairs", THATCH_BUNDLE)
-            .blockstate((ctx, prov) -> {
-                ResourceLocation side = prov.modLoc("block/thatch_side");
-                ResourceLocation end = prov.modLoc("block/thatch_end");
-                prov.stairsBlock(ctx.get(), side, end, end);
-            })
+            .blockstate(() -> Models::generateThatchStairs)
             .register();
+
     public static final BlockEntry<StairBlock> THATCH_STAIRS_FUZZY = woodenStairs("thatch_stairs_fuzzy", THATCH_BUNDLE)
-            .addLayer(() -> RenderType::cutoutMipped)
-            .blockstate((ctx, prov) -> {
-                ModelFile fuzzyThatch = fuzzyStairs(prov, "thatch_stairs_fuzzy", "thatch_side", "thatch_end", "thatch_grass");
-                ModelFile fuzzyThatchOuter = fuzzyStairsOuter(prov, "thatch_stairs_fuzzy_outer", "thatch_side", "thatch_end", "thatch_grass");
-                prov.stairsBlock(ctx.get(), fuzzyThatch, prov.models().getExistingFile(prov.modLoc("thatch_stairs_inner")), fuzzyThatchOuter);
-            })
+            .addLayer(() -> () -> ChunkSectionLayer.CUTOUT_MIPPED)
+            .blockstate(() -> Models::generateThatchRoof)
             .lang("Thatch Roof")
-            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ctx.get(), 4)
+            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(prov.itemLookup(), RecipeCategory.DECORATIONS, ctx.get(), 4)
                     .pattern("C  ").pattern("XC ").pattern("XXC")
                     .define('X', THATCH_BUNDLE.get())
                     .define('C', Items.SUGAR_CANE)
-                    .unlockedBy("has_thatch_bundle", has(THATCH_BUNDLE.get()))
+                    .unlockedBy("has_thatch_bundle", prov.has(THATCH_BUNDLE.get()))
                     .save(prov))
             .register();
     public static final BlockEntry<StairBlock> BAMBOO_STAIRS = woodenStairs("bamboo_stairs", BAMBOO_BUNDLE)
-            .blockstate((ctx, prov) -> {
+            .blockstate(() -> (ctx, prov) -> {
                 ResourceLocation side = prov.modLoc("block/bamboo_side");
                 ResourceLocation end = prov.modLoc("block/bamboo_end");
-                prov.stairsBlock(ctx.get(), side, end, end);
+                prov.generateStairsBlock(ctx.get(), side, end, end);
             })
             .register();
     public static final BlockEntry<StairBlock> CHUNK_STAIRS = stoneStairs("chunk_stairs", CHUNK).register();
@@ -539,26 +516,20 @@ public class TropicraftBlocks {
             .properties(p -> p.mapColor(MapColor.PLANT).strength(2.0f).sound(SoundType.STONE).pushReaction(PushReaction.DESTROY))
             .loot((loot, block) -> loot.add(block, droppingChunks(loot, block, TropicraftItems.COCONUT_CHUNK)))
             .tag(BlockTags.MINEABLE_WITH_AXE)
-            .addLayer(() -> RenderType::cutout)
-            .blockstate((ctx, prov) -> prov.simpleBlock(ctx.get(), prov.models().cross("coconut", prov.modLoc("block/coconut"))))
+            .addLayer(() -> () -> ChunkSectionLayer.CUTOUT)
+            .blockstate(() -> (ctx, prov) ->
+                    prov.createCrossBlock(ctx.get(), PlantType.NOT_TINTED)
+            )
             .item()
-            .model(TropicraftBlocks::blockSprite)
+            .model(() -> Models::generateFlatBlockItem)
             .build()
             .register();
 
     public static final BlockEntry<SlabBlock> BAMBOO_SLAB = woodenSlab("bamboo_slab", BAMBOO_BUNDLE)
-            .blockstate((ctx, prov) -> {
-                ResourceLocation side = prov.modLoc("block/bamboo_side");
-                ResourceLocation end = prov.modLoc("block/bamboo_end");
-                prov.slabBlock(ctx.get(), BAMBOO_BUNDLE.getId(), side, end, end);
-            })
+            .blockstate(() -> Models::generateBambooSlab)
             .register();
     public static final BlockEntry<SlabBlock> THATCH_SLAB = woodenSlab("thatch_slab", THATCH_BUNDLE)
-            .blockstate((ctx, prov) -> {
-                ResourceLocation side = prov.modLoc("block/thatch_side");
-                ResourceLocation end = prov.modLoc("block/thatch_end");
-                prov.slabBlock(ctx.get(), THATCH_BUNDLE.getId(), side, end, end);
-            })
+            .blockstate(() -> Models::generateThatchSlab)
             .register();
     public static final BlockEntry<SlabBlock> CHUNK_SLAB = stoneSlab("chunk_slab", CHUNK).register();
     public static final BlockEntry<SlabBlock> PALM_SLAB = woodenSlab("palm_slab", PALM_PLANKS).register();
@@ -576,10 +547,10 @@ public class TropicraftBlocks {
     public static final BlockEntry<LeavesBlock> PALM_LEAVES = leaves("palm_leaves", PALM_SAPLING, SAPLING_RATES, false).register();
     public static final BlockEntry<LeavesBlock> KAPOK_LEAVES = leaves("kapok_leaves", false).register();
     public static final BlockEntry<LeavesBlock> FRUIT_LEAVES = leaves("fruit_leaves", true).register();
-    public static final BlockEntry<LeavesBlock> GRAPEFRUIT_LEAVES = fruitLeaves("grapefruit_leaves", GRAPEFRUIT_SAPLING, TropicraftItems.GRAPEFRUIT).register();
-    public static final BlockEntry<LeavesBlock> LEMON_LEAVES = fruitLeaves("lemon_leaves", LEMON_SAPLING, TropicraftItems.LEMON).register();
-    public static final BlockEntry<LeavesBlock> LIME_LEAVES = fruitLeaves("lime_leaves", LIME_SAPLING, TropicraftItems.LIME).register();
-    public static final BlockEntry<LeavesBlock> ORANGE_LEAVES = fruitLeaves("orange_leaves", ORANGE_SAPLING, TropicraftItems.ORANGE).register();
+    public static final BlockEntry<UntintedParticleLeavesBlock> GRAPEFRUIT_LEAVES = fruitLeaves("grapefruit_leaves", GRAPEFRUIT_SAPLING, TropicraftItems.GRAPEFRUIT).register();
+    public static final BlockEntry<UntintedParticleLeavesBlock> LEMON_LEAVES = fruitLeaves("lemon_leaves", LEMON_SAPLING, TropicraftItems.LEMON).register();
+    public static final BlockEntry<UntintedParticleLeavesBlock> LIME_LEAVES = fruitLeaves("lime_leaves", LIME_SAPLING, TropicraftItems.LIME).register();
+    public static final BlockEntry<UntintedParticleLeavesBlock> ORANGE_LEAVES = fruitLeaves("orange_leaves", ORANGE_SAPLING, TropicraftItems.ORANGE).register();
     public static final BlockEntry<LeavesBlock> PAPAYA_LEAVES = leaves("papaya_leaves", PAPAYA_SAPLING, SAPLING_RATES, true).register();
     public static final BlockEntry<LeavesBlock> WHITE_FLOWERING_LEAVES = leaves("white_flowering_leaves", true).register();
     public static final BlockEntry<LeavesBlock> RED_FLOWERING_LEAVES = leaves("red_flowering_leaves", true).register();
@@ -589,26 +560,16 @@ public class TropicraftBlocks {
 
     public static final BlockEntry<FruitingVineBlock> PASSIONFRUIT_VINE = REGISTRATE.block("passionfruit_vine", FruitingVineBlock::new)
             .properties(p -> p.mapColor(MapColor.GRASS).replaceable().noCollission().strength(0.2f).sound(SoundType.VINE).ignitedByLava().pushReaction(PushReaction.DESTROY))
-            .blockstate((ctx, prov) -> {
-                MultiPartBlockStateBuilder builder = prov.getMultipartBuilder(ctx.get());
-                for (int age : FruitingVineBlock.AGE.getPossibleValues()) {
-                    BlockModelBuilder model = prov.models().withExistingParent(ctx.getName() + "_" + age, prov.modLoc("block/vines"))
-                            .texture("texture", prov.modLoc("block/" + ctx.getName() + "_" + age));
-                    builder.part().modelFile(model).addModel().condition(FruitingVineBlock.AGE, age).condition(BlockStateProperties.NORTH, true);
-                    builder.part().modelFile(model).rotationY(270).addModel().condition(FruitingVineBlock.AGE, age).condition(BlockStateProperties.WEST, true);
-                    builder.part().modelFile(model).rotationY(90).addModel().condition(FruitingVineBlock.AGE, age).condition(BlockStateProperties.EAST, true);
-                    builder.part().modelFile(model).rotationY(180).addModel().condition(FruitingVineBlock.AGE, age).condition(BlockStateProperties.SOUTH, true);
-                    builder.part().modelFile(model).rotationX(90).addModel().condition(FruitingVineBlock.AGE, age).condition(BlockStateProperties.DOWN, true);
-                    builder.part().modelFile(model).rotationX(270).addModel().condition(FruitingVineBlock.AGE, age).condition(BlockStateProperties.UP, true);
-                }
-            })
-            .addLayer(() -> RenderType::cutoutMipped)
-            .loot((loot, block) -> loot.add(block, loot.createSilkTouchOrShearsDispatchTable(block, loot.applyExplosionCondition(block, lootTableItem(TropicraftItems.PASSIONFRUIT)
+            .blockstate(() -> Models::generatePassionfruitVine)
+            .addLayer(() -> () -> ChunkSectionLayer.CUTOUT_MIPPED)
+            .loot((loot, block) -> loot.add(block, loot.createSilkTouchOrShearsDispatchTable(block, loot.applyExplosionCondition(block, lootTableItem(PASSIONFRUIT)
                     .when(hasBlockStateProperties(block).setProperties(properties().hasProperty(FruitingVineBlock.AGE, FruitingVineBlock.MAX_AGE)))
                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))
             ))))
             .item()
-            .model((ctx, prov) -> prov.blockSprite(ctx, prov.modLoc("block/passionfruit_vine_1")))
+            .model(() -> (ctx, prov) ->
+                    prov.generateFlatItem(ctx.get(), prov.modLoc("block/passionfruit_vine_1"))
+            )
             .build()
             .register();
 
@@ -636,17 +597,9 @@ public class TropicraftBlocks {
     public static final BlockEntry<LeavesBlock> JOCOTE_LEAVES = leaves("jocote_leaves", JOCOTE_SAPLING, SAPLING_RATES, true).register();
     public static final BlockEntry<FruitingBranchBlock> JOCOTE_BRANCH = REGISTRATE.block("jocote_branch", FruitingBranchBlock::new)
             .properties(p -> p.sound(SoundType.AZALEA).noOcclusion().instabreak().randomTicks().pushReaction(PushReaction.DESTROY))
-            .blockstate((ctx, prov) -> {
-                ResourceLocation fruitingBranch = prov.modLoc("block/fruiting_branch");
-                List<BlockModelBuilder> models = IntStream.rangeClosed(0, FruitingBranchBlock.MAX_AGE).mapToObj(age ->
-                        prov.models().withExistingParent(ctx.getName() + "_age" + age, fruitingBranch)
-                                .texture("horizontal", prov.modLoc("block/jocote_branch_horizontal_" + age))
-                                .texture("vertical", prov.modLoc("block/jocote_branch_vertical"))
-                ).toList();
-                prov.horizontalBlock(ctx.get(), state -> models.get(state.getValue(FruitingBranchBlock.AGE)));
-            })
+            .blockstate(() -> Models::generateJocoteBranch)
             .tag(TropicraftTags.Blocks.BRANCHES)
-            .addLayer(() -> RenderType::cutoutMipped)
+            .addLayer(() -> () -> ChunkSectionLayer.CUTOUT_MIPPED)
             .loot((loot, block) -> loot.add(block, lootTable().withPool(loot.applyExplosionCondition(block, lootPool().setRolls(ConstantValue.exactly(1))
                     .add(lootTableItem(block))
                     .add(lootTableItem(JOCOTE)
@@ -655,23 +608,21 @@ public class TropicraftBlocks {
                     )
             ))))
             .item()
-            .model((ctx, prov) -> prov.blockSprite(ctx, prov.modLoc("block/jocote_branch_horizontal_0")))
+            .model(() -> (ctx, prov) ->
+                    prov.generateFlatItem(ctx.get(), prov.modLoc("block/jocote_branch_horizontal_0"))
+            )
             .build()
             .register();
 
     public static final BlockEntry<MahoganyNutBlock> MAHOGANY_NUT = REGISTRATE.block("mahogany_nut", MahoganyNutBlock::new)
             .initialProperties(() -> Blocks.COCOA)
-            .blockstate((ctx, prov) -> prov.getVariantBuilder(ctx.get()).forAllStates(state ->
-                    ConfiguredModel.builder()
-                            .modelFile(prov.models().getExistingFile(prov.modLoc("block/mahogany_nut_" + state.getValue(MahoganyNutBlock.AGE))))
-                            .build()
-            ))
+            .blockstate(() -> Models::generateMahoganyNut)
             .loot((loot, block) -> loot.add(block, lootTable().withPool(loot.applyExplosionCondition(block, lootPool().setRolls(ConstantValue.exactly(1))
                     .add(lootTableItem(block).when(hasBlockStateProperties(block).setProperties(properties().hasProperty(MahoganyNutBlock.AGE, MahoganyNutBlock.MAX_AGE))))
             ))))
-            .addLayer(() -> RenderType::cutoutMipped)
+            .addLayer(() -> () -> ChunkSectionLayer.CUTOUT_MIPPED)
             .item()
-            .model((ctx, prov) -> prov.generated(ctx, prov.modLoc("item/mahogany_nut")))
+            .model(() -> (ctx, prov) -> prov.generateFlatItem(ctx.get(), ModelTemplates.FLAT_ITEM))
             .build()
             .register();
 
@@ -734,18 +685,10 @@ public class TropicraftBlocks {
 
     public static final BlockEntry<ReedsBlock> REEDS = REGISTRATE.block("reeds", ReedsBlock::new)
             .initialProperties(() -> Blocks.SUGAR_CANE)
-            .addLayer(() -> RenderType::cutout)
-            .blockstate((ctx, prov) -> {
-                VariantBlockStateBuilder builder = prov.getVariantBuilder(ctx.get());
-                for (ReedsBlock.Type type : ReedsBlock.Type.values()) {
-                    VariantBlockStateBuilder.PartialBlockstate partialState = builder.partialState().with(ReedsBlock.TYPE, type);
-                    for (String texture : type.getTextures()) {
-                        partialState.addModels(new ConfiguredModel(prov.models().crop(texture, prov.modLoc("block/" + texture))));
-                    }
-                }
-            })
+            .addLayer(() -> () -> ChunkSectionLayer.CUTOUT)
+            .blockstate(() -> Models::generateReeds)
             .item()
-            .model((ctx, prov) -> prov.blockSprite(ctx, prov.modLoc("block/" + ctx.getName() + "_top_tall")))
+            .model(() -> (ctx, prov) -> prov.generateFlatItem(ctx.get(), prov.modLoc("block/" + ctx.getName() + "_top_tall")))
             .build()
             .register();
 
@@ -754,41 +697,31 @@ public class TropicraftBlocks {
             .loot((loot, block) -> loot.add(block, LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
                     .add(loot.applyExplosionDecay(block, LootItem.lootTableItem(TropicraftItems.PAPAYA).apply(SetItemCountFunction.setCount(ConstantValue.exactly(2))
                             .when(hasBlockStateProperties(block).setProperties(properties().hasProperty(PapayaBlock.AGE, 1)))))))))
-            .addLayer(() -> RenderType::cutout)
-            .blockstate((ctx, prov) -> {
-                prov.models().withExistingParent("papaya_stage0", "cocoa_stage2")
-                        .texture("particle", prov.modLoc("block/papaya_stage0"))
-                        .texture("cocoa", prov.modLoc("block/papaya_stage0"));
-                prov.getVariantBuilder(ctx.get()).forAllStates(state -> {
-                    int age = state.getValue(PapayaBlock.AGE);
-                    Direction facing = state.getValue(PapayaBlock.FACING);
-                    ModelFile.ExistingModelFile modelFile = prov.models().getExistingFile(prov.modLoc("block/papaya_stage" + age));
-                    return new ConfiguredModel[]{new ConfiguredModel(modelFile, 0, facing.get2DDataValue() * 90, false)};
-                });
-            })
+            .addLayer(() -> () -> ChunkSectionLayer.CUTOUT)
+            .blockstate(() -> Models::generatePapaya)
             .register();
 
     public static final BlockEntry<FenceBlock> BAMBOO_FENCE = woodenFence("bamboo_fence", BAMBOO_BUNDLE, item -> item
             .tag(ItemTags.WOODEN_FENCES)
-            .model((ctx, prov) -> prov.fenceInventory(ctx.getName(), prov.modLoc("block/bamboo_side")))
+            .model(() -> (ctx, prov) -> prov.generateWithTemplate(ctx.get(), ModelTemplates.FENCE_INVENTORY, TextureMapping.defaultTexture(prov.modLoc("block/bamboo_side"))))
     )
-            .blockstate((ctx, prov) -> prov.fenceBlock(ctx.get(), prov.modLoc("block/bamboo_side")))
+            .blockstate(() -> (ctx, prov) -> prov.generateFenceBlock(ctx.get(), prov.modLoc("block/bamboo_side")))
             .register();
     public static final BlockEntry<FenceBlock> THATCH_FENCE = woodenFence("thatch_fence", THATCH_BUNDLE, item -> item
             .tag(ItemTags.WOODEN_FENCES)
-            .model((ctx, prov) -> prov.fenceInventory(ctx.getName(), prov.modLoc("block/thatch_side")))
+            .model(() -> (ctx, prov) -> prov.generateWithTemplate(ctx.get(), ModelTemplates.FENCE_INVENTORY, TextureMapping.defaultTexture(prov.modLoc("block/thatch_side"))))
     )
-            .blockstate((ctx, prov) -> prov.fenceBlock(ctx.get(), prov.modLoc("block/thatch_side")))
+            .blockstate(() -> (ctx, prov) -> prov.generateFenceBlock(ctx.get(), prov.modLoc("block/thatch_side")))
             .register();
     public static final BlockEntry<FenceBlock> CHUNK_FENCE = woodenFence("chunk_fence", CHUNK, i -> i).register();
     public static final BlockEntry<FenceBlock> PALM_FENCE = woodenFence("palm_fence", PALM_PLANKS, i -> i).register();
     public static final BlockEntry<FenceBlock> MAHOGANY_FENCE = woodenFence("mahogany_fence", MAHOGANY_PLANKS, i -> i).register();
 
     public static final BlockEntry<FenceGateBlock> BAMBOO_FENCE_GATE = fenceGate("bamboo_fence_gate", BAMBOO_BUNDLE)
-            .blockstate((ctx, prov) -> prov.fenceGateBlock(ctx.get(), prov.modLoc("block/bamboo_side")))
+            .blockstate(() -> (ctx, prov) -> prov.generateFenceGateBlock(ctx.get(), prov.modLoc("block/bamboo_side")))
             .register();
     public static final BlockEntry<FenceGateBlock> THATCH_FENCE_GATE = fenceGate("thatch_fence_gate", THATCH_BUNDLE)
-            .blockstate((ctx, prov) -> prov.fenceGateBlock(ctx.get(), prov.modLoc("block/thatch_side")))
+            .blockstate(() -> (ctx, prov) -> prov.generateFenceGateBlock(ctx.get(), prov.modLoc("block/thatch_side")))
             .register();
     public static final BlockEntry<FenceGateBlock> CHUNK_FENCE_GATE = fenceGate("chunk_fence_gate", CHUNK).register();
     public static final BlockEntry<FenceGateBlock> PALM_FENCE_GATE = fenceGate("palm_fence_gate", PALM_PLANKS).register();
@@ -797,11 +730,11 @@ public class TropicraftBlocks {
     public static final BlockEntry<WallBlock> CHUNK_WALL = REGISTRATE.block("chunk_wall", WallBlock::new)
             .initialProperties(CHUNK)
             .tag(BlockTags.WALLS)
-            .blockstate((ctx, prov) -> prov.wallBlock(ctx.get(), prov.blockTexture(CHUNK.get())))
+            .blockstate(() -> (ctx, prov) -> prov.generateWallBlock(ctx.get(), prov.blockTexture(CHUNK.get())))
             .recipe((ctx, prov) -> prov.wall(DataIngredient.items(CHUNK.get()), RecipeCategory.DECORATIONS, ctx))
             .item()
             .tag(ItemTags.WALLS)
-            .model((ctx, prov) -> prov.wallInventory(ctx.getName(), prov.modLoc("block/" + CHUNK.getId().getPath())))
+            .model(() -> (ctx, prov) -> prov.generateWithTemplate(ctx.get(), ModelTemplates.FENCE_INVENTORY, TextureMapping.defaultTexture(prov.modLoc("block/" + CHUNK.getId().getPath()))))
             .build()
             .register();
 
@@ -818,12 +751,12 @@ public class TropicraftBlocks {
     public static final BlockEntry<TallFlowerBlock> IRIS = REGISTRATE.block("iris", TallFlowerBlock::new)
             .properties(p -> p.mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS).replaceable().ignitedByLava().pushReaction(PushReaction.DESTROY))
             .loot((loot, block) -> loot.add(block, createSinglePropConditionTable(loot, block, DoublePlantBlock.HALF, DoubleBlockHalf.LOWER)))
-            .tag(BlockTags.TALL_FLOWERS)
-            .addLayer(() -> RenderType::cutout)
-            .blockstate(TropicraftBlocks::doublePlant)
-            .recipe((ctx, prov) -> prov.singleItemUnfinished(DataIngredient.items(ctx.get()), RecipeCategory.MISC, () -> Items.PURPLE_DYE, 1, 4).save(prov, Tropicraft.location(name(Items.PURPLE_DYE))))
+            .tag(BlockTags.FLOWERS)
+            .addLayer(() -> () -> ChunkSectionLayer.CUTOUT)
+            .blockstate(() -> Models::generateDoublePlant)
+            .recipe((ctx, prov) -> prov.singleItemUnfinished(DataIngredient.items(ctx.get()), RecipeCategory.MISC, () -> Items.PURPLE_DYE, 1, 4).save(prov, Tropicraft.resourceKey(Registries.RECIPE, name(Items.PURPLE_DYE))))
             .item()
-            .model((ctx, prov) -> prov.blockSprite(ctx, prov.modLoc("block/iris_top")))
+            .model(() -> (ctx, prov) -> prov.generateFlatItem(ctx.get(), prov.modLoc("block/iris_top")))
             .build()
             .register();
 
@@ -833,10 +766,12 @@ public class TropicraftBlocks {
                     hasBlockStateProperties(block).setProperties(
                             properties().hasProperty(
                                     DoublePlantBlock.HALF, DoubleBlockHalf.UPPER)))))
-            .addLayer(() -> RenderType::cutout)
-            .blockstate(TropicraftBlocks::doublePlant)
+            .addLayer(() -> () -> ChunkSectionLayer.CUTOUT)
+            .blockstate(() -> Models::generateDoublePlant)
             .item()
-            .model((ctx, prov) -> prov.blockSprite(ctx, prov.modLoc("block/pineapple_top")))
+            .model(() -> (ctx, prov) ->
+                    prov.generateFlatItem(ctx.get(), prov.modLoc("block/pineapple_top"))
+            )
             .build()
             .register();
 
@@ -848,26 +783,17 @@ public class TropicraftBlocks {
         return REGISTRATE.block(name, p -> new BongoDrumBlock(size, p))
                 .properties(p -> p.mapColor(MapColor.TERRACOTTA_WHITE).strength(2.0f).sound(SoundType.WOOD).ignitedByLava().instrument(NoteBlockInstrument.BASS))
                 .tag(TropicraftTags.Blocks.BONGOS)
-                .blockstate((ctx, prov) -> {
-                    AABB bb = size.shape.bounds();
-                    prov.simpleBlock(ctx.get(),
-                            prov.models().cubeBottomTop(ctx.getName(), prov.modLoc("block/bongo_side"), prov.modLoc("block/bongo_bottom"), prov.modLoc("block/bongo_top"))
-                                    .element()
-                                    .from((float) bb.minX * 16, (float) bb.minY * 16, (float) bb.minZ * 16)
-                                    .to((float) bb.maxX * 16, (float) bb.maxY * 16, (float) bb.maxZ * 16)
-                                    .allFaces((dir, face) -> face
-                                            .texture(dir.getAxis().isHorizontal() ? "#side" : dir == Direction.DOWN ? "#bottom" : "#top")
-                                            .cullface(dir.getAxis().isVertical() ? dir : null))
-                                    .end());
-                })
-                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ctx.get())
+                .blockstate(() -> (ctx, prov) ->
+                        prov.createNonTemplateModelBlock(ctx.get())
+                )
+                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(prov.itemLookup(), RecipeCategory.DECORATIONS, ctx.get())
                         .pattern(StringUtils.repeat('T', size.recipeColumns))
                         .pattern(StringUtils.repeat('B', size.recipeColumns))
                         .pattern(StringUtils.repeat('B', size.recipeColumns))
                         .define('T', IGUANA_LEATHER.get())
                         .define('B', MAHOGANY_PLANKS.get())
                         .group("tropicraft:bongos")
-                        .unlockedBy("has_" + prov.safeName(IGUANA_LEATHER.get()), has(IGUANA_LEATHER.get()))
+                        .unlockedBy("has_" + prov.safeName(IGUANA_LEATHER.get()), prov.has(IGUANA_LEATHER.get()))
                         .save(prov))
                 .simpleItem();
     }
@@ -875,28 +801,17 @@ public class TropicraftBlocks {
     public static final BlockEntry<LadderBlock> BAMBOO_LADDER = REGISTRATE.block("bamboo_ladder", LadderBlock::new)
             .initialProperties(() -> Blocks.LADDER)
             .properties(p -> p.sound(SoundType.BAMBOO))
-            .addLayer(() -> RenderType::cutout)
+            .addLayer(() -> () -> ChunkSectionLayer.CUTOUT)
             .tag(BlockTags.CLIMBABLE, BlockTags.MINEABLE_WITH_AXE)
-            .blockstate((ctx, prov) -> {
-                ResourceLocation texture = prov.blockTexture(ctx.get());
-                ModelFile model = prov.models().withExistingParent(ctx.getName(), "ladder")
-                        .texture("particle", texture)
-                        .texture("texture", texture);
-                prov.getVariantBuilder(ctx.get()) // TODO make horizontalBlock etc support this case
-                        .forAllStatesExcept(state -> ConfiguredModel.builder()
-                                        .modelFile(model)
-                                        .rotationY(((int) state.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot() + 180) % 360)
-                                        .build(),
-                                LadderBlock.WATERLOGGED);
-            })
-            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ctx.get(), 4)
+            .blockstate(() -> Models::generateLadder)
+            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(prov.itemLookup(), RecipeCategory.DECORATIONS, ctx.get(), 4)
                     .pattern("S S").pattern("BSB").pattern("S S")
                     .define('S', BAMBOO_STICK.get())
                     .define('B', Items.BAMBOO)
-                    .unlockedBy("has_bamboo", has(Items.BAMBOO))
+                    .unlockedBy("has_bamboo", prov.has(Items.BAMBOO))
                     .save(prov))
             .item()
-            .model(TropicraftBlocks::blockSprite)
+            .model(() -> Models::generateFlatBlockItem)
             .build()
             .register();
 
@@ -908,23 +823,23 @@ public class TropicraftBlocks {
     public static final BlockEntry<BambooChestBlock> BAMBOO_CHEST = REGISTRATE.block("bamboo_chest", BambooChestBlock::new)
             .initialProperties(BAMBOO_BUNDLE)
             .properties(p -> p.strength(1.0f))
-            .blockstate((ctx, prov) -> noModelBlock(ctx, prov, prov.modLoc("block/bamboo_side")))
+            .blockstate(() -> (ctx, prov) -> prov.createAirLikeBlock(ctx.get(), prov.modLoc("block/bamboo_side")))
             .blockEntity(BambooChestBlockEntity::new)
             .renderer(() -> BambooChestRenderer::new)
             .build()
             .item()
-            .clientExtension(() -> TropicraftItemRenderers::bambooChest)
-            .model((ctx, prov) -> prov.withExistingParent(ctx.getName(), "item/chest")
-                    .texture("particle", prov.modLoc("block/bamboo_side")))
+            .model(() -> (ctx, prov) ->
+                    Models.generateChestItem(ctx, prov, Tropicraft.location("bamboo"), prov.modLoc("block/bamboo_side"))
+            )
             .build()
             .addMiscData(ProviderType.LANG, prov -> {
                 prov.add(Tropicraft.ID + ".container.bambooChest", "Bamboo Chest");
                 prov.add(Tropicraft.ID + ".container.bambooChestDouble", "Large Bamboo Chest");
             })
-            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ctx.get())
+            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(prov.itemLookup(), RecipeCategory.DECORATIONS, ctx.get())
                     .pattern("BBB").pattern("B B").pattern("BBB")
                     .define('B', Items.BAMBOO)
-                    .unlockedBy("has_bamboo", has(Items.BAMBOO))
+                    .unlockedBy("has_bamboo", prov.has(Items.BAMBOO))
                     .save(prov))
             .register();
 
@@ -933,26 +848,26 @@ public class TropicraftBlocks {
     public static final BlockEntry<SifterBlock> SIFTER = REGISTRATE.block("sifter", SifterBlock::new)
             .initialProperties(() -> Blocks.OAK_PLANKS)
             .properties(Properties::noOcclusion)
-            .addLayer(() -> RenderType::cutout)
+            .addLayer(() -> () -> ChunkSectionLayer.CUTOUT)
             .blockEntity(SifterBlockEntity::new)
-            .renderer(() -> SifterRenderer::new)
+            .renderer(() -> SifterBlockEntityRenderer::new)
             .build()
             .setData(ProviderType.LANG, (ctx, prov) -> prov.addBlockWithTooltip(ctx, "Place any type of tropics or regular sand in the sifter. What treasures are hidden inside?"))
             .recipe((ctx, prov) -> {
-                ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ctx.get())
+                ShapedRecipeBuilder.shaped(prov.itemLookup(), RecipeCategory.DECORATIONS, ctx.get())
                         .pattern("XXX").pattern("XIX").pattern("XXX")
                         .define('X', ItemTags.PLANKS)
                         .define('I', Tags.Items.GLASS_BLOCKS)
                         .group("tropicraft:sifter")
-                        .unlockedBy("has_glass", has(Tags.Items.GLASS_BLOCKS))
+                        .unlockedBy("has_glass", prov.has(Tags.Items.GLASS_BLOCKS))
                         .save(prov);
-                ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ctx.get())
+                ShapedRecipeBuilder.shaped(prov.itemLookup(), RecipeCategory.DECORATIONS, ctx.get())
                         .pattern("XXX").pattern("XIX").pattern("XXX")
                         .define('X', ItemTags.PLANKS)
                         .define('I', Tags.Items.GLASS_PANES)
                         .group("tropicraft:sifter")
-                        .unlockedBy("has_glass_pane", has(Tags.Items.GLASS_PANES))
-                        .save(prov, Tropicraft.location("sifter_with_glass_pane"));
+                        .unlockedBy("has_glass_pane", prov.has(Tags.Items.GLASS_PANES))
+                        .save(prov, Tropicraft.resourceKey(Registries.RECIPE, "sifter_with_glass_pane"));
             })
             .simpleItem()
             .register();
@@ -961,22 +876,21 @@ public class TropicraftBlocks {
 
     public static final BlockEntry<DrinkMixerBlock> DRINK_MIXER = REGISTRATE.block("drink_mixer", DrinkMixerBlock::new)
             .properties(p -> p.mapColor(MapColor.STONE).strength(2.0f, 30.0f).noOcclusion().instrument(NoteBlockInstrument.BASEDRUM))
-            .blockstate((ctx, prov) -> noModelBlock(ctx, prov, prov.modLoc("block/chunk")))
+            .blockstate(() -> (ctx, prov) -> prov.createAirLikeBlock(ctx.get(), prov.modLoc("block/chunk")))
             .blockEntity(DrinkMixerBlockEntity::new)
-            .renderer(() -> DrinkMixerRenderer::new)
+            .renderer(() -> DrinkMixerBlockEntityRenderer::new)
             .build()
             .item()
-            .clientExtension(() -> TropicraftItemRenderers::drinkMixer)
-            .model((ctx, prov) -> prov.withExistingParent(ctx.getName(), prov.modLoc("item/tall_machine"))
-                    .texture("particle", prov.modLoc("block/chunk")))
+            .properties(p -> p.component(TropicraftDataComponents.HAS_DESCRIPTION, Unit.INSTANCE))
+            .model(() -> Models::generateDrinkMixerItem)
             .build()
-            .addLayer(() -> RenderType::cutout)
+            .addLayer(() -> () -> ChunkSectionLayer.CUTOUT)
             .setData(ProviderType.LANG, (ctx, prov) -> prov.addBlockWithTooltip(ctx, "Place two drink ingredients on the mixer, then place an empty mug on the base, then ???, then enjoy!"))
-            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ctx.get())
+            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(prov.itemLookup(), RecipeCategory.DECORATIONS, ctx.get())
                     .pattern("XXX").pattern("XYX").pattern("XXX")
                     .define('X', CHUNK.get())
                     .define('Y', BAMBOO_MUG.get())
-                    .unlockedBy("has_bamboo_mug", has(BAMBOO_MUG.get()))
+                    .unlockedBy("has_bamboo_mug", prov.has(BAMBOO_MUG.get()))
                     .save(prov))
             .register();
 
@@ -984,25 +898,24 @@ public class TropicraftBlocks {
 
     public static final BlockEntry<AirCompressorBlock> AIR_COMPRESSOR = REGISTRATE.block("air_compressor", AirCompressorBlock::new)
             .properties(p -> p.mapColor(MapColor.STONE).strength(2.0f, 30.0f).noOcclusion().instrument(NoteBlockInstrument.BASEDRUM))
-            .blockstate((ctx, prov) -> noModelBlock(ctx, prov, prov.modLoc("block/chunk")))
+            .blockstate(() -> (ctx, prov) -> prov.createAirLikeBlock(ctx.get(), prov.modLoc("block/chunk")))
             .blockEntity(AirCompressorBlockEntity::new)
-            .renderer(() -> AirCompressorRenderer::new)
+            .renderer(() -> AirCompressorBlockEntityRenderer::new)
             .build()
             .item()
-            .clientExtension(() -> TropicraftItemRenderers::airCompressor)
-            .model((ctx, prov) -> prov.withExistingParent(ctx.getName(), prov.modLoc("item/tall_machine"))
-                    .texture("particle", prov.modLoc("block/chunk")))
+            .properties(p -> p.component(TropicraftDataComponents.HAS_DESCRIPTION, Unit.INSTANCE))
+            .model(() -> Models::generateAirCompressorItem)
             .build()
-            .addLayer(() -> RenderType::cutout)
+            .addLayer(() -> () -> ChunkSectionLayer.CUTOUT)
             .setData(ProviderType.LANG, (ctx, prov) -> prov.addBlockWithTooltip(ctx, "Place an empty scuba harness in the compressor to fill it with air!"))
-            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ctx.get(), 1)
+            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(prov.itemLookup(), RecipeCategory.DECORATIONS, ctx.get(), 1)
                     .pattern("XXX")
                     .pattern("XYX")
                     .pattern("XXX")
                     .define('X', CHUNK.get())
                     .define('Y', AZURITE.get())
-                    .unlockedBy("has_" + prov.safeName(CHUNK.get()), has(CHUNK.get()))
-                    .unlockedBy("has_" + prov.safeName(AZURITE.get()), has(AZURITE.get()))
+                    .unlockedBy("has_" + prov.safeName(CHUNK.get()), prov.has(CHUNK.get()))
+                    .unlockedBy("has_" + prov.safeName(AZURITE.get()), prov.has(AZURITE.get()))
                     .save(prov))
             .register();
 
@@ -1011,7 +924,7 @@ public class TropicraftBlocks {
     public static final BlockEntry<VolcanoBlock> VOLCANO = REGISTRATE.block("volcano", VolcanoBlock::new)
             .initialProperties(() -> Blocks.BEDROCK)
             .properties(Properties::noLootTable)
-            .blockstate((ctx, prov) -> prov.simpleBlock(ctx.get(), prov.models().getExistingFile(prov.mcLoc("block/bedrock"))))
+            .blockstate(() -> Models::generateVolcanoBlock)
             .simpleBlockEntity(VolcanoBlockEntity::new)
             .register();
 
@@ -1021,31 +934,25 @@ public class TropicraftBlocks {
             .initialProperties(() -> Blocks.TORCH)
             .properties(p -> p.sound(SoundType.WOOD).lightLevel(state -> state.getValue(TikiTorchBlock.SECTION) == TorchSection.UPPER ? 15 : 0))
             .loot((loot, block) -> loot.add(block, createSinglePropConditionTable(loot, block, TikiTorchBlock.SECTION, TikiTorchBlock.TorchSection.UPPER)))
-            .addLayer(() -> RenderType::cutout)
-            .blockstate((ctx, prov) -> {
-                ModelFile tikiLower = prov.models().torch("tiki_torch_lower", prov.modLoc("block/tiki_torch_lower"));
-                ModelFile tikiUpper = prov.models().torch("tiki_torch_upper", prov.modLoc("block/tiki_torch_upper"));
-                prov.getVariantBuilder(ctx.get())
-                        .forAllStates(state -> ConfiguredModel.builder()
-                                .modelFile(state.getValue(TikiTorchBlock.SECTION) == TorchSection.UPPER ? tikiUpper : tikiLower).build());
-            })
-            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ctx.get())
+            .addLayer(() -> () -> ChunkSectionLayer.CUTOUT)
+            .blockstate(() -> Models::generateTikiTorch)
+            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(prov.itemLookup(), RecipeCategory.DECORATIONS, ctx.get())
                     .pattern("Y").pattern("X").pattern("X")
                     .define('X', BAMBOO_STICK.get())
                     .define('Y', ItemTags.COALS)
-                    .unlockedBy("has_bamboo_stick", has(BAMBOO_STICK.get()))
+                    .unlockedBy("has_bamboo_stick", prov.has(BAMBOO_STICK.get()))
                     .save(prov))
             .item().defaultModel().build()
             .register();
 
     public static final BlockEntry<FlowerPotBlock> BAMBOO_FLOWER_POT = REGISTRATE.block("bamboo_flower_pot", p -> new FlowerPotBlock(null, () -> Blocks.AIR, p))
             .properties(p -> p.strength(0.2f, 5.0f).sound(SoundType.BAMBOO).pushReaction(PushReaction.DESTROY))
-            .addLayer(() -> RenderType::cutout)
-            .blockstate((ctx, prov) -> flowerPot(ctx, prov, ctx, prov.modLoc("block/bamboo_side")))
-            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ctx.get())
+            .addLayer(() -> () -> ChunkSectionLayer.CUTOUT)
+            .blockstate(() -> (ctx, prov) -> Models.generateFlowerPot(ctx, prov, ctx, prov.modLoc("block/bamboo_side")))
+            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(prov.itemLookup(), RecipeCategory.DECORATIONS, ctx.get())
                     .pattern("# #").pattern(" # ")
                     .define('#', Items.BAMBOO)
-                    .unlockedBy("has_bamboo", has(Items.BAMBOO))
+                    .unlockedBy("has_bamboo", prov.has(Items.BAMBOO))
                     .save(prov))
             .item().defaultModel().build()
             .register();
@@ -1053,160 +960,118 @@ public class TropicraftBlocks {
     public static final BlockEntry<CoffeeBushBlock> COFFEE_BUSH = REGISTRATE.block("coffee_bush", CoffeeBushBlock::new)
             .properties(p -> p.mapColor(MapColor.GRASS).strength(0.15f).sound(SoundType.GRASS).noOcclusion().pushReaction(PushReaction.DESTROY))
             .loot((loot, block) -> loot.add(block, coffee(loot, TropicraftBlocks.COFFEE_BUSH.get(), TropicraftItems.RAW_COFFEE_BEAN)))
-            .addLayer(() -> RenderType::cutout)
-            .blockstate((ctx, prov) -> prov.getVariantBuilder(ctx.get()).forAllStates(state -> {
-                int age = state.getValue(CoffeeBushBlock.AGE);
-                BlockModelBuilder model = prov.models().withExistingParent(ctx.getName() + "_stage_" + age, prov.modLoc("coffee_bush"))
-                        .texture("bush", prov.modLoc("block/" + ctx.getName() + "_stage" + age));
-                return ConfiguredModel.builder().modelFile(model).build();
-            }))
+            .addLayer(() -> () -> ChunkSectionLayer.CUTOUT)
+            .blockstate(() -> Models::generateCoffeeBush)
             .register();
 
     public static final BlockEntry<GrowableSinglePlantBlock> GOLDEN_LEATHER_FERN = REGISTRATE.block("small_golden_leather_fern", p -> new GrowableSinglePlantBlock(p, () -> TropicraftBlocks.TALL_GOLDEN_LEATHER_FERN))
             .initialProperties(() -> Blocks.FERN)
             .properties(p -> p.offsetType(BlockBehaviour.OffsetType.XZ))
-            .addLayer(() -> RenderType::cutout)
-            .blockstate((ctx, prov) -> prov.simpleBlock(ctx.get(), prov.models().cross(ctx.getName(), prov.modLoc("block/small_golden_leather_fern"))))
+            .addLayer(() -> () -> ChunkSectionLayer.CUTOUT)
+            .blockstate(() -> (ctx, prov) -> prov.createCrossBlock(ctx.get(), PlantType.NOT_TINTED, TextureMapping.cross(prov.modLoc("block/small_golden_leather_fern"))))
             .lang("Golden Leather Fern")
             .item()
-            .model((ctx, prov) -> prov.generated(ctx, prov.modLoc("item/golden_leather_fern")))
+            .model(() -> (ctx, prov) -> prov.generateFlatItem(ctx.get(), prov.modLoc("item/golden_leather_fern")))
             .build()
             .register();
 
     public static final BlockEntry<GrowableDoublePlantBlock> TALL_GOLDEN_LEATHER_FERN = REGISTRATE.block("tall_golden_leather_fern", p -> new GrowableDoublePlantBlock(p, () -> TropicraftBlocks.LARGE_GOLDEN_LEATHER_FERN).setPickItem(() -> TropicraftBlocks.GOLDEN_LEATHER_FERN))
             .initialProperties(() -> Blocks.LARGE_FERN)
             .loot((loot, block) -> loot.dropOther(block, GOLDEN_LEATHER_FERN.get()))
-            .addLayer(() -> RenderType::cutout)
-            .blockstate(TropicraftBlocks::doublePlant)
+            .addLayer(() -> () -> ChunkSectionLayer.CUTOUT)
+            .blockstate(() -> Models::generateDoublePlant)
             .register();
 
     public static final BlockEntry<HugePlantBlock> LARGE_GOLDEN_LEATHER_FERN = REGISTRATE.block("golden_leather_fern", p -> new HugePlantBlock(p).setPickItem(() -> TropicraftBlocks.GOLDEN_LEATHER_FERN))
             .properties(p -> p.mapColor(MapColor.PLANT).noOcclusion().noCollission().instabreak().sound(SoundType.GRASS).pushReaction(PushReaction.DESTROY))
             .loot((loot, block) -> loot.dropOther(block, GOLDEN_LEATHER_FERN.get()))
-            .addLayer(() -> RenderType::cutout)
-            .blockstate((ctx, prov) -> {
-                BlockModelBuilder cross = prov.models().withExistingParent(ctx.getName(), prov.modLoc("block/huge_cross"))
-                        .texture("cross", prov.modLoc("block/large_golden_leather_fern"))
-                        .texture("particle", prov.blockTexture(GOLDEN_LEATHER_FERN.get()));
-                prov.getMultipartBuilder(ctx.get())
-                        .part().modelFile(cross).addModel()
-                        .condition(HugePlantBlock.TYPE, HugePlantBlock.Type.CENTER);
-            })
+            .addLayer(() -> () -> ChunkSectionLayer.CUTOUT)
+            .blockstate(() -> Models::generateLargeGoldenLeatherFern)
             .lang("Large Golden Leather Fern")
             .register();
 
     public static final BlockEntry<WaterlilyBlock> FLOWERING_LILY_PAD = REGISTRATE.block("flowering_lily_pad", WaterlilyBlock::new)
             .properties(p -> p.mapColor(MapColor.PLANT).noOcclusion().instabreak().sound(SoundType.LILY_PAD).pushReaction(PushReaction.DESTROY))
-            .addLayer(() -> RenderType::cutout)
-            .blockstate((ctx, prov) -> {
-                BlockModelBuilder model = prov.models().withExistingParent(ctx.getName(), prov.modLoc("block/water_lily_with_flower"))
-                        .texture("flower", prov.modLoc("block/flowering_lily_pad"))
-                        .texture("texture", prov.mcLoc("block/lily_pad"))
-                        .texture("particle", prov.mcLoc("block/lily_pad"));
-                prov.simpleBlock(ctx.get(), ConfiguredModel.allYRotations(model, 0, false));
-            })
+            .addLayer(() -> () -> ChunkSectionLayer.CUTOUT)
+            .blockstate(() -> Models::generateFloweringLilyPad)
             .tag(BlockTags.SWORD_EFFICIENT, BlockTags.INSIDE_STEP_SOUND_BLOCKS, BlockTags.FROG_PREFER_JUMP_TO)
             .color(NonNullSupplier.of(() -> () -> (BlockColor) (blockState, blockAndTintGetter, blockPos, i) -> blockAndTintGetter != null && blockPos != null ? 0xff208030 : 0xff71c35c))
             .item(PlaceOnWaterBlockItem::new)
-            .model((ctx, prov) -> prov.generated(ctx, prov.modLoc("block/flowering_lily_pad")))
+            .model(() -> Models::generateFlatBlockItem)
             .build()
             .register();
 
     public static final BlockEntry<DuckweedBlock> DUCKWEED = REGISTRATE.block("duckweed", DuckweedBlock::new)
             .properties(p -> p.mapColor(MapColor.PLANT).noCollission().noOcclusion().instabreak().sound(SoundType.LILY_PAD).pushReaction(PushReaction.DESTROY))
-            .addLayer(() -> RenderType::cutout)
-            .blockstate((ctx, prov) -> {
-                BlockModelBuilder model = prov.models().withExistingParent(ctx.getName(), prov.mcLoc("block/carpet"))
-                        .texture("wool", prov.modLoc("block/duckweed"))
-                        .texture("particle", prov.modLoc("block/duckweed"));
-                prov.simpleBlock(ctx.get(), model);
-            })
+            .addLayer(() -> () -> ChunkSectionLayer.CUTOUT)
+            .blockstate(() -> Models::generateDuckweed)
             .tag(BlockTags.SWORD_EFFICIENT)
             .item(PlaceOnWaterBlockItem::new)
-            .model((ctx, prov) -> prov.generated(ctx, prov.modLoc("block/duckweed")))
+            .model(() -> Models::generateFlatBlockItem)
             .build()
             .register();
 
     // Short and tall seagrass
     public static final BlockEntry<CustomSeagrassBlock> EEL_GRASS = seagrass("eel_grass", "Enhalus acoroides", () -> TropicraftBlocks.TALL_EEL_GRASS).register();
-    public static final BlockEntry<CustomTallSeagrassBlock> TALL_EEL_GRASS = tallSeagrass("tall_eel_grass", "Enhalus acoroides", EEL_GRASS).register();
+    public static final BlockEntry<CustomTallSeagrassBlock> TALL_EEL_GRASS = tallSeagrass("tall_eel_grass", EEL_GRASS).register();
     public static final BlockEntry<CustomSeagrassBlock> FLOWERING_EEL_GRASS = seagrass("flowering_eel_grass", "Enhalus acoroides", () -> TropicraftBlocks.FLOWERING_TALL_EEL_GRASS).register();
-    public static final BlockEntry<CustomTallSeagrassBlock> FLOWERING_TALL_EEL_GRASS = tallSeagrass("flowering_tall_eel_grass", "Enhalus acoroides", FLOWERING_EEL_GRASS).register();
-    public static final BlockEntry<ScientificNameBlock> MATTED_EEL_GRASS = mattedSeagrassBlock("matted_eel_grass", "Enhalus acoroides").register();
-    public static final BlockEntry<ScientificNameBlock> EEL_GRASS_BLOCK = seagrassBlock("eel_grass", "Enhalus acoroides").register();
+    public static final BlockEntry<CustomTallSeagrassBlock> FLOWERING_TALL_EEL_GRASS = tallSeagrass("flowering_tall_eel_grass", FLOWERING_EEL_GRASS).register();
+    public static final BlockEntry<Block> MATTED_EEL_GRASS = mattedSeagrassBlock("matted_eel_grass", "Enhalus acoroides").register();
+    public static final BlockEntry<Block> EEL_GRASS_BLOCK = seagrassBlock("eel_grass", "Enhalus acoroides").register();
 
     public static final BlockEntry<CustomSeagrassBlock> FERN_SEAGRASS = seagrass("fern_seagrass", "Halophila spinulosa", () -> TropicraftBlocks.TALL_FERN_SEAGRASS).register();
-    public static final BlockEntry<CustomTallSeagrassBlock> TALL_FERN_SEAGRASS = tallSeagrass("tall_fern_seagrass", "Halophila spinulosa", FERN_SEAGRASS).register();
-    public static final BlockEntry<ScientificNameBlock> MATTED_FERN_SEAGRASS = mattedSeagrassBlock("matted_fern_seagrass", "Halophila spinulosa").register();
-    public static final BlockEntry<ScientificNameBlock> FERN_SEAGRASS_BLOCK = seagrassBlock("fern_seagrass", "Halophila spinulosa").register();
+    public static final BlockEntry<CustomTallSeagrassBlock> TALL_FERN_SEAGRASS = tallSeagrass("tall_fern_seagrass", FERN_SEAGRASS).register();
+    public static final BlockEntry<Block> MATTED_FERN_SEAGRASS = mattedSeagrassBlock("matted_fern_seagrass", "Halophila spinulosa").register();
+    public static final BlockEntry<Block> FERN_SEAGRASS_BLOCK = seagrassBlock("fern_seagrass", "Halophila spinulosa").register();
 
     public static final BlockEntry<CustomSeagrassBlock> SICKLE_SEAGRASS = seagrass("sickle_seagrass", "Thalassodendron ciliatum", () -> TropicraftBlocks.TALL_SICKLE_SEAGRASS).register();
-    public static final BlockEntry<CustomTallSeagrassBlock> TALL_SICKLE_SEAGRASS = tallSeagrass("tall_sickle_seagrass", "Thalassodendron ciliatum", SICKLE_SEAGRASS).register();
-    public static final BlockEntry<ScientificNameBlock> MATTED_SICKLE_SEAGRASS = mattedSeagrassBlock("matted_sickle_seagrass", "Thalassodendron ciliatum").register();
-    public static final BlockEntry<ScientificNameBlock> SICKLE_SEAGRASS_BLOCK = seagrassBlock("sickle_seagrass", "Thalassodendron ciliatum").register();
+    public static final BlockEntry<CustomTallSeagrassBlock> TALL_SICKLE_SEAGRASS = tallSeagrass("tall_sickle_seagrass", SICKLE_SEAGRASS).register();
+    public static final BlockEntry<Block> MATTED_SICKLE_SEAGRASS = mattedSeagrassBlock("matted_sickle_seagrass", "Thalassodendron ciliatum").register();
+    public static final BlockEntry<Block> SICKLE_SEAGRASS_BLOCK = seagrassBlock("sickle_seagrass", "Thalassodendron ciliatum").register();
 
     // Short only seagrass
     public static final BlockEntry<CustomSeagrassBlock> NOODLE_SEAGRASS = seagrass("noodle_seagrass", "Syringodium isoetifolium", null).register();
-    public static final BlockEntry<ScientificNameBlock> MATTED_NOODLE_SEAGRASS = mattedSeagrassBlock("matted_noodle_seagrass", "Syringodium isoetifolium").register();
-    public static final BlockEntry<ScientificNameBlock> NOODLE_SEAGRASS_BLOCK = seagrassBlock("noodle_seagrass", "Syringodium isoetifolium").register();
+    public static final BlockEntry<Block> MATTED_NOODLE_SEAGRASS = mattedSeagrassBlock("matted_noodle_seagrass", "Syringodium isoetifolium").register();
+    public static final BlockEntry<Block> NOODLE_SEAGRASS_BLOCK = seagrassBlock("noodle_seagrass", "Syringodium isoetifolium").register();
 
     private static BlockBuilder<CustomSeagrassBlock, Registrate> seagrass(String name, String scientificName, @Nullable Supplier<BlockEntry<? extends TallSeagrassBlock>> tall) {
-        return REGISTRATE.block(name, p -> new CustomSeagrassBlock(p, scientificName, () -> tall.get().get()))
+        return REGISTRATE.block(name, p -> new CustomSeagrassBlock(p, () -> tall.get().get()))
                 .initialProperties(() -> Blocks.SEAGRASS)
                 .loot((loot, block) -> loot.add(block, onlyWithSilkTouchOrShears(loot, block)))
-                .addLayer(() -> RenderType::cutout)
-                .blockstate((ctx, prov) -> {
-                    ResourceLocation texture = prov.blockTexture(ctx.get());
-                    prov.simpleBlock(ctx.get(), prov.models().withExistingParent(ctx.getName(), prov.mcLoc("template_seagrass"))
-                            .texture("texture", texture)
-                            .texture("particle", texture));
-                })
+                .addLayer(() -> () -> ChunkSectionLayer.CUTOUT)
+                .blockstate(() -> Models::generateSeagrass)
                 .item()
-                .model(TropicraftBlocks::blockSprite)
+                .properties(p -> p.component(TropicraftDataComponents.SCIENTIFIC_NAME, scientificName))
+                .model(() -> Models::generateFlatBlockItem)
                 .build();
     }
 
-    private static BlockBuilder<CustomTallSeagrassBlock, Registrate> tallSeagrass(String name, String scientificName, BlockEntry<? extends SeagrassBlock> normal) {
-        return REGISTRATE.block(name, p -> new CustomTallSeagrassBlock(p, scientificName, normal::get))
+    private static BlockBuilder<CustomTallSeagrassBlock, Registrate> tallSeagrass(String name, BlockEntry<? extends SeagrassBlock> normal) {
+        return REGISTRATE.block(name, p -> new CustomTallSeagrassBlock(p, normal::get))
                 .initialProperties(() -> Blocks.SEAGRASS)
                 .loot((loot, block) -> loot.add(block, onlyWithSilkTouchOrShears(loot, normal.get())))
-                .addLayer(() -> RenderType::cutout)
-                .blockstate((ctx, prov) -> {
-                    ModelFile top = prov.models().withExistingParent(ctx.getName() + "_top", prov.mcLoc("template_seagrass"))
-                            .texture("texture", prov.modLoc("block/" + ctx.getName() + "_top"))
-                            .texture("particle", prov.modLoc("block/" + ctx.getName() + "_top"));
-
-                    ModelFile bottom = prov.models().withExistingParent(ctx.getName() + "_bottom", prov.mcLoc("template_seagrass"))
-                            .texture("texture", prov.modLoc("block/" + ctx.getName() + "_bottom"))
-                            .texture("particle", prov.modLoc("block/" + ctx.getName() + "_bottom"));
-
-                    MultiPartBlockStateBuilder builder = prov.getMultipartBuilder(ctx.get());
-                    builder.part().modelFile(top).addModel()
-                            .condition(TallSeagrassBlock.HALF, DoubleBlockHalf.UPPER)
-                            .end();
-                    builder.part().modelFile(bottom).addModel()
-                            .condition(TallSeagrassBlock.HALF, DoubleBlockHalf.LOWER)
-                            .end();
-                });
+                .addLayer(() -> () -> ChunkSectionLayer.CUTOUT)
+                .blockstate(() -> Models::generateTallSeagrass);
     }
 
-    private static BlockBuilder<ScientificNameBlock, Registrate> seagrassBlock(String name, String scientificName) {
-        return REGISTRATE.block(name + "_block", p -> new ScientificNameBlock(p, scientificName))
+    private static BlockBuilder<Block, Registrate> seagrassBlock(String name, String scientificName) {
+        return REGISTRATE.block(name + "_block", Block::new)
                 .initialProperties(() -> Blocks.SAND)
-                .blockstate((ctx, prov) -> prov.simpleBlock(ctx.get(), prov.models()
-                        .cubeAll(ctx.getName(), prov.modLoc("block/matted_" + name + "_top"))))
-                .simpleItem();
+                .blockstate(() -> (ctx, prov) ->
+                        Models.generateSeagrassBlock(name, ctx, prov)
+                )
+                .item()
+                .properties(p -> p.component(TropicraftDataComponents.SCIENTIFIC_NAME, scientificName))
+                .build();
     }
 
-    private static BlockBuilder<ScientificNameBlock, Registrate> mattedSeagrassBlock(String name, String scientificName) {
-        return REGISTRATE.block(name, p -> new ScientificNameBlock(p, scientificName))
+    private static BlockBuilder<Block, Registrate> mattedSeagrassBlock(String name, String scientificName) {
+        return REGISTRATE.block(name, Block::new)
                 .initialProperties(() -> Blocks.SAND)
-                .blockstate((ctx, prov) -> prov.simpleBlock(ctx.get(), prov.models().cubeBottomTop(ctx.getName(),
-                        prov.modLoc("block/" + ctx.getName() + "_side"),
-                        prov.modLoc("block/" + TropicraftBlocks.PURIFIED_SAND.getId().getPath()),
-                        prov.modLoc("block/" + ctx.getName() + "_top")
-                )))
-                .simpleItem();
+                .blockstate(() -> Models::generateMattedSeagrassBlock)
+                .item()
+                .properties(p -> p.component(TropicraftDataComponents.SCIENTIFIC_NAME, scientificName))
+                .build();
     }
 
     @SuppressWarnings("unchecked")
@@ -1238,9 +1103,9 @@ public class TropicraftBlocks {
         return REGISTRATE.block(name, p -> new FlowerPotBlock(BAMBOO_FLOWER_POT, plant, p))
                 .properties(p -> p.strength(0.2f, 5.0f).sound(SoundType.BAMBOO).pushReaction(PushReaction.DESTROY))
                 .loot((loot, block) -> loot.add(block, pottedPlantLoot(loot, block)))
-                .addLayer(() -> RenderType::cutout)
+                .addLayer(() -> () -> ChunkSectionLayer.CUTOUT)
                 .tag(BlockTags.FLOWER_POTS)
-                .blockstate((ctx, prov) -> flowerPot(ctx, prov, BAMBOO_FLOWER_POT, prov.modLoc("block/bamboo_side")))
+                .blockstate(() -> (ctx, prov) -> Models.generateFlowerPot(ctx, prov, BAMBOO_FLOWER_POT, prov.modLoc("block/bamboo_side")))
                 .register();
     }
 
@@ -1248,31 +1113,10 @@ public class TropicraftBlocks {
         return REGISTRATE.block(name, p -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, plant, p))
                 .initialProperties(() -> Blocks.FLOWER_POT)
                 .loot((loot, block) -> loot.add(block, pottedPlantLoot(loot, block)))
-                .addLayer(() -> RenderType::cutout)
+                .addLayer(() -> () -> ChunkSectionLayer.CUTOUT)
                 .tag(BlockTags.FLOWER_POTS)
-                .blockstate((ctx, prov) -> flowerPot(ctx, prov, () -> Blocks.FLOWER_POT, ResourceLocation.withDefaultNamespace("block/flower_pot")))
+                .blockstate(() -> (ctx, prov) -> Models.generateFlowerPot(ctx, prov, () -> Blocks.FLOWER_POT, ResourceLocation.withDefaultNamespace("block/flower_pot")))
                 .register();
-    }
-
-    private static void flowerPot(DataGenContext<Block, ? extends FlowerPotBlock> ctx, RegistrateBlockstateProvider prov, Supplier<? extends Block> empty, ResourceLocation particle) {
-        Block flower = ctx.get().getPotted();
-        boolean isVanilla = flower.builtInRegistryHolder().key().location().getNamespace().equals("minecraft");
-        String flowerName = name(flower);
-        String parent = flower == Blocks.AIR ? "flower_pot" : !isVanilla ? "flower_pot_cross" : ModelProvider.BLOCK_FOLDER + "/potted_" + flowerName;
-        BlockModelBuilder model = prov.models().withExistingParent(ctx.getName(), parent)
-                .texture("flowerpot", prov.blockTexture(empty.get()))
-                .texture("dirt", prov.mcLoc("block/dirt"))
-                .texture("particle", prov.modLoc("block/bamboo_side"));
-        if (!isVanilla) {
-            if (flower instanceof TropicsFlowerBlock) {
-                model.texture("plant", prov.modLoc(ModelProvider.BLOCK_FOLDER + "/flower/" + flowerName));
-            } else if (flower instanceof TallFlowerBlock) {
-                model.texture("plant", prov.modLoc(ModelProvider.BLOCK_FOLDER + "/" + flowerName + "_top"));
-            } else {
-                model.texture("plant", prov.blockTexture(flower));
-            }
-        }
-        prov.simpleBlock(ctx.get(), model);
     }
 
     private static LootTable.Builder pottedPlantLoot(RegistrateBlockLootTables loot, FlowerPotBlock fullPot) {
@@ -1294,38 +1138,16 @@ public class TropicraftBlocks {
             type -> REGISTRATE
                     .block("jigarbov_" + type.getName() + "_wall_torch", p -> new RedstoneWallTorchBlock(p) {
                         @Override
-                        public String getDescriptionId() {
-                            return Util.makeDescriptionId("block", BuiltInRegistries.BLOCK.getKey(this));
-                        }
-
-                        @Override
-                        public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader world, BlockPos pos, Player player) {
+                        public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData, Player player) {
                             return new ItemStack(Items.REDSTONE_TORCH);
                         }
                     })
-                    .initialProperties(() -> Blocks.REDSTONE_WALL_TORCH)
-                    .addLayer(() -> RenderType::cutoutMipped)
-                    .blockstate((ctx, prov) -> {
-                        ResourceLocation parent = prov.modLoc("block/jigarbov_wall_torch");
-                        ResourceLocation etchTexture = prov.modLoc("block/jigarbov/" + type.getName());
-
-                        BlockModelBuilder modelLit = prov.models().withExistingParent(ctx.getName(), parent)
-                                .texture("torch", prov.mcLoc("block/redstone_torch"))
-                                .texture("jigarbov", etchTexture);
-                        BlockModelBuilder modelOff = prov.models().withExistingParent(ctx.getName() + "_off", parent)
-                                .texture("torch", prov.mcLoc("block/redstone_torch_off"))
-                                .texture("jigarbov", etchTexture);
-
-                        prov.getVariantBuilder(ctx.get()).forAllStates(state -> {
-                            boolean lit = state.getValue(RedstoneTorchBlock.LIT);
-                            Direction facing = state.getValue(RedstoneWallTorchBlock.FACING);
-                            int angle = ((int) facing.toYRot() + 90) % 360;
-                            return ConfiguredModel.builder()
-                                    .modelFile(lit ? modelLit : modelOff)
-                                    .rotationY(angle)
-                                    .build();
-                        });
-                    })
+                    .initialProperties(() -> Blocks.REDSTONE_TORCH)
+                    .setData(ProviderType.LANG, (ctx, prov) -> {})
+                    .addLayer(() -> () -> ChunkSectionLayer.CUTOUT_MIPPED)
+                    .blockstate(() -> (ctx, prov) ->
+                            Models.generateJigarbovTorch(ctx, prov, type)
+                    )
                     // TODO: Ideally we should set this on the block properties, but it tries to re-generate the minecraft loot table
                     .loot((loot, block) -> loot.dropOther(block, Items.REDSTONE_TORCH))
                     .register()
@@ -1347,7 +1169,7 @@ public class TropicraftBlocks {
         return REGISTRATE.block(name, p -> new StairBlock(block.get().defaultBlockState(), p))
                 .initialProperties(block)
                 .tag(blockTag)
-                .blockstate((ctx, prov) -> prov.stairsBlock(ctx.get(), prov.blockTexture(block.get())))
+                .blockstate(() -> (ctx, prov) -> prov.generateStairsBlock(ctx.get(), prov.blockTexture(block.get())))
                 .item()
                 .tag(itemTag)
                 .build();
@@ -1370,7 +1192,7 @@ public class TropicraftBlocks {
                 .initialProperties(block)
                 .loot((loot, slab) -> loot.add(slab, loot.createSlabItemTable(slab)))
                 .tag(blockTag)
-                .blockstate((ctx, prov) -> prov.slabBlock(ctx.get(), block.getId(), prov.blockTexture(block.get())))
+                .blockstate(() -> (ctx, prov) -> Models.generateSlabBlock(ctx, prov, block))
                 .item()
                 .tag(itemTag)
                 .build();
@@ -1381,13 +1203,15 @@ public class TropicraftBlocks {
                 .initialProperties(block)
                 .properties(p -> p.noCollission().strength(0.5f).pushReaction(PushReaction.DESTROY))
                 .tag(BlockTags.WOODEN_BUTTONS, BlockTags.MINEABLE_WITH_AXE)
-                .blockstate((ctx, prov) -> prov.buttonBlock(ctx.get(), prov.modLoc("block/" + texture)))
-                .recipe((ctx, prov) -> RegistrateRecipeProvider.buttonBuilder(ctx.get(), Ingredient.of(block.asItem()))
-                        .unlockedBy("has_" + prov.safeName(block.get()), has(block.get()))
+                .blockstate(() -> (ctx, prov) -> prov.generateButtonBlock(ctx.get(), prov.modLoc("block/" + texture)))
+                .recipe((ctx, prov) -> prov.buttonBuilder(ctx.get(), Ingredient.of(block.asItem()))
+                        .unlockedBy("has_" + prov.safeName(block.get()), prov.has(block.get()))
                         .group("wooden_button")
                         .save(prov))
                 .item()
-                .model((ctx, prov) -> prov.buttonInventory(ctx.getName(), prov.modLoc("block/" + texture)))
+                .model(() -> (ctx, prov) ->
+                        prov.generateWithTemplate(ctx.get(), ModelTemplates.BUTTON_INVENTORY, TextureMapping.defaultTexture(prov.modLoc("block/" + texture)))
+                )
                 .tag(ItemTags.WOODEN_BUTTONS)
                 .build();
     }
@@ -1397,14 +1221,12 @@ public class TropicraftBlocks {
                 .initialProperties(block)
                 .properties(p -> p.forceSolidOn().instrument(NoteBlockInstrument.BASS).noCollission().strength(0.5f).ignitedByLava().pushReaction(PushReaction.DESTROY))
                 .tag(BlockTags.WOODEN_PRESSURE_PLATES, BlockTags.MINEABLE_WITH_AXE)
-                .recipe((ctx, prov) -> RegistrateRecipeProvider.pressurePlateBuilder(RecipeCategory.REDSTONE, ctx.get(), Ingredient.of(block.asItem()))
-                        .unlockedBy("has_" + prov.safeName(block.get()), has(block.get()))
+                .recipe((ctx, prov) -> prov.pressurePlateBuilder(RecipeCategory.REDSTONE, ctx.get(), Ingredient.of(block.asItem()))
+                        .unlockedBy("has_" + prov.safeName(block.get()), prov.has(block.get()))
                         .group("wooden_pressure_plate")
                         .save(prov))
-                .blockstate((ctx, prov) -> prov.pressurePlateBlock(ctx.get(), prov.modLoc("block/" + texture)))
-                .item()
-                .model((ctx, prov) -> prov.pressurePlate(ctx.getName(), prov.modLoc("block/" + texture)))
-                .build();
+                .blockstate(() -> (ctx, prov) -> prov.generatePressurePlateBlock(ctx.get(), prov.modLoc("block/" + texture)))
+                .simpleItem();
     }
 
     private static BlockBuilder<StandingSignBlock, Registrate> standingSign(WoodType woodType, Supplier<? extends Item> item, String texture) {
@@ -1412,10 +1234,9 @@ public class TropicraftBlocks {
         return REGISTRATE.block(woodName + "_sign", p -> new StandingSignBlock(woodType, p))
                 .initialProperties(() -> Blocks.OAK_SIGN)
                 .tag(BlockTags.STANDING_SIGNS, BlockTags.MINEABLE_WITH_AXE)
-                .blockstate((ctx, prov) -> {
-                    BlockModelBuilder model = prov.models().sign(woodName + "_sign", prov.modLoc("block/" + texture));
-                    prov.simpleBlock(ctx.get(), model);
-                })
+                .blockstate(() -> (ctx, prov) ->
+                        prov.createAirLikeBlock(ctx.get(), prov.modLoc("block/" + texture))
+                )
                 .loot((loot, b) -> loot.dropOther(b, item.get()))
                 .setData(ProviderType.LANG, NonNullBiConsumer.noop())
                 .onRegisterAfter(Registries.BLOCK_ENTITY_TYPE, b -> extendBlockEntity(BlockEntityType.SIGN, b));
@@ -1424,12 +1245,11 @@ public class TropicraftBlocks {
     private static BlockBuilder<WallSignBlock, Registrate> wallSign(WoodType woodType, Supplier<? extends Item> item, String texture) {
         String woodName = ResourceLocation.parse(woodType.name()).getPath();
         return REGISTRATE.block(woodName + "_wall_sign", p -> new WallSignBlock(woodType, p))
-                .initialProperties(() -> Blocks.OAK_WALL_SIGN)
+                .initialProperties(() -> Blocks.OAK_SIGN)
                 .tag(BlockTags.WALL_SIGNS, BlockTags.MINEABLE_WITH_AXE)
-                .blockstate((ctx, prov) -> {
-                    BlockModelBuilder model = prov.models().sign(woodName + "_sign", prov.modLoc("block/" + texture));
-                    prov.simpleBlock(ctx.get(), model);
-                })
+                .blockstate(() -> (ctx, prov) ->
+                        prov.createAirLikeBlock(ctx.get(), prov.modLoc("block/" + texture))
+                )
                 .loot((loot, b) -> loot.dropOther(b, item.get()))
                 .setData(ProviderType.LANG, NonNullBiConsumer.noop())
                 .onRegisterAfter(Registries.BLOCK_ENTITY_TYPE, b -> extendBlockEntity(BlockEntityType.SIGN, b));
@@ -1458,17 +1278,17 @@ public class TropicraftBlocks {
                     }
                 })
                 .initialProperties(() -> Blocks.OAK_SAPLING)
-                .addLayer(() -> RenderType::cutout)
+                .addLayer(() -> () -> ChunkSectionLayer.CUTOUT)
                 .tag(BlockTags.SAPLINGS)
-                .blockstate((ctx, prov) -> prov.simpleBlock(ctx.get(), prov.models().cross(ctx.getName(), prov.blockTexture(ctx.get()))))
+                .blockstate(() -> Models::generateSapling)
                 .item()
-                .model(TropicraftBlocks::blockSprite)
+                .model(() -> Models::generateFlatBlockItem)
                 .tag(ItemTags.SAPLINGS)
                 .build();
     }
 
     private static BlockBuilder<LeavesBlock, Registrate> leaves(String name, BlockEntry<SaplingBlock> sapling, float[] saplingRates, boolean normalDecay) {
-        return REGISTRATE.block(name, normalDecay ? LeavesBlock::new : TropicraftLeavesBlock::new)
+        return REGISTRATE.block(name, properties -> normalDecay ? new UntintedParticleLeavesBlock(0.01f, TROPICS_LEAF_PARTICLE, properties) : new TropicraftLeavesBlock(0.01f, TROPICS_LEAF_PARTICLE, properties))
                 .initialProperties(() -> Blocks.OAK_LEAVES)
                 .loot((loot, block) -> loot.add(block, loot.createLeavesDrops(block, sapling.get(), saplingRates)))
                 .tag(BlockTags.LEAVES, BlockTags.MINEABLE_WITH_HOE)
@@ -1478,7 +1298,7 @@ public class TropicraftBlocks {
     }
 
     private static BlockBuilder<LeavesBlock, Registrate> leaves(String name, boolean normalDecay) {
-        return REGISTRATE.block(name, normalDecay ? LeavesBlock::new : TropicraftLeavesBlock::new)
+        return REGISTRATE.block(name, properties -> normalDecay ? new UntintedParticleLeavesBlock(0.01f, TROPICS_LEAF_PARTICLE, properties) : new TropicraftLeavesBlock(0.01f, TROPICS_LEAF_PARTICLE, properties))
                 .initialProperties(() -> Blocks.OAK_LEAVES)
                 .loot((loot, block) -> loot.add(block, onlyWithSilkTouchOrShears(loot, block).withPool(lootPool()
                         .setRolls(ConstantValue.exactly(1))
@@ -1492,8 +1312,8 @@ public class TropicraftBlocks {
                 .build();
     }
 
-    private static BlockBuilder<LeavesBlock, Registrate> fruitLeaves(String name, Supplier<SaplingBlock> sapling, Supplier<? extends Item> fruit) {
-        return REGISTRATE.block(name, LeavesBlock::new)
+    private static BlockBuilder<UntintedParticleLeavesBlock, Registrate> fruitLeaves(String name, Supplier<SaplingBlock> sapling, Supplier<? extends Item> fruit) {
+        return REGISTRATE.block(name, properties -> new UntintedParticleLeavesBlock(0.01f, TROPICS_LEAF_PARTICLE, properties))
                 .initialProperties(() -> Blocks.OAK_LEAVES)
                 .loot((loot, block) -> loot.add(block, loot.createLeavesDrops(block, sapling.get(), FRUIT_SAPLING_RATES)
                         .withPool(lootPool().setRolls(ConstantValue.exactly(1))
@@ -1515,7 +1335,7 @@ public class TropicraftBlocks {
                 .initialProperties(() -> Blocks.OAK_LOG)
                 .properties(p -> rotatedPillarProperties(p, topColor, sideColor))
                 .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN, BlockTags.MINEABLE_WITH_AXE)
-                .blockstate((ctx, prov) -> prov.logBlock(ctx.get()))
+                .blockstate(() -> (ctx, prov) -> prov.generateLogBlock(ctx.get()))
                 .item()
                 .tag(ItemTags.LOGS, ItemTags.LOGS_THAT_BURN, TropicraftTags.Items.MANGROVE_LOGS)
                 .build();
@@ -1526,7 +1346,7 @@ public class TropicraftBlocks {
                 .initialProperties(() -> Blocks.OAK_LOG)
                 .properties(p -> rotatedPillarProperties(p, topColor, sideColor))
                 .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN, BlockTags.MINEABLE_WITH_AXE)
-                .blockstate((ctx, prov) -> prov.logBlock(ctx.get()))
+                .blockstate(() -> (ctx, prov) -> prov.generateLogBlock(ctx.get()))
                 .item()
                 .tag(ItemTags.LOGS, ItemTags.LOGS_THAT_BURN)
                 .build();
@@ -1540,15 +1360,15 @@ public class TropicraftBlocks {
         return REGISTRATE.block(name, p -> stripped != null ? new TropicraftLogBlock(p, stripped) : new RotatedPillarBlock(p))
                 .properties(p -> p.sound(SoundType.WOOD).mapColor(color).strength(2.0f).ignitedByLava().instrument(NoteBlockInstrument.BASS))
                 .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN, BlockTags.MINEABLE_WITH_AXE)
-                .blockstate((ctx, prov) -> {
+                .blockstate(() -> (ctx, prov) -> {
                     ResourceLocation barkTexture = prov.blockTexture(bark.get());
-                    prov.axisBlock(ctx.get(), barkTexture, barkTexture);
+                    prov.generateAxisBlock(ctx.get(), barkTexture, barkTexture);
                 })
-                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ctx.get(), 3)
+                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(prov.itemLookup(), RecipeCategory.BUILDING_BLOCKS, ctx.get(), 3)
                         .pattern("##").pattern("##")
                         .define('#', bark.get())
                         .group("bark")
-                        .unlockedBy("has_log", has(Blocks.ACACIA_LOG))
+                        .unlockedBy("has_log", prov.has(Blocks.ACACIA_LOG)) // TODO: What? Why?
                         .save(prov))
                 .item()
                 .tag(ItemTags.LOGS, ItemTags.LOGS_THAT_BURN)
@@ -1567,66 +1387,18 @@ public class TropicraftBlocks {
                                 .isRedstoneConductor((state, world, pos) -> false)
                                 .hasPostProcess((state, world, pos) -> true)
                 )
-                .addLayer(() -> RenderType::cutoutMipped)
+                .addLayer(() -> () -> ChunkSectionLayer.CUTOUT_MIPPED)
                 .tag(TropicraftTags.Blocks.ROOTS, BlockTags.MINEABLE_WITH_AXE)
-                .blockstate((ctx, prov) -> {
-                    ResourceLocation roots = prov.modLoc("block/" + name);
-
-                    ModelFile stem = prov.models().withExistingParent(name + "_stem", prov.modLoc("block/mangrove_roots/stem"))
-                            .texture("roots", roots);
-                    ModelFile stemShort = prov.models().withExistingParent(name + "_stem_short", prov.modLoc("block/mangrove_roots/stem_short"))
-                            .texture("roots", roots);
-                    ModelFile connectionLow = prov.models().withExistingParent(name + "_connection_low", prov.modLoc("block/mangrove_roots/connection_low"))
-                            .texture("roots", roots);
-                    ModelFile connectionHigh = prov.models().withExistingParent(name + "_connection_high", prov.modLoc("block/mangrove_roots/connection_high"))
-                            .texture("roots", roots);
-
-                    ModelFile appendagesHigh = prov.models().withExistingParent(name + "_appendages_high", prov.modLoc("block/mangrove_roots/appendages"))
-                            .texture("appendages", prov.modLoc("block/" + name + "_appendages_high"));
-                    ModelFile appendagesHighShort = prov.models().withExistingParent(name + "_appendages_high_short", prov.modLoc("block/mangrove_roots/appendages"))
-                            .texture("appendages", prov.modLoc("block/" + name + "_appendages_high_short"));
-                    ModelFile appendagesGrounded = prov.models().withExistingParent(name + "_appendages_ground", prov.modLoc("block/mangrove_roots/appendages"))
-                            .texture("appendages", prov.modLoc("block/" + name + "_appendages_ground"));
-                    ModelFile appendagesGroundedShort = prov.models().withExistingParent(name + "_appendages_ground_short", prov.modLoc("block/mangrove_roots/appendages"))
-                            .texture("appendages", prov.modLoc("block/" + name + "_appendages_ground_short"));
-
-                    MultiPartBlockStateBuilder builder = prov.getMultipartBuilder(ctx.get());
-
-                    builder.part().modelFile(stem).addModel()
-                            .condition(MangroveRootsBlock.TALL, true);
-                    builder.part().modelFile(stemShort).addModel()
-                            .condition(MangroveRootsBlock.TALL, false);
-
-                    builder.part().modelFile(appendagesGrounded).addModel()
-                            .condition(MangroveRootsBlock.TALL, true)
-                            .condition(MangroveRootsBlock.GROUNDED, true);
-                    builder.part().modelFile(appendagesGroundedShort).addModel()
-                            .condition(MangroveRootsBlock.TALL, false)
-                            .condition(MangroveRootsBlock.GROUNDED, true);
-                    builder.part().modelFile(appendagesHigh).addModel()
-                            .condition(MangroveRootsBlock.TALL, true)
-                            .condition(MangroveRootsBlock.GROUNDED, false);
-                    builder.part().modelFile(appendagesHighShort).addModel()
-                            .condition(MangroveRootsBlock.TALL, false)
-                            .condition(MangroveRootsBlock.GROUNDED, false);
-
-                    for (int i = 0; i < 4; i++) {
-                        EnumProperty<MangroveRootsBlock.Connection> connection = MangroveRootsBlock.CONNECTIONS[i];
-                        int rotation = (i * 90 + 270) % 360;
-
-                        builder.part().modelFile(connectionHigh).rotationY(rotation).uvLock(true).addModel()
-                                .condition(connection, MangroveRootsBlock.Connection.HIGH);
-                        builder.part().modelFile(connectionLow).rotationY(rotation).uvLock(true).addModel()
-                                .condition(connection, MangroveRootsBlock.Connection.LOW);
-                    }
-                })
+                .blockstate(() -> (ctx, prov) ->
+                        Models.generateMangroveRoots(ctx, prov, name)
+                )
                 .item()
-                .model((ctx, prov) -> prov.blockItem(ctx, "_stem"))
+                .model(() -> (ctx, prov) -> prov.generateBlockItem(ctx.get(), "_stem"))
                 .build();
     }
 
     private static BlockBuilder<MangroveLeavesBlock, Registrate> mangroveLeaves(String name, Supplier<PropaguleBlock> propagule) {
-        return REGISTRATE.block(name, p -> new MangroveLeavesBlock(p, propagule))
+        return REGISTRATE.block(name, p -> new MangroveLeavesBlock(0.01f, TROPICS_LEAF_PARTICLE, propagule, p))
                 .initialProperties(() -> Blocks.OAK_LEAVES)
                 .properties(Properties::randomTicks)
                 .loot((loot, block) -> loot.add(block, onlyWithSilkTouchOrShears(loot, block).withPool(lootPool()
@@ -1644,18 +1416,13 @@ public class TropicraftBlocks {
     private static BlockBuilder<PropaguleBlock, Registrate> propagule(String name, TreeGrower tree, String scientificName) {
         return REGISTRATE.block(name, p -> new PropaguleBlock(tree, p))
                 .initialProperties(() -> Blocks.OAK_SAPLING)
-                .addLayer(() -> RenderType::cutout)
+                .addLayer(() -> () -> ChunkSectionLayer.CUTOUT)
                 .tag(BlockTags.SAPLINGS)
-                .blockstate((ctx, prov) -> {
-                    BlockModelBuilder planted = prov.models().cross(ctx.getName() + "_planted", prov.modLoc("block/" + ctx.getName() + "_planted"));
-                    BlockModelBuilder hanging = prov.models().cross(ctx.getName() + "_hanging", prov.blockTexture(ctx.get()));
-                    prov.getVariantBuilder(ctx.get())
-                            .partialState().with(PropaguleBlock.PLANTED, false).addModels(new ConfiguredModel(hanging))
-                            .partialState().with(PropaguleBlock.PLANTED, true).addModels(new ConfiguredModel(planted));
-                })
+                .blockstate(() -> Models::generatePropagule)
                 .setData(ProviderType.LANG, (ctx, prov) -> prov.addBlockWithTooltip(ctx, scientificName))
                 .item()
-                .model(TropicraftBlocks::blockSprite)
+                .properties(p -> p.component(TropicraftDataComponents.HAS_DESCRIPTION, Unit.INSTANCE))
+                .model(() -> Models::generateFlatBlockItem)
                 .tag(ItemTags.SAPLINGS)
                 .build();
     }
@@ -1675,11 +1442,13 @@ public class TropicraftBlocks {
         BlockBuilder<FenceBlock, Registrate> builder = REGISTRATE.block(name, FenceBlock::new)
                 .initialProperties(block)
                 .tag(BlockTags.WOODEN_FENCES, BlockTags.MINEABLE_WITH_AXE)
-                .blockstate((ctx, prov) -> prov.fenceBlock(ctx.get(), prov.blockTexture(block.get())))
+                .blockstate(() -> (ctx, prov) -> prov.generateFenceBlock(ctx.get(), prov.blockTexture(block.get())))
                 .recipe((ctx, prov) -> prov.fence(DataIngredient.items(block.get()), RecipeCategory.DECORATIONS, ctx, "wooden_fence"));
         return itemFunction.apply(builder.item()
                 .tag(ItemTags.WOODEN_FENCES)
-                .model((ctx, prov) -> prov.fenceInventory(ctx.getName(), prov.modLoc("block/" + prov.name(block))))
+                .model(() -> (ctx, prov) ->
+                        prov.generateWithTemplate(ctx.get(), ModelTemplates.FENCE_INVENTORY, TextureMapping.defaultTexture(block.get()))
+                )
         ).build();
     }
 
@@ -1687,7 +1456,7 @@ public class TropicraftBlocks {
         return REGISTRATE.block(name, p -> new FenceGateBlock(p, SoundEvents.FENCE_GATE_OPEN, SoundEvents.FENCE_GATE_CLOSE))
                 .initialProperties(block)
                 .tag(BlockTags.FENCE_GATES, BlockTags.MINEABLE_WITH_AXE)
-                .blockstate((ctx, prov) -> prov.fenceGateBlock(ctx.get(), prov.blockTexture(block.get())))
+                .blockstate(() -> (ctx, prov) -> prov.generateFenceGateBlock(ctx.get(), prov.blockTexture(block.get())))
                 .recipe((ctx, prov) -> prov.fenceGate(DataIngredient.items(block.get()), RecipeCategory.DECORATIONS, ctx, "wooden_fence_gate"))
                 .simpleItem();
     }
@@ -1696,9 +1465,9 @@ public class TropicraftBlocks {
         return REGISTRATE.block(name, p -> new DoorBlock(BlockSetType.OAK, p))
                 .initialProperties(() -> Blocks.OAK_DOOR)
                 .loot((loot, block) -> loot.add(block, createSinglePropConditionTable(loot, block, DoorBlock.HALF, DoubleBlockHalf.LOWER)))
-                .addLayer(() -> RenderType::cutout)
+                .addLayer(() -> () -> ChunkSectionLayer.CUTOUT)
                 .tag(BlockTags.WOODEN_DOORS, BlockTags.MINEABLE_WITH_AXE)
-                .blockstate((ctx, prov) -> prov.doorBlock(ctx.get(), prov.modLoc("block/" + ctx.getName() + "_bottom"), prov.modLoc("block/" + ctx.getName() + "_top")))
+                .blockstate(() -> (ctx, prov) -> prov.generateDoorBlock(ctx.get(), prov.modLoc("block/" + ctx.getName() + "_bottom"), prov.modLoc("block/" + ctx.getName() + "_top")))
                 .recipe((ctx, prov) -> prov.door(DataIngredient.items(material.get()), RecipeCategory.DECORATIONS, ctx, "wooden_door"))
                 .item()
                 .defaultModel()
@@ -1709,13 +1478,13 @@ public class TropicraftBlocks {
     private static BlockBuilder<TrapDoorBlock, Registrate> trapdoor(String name, BlockEntry<? extends Block> material) {
         return REGISTRATE.block(name, p -> new TrapDoorBlock(BlockSetType.OAK, p))
                 .initialProperties(() -> Blocks.OAK_TRAPDOOR)
-                .addLayer(() -> RenderType::cutout)
+                .addLayer(() -> () -> ChunkSectionLayer.CUTOUT)
                 .tag(BlockTags.WOODEN_TRAPDOORS, BlockTags.MINEABLE_WITH_AXE)
-                .blockstate((ctx, prov) -> prov.trapdoorBlock(ctx.get(), prov.blockTexture(ctx.get()), true))
+                .blockstate(() -> (ctx, prov) -> prov.generateTrapdoorBlock(ctx.get(), prov.blockTexture(ctx.get()), true))
                 .recipe((ctx, prov) -> prov.trapDoor(DataIngredient.items(material.get()), RecipeCategory.DECORATIONS, ctx, "wooden_trapdoor"))
                 .item()
                 .tag(ItemTags.WOODEN_TRAPDOORS)
-                .model((ctx, prov) -> prov.blockItem(ctx, "_bottom"))
+                .model(() -> (ctx, prov) -> prov.generateBlockItem(ctx.get(), "_bottom"))
                 .build();
     }
 
@@ -1724,57 +1493,19 @@ public class TropicraftBlocks {
                 .initialProperties(slab)
                 .properties(Properties::noOcclusion)
                 .tag(BlockTags.MINEABLE_WITH_AXE)
-                .blockstate((ctx, prov) -> {
-                    ResourceLocation resolvedTexture = texture.map(b -> prov.blockTexture(b.get()), Function.identity());
-                    ModelFile shortModel = prov.models().withExistingParent(ctx.getName() + "_short", prov.modLoc("block/boardwalk/short"))
-                            .texture("planks", resolvedTexture);
-                    ModelFile shortPostModel = prov.models().withExistingParent(ctx.getName() + "_short_post", prov.modLoc("block/boardwalk/short_post"))
-                            .texture("planks", resolvedTexture);
-                    ModelFile tallModel = prov.models().withExistingParent(ctx.getName() + "_tall", prov.modLoc("block/boardwalk/tall"))
-                            .texture("planks", resolvedTexture);
-                    ModelFile tallPostModel = prov.models().withExistingParent(ctx.getName() + "_tall_post", prov.modLoc("block/boardwalk/tall_post"))
-                            .texture("planks", resolvedTexture);
-                    ModelFile tallConnectionModel = prov.models().withExistingParent(ctx.getName() + "_tall_connection", prov.modLoc("block/boardwalk/tall_connection"))
-                            .texture("planks", resolvedTexture);
-
-                    MultiPartBlockStateBuilder builder = prov.getMultipartBuilder(ctx.get());
-
-                    Direction.Axis[] horizontals = new Direction.Axis[]{Direction.Axis.X, Direction.Axis.Z};
-                    for (Direction.Axis axis : horizontals) {
-                        int rotation = axis == Direction.Axis.X ? 270 : 0;
-
-                        builder.part().modelFile(shortModel).rotationY(rotation).uvLock(true).addModel()
-                                .condition(BoardwalkBlock.TYPE, BoardwalkBlock.Type.SHORTS)
-                                .condition(BoardwalkBlock.AXIS, axis);
-
-                        builder.part().modelFile(tallModel).rotationY(rotation).uvLock(true).addModel()
-                                .condition(BoardwalkBlock.TYPE, BoardwalkBlock.Type.TALLS)
-                                .condition(BoardwalkBlock.AXIS, axis);
-
-                        builder.part().modelFile(tallConnectionModel).rotationY(rotation).uvLock(true).addModel()
-                                .condition(BoardwalkBlock.TYPE, BoardwalkBlock.Type.BACKS)
-                                .condition(BoardwalkBlock.AXIS, axis);
-
-                        builder.part().modelFile(tallConnectionModel).rotationY((rotation + 180) % 360).uvLock(true).addModel()
-                                .condition(BoardwalkBlock.TYPE, BoardwalkBlock.Type.FRONTS)
-                                .condition(BoardwalkBlock.AXIS, axis);
-                    }
-
-                    builder.part().modelFile(shortPostModel).addModel()
-                            .condition(BoardwalkBlock.TYPE, BoardwalkBlock.Type.SHORT_POSTS);
-                    builder.part().modelFile(tallPostModel).addModel()
-                            .condition(BoardwalkBlock.TYPE, BoardwalkBlock.Type.TALL_POSTS);
-                })
-                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ctx.get(), 3)
+                .blockstate(() -> (ctx, prov) ->
+                        Models.generateBoardwalk(ctx, prov, texture)
+                )
+                .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(prov.itemLookup(), RecipeCategory.DECORATIONS, ctx.get(), 3)
                         .pattern("XXX")
                         .pattern("S S")
                         .define('X', slab.get())
                         .define('S', Tags.Items.RODS_WOODEN)
                         .group("tropicraft:boardwalk")
-                        .unlockedBy("has_" + prov.safeName(slab.get()), has(slab.get()))
+                        .unlockedBy("has_" + prov.safeName(slab.get()), prov.has(slab.get()))
                         .save(prov))
                 .item()
-                .model((ctx, prov) -> prov.blockItem(ctx, "_short"))
+                .model(() -> (ctx, prov) -> prov.generateBlockItem(ctx.get(), "_short"))
                 .build();
     }
 
@@ -1788,7 +1519,7 @@ public class TropicraftBlocks {
 
     private static LootPool.Builder droppingChunksPool(RegistrateBlockLootTables loot, Block block, Supplier<? extends ItemLike> chunk) {
         return LootPool.lootPool().add(LootItem.lootTableItem(chunk.get())
-                .when(MatchTool.toolMatches(ItemPredicate.Builder.item().of(ItemTags.SWORDS)))
+                .when(MatchTool.toolMatches(ItemPredicate.Builder.item().of(loot.itemLookup(), ItemTags.SWORDS)))
                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0f, 4.0f)))
                 .otherwise(loot.applyExplosionCondition(block, LootItem.lootTableItem(block))));
     }
@@ -1826,45 +1557,6 @@ public class TropicraftBlocks {
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))));
     }
 
-    private static ModelFile cubeTop(DataGenContext<Block, BlockTropicraftSand> ctx, RegistrateBlockstateProvider prov, String suffix) {
-        return prov.models().cubeTop(ctx.getName() + "_" + suffix, prov.blockTexture(ctx.get()), prov.modLoc("block/" + ctx.getName() + "_" + suffix));
-    }
-
-    private static ModelFile fuzzyStairs(RegistrateBlockstateProvider prov, String name, String parent, String side, String end, String cross) {
-        return prov.models().withExistingParent(name, prov.modLoc(parent))
-                .texture("side", prov.modLoc("block/" + side))
-                .texture("bottom", prov.modLoc("block/" + end))
-                .texture("top", prov.modLoc("block/" + end))
-                .texture("cross", prov.modLoc("block/" + cross));
-    }
-
-    private static ModelFile fuzzyStairs(RegistrateBlockstateProvider prov, String name, String side, String end, String cross) {
-        return fuzzyStairs(prov, name, "stairs_fuzzy", side, end, cross);
-    }
-
-    private static ModelFile fuzzyStairsOuter(RegistrateBlockstateProvider prov, String name, String side, String end, String cross) {
-        return fuzzyStairs(prov, name, "stairs_fuzzy_outer", side, end, cross);
-    }
-
-    private static void doublePlant(DataGenContext<Block, ? extends DoublePlantBlock> ctx, RegistrateBlockstateProvider prov) {
-        BlockModelProvider models = prov.models();
-        prov.getVariantBuilder(ctx.get())
-                .partialState().with(DoublePlantBlock.HALF, DoubleBlockHalf.LOWER).addModels(new ConfiguredModel(models.cross(ctx.getName() + "_bottom", prov.modLoc("block/" + ctx.getName() + "_bottom"))))
-                .partialState().with(DoublePlantBlock.HALF, DoubleBlockHalf.UPPER).addModels(new ConfiguredModel(models.cross(ctx.getName() + "_top", prov.modLoc("block/" + ctx.getName() + "_top"))));
-    }
-
-    private static void noModelBlock(DataGenContext<Block, ? extends Block> ctx, RegistrateBlockstateProvider prov, ResourceLocation particle) {
-        prov.simpleBlock(ctx.get(), prov.models().getBuilder(ctx.getName()).texture("particle", particle));
-    }
-
-    private static void simpleBlockAllRotations(DataGenContext<Block, ? extends Block> ctx, RegistrateBlockstateProvider prov) {
-        prov.simpleBlock(ctx.get(), ConfiguredModel.allRotations(prov.cubeAll(ctx.get()), false));
-    }
-
-    private static ItemModelBuilder blockSprite(DataGenContext<Item, ? extends ItemLike> ctx, RegistrateItemModelProvider prov) {
-        return prov.blockSprite(ctx);
-    }
-
     private static String name(ItemLike item) {
         return item.asItem().builtInRegistryHolder().key().location().getPath();
     }
@@ -1875,5 +1567,519 @@ public class TropicraftBlocks {
                 .add(block)
                 .build()
         );
+    }
+
+    private static class Models {
+        public static final TextureSlot WOOD_SLOT = TextureSlot.create("wood");
+        public static final TextureSlot HORIZONTAL_SLOT = TextureSlot.create("horizontal");
+        public static final TextureSlot VERTICAL_SLOT = TextureSlot.create("vertical");
+        public static final TextureSlot BUSH_SLOT = TextureSlot.create("bush");
+        public static final TextureSlot JIGARBOV_SLOT = TextureSlot.create("jigarbov");
+        public static final TextureSlot PLANKS_SLOT = TextureSlot.create("planks");
+        public static final TextureSlot VINE_SLOT = TextureSlot.create("vine");
+
+        public static final ModelTemplate ITEM_FRAME_TEMPLATE = ModelTemplates.create("item_frame", WOOD_SLOT);
+        public static final ModelTemplate ITEM_FRAME_MAP_TEMPLATE = ModelTemplates.create("item_frame_map", WOOD_SLOT);
+
+        public static final ModelTemplate FUZZY_STAIRS_TEMPLATE = ModelTemplates.create(Tropicraft.location("stairs_fuzzy").toString(), TextureSlot.SIDE, TextureSlot.BOTTOM, TextureSlot.TOP, TextureSlot.CROSS);
+        public static final ModelTemplate FUZZY_STAIRS_OUTER_TEMPLATE = ModelTemplates.create(Tropicraft.location("stairs_fuzzy_outer").toString(), TextureSlot.SIDE, TextureSlot.BOTTOM, TextureSlot.TOP, TextureSlot.CROSS);
+
+        public static final ModelTemplate FRUITING_BRANCH = ModelTemplates.create(Tropicraft.location("fruiting_branch").toString(), HORIZONTAL_SLOT, VERTICAL_SLOT);
+        public static final ModelTemplate COFFEE_BUSH = ModelTemplates.create(Tropicraft.location("coffee_bush").toString(), BUSH_SLOT);
+        public static final ModelTemplate HUGE_CROSS = ModelTemplates.create(Tropicraft.location("huge_cross").toString(), TextureSlot.CROSS, TextureSlot.PARTICLE);
+        public static final ModelTemplate JIGARBOV_TORCH = ModelTemplates.create(Tropicraft.location("jigarbov_wall_torch").toString(), TextureSlot.TORCH, JIGARBOV_SLOT);
+        public static final ModelTemplate JIGARBOV_TORCH_UNLIT = ModelTemplates.create(Tropicraft.location("jigarbov_wall_torch_unlit").toString(), TextureSlot.TORCH, JIGARBOV_SLOT);
+        public static final ModelTemplate TALL_MACHINE = ModelTemplates.createItem(Tropicraft.location("tall_machine").toString(), TextureSlot.PARTICLE);
+        public static final ModelTemplate TALL_TORCH_TEMPLATE = ModelTemplates.create(Tropicraft.location("template_tall_torch").toString(), TextureSlot.TORCH);
+
+        public static final ModelTemplate LADDER_TEMPLATE = ModelTemplates.create("ladder", TextureSlot.TEXTURE, TextureSlot.PARTICLE);
+        public static final ModelTemplate VINE_TEMPLATE = ModelTemplates.create("vine", VINE_SLOT, TextureSlot.PARTICLE);
+
+        private static final List<VariantMutator> ALL_Y_ROTATIONS = List.of(NOP, Y_ROT_90, Y_ROT_180, Y_ROT_270);
+        private static final List<VariantMutator> ALL_ROTATIONS = List.of(
+                NOP,
+                X_ROT_90,
+                X_ROT_180,
+                X_ROT_270,
+                Y_ROT_90,
+                Y_ROT_90.then(X_ROT_90),
+                Y_ROT_90.then(X_ROT_180),
+                Y_ROT_90.then(X_ROT_270),
+                Y_ROT_180,
+                Y_ROT_180.then(X_ROT_90),
+                Y_ROT_180.then(X_ROT_180),
+                Y_ROT_180.then(X_ROT_270),
+                Y_ROT_270,
+                Y_ROT_270.then(X_ROT_90),
+                Y_ROT_270.then(X_ROT_180),
+                Y_ROT_270.then(X_ROT_270)
+        );
+
+        public static void generateBlockStates(RegistrateBlockModelGenerator prov) {
+            TextureMapping bambooItemFrameTextures = new TextureMapping()
+                    .put(TextureSlot.PARTICLE, prov.modLoc("block/bamboo_side"))
+                    .put(WOOD_SLOT, prov.modLoc("block/bamboo_side"));
+            ITEM_FRAME_TEMPLATE.create(
+                    prov.modLoc("block/bamboo_item_frame"),
+                    bambooItemFrameTextures,
+                    prov.modelOutput
+            );
+            ITEM_FRAME_MAP_TEMPLATE.create(
+                    prov.modLoc("block/bamboo_item_frame_map"),
+                    bambooItemFrameTextures,
+                    prov.modelOutput
+            );
+        }
+
+        public static ResourceLocation fuzzyStairs(DataGenContext<Block, ? extends Block> ctx, RegistrateBlockModelGenerator prov, String suffix, ModelTemplate template, String side, String end, String cross) {
+            TextureMapping textures = new TextureMapping()
+                    .put(TextureSlot.SIDE, prov.modLoc("block/" + side))
+                    .put(TextureSlot.BOTTOM, prov.modLoc("block/" + end))
+                    .put(TextureSlot.TOP, prov.modLoc("block/" + end))
+                    .put(TextureSlot.CROSS, prov.modLoc("block/" + cross));
+            return template.createWithSuffix(ctx.get(), suffix, textures, prov.modelOutput);
+        }
+
+        public static void generateDoublePlant(DataGenContext<Block, ? extends DoublePlantBlock> ctx, RegistrateBlockModelGenerator prov) {
+            MultiVariant topVariant = plainVariant(prov.createSuffixedVariant(ctx.get(), "_top", ModelTemplates.CROSS, TextureMapping::cross));
+            MultiVariant bottomVariant = plainVariant(prov.createSuffixedVariant(ctx.get(), "_bottom", ModelTemplates.CROSS, TextureMapping::cross));
+            prov.createDoubleBlock(ctx.get(), topVariant, bottomVariant);
+        }
+
+        public static void generateFlatBlockItem(DataGenContext<Item, ? extends BlockItem> ctx, RegistrateItemModelGenerator prov) {
+            prov.generateFlatBlockItem(ctx.get());
+        }
+
+        public static ResourceLocation cubeTop(DataGenContext<Block, ? extends Block> ctx, RegistrateBlockModelGenerator prov, String suffix) {
+            return ModelTemplates.CUBE_TOP.createWithSuffix(
+                    ctx.get(),
+                    suffix,
+                    new TextureMapping()
+                            .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(ctx.get()))
+                            .put(TextureSlot.TOP, TextureMapping.getBlockTexture(ctx.get(), suffix)),
+                    prov.modelOutput
+            );
+        }
+
+        public static List<Weighted<Variant>> allYRotations(Variant variant, int weight) {
+            return ALL_Y_ROTATIONS.stream().map(rotation -> new Weighted<>(variant.with(rotation), weight)).toList();
+        }
+
+        public static List<Weighted<Variant>> allRotations(Variant variant, int weight) {
+            return ALL_ROTATIONS.stream().map(rotation -> new Weighted<>(variant.with(rotation), weight)).toList();
+        }
+
+        public static void generateLadder(DataGenContext<Block, LadderBlock> ctx, RegistrateBlockModelGenerator prov) {
+            ResourceLocation model = LADDER_TEMPLATE.create(ctx.get(), TextureMapping.defaultTexture(ctx.get()), prov.modelOutput);
+            prov.blockStateOutput.accept(
+                    MultiVariantGenerator.dispatch(ctx.get(), plainVariant(model)).with(ROTATION_HORIZONTAL_FACING)
+            );
+        }
+
+        private static void generateChestItem(DataGenContext<Item, BlockItem> ctx, RegistrateItemModelGenerator prov, ResourceLocation texture, ResourceLocation particle) {
+            ResourceLocation baseModel = ModelTemplates.CHEST_INVENTORY.create(ctx.get(), TextureMapping.particle(particle), prov.modelOutput);
+            prov.itemModelOutput.accept(ctx.get(), ItemModelUtils.specialModel(baseModel, new ChestSpecialRenderer.Unbaked(texture)));
+        }
+
+        public static void generateAllRotationVariantBlock(DataGenContext<Block, ? extends Block> ctx, RegistrateBlockModelGenerator prov) {
+            Variant variant = plainModel(TexturedModel.CUBE.create(ctx.get(), prov.modelOutput));
+            prov.blockStateOutput.accept(MultiVariantGenerator.dispatch(ctx.get(), createAllRotationVariants(variant)));
+        }
+
+        public static MultiVariant createAllRotationVariants(Variant variant) {
+            return variants(ALL_ROTATIONS.stream().map(variant::with).toArray(Variant[]::new));
+        }
+
+        private static void generateFlower(DataGenContext<Block, TropicsFlowerBlock> ctx, RegistrateBlockModelGenerator prov) {
+            TextureMapping textures = TextureMapping.cross(prov.modLoc("block/flower/" + ctx.getName()));
+            prov.createCrossBlock(ctx.get(), PlantType.NOT_TINTED, textures);
+        }
+
+        private static void generatePurifiedSand(DataGenContext<Block, BlockTropicraftSand> ctx, RegistrateBlockModelGenerator prov) {
+            Variant normal = plainModel(TexturedModel.CUBE.create(ctx.get(), prov.modelOutput));
+            Variant calcified = plainModel(cubeTop(ctx, prov, "_calcified"));
+            Variant dune1 = plainModel(cubeTop(ctx, prov, "_dune1"));
+            Variant dune2 = plainModel(cubeTop(ctx, prov, "_dune2"));
+            Variant starfish = plainModel(cubeTop(ctx, prov, "_starfish"));
+            prov.blockStateOutput.accept(MultiVariantGenerator.dispatch(ctx.get()).with(createBooleanModelDispatch(
+                    BlockTropicraftSand.UNDERWATER,
+                    new MultiVariant(WeightedList.<Variant>builder()
+                            .addAll(allRotations(normal, 50))
+                            .addAll(allYRotations(dune1, 10))
+                            .addAll(allYRotations(dune2, 10))
+                            .addAll(allYRotations(starfish, 1))
+                            .build()
+                    ),
+                    new MultiVariant(WeightedList.<Variant>builder()
+                            .addAll(allRotations(normal, 50))
+                            .addAll(allYRotations(calcified, 5))
+                            .build()
+                    )
+            )));
+        }
+
+        private static void generateMud(DataGenContext<Block, MudBlock> ctx, RegistrateBlockModelGenerator prov) {
+            Variant normal = plainModel(TexturedModel.CUBE.create(ctx.get(), prov.modelOutput));
+            Variant withStones = plainModel(ModelTemplates.CUBE_ALL.createWithSuffix(ctx.get(), "_with_stones", TextureMapping.cube(TextureMapping.getBlockTexture(ctx.get(), "_with_stones")), prov.modelOutput));
+            prov.blockStateOutput.accept(MultiVariantGenerator.dispatch(ctx.get(), new MultiVariant(WeightedList.<Variant>builder()
+                    .addAll(allYRotations(normal, 5))
+                    .addAll(allYRotations(withStones, 1))
+                    .build()
+            )));
+        }
+
+        private static void generateThatchRoof(DataGenContext<Block, StairBlock> ctx, RegistrateBlockModelGenerator prov) {
+            ResourceLocation straightModel = fuzzyStairs(ctx, prov, "", FUZZY_STAIRS_TEMPLATE, "thatch_side", "thatch_end", "thatch_grass");
+            ResourceLocation innerModel = prov.modLoc("block/thatch_stairs_inner");
+            ResourceLocation outerModel = fuzzyStairs(ctx, prov, "_outer", FUZZY_STAIRS_OUTER_TEMPLATE, "thatch_side", "thatch_end", "thatch_grass");
+            prov.blockStateOutput.accept(createStairs(ctx.get(),
+                    plainVariant(innerModel),
+                    plainVariant(straightModel),
+                    plainVariant(outerModel)
+            ));
+        }
+
+        private static void generateThatchStairs(DataGenContext<Block, StairBlock> ctx, RegistrateBlockModelGenerator prov) {
+            ResourceLocation side = prov.modLoc("block/thatch_side");
+            ResourceLocation end = prov.modLoc("block/thatch_end");
+            prov.generateStairsBlock(ctx.get(), side, end, end);
+        }
+
+        private static void generateBambooSlab(DataGenContext<Block, SlabBlock> ctx, RegistrateBlockModelGenerator prov) {
+            ResourceLocation side = prov.modLoc("block/bamboo_side");
+            ResourceLocation end = prov.modLoc("block/bamboo_end");
+            prov.generateSlabBlock(ctx.get(), plainVariant(ModelLocationUtils.getModelLocation(BAMBOO_BUNDLE.get())), side, end, end);
+        }
+
+        private static void generateThatchSlab(DataGenContext<Block, SlabBlock> ctx, RegistrateBlockModelGenerator prov) {
+            ResourceLocation side = prov.modLoc("block/thatch_side");
+            ResourceLocation end = prov.modLoc("block/thatch_end");
+            prov.generateSlabBlock(ctx.get(), plainVariant(ModelLocationUtils.getModelLocation(THATCH_BUNDLE.get())), side, end, end);
+        }
+
+        private static void generatePassionfruitVine(DataGenContext<Block, FruitingVineBlock> ctx, RegistrateBlockModelGenerator prov) {
+            Map<Property<Boolean>, VariantMutator> multifaceProperties = selectMultifaceProperties(ctx.get().defaultBlockState(), MultifaceBlock::getFaceProperty);
+            MultiPartGenerator builder = MultiPartGenerator.multiPart(ctx.get());
+            for (int age : FruitingVineBlock.AGE.getPossibleValues()) {
+                ResourceLocation texture = prov.modLoc("block/" + ctx.getName() + "_" + age);
+                TextureMapping textures = new TextureMapping().put(VINE_SLOT, texture).put(TextureSlot.PARTICLE, texture);
+                MultiVariant model = plainVariant(VINE_TEMPLATE.createWithSuffix(ctx.get(), "_" + age, textures, prov.modelOutput));
+                for (Map.Entry<Property<Boolean>, VariantMutator> entry : multifaceProperties.entrySet()) {
+                    Property<Boolean> faceProperty = entry.getKey();
+                    VariantMutator faceMutator = entry.getValue();
+                    ConditionBuilder condition = condition().term(FruitingVineBlock.AGE, age).term(faceProperty, true);
+                    builder.with(condition, model.with(faceMutator));
+                }
+            }
+            prov.blockStateOutput.accept(builder);
+        }
+
+        private static void generateJocoteBranch(DataGenContext<Block, FruitingBranchBlock> ctx, RegistrateBlockModelGenerator prov) {
+            prov.blockStateOutput.accept(MultiVariantGenerator.dispatch(ctx.get())
+                    .with(PropertyDispatch.initial(FruitingBranchBlock.AGE).generate(age ->
+                            plainVariant(FRUITING_BRANCH.createWithSuffix(ctx.get(),
+                                    "_age" + age,
+                                    new TextureMapping()
+                                            .put(HORIZONTAL_SLOT, prov.modLoc("block/jocote_branch_horizontal_" + age))
+                                            .put(VERTICAL_SLOT, prov.modLoc("block/jocote_branch_vertical")),
+                                    prov.modelOutput
+                            ))
+                    ))
+                    .with(ROTATION_HORIZONTAL_FACING)
+            );
+        }
+
+        private static void generateMahoganyNut(DataGenContext<Block, MahoganyNutBlock> ctx, RegistrateBlockModelGenerator prov) {
+            prov.blockStateOutput.accept(MultiVariantGenerator.dispatch(ctx.get())
+                    .with(PropertyDispatch.initial(BlockStateProperties.AGE_2)
+                            .select(0, plainVariant(ModelLocationUtils.getModelLocation(ctx.get(), "_0")))
+                            .select(1, plainVariant(ModelLocationUtils.getModelLocation(ctx.get(), "_1")))
+                            .select(2, plainVariant(ModelLocationUtils.getModelLocation(ctx.get(), "_2")))
+                    ));
+        }
+
+        private static void generateReeds(DataGenContext<Block, ReedsBlock> ctx, RegistrateBlockModelGenerator prov) {
+            Function<String, Variant> models = Util.memoize(texture -> {
+                ResourceLocation location = prov.modLoc("block/" + texture);
+                return plainModel(ModelTemplates.CROP.create(location, TextureMapping.singleSlot(TextureSlot.CROP, location), prov.modelOutput));
+            });
+            prov.blockStateOutput.accept(MultiVariantGenerator.dispatch(ctx.get()).with(PropertyDispatch.initial(ReedsBlock.TYPE)
+                    .generate(type -> variants(Arrays.stream(type.getTextures()).map(models).toArray(Variant[]::new)))
+            ));
+        }
+
+        private static void generatePapaya(DataGenContext<Block, PapayaBlock> ctx, RegistrateBlockModelGenerator prov) {
+            TextureSlot cocoaSlot = TextureSlot.create("cocoa");
+            TextureMapping texturesStage0 = TextureMapping.singleSlot(cocoaSlot, prov.modLoc("block/papaya_stage0"));
+            MultiVariant stage0 = plainVariant(ModelTemplates.create("cocoa_stage2", cocoaSlot).createWithSuffix(ctx.get(), "_stage0", texturesStage0, prov.modelOutput));
+            prov.blockStateOutput.accept(MultiVariantGenerator.dispatch(ctx.get())
+                    .with(PropertyDispatch.initial(BlockStateProperties.AGE_1)
+                            .select(0, stage0)
+                            .select(1, plainVariant(ModelLocationUtils.getModelLocation(ctx.get(), "_stage1")))
+                    )
+                    .with(ROTATION_HORIZONTAL_FACING_ALT));
+        }
+
+        private static void generateVolcanoBlock(DataGenContext<Block, VolcanoBlock> ctx, RegistrateBlockModelGenerator prov) {
+            MultiVariant variant = plainVariant(ModelLocationUtils.getModelLocation(Blocks.BEDROCK));
+            prov.blockStateOutput.accept(MultiVariantGenerator.dispatch(ctx.get(), variant));
+        }
+
+        private static void generateTikiTorch(DataGenContext<Block, TikiTorchBlock> ctx, RegistrateBlockModelGenerator prov) {
+            MultiVariant tikiLower = plainVariant(TALL_TORCH_TEMPLATE.createWithSuffix(ctx.get(), "_lower", TextureMapping.torch(prov.modLoc("block/tiki_torch_lower")), prov.modelOutput));
+            MultiVariant tikiUpper = plainVariant(ModelTemplates.TORCH.createWithSuffix(ctx.get(), "_upper", TextureMapping.torch(prov.modLoc("block/tiki_torch_upper")), prov.modelOutput));
+            Block block = ctx.get();
+            prov.blockStateOutput.accept(MultiVariantGenerator.dispatch(block).with(
+                    PropertyDispatch.initial(TikiTorchBlock.SECTION)
+                            .select(TorchSection.LOWER, tikiLower)
+                            .select(TorchSection.MIDDLE, tikiLower)
+                            .select(TorchSection.UPPER, tikiUpper)
+            ));
+        }
+
+        private static void generateFlowerPot(DataGenContext<Block, ? extends FlowerPotBlock> ctx, RegistrateBlockModelGenerator prov, Supplier<? extends Block> empty, ResourceLocation particle) {
+            Block flower = ctx.get().getPotted();
+            boolean isVanilla = flower.builtInRegistryHolder().key().location().getNamespace().equals("minecraft");
+            String flowerName = name(flower);
+            TextureSlot flowerpotSlot = TextureSlot.create("flowerpot");
+            ModelTemplate template;
+            if (flower == Blocks.AIR) {
+                template = ModelTemplates.create("flower_pot", flowerpotSlot, TextureSlot.PARTICLE);
+            } else if (!isVanilla) {
+                template = ModelTemplates.create("flower_pot_cross", flowerpotSlot, TextureSlot.PLANT, TextureSlot.PARTICLE);
+            } else {
+                template = ModelTemplates.create("potted_" + flowerName, flowerpotSlot, TextureSlot.PARTICLE);
+            }
+            TextureMapping textures = new TextureMapping()
+                    .put(flowerpotSlot, prov.blockTexture(empty.get()))
+                    .put(TextureSlot.PARTICLE, prov.modLoc("block/bamboo_side"));
+            if (!isVanilla) {
+                if (flower instanceof TropicsFlowerBlock) {
+                    textures.put(TextureSlot.PLANT, prov.modLoc("block/flower/" + flowerName));
+                } else if (flower instanceof TallFlowerBlock) {
+                    textures.put(TextureSlot.PLANT, prov.modLoc("block/" + flowerName + "_top"));
+                } else {
+                    textures.put(TextureSlot.PLANT, prov.blockTexture(flower));
+                }
+            }
+            prov.generateWithTemplate(ctx.get(), template, textures);
+        }
+
+        private static void generateCoffeeBush(DataGenContext<Block, CoffeeBushBlock> ctx, RegistrateBlockModelGenerator prov) {
+            prov.blockStateOutput.accept(MultiVariantGenerator.dispatch(ctx.get()).with(PropertyDispatch.initial(CoffeeBushBlock.AGE).generate(age -> {
+                TextureMapping textures = TextureMapping.singleSlot(BUSH_SLOT, prov.modLoc("block/" + ctx.getName() + "_stage" + age));
+                return plainVariant(COFFEE_BUSH.createWithSuffix(ctx.get(), "_stage_" + age, textures, prov.modelOutput));
+            })));
+        }
+
+        private static void generateLargeGoldenLeatherFern(DataGenContext<Block, HugePlantBlock> ctx, RegistrateBlockModelGenerator prov) {
+            TextureMapping textures = new TextureMapping()
+                    .put(TextureSlot.CROSS, prov.modLoc("block/large_golden_leather_fern"))
+                    .put(TextureSlot.PARTICLE, TextureMapping.getBlockTexture(GOLDEN_LEATHER_FERN.get()));
+            MultiVariant model = plainVariant(HUGE_CROSS.create(ctx.get(), textures, prov.modelOutput));
+            prov.blockStateOutput.accept(MultiPartGenerator.multiPart(ctx.get())
+                    .with(condition().term(HugePlantBlock.TYPE, HugePlantBlock.Type.CENTER), model)
+            );
+        }
+
+        private static void generateFloweringLilyPad(DataGenContext<Block, WaterlilyBlock> ctx, RegistrateBlockModelGenerator prov) {
+            ModelTemplate template = ModelTemplates.create(Tropicraft.location("water_lily_with_flower").toString(), TextureSlot.TEXTURE, TextureSlot.PLANT);
+            TextureMapping textures = new TextureMapping()
+                    .put(TextureSlot.TEXTURE, TextureMapping.getBlockTexture(Blocks.LILY_PAD))
+                    .put(TextureSlot.PLANT, TextureMapping.getBlockTexture(ctx.get()));
+            MultiVariant variant = createRotatedVariants(plainModel(template.create(ctx.get(), textures, prov.modelOutput)));
+            prov.blockStateOutput.accept(createSimpleBlock(ctx.get(), variant));
+        }
+
+        private static void generateDuckweed(DataGenContext<Block, DuckweedBlock> ctx, RegistrateBlockModelGenerator prov) {
+            ResourceLocation texture = prov.modLoc("block/duckweed");
+            TextureMapping textures = new TextureMapping().put(TextureSlot.WOOL, texture).put(TextureSlot.PARTICLE, texture);
+            prov.generateWithTemplate(ctx.get(), ModelTemplates.CARPET, textures);
+        }
+
+        private static void generateSeagrass(DataGenContext<Block, CustomSeagrassBlock> ctx, RegistrateBlockModelGenerator prov) {
+            prov.createTrivialBlock(ctx.get(), TexturedModel.SEAGRASS);
+        }
+
+        private static void generateTallSeagrass(DataGenContext<Block, CustomTallSeagrassBlock> ctx, RegistrateBlockModelGenerator prov) {
+            prov.createDoubleBlock(ctx.get(),
+                    plainVariant(ModelTemplates.SEAGRASS.createWithSuffix(ctx.get(), "_top", TextureMapping.defaultTexture(TextureMapping.getBlockTexture(ctx.get(), "_top")), prov.modelOutput)),
+                    plainVariant(ModelTemplates.SEAGRASS.createWithSuffix(ctx.get(), "_bottom", TextureMapping.defaultTexture(TextureMapping.getBlockTexture(ctx.get(), "_bottom")), prov.modelOutput))
+            );
+        }
+
+        private static void generateSeagrassBlock(String name, DataGenContext<Block, Block> ctx, RegistrateBlockModelGenerator prov) {
+            prov.generateWithTemplate(ctx.get(), ModelTemplates.CUBE_ALL, TextureMapping.cube(prov.modLoc("block/matted_" + name + "_top")));
+        }
+
+        private static void generateMattedSeagrassBlock(DataGenContext<Block, Block> ctx, RegistrateBlockModelGenerator prov) {
+            ResourceLocation bottomTexture = TextureMapping.getBlockTexture(TropicraftBlocks.PURIFIED_SAND.get());
+            prov.createTrivialBlock(ctx.get(), TexturedModel.CUBE_TOP_BOTTOM.updateTexture(textures -> textures.put(TextureSlot.BOTTOM, bottomTexture)));
+        }
+
+        private static void generateJigarbovTorch(DataGenContext<Block, ? extends Block> ctx, RegistrateBlockModelGenerator prov, JigarbovTorchType type) {
+            ResourceLocation etchTexture = prov.modLoc("block/jigarbov/" + type.getName());
+
+            TextureMapping litTextures = new TextureMapping()
+                    .put(TextureSlot.TORCH, prov.mcLoc("block/redstone_torch"))
+                    .put(JIGARBOV_SLOT, etchTexture);
+            MultiVariant litVariant = plainVariant(JIGARBOV_TORCH.create(ctx.get(), litTextures, prov.modelOutput));
+
+            TextureMapping unlitTextures = new TextureMapping()
+                    .put(TextureSlot.TORCH, prov.mcLoc("block/redstone_torch_off"))
+                    .put(JIGARBOV_SLOT, etchTexture);
+            MultiVariant unlitVariant = plainVariant(JIGARBOV_TORCH_UNLIT.createWithSuffix(ctx.get(), "_off", unlitTextures, prov.modelOutput));
+
+            prov.blockStateOutput.accept(MultiVariantGenerator.dispatch(ctx.get())
+                    .with(createBooleanModelDispatch(BlockStateProperties.LIT, litVariant, unlitVariant))
+                    .with(ROTATION_TORCH)
+            );
+        }
+
+        private static void generateSlabBlock(DataGenContext<Block, SlabBlock> ctx, RegistrateBlockModelGenerator prov, BlockEntry<? extends Block> block) {
+            prov.generateSlabBlock(ctx.get(), plainVariant(ModelLocationUtils.getModelLocation(block.get())), prov.blockTexture(block.get()));
+        }
+
+        private static void generateSapling(DataGenContext<Block, SaplingBlock> ctx, RegistrateBlockModelGenerator prov) {
+            prov.createCrossBlock(ctx.get(), PlantType.NOT_TINTED);
+        }
+
+        private static void generateMangroveRoots(DataGenContext<Block, MangroveRootsBlock> ctx, RegistrateBlockModelGenerator prov, String name) {
+            ResourceLocation roots = prov.modLoc("block/" + name);
+
+            TextureSlot rootsSlot = TextureSlot.create("roots");
+            TextureSlot appendagesSlot = TextureSlot.create("appendages");
+            ModelTemplate stemTemplate = ModelTemplates.create(Tropicraft.location("mangrove_roots/stem").toString(), "_stem", rootsSlot);
+            ModelTemplate stemShortTemplate = ModelTemplates.create(Tropicraft.location("mangrove_roots/stem_short").toString(), "_stem_short", rootsSlot);
+            ModelTemplate connectionLowTemplate = ModelTemplates.create(Tropicraft.location("mangrove_roots/connection_low").toString(), "_connection_low", rootsSlot);
+            ModelTemplate connectionHighTemplate = ModelTemplates.create(Tropicraft.location("mangrove_roots/connection_high").toString(), "_connection_high", rootsSlot);
+
+            ModelTemplate appendagesTemplate = ModelTemplates.create(Tropicraft.location("mangrove_roots/appendages").toString(), appendagesSlot);
+
+            TextureMapping rootsTextures = TextureMapping.singleSlot(rootsSlot, roots);
+
+            MultiVariant stem = plainVariant(stemTemplate.create(ctx.get(), rootsTextures, prov.modelOutput));
+            MultiVariant stemShort = plainVariant(stemShortTemplate.create(ctx.get(), rootsTextures, prov.modelOutput));
+            MultiVariant connectionLow = plainVariant(connectionLowTemplate.create(ctx.get(), rootsTextures, prov.modelOutput));
+            MultiVariant connectionHigh = plainVariant(connectionHighTemplate.create(ctx.get(), rootsTextures, prov.modelOutput));
+
+            MultiVariant appendagesHigh = plainVariant(appendagesTemplate.createWithSuffix(ctx.get(), "_appendages_high", TextureMapping.singleSlot(appendagesSlot, prov.modLoc("block/" + name + "_appendages_high")), prov.modelOutput));
+            MultiVariant appendagesHighShort = plainVariant(appendagesTemplate.createWithSuffix(ctx.get(), "_appendages_high_short", TextureMapping.singleSlot(appendagesSlot, prov.modLoc("block/" + name + "_appendages_high_short")), prov.modelOutput));
+            MultiVariant appendagesGrounded = plainVariant(appendagesTemplate.createWithSuffix(ctx.get(), "_appendages_ground", TextureMapping.singleSlot(appendagesSlot, prov.modLoc("block/" + name + "_appendages_ground")), prov.modelOutput));
+            MultiVariant appendagesGroundedShort = plainVariant(appendagesTemplate.createWithSuffix(ctx.get(), "_appendages_ground_short", TextureMapping.singleSlot(appendagesSlot, prov.modLoc("block/" + name + "_appendages_ground_short")), prov.modelOutput));
+
+            MultiPartGenerator builder = MultiPartGenerator.multiPart(ctx.get());
+
+            builder.with(condition().term(MangroveRootsBlock.TALL, true), stem);
+            builder.with(condition().term(MangroveRootsBlock.TALL, false), stemShort);
+
+            builder.with(
+                    condition().term(MangroveRootsBlock.TALL, true).term(MangroveRootsBlock.GROUNDED, true),
+                    appendagesGrounded
+            );
+            builder.with(
+                    condition().term(MangroveRootsBlock.TALL, false).term(MangroveRootsBlock.GROUNDED, true),
+                    appendagesGroundedShort
+            );
+            builder.with(
+                    condition().term(MangroveRootsBlock.TALL, true).term(MangroveRootsBlock.GROUNDED, false),
+                    appendagesHigh
+            );
+            builder.with(
+                    condition().term(MangroveRootsBlock.TALL, false).term(MangroveRootsBlock.GROUNDED, false),
+                    appendagesHighShort
+            );
+
+            for (int i = 0; i < 4; i++) {
+                EnumProperty<MangroveRootsBlock.Connection> connection = MangroveRootsBlock.CONNECTIONS[i];
+                VariantMutator rotation = switch (i) {
+                    case 0 -> Y_ROT_270;
+                    case 1 -> NOP;
+                    case 2 -> Y_ROT_90;
+                    default -> Y_ROT_180;
+                };
+
+                builder.with(condition().term(connection, MangroveRootsBlock.Connection.HIGH), connectionHigh.with(rotation.then(UV_LOCK)));
+                builder.with(condition().term(connection, MangroveRootsBlock.Connection.LOW), connectionLow.with(rotation.then(UV_LOCK)));
+            }
+
+            prov.blockStateOutput.accept(builder);
+        }
+
+        private static void generatePropagule(DataGenContext<Block, PropaguleBlock> ctx, RegistrateBlockModelGenerator prov) {
+            prov.blockStateOutput.accept(MultiVariantGenerator.dispatch(ctx.get()).with(createBooleanModelDispatch(PropaguleBlock.PLANTED,
+                    plainVariant(ModelTemplates.CROSS.createWithSuffix(ctx.get(), "_planted", TextureMapping.cross(prov.modLoc("block/" + ctx.getName() + "_planted")), prov.modelOutput)),
+                    plainVariant(ModelTemplates.CROSS.createWithSuffix(ctx.get(), "_hanging", TextureMapping.cross(ctx.get()), prov.modelOutput))
+            )));
+        }
+
+        private static void generateBoardwalk(DataGenContext<Block, BoardwalkBlock> ctx, RegistrateBlockModelGenerator prov, Either<Supplier<Block>, ResourceLocation> texture) {
+            TextureMapping textures = TextureMapping.singleSlot(PLANKS_SLOT, texture.map(b -> ModelLocationUtils.getModelLocation(b.get()), Function.identity()));
+
+            ModelTemplate shortTemplate = ModelTemplates.create(Tropicraft.location("boardwalk/short").toString(), "_short", PLANKS_SLOT);
+            ModelTemplate shortPostTemplate = ModelTemplates.create(Tropicraft.location("boardwalk/short_post").toString(), "_short_post", PLANKS_SLOT);
+            ModelTemplate tallTemplate = ModelTemplates.create(Tropicraft.location("boardwalk/tall").toString(), "_tall", PLANKS_SLOT);
+            ModelTemplate tallPostTemplate = ModelTemplates.create(Tropicraft.location("boardwalk/tall_post").toString(), "_tall_post", PLANKS_SLOT);
+            ModelTemplate tallConnectionTemplate = ModelTemplates.create(Tropicraft.location("boardwalk/tall_connection").toString(), "_tall_connection", PLANKS_SLOT);
+
+            MultiVariant shortModel = plainVariant(shortTemplate.create(ctx.get(), textures, prov.modelOutput));
+            MultiVariant shortPostModel = plainVariant(shortPostTemplate.create(ctx.get(), textures, prov.modelOutput));
+            MultiVariant tallModel = plainVariant(tallTemplate.create(ctx.get(), textures, prov.modelOutput));
+            MultiVariant tallPostModel = plainVariant(tallPostTemplate.create(ctx.get(), textures, prov.modelOutput));
+            MultiVariant tallConnectionModel = plainVariant(tallConnectionTemplate.create(ctx.get(), textures, prov.modelOutput));
+
+            MultiPartGenerator builder = MultiPartGenerator.multiPart(ctx.get());
+
+            Direction.Axis[] horizontals = new Direction.Axis[]{Direction.Axis.X, Direction.Axis.Z};
+            for (Direction.Axis axis : horizontals) {
+                VariantMutator rotation = axis == Direction.Axis.X ? Y_ROT_270 : NOP;
+                VariantMutator reverseRotation = axis == Direction.Axis.X ? Y_ROT_90 : Y_ROT_180;
+
+                builder.with(
+                        condition().term(BoardwalkBlock.TYPE, BoardwalkBlock.Type.SHORT, BoardwalkBlock.Type.SHORT_POST)
+                                .term(BoardwalkBlock.AXIS, axis),
+                        shortModel.with(rotation).with(UV_LOCK)
+                );
+
+                builder.with(
+                        condition().term(BoardwalkBlock.TYPE, BoardwalkBlock.Type.TALL, BoardwalkBlock.Type.TALL_POST, BoardwalkBlock.Type.TALL_POST_FRONT, BoardwalkBlock.Type.TALL_POST_BACK, BoardwalkBlock.Type.TALL_POST_FRONT_BACK)
+                                .term(BoardwalkBlock.AXIS, axis),
+                        tallModel.with(rotation).with(UV_LOCK)
+                );
+
+                builder.with(
+                        condition().term(BoardwalkBlock.TYPE, BoardwalkBlock.Type.TALL_POST_BACK, BoardwalkBlock.Type.TALL_POST_FRONT_BACK)
+                                .term(BoardwalkBlock.AXIS, axis),
+                        tallConnectionModel.with(rotation).with(UV_LOCK)
+                );
+
+                builder.with(
+                        condition().term(BoardwalkBlock.TYPE, BoardwalkBlock.Type.TALL_POST_FRONT, BoardwalkBlock.Type.TALL_POST_FRONT_BACK)
+                                .term(BoardwalkBlock.AXIS, axis),
+                        tallConnectionModel.with(reverseRotation).with(UV_LOCK)
+                );
+            }
+
+            builder.with(
+                    condition().term(BoardwalkBlock.TYPE, BoardwalkBlock.Type.SHORT_POST),
+                    shortPostModel
+            );
+            builder.with(
+                    condition().term(BoardwalkBlock.TYPE, BoardwalkBlock.Type.TALL_POST, BoardwalkBlock.Type.TALL_POST_FRONT, BoardwalkBlock.Type.TALL_POST_BACK, BoardwalkBlock.Type.TALL_POST_FRONT_BACK),
+                    tallPostModel
+            );
+
+            prov.blockStateOutput.accept(builder);
+        }
+
+        private static void generateDrinkMixerItem(DataGenContext<Item, BlockItem> ctx, RegistrateItemModelGenerator prov) {
+            ResourceLocation baseModel = TALL_MACHINE.create(ctx.get(), TextureMapping.particle(CHUNK.get()), prov.modelOutput);
+            prov.itemModelOutput.accept(ctx.get(), ItemModelUtils.specialModel(baseModel, new DrinkMixerSpecialRenderer.Unbaked()));
+        }
+
+        private static void generateAirCompressorItem(DataGenContext<Item, BlockItem> ctx, RegistrateItemModelGenerator prov) {
+            ResourceLocation baseModel = TALL_MACHINE.create(ctx.get(), TextureMapping.particle(CHUNK.get()), prov.modelOutput);
+            prov.itemModelOutput.accept(ctx.get(), ItemModelUtils.specialModel(baseModel, new AirCompressorSpecialRenderer.Unbaked()));
+        }
     }
 }

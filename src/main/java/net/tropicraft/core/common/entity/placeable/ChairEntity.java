@@ -2,7 +2,6 @@ package net.tropicraft.core.common.entity.placeable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -14,13 +13,13 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.HitResult;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nullable;
@@ -29,7 +28,7 @@ import java.util.List;
 public class ChairEntity extends FurnitureEntity {
     // TODO add drips after being wet
     // TODO make it so monkies can sit in the chair ouo
-    private static final EntityDataAccessor<Byte> COMESAILAWAY = SynchedEntityData.defineId(ChairEntity.class, EntityDataSerializers.BYTE);
+    private static final EntityDataAccessor<Boolean> COMESAILAWAY = SynchedEntityData.defineId(ChairEntity.class, EntityDataSerializers.BOOLEAN);
 
     /**
      * Is any entity sitting in the chair?
@@ -213,19 +212,19 @@ public class ChairEntity extends FurnitureEntity {
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(COMESAILAWAY, (byte) 0);
+        builder.define(COMESAILAWAY, false);
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag nbt) {
-        super.readAdditionalSaveData(nbt);
-        setComeSailAway(nbt.getBoolean("COME_SAIL_AWAY"));
+    protected void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        setComeSailAway(input.getBooleanOr("COME_SAIL_AWAY", false));
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag nbt) {
-        super.addAdditionalSaveData(nbt);
-        nbt.putBoolean("COME_SAIL_AWAY", getComeSailAway());
+    protected void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putBoolean("COME_SAIL_AWAY", getComeSailAway());
     }
 
     @Override
@@ -259,20 +258,15 @@ public class ChairEntity extends FurnitureEntity {
     }
 
     public void setComeSailAway(boolean sail) {
-        entityData.set(COMESAILAWAY, sail ? Byte.valueOf((byte) 1) : Byte.valueOf((byte) 0));
+        entityData.set(COMESAILAWAY, sail);
     }
 
     public boolean getComeSailAway() {
-        return entityData.get(COMESAILAWAY) == (byte) 1;
+        return entityData.get(COMESAILAWAY);
     }
 
     @Override
-    public ItemStack getPickedResult(HitResult target) {
-        return new ItemStack(TropicraftItems.CHAIRS.get(DyeColor.byId(getColor().getId())).get());
-    }
-
-    @Override
-    public AABB getBoundingBoxForCulling() {
-        return getBoundingBox().expandTowards(0.0, 1.0, 0.0);
+    public ItemStack getPickResult() {
+        return new ItemStack(TropicraftItems.CHAIRS.get(getColor()).get());
     }
 }

@@ -1,6 +1,6 @@
 package net.tropicraft.core.client.entity.model;
 
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -8,9 +8,9 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import net.tropicraft.core.common.entity.SeaTurtleEntity;
+import net.tropicraft.core.client.entity.render.state.SeaTurtleRenderState;
 
-public class SeaTurtleModel extends HierarchicalModel<SeaTurtleEntity> {
+public class SeaTurtleModel extends EntityModel<SeaTurtleRenderState> {
     private final ModelPart body;
     private final ModelPart frFlipper;
     private final ModelPart flFlipper;
@@ -18,6 +18,7 @@ public class SeaTurtleModel extends HierarchicalModel<SeaTurtleEntity> {
     private final ModelPart rrFlipper;
 
     public SeaTurtleModel(ModelPart root) {
+        super(root);
         body = root.getChild("body");
         frFlipper = body.getChild("frFlipper");
         flFlipper = body.getChild("flFlipper");
@@ -70,14 +71,16 @@ public class SeaTurtleModel extends HierarchicalModel<SeaTurtleEntity> {
     }
 
     @Override
-    public void setupAnim(SeaTurtleEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(SeaTurtleRenderState state) {
+        super.setupAnim(state);
+
         float defFront = 0.3927f;
         float defFront2 = 0.3f;
         float defRear = 0.5f;
 
-        if (!entity.isInWater() && !entity.isVehicle()) {
-            limbSwingAmount *= 3.0f;
-            limbSwing *= 2.0f;
+        if (!state.isInWater && !state.isVehicle) {
+            float limbSwingAmount = state.walkAnimationSpeed * 3.0f;
+            float limbSwing = state.walkAnimationPos * 2.0f;
 
             body.xRot = -Math.abs(Mth.sin(limbSwing * 0.25f) * 1.25f * limbSwingAmount) - 0.10f;
             frFlipper.xRot = defFront2;
@@ -93,9 +96,9 @@ public class SeaTurtleModel extends HierarchicalModel<SeaTurtleEntity> {
             rlFlipper.yRot = -swimRotate(limbSwing, limbSwingAmount, 3.0f, 2.0f, 0, -defRear);
             rlFlipper.zRot = 0.0f;
         } else {
-            limbSwingAmount *= 0.75f;
-            limbSwing *= 0.1f;
-            body.xRot = (float) Math.toRadians(headPitch);
+            float limbSwingAmount = state.walkAnimationSpeed * 0.75f;
+            float limbSwing = state.walkAnimationPos * 0.1f;
+            body.xRot = (float) Math.toRadians(state.xRot);
             frFlipper.yRot = swimRotate(limbSwing, limbSwingAmount, 1.25f, 1.5f, 0, defFront);
             frFlipper.xRot = swimRotate(limbSwing, limbSwingAmount, 1.25f, 1.5f, Mth.PI / 4, defFront2 + 0.25f);
             frFlipper.zRot = 0;
@@ -109,11 +112,6 @@ public class SeaTurtleModel extends HierarchicalModel<SeaTurtleEntity> {
             rrFlipper.zRot = swimRotate(limbSwing, limbSwingAmount, 5.0f, 0.5f, 0, 0.5f);
             rlFlipper.zRot = swimRotate(limbSwing, limbSwingAmount, 5.0f, 0.5f, Mth.PI, -0.5f);
         }
-    }
-
-    @Override
-    public ModelPart root() {
-        return body;
     }
 
     private float swimRotate(float swing, float amount, float rot, float intensity, float rotOffset, float offset) {

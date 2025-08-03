@@ -1,26 +1,24 @@
 package net.tropicraft.core.client.entity.render;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.entity.AgeableMobRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.entity.model.TapirModel;
 import net.tropicraft.core.client.entity.render.layer.SunglassesLayer;
+import net.tropicraft.core.client.entity.render.state.TapirRenderState;
 import net.tropicraft.core.common.entity.passive.TapirEntity;
 
-@OnlyIn(Dist.CLIENT)
-public class TapirRenderer extends MobRenderer<TapirEntity, TapirModel<TapirEntity>> {
+public class TapirRenderer extends AgeableMobRenderer<TapirEntity, TapirRenderState, TapirModel> {
     private static final ResourceLocation TEXTURE = Tropicraft.location("textures/entity/tapir.png");
     private static final ResourceLocation BABY_TEXTURE = Tropicraft.location("textures/entity/tapir_baby.png");
 
     public TapirRenderer(EntityRendererProvider.Context context) {
-        super(context, new TapirModel<>(context.bakeLayer(TropicraftRenderLayers.TAPIR_LAYER)), 0.6f);
-        addLayer(new SunglassesLayer<>(this, TapirEntity::isUndercover, (poseStack, entity, model) -> {
+        super(context, new TapirModel(context.bakeLayer(TropicraftRenderLayers.TAPIR_LAYER)), new TapirModel(context.bakeLayer(TropicraftRenderLayers.TAPIR_BABY_LAYER)), 0.6f);
+        addLayer(new SunglassesLayer<>(this, state -> state.isUndercover, (poseStack, state, model) -> {
             ModelPart head = model.head();
             head.translateAndRotate(poseStack);
             poseStack.translate(0.5f / 16.0f, 2.0f / 16.0f, -10.0f / 16.0f);
@@ -30,12 +28,18 @@ public class TapirRenderer extends MobRenderer<TapirEntity, TapirModel<TapirEnti
     }
 
     @Override
-    protected void scale(TapirEntity entity, PoseStack matrixStack, float partialTicks) {
-        matrixStack.scale(0.8f, 0.8f, 0.8f);
+    public TapirRenderState createRenderState() {
+        return new TapirRenderState();
     }
 
     @Override
-    public ResourceLocation getTextureLocation(TapirEntity entity) {
-        return entity.isBaby() ? BABY_TEXTURE : TEXTURE;
+    public void extractRenderState(TapirEntity entity, TapirRenderState state, float partialTicks) {
+        super.extractRenderState(entity, state, partialTicks);
+        state.isUndercover = entity.isUndercover();
+    }
+
+    @Override
+    public ResourceLocation getTextureLocation(TapirRenderState state) {
+        return state.isBaby ? BABY_TEXTURE : TEXTURE;
     }
 }

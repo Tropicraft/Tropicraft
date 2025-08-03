@@ -1,17 +1,16 @@
 package net.tropicraft.core.client.entity.model;
 
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
-import net.tropicraft.core.common.entity.underdasea.MarlinEntity;
 
-public class MarlinModel extends HierarchicalModel<MarlinEntity> {
-    private final ModelPart root;
+public class MarlinModel extends EntityModel<LivingEntityRenderState> {
     private final ModelPart leftFin;
     private final ModelPart rightFin;
     private final ModelPart head;
@@ -19,7 +18,7 @@ public class MarlinModel extends HierarchicalModel<MarlinEntity> {
     private final ModelPart tail3;
 
     public MarlinModel(ModelPart root) {
-        this.root = root;
+        super(root);
         head = root.getChild("head");
         tail1 = root.getChild("tail1");
         ModelPart tail2 = tail1.getChild("tail2");
@@ -103,11 +102,13 @@ public class MarlinModel extends HierarchicalModel<MarlinEntity> {
     }
 
     @Override
-    public void setupAnim(MarlinEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        float yAngleRot = Mth.sin(ageInTicks * 0.25f);
+    public void setupAnim(LivingEntityRenderState state) {
+        super.setupAnim(state);
+
+        float yAngleRot = Mth.sin(state.ageInTicks * 0.25f);
         float zWaveFloat = yAngleRot * 0.165f;
-        if (!entity.isInWater()) {
-            float yWaveRot = Mth.sin(ageInTicks * 0.55f) * 0.260f;
+        if (!state.isInWater) {
+            float yWaveRot = Mth.sin(state.ageInTicks * 0.55f) * 0.260f;
             head.yRot = yWaveRot;
             tail1.yRot = yWaveRot;
             tail3.yRot = yWaveRot;
@@ -117,17 +118,12 @@ public class MarlinModel extends HierarchicalModel<MarlinEntity> {
             rightFin.yRot = 1.5f - zWaveFloat - 0.523598f;
         } else {
             head.yRot = yAngleRot * 0.135f;
-            tail1.yRot = Mth.sin(ageInTicks * 0.35f) * 0.15f;
-            tail3.yRot = Mth.sin(ageInTicks * 0.45f) * 0.16f;
+            tail1.yRot = Mth.sin(state.ageInTicks * 0.35f) * 0.15f;
+            tail3.yRot = Mth.sin(state.ageInTicks * 0.45f) * 0.16f;
             leftFin.zRot = zWaveFloat + 0.523598f;
             rightFin.zRot = -yAngleRot * 0.165f - 0.523598f;
             leftFin.yRot = -0.392699f;
             rightFin.yRot = 0.392699f;
         }
-    }
-
-    @Override
-    public ModelPart root() {
-        return root;
     }
 }

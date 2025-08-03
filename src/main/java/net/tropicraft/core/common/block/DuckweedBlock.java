@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -23,8 +24,9 @@ public final class DuckweedBlock extends BushBlock {
     private static final VoxelShape SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 1.5, 16.0);
 
     @Override
-    public MapCodec<DuckweedBlock> codec() {
-        return CODEC;
+    @SuppressWarnings("unchecked")
+    public MapCodec<BushBlock> codec() {
+        return (MapCodec<BushBlock>) (MapCodec<?>) CODEC;
     }
 
     public DuckweedBlock(BlockBehaviour.Properties properties) {
@@ -32,8 +34,8 @@ public final class DuckweedBlock extends BushBlock {
     }
 
     @Override
-    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-        super.entityInside(state, level, pos, entity);
+    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier) {
+        super.entityInside(state, level, pos, entity, effectApplier);
         if (level instanceof ServerLevel && entity instanceof Boat) {
             level.destroyBlock(new BlockPos(pos), true, entity);
         }

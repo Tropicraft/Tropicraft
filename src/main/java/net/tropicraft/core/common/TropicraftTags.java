@@ -67,6 +67,10 @@ public class TropicraftTags {
 
         public static final TagKey<Item> REPAIRS_FIRE_ARMOR = modTag("repairs_fire_armor");
         public static final TagKey<Item> REPAIRS_SCUBA_GEAR = modTag("repairs_scuba_gear");
+        public static final TagKey<Item> REPAIRS_SCALE_ARMOR = modTag("repairs_scale_armor");
+        public static final TagKey<Item> REPAIRS_NIGEL_STACHE = modTag("repairs_nigel_stache");
+
+        public static final TagKey<Item> BAMBOO_TOOL_MATERIALS = modTag("bamboo_tool_materials");
 
         static TagKey<Item> tag(String modid, String name) {
             return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(modid, name));

@@ -36,7 +36,7 @@ public class TropicalFertilizerItem extends BoneMealItem {
                 BlockState blockstate = Blocks.TALL_GRASS.defaultBlockState();
                 Level level = context.getLevel();
                 RandomSource rand = level.getRandom();
-                Optional<Holder.Reference<PlacedFeature>> grassBonemeal = level.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolder(VegetationPlacements.GRASS_BONEMEAL);
+                Optional<Holder.Reference<PlacedFeature>> grassBonemeal = level.registryAccess().lookupOrThrow(Registries.PLACED_FEATURE).get(VegetationPlacements.GRASS_BONEMEAL);
                 for (int i = 0; i < 128; ++i) {
                     BlockPos blockpos1 = blockpos;
                     int j = 0;

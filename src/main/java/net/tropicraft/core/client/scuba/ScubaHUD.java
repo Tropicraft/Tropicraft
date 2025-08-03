@@ -7,7 +7,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.CommonColors;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -20,13 +19,13 @@ import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.data.TropicraftLangKeys;
-import net.tropicraft.core.common.item.scuba.ScubaArmorItem;
+import net.tropicraft.core.common.item.component.TropicraftDataComponents;
 import net.tropicraft.core.common.item.scuba.ScubaData;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 
 import java.util.Locale;
 
-@EventBusSubscriber(value = Dist.CLIENT, modid = Tropicraft.ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(value = Dist.CLIENT, modid = Tropicraft.ID)
 public class ScubaHUD {
 
     @SubscribeEvent
@@ -39,9 +38,9 @@ public class ScubaHUD {
         if (renderViewEntity instanceof Player player) {
             // TODO support other slots than chest?
             ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
-            if (chestStack.getItem() instanceof ScubaArmorItem scuba) {
+            Integer airRemaining = chestStack.get(TropicraftDataComponents.SCUBA_AIR);
+            if (airRemaining != null) {
                 ScubaData data = player.getData(ScubaData.ATTACHMENT);
-                int airRemaining = scuba.getRemainingAir(chestStack);
                 ChatFormatting airColor = getAirTimeColor(airRemaining);
                 double depth = ScubaData.getDepth(player);
                 Component depthStr;

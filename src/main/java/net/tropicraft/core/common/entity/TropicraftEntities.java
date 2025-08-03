@@ -9,16 +9,21 @@ import net.minecraft.Util;
 import net.minecraft.advancements.critereon.EntityFlagsPredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.NbtPredicate;
-import net.minecraft.client.renderer.entity.DolphinRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.Item;
@@ -44,7 +49,56 @@ import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.event.entity.living.MobSpawnEvent;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.ClientSetup;
-import net.tropicraft.core.client.entity.render.*;
+import net.tropicraft.core.client.entity.render.AshenMaskRenderer;
+import net.tropicraft.core.client.entity.render.AshenRenderer;
+import net.tropicraft.core.client.entity.render.BambooItemFrameRenderer;
+import net.tropicraft.core.client.entity.render.BasiliskLizardRenderer;
+import net.tropicraft.core.client.entity.render.BeachFloatRenderer;
+import net.tropicraft.core.client.entity.render.ChairRenderer;
+import net.tropicraft.core.client.entity.render.CowktailRenderer;
+import net.tropicraft.core.client.entity.render.CuberaRenderer;
+import net.tropicraft.core.client.entity.render.EIHRenderer;
+import net.tropicraft.core.client.entity.render.EagleRayRenderer;
+import net.tropicraft.core.client.entity.render.FailgullRenderer;
+import net.tropicraft.core.client.entity.render.FiddlerCrabRenderer;
+import net.tropicraft.core.client.entity.render.FishingBobberEntityRenderer;
+import net.tropicraft.core.client.entity.render.GibnutRenderer;
+import net.tropicraft.core.client.entity.render.HummingbirdRenderer;
+import net.tropicraft.core.client.entity.render.IguanaRenderer;
+import net.tropicraft.core.client.entity.render.JaguarRenderer;
+import net.tropicraft.core.client.entity.render.KoaRenderer;
+import net.tropicraft.core.client.entity.render.ManOWarRenderer;
+import net.tropicraft.core.client.entity.render.ManateeRenderer;
+import net.tropicraft.core.client.entity.render.MarlinRenderer;
+import net.tropicraft.core.client.entity.render.PapyrusCanaryRenderer;
+import net.tropicraft.core.client.entity.render.PapyrusGonolekRenderer;
+import net.tropicraft.core.client.entity.render.PiranhaRenderer;
+import net.tropicraft.core.client.entity.render.PoisonBlotRenderer;
+import net.tropicraft.core.client.entity.render.SardineRenderer;
+import net.tropicraft.core.client.entity.render.SeaTurtleRenderer;
+import net.tropicraft.core.client.entity.render.SeaUrchinRenderer;
+import net.tropicraft.core.client.entity.render.SeahorseRenderer;
+import net.tropicraft.core.client.entity.render.SharkRenderer;
+import net.tropicraft.core.client.entity.render.ShoebillStorkRenderer;
+import net.tropicraft.core.client.entity.render.SlenderHarvestMouseRenderer;
+import net.tropicraft.core.client.entity.render.SpearRenderer;
+import net.tropicraft.core.client.entity.render.SpiderMonkeyRenderer;
+import net.tropicraft.core.client.entity.render.StarfishRenderer;
+import net.tropicraft.core.client.entity.render.TapirRenderer;
+import net.tropicraft.core.client.entity.render.ToucanRenderer;
+import net.tropicraft.core.client.entity.render.TreeFrogRenderer;
+import net.tropicraft.core.client.entity.render.TropiBeeRenderer;
+import net.tropicraft.core.client.entity.render.TropiCreeperRenderer;
+import net.tropicraft.core.client.entity.render.TropiSkellyRenderer;
+import net.tropicraft.core.client.entity.render.TropiSpiderRenderer;
+import net.tropicraft.core.client.entity.render.TropicraftDolphinRenderer;
+import net.tropicraft.core.client.entity.render.TropicraftTropicalFishRenderer;
+import net.tropicraft.core.client.entity.render.UmbrellaRenderer;
+import net.tropicraft.core.client.entity.render.VMonkeyRenderer;
+import net.tropicraft.core.client.entity.render.WallItemRenderer;
+import net.tropicraft.core.client.entity.render.WhiteCollaredOlivebackRenderer;
+import net.tropicraft.core.client.entity.render.WhiteLippedPeccaryRenderer;
+import net.tropicraft.core.client.entity.render.WhiteWingedWarblerRenderer;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.TropicsConfigs;
 import net.tropicraft.core.common.block.TropicraftBlocks;
@@ -56,16 +110,51 @@ import net.tropicraft.core.common.entity.egg.TropiSpiderEggEntity;
 import net.tropicraft.core.common.entity.hostile.AshenEntity;
 import net.tropicraft.core.common.entity.hostile.TropiSkellyEntity;
 import net.tropicraft.core.common.entity.hostile.TropiSpiderEntity;
-import net.tropicraft.core.common.entity.neutral.*;
-import net.tropicraft.core.common.entity.passive.*;
+import net.tropicraft.core.common.entity.neutral.EIHEntity;
+import net.tropicraft.core.common.entity.neutral.IguanaEntity;
+import net.tropicraft.core.common.entity.neutral.JaguarEntity;
+import net.tropicraft.core.common.entity.neutral.TreeFrogEntity;
+import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
+import net.tropicraft.core.common.entity.passive.CowktailEntity;
+import net.tropicraft.core.common.entity.passive.EntityKoaBase;
+import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
+import net.tropicraft.core.common.entity.passive.FailgullEntity;
+import net.tropicraft.core.common.entity.passive.FiddlerCrabEntity;
+import net.tropicraft.core.common.entity.passive.FishingBobberEntity;
+import net.tropicraft.core.common.entity.passive.GibnutEntity;
+import net.tropicraft.core.common.entity.passive.HummingbirdEntity;
+import net.tropicraft.core.common.entity.passive.ShoebillStorkEntity;
+import net.tropicraft.core.common.entity.passive.SlenderHarvestMouseEntity;
+import net.tropicraft.core.common.entity.passive.SmallBirdEntity;
+import net.tropicraft.core.common.entity.passive.TapirEntity;
+import net.tropicraft.core.common.entity.passive.ToucanEntity;
+import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
+import net.tropicraft.core.common.entity.passive.WhiteLippedPeccaryEntity;
 import net.tropicraft.core.common.entity.passive.basilisk.BasiliskLizardEntity;
 import net.tropicraft.core.common.entity.passive.monkey.SpiderMonkeyEntity;
-import net.tropicraft.core.common.entity.placeable.*;
+import net.tropicraft.core.common.entity.placeable.AshenMaskEntity;
+import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
+import net.tropicraft.core.common.entity.placeable.ChairEntity;
+import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
+import net.tropicraft.core.common.entity.placeable.WallItemEntity;
 import net.tropicraft.core.common.entity.projectile.ExplodingCoconutEntity;
 import net.tropicraft.core.common.entity.projectile.LavaBallEntity;
 import net.tropicraft.core.common.entity.projectile.PoisonBlotEntity;
 import net.tropicraft.core.common.entity.projectile.SpearEntity;
-import net.tropicraft.core.common.entity.underdasea.*;
+import net.tropicraft.core.common.entity.underdasea.CuberaEntity;
+import net.tropicraft.core.common.entity.underdasea.EagleRayEntity;
+import net.tropicraft.core.common.entity.underdasea.ManOWarEntity;
+import net.tropicraft.core.common.entity.underdasea.ManateeEntity;
+import net.tropicraft.core.common.entity.underdasea.MarlinEntity;
+import net.tropicraft.core.common.entity.underdasea.PiranhaEntity;
+import net.tropicraft.core.common.entity.underdasea.SardineEntity;
+import net.tropicraft.core.common.entity.underdasea.SeaUrchinEntity;
+import net.tropicraft.core.common.entity.underdasea.SeahorseEntity;
+import net.tropicraft.core.common.entity.underdasea.SharkEntity;
+import net.tropicraft.core.common.entity.underdasea.StarfishEntity;
+import net.tropicraft.core.common.entity.underdasea.TropicraftDolphinEntity;
+import net.tropicraft.core.common.entity.underdasea.TropicraftFishUtils;
+import net.tropicraft.core.common.entity.underdasea.TropicraftTropicalFishEntity;
 import net.tropicraft.core.common.item.TropicalFertilizerItem;
 import net.tropicraft.core.common.item.TropicraftItems;
 
@@ -86,6 +175,7 @@ public class TropicraftEntities {
                     .setShouldReceiveVelocityUpdates(true))
             .attributes(EntityKoaBase::createAttributes)
             .spawnPlacement(SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canAnimalSpawn, RegisterSpawnPlacementsEvent.Operation.REPLACE)
+            .loot(TropicraftEntities::noDrops)
             .renderer(() -> KoaRenderer::new)
             .register();
     public static final EntityEntry<TropiCreeperEntity> TROPICREEPER = REGISTRATE.entity("tropicreeper", TropiCreeperEntity::new, MobCategory.CREATURE)
@@ -98,7 +188,7 @@ public class TropicraftEntities {
             .loot((lootTables, entity) -> lootTables.add(entity, LootTable.lootTable()
                     .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TropicraftItems.MUSIC_DISC_EASTERN_ISLES.get()))
                             .when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.ATTACKER,
-                                    EntityPredicate.Builder.entity().of(EntityTypeTags.SKELETONS))))))
+                                    EntityPredicate.Builder.entity().of(lootTables.getRegistries().lookupOrThrow(Registries.ENTITY_TYPE), EntityTypeTags.SKELETONS))))))
             .renderer(() -> TropiCreeperRenderer::new)
             .register();
     public static final EntityEntry<IguanaEntity> IGUANA = REGISTRATE.entity("iguana", IguanaEntity::new, MobCategory.CREATURE)
@@ -117,6 +207,7 @@ public class TropicraftEntities {
                     .setTrackingRange(10)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(false))
+            .loot(TropicraftEntities::noDrops)
             .renderer(() -> UmbrellaRenderer::new)
             .register();
     public static final EntityEntry<ChairEntity> CHAIR = REGISTRATE.entity("chair", ChairEntity::new, MobCategory.MISC)
@@ -125,6 +216,7 @@ public class TropicraftEntities {
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(false)
                     .passengerAttachments(new Vec3(0.0, 0.25, -0.125)))
+            .loot(TropicraftEntities::noDrops)
             .renderer(() -> ChairRenderer::new)
             .register();
     public static final EntityEntry<BeachFloatEntity> BEACH_FLOAT = REGISTRATE.entity("beach_float", BeachFloatEntity::new, MobCategory.MISC)
@@ -133,6 +225,7 @@ public class TropicraftEntities {
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(false)
                     .passengerAttachments(new Vec3(0.0, -10.0 / 16.0, -0.6)))
+            .loot(TropicraftEntities::noDrops)
             .renderer(() -> BeachFloatRenderer::new)
             .register();
     public static final EntityEntry<TropiSkellyEntity> TROPISKELLY = REGISTRATE.entity("tropiskelly", TropiSkellyEntity::new, MobCategory.MONSTER)
@@ -161,6 +254,7 @@ public class TropicraftEntities {
                     .setTrackingRange(8)
                     .setUpdateInterval(Integer.MAX_VALUE)
                     .setShouldReceiveVelocityUpdates(false))
+            .loot(TropicraftEntities::noDrops)
             .renderer(() -> WallItemRenderer::new)
             .register();
     public static final EntityEntry<BambooItemFrame> BAMBOO_ITEM_FRAME = REGISTRATE.entity("bamboo_item_frame", (EntityType.EntityFactory<BambooItemFrame>) BambooItemFrame::new, MobCategory.MISC)
@@ -168,6 +262,7 @@ public class TropicraftEntities {
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(false))
+            .loot(TropicraftEntities::noDrops)
             .renderer(() -> BambooItemFrameRenderer::new)
             .register();
     // TODO: Register again when volcano eruption is finished
@@ -216,7 +311,7 @@ public class TropicraftEntities {
             .spawnPlacement(SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TropicraftEntities::canSpawnOceanWaterMob, RegisterSpawnPlacementsEvent.Operation.REPLACE)
             .attributes(TropicraftDolphinEntity::createAttributes)
             .loot((lootTables, entity) -> dropItemsWithEnchantBonus(lootTables, entity, (RegistryEntry<Item, TropicalFertilizerItem>) TropicraftItems.TROPICAL_FERTILIZER, UniformGenerator.between(1, 3)))
-            .renderer(() -> DolphinRenderer::new)
+            .renderer(() -> TropicraftDolphinRenderer::new)
             .register();
     public static final EntityEntry<SeahorseEntity> SEAHORSE = REGISTRATE.entity("seahorse", SeahorseEntity::new, MobCategory.WATER_AMBIENT)
             .properties(b -> b.sized(0.5f, 0.6f)
@@ -234,6 +329,7 @@ public class TropicraftEntities {
                     .setTrackingRange(4)
                     .setUpdateInterval(20)
                     .setShouldReceiveVelocityUpdates(true))
+            .loot(TropicraftEntities::noDrops)
             .renderer(() -> PoisonBlotRenderer::new)
             .register();
     public static final EntityEntry<TreeFrogEntity> TREE_FROG = REGISTRATE.entity("tree_frog", TreeFrogEntity::new, MobCategory.CREATURE)
@@ -375,6 +471,7 @@ public class TropicraftEntities {
                     .setTrackingRange(6)
                     .setUpdateInterval(100)
                     .setShouldReceiveVelocityUpdates(true))
+            .loot(TropicraftEntities::noDrops)
             .renderer(() -> AshenMaskRenderer::new)
             .register();
     public static final EntityEntry<AshenEntity> ASHEN = REGISTRATE.entity("ashen", AshenEntity::new, MobCategory.MONSTER)
@@ -392,6 +489,7 @@ public class TropicraftEntities {
                     .setTrackingRange(4)
                     .setUpdateInterval(10)
                     .setShouldReceiveVelocityUpdates(true))
+            .loot(TropicraftEntities::noDrops)
             .renderer(() -> ThrownItemRenderer::new)
             .register();
     public static final EntityEntry<SharkEntity> HAMMERHEAD = REGISTRATE.entity("hammerhead", SharkEntity::new, MobCategory.WATER_CREATURE)
@@ -546,6 +644,7 @@ public class TropicraftEntities {
                     .setUpdateInterval(3)
                     .setShouldReceiveVelocityUpdates(true))
             .attributes(FishingBobberEntity::createAttributes)
+            .loot(TropicraftEntities::noDrops)
             .renderer(() -> FishingBobberEntityRenderer::new)
             .register();
 
@@ -553,6 +652,7 @@ public class TropicraftEntities {
             .properties(b -> b.sized(0.8f, 0.8f)
                     .setTrackingRange(4).updateInterval(20)
                     .setShouldReceiveVelocityUpdates(true))
+            .loot(TropicraftEntities::noDrops)
             .renderer(() -> SpearRenderer::new)
             .register();
 
@@ -646,19 +746,19 @@ public class TropicraftEntities {
             .renderer(() -> ShoebillStorkRenderer::new)
             .register();
 
-    public static boolean canAnimalSpawn(EntityType<? extends Mob> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
+    public static boolean canAnimalSpawn(EntityType<? extends Mob> animal, LevelAccessor worldIn, EntitySpawnReason reason, BlockPos pos, RandomSource random) {
         BlockState groundState = worldIn.getBlockState(pos.below());
         return groundState.is(Blocks.GRASS_BLOCK)
                 || groundState.is(BlockTags.SAND)
                 || groundState.is(TropicraftTags.Blocks.MUD);
     }
 
-    public static <T extends Mob> boolean canSpawnOceanWaterMob(EntityType<T> waterMob, LevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource rand) {
+    public static <T extends Mob> boolean canSpawnOceanWaterMob(EntityType<T> waterMob, LevelAccessor world, EntitySpawnReason reason, BlockPos pos, RandomSource rand) {
         int seaLevel = TropicraftDimension.getSeaLevel(world);
         return pos.getY() > 90 && pos.getY() < seaLevel && world.getFluidState(pos).is(FluidTags.WATER);
     }
 
-    public static <T extends Mob> boolean canSpawnSurfaceOceanWaterMob(EntityType<T> waterMob, LevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource rand) {
+    public static <T extends Mob> boolean canSpawnSurfaceOceanWaterMob(EntityType<T> waterMob, LevelAccessor world, EntitySpawnReason reason, BlockPos pos, RandomSource rand) {
         int seaLevel = TropicraftDimension.getSeaLevel(world);
         return pos.getY() > seaLevel - 3 && pos.getY() < seaLevel && world.getFluidState(pos).is(FluidTags.WATER);
     }
@@ -706,7 +806,7 @@ public class TropicraftEntities {
         ServerLevel level = event.getLevel().getLevel();
         if (level.dimension() == TropicraftDimension.WORLD) {
             if (!TropicsConfigs.COMMON.spawnHostileMobsInTropics.get()) {
-                if (event.getSpawnType() == MobSpawnType.NATURAL || event.getSpawnType() == MobSpawnType.CHUNK_GENERATION) {
+                if (event.getSpawnType() == EntitySpawnReason.NATURAL || event.getSpawnType() == EntitySpawnReason.CHUNK_GENERATION) {
                     Mob mob = event.getEntity();
                     if (mob.getType() != TropicraftEntities.ASHEN.get() && (mob.getType().getCategory() == MobCategory.MONSTER || mob instanceof Enemy)) {
                         event.setResult(MobSpawnEvent.PositionCheck.Result.FAIL);

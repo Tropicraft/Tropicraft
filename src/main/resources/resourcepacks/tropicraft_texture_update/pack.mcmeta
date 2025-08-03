@@ -1,6 +1,6 @@
 {
   "pack": {
-    "pack_format": 34,
+    "pack_format": 64,
     "description": {
       "translate": "resourcePack.tropicraft.texture_update.description"
     }

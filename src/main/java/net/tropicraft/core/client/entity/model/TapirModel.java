@@ -1,16 +1,13 @@
 package net.tropicraft.core.client.entity.model;
 
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.tropicraft.core.client.entity.render.state.TapirRenderState;
 
-public class TapirModel<T extends Entity> extends TropicraftAgeableHierarchicalModel<T> {
-    private final ModelPart root;
+public class TapirModel extends EntityModel<TapirRenderState> {
     private final ModelPart head_base;
     private final ModelPart leg_front_left;
     private final ModelPart leg_front_right;
@@ -18,7 +15,7 @@ public class TapirModel<T extends Entity> extends TropicraftAgeableHierarchicalM
     private final ModelPart leg_back_right;
 
     public TapirModel(ModelPart root) {
-        this.root = root;
+        super(root);
         ModelPart body_base = root.getChild("body_base");
         head_base = root.getChild("head_base");
         leg_front_left = body_base.getChild("leg_front_left");
@@ -105,14 +102,20 @@ public class TapirModel<T extends Entity> extends TropicraftAgeableHierarchicalM
                         .addBox(-2.0f, 0.0f, -2.0f, 4.0f, 10.0f, 4.0f, false),
                 PartPose.offset(-3.0f, 7.0f, 4.0f));
 
-        return LayerDefinition.create(mesh, 128, 128);
+        return LayerDefinition.create(mesh, 128, 128).apply(MeshTransformer.scaling(0.8f));
+    }
+
+    public static LayerDefinition createBaby() {
+        return create().apply(ModelAnimator.hierarchicalBaby("head_base", 0.5f));
     }
 
     @Override
-    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float age, float headYaw, float headPitch) {
-        ModelAnimator.look(head_base, headYaw, headPitch);
+    public void setupAnim(TapirRenderState state) {
+        super.setupAnim(state);
 
-        try (ModelAnimator.Cycle walk = ModelAnimator.cycle(limbSwing * 0.1f, limbSwingAmount)) {
+        ModelAnimator.look(head_base, state);
+
+        try (ModelAnimator.Cycle walk = ModelAnimator.cycle(state.walkAnimationPos * 0.1f, state.walkAnimationSpeed)) {
             leg_front_left.xRot = walk.eval(1.0f, 1.0f);
             leg_front_right.xRot = walk.eval(-1.0f, 1.0f);
             leg_back_left.xRot = walk.eval(-1.0f, 1.0f);
@@ -120,12 +123,6 @@ public class TapirModel<T extends Entity> extends TropicraftAgeableHierarchicalM
         }
     }
 
-    @Override
-    protected ModelPart root() {
-        return root;
-    }
-
-    @Override
     public ModelPart head() {
         return head_base;
     }

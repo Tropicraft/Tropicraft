@@ -6,9 +6,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.entity.model.ToucanModel;
+import net.tropicraft.core.client.entity.render.state.BirdRenderState;
 import net.tropicraft.core.common.entity.passive.ToucanEntity;
 
-public class ToucanRenderer extends MobRenderer<ToucanEntity, ToucanModel> {
+public class ToucanRenderer extends MobRenderer<ToucanEntity, BirdRenderState, ToucanModel> {
     private static final ResourceLocation TEXTURE = Tropicraft.location("textures/entity/toucan.png");
 
     public ToucanRenderer(EntityRendererProvider.Context context) {
@@ -16,7 +17,18 @@ public class ToucanRenderer extends MobRenderer<ToucanEntity, ToucanModel> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(ToucanEntity entity) {
+    public BirdRenderState createRenderState() {
+        return new BirdRenderState();
+    }
+
+    @Override
+    public void extractRenderState(ToucanEntity entity, BirdRenderState state, float partialTicks) {
+        super.extractRenderState(entity, state, partialTicks);
+        state.flightAnimation = entity.getFlightAnimation(partialTicks);
+    }
+
+    @Override
+    public ResourceLocation getTextureLocation(BirdRenderState entity) {
         return TEXTURE;
     }
 }

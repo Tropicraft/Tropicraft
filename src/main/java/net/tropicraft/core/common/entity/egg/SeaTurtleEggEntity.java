@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.entity.egg;
 
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.tropicraft.core.common.entity.TropicraftEntities;
@@ -16,7 +17,7 @@ public class SeaTurtleEggEntity extends EggEntity {
     @Override
     @Nullable
     public Entity onHatch() {
-        return TropicraftEntities.SEA_TURTLE.get().create(level());
+        return TropicraftEntities.SEA_TURTLE.get().create(level(), EntitySpawnReason.BREEDING);
     }
 
     @Override

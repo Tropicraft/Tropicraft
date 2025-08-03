@@ -8,9 +8,8 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.tropicraft.core.common.entity.TropiBeeEntity;
 
-public class TropiBeeModel extends BeeModel<TropiBeeEntity> {
+public class TropiBeeModel extends BeeModel {
     private final ModelPart body;
 
     public TropiBeeModel(ModelPart root) {

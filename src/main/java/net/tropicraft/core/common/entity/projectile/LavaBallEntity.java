@@ -2,17 +2,18 @@ package net.tropicraft.core.common.entity.projectile;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 public class LavaBallEntity extends Entity {
     public boolean setFire;
@@ -35,7 +36,7 @@ public class LavaBallEntity extends Entity {
     public LavaBallEntity(EntityType<? extends LavaBallEntity> type, Level world, double i, double j, double k, double motX, double motY, double motZ) {
         super(type, world);
         setFire = false;
-        moveTo(i, j, k, 0, 0);
+        snapTo(i, j, k, 0, 0);
         accelerationX = motX;
         accelerationY = motY;
         accelerationZ = motZ;
@@ -60,17 +61,6 @@ public class LavaBallEntity extends Entity {
     @Override
     public boolean isPushable() {
         return true;
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public void supahDrip() {
-        float x = (float) getX();
-        float y = (float) getY();
-        float z = (float) getZ();
-
-        if (level().isClientSide) {
-            level().addParticle(ParticleTypes.LAVA, x, y, z, getDeltaMovement().x, -1.5f, getDeltaMovement().z);
-        }
     }
 
     @Override
@@ -107,7 +97,7 @@ public class LavaBallEntity extends Entity {
             motionY -= 0.05f;
             if (level().isClientSide) {
                 for (int i = 0; i < 5 + random.nextInt(3); i++) {
-                    supahDrip();
+                    level().addParticle(ParticleTypes.LAVA, getX(), getY(), getZ(), getDeltaMovement().x, -1.5f, getDeltaMovement().z);
                 }
             }
         }
@@ -161,12 +151,17 @@ public class LavaBallEntity extends Entity {
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag nbt) {
-        lifeTimer = nbt.getInt("lifeTimer");
+    public boolean hurtServer(ServerLevel level, DamageSource damageSource, float amount) {
+        return false;
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag nbt) {
-        nbt.putInt("lifeTimer", lifeTimer);
+    protected void readAdditionalSaveData(ValueInput input) {
+        lifeTimer = input.getIntOr("lifeTimer", 0);
+    }
+
+    @Override
+    protected void addAdditionalSaveData(ValueOutput output) {
+        output.putInt("lifeTimer", lifeTimer);
     }
 }

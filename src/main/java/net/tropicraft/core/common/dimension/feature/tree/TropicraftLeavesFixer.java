@@ -57,40 +57,40 @@ public class TropicraftLeavesFixer {
                 iterator.remove();
                 if (!box.isInside(blockPos)) {
                     continue;
-        		}
+                }
 
-				if (currentDistance != 0) {
-					BlockState leafState = level.getBlockState(blockPos);
-					setBlockKnownShape(level, blockPos, leafState.setValue(BlockStateProperties.DISTANCE, currentDistance));
-				}
-				voxelShape.fill(blockPos.getX() - box.minX(), blockPos.getY() - box.minY(), blockPos.getZ() - box.minZ());
+                if (currentDistance != 0) {
+                    BlockState leafState = level.getBlockState(blockPos);
+                    setBlockKnownShape(level, blockPos, leafState.setValue(BlockStateProperties.DISTANCE, currentDistance));
+                }
+                voxelShape.fill(blockPos.getX() - box.minX(), blockPos.getY() - box.minY(), blockPos.getZ() - box.minZ());
 
-				for (BlockPos offset : neighborOffsets) {
-					mutablePos.setWithOffset(blockPos, offset);
-					if (!box.isInside(mutablePos)) {
-						continue;
-					}
-					if (!voxelShape.isFull(mutablePos.getX() - box.minX(), mutablePos.getY() - box.minY(), mutablePos.getZ() - box.minZ())) {
-						BlockState neighborState = level.getBlockState(mutablePos);
-						OptionalInt neighborDistance = TropicraftLeavesBlock.getOptionalDistanceAt(neighborState);
-						if (neighborDistance.isPresent()) {
-							int newDistance = Math.min(neighborDistance.getAsInt(), currentDistance + 1);
-							if (newDistance < LeavesBlock.DECAY_DISTANCE) {
-								queuesByDistance.get(newDistance).add(mutablePos.immutable());
-								currentDistance = Math.min(currentDistance, newDistance);
-							}
-						}
-					}
-				}
-			}
+                for (BlockPos offset : neighborOffsets) {
+                    mutablePos.setWithOffset(blockPos, offset);
+                    if (!box.isInside(mutablePos)) {
+                        continue;
+                    }
+                    if (!voxelShape.isFull(mutablePos.getX() - box.minX(), mutablePos.getY() - box.minY(), mutablePos.getZ() - box.minZ())) {
+                        BlockState neighborState = level.getBlockState(mutablePos);
+                        OptionalInt neighborDistance = TropicraftLeavesBlock.getOptionalDistanceAt(neighborState);
+                        if (neighborDistance.isPresent()) {
+                            int newDistance = Math.min(neighborDistance.getAsInt(), currentDistance + 1);
+                            if (newDistance < LeavesBlock.DECAY_DISTANCE) {
+                                queuesByDistance.get(newDistance).add(mutablePos.immutable());
+                                currentDistance = Math.min(currentDistance, newDistance);
+                            }
+                        }
+                    }
+                }
+            }
 
-			currentDistance++;
-		}
+            currentDistance++;
+        }
 
-		return voxelShape;
-	}
+        return voxelShape;
+    }
 
-	private static void setBlockKnownShape(LevelWriter level, BlockPos pos, BlockState state) {
-		level.setBlock(pos, state, Block.UPDATE_ALL | Block.UPDATE_KNOWN_SHAPE);
-	}
+    private static void setBlockKnownShape(LevelWriter level, BlockPos pos, BlockState state) {
+        level.setBlock(pos, state, Block.UPDATE_ALL | Block.UPDATE_KNOWN_SHAPE);
+    }
 }

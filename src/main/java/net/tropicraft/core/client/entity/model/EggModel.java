@@ -1,6 +1,6 @@
 package net.tropicraft.core.client.entity.model;
 
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -8,14 +8,13 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import net.tropicraft.core.common.entity.egg.EggEntity;
+import net.tropicraft.core.client.entity.render.state.EggRenderState;
 
-public class EggModel extends HierarchicalModel<EggEntity> {
-    private final ModelPart root;
+public class EggModel extends EntityModel<EggRenderState> {
     private final ModelPart body;
 
     public EggModel(ModelPart root) {
-        this.root = root;
+        super(root);
         body = root.getChild("body");
     }
 
@@ -39,22 +38,15 @@ public class EggModel extends HierarchicalModel<EggEntity> {
     }
 
     @Override
-    public void setupAnim(EggEntity egg, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        boolean hatching = egg.isNearHatching();
-        float randRotator = (float) egg.rotationRand;
+    public void setupAnim(EggRenderState state) {
         body.yRot = 0.0f;
-        if (hatching) {
-            body.yRot = Mth.sin(ageInTicks * 0.6f) * 0.6f;
-            body.xRot = Mth.sin(randRotator * 4.0f) * 0.6f;
-            body.zRot = Mth.cos(randRotator * 4.0f) * 0.6f;
+        if (state.hatching) {
+            body.yRot = Mth.sin(state.ageInTicks * 0.6f) * 0.6f;
+            body.xRot = Mth.sin(state.randRotater * 4.0f) * 0.6f;
+            body.zRot = Mth.cos(state.randRotater * 4.0f) * 0.6f;
         } else {
             body.xRot = 0.0f;
             body.zRot = 0.0f;
         }
-    }
-
-    @Override
-    public ModelPart root() {
-        return root;
     }
 }

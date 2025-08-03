@@ -2,12 +2,14 @@ package net.tropicraft.core.common.entity.underdasea;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityEvent;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -90,7 +92,7 @@ public class ManOWarEntity extends WaterAnimal {
                     rotationVelocity = 1.0f / (random.nextFloat() + 1.0f) * 0.2f;
                 }
 
-                level().broadcastEntityEvent(this, (byte) 19);
+                level().broadcastEntityEvent(this, EntityEvent.SQUID_ANIM_SYNCH);
             }
         }
 
@@ -98,13 +100,13 @@ public class ManOWarEntity extends WaterAnimal {
             attackTimer--;
         }
 
-        if (isInWaterOrBubble()) {
-            if (random.nextInt(5) == 0 && attackTimer <= 0) {
-                List<LivingEntity> list = level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(2D, 4D, 2D).move(0.0, -2.0, 0.0), EntitySelector.NO_CREATIVE_OR_SPECTATOR);
+        if (isInWater()) {
+            if (level() instanceof ServerLevel serverLevel && random.nextInt(5) == 0 && attackTimer <= 0) {
+                List<LivingEntity> list = serverLevel.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(2D, 4D, 2D).move(0.0, -2.0, 0.0), EntitySelector.NO_CREATIVE_OR_SPECTATOR);
                 for (LivingEntity ent : list) {
                     if (ent.getType() != TropicraftEntities.MAN_O_WAR.get()) {
                         if (ent.isInWater()) {
-                            ent.hurt(damageSources().mobAttack(this), (float) getAttribute(Attributes.ATTACK_DAMAGE).getValue());
+                            ent.hurtServer(serverLevel, damageSources().mobAttack(this), (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
                             attackTimer = 20;
                         }
                     }
@@ -156,11 +158,12 @@ public class ManOWarEntity extends WaterAnimal {
     @Override
     public void die(DamageSource d) {
         super.die(d);
-        if (!level().isClientSide) {
+        // TODO: Why not loot table?
+        if (level() instanceof ServerLevel serverLevel) {
             int numDrops = 3 + random.nextInt(1);
 
             for (int i = 0; i < numDrops; i++) {
-                spawnAtLocation(Items.SLIME_BALL, 1);
+                spawnAtLocation(serverLevel, Items.SLIME_BALL, 1);
             }
         }
     }
@@ -186,9 +189,8 @@ public class ManOWarEntity extends WaterAnimal {
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
-        if (id == 19) {
+        if (id == EntityEvent.SQUID_ANIM_SYNCH) {
             squidRotation = 0.0f;
         } else {
             super.handleEntityEvent(id);

@@ -7,6 +7,6 @@ import net.tropicraft.core.common.entity.underdasea.PiranhaEntity;
 
 public class PiranhaRenderer extends TropicraftFishRenderer<PiranhaEntity> {
     public PiranhaRenderer(EntityRendererProvider.Context context) {
-        super(context, new TropicraftFishModel<>(context.bakeLayer(TropicraftRenderLayers.PIRANHA_LAYER)), 0.2f);
+        super(context, new TropicraftFishModel(context.bakeLayer(TropicraftRenderLayers.PIRANHA_LAYER)), 0.2f);
     }
 }

@@ -11,29 +11,22 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.level.Level;
 import net.tropicraft.core.common.drinks.Cocktail;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.TropicraftDrinks;
+import net.tropicraft.core.common.item.component.TropicraftDataComponents;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
 public class CocktailItem extends Item {
     public CocktailItem(Properties properties) {
         super(properties.component(TropicraftDataComponents.COCKTAIL, Cocktail.EMPTY));
-    }
-
-    @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        getCocktail(stack).ingredients().forEach(ingredient -> tooltip.add(ingredient.value().getDisplayName()));
     }
 
     public static Cocktail getCocktail(ItemStack itemStack) {
@@ -70,8 +63,8 @@ public class CocktailItem extends Item {
     }
 
     @Override
-    public UseAnim getUseAnimation(ItemStack stack) {
-        return UseAnim.DRINK;
+    public ItemUseAnimation getUseAnimation(ItemStack stack) {
+        return ItemUseAnimation.DRINK;
     }
 
     public ItemStack onFoodEaten(ItemStack itemstack, Level world, Player player) {
@@ -103,15 +96,15 @@ public class CocktailItem extends Item {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand hand) {
+    public InteractionResult use(Level worldIn, Player playerIn, InteractionHand hand) {
         ItemStack stack = playerIn.getItemInHand(hand);
         if (!isDrink(stack)) {
-            return new InteractionResultHolder<>(InteractionResult.FAIL, stack);
+            return InteractionResult.FAIL;
         }
 
         playerIn.startUsingItem(hand);
 
-        return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
+        return InteractionResult.SUCCESS;
     }
 
     @Override

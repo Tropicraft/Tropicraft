@@ -27,7 +27,7 @@ public class TropicsFlowerBlock extends FlowerBlock {
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-        Vec3 offset = state.getOffset(world, pos);
+        Vec3 offset = state.getOffset(pos);
         return shape.move(offset.x, offset.y, offset.z);
     }
 }

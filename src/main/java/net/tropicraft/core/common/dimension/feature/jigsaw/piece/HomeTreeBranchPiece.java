@@ -28,7 +28,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSetting
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.tropicraft.core.common.block.TropicraftBlocks;
-import net.tropicraft.core.common.block.TropicraftLeavesBlock;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -70,10 +69,10 @@ public final class HomeTreeBranchPiece extends StructurePoolElement implements I
     }
 
     @Override
-    public List<StructureTemplate.StructureBlockInfo> getShuffledJigsawBlocks(StructureTemplateManager templates, BlockPos pos, Rotation rotation, RandomSource random) {
+    public List<StructureTemplate.JigsawBlockInfo> getShuffledJigsawBlocks(StructureTemplateManager structureTemplateManager, BlockPos pos, Rotation rotation, RandomSource random) {
         FrontAndTop orientation = FrontAndTop.fromFrontAndTop(Direction.DOWN, Direction.SOUTH);
         BlockState state = Blocks.JIGSAW.defaultBlockState().setValue(JigsawBlock.ORIENTATION, orientation);
-        return List.of(new StructureTemplate.StructureBlockInfo(pos, state, JIGSAW_NBT));
+        return List.of(StructureTemplate.JigsawBlockInfo.of(new StructureTemplate.StructureBlockInfo(pos, state, JIGSAW_NBT)));
     }
 
     @Override
@@ -106,7 +105,7 @@ public final class HomeTreeBranchPiece extends StructurePoolElement implements I
         int branchY2 = rand.nextInt(4) + 4;
 
         BlockState wood = TropicraftBlocks.MAHOGANY_LOG.get().defaultBlockState();
-        BlockState leaf = TropicraftBlocks.MAHOGANY_LEAVES.get().defaultBlockState().setValue(TropicraftLeavesBlock.NEW_DECAY, true);
+        BlockState leaf = TropicraftBlocks.MAHOGANY_LEAVES.get().defaultBlockState();
         final int leafCircleSizeConstant = 3;
         int y2 = origin.getY() + branchY2;
 

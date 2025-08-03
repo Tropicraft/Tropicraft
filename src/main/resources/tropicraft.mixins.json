@@ -7,12 +7,12 @@
     "BlockEntityTypeAccessor",
     "EntityMixin",
     "MobMixin",
+    "datafix.DataFixersMixin",
     "fix.StructureTemplateProjectionMixin",
     "worldgen.JigsawPlacerMixin",
     "worldgen.WorldDimensionsMixin"
   ],
   "client": [
-    "client.HumanoidArmorLayerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

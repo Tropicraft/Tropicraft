@@ -11,9 +11,10 @@ import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
 import net.tropicraft.core.client.entity.model.AshenModel;
 import net.tropicraft.core.client.entity.render.AshenRenderer;
+import net.tropicraft.core.client.entity.render.state.AshenRenderState;
 import net.tropicraft.core.common.entity.hostile.AshenEntity;
 
-public class AshenMaskLayer extends RenderLayer<AshenEntity, AshenModel> {
+public class AshenMaskLayer extends RenderLayer<AshenRenderState, AshenModel> {
     private static final ResourceLocation TEXTURE_LOCATION = Tropicraft.location("textures/entity/ashen/mask.png");
 
     private final TropicraftSpecialRenderHelper mask;
@@ -26,16 +27,16 @@ public class AshenMaskLayer extends RenderLayer<AshenEntity, AshenModel> {
     }
 
     @Override
-    public void render(PoseStack stack, MultiBufferSource bufferSource, int packedLight, AshenEntity ashen, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (ashen.hasMask()) {
+    public void render(PoseStack stack, MultiBufferSource bufferSource, int packedLight, AshenRenderState state, float yRot, float xRot) {
+        if (state.hasMask) {
             stack.pushPose();
-            modelAshen.setupAnim(ashen, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+            modelAshen.setupAnim(state);
             modelAshen.head.translateAndRotate(stack);
 
             stack.translate(-0.03125f, 0.0625f * 3, 0.18f);
             stack.scale(0.75f, 0.75f, 0.75f);
             VertexConsumer builder = bufferSource.getBuffer(RenderType.entityCutoutNoCull(TEXTURE_LOCATION));
-            mask.renderMask(stack, builder, ashen.getMaskType(), packedLight, OverlayTexture.NO_OVERLAY);
+            mask.renderMask(stack, builder, state.maskType, packedLight, OverlayTexture.NO_OVERLAY);
             stack.popPose();
         }
     }

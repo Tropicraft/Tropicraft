@@ -2,16 +2,14 @@ package net.tropicraft.core.common.entity.passive;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
@@ -28,7 +26,6 @@ import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
@@ -38,6 +35,8 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
@@ -62,7 +61,7 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes()
+        return Animal.createAnimalAttributes()
                 .add(Attributes.MAX_HEALTH, 6.0)
                 .add(Attributes.FLYING_SPEED, 0.4)
                 .add(Attributes.MOVEMENT_SPEED, 0.2);
@@ -73,7 +72,6 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
         FlyingPathNavigation navigator = new FlyingPathNavigation(this, world);
         navigator.setCanOpenDoors(false);
         navigator.setCanFloat(true);
-        navigator.setCanPassDoors(true);
         return navigator;
     }
 
@@ -81,13 +79,13 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
     protected void registerGoals() {
         goalSelector.addGoal(0, new FloatGoal(this));
         goalSelector.addGoal(1, new FlyAwayInPanicGoal());
-        goalSelector.addGoal(2, new TemptGoal(this, 1.25, Ingredient.of(Items.SUGAR), false));
+        goalSelector.addGoal(2, new TemptGoal(this, 1.25, item -> item.is(Items.SUGAR), false));
         goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0f));
         goalSelector.addGoal(4, new FeedFromPlantsGoal());
         goalSelector.addGoal(5, new FlyAroundRandomlyGoal());
     }
 
-    public static boolean canHummingbirdSpawnOn(EntityType<HummingbirdEntity> type, LevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {
+    public static boolean canHummingbirdSpawnOn(EntityType<HummingbirdEntity> type, LevelAccessor world, EntitySpawnReason reason, BlockPos pos, RandomSource random) {
         BlockState groundState = world.getBlockState(pos.below());
         return (groundState.is(BlockTags.LEAVES) || groundState.is(Blocks.GRASS_BLOCK) || groundState.isAir())
                 && world.getRawBrightness(pos, 0) > 8;
@@ -99,7 +97,7 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
     }
 
     @Override
-    public boolean causeFallDamage(float pFallDistance, float pMultiplier, DamageSource pSource) {
+    public boolean causeFallDamage(double distance, float multiplier, DamageSource source) {
         return false;
     }
 
@@ -148,15 +146,15 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag nbt) {
-        super.addAdditionalSaveData(nbt);
-        nbt.putByte("pollen_collected", (byte) pollenCollected);
+    public void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putByte("pollen_collected", (byte) pollenCollected);
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag nbt) {
-        super.readAdditionalSaveData(nbt);
-        pollenCollected = nbt.getByte("pollen_collected");
+    public void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        pollenCollected = input.getByteOr("pollen_collected", (byte) 0);
     }
 
     final class FeedFromPlantsGoal extends FlyingGoal {

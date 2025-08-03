@@ -1,22 +1,16 @@
 package net.tropicraft.core.common.dimension.feature;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.AquaticFeatures;
+import net.minecraft.data.worldgen.placement.AquaticPlacements;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.placement.BiomeFilter;
-import net.minecraft.world.level.levelgen.placement.BlockPredicateFilter;
-import net.minecraft.world.level.levelgen.placement.CarvingMaskPlacement;
 import net.minecraft.world.level.levelgen.placement.CountPlacement;
 import net.minecraft.world.level.levelgen.placement.HeightmapPlacement;
 import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
@@ -27,7 +21,6 @@ import net.minecraft.world.level.levelgen.placement.RarityFilter;
 import net.tropicraft.Tropicraft;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 import static net.minecraft.data.worldgen.placement.VegetationPlacements.worldSurfaceSquaredWithCount;
 import static net.tropicraft.core.common.dimension.feature.TropicraftPlacementUtil.*;
@@ -77,31 +70,12 @@ public final class TropicraftVegetationPlacements {
 
     public static final ResourceKey<PlacedFeature> SINGLE_UNDERGROWTH = createKey("single_undergrowth");
 
-    public static final ResourceKey<PlacedFeature> SEAGRASS = createKey("seagrass");
-
-    public static final ResourceKey<PlacedFeature> UNDERGROUND_SEAGRASS_ON_STONE = createKey("underground_seagrass_on_stone");
-    public static final ResourceKey<PlacedFeature> UNDERGROUND_SEAGRASS_ON_DIRT = createKey("underground_seagrass_on_dirt");
-
-    public static final ResourceKey<PlacedFeature> UNDERGROUND_SEA_PICKLES = createKey("underground_sea_pickles");
-
     public static final ResourceKey<PlacedFeature> MANGROVE_REEDS = createKey("mangrove_reeds");
 
     public static final ResourceKey<PlacedFeature> KELP = createKey("kelp");
 
     public static List<PlacementModifier> worldSurfaceSquaredWithChance(int onceEvery) {
         return List.of(RarityFilter.onAverageOnceEvery(onceEvery), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome());
-    }
-
-    private static List<PlacementModifier> seagrassPlacement(Supplier<? extends Block> belowBlock) {
-        BlockPredicateFilter seagrassPredicate = BlockPredicateFilter.forPredicate(BlockPredicate.allOf(
-                BlockPredicate.matchesBlocks(new BlockPos(0, -1, 0), belowBlock.get()),
-                BlockPredicate.matchesBlocks(BlockPos.ZERO, Blocks.WATER),
-                BlockPredicate.matchesBlocks(new BlockPos(0, 1, 0), Blocks.WATER)));
-
-        return List.of(CarvingMaskPlacement.forStep(GenerationStep.Carving.LIQUID),
-                RarityFilter.onAverageOnceEvery(10),
-                seagrassPredicate,
-                BiomeFilter.biome());
     }
 
     public static void bootstrap(BootstrapContext<PlacedFeature> context) {
@@ -224,21 +198,6 @@ public final class TropicraftVegetationPlacements {
 
         register(context, SINGLE_UNDERGROWTH, TropicraftVegetationFeatures.SINGLE_UNDERGROWTH, worldSurfaceSquaredWithCount(2));
 
-        register(context, SEAGRASS, TropicraftVegetationFeatures.SEAGRASS, List.of(CountPlacement.of(48),
-                InSquarePlacement.spread(),
-                HeightmapPlacement.onHeightmap(Heightmap.Types.OCEAN_FLOOR_WG),
-                BiomeFilter.biome()
-        ));
-
-        register(context, UNDERGROUND_SEAGRASS_ON_STONE, TropicraftVegetationFeatures.UNDERGROUND_SEAGRASS, seagrassPlacement(() -> Blocks.STONE));
-        register(context, UNDERGROUND_SEAGRASS_ON_DIRT, TropicraftVegetationFeatures.UNDERGROUND_SEAGRASS, seagrassPlacement(() -> Blocks.DIRT));
-
-        register(context, UNDERGROUND_SEA_PICKLES, TropicraftVegetationFeatures.UNDERGROUND_SEA_PICKLES, List.of(
-                CarvingMaskPlacement.forStep(GenerationStep.Carving.LIQUID),
-                RarityFilter.onAverageOnceEvery(10),
-                BiomeFilter.biome()
-        ));
-
         register(context, MANGROVE_REEDS, TropicraftVegetationFeatures.MANGROVE_REEDS, List.of(
                 CountPlacement.of(2),
                 InSquarePlacement.spread(),
@@ -335,18 +294,9 @@ public final class TropicraftVegetationPlacements {
         addVegetalDecoration(generation, PATCH_IRIS);
     }
 
-    public static void addUndergroundSeagrass(BiomeGenerationSettings.Builder generation) {
-        addVegetalDecoration(generation, UNDERGROUND_SEAGRASS_ON_STONE);
-        addVegetalDecoration(generation, UNDERGROUND_SEAGRASS_ON_DIRT);
-    }
-
     public static void addSeagrass(BiomeGenerationSettings.Builder generation) {
         addVegetalDecoration(generation, TROPI_SEAGRASS);
-        addVegetalDecoration(generation, SEAGRASS);
-    }
-
-    public static void addUndergroundPickles(BiomeGenerationSettings.Builder generation) {
-        addVegetalDecoration(generation, UNDERGROUND_SEA_PICKLES);
+        addVegetalDecoration(generation, AquaticPlacements.SEAGRASS_NORMAL);
     }
 
     public static void addKelp(BiomeGenerationSettings.Builder generation) {

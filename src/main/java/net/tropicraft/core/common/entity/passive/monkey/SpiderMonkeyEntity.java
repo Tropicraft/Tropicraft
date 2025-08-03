@@ -1,14 +1,12 @@
 package net.tropicraft.core.common.entity.passive.monkey;
 
-import com.google.common.base.Suppliers;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.BreedGoal;
@@ -22,20 +20,18 @@ import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.tropicraft.core.common.BinaryAnimation;
-import net.tropicraft.core.common.Easings;
 import net.tropicraft.core.common.TropicraftTags;
 
-import java.util.function.Supplier;
+import javax.annotation.Nullable;
 
 public class SpiderMonkeyEntity extends Animal {
-    private static final Supplier<Ingredient> BREEDING_ITEMS = Suppliers.memoize(() -> Ingredient.of(TropicraftTags.Items.FRUITS));
-
     private static final EntityDataAccessor<Boolean> STANDING = SynchedEntityData.defineId(SpiderMonkeyEntity.class, EntityDataSerializers.BOOLEAN);
 
-    private final BinaryAnimation standAnimation = new BinaryAnimation(15, Easings::inOutSine);
+    private final BinaryAnimation standAnimation = new BinaryAnimation(15, Mth::easeInOutSine);
 
     public SpiderMonkeyEntity(EntityType<? extends SpiderMonkeyEntity> type, Level world) {
         super(type, world);
@@ -46,7 +42,7 @@ public class SpiderMonkeyEntity extends Animal {
         goalSelector.addGoal(0, new FloatGoal(this));
         goalSelector.addGoal(1, new PanicGoal(this, 2.0));
         goalSelector.addGoal(2, new BreedGoal(this, 1.0));
-        goalSelector.addGoal(3, new TemptGoal(this, 1.25, BREEDING_ITEMS.get(), false));
+        goalSelector.addGoal(3, new TemptGoal(this, 1.25, item -> item.is(TropicraftTags.Items.FRUITS), false));
         goalSelector.addGoal(4, new FollowParentGoal(this, 1.25));
         goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0));
         goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0f));
@@ -54,7 +50,7 @@ public class SpiderMonkeyEntity extends Animal {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes()
+        return Animal.createAnimalAttributes()
                 .add(Attributes.MAX_HEALTH, 10.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.2f);
     }
@@ -102,15 +98,15 @@ public class SpiderMonkeyEntity extends Animal {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag nbt) {
-        super.readAdditionalSaveData(nbt);
-        setStanding(nbt.getBoolean("standing"));
+    public void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        setStanding(input.getBooleanOr("standing", false));
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag nbt) {
-        super.addAdditionalSaveData(nbt);
-        nbt.putBoolean("standing", isStanding());
+    public void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putBoolean("standing", isStanding());
     }
 
     @Override
@@ -119,6 +115,7 @@ public class SpiderMonkeyEntity extends Animal {
     }
 
     @Override
+    @Nullable
     public SpiderMonkeyEntity getBreedOffspring(ServerLevel world, AgeableMob mate) {
         return null;
     }
@@ -129,7 +126,7 @@ public class SpiderMonkeyEntity extends Animal {
     }
 
     @Override
-    protected int calculateFallDamage(float distance, float damageMultiplier) {
+    protected int calculateFallDamage(double distance, float damageMultiplier) {
         return super.calculateFallDamage(distance, damageMultiplier) / 2;
     }
 }

@@ -62,7 +62,7 @@ public class EntityAIEatToHeal extends Goal {
 
         if (hasFoodAtHome()) {
             boolean isClose = false;
-            BlockPos blockposGoal = entityObj.getRestrictCenter();
+            BlockPos blockposGoal = entityObj.getHomePosition();
 
             if (blockposGoal.equals(BlockPos.ZERO)) {
                 stop();
@@ -145,19 +145,14 @@ public class EntityAIEatToHeal extends Goal {
             //path to base of fire
             blockposGoal = entityObj.posLastFireplaceFound.offset(0, -1, 0);
         } else {
-            blockposGoal = entityObj.getRestrictCenter();
-        }
-
-        if (blockposGoal.equals(BlockPos.ZERO)) {
-            return false;
+            if (!entityObj.hasHome()) {
+                return false;
+            }
+            blockposGoal = entityObj.getHomePosition();
         }
 
         //prevent walking into the fire
-        double dist = entityObj.position().distanceTo(new Vec3(blockposGoal.getX(), blockposGoal.getY(), blockposGoal.getZ()));
-        if (dist <= 3D) {
-            return true;
-        }
-        return false;
+        return entityObj.position().closerThan(Vec3.atCenterOf(blockposGoal), 3.0);
     }
 
     public boolean hasFoodSource() {
@@ -168,8 +163,8 @@ public class EntityAIEatToHeal extends Goal {
     }
 
     public boolean hasFoodAtHome() {
-        BlockPos blockposGoal = entityObj.getRestrictCenter();
-        if (!blockposGoal.equals(BlockPos.ZERO)) {
+        if (entityObj.hasHome()) {
+            BlockPos blockposGoal = entityObj.getHomePosition();
             BlockEntity tile = entityObj.level().getBlockEntity(blockposGoal);
             if (tile instanceof ChestBlockEntity chest) {
                 if (hasFoodSource(chest)) return true;
@@ -188,8 +183,8 @@ public class EntityAIEatToHeal extends Goal {
     }
 
     public ItemStack consumeOneStackSizeOfFoodAtHome() {
-        BlockPos blockposGoal = entityObj.getRestrictCenter();
-        if (!blockposGoal.equals(BlockPos.ZERO)) {
+        if (entityObj.hasHome()) {
+            BlockPos blockposGoal = entityObj.getHomePosition();
             BlockEntity tile = entityObj.level().getBlockEntity(blockposGoal);
             if (tile instanceof ChestBlockEntity chest) {
 

@@ -33,7 +33,7 @@ public class RainforestVinesFeature extends Feature<RainforestVinesConfig> {
 
         BlockPos.MutableBlockPos mutablePos = pos.mutable();
 
-        int maxY = Math.min(pos.getY() + config.height, world.getMaxBuildHeight());
+        int maxY = Math.min(pos.getY() + config.height, world.getMaxY());
         for (int y = pos.getY(); y < maxY; ++y) {
             for (int i = 0; i < config.rollsPerY; i++) {
                 mutablePos.set(pos);

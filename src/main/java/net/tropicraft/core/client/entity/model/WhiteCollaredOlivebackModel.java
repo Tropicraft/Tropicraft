@@ -1,6 +1,6 @@
 package net.tropicraft.core.client.entity.model;
 
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -9,9 +9,9 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import net.tropicraft.core.common.entity.passive.SmallBirdEntity;
+import net.tropicraft.core.client.entity.render.state.BirdRenderState;
 
-public class WhiteCollaredOlivebackModel extends HierarchicalModel<SmallBirdEntity> {
+public class WhiteCollaredOlivebackModel extends EntityModel<BirdRenderState> {
     private final ModelPart body;
     private final ModelPart butt;
     private final ModelPart tail1;
@@ -24,6 +24,7 @@ public class WhiteCollaredOlivebackModel extends HierarchicalModel<SmallBirdEnti
     private final ModelPart wingRight;
 
     public WhiteCollaredOlivebackModel(ModelPart root) {
+        super(root);
         body = root.getChild("body_base");
         butt = body.getChild("birb_butt");
         tail2 = butt.getChild("tail2");
@@ -58,19 +59,13 @@ public class WhiteCollaredOlivebackModel extends HierarchicalModel<SmallBirdEnti
     }
 
     @Override
-    public ModelPart root() {
-        return body;
-    }
-
-    @Override
-    public void setupAnim(SmallBirdEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch) {
+    public void setupAnim(BirdRenderState state) {
         body.getAllParts().forEach(ModelPart::resetPose);
 
-        head.xRot += headPitch * ModelAnimator.DEG_TO_RAD;
-        head.yRot += headYaw * ModelAnimator.DEG_TO_RAD;
+        head.xRot += state.xRot * ModelAnimator.DEG_TO_RAD;
+        head.yRot += state.yRot * ModelAnimator.DEG_TO_RAD;
 
-        float partialTicks = ageInTicks - entity.tickCount;
-        float flightAnimation = entity.getFlightAnimation(partialTicks);
+        float flightAnimation = state.flightAnimation;
         float groundAnimation = 1.0f - flightAnimation;
 
         if (flightAnimation > 0.0f) {
@@ -80,7 +75,7 @@ public class WhiteCollaredOlivebackModel extends HierarchicalModel<SmallBirdEnti
             wingLeft.xRot += 90.0f * Mth.DEG_TO_RAD * flightAnimation;
             wingRight.xRot += 90.0f * Mth.DEG_TO_RAD * flightAnimation;
 
-            try (ModelAnimator.Cycle fly = ModelAnimator.cycle(ageInTicks * 0.3f, flightAnimation)) {
+            try (ModelAnimator.Cycle fly = ModelAnimator.cycle(state.ageInTicks * 0.3f, flightAnimation)) {
                 body.y += fly.eval(1.0f, 0.2f, -0.06f, 0.0f);
                 body.xRot += fly.eval(0.5f, -0.1f, -0.06f, 0.2f);
                 head.xRot += fly.eval(0.5f, 0.1f, -0.1f, 0.0f);
@@ -91,7 +86,7 @@ public class WhiteCollaredOlivebackModel extends HierarchicalModel<SmallBirdEnti
         }
 
         if (groundAnimation > 0.0f) {
-            try (ModelAnimator.Cycle walk = ModelAnimator.cycle(limbSwing * 0.5f, limbSwingAmount * groundAnimation)) {
+            try (ModelAnimator.Cycle walk = ModelAnimator.cycle(state.walkAnimationPos * 0.5f, state.walkAnimationSpeed * groundAnimation)) {
                 legLeft.xRot += walk.eval(1.0f, 1.0f, 0.0f, 0.5f);
                 legRight.xRot += walk.eval(1.0f, 1.0f, 0.0f, 0.5f);
 
@@ -101,7 +96,7 @@ public class WhiteCollaredOlivebackModel extends HierarchicalModel<SmallBirdEnti
                 wingRight.yRot += walk.eval(2.0f, -0.5f, 0.0f, -1.0f);
             }
 
-            try (ModelAnimator.Cycle idle = ModelAnimator.cycle(ageInTicks, 1.0f)) {
+            try (ModelAnimator.Cycle idle = ModelAnimator.cycle(state.ageInTicks, 1.0f)) {
                 float wingTwitch = idle.twitchSymmetric(12.0f, 0.22f, 0.5f);
                 wingLeft.yRot += wingTwitch;
                 wingLeft.xRot += wingTwitch * 0.5f;

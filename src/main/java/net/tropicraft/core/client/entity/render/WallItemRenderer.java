@@ -2,51 +2,52 @@ package net.tropicraft.core.client.entity.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.state.ItemFrameRenderState;
+import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.PlayerHeadItem;
-import net.minecraft.world.level.Level;
 import net.tropicraft.core.common.entity.placeable.WallItemEntity;
 
-public class WallItemRenderer extends EntityRenderer<WallItemEntity> {
+public class WallItemRenderer extends EntityRenderer<WallItemEntity, ItemFrameRenderState> {
+    private final ItemModelResolver itemModelResolver;
 
     public WallItemRenderer(EntityRendererProvider.Context context) {
         super(context);
+        itemModelResolver = context.getItemModelResolver();
     }
 
     @Override
-    public void render(WallItemEntity entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource bufferIn, int packedLightIn) {
-        stack.pushPose();
-        stack.mulPose(Axis.XP.rotationDegrees(entity.getXRot()));
-        stack.mulPose(Axis.YP.rotationDegrees(180.0f - entity.getYRot()));
-        stack.mulPose(Axis.ZP.rotationDegrees(entity.getRotation() * 360 / 8.0f));
-        ItemStack itemStack = entity.getItem();
-        int seed = entity.getId();
-        Level level = entity.level();
-        if (!itemStack.isEmpty()) {
-            stack.pushPose();
-            stack.scale((float) 1, (float) 1, (float) 1);
+    public ItemFrameRenderState createRenderState() {
+        return new ItemFrameRenderState();
+    }
 
-            // TODO what is this now?
-            if (/*!Minecraft.getInstance().getItemRenderer().shouldRenderItemIn3D(stack) || */itemStack.getItem() instanceof PlayerHeadItem) {
-                stack.mulPose(Axis.YP.rotationDegrees(180.0f));
-            }
-            Minecraft.getInstance().getItemRenderer().renderStatic(itemStack, ItemDisplayContext.FIXED, packedLightIn, OverlayTexture.NO_OVERLAY, stack, bufferIn, level, seed);
-            stack.popPose();
+    @Override
+    public void extractRenderState(WallItemEntity entity, ItemFrameRenderState state, float partialTick) {
+        super.extractRenderState(entity, state, partialTick);
+        state.direction = entity.getDirection();
+        itemModelResolver.updateForNonLiving(state.item, entity.getItem(), ItemDisplayContext.FIXED, entity);
+        state.rotation = entity.getRotation();
+    }
+
+    @Override
+    public void render(ItemFrameRenderState state, PoseStack stack, MultiBufferSource bufferSource, int lightCoords) {
+        stack.pushPose();
+
+        if (state.direction.getAxis().isHorizontal()) {
+            stack.mulPose(Axis.YP.rotationDegrees(180.0f - state.direction.get2DDataValue() * 90.0f));
+        } else {
+            stack.mulPose(Axis.XP.rotationDegrees(-90.0f * state.direction.getAxisDirection().getStep()));
+        }
+
+        stack.mulPose(Axis.ZP.rotationDegrees(state.rotation * 360 / 8.0f));
+        if (!state.item.isEmpty()) {
+            state.item.render(stack, bufferSource, lightCoords, OverlayTexture.NO_OVERLAY);
         }
         stack.popPose();
-        super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
-    }
 
-    @Override
-    public ResourceLocation getTextureLocation(WallItemEntity wallItemEntity) {
-        return TextureAtlas.LOCATION_BLOCKS;
+        super.render(state, stack, bufferSource, lightCoords);
     }
 }

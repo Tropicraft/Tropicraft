@@ -166,10 +166,10 @@ public class EntityAIKoaMate extends Goal {
         //if (net.neoforged.common.MinecraftForge.EVENT_BUS.post(event) || event.getChild() == null) { return; }
         //entityvillager = event.getChild();
         entityvillager.setAge(-24000);
-        entityvillager.moveTo(villagerObj.getX(), villagerObj.getY(), villagerObj.getZ(), 0.0f, 0.0f);
-        if (entityvillager instanceof EntityKoaBase) {
-            ((EntityKoaBase) entityvillager).setVillageAndDimID(villagerObj.getVillageID(), villagerObj.getVillageDimension());
-            entityvillager.restrictTo(villagerObj.getRestrictCenter(), EntityKoaBase.MAX_HOME_DISTANCE);
+        entityvillager.snapTo(villagerObj.getX(), villagerObj.getY(), villagerObj.getZ(), 0.0f, 0.0f);
+        if (entityvillager instanceof EntityKoaBase koa) {
+            koa.setVillageAndDimID(villagerObj.getVillageID(), villagerObj.getVillageDimension());
+            koa.setHomeTo(villagerObj.getHomePosition(), EntityKoaBase.MAX_HOME_DISTANCE);
 
             //TODO: 1.14 readd
             /*TownKoaVillage village = villagerObj.getVillage();
@@ -179,7 +179,7 @@ public class EntityAIKoaMate extends Goal {
                 village.addEntity(entityvillager);
             }*/
 
-            ((EntityKoaBase) entityvillager).updateUniqueEntityAI();
+            koa.updateUniqueEntityAI();
 
             entityvillager.level().playSound(null, entityvillager.blockPosition(), SoundEvents.CHICKEN_EGG, SoundSource.AMBIENT, 1, 1);
         }

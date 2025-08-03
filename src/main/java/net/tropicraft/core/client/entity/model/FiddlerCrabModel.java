@@ -1,17 +1,16 @@
 package net.tropicraft.core.client.entity.model;
 
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 
-public class FiddlerCrabModel<T extends Entity> extends HierarchicalModel<T> {
-    private final ModelPart root;
+public class FiddlerCrabModel extends EntityModel<LivingEntityRenderState> {
     private final ModelPart claw_left_c_r1;
     private final ModelPart leg_left_fra;
     private final ModelPart leg_left_mia;
@@ -21,7 +20,7 @@ public class FiddlerCrabModel<T extends Entity> extends HierarchicalModel<T> {
     private final ModelPart leg_right_baa;
 
     public FiddlerCrabModel(ModelPart root) {
-        this.root = root;
+        super(root);
         ModelPart body_base = root.getChild("body_base");
         ModelPart claw_left_a = body_base.getChild("claw_left_a");
         ModelPart claw_left_c = claw_left_a.getChild("claw_left_c");
@@ -164,10 +163,10 @@ public class FiddlerCrabModel<T extends Entity> extends HierarchicalModel<T> {
     }
 
     @Override
-    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float age, float headYaw, float headPitch) {
-        root.getAllParts().forEach(ModelPart::resetPose);
+    public void setupAnim(LivingEntityRenderState state) {
+        super.setupAnim(state);
 
-        try (ModelAnimator.Cycle walk = ModelAnimator.cycle(limbSwing * 0.6f, limbSwingAmount)) {
+        try (ModelAnimator.Cycle walk = ModelAnimator.cycle(state.walkAnimationPos * 0.6f, state.walkAnimationSpeed)) {
             leg_right_fra.zRot += walk.eval(1.0f, 1.5f, 0.0f, 1.5f);
             leg_right_mia.zRot += walk.eval(1.0f, 1.5f, 0.4f, 1.5f);
             leg_right_baa.zRot += walk.eval(1.0f, 1.5f, 0.0f, 1.5f);
@@ -177,13 +176,8 @@ public class FiddlerCrabModel<T extends Entity> extends HierarchicalModel<T> {
             leg_left_baa.zRot -= walk.eval(1.0f, 1.5f, 0.4f, 1.5f);
         }
 
-        try (ModelAnimator.Cycle idle = ModelAnimator.cycle(age * 0.025f, 0.05f)) {
+        try (ModelAnimator.Cycle idle = ModelAnimator.cycle(state.ageInTicks * 0.025f, 0.05f)) {
             claw_left_c_r1.zRot += idle.eval(1.0f, 1.0f, 0.0f, -0.5f);
         }
-    }
-
-    @Override
-    public ModelPart root() {
-        return root;
     }
 }

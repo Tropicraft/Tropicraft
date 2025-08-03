@@ -1,18 +1,28 @@
 package net.tropicraft.core.common.item.scuba;
 
-public enum ScubaType {
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.equipment.ArmorMaterial;
+import net.tropicraft.Tropicraft;
+import net.tropicraft.core.common.item.TropicraftArmorMaterials;
 
-    YELLOW("yellow"),
-    PINK("pink"),
+public enum ScubaType {
+    YELLOW(TropicraftArmorMaterials.SCUBA_YELLOW, "yellow"),
+    PINK(TropicraftArmorMaterials.SCUBA_PINK, "pink"),
     ;
 
-    private final String textureName;
+    private final ArmorMaterial material;
+    private final ResourceLocation textureLocation;
 
-    ScubaType(String textureName) {
-        this.textureName = textureName;
+    ScubaType(ArmorMaterial material, String textureName) {
+        this.material = material;
+        textureLocation = Tropicraft.location("textures/models/armor/scuba_gear_" + textureName + ".png");
     }
 
-    public String getTextureName() {
-        return textureName;
+    public ArmorMaterial material() {
+        return material;
+    }
+
+    public ResourceLocation textureLocation() {
+        return textureLocation;
     }
 }

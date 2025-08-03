@@ -1,17 +1,17 @@
 package net.tropicraft.core.client.entity.model;
 
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.MeshTransformer;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.tropicraft.core.common.entity.underdasea.CuberaEntity;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 
-public class CuberaModel<T extends CuberaEntity> extends HierarchicalModel<T> {
-    private final ModelPart root;
+public class CuberaModel extends EntityModel<LivingEntityRenderState> {
     private final ModelPart fin_anal;
     private final ModelPart fin_pelvic_right_r1;
     private final ModelPart fin_pelvic_left_r1;
@@ -24,7 +24,7 @@ public class CuberaModel<T extends CuberaEntity> extends HierarchicalModel<T> {
     private final ModelPart fin_tail;
 
     public CuberaModel(ModelPart root) {
-        this.root = root;
+        super(root);
         fin_anal = root.getChild("fin_anal");
         ModelPart fin_pelvic_right = root.getChild("fin_pelvic_right");
         fin_pelvic_right_r1 = fin_pelvic_right.getChild("fin_pelvic_right_r1");
@@ -109,12 +109,14 @@ public class CuberaModel<T extends CuberaEntity> extends HierarchicalModel<T> {
                         .texOffs(17, 15).addBox(0.0f, -2.0f, -1.0f, 0.0f, 8.0f, 5.0f),
                 PartPose.offsetAndRotation(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f));
 
-        return LayerDefinition.create(mesh, 64, 64);
+        return LayerDefinition.create(mesh, 64, 64).apply(MeshTransformer.scaling(1.25f));
     }
 
     @Override
-    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float age, float headYaw, float headPitch) {
-        if (entity.isInWater()) {
+    public void setupAnim(LivingEntityRenderState state) {
+        super.setupAnim(state);
+
+        if (state.isInWater) {
             root.zRot = 0.0f;
             root.y = 20.0f;
         } else {
@@ -122,7 +124,7 @@ public class CuberaModel<T extends CuberaEntity> extends HierarchicalModel<T> {
             root.y = 22.0f;
         }
 
-        try (ModelAnimator.Cycle swim = ModelAnimator.cycle(limbSwing * 0.4f, limbSwingAmount)) {
+        try (ModelAnimator.Cycle swim = ModelAnimator.cycle(state.walkAnimationPos * 0.4f, state.walkAnimationSpeed)) {
             tail_base.yRot = swim.eval(1.0f, 1.0f, 0.0f, 0.0f);
             tail_main.yRot = swim.eval(1.0f, 1.0f, 0.25f, 0.0f);
             fin_tail.yRot = swim.eval(1.0f, 1.0f, 0.5f, 0.0f);
@@ -131,7 +133,7 @@ public class CuberaModel<T extends CuberaEntity> extends HierarchicalModel<T> {
             fin_anal.yRot = swim.eval(1.0f, 0.125f);
         }
 
-        try (ModelAnimator.Cycle idle = ModelAnimator.cycle(age * 0.05f, 0.1f)) {
+        try (ModelAnimator.Cycle idle = ModelAnimator.cycle(state.ageInTicks * 0.05f, 0.1f)) {
             root.y += idle.eval(0.5f, 2.0f);
 
             jaw_lower.xRot = -7.5f * ModelAnimator.DEG_TO_RAD - idle.eval(1.0f, 0.5f, 0.0f, 1.0f);
@@ -142,10 +144,5 @@ public class CuberaModel<T extends CuberaEntity> extends HierarchicalModel<T> {
             fin_pelvic_left_r1.zRot = idle.eval(0.5f, -1.0f, 0.2f, 0.0f);
             fin_pelvic_right_r1.zRot = idle.eval(0.5f, 1.0f, 0.2f, 0.0f);
         }
-    }
-
-    @Override
-    public ModelPart root() {
-        return root;
     }
 }

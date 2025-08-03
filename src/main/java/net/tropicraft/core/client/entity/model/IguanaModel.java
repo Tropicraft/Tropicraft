@@ -1,17 +1,16 @@
 package net.tropicraft.core.client.entity.model;
 
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
-import net.tropicraft.core.common.entity.neutral.IguanaEntity;
 
-public class IguanaModel extends HierarchicalModel<IguanaEntity> {
-    private final ModelPart root;
+public class IguanaModel extends EntityModel<LivingEntityRenderState> {
     private final ModelPart head;
     private final ModelPart headTop1;
     private final ModelPart headTop2;
@@ -26,7 +25,7 @@ public class IguanaModel extends HierarchicalModel<IguanaEntity> {
     private final ModelPart miscPart;
 
     public IguanaModel(ModelPart root) {
-        this.root = root;
+        super(root);
         head = root.getChild("head");
         headTop1 = root.getChild("headTop1");
         headTop2 = root.getChild("headTop2");
@@ -145,25 +144,27 @@ public class IguanaModel extends HierarchicalModel<IguanaEntity> {
     }
 
     @Override
-    public void setupAnim(IguanaEntity iguana, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        frontRightLeg.xRot = Mth.cos(limbSwing * 0.6662f) * 1.75f * limbSwingAmount;
-        frontLeftLeg.xRot = Mth.cos(limbSwing * 0.6662f + Mth.PI) * 1.75f * limbSwingAmount;
-        rearRightLeg.xRot = Mth.cos(limbSwing * 0.6662f + Mth.PI) * 1.75f * limbSwingAmount;
-        rearLeftLeg.xRot = Mth.cos(limbSwing * 0.6662f) * 1.75f * limbSwingAmount;
-        tailBase.yRot = Mth.cos(limbSwing * 0.6662f) * 0.25f * limbSwingAmount;
-        tailMid.setPos(0.0f - (Mth.cos(tailBase.yRot + Mth.HALF_PI) * 6), 21.5f, 12.0f + Mth.sin(tailBase.xRot + Mth.PI) * 6);
-        tailMid.yRot = tailBase.yRot + Mth.cos(limbSwing * 0.6662f) * 0.50f * limbSwingAmount;
-        miscPart.setPos(0.0f - (Mth.cos(tailMid.yRot + Mth.HALF_PI) * 6), 21.5f, 18.0f + Mth.sin(tailMid.xRot + Mth.PI) * 6);
-        miscPart.yRot = tailMid.yRot + Mth.cos(limbSwing * 0.6662f) * 0.75f * limbSwingAmount;
+    public void setupAnim(LivingEntityRenderState state) {
+        super.setupAnim(state);
 
-        ModelAnimator.look(head, netHeadYaw, headPitch);
-        ModelAnimator.look(jaw, netHeadYaw, headPitch);
-        ModelAnimator.look(headTop1, netHeadYaw, headPitch);
-        ModelAnimator.look(headTop2, netHeadYaw, headPitch);
-        ModelAnimator.look(dewLap, netHeadYaw, headPitch);
+        frontRightLeg.xRot = Mth.cos(state.walkAnimationPos * 0.6662f) * 1.75f * state.walkAnimationSpeed;
+        frontLeftLeg.xRot = Mth.cos(state.walkAnimationPos * 0.6662f + Mth.PI) * 1.75f * state.walkAnimationSpeed;
+        rearRightLeg.xRot = Mth.cos(state.walkAnimationPos * 0.6662f + Mth.PI) * 1.75f * state.walkAnimationSpeed;
+        rearLeftLeg.xRot = Mth.cos(state.walkAnimationPos * 0.6662f) * 1.75f * state.walkAnimationSpeed;
+        tailBase.yRot = Mth.cos(state.walkAnimationPos * 0.6662f) * 0.25f * state.walkAnimationSpeed;
+        tailMid.setPos(0.0f - (Mth.cos(tailBase.yRot + Mth.HALF_PI) * 6), 21.5f, 12.0f + Mth.sin(tailBase.xRot + Mth.PI) * 6);
+        tailMid.yRot = tailBase.yRot + Mth.cos(state.walkAnimationPos * 0.6662f) * 0.50f * state.walkAnimationSpeed;
+        miscPart.setPos(0.0f - (Mth.cos(tailMid.yRot + Mth.HALF_PI) * 6), 21.5f, 18.0f + Mth.sin(tailMid.xRot + Mth.PI) * 6);
+        miscPart.yRot = tailMid.yRot + Mth.cos(state.walkAnimationPos * 0.6662f) * 0.75f * state.walkAnimationSpeed;
+
+        ModelAnimator.look(head, state);
+        ModelAnimator.look(jaw, state);
+        ModelAnimator.look(headTop1, state);
+        ModelAnimator.look(headTop2, state);
+        ModelAnimator.look(dewLap, state);
 
         // Animate iguana tail ambiently
-        try (ModelAnimator.Cycle idle = ModelAnimator.cycle(ageInTicks * 0.025f, 0.1f)) {
+        try (ModelAnimator.Cycle idle = ModelAnimator.cycle(state.ageInTicks * 0.025f, 0.1f)) {
             tailBase.yRot += idle.eval(1.0f, 1.0f, 0.0f, 0.0f);
 
             // The positions need to be set to ensure the tail parts move in tandem
@@ -173,10 +174,5 @@ public class IguanaModel extends HierarchicalModel<IguanaEntity> {
             miscPart.setPos(0.0f - (Mth.cos(tailMid.yRot + Mth.HALF_PI) * 6), 21.5f, 18.0f + Mth.sin(tailMid.xRot + 3.14159f) * 6);
             miscPart.yRot += idle.eval(1.0f, 1.0f, 0.075f, 0.0f);
         }
-    }
-
-    @Override
-    public ModelPart root() {
-        return root;
     }
 }

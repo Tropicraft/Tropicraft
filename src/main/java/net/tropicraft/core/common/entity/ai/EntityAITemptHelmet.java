@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.entity.ai;
 
 import com.tterrag.registrate.util.entry.ItemEntry;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
@@ -91,7 +92,7 @@ public class EntityAITemptHelmet extends Goal {
             if (temptingPlayer == null) {
                 return false;
             } else {
-                return isTempting(temptingPlayer.getInventory().armor.get(3));
+                return isTempting(temptingPlayer.getItemBySlot(EquipmentSlot.HEAD));
                 //return this.isTempting(this.temptingPlayer.getHeldItemMainhand()) || this.isTempting(this.temptingPlayer.getHeldItemOffhand());
             }
         }
@@ -99,7 +100,7 @@ public class EntityAITemptHelmet extends Goal {
 
     protected boolean isTempting(ItemStack stack) {
         for (ItemEntry<? extends Item> items : temptItem) {
-            if (items.isBound() && items.get().asItem() == stack.getItem()) {
+            if (items.isBound() && stack.is(items.get())) {
                 return true;
             }
         }

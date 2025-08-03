@@ -2,18 +2,20 @@ package net.tropicraft.core.common.block;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.util.ARGB;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 public class BlockTropicraftSand extends FallingBlock {
     public static final MapCodec<BlockTropicraftSand> CODEC = simpleCodec(BlockTropicraftSand::new);
@@ -25,7 +27,7 @@ public class BlockTropicraftSand extends FallingBlock {
     public BlockTropicraftSand(Properties properties) {
         super(properties);
         registerDefaultState(defaultBlockState().setValue(UNDERWATER, false));
-        dustColor = defaultMapColor().col | 0xFF000000;
+        dustColor = ARGB.opaque(defaultMapColor().col);
     }
 
     @Override
@@ -45,19 +47,15 @@ public class BlockTropicraftSand extends FallingBlock {
     }
 
     @Override
-    @Deprecated
-    public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos pos2, boolean isMoving) {
-        FluidState upState = world.getFluidState(pos.above());
-        boolean underwater = upState.getType().isSame(Fluids.WATER);
-        if (underwater != state.getValue(UNDERWATER)) {
-            world.setBlock(pos, state.setValue(UNDERWATER, underwater), Block.UPDATE_CLIENTS);
+    protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess tickAccess, BlockPos pos, Direction neighborDirection, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
+        if (neighborDirection == Direction.UP) {
+            state = state.setValue(UNDERWATER, neighborState.getFluidState().is(FluidTags.WATER));
         }
-        super.neighborChanged(state, world, pos, block, pos2, isMoving);
+        return super.updateShape(state, level, tickAccess, pos, neighborDirection, neighborPos, neighborState, random);
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
-    public int getDustColor(BlockState state, BlockGetter reader, BlockPos pos) {
+    public int getDustColor(BlockState state, BlockGetter level, BlockPos pos) {
         return dustColor;
     }
 }

@@ -2,7 +2,7 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'java-library'
-    id 'net.neoforged.moddev' version '1.0.17'
+    id 'net.neoforged.moddev' version '2.0.103'
 }
 
 group = 'net.tropicraft'
@@ -44,10 +44,10 @@ neoForge {
         }
 
         data {
-            data()
+            clientData()
             def inputResourcesPath = file('src/main/resources/').getAbsolutePath()
             def generatedResourcesPath = file('src/generated/resources/').getAbsolutePath()
-            programArguments.addAll '--mod', project.mod_id, '--all', '--output', generatedResourcesPath, '--existing', inputResourcesPath, '--input', inputResourcesPath
+            programArguments.addAll '--mod', project.mod_id, '--all', '--output', generatedResourcesPath, '--existing', inputResourcesPath
         }
 
         configureEach {
@@ -69,17 +69,17 @@ sourceSets.main.resources {
 
 repositories {
     maven {
-        url = 'https://mvn.devos.one/snapshots/'
+        url = 'https://maven.gegy.dev/'
         content { includeGroup 'com.tterrag.registrate' }
     }
     mavenLocal()
 }
 
 dependencies {
-    jarJar(implementation("com.tterrag.registrate:Registrate:MC1.21-${registrate_version}")) {
+    jarJar(implementation("com.tterrag.registrate:Registrate-LT:MC1.21.8-${registrate_version}")) {
         version {
-            strictly "[MC1.21-${registrate_version},MC1.22)"
-            prefer "MC1.21-${registrate_version}"
+            strictly "[MC1.21.8-${registrate_version},MC1.22)"
+            prefer "MC1.21.8-${registrate_version}"
         }
     }
 }
@@ -105,6 +105,7 @@ neoForge.ideSyncTask generateModMetadata
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+    options.compilerArgs << "-Xmaxerrs" << "5000"
 }
 
 idea {
