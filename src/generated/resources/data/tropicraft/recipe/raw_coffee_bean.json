@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "tropicraft:coffee_berry"
-    }
+    "tropicraft:coffee_berry"
   ],
   "result": {
     "count": 1,

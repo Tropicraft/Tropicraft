@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "wooden_trapdoor",
   "key": {
-    "X": {
-      "item": "tropicraft:mahogany_planks"
-    }
+    "X": "tropicraft:mahogany_planks"
   },
   "pattern": [
     "XXX",

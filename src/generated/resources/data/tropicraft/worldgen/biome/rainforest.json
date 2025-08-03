@@ -1,14 +1,13 @@
 {
-  "carvers": {
-    "air": [
-      "tropicraft:cave",
-      "tropicraft:canyon"
-    ]
-  },
+  "carvers": [
+    "tropicraft:cave",
+    "tropicraft:canyon"
+  ],
   "creature_spawn_probability": 0.3,
   "downfall": 2.0,
   "effects": {
     "fog_color": 12248771,
+    "music_volume": 1.0,
     "sky_color": 7907327,
     "water_color": 5172447,
     "water_fog_color": 270131
@@ -61,7 +60,7 @@
       "tropicraft:trees_rainforest",
       "tropicraft:trees_papaya",
       "tropicraft:tropi_seagrass",
-      "tropicraft:seagrass",
+      "minecraft:seagrass_normal",
       "minecraft:patch_grass_jungle",
       "minecraft:bamboo_light",
       "minecraft:patch_melon",

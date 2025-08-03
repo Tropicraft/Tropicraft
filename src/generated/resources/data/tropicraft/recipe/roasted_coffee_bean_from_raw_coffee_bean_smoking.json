@@ -3,9 +3,7 @@
   "category": "food",
   "cookingtime": 100,
   "experience": 0.1,
-  "ingredient": {
-    "item": "tropicraft:raw_coffee_bean"
-  },
+  "ingredient": "tropicraft:raw_coffee_bean",
   "result": {
     "count": 1,
     "id": "tropicraft:roasted_coffee_bean"

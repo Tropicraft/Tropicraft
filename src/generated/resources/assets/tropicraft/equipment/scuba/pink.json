@@ -1,0 +1,9 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "tropicraft:textures/models/armor/scuba_gear_pink.png"
+      }
+    ]
+  }
+}

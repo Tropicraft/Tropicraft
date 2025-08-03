@@ -1,8 +1,9 @@
 {
-  "carvers": {},
+  "carvers": [],
   "downfall": 1.25,
   "effects": {
     "fog_color": 12638463,
+    "music_volume": 1.0,
     "sky_color": 7907327,
     "water_color": 5172447,
     "water_fog_color": 270131
@@ -52,7 +53,7 @@
       "tropicraft:flowers_tropics",
       "tropicraft:patch_iris",
       "tropicraft:tropi_seagrass",
-      "tropicraft:seagrass"
+      "minecraft:seagrass_normal"
     ]
   ],
   "has_precipitation": true,

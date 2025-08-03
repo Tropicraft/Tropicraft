@@ -1,0 +1,6 @@
+{
+  "parent": "tropicraft:item/template_face_item",
+  "textures": {
+    "layer0": "tropicraft:item/nigel_stache_equipped"
+  }
+}

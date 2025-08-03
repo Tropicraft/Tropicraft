@@ -3,9 +3,7 @@
   "category": "building",
   "group": "planks",
   "ingredients": [
-    {
-      "item": "tropicraft:stripped_mangrove_wood"
-    }
+    "tropicraft:stripped_mangrove_wood"
   ],
   "result": {
     "count": 4,

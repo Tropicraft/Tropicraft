@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "wooden_sign",
   "key": {
-    "#": {
-      "item": "tropicraft:palm_planks"
-    },
-    "|": {
-      "tag": "c:rods/wooden"
-    }
+    "#": "tropicraft:palm_planks",
+    "|": "#c:rods/wooden"
   },
   "pattern": [
     "###",

@@ -1,7 +1,6 @@
 {
   "parent": "minecraft:block/template_seagrass",
   "textures": {
-    "particle": "tropicraft:block/tall_eel_grass_top",
     "texture": "tropicraft:block/tall_eel_grass_top"
   }
 }

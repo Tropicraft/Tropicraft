@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "I": {
-      "item": "tropicraft:zircon_gem"
-    },
-    "X": {
-      "item": "tropicraft:bamboo_stick"
-    }
+    "I": "tropicraft:zircon_gem",
+    "X": "tropicraft:bamboo_stick"
   },
   "pattern": [
     "X  ",

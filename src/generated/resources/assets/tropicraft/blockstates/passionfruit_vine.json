@@ -12,16 +12,7 @@
     {
       "apply": {
         "model": "tropicraft:block/passionfruit_vine_0",
-        "y": 270
-      },
-      "when": {
-        "age": "0",
-        "west": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "tropicraft:block/passionfruit_vine_0",
+        "uvlock": true,
         "y": 90
       },
       "when": {
@@ -32,6 +23,7 @@
     {
       "apply": {
         "model": "tropicraft:block/passionfruit_vine_0",
+        "uvlock": true,
         "y": 180
       },
       "when": {
@@ -42,21 +34,34 @@
     {
       "apply": {
         "model": "tropicraft:block/passionfruit_vine_0",
-        "x": 90
+        "uvlock": true,
+        "y": 270
       },
       "when": {
         "age": "0",
-        "down": "true"
+        "west": "true"
       }
     },
     {
       "apply": {
         "model": "tropicraft:block/passionfruit_vine_0",
+        "uvlock": true,
         "x": 270
       },
       "when": {
         "age": "0",
         "up": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "tropicraft:block/passionfruit_vine_0",
+        "uvlock": true,
+        "x": 90
+      },
+      "when": {
+        "age": "0",
+        "down": "true"
       }
     },
     {
@@ -71,16 +76,7 @@
     {
       "apply": {
         "model": "tropicraft:block/passionfruit_vine_1",
-        "y": 270
-      },
-      "when": {
-        "age": "1",
-        "west": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "tropicraft:block/passionfruit_vine_1",
+        "uvlock": true,
         "y": 90
       },
       "when": {
@@ -91,6 +87,7 @@
     {
       "apply": {
         "model": "tropicraft:block/passionfruit_vine_1",
+        "uvlock": true,
         "y": 180
       },
       "when": {
@@ -101,21 +98,34 @@
     {
       "apply": {
         "model": "tropicraft:block/passionfruit_vine_1",
-        "x": 90
+        "uvlock": true,
+        "y": 270
       },
       "when": {
         "age": "1",
-        "down": "true"
+        "west": "true"
       }
     },
     {
       "apply": {
         "model": "tropicraft:block/passionfruit_vine_1",
+        "uvlock": true,
         "x": 270
       },
       "when": {
         "age": "1",
         "up": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "tropicraft:block/passionfruit_vine_1",
+        "uvlock": true,
+        "x": 90
+      },
+      "when": {
+        "age": "1",
+        "down": "true"
       }
     },
     {
@@ -130,16 +140,7 @@
     {
       "apply": {
         "model": "tropicraft:block/passionfruit_vine_2",
-        "y": 270
-      },
-      "when": {
-        "age": "2",
-        "west": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "tropicraft:block/passionfruit_vine_2",
+        "uvlock": true,
         "y": 90
       },
       "when": {
@@ -150,6 +151,7 @@
     {
       "apply": {
         "model": "tropicraft:block/passionfruit_vine_2",
+        "uvlock": true,
         "y": 180
       },
       "when": {
@@ -160,21 +162,34 @@
     {
       "apply": {
         "model": "tropicraft:block/passionfruit_vine_2",
-        "x": 90
+        "uvlock": true,
+        "y": 270
       },
       "when": {
         "age": "2",
-        "down": "true"
+        "west": "true"
       }
     },
     {
       "apply": {
         "model": "tropicraft:block/passionfruit_vine_2",
+        "uvlock": true,
         "x": 270
       },
       "when": {
         "age": "2",
         "up": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "tropicraft:block/passionfruit_vine_2",
+        "uvlock": true,
+        "x": 90
+      },
+      "when": {
+        "age": "2",
+        "down": "true"
       }
     }
   ]

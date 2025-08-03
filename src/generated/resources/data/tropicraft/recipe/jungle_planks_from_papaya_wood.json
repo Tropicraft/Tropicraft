@@ -3,9 +3,7 @@
   "category": "building",
   "group": "planks",
   "ingredients": [
-    {
-      "item": "tropicraft:papaya_wood"
-    }
+    "tropicraft:papaya_wood"
   ],
   "result": {
     "count": 4,

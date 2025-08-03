@@ -3,9 +3,7 @@
   "category": "building",
   "group": "wooden_slab",
   "key": {
-    "X": {
-      "item": "tropicraft:thatch_bundle"
-    }
+    "X": "tropicraft:thatch_bundle"
   },
   "pattern": [
     "XXX"

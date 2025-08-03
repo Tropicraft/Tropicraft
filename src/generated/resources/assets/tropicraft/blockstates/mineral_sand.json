@@ -6,34 +6,7 @@
       },
       {
         "model": "tropicraft:block/mineral_sand",
-        "y": 90
-      },
-      {
-        "model": "tropicraft:block/mineral_sand",
-        "y": 180
-      },
-      {
-        "model": "tropicraft:block/mineral_sand",
-        "y": 270
-      },
-      {
-        "model": "tropicraft:block/mineral_sand",
         "x": 90
-      },
-      {
-        "model": "tropicraft:block/mineral_sand",
-        "x": 90,
-        "y": 90
-      },
-      {
-        "model": "tropicraft:block/mineral_sand",
-        "x": 90,
-        "y": 180
-      },
-      {
-        "model": "tropicraft:block/mineral_sand",
-        "x": 90,
-        "y": 270
       },
       {
         "model": "tropicraft:block/mineral_sand",
@@ -41,32 +14,59 @@
       },
       {
         "model": "tropicraft:block/mineral_sand",
-        "x": 180,
+        "x": 270
+      },
+      {
+        "model": "tropicraft:block/mineral_sand",
+        "y": 90
+      },
+      {
+        "model": "tropicraft:block/mineral_sand",
+        "x": 90,
         "y": 90
       },
       {
         "model": "tropicraft:block/mineral_sand",
         "x": 180,
+        "y": 90
+      },
+      {
+        "model": "tropicraft:block/mineral_sand",
+        "x": 270,
+        "y": 90
+      },
+      {
+        "model": "tropicraft:block/mineral_sand",
         "y": 180
+      },
+      {
+        "model": "tropicraft:block/mineral_sand",
+        "x": 90,
+        "y": 180
+      },
+      {
+        "model": "tropicraft:block/mineral_sand",
+        "x": 180,
+        "y": 180
+      },
+      {
+        "model": "tropicraft:block/mineral_sand",
+        "x": 270,
+        "y": 180
+      },
+      {
+        "model": "tropicraft:block/mineral_sand",
+        "y": 270
+      },
+      {
+        "model": "tropicraft:block/mineral_sand",
+        "x": 90,
+        "y": 270
       },
       {
         "model": "tropicraft:block/mineral_sand",
         "x": 180,
         "y": 270
-      },
-      {
-        "model": "tropicraft:block/mineral_sand",
-        "x": 270
-      },
-      {
-        "model": "tropicraft:block/mineral_sand",
-        "x": 270,
-        "y": 90
-      },
-      {
-        "model": "tropicraft:block/mineral_sand",
-        "x": 270,
-        "y": 180
       },
       {
         "model": "tropicraft:block/mineral_sand",

@@ -18,7 +18,7 @@
         "y": 270
       },
       "when": {
-        "type": "tall|tall_post|tall_post_front|tall_post_back|tall_post_front_back",
+        "type": "tall|tall_post|tall_post_back|tall_post_front|tall_post_front_back",
         "axis": "x"
       }
     },
@@ -60,7 +60,7 @@
         "uvlock": true
       },
       "when": {
-        "type": "tall|tall_post|tall_post_front|tall_post_back|tall_post_front_back",
+        "type": "tall|tall_post|tall_post_back|tall_post_front|tall_post_front_back",
         "axis": "z"
       }
     },
@@ -98,7 +98,7 @@
         "model": "tropicraft:block/mahogany_boardwalk_tall_post"
       },
       "when": {
-        "type": "tall_post|tall_post_front|tall_post_back|tall_post_front_back"
+        "type": "tall_post|tall_post_back|tall_post_front|tall_post_front_back"
       }
     }
   ]

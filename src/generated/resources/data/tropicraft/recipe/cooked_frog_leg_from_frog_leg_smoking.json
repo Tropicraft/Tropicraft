@@ -3,9 +3,7 @@
   "category": "food",
   "cookingtime": 100,
   "experience": 0.1,
-  "ingredient": {
-    "item": "tropicraft:frog_leg"
-  },
+  "ingredient": "tropicraft:frog_leg",
   "result": {
     "count": 1,
     "id": "tropicraft:cooked_frog_leg"

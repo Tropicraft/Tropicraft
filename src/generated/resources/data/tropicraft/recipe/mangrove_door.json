@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "wooden_door",
   "key": {
-    "X": {
-      "item": "tropicraft:mangrove_planks"
-    }
+    "X": "tropicraft:mangrove_planks"
   },
   "pattern": [
     "XX",

@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "X": {
-      "item": "tropicraft:eudialyte_gem"
-    }
+    "X": "tropicraft:eudialyte_gem"
   },
   "pattern": [
     "XXX",

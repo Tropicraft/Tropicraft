@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "tropicraft:chairs",
   "key": {
-    "B": {
-      "item": "tropicraft:bamboo_stick"
-    },
-    "W": {
-      "item": "minecraft:brown_wool"
-    }
+    "B": "tropicraft:bamboo_stick",
+    "W": "minecraft:brown_wool"
   },
   "pattern": [
     "BWB",

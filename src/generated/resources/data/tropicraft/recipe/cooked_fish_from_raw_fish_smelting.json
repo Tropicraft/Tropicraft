@@ -3,9 +3,7 @@
   "category": "food",
   "cookingtime": 200,
   "experience": 0.1,
-  "ingredient": {
-    "item": "tropicraft:raw_fish"
-  },
+  "ingredient": "tropicraft:raw_fish",
   "result": {
     "count": 1,
     "id": "tropicraft:cooked_fish"

@@ -1,8 +1,7 @@
 {
   "parent": "tropicraft:block/water_lily_with_flower",
   "textures": {
-    "flower": "tropicraft:block/flowering_lily_pad",
-    "particle": "minecraft:block/lily_pad",
+    "plant": "tropicraft:block/flowering_lily_pad",
     "texture": "minecraft:block/lily_pad"
   }
 }

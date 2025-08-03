@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "tropicraft:scale"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "tropicraft:scale"
+      }
+    ]
+  }
+}

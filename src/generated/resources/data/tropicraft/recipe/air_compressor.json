@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "X": {
-      "item": "tropicraft:chunk"
-    },
-    "Y": {
-      "item": "tropicraft:azurite_gem"
-    }
+    "X": "tropicraft:chunk",
+    "Y": "tropicraft:azurite_gem"
   },
   "pattern": [
     "XXX",

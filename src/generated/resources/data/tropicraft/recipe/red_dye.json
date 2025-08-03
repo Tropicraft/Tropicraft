@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "tropicraft:red_anthurium"
-    }
+    "tropicraft:red_anthurium"
   ],
   "result": {
     "count": 2,

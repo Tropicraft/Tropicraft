@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "wooden_door",
   "key": {
-    "X": {
-      "item": "tropicraft:bamboo_bundle"
-    }
+    "X": "tropicraft:bamboo_bundle"
   },
   "pattern": [
     "XX",

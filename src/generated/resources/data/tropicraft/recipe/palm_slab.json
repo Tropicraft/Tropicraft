@@ -3,9 +3,7 @@
   "category": "building",
   "group": "wooden_slab",
   "key": {
-    "X": {
-      "item": "tropicraft:palm_planks"
-    }
+    "X": "tropicraft:palm_planks"
   },
   "pattern": [
     "XXX"

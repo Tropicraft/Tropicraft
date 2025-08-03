@@ -4,12 +4,8 @@
   "group": "planks",
   "ingredients": [
     [
-      {
-        "item": "tropicraft:mahogany_log"
-      },
-      {
-        "item": "tropicraft:mohogany_wood"
-      }
+      "tropicraft:mahogany_log",
+      "tropicraft:mohogany_wood"
     ]
   ],
   "result": {

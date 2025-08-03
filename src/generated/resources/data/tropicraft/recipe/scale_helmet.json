@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "X": {
-      "item": "tropicraft:scale"
-    }
+    "X": "tropicraft:scale"
   },
   "pattern": [
     "XXX",

@@ -3,9 +3,7 @@
   "category": "food",
   "cookingtime": 600,
   "experience": 0.1,
-  "ingredient": {
-    "item": "minecraft:seagrass"
-  },
+  "ingredient": "minecraft:seagrass",
   "result": {
     "count": 1,
     "id": "tropicraft:toasted_nori"

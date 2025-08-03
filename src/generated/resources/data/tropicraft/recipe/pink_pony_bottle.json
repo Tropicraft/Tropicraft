@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "X": {
-      "item": "minecraft:pink_stained_glass_pane"
-    },
-    "Y": {
-      "item": "minecraft:lever"
-    }
+    "X": "minecraft:pink_stained_glass_pane",
+    "Y": "minecraft:lever"
   },
   "pattern": [
     "Y",

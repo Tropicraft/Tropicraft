@@ -3,9 +3,7 @@
   "category": "food",
   "cookingtime": 200,
   "experience": 0.15,
-  "ingredient": {
-    "item": "tropicraft:raw_ray"
-  },
+  "ingredient": "tropicraft:raw_ray",
   "result": {
     "count": 1,
     "id": "tropicraft:cooked_ray"

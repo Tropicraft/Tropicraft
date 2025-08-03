@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "wooden_fence_gate",
   "key": {
-    "#": {
-      "tag": "c:rods/wooden"
-    },
-    "W": {
-      "item": "tropicraft:bamboo_bundle"
-    }
+    "#": "#c:rods/wooden",
+    "W": "tropicraft:bamboo_bundle"
   },
   "pattern": [
     "#W#",

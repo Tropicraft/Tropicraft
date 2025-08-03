@@ -1,0 +1,14 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "on_false": {
+      "type": "minecraft:model",
+      "model": "tropicraft:item/bamboo_spear"
+    },
+    "on_true": {
+      "type": "minecraft:model",
+      "model": "tropicraft:item/bamboo_spear_throwing"
+    },
+    "property": "minecraft:using_item"
+  }
+}

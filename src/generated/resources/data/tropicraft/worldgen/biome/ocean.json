@@ -1,8 +1,9 @@
 {
-  "carvers": {},
+  "carvers": [],
   "downfall": 1.25,
   "effects": {
     "fog_color": 12638463,
+    "music_volume": 1.0,
     "sky_color": 7907327,
     "water_color": 5172447,
     "water_fog_color": 270131
@@ -54,10 +55,7 @@
       "tropicraft:tropi_seagrass",
       "minecraft:warm_ocean_vegetation",
       "minecraft:seagrass_warm",
-      "tropicraft:underground_seagrass_on_stone",
-      "tropicraft:underground_seagrass_on_dirt",
-      "minecraft:sea_pickle",
-      "tropicraft:underground_sea_pickles"
+      "minecraft:sea_pickle"
     ]
   ],
   "has_precipitation": true,

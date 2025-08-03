@@ -3,9 +3,7 @@
   "category": "building",
   "group": "wooden_slab",
   "key": {
-    "X": {
-      "item": "tropicraft:mahogany_planks"
-    }
+    "X": "tropicraft:mahogany_planks"
   },
   "pattern": [
     "XXX"

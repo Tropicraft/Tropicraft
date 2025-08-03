@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/template_torch",
+  "parent": "tropicraft:block/template_tall_torch",
   "textures": {
     "torch": "tropicraft:block/tiki_torch_lower"
   }

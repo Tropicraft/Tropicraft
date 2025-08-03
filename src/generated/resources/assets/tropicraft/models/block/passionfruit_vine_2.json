@@ -1,6 +1,7 @@
 {
-  "parent": "tropicraft:block/vines",
+  "parent": "minecraft:block/vine",
   "textures": {
-    "texture": "tropicraft:block/passionfruit_vine_2"
+    "particle": "tropicraft:block/passionfruit_vine_2",
+    "vine": "tropicraft:block/passionfruit_vine_2"
   }
 }

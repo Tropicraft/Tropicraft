@@ -3,9 +3,7 @@
   "category": "building",
   "group": "bark",
   "key": {
-    "#": {
-      "item": "tropicraft:palm_log"
-    }
+    "#": "tropicraft:palm_log"
   },
   "pattern": [
     "##",

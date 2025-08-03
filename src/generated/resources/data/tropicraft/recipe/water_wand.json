@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "X": {
-      "item": "tropicraft:azurite_gem"
-    },
-    "Y": {
-      "item": "minecraft:gold_ingot"
-    }
+    "X": "tropicraft:azurite_gem",
+    "Y": "minecraft:gold_ingot"
   },
   "pattern": [
     "  X",

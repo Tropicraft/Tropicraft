@@ -3,9 +3,7 @@
   "category": "building",
   "group": "planks",
   "ingredients": [
-    {
-      "item": "tropicraft:stripped_mangrove_log"
-    }
+    "tropicraft:stripped_mangrove_log"
   ],
   "result": {
     "count": 4,

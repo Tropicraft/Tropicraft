@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "tropicraft:beach_floats",
   "key": {
-    "B": {
-      "item": "minecraft:bamboo"
-    },
-    "W": {
-      "item": "minecraft:pink_wool"
-    }
+    "B": "minecraft:bamboo",
+    "W": "minecraft:pink_wool"
   },
   "pattern": [
     "WWW",

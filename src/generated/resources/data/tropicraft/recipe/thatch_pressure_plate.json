@@ -3,9 +3,7 @@
   "category": "redstone",
   "group": "wooden_pressure_plate",
   "key": {
-    "#": {
-      "item": "tropicraft:thatch_bundle"
-    }
+    "#": "tropicraft:thatch_bundle"
   },
   "pattern": [
     "##"

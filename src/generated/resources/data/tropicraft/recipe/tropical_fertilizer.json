@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "tropicraft:magic_mushroom"
-    },
-    {
-      "item": "tropicraft:croton"
-    }
+    "tropicraft:magic_mushroom",
+    "tropicraft:croton"
   ],
   "result": {
     "count": 1,

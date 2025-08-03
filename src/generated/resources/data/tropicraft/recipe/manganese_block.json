@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "X": {
-      "item": "tropicraft:manganese_ingot"
-    }
+    "X": "tropicraft:manganese_ingot"
   },
   "pattern": [
     "XXX",

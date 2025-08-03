@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "X": {
-      "item": "minecraft:bamboo"
-    },
-    "Y": {
-      "item": "minecraft:leather"
-    }
+    "X": "minecraft:bamboo",
+    "Y": "minecraft:leather"
   },
   "pattern": [
     "XXX",

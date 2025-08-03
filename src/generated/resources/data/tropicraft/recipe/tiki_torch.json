@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "X": {
-      "item": "tropicraft:bamboo_stick"
-    },
-    "Y": {
-      "tag": "minecraft:coals"
-    }
+    "X": "tropicraft:bamboo_stick",
+    "Y": "#minecraft:coals"
   },
   "pattern": [
     "Y",

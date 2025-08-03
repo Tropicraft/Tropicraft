@@ -1,3 +1,6 @@
 {
-  "parent": "minecraft:item/template_spawn_egg"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "tropicraft:item/shoebill_stork_spawn_egg"
+  }
 }
