@@ -1,5 +1,5 @@
 {
-  "parent": "tropicraft:block/jigarbov_wall_torch",
+  "parent": "tropicraft:block/jigarbov_wall_torch_unlit",
   "textures": {
     "jigarbov": "tropicraft:block/jigarbov/spruce",
     "torch": "minecraft:block/redstone_torch_off"

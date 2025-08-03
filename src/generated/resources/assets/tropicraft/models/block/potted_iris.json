@@ -1,7 +1,6 @@
 {
   "parent": "minecraft:block/flower_pot_cross",
   "textures": {
-    "dirt": "minecraft:block/dirt",
     "flowerpot": "minecraft:block/flower_pot",
     "particle": "tropicraft:block/bamboo_side",
     "plant": "tropicraft:block/iris_top"

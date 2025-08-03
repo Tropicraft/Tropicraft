@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "X": {
-      "item": "minecraft:glass_pane"
-    },
-    "Y": {
-      "item": "tropicraft:zircon_gem"
-    },
-    "Z": {
-      "item": "minecraft:yellow_dye"
-    }
+    "X": "minecraft:glass_pane",
+    "Y": "tropicraft:zircon_gem",
+    "Z": "minecraft:yellow_dye"
   },
   "pattern": [
     "YYY",

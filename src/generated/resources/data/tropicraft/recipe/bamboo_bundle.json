@@ -2,33 +2,15 @@
   "type": "minecraft:crafting_shapeless",
   "category": "building",
   "ingredients": [
-    {
-      "item": "tropicraft:bamboo_stick"
-    },
-    {
-      "item": "tropicraft:bamboo_stick"
-    },
-    {
-      "item": "tropicraft:bamboo_stick"
-    },
-    {
-      "item": "tropicraft:bamboo_stick"
-    },
-    {
-      "item": "tropicraft:bamboo_stick"
-    },
-    {
-      "item": "tropicraft:bamboo_stick"
-    },
-    {
-      "item": "tropicraft:bamboo_stick"
-    },
-    {
-      "item": "tropicraft:bamboo_stick"
-    },
-    {
-      "item": "tropicraft:bamboo_stick"
-    }
+    "tropicraft:bamboo_stick",
+    "tropicraft:bamboo_stick",
+    "tropicraft:bamboo_stick",
+    "tropicraft:bamboo_stick",
+    "tropicraft:bamboo_stick",
+    "tropicraft:bamboo_stick",
+    "tropicraft:bamboo_stick",
+    "tropicraft:bamboo_stick",
+    "tropicraft:bamboo_stick"
   ],
   "result": {
     "count": 2,

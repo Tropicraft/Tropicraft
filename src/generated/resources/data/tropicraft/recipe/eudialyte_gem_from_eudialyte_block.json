@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "building",
   "ingredients": [
-    {
-      "item": "tropicraft:eudialyte_block"
-    }
+    "tropicraft:eudialyte_block"
   ],
   "result": {
     "count": 9,

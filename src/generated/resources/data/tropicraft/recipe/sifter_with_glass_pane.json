@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "tropicraft:sifter",
   "key": {
-    "I": {
-      "tag": "c:glass_panes"
-    },
-    "X": {
-      "tag": "minecraft:planks"
-    }
+    "I": "#c:glass_panes",
+    "X": "#minecraft:planks"
   },
   "pattern": [
     "XXX",

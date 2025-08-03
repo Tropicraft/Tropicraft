@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "tropicraft:bongos",
   "key": {
-    "B": {
-      "item": "tropicraft:mahogany_planks"
-    },
-    "T": {
-      "item": "tropicraft:iguana_leather"
-    }
+    "B": "tropicraft:mahogany_planks",
+    "T": "tropicraft:iguana_leather"
   },
   "pattern": [
     "TT",

@@ -1,6 +1,7 @@
 {
   "ambient_light": 0.0,
   "bed_works": true,
+  "cloud_height": 256,
   "coordinate_scale": 1.0,
   "effects": "tropicraft:tropics",
   "has_ceiling": false,

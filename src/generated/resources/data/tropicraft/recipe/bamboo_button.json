@@ -3,9 +3,7 @@
   "category": "redstone",
   "group": "wooden_button",
   "ingredients": [
-    {
-      "item": "tropicraft:bamboo_bundle"
-    }
+    "tropicraft:bamboo_bundle"
   ],
   "result": {
     "count": 1,

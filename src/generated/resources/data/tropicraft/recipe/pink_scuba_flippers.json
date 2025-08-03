@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "X": {
-      "item": "minecraft:pink_dye"
-    },
-    "Y": {
-      "item": "tropicraft:zircon_gem"
-    }
+    "X": "minecraft:pink_dye",
+    "Y": "tropicraft:zircon_gem"
   },
   "pattern": [
     "XX",

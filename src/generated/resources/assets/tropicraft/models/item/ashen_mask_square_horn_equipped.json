@@ -1,0 +1,7 @@
+{
+  "parent": "tropicraft:item/equipped_ashen_mask",
+  "textures": {
+    "back": "tropicraft:item/ashen_mask/equipped/square_horn_back",
+    "layer0": "tropicraft:item/ashen_mask/equipped/square_horn"
+  }
+}

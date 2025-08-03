@@ -1,7 +1,6 @@
 {
   "parent": "minecraft:block/potted_dandelion",
   "textures": {
-    "dirt": "minecraft:block/dirt",
     "flowerpot": "tropicraft:block/bamboo_flower_pot",
     "particle": "tropicraft:block/bamboo_side"
   }

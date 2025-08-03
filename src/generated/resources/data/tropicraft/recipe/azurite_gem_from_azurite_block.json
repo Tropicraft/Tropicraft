@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "building",
   "ingredients": [
-    {
-      "item": "tropicraft:azurite_block"
-    }
+    "tropicraft:azurite_block"
   ],
   "result": {
     "count": 9,

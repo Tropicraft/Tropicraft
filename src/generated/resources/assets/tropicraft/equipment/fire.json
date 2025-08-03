@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "tropicraft:fire"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "tropicraft:fire"
+      }
+    ]
+  }
+}

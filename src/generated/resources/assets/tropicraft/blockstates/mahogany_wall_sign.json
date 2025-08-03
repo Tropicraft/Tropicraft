@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "tropicraft:block/mahogany_sign"
+      "model": "tropicraft:block/mahogany_wall_sign"
     }
   }
 }

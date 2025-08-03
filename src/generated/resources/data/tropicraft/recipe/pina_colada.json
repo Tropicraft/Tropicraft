@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "tropicraft:bamboo_mug"
-    },
-    {
-      "item": "tropicraft:coconut_chunk"
-    },
-    {
-      "item": "tropicraft:pineapple_cubes"
-    }
+    "tropicraft:bamboo_mug",
+    "tropicraft:coconut_chunk",
+    "tropicraft:pineapple_cubes"
   ],
   "result": {
     "components": {

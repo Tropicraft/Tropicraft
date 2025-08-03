@@ -1,15 +1,14 @@
 {
-  "carvers": {
-    "air": [
-      "tropicraft:cave",
-      "tropicraft:canyon"
-    ]
-  },
+  "carvers": [
+    "tropicraft:cave",
+    "tropicraft:canyon"
+  ],
   "creature_spawn_probability": 0.3,
   "downfall": 1.5,
   "effects": {
     "fog_color": 12248771,
     "grass_color": 7320092,
+    "music_volume": 1.0,
     "sky_color": 7907327,
     "water_color": 6734231,
     "water_fog_color": 800034

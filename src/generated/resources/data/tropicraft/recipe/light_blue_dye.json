@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "tropicraft:commelina_diffusa"
-    }
+    "tropicraft:commelina_diffusa"
   ],
   "result": {
     "count": 2,

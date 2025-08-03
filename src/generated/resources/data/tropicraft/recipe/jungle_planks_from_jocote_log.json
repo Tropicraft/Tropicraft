@@ -3,9 +3,7 @@
   "category": "building",
   "group": "planks",
   "ingredients": [
-    {
-      "item": "tropicraft:jocote_log"
-    }
+    "tropicraft:jocote_log"
   ],
   "result": {
     "count": 4,

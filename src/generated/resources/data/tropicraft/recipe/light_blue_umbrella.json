@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "tropicraft:umbrellas",
   "key": {
-    "B": {
-      "item": "tropicraft:bamboo_stick"
-    },
-    "W": {
-      "item": "minecraft:light_blue_wool"
-    }
+    "B": "tropicraft:bamboo_stick",
+    "W": "minecraft:light_blue_wool"
   },
   "pattern": [
     "WWW",

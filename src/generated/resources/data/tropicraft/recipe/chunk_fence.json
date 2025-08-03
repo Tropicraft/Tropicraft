@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "wooden_fence",
   "key": {
-    "#": {
-      "tag": "c:rods/wooden"
-    },
-    "W": {
-      "item": "tropicraft:chunk"
-    }
+    "#": "#c:rods/wooden",
+    "W": "tropicraft:chunk"
   },
   "pattern": [
     "W#W",

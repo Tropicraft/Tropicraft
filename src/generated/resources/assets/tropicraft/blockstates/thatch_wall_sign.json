@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "tropicraft:block/thatch_sign"
+      "model": "tropicraft:block/thatch_wall_sign"
     }
   }
 }

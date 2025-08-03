@@ -1,13 +1,5 @@
 {
   "parent": "tropicraft:item/spear",
-  "overrides": [
-    {
-      "model": "tropicraft:item/bamboo_spear_throwing",
-      "predicate": {
-        "minecraft:throwing": 1.0
-      }
-    }
-  ],
   "textures": {
     "layer0": "tropicraft:item/bamboo_spear"
   }

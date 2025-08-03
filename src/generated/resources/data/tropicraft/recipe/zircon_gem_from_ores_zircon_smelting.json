@@ -3,9 +3,7 @@
   "category": "misc",
   "cookingtime": 200,
   "experience": 0.5,
-  "ingredient": {
-    "tag": "c:ores/zircon"
-  },
+  "ingredient": "#c:ores/zircon",
   "result": {
     "count": 1,
     "id": "tropicraft:zircon_gem"

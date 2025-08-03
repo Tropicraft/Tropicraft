@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "building",
   "ingredients": [
-    {
-      "item": "tropicraft:manganese_block"
-    }
+    "tropicraft:manganese_block"
   ],
   "result": {
     "count": 9,

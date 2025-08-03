@@ -1,20 +1,10 @@
 {
-  "multipart": [
-    {
-      "apply": {
-        "model": "tropicraft:block/flowering_tall_eel_grass_top"
-      },
-      "when": {
-        "half": "upper"
-      }
+  "variants": {
+    "half=lower": {
+      "model": "tropicraft:block/flowering_tall_eel_grass_bottom"
     },
-    {
-      "apply": {
-        "model": "tropicraft:block/flowering_tall_eel_grass_bottom"
-      },
-      "when": {
-        "half": "lower"
-      }
+    "half=upper": {
+      "model": "tropicraft:block/flowering_tall_eel_grass_top"
     }
-  ]
+  }
 }

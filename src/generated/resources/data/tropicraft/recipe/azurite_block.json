@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "X": {
-      "item": "tropicraft:azurite_gem"
-    }
+    "X": "tropicraft:azurite_gem"
   },
   "pattern": [
     "XXX",

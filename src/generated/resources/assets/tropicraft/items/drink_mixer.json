@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "tropicraft:item/drink_mixer",
+    "model": {
+      "type": "tropicraft:drink_mixer"
+    }
+  }
+}

@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "X": {
-      "item": "tropicraft:zirconium_gem"
-    }
+    "X": "tropicraft:zirconium_gem"
   },
   "pattern": [
     "XXX",

@@ -1,0 +1,19 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "tropicraft:item/ashen_mask_screw_attack_equipped"
+        },
+        "when": "head"
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "tropicraft:item/ashen_mask_screw_attack"
+    },
+    "property": "minecraft:display_context"
+  }
+}

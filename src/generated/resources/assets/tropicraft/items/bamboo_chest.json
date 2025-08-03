@@ -1,0 +1,10 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "tropicraft:item/bamboo_chest",
+    "model": {
+      "type": "minecraft:chest",
+      "texture": "tropicraft:bamboo"
+    }
+  }
+}

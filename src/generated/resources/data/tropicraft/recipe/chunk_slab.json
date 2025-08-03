@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "X": {
-      "item": "tropicraft:chunk"
-    }
+    "X": "tropicraft:chunk"
   },
   "pattern": [
     "XXX"

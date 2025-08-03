@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "X": {
-      "item": "tropicraft:purified_sand"
-    }
+    "X": "tropicraft:purified_sand"
   },
   "pattern": [
     "XX",

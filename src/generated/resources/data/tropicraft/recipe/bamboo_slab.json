@@ -3,9 +3,7 @@
   "category": "building",
   "group": "wooden_slab",
   "key": {
-    "X": {
-      "item": "tropicraft:bamboo_bundle"
-    }
+    "X": "tropicraft:bamboo_bundle"
   },
   "pattern": [
     "XXX"

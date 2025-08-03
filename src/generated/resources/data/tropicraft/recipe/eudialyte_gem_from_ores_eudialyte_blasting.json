@@ -3,9 +3,7 @@
   "category": "misc",
   "cookingtime": 100,
   "experience": 0.5,
-  "ingredient": {
-    "tag": "c:ores/eudialyte"
-  },
+  "ingredient": "#c:ores/eudialyte",
   "result": {
     "count": 1,
     "id": "tropicraft:eudialyte_gem"

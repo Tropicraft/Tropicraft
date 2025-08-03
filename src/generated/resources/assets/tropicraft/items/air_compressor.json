@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "tropicraft:item/air_compressor",
+    "model": {
+      "type": "tropicraft:air_compressor"
+    }
+  }
+}

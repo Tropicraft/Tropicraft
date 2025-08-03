@@ -5,7 +5,6 @@
       "Name": "tropicraft:kapok_leaves",
       "Properties": {
         "distance": "1",
-        "new_decay": "true",
         "persistent": "false",
         "waterlogged": "false"
       }

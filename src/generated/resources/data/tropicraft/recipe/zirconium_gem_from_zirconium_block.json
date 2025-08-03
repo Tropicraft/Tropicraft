@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "building",
   "ingredients": [
-    {
-      "item": "tropicraft:zirconium_block"
-    }
+    "tropicraft:zirconium_block"
   ],
   "result": {
     "count": 9,

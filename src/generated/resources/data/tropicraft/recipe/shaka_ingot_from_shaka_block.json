@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "building",
   "ingredients": [
-    {
-      "item": "tropicraft:shaka_block"
-    }
+    "tropicraft:shaka_block"
   ],
   "result": {
     "count": 9,

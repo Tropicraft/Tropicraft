@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "tropicraft:orange_anthurium"
-    }
+    "tropicraft:orange_anthurium"
   ],
   "result": {
     "count": 2,

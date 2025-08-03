@@ -3,9 +3,7 @@
   "category": "misc",
   "cookingtime": 100,
   "experience": 0.5,
-  "ingredient": {
-    "tag": "c:ores/shaka"
-  },
+  "ingredient": "#c:ores/shaka",
   "result": {
     "count": 1,
     "id": "tropicraft:shaka_ingot"

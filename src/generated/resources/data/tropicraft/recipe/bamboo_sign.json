@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "wooden_sign",
   "key": {
-    "#": {
-      "item": "tropicraft:bamboo_bundle"
-    },
-    "|": {
-      "tag": "c:rods/wooden"
-    }
+    "#": "tropicraft:bamboo_bundle",
+    "|": "#c:rods/wooden"
   },
   "pattern": [
     "###",

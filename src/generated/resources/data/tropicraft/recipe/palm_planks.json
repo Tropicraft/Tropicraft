@@ -4,12 +4,8 @@
   "group": "planks",
   "ingredients": [
     [
-      {
-        "item": "tropicraft:palm_log"
-      },
-      {
-        "item": "tropicraft:palm_wood"
-      }
+      "tropicraft:palm_log",
+      "tropicraft:palm_wood"
     ]
   ],
   "result": {

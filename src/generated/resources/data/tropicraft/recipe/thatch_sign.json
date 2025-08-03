@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "wooden_sign",
   "key": {
-    "#": {
-      "item": "tropicraft:thatch_bundle"
-    },
-    "|": {
-      "tag": "c:rods/wooden"
-    }
+    "#": "tropicraft:thatch_bundle",
+    "|": "#c:rods/wooden"
   },
   "pattern": [
     "###",

@@ -3,9 +3,7 @@
   "category": "building",
   "group": "bark",
   "key": {
-    "#": {
-      "item": "tropicraft:red_mangrove_log"
-    }
+    "#": "tropicraft:red_mangrove_log"
   },
   "pattern": [
     "##",

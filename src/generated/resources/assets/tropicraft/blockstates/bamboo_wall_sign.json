@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "tropicraft:block/bamboo_sign"
+      "model": "tropicraft:block/bamboo_wall_sign"
     }
   }
 }

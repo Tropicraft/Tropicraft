@@ -3,9 +3,7 @@
   "category": "food",
   "cookingtime": 200,
   "experience": 0.15,
-  "ingredient": {
-    "item": "tropicraft:fresh_marlin"
-  },
+  "ingredient": "tropicraft:fresh_marlin",
   "result": {
     "count": 1,
     "id": "tropicraft:seared_marlin"

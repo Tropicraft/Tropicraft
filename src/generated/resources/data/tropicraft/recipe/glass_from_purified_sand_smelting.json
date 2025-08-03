@@ -3,9 +3,7 @@
   "category": "blocks",
   "cookingtime": 200,
   "experience": 0.3,
-  "ingredient": {
-    "item": "tropicraft:purified_sand"
-  },
+  "ingredient": "tropicraft:purified_sand",
   "result": {
     "count": 1,
     "id": "minecraft:glass"

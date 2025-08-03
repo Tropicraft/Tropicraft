@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "wooden_fence_gate",
   "key": {
-    "#": {
-      "tag": "c:rods/wooden"
-    },
-    "W": {
-      "item": "tropicraft:mangrove_planks"
-    }
+    "#": "#c:rods/wooden",
+    "W": "tropicraft:mangrove_planks"
   },
   "pattern": [
     "#W#",

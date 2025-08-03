@@ -3,9 +3,7 @@
   "category": "building",
   "group": "wooden_stairs",
   "key": {
-    "X": {
-      "item": "tropicraft:mahogany_planks"
-    }
+    "X": "tropicraft:mahogany_planks"
   },
   "pattern": [
     "X  ",

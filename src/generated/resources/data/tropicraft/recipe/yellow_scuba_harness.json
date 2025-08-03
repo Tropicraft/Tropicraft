@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "X": {
-      "item": "minecraft:yellow_dye"
-    },
-    "Y": {
-      "tag": "c:leathers"
-    },
-    "Z": {
-      "item": "tropicraft:azurite_gem"
-    }
+    "X": "minecraft:yellow_dye",
+    "Y": "#c:leathers",
+    "Z": "tropicraft:azurite_gem"
   },
   "pattern": [
     "Y Y",

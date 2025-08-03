@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "wooden_door",
   "key": {
-    "X": {
-      "item": "tropicraft:thatch_bundle"
-    }
+    "X": "tropicraft:thatch_bundle"
   },
   "pattern": [
     "XX",
