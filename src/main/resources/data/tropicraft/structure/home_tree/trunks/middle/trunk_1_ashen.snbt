@@ -1,5 +1,5 @@
 {
-    DataVersion: 3953,
+    DataVersion: 4440,
     size: [17, 10, 17],
     data: [
         {pos: [0, 0, 8], state: "tropicraft:mahogany_log{axis:y}"},
@@ -861,7 +861,7 @@
         {pos: [6, 4, 9], state: "minecraft:air"},
         {pos: [6, 4, 10], state: "minecraft:air"},
         {pos: [6, 4, 11], state: "minecraft:air"},
-        {pos: [6, 4, 12], state: "minecraft:spawner", nbt: {Delay: 150s, MaxNearbyEntities: 6s, MaxSpawnDelay: 800s, MinSpawnDelay: 200s, RequiredPlayerRange: 16s, SpawnCount: 4s, SpawnData: {entity: {id: "tropicraft:ashen"}}, SpawnPotentials: [{weight: 1, data: {entity: {id: "tropicraft:ashen"}}}], SpawnRange: 4s, id: "minecraft:mob_spawner"}},
+        {pos: [6, 4, 12], state: "minecraft:spawner", nbt: {Delay: 150s, MaxNearbyEntities: 6s, MaxSpawnDelay: 800s, MinSpawnDelay: 200s, RequiredPlayerRange: 16s, SpawnCount: 4s, SpawnData: {entity: {id: "tropicraft:ashen"}}, SpawnPotentials: [{data: {entity: {id: "tropicraft:ashen"}}, weight: 1}], SpawnRange: 4s, id: "minecraft:mob_spawner"}},
         {pos: [6, 4, 13], state: "tropicraft:mahogany_log{axis:y}"},
         {pos: [6, 4, 14], state: "tropicraft:mahogany_log{axis:y}"},
         {pos: [6, 4, 15], state: "tropicraft:mahogany_log{axis:y}"},

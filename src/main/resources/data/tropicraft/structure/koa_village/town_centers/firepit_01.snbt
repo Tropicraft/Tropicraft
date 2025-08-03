@@ -1,5 +1,5 @@
 {
-    DataVersion: 3953,
+    DataVersion: 4440,
     size: [9, 5, 9],
     data: [
         {pos: [0, 0, 0], state: "minecraft:air"},
@@ -42,7 +42,7 @@
         {pos: [4, 0, 1], state: "minecraft:air"},
         {pos: [4, 0, 2], state: "minecraft:air"},
         {pos: [4, 0, 3], state: "tropicraft:chunk_slab{type:top,waterlogged:false}"},
-        {pos: [4, 0, 4], state: "minecraft:smoker{facing:north,lit:false}", nbt: {BurnTime: 0, CookTime: 0, CookTimeTotal: 0, Items: [], RecipesUsed: {}, id: "minecraft:smoker"}},
+        {pos: [4, 0, 4], state: "minecraft:smoker{facing:north,lit:false}", nbt: {Items: [], RecipesUsed: {}, cooking_time_spent: 0, cooking_total_time: 0, id: "minecraft:smoker", lit_time_remaining: 0, lit_total_time: 0}},
         {pos: [4, 0, 5], state: "tropicraft:chunk_slab{type:top,waterlogged:false}"},
         {pos: [4, 0, 6], state: "minecraft:air"},
         {pos: [4, 0, 7], state: "minecraft:air"},
