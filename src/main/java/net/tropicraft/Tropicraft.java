@@ -147,7 +147,7 @@ public class Tropicraft {
             if (event.getPackType() == PackType.CLIENT_RESOURCES) {
                 event.addRepositorySource(new EmbeddedPackSource(modFile, PackType.CLIENT_RESOURCES, "tropicraft_texture_update", TropicraftLangKeys.TEXTURE_UPDATE_PACK.component()));
             }
-		});
+        });
     }
 
     private static final Pattern QUALIFIER = Pattern.compile("-\\w+\\+\\d+");

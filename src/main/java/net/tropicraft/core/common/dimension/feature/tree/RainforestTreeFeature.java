@@ -29,7 +29,7 @@ public abstract class RainforestTreeFeature extends Feature<NoneFeatureConfigura
     }
 
     protected void setState(@Nullable Set<BlockPos> positions, LevelWriter world, BlockPos pos, BlockState state) {
-		if (positions != null) {
+        if (positions != null) {
             positions.add(pos);
         }
         setBlockStateInternally(world, pos, state);

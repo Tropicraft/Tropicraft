@@ -172,11 +172,11 @@ public class TropicraftRenderLayers {
         MANATEE_LAYER = registerMain("manatee", ManateeModel::create, event);
         SLENDER_HARVEST_MOUSE_LAYER = registerMain("slender_harvest_mouse", SlenderHarvestMouseModel::create, event);
         TOUCAN_LAYER = registerMain("toucan", ToucanModel::create, event);
-		PAPYRUS_CANARY_LAYER = registerMain("papyrus_canary", PapyrusCanaryModel::createBodyLayer, event);
-		PAPYRUS_GONOLEK_LAYER = registerMain("papyrus_gonolek", PapyrusGonolekModel::createBodyLayer, event);
-		SHOEBILL_STORK_LAYER = registerMain("shoebill_stork", ShoebillStorkModel::createBodyLayer, event);
-		WHITE_COLLARED_OLIVEBACK_LAYER = registerMain("white_collared_oliveback", WhiteCollaredOlivebackModel::createBodyLayer, event);
-		WHITE_WINGED_WARBLER_LAYER = registerMain("white_winged_warbler", WhiteWingedWarblerModel::createBodyLayer, event);
+        PAPYRUS_CANARY_LAYER = registerMain("papyrus_canary", PapyrusCanaryModel::createBodyLayer, event);
+        PAPYRUS_GONOLEK_LAYER = registerMain("papyrus_gonolek", PapyrusGonolekModel::createBodyLayer, event);
+        SHOEBILL_STORK_LAYER = registerMain("shoebill_stork", ShoebillStorkModel::createBodyLayer, event);
+        WHITE_COLLARED_OLIVEBACK_LAYER = registerMain("white_collared_oliveback", WhiteCollaredOlivebackModel::createBodyLayer, event);
+        WHITE_WINGED_WARBLER_LAYER = registerMain("white_winged_warbler", WhiteWingedWarblerModel::createBodyLayer, event);
 
         HEADPIECE_LAYER = registerMain("headpiece", PlayerHeadpieceModel::create, event);
         HEAD_SCUBA_LAYER = registerMain("scuba_goggles", ModelScubaGear::create, event);

@@ -30,11 +30,11 @@ public class EmbeddedPackSource implements RepositorySource {
         this.type = type;
         this.packId = packId;
         this.packName = packName;
-	}
+    }
 
     @Override
     public void loadPacks(Consumer<Pack> consumer) {
-		Path packPath = modFile.findResource(type == PackType.CLIENT_RESOURCES ? "resourcepacks" : "datapacks").resolve(packId);
+        Path packPath = modFile.findResource(type == PackType.CLIENT_RESOURCES ? "resourcepacks" : "datapacks").resolve(packId);
         if (!Files.exists(packPath)) {
             LOGGER.error("Unable to find embedded mod pack {} at {}", packId, packPath);
             return;

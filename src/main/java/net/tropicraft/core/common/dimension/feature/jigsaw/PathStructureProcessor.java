@@ -69,7 +69,7 @@ public abstract class PathStructureProcessor extends CheatyStructureProcessor {
         return VECTOR_CACHE.computeIfAbsent(settings, s ->
                         template.filterBlocks(seedPos, infiniteBounds, Blocks.JIGSAW, true).stream() // Find all jigsaw blocks
                                 .filter(b -> b.nbt().getString("target").equals(Tropicraft.ID + ":path_center")) // Filter for vector markers
-//                		.peek(bi -> setBlockState(world, world.getHeight(Type.WORLD_SURFACE_WG, bi.pos), bi.state))
+//                        .peek(bi -> setBlockState(world, world.getHeight(Type.WORLD_SURFACE_WG, bi.pos), bi.state))
                                 .map(bi -> new PathVector(level.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, bi.pos()).subtract(seedPos), JigsawBlock.getFrontFacing(bi.state()))) // Convert pos to structure local, extract facing
                                 .collect(Collectors.toList()))
                 .stream()

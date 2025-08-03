@@ -50,15 +50,15 @@ public class SteepPathProcessor extends PathStructureProcessor {
         }
 //        Rotation antiRotate = placementSettingsIn.getRotation();
 //        if (antiRotate == Rotation.CLOCKWISE_90) {
-//        	antiRotate = Rotation.COUNTERCLOCKWISE_90;
+//            antiRotate = Rotation.COUNTERCLOCKWISE_90;
 //        } else if (antiRotate == Rotation.COUNTERCLOCKWISE_90) {
-//        	antiRotate = Rotation.CLOCKWISE_90;
+//            antiRotate = Rotation.CLOCKWISE_90;
 //        }
 //        Mirror antiMirror = placementSettingsIn.getMirror();
 //        BlockState debugState = Blocks.MAGENTA_GLAZED_TERRACOTTA.getDefaultState()
-//        		.with(GlazedTerracottaBlock.HORIZONTAL_FACING, Direction.getFacingFromAxis(AxisDirection.POSITIVE, axis))
-//        		.rotate(antiRotate)
-//        		.mirror(antiMirror);
+//                .with(GlazedTerracottaBlock.HORIZONTAL_FACING, Direction.getFacingFromAxis(AxisDirection.POSITIVE, axis))
+//                .rotate(antiRotate)
+//                .mirror(antiMirror);
         if (ladder == null) {
             return blockInfo;//new BlockInfo(blockInfo.pos, debugState, blockInfo.nbt); // Nothing to do here, we're on flat ground
         }

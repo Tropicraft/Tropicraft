@@ -36,7 +36,7 @@ public class ExplodingCoconutEntity extends ThrowableItemProjectile {
     @Override
     protected void onHit(HitResult result) {
         if (!level().isClientSide) {
-			level().explode(
+            level().explode(
                     this,
                     level().damageSources().explosion(this, getOwner()),
                     null,

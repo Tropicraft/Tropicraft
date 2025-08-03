@@ -18,36 +18,36 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public final class DuckweedBlock extends BushBlock {
-	public static final MapCodec<DuckweedBlock> CODEC = simpleCodec(DuckweedBlock::new);
+    public static final MapCodec<DuckweedBlock> CODEC = simpleCodec(DuckweedBlock::new);
 
-	private static final VoxelShape SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 1.5, 16.0);
+    private static final VoxelShape SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 1.5, 16.0);
 
-	@Override
-	public MapCodec<DuckweedBlock> codec() {
-		return CODEC;
-	}
+    @Override
+    public MapCodec<DuckweedBlock> codec() {
+        return CODEC;
+    }
 
-	public DuckweedBlock(BlockBehaviour.Properties properties) {
-		super(properties);
-	}
+    public DuckweedBlock(BlockBehaviour.Properties properties) {
+        super(properties);
+    }
 
-	@Override
-	protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		super.entityInside(state, level, pos, entity);
-		if (level instanceof ServerLevel && entity instanceof Boat) {
-			level.destroyBlock(new BlockPos(pos), true, entity);
-		}
-	}
+    @Override
+    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+        super.entityInside(state, level, pos, entity);
+        if (level instanceof ServerLevel && entity instanceof Boat) {
+            level.destroyBlock(new BlockPos(pos), true, entity);
+        }
+    }
 
-	@Override
-	protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-		return SHAPE;
-	}
+    @Override
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return SHAPE;
+    }
 
-	@Override
-	protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
-		FluidState fluidState = level.getFluidState(pos);
-		FluidState aboveFluidState = level.getFluidState(pos.above());
-		return (fluidState.getType() == Fluids.WATER || state.getBlock() instanceof IceBlock) && aboveFluidState.getType() == Fluids.EMPTY;
-	}
+    @Override
+    protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
+        FluidState fluidState = level.getFluidState(pos);
+        FluidState aboveFluidState = level.getFluidState(pos.above());
+        return (fluidState.getType() == Fluids.WATER || state.getBlock() instanceof IceBlock) && aboveFluidState.getType() == Fluids.EMPTY;
+    }
 }

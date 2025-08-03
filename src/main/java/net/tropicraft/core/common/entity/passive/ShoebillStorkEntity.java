@@ -24,91 +24,91 @@ import net.tropicraft.core.common.Easings;
 import net.tropicraft.core.common.entity.IkWalker;
 
 public class ShoebillStorkEntity extends Animal {
-	public static final float BASE_FOOT_Z = 0.0152f;
+    public static final float BASE_FOOT_Z = 0.0152f;
 
-	private final IkWalker walker = new IkWalker(
-			6,
-			4,
-			SharedConstants.TICKS_PER_SECOND,
-			0.25f
-	);
-	// Positions from actual model coordinates of the feet
-	private final IkWalker.Foot leftFoot = walker.addFoot(BASE_FOOT_Z, -0.1168f);
-	private final IkWalker.Foot rightFoot = walker.addFoot(BASE_FOOT_Z, 0.1168f);
+    private final IkWalker walker = new IkWalker(
+            6,
+            4,
+            SharedConstants.TICKS_PER_SECOND,
+            0.25f
+    );
+    // Positions from actual model coordinates of the feet
+    private final IkWalker.Foot leftFoot = walker.addFoot(BASE_FOOT_Z, -0.1168f);
+    private final IkWalker.Foot rightFoot = walker.addFoot(BASE_FOOT_Z, 0.1168f);
 
-	private final BinaryAnimation flightAnimation = new BinaryAnimation(3, Easings::inOutSine);
+    private final BinaryAnimation flightAnimation = new BinaryAnimation(3, Easings::inOutSine);
 
-	public ShoebillStorkEntity(EntityType<? extends ShoebillStorkEntity> type, Level world) {
-		super(type, world);
-	}
+    public ShoebillStorkEntity(EntityType<? extends ShoebillStorkEntity> type, Level world) {
+        super(type, world);
+    }
 
-	public static AttributeSupplier.Builder createAttributes() {
-		return Mob.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 10.0)
-				.add(Attributes.MOVEMENT_SPEED, 0.08);
-	}
+    public static AttributeSupplier.Builder createAttributes() {
+        return Mob.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 10.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.08);
+    }
 
-	@Override
-	protected void registerGoals() {
-		super.registerGoals();
-		goalSelector.addGoal(0, new PanicGoal(this, 1.25));
-		goalSelector.addGoal(0, new FloatGoal(this));
-		goalSelector.addGoal(1, new LookAtPlayerGoal(this, Player.class, 8.0f));
-		goalSelector.addGoal(2, new TemptGoal(this, 1.25, Ingredient.of(ItemTags.FISHES), false));
-		goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0));
-	}
+    @Override
+    protected void registerGoals() {
+        super.registerGoals();
+        goalSelector.addGoal(0, new PanicGoal(this, 1.25));
+        goalSelector.addGoal(0, new FloatGoal(this));
+        goalSelector.addGoal(1, new LookAtPlayerGoal(this, Player.class, 8.0f));
+        goalSelector.addGoal(2, new TemptGoal(this, 1.25, Ingredient.of(ItemTags.FISHES), false));
+        goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0));
+    }
 
-	@Override
-	public void tick() {
-		super.tick();
-		if (!level().isClientSide()) {
-			Vec3 deltaMovement = getDeltaMovement();
-			if (!moveControl.hasWanted() && !onGround() && deltaMovement.y < 0.0) {
-				setDeltaMovement(deltaMovement.multiply(1.0, 0.8, 1.0));
-			}
-		}
-	}
+    @Override
+    public void tick() {
+        super.tick();
+        if (!level().isClientSide()) {
+            Vec3 deltaMovement = getDeltaMovement();
+            if (!moveControl.hasWanted() && !onGround() && deltaMovement.y < 0.0) {
+                setDeltaMovement(deltaMovement.multiply(1.0, 0.8, 1.0));
+            }
+        }
+    }
 
-	@Override
-	public void calculateEntityAnimation(boolean includeHeight) {
-		super.calculateEntityAnimation(includeHeight);
-		if (level().isClientSide()) {
-			flightAnimation.tick(!onGround());
-			walker.update(this);
-		}
-	}
+    @Override
+    public void calculateEntityAnimation(boolean includeHeight) {
+        super.calculateEntityAnimation(includeHeight);
+        if (level().isClientSide()) {
+            flightAnimation.tick(!onGround());
+            walker.update(this);
+        }
+    }
 
-	@Override
-	public void absMoveTo(double x, double y, double z) {
-		super.absMoveTo(x, y, z);
-		walker.reset(this);
-	}
+    @Override
+    public void absMoveTo(double x, double y, double z) {
+        super.absMoveTo(x, y, z);
+        walker.reset(this);
+    }
 
-	@Override
-	public void moveTo(double x, double y, double z, float yRot, float xRot) {
-		super.moveTo(x, y, z, yRot, xRot);
-		walker.reset(this);
-	}
+    @Override
+    public void moveTo(double x, double y, double z, float yRot, float xRot) {
+        super.moveTo(x, y, z, yRot, xRot);
+        walker.reset(this);
+    }
 
-	public IkWalker.Foot leftFoot() {
-		return leftFoot;
-	}
+    public IkWalker.Foot leftFoot() {
+        return leftFoot;
+    }
 
-	public IkWalker.Foot rightFoot() {
-		return rightFoot;
-	}
+    public IkWalker.Foot rightFoot() {
+        return rightFoot;
+    }
 
-	public float getFlightAnimation(float partialTicks) {
-		return flightAnimation.get(partialTicks);
-	}
+    public float getFlightAnimation(float partialTicks) {
+        return flightAnimation.get(partialTicks);
+    }
 
-	@Override
-	public boolean isFood(ItemStack stack) {
-		return false;
-	}
+    @Override
+    public boolean isFood(ItemStack stack) {
+        return false;
+    }
 
-	@Override
-	public ShoebillStorkEntity getBreedOffspring(ServerLevel world, AgeableMob mate) {
-		return null;
-	}
+    @Override
+    public ShoebillStorkEntity getBreedOffspring(ServerLevel world, AgeableMob mate) {
+        return null;
+    }
 }

@@ -69,9 +69,9 @@ public final class FruitingBranchBlock extends Block implements BonemealableBloc
     @Override
     protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         if (context instanceof EntityCollisionContext entityContext && entityContext.getEntity() != null) {
-			if (entityContext.getEntity().getType().is(TropicraftTags.Entities.CAN_STAND_ON_BRANCH)) {
-				return BIRD_PERCH_SHAPE;
-			}
+            if (entityContext.getEntity().getType().is(TropicraftTags.Entities.CAN_STAND_ON_BRANCH)) {
+                return BIRD_PERCH_SHAPE;
+            }
         }
         return Shapes.empty();
     }

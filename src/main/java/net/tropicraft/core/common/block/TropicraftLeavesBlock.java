@@ -42,7 +42,7 @@ public class TropicraftLeavesBlock extends LeavesBlock {
         return CODEC;
     }
 
-	@Override
+    @Override
     protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         level.setBlock(pos, updateDistance(state, level, pos), Block.UPDATE_ALL);
     }

@@ -88,17 +88,17 @@ public class VolcanoBlockEntity extends BlockEntity {
                 break;
             case ERUPTING:
                 if (!getLevel().isClientSide) {
-                    //	if ((ticksUntilRetreating % (getWorld().rand.nextInt(40) + 10) == 0)/* && time > 800 && !falling*/) {
+                    //    if ((ticksUntilRetreating % (getWorld().rand.nextInt(40) + 10) == 0)/* && time > 800 && !falling*/) {
                     if (getLevel().random.nextInt(15) == 0) {
                         throwLavaFromCaldera(0.05 + Math.abs(getLevel().random.nextGaussian()) * (lavaLevel > 90 ? LAVA_ERUPT_LEVEL + heightOffset : 0.75));
                     }
-                    //	}
+                    //    }
 
-                    //	if ((ticksUntilRetreating % (getWorld().rand.nextInt(40) + 10) == 0) && lavaLevel > 90) {
+                    //    if ((ticksUntilRetreating % (getWorld().rand.nextInt(40) + 10) == 0) && lavaLevel > 90) {
                     if (getLevel().random.nextInt(15) == 0) {
                         throwLavaFromCaldera(0.05 + Math.abs(getLevel().random.nextGaussian()) * (lavaLevel > LAVA_ERUPT_LEVEL + heightOffset ? 1 : 0.75));
                     }
-                    //	}
+                    //    }
                 }
                 break;
             case RETREATING:
@@ -214,9 +214,9 @@ public class VolcanoBlockEntity extends BlockEntity {
             }
         }
 
-        //		if (updateFlag == 0) {
-        //			getWorld().markBlockRangeForRenderUpdate(xPos - radius, lavaLevel, zPos - radius, xPos + radius, lavaLevel, zPos + radius);
-        //		}
+        //        if (updateFlag == 0) {
+        //            getWorld().markBlockRangeForRenderUpdate(xPos - radius, lavaLevel, zPos - radius, xPos + radius, lavaLevel, zPos + radius);
+        //        }
     }
 
     public void spewSmoke() {

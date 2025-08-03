@@ -10,92 +10,92 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IkWalker {
-	private static final double STEP_DISTANCE = 0.25;
-	// Even if another foot is currently stepping, we're too far - step now!
-	private static final double STEP_NOW_DISTANCE = 0.4;
-	private static final double RESET_DISTANCE = 1.5;
+    private static final double STEP_DISTANCE = 0.25;
+    // Even if another foot is currently stepping, we're too far - step now!
+    private static final double STEP_NOW_DISTANCE = 0.4;
+    private static final double RESET_DISTANCE = 1.5;
 
-	private static final double MIN_SETTLE_DISTANCE = 0.05;
+    private static final double MIN_SETTLE_DISTANCE = 0.05;
 
-	private final int stepLengthTicks;
-	private final int stepIntervalTicks;
-	private final int settleDelayTicks;
-	private final float stepAhead;
+    private final int stepLengthTicks;
+    private final int stepIntervalTicks;
+    private final int settleDelayTicks;
+    private final float stepAhead;
 
-	private final List<Foot> feet = new ArrayList<>();
+    private final List<Foot> feet = new ArrayList<>();
 
-	private int stepDelayTicks;
+    private int stepDelayTicks;
 
-	public IkWalker(int stepLengthTicks, int stepIntervalTicks, int settleDelayTicks, float stepAhead) {
-		this.stepLengthTicks = stepLengthTicks;
-		this.stepIntervalTicks = stepIntervalTicks;
-		this.settleDelayTicks = settleDelayTicks;
-		this.stepAhead = stepAhead;
-	}
+    public IkWalker(int stepLengthTicks, int stepIntervalTicks, int settleDelayTicks, float stepAhead) {
+        this.stepLengthTicks = stepLengthTicks;
+        this.stepIntervalTicks = stepIntervalTicks;
+        this.settleDelayTicks = settleDelayTicks;
+        this.stepAhead = stepAhead;
+    }
 
-	public Foot addFoot(float forward, float right) {
-		Foot foot = new Foot(forward, right);
-		feet.add(foot);
-		return foot;
-	}
+    public Foot addFoot(float forward, float right) {
+        Foot foot = new Foot(forward, right);
+        feet.add(foot);
+        return foot;
+    }
 
-	public void reset(Mob entity) {
-		EntitySpace entitySpace = EntitySpace.from(entity);
-		for (Foot foot : feet) {
-			foot.reset(entitySpace);
-		}
-	}
+    public void reset(Mob entity) {
+        EntitySpace entitySpace = EntitySpace.from(entity);
+        for (Foot foot : feet) {
+            foot.reset(entitySpace);
+        }
+    }
 
-	public void update(Mob entity) {
-		boolean moving = entity.walkAnimation.isMoving();
-		EntitySpace entitySpace = EntitySpace.from(entity);
+    public void update(Mob entity) {
+        boolean moving = entity.walkAnimation.isMoving();
+        EntitySpace entitySpace = EntitySpace.from(entity);
 
-		boolean waitingToStep = stepDelayTicks > 0;
-		if (waitingToStep) {
-			stepDelayTicks--;
-		}
+        boolean waitingToStep = stepDelayTicks > 0;
+        if (waitingToStep) {
+            stepDelayTicks--;
+        }
 
-		boolean anyStepping = false;
-		for (Foot foot : feet) {
-			if (entity.onGround()) {
-				foot.updateOnGround(entitySpace, moving, waitingToStep, anyStepping);
-			} else {
-				foot.updateInAir(entitySpace);
-			}
-			anyStepping |= foot.isStepping();
-		}
+        boolean anyStepping = false;
+        for (Foot foot : feet) {
+            if (entity.onGround()) {
+                foot.updateOnGround(entitySpace, moving, waitingToStep, anyStepping);
+            } else {
+                foot.updateInAir(entitySpace);
+            }
+            anyStepping |= foot.isStepping();
+        }
 
-		if (anyStepping) {
-			stepDelayTicks = stepIntervalTicks;
-		}
-	}
+        if (anyStepping) {
+            stepDelayTicks = stepIntervalTicks;
+        }
+    }
 
-	public class Foot {
-		private final float forward;
-		private final float right;
+    public class Foot {
+        private final float forward;
+        private final float right;
 
-		private final Vector2d oldPosition = new Vector2d();
-		private final Vector2d position = new Vector2d();
-		@Nullable
-		private Vector2d lastStepPosition;
+        private final Vector2d oldPosition = new Vector2d();
+        private final Vector2d position = new Vector2d();
+        @Nullable
+        private Vector2d lastStepPosition;
 
-		private int stepTicks;
-		private int stepLengthTicks;
+        private int stepTicks;
+        private int stepLengthTicks;
 
-		private int settleDelayTicks;
+        private int settleDelayTicks;
 
-		private Foot(float forward, float right) {
-			this.forward = forward;
-			this.right = right;
-		}
+        private Foot(float forward, float right) {
+            this.forward = forward;
+            this.right = right;
+        }
 
-		private void reset(EntitySpace entitySpace) {
-			moveTo(entitySpace.toWorldSpace(forward, right));
-			oldPosition.set(position);
-		}
+        private void reset(EntitySpace entitySpace) {
+            moveTo(entitySpace.toWorldSpace(forward, right));
+            oldPosition.set(position);
+        }
 
-		private void updateOnGround(EntitySpace entitySpace, boolean moving, boolean waitingToStep, boolean anyFootStepping) {
-			oldPosition.set(position);
+        private void updateOnGround(EntitySpace entitySpace, boolean moving, boolean waitingToStep, boolean anyFootStepping) {
+    		oldPosition.set(position);
 
 			if (lastStepPosition != null && ++stepTicks >= stepLengthTicks) {
 				lastStepPosition = null;

@@ -95,7 +95,7 @@ public final class ModelAnimator {
             if (time * speed % interval > 1.0f) {
                 return 0.0f;
             }
-			return scale * Mth.square(eval(speed, 1.0f));
+            return scale * Mth.square(eval(speed, 1.0f));
         }
 
         public float periodic(float interval, float fade, float length, float scale) {
@@ -115,7 +115,7 @@ public final class ModelAnimator {
 
         public float evalSkewed(float speed, float scale, float delay, float offset, float skew, float squareness) {
             float x = TAU * (time * speed - delay);
-			float modifiedSin = squareness * Mth.sin(x);
+            float modifiedSin = squareness * Mth.sin(x);
             float value = modifiedSin / Mth.sqrt(Mth.square(skew + Mth.cos(x)) + Mth.square(modifiedSin));
             return (value * scale + offset) * this.scale;
         }
