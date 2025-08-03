@@ -13,7 +13,7 @@ import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.DrinkIngredient;
 import net.tropicraft.core.common.drinks.action.DrinkAction;
 
-@EventBusSubscriber(modid = Tropicraft.ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Tropicraft.ID)
 public class TropicraftRegistries {
     public static final ResourceKey<Registry<Drink>> DRINK = createKey("drink");
     public static final ResourceKey<Registry<MapCodec<? extends DrinkAction>>> DRINK_ACTION = createKey("drink_action");

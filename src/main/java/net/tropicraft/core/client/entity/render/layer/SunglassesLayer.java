@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -17,15 +18,15 @@ import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
 
 import java.util.function.Predicate;
 
-public class SunglassesLayer<T extends Entity, M extends EntityModel<T>> extends RenderLayer<T, M> {
+public class SunglassesLayer<S extends EntityRenderState, M extends EntityModel<S>> extends RenderLayer<S, M> {
     private static final ResourceLocation TEXTURE = Tropicraft.location("textures/entity/sunglasses.png");
 
     private final TropicraftSpecialRenderHelper mask;
     private final M model;
-    private final Predicate<T> predicate;
-    private final Transform<T, M> transform;
+    private final Predicate<S> predicate;
+    private final Transform<S, M> transform;
 
-    public SunglassesLayer(RenderLayerParent<T, M> parent, Predicate<T> predicate, Transform<T, M> transform) {
+    public SunglassesLayer(RenderLayerParent<S, M> parent, Predicate<S> predicate, Transform<S, M> transform) {
         super(parent);
         model = parent.getModel();
         mask = new TropicraftSpecialRenderHelper();
@@ -34,22 +35,22 @@ public class SunglassesLayer<T extends Entity, M extends EntityModel<T>> extends
     }
 
     @Override
-    public void render(PoseStack stack, MultiBufferSource bufferIn, int packedLightIn, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (!predicate.test(entity)) {
+    public void render(PoseStack stack, MultiBufferSource bufferSource, int packedLight, S renderState, float yRot, float xRot) {
+        if (!predicate.test(renderState)) {
             return;
         }
 
         stack.pushPose();
-        model.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        transform.apply(stack, entity, model);
+        model.setupAnim(renderState);
+        transform.apply(stack, renderState, model);
 
         stack.mulPose(Axis.YP.rotation(Mth.PI));
-        VertexConsumer consumer = bufferIn.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
-        mask.renderMask(stack, consumer, 0, packedLightIn, OverlayTexture.NO_OVERLAY);
+        VertexConsumer consumer = bufferSource.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
+        mask.renderMask(stack, consumer, 0, packedLight, OverlayTexture.NO_OVERLAY);
         stack.popPose();
     }
 
-    public interface Transform<T, M> {
-        void apply(PoseStack poseStack, T entity, M model);
+    public interface Transform<S, M> {
+        void apply(PoseStack poseStack, S state, M model);
     }
 }

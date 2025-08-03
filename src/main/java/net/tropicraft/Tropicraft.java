@@ -8,45 +8,41 @@ import com.tterrag.registrate.providers.DataProviderInitializer;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateTagsProvider;
 import net.minecraft.Util;
-import net.minecraft.client.resources.model.BlockStateModelLoader;
+import net.minecraft.client.resources.model.BlockStateDefinitions;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
-import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
-import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
+import net.neoforged.neoforge.client.event.AddClientReloadListenersEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforgespi.locating.IModFile;
 import net.tropicraft.core.client.EmbeddedPackSource;
+import net.tropicraft.core.client.TropicraftEquipmentAssets;
 import net.tropicraft.core.client.data.TropicraftLangKeys;
+import net.tropicraft.core.client.entity.render.BambooItemFrameRenderer;
 import net.tropicraft.core.common.TropicraftPackRegistries;
 import net.tropicraft.core.common.TropicsConfigs;
+import net.tropicraft.core.common.attribute.TropicraftAttributes;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.command.TropicraftCommands;
 import net.tropicraft.core.common.command.debug.MapBiomesCommand;
@@ -74,13 +70,13 @@ import net.tropicraft.core.common.dimension.feature.tree.TropicraftFoliagePlacer
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftTreeDecorators;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftTrunkPlacers;
 import net.tropicraft.core.common.drinks.action.TropicraftDrinkActions;
-import net.tropicraft.core.common.item.TropicraftArmorMaterials;
-import net.tropicraft.core.common.item.TropicraftDataComponents;
 import net.tropicraft.core.common.item.TropicraftItems;
+import net.tropicraft.core.common.item.component.TropicraftDataComponents;
 import net.tropicraft.core.common.item.scuba.ScubaData;
-import net.tropicraft.core.common.item.scuba.ScubaGogglesItem;
 import net.tropicraft.core.common.sound.Sounds;
 
+import java.nio.file.Path;
+import java.util.List;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
@@ -95,11 +91,15 @@ public class Tropicraft {
     private static final Supplier<Registrate> REGISTRATE = Suppliers.memoize(() -> {
         Registrate registrate = Registrate.create(ID)
                 .defaultCreativeTab(CREATIVE_TAB.location().getPath(), builder -> builder.icon(() -> new ItemStack(TropicraftBlocks.PALM_SAPLING.get()))).build()
-                .addDataGenerator(ProviderType.LANG, TropicraftLangKeys::generate);
+                .addDataGenerator(ProviderType.LANG, TropicraftLangKeys::generate)
+                .addDataGenerator(ProviderType.GENERIC_CLIENT, prov -> prov.add(data ->
+                        new TropicraftEquipmentAssets.Provider(data.output()))
+                );
+
         DataProviderInitializer initializer = registrate.getDataGenInitializer();
         TropicraftPackRegistries.addTo(initializer);
         initializer.addDependency(ProviderType.ADVANCEMENT, ProviderType.DYNAMIC);
-        initializer.addDependency(ProviderType.RECIPE, ProviderType.DYNAMIC);
+        initializer.addDependency(ProviderType.RECIPE_RUNNER, ProviderType.DYNAMIC);
         initializer.addDependency(BIOME_TAGS, ProviderType.DYNAMIC);
         TropicraftBiomes.setup(registrate);
         return registrate;
@@ -126,7 +126,7 @@ public class Tropicraft {
 
         // Registry objects
         Sounds.REGISTER.register(modBus);
-        ScubaGogglesItem.ATTRIBUTES.register(modBus);
+        TropicraftAttributes.REGISTER.register(modBus);
         TropicraftCarvers.CARVERS.register(modBus);
         TropicraftFoliagePlacers.REGISTER.register(modBus);
         TropicraftTrunkPlacers.REGISTER.register(modBus);
@@ -139,8 +139,9 @@ public class Tropicraft {
         TropicraftStructurePieceTypes.REGISTER.register(modBus);
         ScubaData.ATTACHMENT_TYPES.register(modBus);
         TropicraftDataComponents.REGISTER.register(modBus);
-        TropicraftArmorMaterials.REGISTER.register(modBus);
         TropicraftDrinkActions.REGISTER.register(modBus);
+
+        modBus.addListener(TropicraftItems::onItemRegister);
 
         IModFile modFile = container.getModInfo().getOwningFile().getFile();
         modBus.addListener((AddPackFindersEvent event) -> {
@@ -173,10 +174,12 @@ public class Tropicraft {
         );
     }
 
-    private void gatherData(GatherDataEvent event) {
+    private void gatherData(GatherDataEvent.Client event) {
         DataGenerator generator = event.getGenerator();
         PackOutput output = generator.getPackOutput();
-        generator.addProvider(event.includeServer(), new StructureConverter(ID, output, event.getInputs()));
+        // Big hack, as we can't pass inputs in client data generation
+        Path inputPath = event.getGenerator().getPackOutput().getOutputFolder().getParent().getParent().resolve("main/resources");
+        generator.addProvider(true, new StructureConverter(ID, output, List.of(inputPath)));
     }
 
     private void registerCommands(RegisterCommandsEvent event) {
@@ -189,15 +192,14 @@ public class Tropicraft {
         }
     }
 
-    @EventBusSubscriber(modid = ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
+    @EventBusSubscriber(modid = ID, value = Dist.CLIENT)
     private static class ClientHandler {
         @SubscribeEvent
-        public static void registerReloadListeners(RegisterClientReloadListenersEvent event) {
+        public static void registerReloadListeners(AddClientReloadListenersEvent event) {
             // Hack in our item frame models the way vanilla does
-            StateDefinition<Block, BlockState> frameState = new StateDefinition.Builder<Block, BlockState>(Blocks.AIR).add(BooleanProperty.create("map")).create(Block::defaultBlockState, BlockState::new);
-            BlockStateModelLoader.STATIC_DEFINITIONS = Util.copyAndPut(
-                    BlockStateModelLoader.STATIC_DEFINITIONS,
-                    TropicraftItems.BAMBOO_ITEM_FRAME.getId(), frameState
+            BlockStateDefinitions.STATIC_DEFINITIONS = Util.copyAndPut(
+                    BlockStateDefinitions.STATIC_DEFINITIONS,
+                    TropicraftItems.BAMBOO_ITEM_FRAME.getId(), BambooItemFrameRenderer.FAKE_BLOCK_STATE
             );
         }
     }

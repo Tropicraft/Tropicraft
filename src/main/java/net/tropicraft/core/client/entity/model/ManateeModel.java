@@ -1,6 +1,6 @@
 package net.tropicraft.core.client.entity.model;
 
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -9,10 +9,9 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import net.tropicraft.core.common.entity.underdasea.ManateeEntity;
+import net.tropicraft.core.client.entity.render.state.ManateeRenderState;
 
-public class ManateeModel extends HierarchicalModel<ManateeEntity> {
-    private final ModelPart root;
+public class ManateeModel extends EntityModel<ManateeRenderState> {
     private final ModelPart body;
     private final ModelPart head;
     private final ModelPart tailBase;
@@ -21,7 +20,7 @@ public class ManateeModel extends HierarchicalModel<ManateeEntity> {
     private final ModelPart armRight;
 
     public ManateeModel(ModelPart root) {
-        this.root = root;
+        super(root);
         body = root.getChild("body_base");
         head = body.getChild("head_base");
         tailBase = body.getChild("tail_base");
@@ -56,21 +55,20 @@ public class ManateeModel extends HierarchicalModel<ManateeEntity> {
     }
 
     @Override
-    public void setupAnim(ManateeEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch) {
-        body.getAllParts().forEach(ModelPart::resetPose);
+    public void setupAnim(ManateeRenderState state) {
+        super.setupAnim(state);
 
-        float partialTicks = ageInTicks - entity.tickCount;
-        body.xRot = entity.getXBodyRot(partialTicks) * Mth.DEG_TO_RAD;
-        ModelAnimator.look(head, Mth.wrapDegrees(headYaw) * 0.25f, Mth.clamp(Mth.wrapDegrees(headPitch), 0.0f, 30.0f));
+        body.xRot = state.xBodyRot * Mth.DEG_TO_RAD;
+        ModelAnimator.look(head, Mth.wrapDegrees(state.yRot) * 0.25f, Mth.clamp(Mth.wrapDegrees(state.xRot), 0.0f, 30.0f));
         head.xRot -= body.xRot;
 
-        if (entity.isInWater()) {
-            try (ModelAnimator.Cycle idle = ModelAnimator.cycle(ageInTicks * 0.01f, 1.0f)) {
+        if (state.isInWater) {
+            try (ModelAnimator.Cycle idle = ModelAnimator.cycle(state.ageInTicks * 0.01f, 1.0f)) {
                 body.y += idle.eval(1.0f, 0.6f);
             }
         }
 
-        try (ModelAnimator.Cycle swim = ModelAnimator.cycle(limbSwing * 0.125f, Math.min(limbSwingAmount, 0.8f))) {
+        try (ModelAnimator.Cycle swim = ModelAnimator.cycle(state.walkAnimationPos * 0.125f, Math.min(state.walkAnimationSpeed, 0.8f))) {
             body.y += swim.eval(1.0f, 2.0f, 0.65f, 0.0f);
             head.xRot += swim.eval(1.0f, 0.125f, -0.2f, 0.25f);
             body.xRot += swim.eval(1.0f, 0.125f, 0.0f, 0.0f);
@@ -85,10 +83,5 @@ public class ManateeModel extends HierarchicalModel<ManateeEntity> {
             armRight.yRot -= swim.eval(0.5f, 2.0f, 0.6f, 2.0f);
             armRight.zRot -= swim.eval(0.5f, -1.5f, 0.4f, -1.5f);
         }
-    }
-
-    @Override
-    public ModelPart root() {
-        return root;
     }
 }

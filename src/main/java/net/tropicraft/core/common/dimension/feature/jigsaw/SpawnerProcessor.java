@@ -1,11 +1,9 @@
 package net.tropicraft.core.common.dimension.feature.jigsaw;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -20,10 +18,10 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class SpawnerProcessor extends StructureProcessor {
-    public static final SpawnerProcessor IGUANA = new SpawnerProcessor(ImmutableList.of(TropicraftEntities.IGUANA.getId()));
-    public static final SpawnerProcessor ASHEN = new SpawnerProcessor(ImmutableList.of(TropicraftEntities.ASHEN.getId()));
-    public static final SpawnerProcessor EIH = new SpawnerProcessor(ImmutableList.of(TropicraftEntities.EIH.getId()));
-    public static final SpawnerProcessor IGUANA_AND_ASHEN = new SpawnerProcessor(ImmutableList.of(TropicraftEntities.ASHEN.getId(), TropicraftEntities.IGUANA.getId()));
+    public static final SpawnerProcessor IGUANA = new SpawnerProcessor(List.of(TropicraftEntities.IGUANA.getId()));
+    public static final SpawnerProcessor ASHEN = new SpawnerProcessor(List.of(TropicraftEntities.ASHEN.getId()));
+    public static final SpawnerProcessor EIH = new SpawnerProcessor(List.of(TropicraftEntities.EIH.getId()));
+    public static final SpawnerProcessor IGUANA_AND_ASHEN = new SpawnerProcessor(List.of(TropicraftEntities.ASHEN.getId(), TropicraftEntities.IGUANA.getId()));
 
     public static final MapCodec<SpawnerProcessor> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
             ResourceLocation.CODEC.listOf().fieldOf("entity_types").forGetter(p -> p.entityTypes)
@@ -44,24 +42,24 @@ public class SpawnerProcessor extends StructureProcessor {
     @Nullable
     public StructureTemplate.StructureBlockInfo process(LevelReader world, BlockPos pos, BlockPos pos2, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo blockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
         Block block = blockInfo.state().getBlock();
-
         if (block != Blocks.SPAWNER) {
             return blockInfo;
-        } else {
-            CompoundTag tag = new CompoundTag();
-
-            String typeName = entityTypes.getFirst().toString();
-            tag.putString("id", typeName);
-
-            blockInfo.nbt().getCompound("SpawnData").putString("id", typeName);
-            // TODO not working
-            ListTag list = blockInfo.nbt().getList("SpawnPotentials", 9);
-            for (int i = 0; i < list.size(); i++) {
-                CompoundTag nbt = list.getCompound(i);
-                nbt.getCompound("Entity").putString("id", typeName);
-            }
-
-            return blockInfo;
         }
+
+        String typeName = entityTypes.getFirst().toString();
+
+        CompoundTag spawnData = blockInfo.nbt().getCompoundOrEmpty("SpawnData");
+        spawnData.putString("id", typeName);
+
+        // TODO not working
+        blockInfo.nbt().getList("SpawnPotentials").ifPresent(list -> {
+            for (int i = 0; i < list.size(); i++) {
+                CompoundTag nbt = list.getCompoundOrEmpty(i);
+                nbt.getCompoundOrEmpty("Entity").putString("id", typeName);
+            }
+        });
+
+        blockInfo.nbt().put("SpawnData", spawnData);
+        return blockInfo;
     }
 }

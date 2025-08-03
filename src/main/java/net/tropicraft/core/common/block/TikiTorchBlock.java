@@ -14,8 +14,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -104,15 +104,17 @@ public final class TikiTorchBlock extends Block {
             return defaultBlockState().setValue(SECTION, TorchSection.UPPER);
         }
         BlockState ret = defaultBlockState().setValue(SECTION, TorchSection.LOWER);
-        return blockpos.getY() < context.getLevel().getMaxBuildHeight() - 1 &&
+        return blockpos.getY() < context.getLevel().getMaxY() - 1 &&
                 context.getLevel().getBlockState(blockpos.above()).canBeReplaced(context) &&
                 context.getLevel().getBlockState(blockpos.above(2)).canBeReplaced(context) ? ret : null;
     }
 
     @Override
-    @Deprecated
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
-        return facing.getAxis() == Axis.Y && !canSurvive(stateIn, worldIn, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+    protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess scheduledTickAccess, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
+        if (direction.getAxis() == Axis.Y && !canSurvive(state, level, pos)) {
+            return Blocks.AIR.defaultBlockState();
+        }
+        return super.updateShape(state, level, scheduledTickAccess, pos, direction, neighborPos, neighborState, random);
     }
 
     @Override

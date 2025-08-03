@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:item/generated",
+  "display": {
+    "head": {
+      "translation": [0.0, 0.75, -6.75],
+      "scale": [1.5, 1.5, 1.0]
+    }
+  }
+}

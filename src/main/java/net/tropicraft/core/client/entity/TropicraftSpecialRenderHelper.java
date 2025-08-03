@@ -51,10 +51,11 @@ public class TropicraftSpecialRenderHelper {
     }
 
     public static void vertex(VertexConsumer bufferIn, PoseStack.Pose pose, double x, double y, double z, float red, float green, float blue, float alpha, float texU, float texV, Direction normal, int packedLight, int packedOverlay) {
-        Vec3i normalVec = normal.getNormal();
+        Vec3i normalVec = normal.getUnitVec3i();
         bufferIn.addVertex(pose, (float) x, (float) y, (float) z).setColor(red, green, blue, alpha).setUv(texU, texV).setOverlay(packedOverlay).setLight(packedLight).setNormal(pose, normalVec.getX(), normalVec.getY(), normalVec.getZ());
     }
 
+    // TODO: This is pretty inefficient to render, can we rather bake it? (maybe even reuse item model baking)
     public static void popper(float f, float f1, float f2, float f3, float f1shifted, float f3shifted, float layerHeight, PoseStack stack, VertexConsumer buffer, int packedLightIn, int overlayLightIn, float red, float green, float blue, float alpha) {
         float f4 = 1.0f;
 

@@ -7,13 +7,14 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.Portal;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.portal.DimensionTransition;
+import net.minecraft.world.level.portal.TeleportTransition;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 
 import javax.annotation.Nullable;
@@ -40,7 +41,7 @@ public final class PortalWaterBlock extends LiquidBlock implements Portal {
     }
 
     @Override
-    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier) {
         if (entity.canUsePortal(false)) {
             entity.setAsInsidePortal(this, pos);
         }
@@ -53,7 +54,7 @@ public final class PortalWaterBlock extends LiquidBlock implements Portal {
 
     @Nullable
     @Override
-    public DimensionTransition getPortalDestination(ServerLevel level, Entity entity, BlockPos pos) {
+    public TeleportTransition getPortalDestination(ServerLevel level, Entity entity, BlockPos pos) {
         return TropicraftDimension.getPortalTransition(level, entity, TropicraftDimension.WORLD);
     }
 }

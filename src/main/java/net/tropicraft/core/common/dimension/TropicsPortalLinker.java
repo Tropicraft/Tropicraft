@@ -73,7 +73,7 @@ public class TropicsPortalLinker {
 
                 LevelChunk chunk = world.getChunk(SectionPos.blockToSectionCoord(x), SectionPos.blockToSectionCoord(z));
 
-                for (int y = chunk.getHeight(Heightmap.Types.WORLD_SURFACE, x, z); y >= chunk.getMinBuildHeight(); y--) {
+                for (int y = chunk.getHeight(Heightmap.Types.WORLD_SURFACE, x, z); y >= chunk.getMinY(); y--) {
                     mutablePos.set(x, y, z);
                     if (chunk.getBlockState(mutablePos).is(PORTAL_BLOCK)) {
                         mutablePos.move(Direction.DOWN);
@@ -83,7 +83,7 @@ public class TropicsPortalLinker {
                         }
 
                         double distY = y + 0.5 - mutablePos.getY();
-                        double distance = distX * distX + distY * distY + distZ * distZ;
+                        double distance = Mth.lengthSquared(distX, distY, distZ);
                         if (closestPortalDistance < 0.0 || distance < closestPortalDistance) {
                             closestPortalDistance = distance;
                             foundX = x;
@@ -130,7 +130,7 @@ public class TropicsPortalLinker {
                 double distZ = (z + 0.5) - entity.getZ();
 
                 // Find topmost solid block at this x,z location
-                int y = world.getMaxBuildHeight() - 1;
+                int y = world.getMaxY();
                 BlockPos pos = new BlockPos(x, y, z);
                 for (; y >= 63 - 1 && (world.getBlockState(pos).is(Blocks.AIR) ||
                         !getValidBuildBlocks().contains(world.getBlockState(pos))); pos = pos.below()) {
@@ -145,7 +145,7 @@ public class TropicsPortalLinker {
                 if (getValidBuildBlocks().contains(world.getBlockState(tryPos))) {
                     for (int xOffset = -2; xOffset <= 2; xOffset++) {
                         for (int zOffset = -2; zOffset <= 2; zOffset++) {
-                            int otherY = world.getMaxBuildHeight() - 1;
+                            int otherY = world.getMaxY();
                             BlockPos pos1 = new BlockPos(x + xOffset, otherY, z + zOffset);
                             BlockPos pos2 = tryPos.mutable();
                             for (; otherY >= 63 && (world.getBlockState(pos1).is(Blocks.AIR) ||

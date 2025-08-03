@@ -6,9 +6,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.entity.model.ManateeModel;
+import net.tropicraft.core.client.entity.render.state.ManateeRenderState;
 import net.tropicraft.core.common.entity.underdasea.ManateeEntity;
 
-public class ManateeRenderer extends MobRenderer<ManateeEntity, ManateeModel> {
+public class ManateeRenderer extends MobRenderer<ManateeEntity, ManateeRenderState, ManateeModel> {
     private static final ResourceLocation TEXTURE = Tropicraft.location("textures/entity/manatee.png");
 
     public ManateeRenderer(EntityRendererProvider.Context context) {
@@ -16,7 +17,18 @@ public class ManateeRenderer extends MobRenderer<ManateeEntity, ManateeModel> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(ManateeEntity pEntity) {
+    public ManateeRenderState createRenderState() {
+        return new ManateeRenderState();
+    }
+
+    @Override
+    public void extractRenderState(ManateeEntity entity, ManateeRenderState state, float partialTicks) {
+        super.extractRenderState(entity, state, partialTicks);
+        state.xBodyRot = entity.getXBodyRot(partialTicks);
+    }
+
+    @Override
+    public ResourceLocation getTextureLocation(ManateeRenderState state) {
         return TEXTURE;
     }
 }

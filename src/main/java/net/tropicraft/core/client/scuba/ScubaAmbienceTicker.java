@@ -4,7 +4,6 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
@@ -21,7 +20,7 @@ import net.tropicraft.core.common.item.scuba.ScubaData;
 
 import javax.annotation.Nullable;
 
-@EventBusSubscriber(value = Dist.CLIENT, modid = Tropicraft.ID, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(value = Dist.CLIENT, modid = Tropicraft.ID)
 public class ScubaAmbienceTicker {
 
     public static final SoundEvent SHALLOW_SCUBA = SoundEvent.createVariableRangeEvent(Tropicraft.location("scuba.shallow"));
@@ -38,13 +37,8 @@ public class ScubaAmbienceTicker {
             Entity renderViewEntity = mc.getCameraEntity();
             if (renderViewEntity instanceof Player player) {
                 if (renderInfo != null && renderInfo.getFluidInCamera() == FogType.WATER && player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ScubaArmorItem) {
-                    if (ScubaData.getDepth(player) < 60) {
-                        play(SHALLOW_SCUBA);
-                        return;
-                    } else {
-                        play(DEEP_SCUBA);
-                        return;
-                    }
+                    play(ScubaData.getDepth(player) < 60 ? SHALLOW_SCUBA : DEEP_SCUBA);
+                    return;
                 }
             }
         }
@@ -55,13 +49,13 @@ public class ScubaAmbienceTicker {
         if (currentSound != sound) {
             stop();
             currentSound = sound;
-            Minecraft.getInstance().getSoundManager().play(new SimpleSoundInstance(sound.getLocation(), SoundSource.AMBIENT, 0.4f, 1.0f, SoundInstance.createUnseededRandom(), true, 0, SoundInstance.Attenuation.NONE, 0.0f, 0.0f, 0.0f, true));
+            Minecraft.getInstance().getSoundManager().play(new SimpleSoundInstance(sound.location(), SoundSource.AMBIENT, 0.4f, 1.0f, SoundInstance.createUnseededRandom(), true, 0, SoundInstance.Attenuation.NONE, 0.0f, 0.0f, 0.0f, true));
         }
     }
 
     private static void stop() {
         if (currentSound != null) {
-            Minecraft.getInstance().getSoundManager().stop(currentSound.getLocation(), SoundSource.AMBIENT);
+            Minecraft.getInstance().getSoundManager().stop(currentSound.location(), SoundSource.AMBIENT);
             currentSound = null;
         }
     }

@@ -1,9 +1,10 @@
 package net.tropicraft.core.common.entity.neutral;
 
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityReference;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -22,11 +23,12 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.sound.Sounds;
 
 import javax.annotation.Nullable;
-import java.util.UUID;
 
 public class IguanaEntity extends PathfinderMob {
 
@@ -35,19 +37,19 @@ public class IguanaEntity extends PathfinderMob {
      */
     private int angerLevel;
     @Nullable
-    private UUID angerTargetUUID;
+    private EntityReference<Player> angerTarget;
 
     private static final AttributeModifier ATTACK_SPEED_BOOST_MODIFIER = new AttributeModifier(Tropicraft.location("attack_speed_boost"), 0.05, AttributeModifier.Operation.ADD_VALUE);
 
     public IguanaEntity(EntityType<? extends PathfinderMob> type, Level world) {
-        super((EntityType<? extends IguanaEntity>) type, world);
+        super(type, world);
     }
 
     @Override
     public void setLastHurtByMob(@Nullable LivingEntity entity) {
         super.setLastHurtByMob(entity);
-        if (entity != null) {
-            angerTargetUUID = entity.getUUID();
+        if (entity instanceof Player player) {
+            angerTarget = new EntityReference<>(player);
         }
     }
 
@@ -76,37 +78,30 @@ public class IguanaEntity extends PathfinderMob {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag compound) {
-        super.addAdditionalSaveData(compound);
-        compound.putShort("Anger", (short) angerLevel);
+    public void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putShort("Anger", (short) angerLevel);
 
-        if (angerTargetUUID != null) {
-            compound.putString("HurtBy", angerTargetUUID.toString());
-        } else {
-            compound.putString("HurtBy", "");
+        EntityReference.store(angerTarget, output, "HurtBy");
+    }
+
+    @Override
+    public void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        angerLevel = input.getShortOr("Anger", (short) 0);
+
+        angerTarget = EntityReference.read(input, "HurtBy");
+
+        Player player = EntityReference.get(angerTarget, level()::getPlayerByUUID, Player.class);
+        setLastHurtByMob(player);
+        if (player != null) {
+            lastHurtByPlayer = new EntityReference<>(player);
+            lastHurtByPlayerMemoryTime = getLastHurtByMobTimestamp();
         }
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compound) {
-        super.readAdditionalSaveData(compound);
-        angerLevel = compound.getShort("Anger");
-        String hurtBy = compound.getString("HurtBy");
-
-        if (!hurtBy.isEmpty()) {
-            angerTargetUUID = UUID.fromString(hurtBy);
-            Player entityplayer = level().getPlayerByUUID(angerTargetUUID);
-            setLastHurtByMob(entityplayer);
-
-            if (entityplayer != null) {
-                lastHurtByPlayer = entityplayer;
-                lastHurtByPlayerTime = getLastHurtByMobTimestamp();
-            }
-        }
-    }
-
-    @Override
-    protected void customServerAiStep() {
+    protected void customServerAiStep(ServerLevel level) {
         AttributeInstance attribute = getAttribute(Attributes.MOVEMENT_SPEED);
 
         if (isAngry()) {
@@ -119,27 +114,28 @@ public class IguanaEntity extends PathfinderMob {
             attribute.removeModifier(ATTACK_SPEED_BOOST_MODIFIER);
         }
 
-        if (angerLevel > 0 && angerTargetUUID != null && getLastHurtByMob() == null) {
-            Player entityplayer = level().getPlayerByUUID(angerTargetUUID);
-            setLastHurtByMob(entityplayer);
-            lastHurtByPlayer = entityplayer;
-            lastHurtByPlayerTime = getLastHurtByMobTimestamp();
+        if (angerLevel > 0 && angerTarget != null && getLastHurtByMob() == null) {
+            Player player = EntityReference.get(angerTarget, level()::getPlayerByUUID, Player.class);
+            setLastHurtByMob(player);
+            if (player != null) {
+                setLastHurtByPlayer(player, PLAYER_HURT_EXPERIENCE_TIME);
+            }
         }
 
-        super.customServerAiStep();
+        super.customServerAiStep(level);
     }
 
     @Override
-    public boolean hurt(DamageSource damageSource, float amount) {
-        if (isInvulnerableTo(damageSource)) {
+    public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
+        if (isInvulnerableTo(level, source)) {
             return false;
         } else {
-            Entity sourceEntity = damageSource.getEntity();
-            if (sourceEntity instanceof Player && !((Player) sourceEntity).isCreative() && hasLineOfSight(sourceEntity)) {
+            Entity sourceEntity = source.getEntity();
+            if (sourceEntity instanceof Player sourcePlayer && !sourcePlayer.isCreative() && hasLineOfSight(sourceEntity)) {
                 becomeAngryAt(sourceEntity);
             }
 
-            return super.hurt(damageSource, amount);
+            return super.hurtServer(level, source, amount);
         }
     }
 

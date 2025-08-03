@@ -1,14 +1,19 @@
 package net.tropicraft.core.common.entity.passive;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityReference;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
@@ -25,20 +30,21 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.UUID;
-
 public final class FiddlerCrabEntity extends Animal implements OwnableEntity {
+    private static final String OWNER_TAG = "Owner";
+    private static final String ROLLING_DOWN_TOWN_TAG = "RollingDownTown";
+
     private boolean rollingDownTown;
 
     private boolean travellingGolf;
 
     @Nullable
-    private UUID owner = null;
-    private static final String OWNER_UUID_TAG = "Owner";
-    private static final String ROLLING_DOWN_TOWN_TAG = "RollingDownTown";
+    private EntityReference<LivingEntity> owner = null;
 
     public FiddlerCrabEntity(EntityType<? extends FiddlerCrabEntity> type, Level world) {
         super(type, world);
@@ -49,7 +55,7 @@ public final class FiddlerCrabEntity extends Animal implements OwnableEntity {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes()
+        return Animal.createAnimalAttributes()
                 .add(Attributes.MAX_HEALTH, 6.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.15f)
                 .add(Attributes.STEP_HEIGHT, 1.0f);
@@ -71,25 +77,27 @@ public final class FiddlerCrabEntity extends Animal implements OwnableEntity {
         float targetAmount = distance * 4.0f + rotation * 0.25f;
         targetAmount = Math.min(targetAmount, 0.25f);
 
-        walkAnimation.update(targetAmount, 0.4f);
+        walkAnimation.update(targetAmount, 0.4f, 1.0f);
     }
 
     @Override
-    public boolean hurt(final DamageSource source, final float amount) {
+    public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
         if (!rollingDownTown) {
-            return super.hurt(source, amount);
+            return super.hurtServer(level, source, amount);
         }
 
         if (owner != null && !wasHurtByOwner(source)) {
             return false;
         }
 
-        return super.hurt(source, amount);
+        return super.hurtServer(level, source, amount);
     }
 
-    private boolean wasHurtByOwner(final DamageSource source) {
-        UUID sourceId = source.getEntity() != null ? source.getEntity().getUUID() : null;
-        return owner != null && owner.equals(sourceId);
+    private boolean wasHurtByOwner(DamageSource source) {
+        if (owner == null) {
+            return false;
+        }
+        return source.getEntity() instanceof LivingEntity sourceEntity && owner.matches(sourceEntity);
     }
 
     @Override
@@ -98,6 +106,7 @@ public final class FiddlerCrabEntity extends Animal implements OwnableEntity {
     }
 
     @Override
+    @Nullable
     public FiddlerCrabEntity getBreedOffspring(ServerLevel world, AgeableMob mate) {
         return null;
     }
@@ -108,7 +117,7 @@ public final class FiddlerCrabEntity extends Animal implements OwnableEntity {
     }
 
     @Override
-    protected boolean isAffectedByFluids() {
+    public boolean isAffectedByFluids() {
         // avoid being affected by water while on the ground
         return !onGround();
     }
@@ -141,7 +150,7 @@ public final class FiddlerCrabEntity extends Animal implements OwnableEntity {
     }
 
     private void travelGolf(Vec3 input) {
-        if (!isControlledByLocalInstance() || isFallFlying()) {
+        if (isFallFlying()) {
             super.travel(input);
             return;
         }
@@ -165,7 +174,7 @@ public final class FiddlerCrabEntity extends Animal implements OwnableEntity {
     public BlockPos getBlockPosBelowThatAffectsMyMovement() {
         if (travellingGolf) {
             // Pretend to be walking in the air!
-            return blockPosition().atY(level().getMinBuildHeight() - 1);
+            return blockPosition().atY(level().getMinY() - 1);
         }
         return super.getBlockPosBelowThatAffectsMyMovement();
     }
@@ -195,24 +204,17 @@ public final class FiddlerCrabEntity extends Animal implements OwnableEntity {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putBoolean(ROLLING_DOWN_TOWN_TAG, rollingDownTown);
-        final UUID ownerUUID = getOwnerUUID();
-        if (ownerUUID != null) {
-            tag.putUUID(OWNER_UUID_TAG, ownerUUID);
-        }
+    public void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putBoolean(ROLLING_DOWN_TOWN_TAG, rollingDownTown);
+        EntityReference.store(owner, output, OWNER_TAG);
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        rollingDownTown = tag.getBoolean(ROLLING_DOWN_TOWN_TAG);
-        if (tag.contains(OWNER_UUID_TAG)) {
-            setOwnerUUID(tag.getUUID(OWNER_UUID_TAG));
-        } else {
-            setOwnerUUID(null);
-        }
+    public void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        rollingDownTown = input.getBooleanOr(ROLLING_DOWN_TOWN_TAG, false);
+        setOwner(EntityReference.read(input, OWNER_TAG));
     }
 
     public boolean isRollingDownTown() {
@@ -227,7 +229,7 @@ public final class FiddlerCrabEntity extends Animal implements OwnableEntity {
         return super.maxUpStep();
     }
 
-    public static boolean canCrabSpawn(EntityType<? extends FiddlerCrabEntity> type, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {
+    public static boolean canCrabSpawn(EntityType<? extends FiddlerCrabEntity> type, ServerLevelAccessor world, EntitySpawnReason reason, BlockPos pos, RandomSource random) {
         BlockPos groundPos = pos.below();
         BlockState groundBlock = world.getBlockState(groundPos);
         if (!groundBlock.is(BlockTags.SAND)) {
@@ -244,19 +246,17 @@ public final class FiddlerCrabEntity extends Animal implements OwnableEntity {
                 && (fluid.isEmpty() || fluid.is(FluidTags.WATER));
     }
 
-    @Nullable
     @Override
-    public UUID getOwnerUUID() {
+    @Nullable
+    public EntityReference<LivingEntity> getOwnerReference() {
         return owner;
     }
 
-    public void setOwnerUUID(@Nullable UUID uuid) {
-        this.owner = uuid;
+    public void setOwner(@Nullable EntityReference<LivingEntity> owner) {
+        this.owner = owner;
     }
 
     static final class CrabMoveController extends MoveControl {
-        private static final double RAD_TO_DEG = 180.0 / Math.PI;
-
         CrabMoveController(Mob mob) {
             super(mob);
         }
@@ -283,7 +283,7 @@ public final class FiddlerCrabEntity extends Animal implements OwnableEntity {
                 return;
             }
 
-            float forward = (float) (Mth.atan2(dz, dx) * RAD_TO_DEG) - 90.0f;
+            float forward = (float) (Mth.atan2(dz, dx) * Mth.RAD_TO_DEG) - 90.0f;
             float leftTarget = forward - 90.0f;
             float rightTarget = forward + 90.0f;
 

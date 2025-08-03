@@ -40,7 +40,7 @@ public class EntityAIChillAtFire extends Goal {
 
         BlockPos blockpos = entityObj.blockPosition();
 
-        if (!entityObj.level().isDay() || entityObj.level().isRaining() && entityObj.level().getBiome(blockpos).value().getPrecipitationAt(blockpos) != Biome.Precipitation.RAIN) {
+        if (!entityObj.level().isBrightOutside() || entityObj.level().isRaining() && entityObj.level().getBiome(blockpos).value().getPrecipitationAt(blockpos, entityObj.level().getSeaLevel()) != Biome.Precipitation.RAIN) {
             if (!isTooClose()) {
                 return entityObj.level().random.nextInt(20) == 0;
             } else {
@@ -60,7 +60,7 @@ public class EntityAIChillAtFire extends Goal {
 
         BlockPos blockpos = entityObj.blockPosition();
         //return !this.entityObj.getNavigation().noPath();
-        if (!entityObj.level().isDay() || entityObj.level().isRaining() && entityObj.level().getBiome(blockpos).value().getPrecipitationAt(blockpos) != Biome.Precipitation.RAIN) {
+        if (!entityObj.level().isBrightOutside() || entityObj.level().isRaining() && entityObj.level().getBiome(blockpos).value().getPrecipitationAt(blockpos, entityObj.level().getSeaLevel()) != Biome.Precipitation.RAIN) {
             return !isTooClose();
         } else {
             return entityObj.level().random.nextInt(60) != 0;
@@ -78,12 +78,11 @@ public class EntityAIChillAtFire extends Goal {
             //path to base of fire
             blockposGoal = entityObj.posLastFireplaceFound.offset(0, -1, 0);
         } else {
-            blockposGoal = entityObj.getRestrictCenter();
-        }
-
-        if (blockposGoal.equals(BlockPos.ZERO)) {
-            stop();
-            return;
+            if (!entityObj.hasHome()) {
+                stop();
+                return;
+            }
+            blockposGoal = entityObj.getHomePosition();
         }
 
         //prevent walking into the fire
@@ -188,16 +187,14 @@ public class EntityAIChillAtFire extends Goal {
             //path to base of fire
             blockposGoal = entityObj.posLastFireplaceFound.offset(0, -1, 0);
         } else {
-            blockposGoal = entityObj.getRestrictCenter();
-        }
-
-        if (blockposGoal.equals(BlockPos.ZERO)) {
-            return false;
+            if (!entityObj.hasHome()) {
+                return false;
+            }
+            blockposGoal = entityObj.getHomePosition();
         }
 
         //prevent walking into the fire
-        double dist = entityObj.position().distanceTo(new Vec3(blockposGoal.getX(), blockposGoal.getY(), blockposGoal.getZ()));
-        return dist <= 3D;
+        return entityObj.position().closerThan(Vec3.atCenterOf(blockposGoal), 3.0);
     }
 }
 

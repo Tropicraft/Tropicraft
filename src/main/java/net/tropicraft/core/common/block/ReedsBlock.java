@@ -7,11 +7,13 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.util.TriState;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
@@ -25,7 +27,6 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.util.TriState;
 
 public final class ReedsBlock extends Block implements SimpleWaterloggedBlock {
     public static final MapCodec<ReedsBlock> CODEC = simpleCodec(ReedsBlock::new);
@@ -67,23 +68,23 @@ public final class ReedsBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos) {
-        if (!state.canSurvive(world, currentPos)) {
+    protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess scheduledTickAccess, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
+        if (!state.canSurvive(level, pos)) {
             return Blocks.AIR.defaultBlockState();
         }
 
         if (state.getValue(WATERLOGGED)) {
-            world.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
+            scheduledTickAccess.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
 
-        return state.setValue(TYPE, getAppropriateTypeAt(world, currentPos));
+        return state.setValue(TYPE, getAppropriateTypeAt(level, pos));
     }
 
-    private Type getAppropriateTypeAt(LevelAccessor world, BlockPos pos) {
-        if (world.getBlockState(pos.above()).is(this)) {
+    private Type getAppropriateTypeAt(LevelReader level, BlockPos pos) {
+        if (level.getBlockState(pos.above()).is(this)) {
             return Type.BOTTOM;
         }
-        return world.getBlockState(pos.below()).is(this) ? Type.TOP : Type.SINGLE;
+        return level.getBlockState(pos.below()).is(this) ? Type.TOP : Type.SINGLE;
     }
 
     @Override

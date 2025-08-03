@@ -115,52 +115,52 @@ public class TwoJointSolver {
         Matrix4x3f localToWorld = new Matrix4x3f();
         for (ModelPart part : body) {
             translateAndRotate(part, localToWorld);
-		}
-		return localToWorld;
-	}
+        }
+        return localToWorld;
+    }
 
-	private Matrix4x3f getWorldToLocal() {
-		Matrix4x3f worldToLocal = new Matrix4x3f();
-		for (int i = body.length - 1; i >= 0; i--) {
-			translateAndRotateInverse(body[i], worldToLocal);
-		}
-		return worldToLocal;
-	}
+    private Matrix4x3f getWorldToLocal() {
+        Matrix4x3f worldToLocal = new Matrix4x3f();
+        for (int i = body.length - 1; i >= 0; i--) {
+            translateAndRotateInverse(body[i], worldToLocal);
+        }
+        return worldToLocal;
+    }
 
-	// Cosine rule: gives the angle opposite to side c
-	private static float angleForSideLengths(float a, float b, float c) {
-		return (float) Math.acos(Mth.clamp(
-				(a * a + b * b - c * c) / (2 * a * b),
-				-1.0f, 1.0f
-		));
-	}
+    // Cosine rule: gives the angle opposite to side c
+    private static float angleForSideLengths(float a, float b, float c) {
+        return (float) Math.acos(Mth.clamp(
+                (a * a + b * b - c * c) / (2 * a * b),
+                -1.0f, 1.0f
+        ));
+    }
 
-	private Quaternionf getWorldKneeRotation(Quaternionf result) {
-		for (ModelPart part : body) {
-			result.rotateZYX(part.zRot, part.yRot, part.xRot);
-		}
-		result.rotateZYX(hip.zRot, hip.yRot, hip.xRot);
-		result.rotateZYX(knee.zRot, knee.yRot, knee.xRot);
-		return result;
-	}
+    private Quaternionf getWorldKneeRotation(Quaternionf result) {
+        for (ModelPart part : body) {
+            result.rotateZYX(part.zRot, part.yRot, part.xRot);
+        }
+        result.rotateZYX(hip.zRot, hip.yRot, hip.xRot);
+        result.rotateZYX(knee.zRot, knee.yRot, knee.xRot);
+        return result;
+    }
 
-	private static void translateAndRotate(ModelPart part, Matrix4x3f matrix) {
-		matrix.translate(part.x / 16.0f, part.y / 16.0f, part.z / 16.0f);
-		if (part.xRot != 0.0f || part.yRot != 0.0f || part.zRot != 0.0f) {
-			matrix.rotateZYX(part.zRot, part.yRot, part.xRot);
-		}
-		if (part.xScale != 1.0f || part.yScale != 1.0f || part.zScale != 1.0f) {
-			matrix.scale(part.xScale, part.yScale, part.zScale);
-		}
-	}
+    private static void translateAndRotate(ModelPart part, Matrix4x3f matrix) {
+        matrix.translate(part.x / 16.0f, part.y / 16.0f, part.z / 16.0f);
+        if (part.xRot != 0.0f || part.yRot != 0.0f || part.zRot != 0.0f) {
+            matrix.rotateZYX(part.zRot, part.yRot, part.xRot);
+        }
+        if (part.xScale != 1.0f || part.yScale != 1.0f || part.zScale != 1.0f) {
+            matrix.scale(part.xScale, part.yScale, part.zScale);
+        }
+    }
 
-	private static void translateAndRotateInverse(ModelPart part, Matrix4x3f worldToLocal) {
-		if (part.xScale != 1.0f || part.yScale != 1.0f || part.zScale != 1.0f) {
-			worldToLocal.scale(1.0f / part.xScale, 1.0f / part.yScale, 1.0f / part.zScale);
-		}
-		if (part.xRot != 0.0f || part.yRot != 0.0f || part.zRot != 0.0f) {
-			worldToLocal.rotate(new Quaternionf().rotationZYX(part.zRot, part.yRot, part.xRot).conjugate());
-		}
-		worldToLocal.translate(-part.x / 16.0f, -part.y / 16.0f, -part.z / 16.0f);
-	}
+    private static void translateAndRotateInverse(ModelPart part, Matrix4x3f worldToLocal) {
+        if (part.xScale != 1.0f || part.yScale != 1.0f || part.zScale != 1.0f) {
+            worldToLocal.scale(1.0f / part.xScale, 1.0f / part.yScale, 1.0f / part.zScale);
+        }
+        if (part.xRot != 0.0f || part.yRot != 0.0f || part.zRot != 0.0f) {
+            worldToLocal.rotate(new Quaternionf().rotationZYX(part.zRot, part.yRot, part.xRot).conjugate());
+        }
+        worldToLocal.translate(-part.x / 16.0f, -part.y / 16.0f, -part.z / 16.0f);
+    }
 }

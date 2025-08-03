@@ -1,15 +1,15 @@
 package net.tropicraft.core.client.entity.render;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.entity.model.EIHModel;
+import net.tropicraft.core.client.entity.render.state.EIHRenderState;
 import net.tropicraft.core.common.entity.neutral.EIHEntity;
 
-public class EIHRenderer extends MobRenderer<EIHEntity, EIHModel> {
+public class EIHRenderer extends MobRenderer<EIHEntity, EIHRenderState, EIHModel> {
 
     private static final ResourceLocation TEXTURE_SLEEP = Tropicraft.location("textures/entity/eih/headtext.png");
     private static final ResourceLocation TEXTURE_AWARE = Tropicraft.location("textures/entity/eih/headawaretext.png");
@@ -20,15 +20,22 @@ public class EIHRenderer extends MobRenderer<EIHEntity, EIHModel> {
     }
 
     @Override
-    protected void scale(EIHEntity eih, PoseStack stack, float partialTickTime) {
-        stack.scale(2.0f, 1.75f, 2.0f);
+    public EIHRenderState createRenderState() {
+        return new EIHRenderState();
     }
 
     @Override
-    public ResourceLocation getTextureLocation(EIHEntity eih) {
-        if (eih.isAware()) {
+    public void extractRenderState(EIHEntity entity, EIHRenderState state, float partialTicks) {
+        super.extractRenderState(entity, state, partialTicks);
+        state.angry = entity.isAngry();
+        state.aware = entity.isAware();
+    }
+
+    @Override
+    public ResourceLocation getTextureLocation(EIHRenderState state) {
+        if (state.aware) {
             return TEXTURE_AWARE;
-        } else if (eih.isAngry()) {
+        } else if (state.angry) {
             return TEXTURE_ANGRY;
         } else {
             return TEXTURE_SLEEP;

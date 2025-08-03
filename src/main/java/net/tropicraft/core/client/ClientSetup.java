@@ -11,11 +11,11 @@ import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.entity.render.EggRenderer;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 
-@EventBusSubscriber(modid = Tropicraft.ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Tropicraft.ID, value = Dist.CLIENT)
 public class ClientSetup {
     @SubscribeEvent
     public static void setupDimensionRenderInfo(RegisterDimensionSpecialEffectsEvent event) {
-        event.register(TropicraftDimension.EFFECTS_ID, new DimensionSpecialEffects(256.0F, true, DimensionSpecialEffects.SkyType.NORMAL, false, false) {
+        event.register(TropicraftDimension.EFFECTS_ID, new DimensionSpecialEffects(DimensionSpecialEffects.SkyType.OVERWORLD, false, false) {
             @Override
             public Vec3 getBrightnessDependentFogColor(Vec3 color, float brightness) {
                 return color.multiply(brightness * 0.94f + 0.06f, brightness * 0.94f + 0.06f, brightness * 0.91f + 0.09f);

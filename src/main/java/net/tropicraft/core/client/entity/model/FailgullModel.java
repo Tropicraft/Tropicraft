@@ -1,25 +1,28 @@
 package net.tropicraft.core.client.entity.model;
 
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
-import net.tropicraft.core.common.entity.passive.FailgullEntity;
 
-public class FailgullModel extends HierarchicalModel<FailgullEntity> {
+public class FailgullModel extends EntityModel<LivingEntityRenderState> {
     private static final float WING_ROT_BASE = 90 * Mth.DEG_TO_RAD;
     private static final float LEFT_WING_ZROT = 93 * Mth.DEG_TO_RAD;
     private static final float RIGHT_WING_ZROT = 87 * Mth.DEG_TO_RAD;
 
-    private final ModelPart root;
     private final ModelPart lowerLeg1;
     private final ModelPart lowerLeg2;
     private final ModelPart rightWing;
     private final ModelPart leftWing;
 
     public FailgullModel(ModelPart root) {
-        this.root = root;
+        super(root);
         lowerLeg1 = root.getChild("lowerLeg1");
         lowerLeg2 = root.getChild("lowerLeg2");
         rightWing = root.getChild("rightWing");
@@ -100,16 +103,13 @@ public class FailgullModel extends HierarchicalModel<FailgullEntity> {
     }
 
     @Override
-    public void setupAnim(FailgullEntity failgull, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        lowerLeg1.xRot = Mth.cos(limbSwing * 0.6662f) * 1.4f * limbSwingAmount;
-        lowerLeg2.xRot = Mth.cos(limbSwing * 0.6662f + Mth.PI) * 1.4f * limbSwingAmount;
+    public void setupAnim(LivingEntityRenderState state) {
+        super.setupAnim(state);
 
-        rightWing.zRot = RIGHT_WING_ZROT + Mth.sin(ageInTicks * 0.4f) / 2;
-        leftWing.zRot = LEFT_WING_ZROT - Mth.sin(ageInTicks * 0.4f) / 2;
-    }
+        lowerLeg1.xRot = Mth.cos(state.walkAnimationPos * 0.6662f) * 1.4f * state.walkAnimationSpeed;
+        lowerLeg2.xRot = Mth.cos(state.walkAnimationPos * 0.6662f + Mth.PI) * 1.4f * state.walkAnimationSpeed;
 
-    @Override
-    public ModelPart root() {
-        return root;
+        rightWing.zRot = RIGHT_WING_ZROT + Mth.sin(state.ageInTicks * 0.4f) / 2;
+        leftWing.zRot = LEFT_WING_ZROT - Mth.sin(state.ageInTicks * 0.4f) / 2;
     }
 }

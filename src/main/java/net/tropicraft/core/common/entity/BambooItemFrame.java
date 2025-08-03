@@ -7,7 +7,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import net.tropicraft.core.common.item.TropicraftItems;
 
@@ -36,17 +35,17 @@ public class BambooItemFrame extends ItemFrame implements IEntityWithComplexSpaw
     @Override
     public void writeSpawnData(RegistryFriendlyByteBuf buffer) {
         buffer.writeBlockPos(pos);
-        buffer.writeByte(direction.get3DDataValue());
+        Direction.STREAM_CODEC.encode(buffer, getDirection());
     }
 
     @Override
     public void readSpawnData(RegistryFriendlyByteBuf additionalData) {
         pos = additionalData.readBlockPos();
-        setDirection(Direction.from3DDataValue(additionalData.readByte()));
+        setDirection(Direction.STREAM_CODEC.decode(additionalData));
     }
 
     @Override
-    public ItemStack getPickedResult(HitResult target) {
+    public ItemStack getPickResult() {
         return new ItemStack(TropicraftItems.BAMBOO_ITEM_FRAME.get());
     }
 }

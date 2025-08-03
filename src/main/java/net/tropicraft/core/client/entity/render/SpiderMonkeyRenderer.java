@@ -1,28 +1,34 @@
 package net.tropicraft.core.client.entity.render;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.entity.model.SpiderMonkeyModel;
+import net.tropicraft.core.client.entity.render.state.SpiderMonkeyRenderState;
 import net.tropicraft.core.common.entity.passive.monkey.SpiderMonkeyEntity;
 
-public class SpiderMonkeyRenderer extends MobRenderer<SpiderMonkeyEntity, SpiderMonkeyModel<SpiderMonkeyEntity>> {
+public class SpiderMonkeyRenderer extends MobRenderer<SpiderMonkeyEntity, SpiderMonkeyRenderState, SpiderMonkeyModel> {
     private static final ResourceLocation TEXTURE = Tropicraft.location("textures/entity/spider_monkey.png");
 
     public SpiderMonkeyRenderer(EntityRendererProvider.Context context) {
-        super(context, new SpiderMonkeyModel<>(context.bakeLayer(TropicraftRenderLayers.SPIDER_MONKEY_LAYER)), 0.4f);
+        super(context, new SpiderMonkeyModel(context.bakeLayer(TropicraftRenderLayers.SPIDER_MONKEY_LAYER)), 0.4f);
     }
 
     @Override
-    protected void scale(SpiderMonkeyEntity entity, PoseStack matrixStack, float partialTicks) {
-        matrixStack.scale(0.7f, 0.7f, 0.7f);
+    public SpiderMonkeyRenderState createRenderState() {
+        return new SpiderMonkeyRenderState();
     }
 
     @Override
-    public ResourceLocation getTextureLocation(SpiderMonkeyEntity entity) {
+    public void extractRenderState(SpiderMonkeyEntity entity, SpiderMonkeyRenderState state, float partialTicks) {
+        super.extractRenderState(entity, state, partialTicks);
+        state.standAnimation = entity.getStandAnimation(partialTicks);
+    }
+
+    @Override
+    public ResourceLocation getTextureLocation(SpiderMonkeyRenderState state) {
         return TEXTURE;
     }
 }

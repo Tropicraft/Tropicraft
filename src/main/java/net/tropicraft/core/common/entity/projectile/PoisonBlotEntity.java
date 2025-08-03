@@ -5,7 +5,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
@@ -16,10 +15,6 @@ public class PoisonBlotEntity extends ThrowableProjectile {
 
     public PoisonBlotEntity(EntityType<? extends ThrowableProjectile> type, Level world) {
         super(type, world);
-    }
-
-    public PoisonBlotEntity(EntityType<? extends ThrowableProjectile> type, LivingEntity thrower, Level world) {
-        super(type, thrower, world);
     }
 
     @Override

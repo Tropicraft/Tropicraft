@@ -19,7 +19,7 @@ import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
-import net.minecraft.world.level.portal.DimensionTransition;
+import net.minecraft.world.level.portal.TeleportTransition;
 import net.minecraft.world.phys.Vec3;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomeBuilder;
@@ -28,6 +28,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
 import java.util.OptionalLong;
 
 public class TropicraftDimension {
@@ -58,6 +59,7 @@ public class TropicraftDimension {
                 BlockTags.INFINIBURN_OVERWORLD,
                 EFFECTS_ID,
                 0.0f,
+                Optional.of(256),
                 new DimensionType.MonsterSettings(false, true, UniformInt.of(0, 7), 0)
         ));
     }
@@ -84,7 +86,7 @@ public class TropicraftDimension {
      * @param dimensionType The Tropicraft Dimension Type for reference
      */
     public static void teleportPlayer(ServerPlayer player, ResourceKey<Level> dimensionType) {
-        ServerLevel targetLevel = getTeleportDestination(player.serverLevel(), dimensionType);
+        ServerLevel targetLevel = getTeleportDestination(player.level(), dimensionType);
         if (targetLevel == null) {
             return;
         }
@@ -97,18 +99,18 @@ public class TropicraftDimension {
         Vec3 pos = new Vec3(x + 0.5, topY + 1.0, z + 0.5);
 
         player.unRide();
-        player.changeDimension(new DimensionTransition(
+        player.teleport(new TeleportTransition(
                 targetLevel,
                 pos,
                 Vec3.ZERO,
                 player.getYRot(),
                 player.getXRot(),
-                DimensionTransition.DO_NOTHING
+                TeleportTransition.DO_NOTHING
         ));
     }
 
     @Nullable
-    public static DimensionTransition getPortalTransition(ServerLevel level, Entity entity, ResourceKey<Level> targetDimension) {
+    public static TeleportTransition getPortalTransition(ServerLevel level, Entity entity, ResourceKey<Level> targetDimension) {
         ServerLevel targetLevel = getTeleportDestination(level, targetDimension);
         if (targetLevel == null) {
             return null;
@@ -118,13 +120,13 @@ public class TropicraftDimension {
         if (portal == null) {
             return null;
         }
-        return new DimensionTransition(
+        return new TeleportTransition(
                 targetLevel,
                 portal.position(),
                 Vec3.ZERO,
                 portal.yRot(),
                 portal.xRot(),
-                DimensionTransition.PLACE_PORTAL_TICKET.then(DimensionTransition.PLAY_PORTAL_SOUND)
+                TeleportTransition.PLACE_PORTAL_TICKET.then(TeleportTransition.PLAY_PORTAL_SOUND)
         );
     }
 
@@ -139,9 +141,9 @@ public class TropicraftDimension {
      */
     public static void teleportPlayerWithPortal(ServerPlayer player, ResourceKey<Level> dimensionType) {
         player.unRide();
-        DimensionTransition portalTransition = getPortalTransition(player.serverLevel(), player, dimensionType);
+        TeleportTransition portalTransition = getPortalTransition(player.level(), player, dimensionType);
         if (portalTransition != null) {
-            player.changeDimension(portalTransition);
+            player.teleport(portalTransition);
         }
     }
 

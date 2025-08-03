@@ -2,9 +2,13 @@ package net.tropicraft.core.common.block;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.ParticleUtils;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.function.Supplier;
@@ -14,9 +18,11 @@ public class MangroveLeavesBlock extends LeavesBlock {
     private static final int SPACING = 2;
 
     private final Supplier<PropaguleBlock> propaguleBlock;
+    private final ParticleOptions leafParticle;
 
-    public MangroveLeavesBlock(Properties props, Supplier<PropaguleBlock> propaguleBlock) {
-        super(props);
+    public MangroveLeavesBlock(float leafParticleChance, ParticleOptions leafParticle, Supplier<PropaguleBlock> propaguleBlock, BlockBehaviour.Properties properties) {
+        super(leafParticleChance, properties);
+        this.leafParticle = leafParticle;
         this.propaguleBlock = propaguleBlock;
     }
 
@@ -37,6 +43,11 @@ public class MangroveLeavesBlock extends LeavesBlock {
         if (canGrowPropagules(state) && random.nextInt(PROPAGULE_GROW_CHANCE) == 0) {
             tryGrowPropagule(world, pos);
         }
+    }
+
+    @Override
+    protected void spawnFallingLeavesParticle(Level level, BlockPos pos, RandomSource random) {
+        ParticleUtils.spawnParticleBelow(level, pos, random, leafParticle);
     }
 
     private void tryGrowPropagule(ServerLevel world, BlockPos pos) {

@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -26,6 +27,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.sound.Sounds;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
@@ -102,17 +104,17 @@ public final class BongoDrumBlock extends Block {
     }
 
     @Override
-    public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-        if (worldIn.isClientSide) {
+    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, @Nullable Orientation orientation, boolean movedByPiston) {
+        if (level.isClientSide) {
             return;
         }
-        boolean flag = worldIn.hasNeighborSignal(pos);
+        boolean flag = level.hasNeighborSignal(pos);
         if (flag != state.getValue(POWERED)) {
             if (flag) {
-                playBongoSound(worldIn, pos, state);
+                playBongoSound(level, pos, state);
             }
 
-            worldIn.setBlock(pos, state.setValue(POWERED, flag), 3);
+            level.setBlock(pos, state.setValue(POWERED, flag), 3);
         }
     }
 

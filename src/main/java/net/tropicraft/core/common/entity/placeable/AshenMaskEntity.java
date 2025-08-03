@@ -1,17 +1,20 @@
 package net.tropicraft.core.common.entity.placeable;
 
-import net.minecraft.nbt.CompoundTag;
+import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
+import net.tropicraft.core.common.item.AshenMaskItem;
 import net.tropicraft.core.common.item.AshenMasks;
 import net.tropicraft.core.common.item.TropicraftItems;
 
@@ -24,8 +27,9 @@ public class AshenMaskEntity extends Entity {
         super(type, world);
     }
 
-    public void dropItemStack() {
-        spawnAtLocation(new ItemStack(TropicraftItems.ASHEN_MASKS.get(AshenMasks.VALUES[getMaskType()]).get()), 1.0f);
+    public void dropItemStack(ServerLevel level) {
+        ItemEntry<AshenMaskItem> mask = TropicraftItems.ASHEN_MASKS.get(AshenMasks.VALUES[getMaskType()]);
+        spawnAtLocation(level, new ItemStack(mask.get()), 1.0f);
     }
 
     @Override
@@ -39,13 +43,13 @@ public class AshenMaskEntity extends Entity {
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag nbt) {
-        setMaskType(nbt.getByte("MaskType"));
+    protected void readAdditionalSaveData(ValueInput input) {
+        setMaskType(input.getByteOr("MaskType", (byte) 0));
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag nbt) {
-        nbt.putByte("MaskType", getMaskType());
+    protected void addAdditionalSaveData(ValueOutput output) {
+        output.putByte("MaskType", getMaskType());
     }
 
     public void setMaskType(byte type) {
@@ -81,14 +85,14 @@ public class AshenMaskEntity extends Entity {
     }
 
     @Override
-    public boolean hurt(DamageSource damageSource, float par2) {
-        if (isInvulnerableTo(damageSource)) {
+    public boolean hurtServer(ServerLevel level, DamageSource damageSource, float amount) {
+        if (isInvulnerableToBase(damageSource)) {
             return false;
         } else {
-            if (isAlive() && !level().isClientSide) {
+            if (isAlive()) {
                 remove(RemovalReason.KILLED);
                 markHurt();
-                dropItemStack();
+                dropItemStack(level);
             }
 
             return true;
@@ -96,7 +100,7 @@ public class AshenMaskEntity extends Entity {
     }
 
     @Override
-    public ItemStack getPickedResult(HitResult target) {
+    public ItemStack getPickResult() {
         return new ItemStack(TropicraftItems.ASHEN_MASKS.get(AshenMasks.VALUES[getMaskType()]).get());
     }
 }

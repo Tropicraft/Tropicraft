@@ -2,11 +2,11 @@ package net.tropicraft.core.common.entity.placeable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.HitResult;
 import net.tropicraft.core.common.entity.BambooItemFrame;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 
@@ -23,8 +23,8 @@ public class WallItemEntity extends BambooItemFrame {
     }
 
     @Override
-    protected void dropItem(@Nullable Entity entityIn, boolean p_146065_2_) {
-        super.dropItem(entityIn, false);
+    public void dropItem(ServerLevel level, @Nullable Entity entity) {
+        super.dropItem(level, entity);
         remove(RemovalReason.DISCARDED);
     }
 
@@ -33,7 +33,7 @@ public class WallItemEntity extends BambooItemFrame {
     }
 
     @Override
-    public ItemStack getPickedResult(HitResult target) {
+    public ItemStack getPickResult() {
         return getItem();
     }
 }

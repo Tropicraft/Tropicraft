@@ -13,7 +13,6 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.tropicraft.core.common.block.TropicraftBlocks;
-import net.tropicraft.core.common.block.TropicraftLeavesBlock;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftLeavesFixer;
 
 import java.util.Set;
@@ -54,7 +53,7 @@ public class UndergrowthFeature extends Feature<NoneFeatureConfiguration> {
         setBlock(world, pos, TropicraftBlocks.MAHOGANY_LOG.get().defaultBlockState());
 
         Set<BlockPos> leaves = new ObjectOpenHashSet<>();
-        BlockState leavesState = TropicraftBlocks.KAPOK_LEAVES.get().defaultBlockState().setValue(TropicraftLeavesBlock.NEW_DECAY, true);
+        BlockState leavesState = TropicraftBlocks.KAPOK_LEAVES.get().defaultBlockState();
 
         int count = 0;
 

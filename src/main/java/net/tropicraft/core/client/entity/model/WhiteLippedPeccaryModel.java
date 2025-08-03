@@ -1,16 +1,12 @@
 package net.tropicraft.core.client.entity.model;
 
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 
-public class WhiteLippedPeccaryModel<T extends Entity> extends TropicraftAgeableHierarchicalModel<T> {
-    private final ModelPart root;
+public class WhiteLippedPeccaryModel extends EntityModel<LivingEntityRenderState> {
     private final ModelPart head_base;
     private final ModelPart body_base;
     private final ModelPart leg_left_ba;
@@ -19,7 +15,7 @@ public class WhiteLippedPeccaryModel<T extends Entity> extends TropicraftAgeable
     private final ModelPart leg_right_fr;
 
     public WhiteLippedPeccaryModel(ModelPart root) {
-        this.root = root;
+        super(root);
         body_base = root.getChild("body_base");
         head_base = root.getChild("head_base");
 
@@ -114,14 +110,19 @@ public class WhiteLippedPeccaryModel<T extends Entity> extends TropicraftAgeable
                         .texOffs(0, 41).addBox(-0.995f, 0.1f, -1.0f, 2.0f, 6.0f, 2.0f, false),
                 PartPose.offset(-2.0f, 5.9f, -8.0f));
 
-        return LayerDefinition.create(mesh, 64, 64);
+        return LayerDefinition.create(mesh, 64, 64).apply(MeshTransformer.scaling(0.9f));
+    }
+
+    public static LayerDefinition createBaby() {
+        return create().apply(ModelAnimator.hierarchicalBaby("head_base", 0.5f));
     }
 
     @Override
-    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float age, float headYaw, float headPitch) {
-        ModelAnimator.look(head_base, headYaw, headPitch);
+    public void setupAnim(LivingEntityRenderState state) {
+        super.setupAnim(state);
+        ModelAnimator.look(head_base, state);
 
-        try (ModelAnimator.Cycle walk = ModelAnimator.cycle(limbSwing * 0.2f, limbSwingAmount)) {
+        try (ModelAnimator.Cycle walk = ModelAnimator.cycle(state.walkAnimationPos * 0.2f, state.walkAnimationSpeed)) {
             leg_left_fr.xRot = walk.eval(1.0f, 1.0f);
             leg_right_fr.xRot = walk.eval(-1.0f, 1.0f);
             leg_left_ba.xRot = walk.eval(-1.0f, 1.0f);
@@ -129,12 +130,6 @@ public class WhiteLippedPeccaryModel<T extends Entity> extends TropicraftAgeable
         }
     }
 
-    @Override
-    protected ModelPart root() {
-        return root;
-    }
-
-    @Override
     protected ModelPart head() {
         return head_base;
     }

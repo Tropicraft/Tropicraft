@@ -113,14 +113,14 @@ public class TropicraftFeatureUtil {
     }
 
     public static boolean goesBeyondWorldSize(WorldGenLevel world, int y, int height) {
-        return y < world.getMinBuildHeight() + 1 || y + height + 1 > world.getMaxBuildHeight();
+        return y < world.getMinY() + 1 || y + height > world.getMaxY();
     }
 
     public static boolean isBBAvailable(WorldGenLevel world, BlockPos pos, int height) {
         for (int y = 0; y <= 1 + height; y++) {
             BlockPos checkPos = pos.above(y);
             int size = 1;
-            if (checkPos.getY() < world.getMinBuildHeight() || checkPos.getY() >= world.getMaxBuildHeight()) {
+            if (checkPos.getY() < world.getMinY() || checkPos.getY() > world.getMaxY()) {
                 return false;
             }
 
@@ -140,9 +140,7 @@ public class TropicraftFeatureUtil {
         return true;
     }
 
-    public static boolean isSoil(LevelAccessor world, BlockPos pos) {
-        BlockState blockState = world.getBlockState(pos);
-        Block block = blockState.getBlock();
-        return block == Blocks.DIRT || block == Blocks.COARSE_DIRT || block == Blocks.GRASS_BLOCK || block == Blocks.PODZOL;
+    public static boolean isSoil(LevelAccessor level, BlockPos pos) {
+        return level.getBlockState(pos).is(BlockTags.DIRT);
     }
 }

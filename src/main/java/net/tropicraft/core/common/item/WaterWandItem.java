@@ -4,7 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -19,7 +18,7 @@ public class WaterWandItem extends Item {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+    public InteractionResult use(Level world, Player player, InteractionHand hand) {
         double inc = Math.PI / 12;
 
         ItemStack itemstack = player.getItemInHand(hand);
@@ -41,7 +40,7 @@ public class WaterWandItem extends Item {
             }
         }
 
-        return new InteractionResultHolder<>(InteractionResult.PASS, itemstack);
+        return InteractionResult.PASS;
     }
 
     private boolean removeWater(Level world, ItemStack itemstack, Player player, BlockPos pos, EquipmentSlot slot) {

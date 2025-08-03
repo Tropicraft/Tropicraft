@@ -68,7 +68,7 @@ public class NoRotateSingleJigsawPiece extends SinglePoolElement {
     }
 
     @Override
-    public List<StructureBlockInfo> getShuffledJigsawBlocks(StructureTemplateManager templateManager, BlockPos pos, Rotation rotation, RandomSource random) {
+    public List<StructureTemplate.JigsawBlockInfo> getShuffledJigsawBlocks(StructureTemplateManager templateManager, BlockPos pos, Rotation rotation, RandomSource random) {
         return super.getShuffledJigsawBlocks(templateManager, pos, Rotation.NONE, random);
     }
 

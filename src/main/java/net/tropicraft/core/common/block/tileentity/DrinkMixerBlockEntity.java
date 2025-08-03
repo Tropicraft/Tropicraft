@@ -5,11 +5,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Player;
@@ -19,6 +16,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.tropicraft.core.common.block.DrinkMixerBlock;
 import net.tropicraft.core.common.drinks.Drink;
@@ -54,34 +53,26 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
     }
 
     @Override
-    protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
-        super.loadAdditional(nbt, registries);
-        ticks = nbt.getInt("MixTicks");
-        mixing = nbt.getBoolean("Mixing");
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
+        ticks = input.getIntOr("MixTicks", 0);
+        mixing = input.getBooleanOr("Mixing", false);
 
-        ItemStack.SINGLE_ITEM_CODEC.listOf().parse(registries.createSerializationContext(NbtOps.INSTANCE), nbt.get("ingredients"))
-                .resultOrPartial(error -> LOGGER.error("Failed to parse drink mixer ingredients: '{}'", error))
-                .ifPresent(this::setDrinkIngredients);
-
-        if (nbt.contains("Result")) {
-            result = ItemStack.parse(registries, nbt.getCompound("Result")).orElse(ItemStack.EMPTY);
-        } else {
-            result = ItemStack.EMPTY;
-        }
+        setDrinkIngredients(input.read("ingredients", ItemStack.SINGLE_ITEM_CODEC.listOf()).orElse(List.of()));
+        result = input.read("Result", ItemStack.CODEC).orElse(ItemStack.EMPTY);
     }
 
     @Override
-    protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
-        super.saveAdditional(nbt, registries);
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
 
-        nbt.putInt("MixTicks", ticks);
-        nbt.putBoolean("Mixing", mixing);
+        output.putInt("MixTicks", ticks);
+        output.putBoolean("Mixing", mixing);
 
-        RegistryOps<Tag> registryOps = registries.createSerializationContext(NbtOps.INSTANCE);
-        nbt.put("ingredients", ItemStack.SINGLE_ITEM_CODEC.listOf().encodeStart(registryOps, drinkIngredients).getOrThrow());
+        output.store("ingredients", ItemStack.SINGLE_ITEM_CODEC.listOf(), drinkIngredients);
 
         if (!result.isEmpty()) {
-            nbt.put("Result", result.save(registries, new CompoundTag()));
+            output.store("Result", ItemStack.CODEC, result);
         }
     }
 
@@ -147,7 +138,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         dropItem(result, at);
 
         for (ItemStack ingredient : drinkIngredients) {
-            ItemStack container = ingredient.getCraftingRemainingItem();
+            ItemStack container = ingredient.getCraftingRemainder();
             if (!container.isEmpty()) {
                 dropItem(container, at);
             }
@@ -204,8 +195,8 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
     }
 
     @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider registries) {
-        loadAdditional(pkt.getTag(), registries);
+    public void onDataPacket(Connection net, ValueInput input) {
+        loadAdditional(input);
     }
 
     protected void syncInventory() {
@@ -223,12 +214,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
 
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        return writeItems(new CompoundTag(), registries);
-    }
-
-    private CompoundTag writeItems(CompoundTag nbt, HolderLookup.Provider registries) {
-        saveAdditional(nbt, registries);
-        return nbt;
+        return saveCustomOnly(registries);
     }
 
     public ItemStack getResult() {

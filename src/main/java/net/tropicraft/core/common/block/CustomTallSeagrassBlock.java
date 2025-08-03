@@ -1,27 +1,21 @@
 package net.tropicraft.core.common.block;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.SeagrassBlock;
 import net.minecraft.world.level.block.TallSeagrassBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
-import java.util.List;
 import java.util.function.Supplier;
 
 public class CustomTallSeagrassBlock extends TallSeagrassBlock {
-    private final String scientificName;
     private final Supplier<? extends SeagrassBlock> drop;
 
-    public CustomTallSeagrassBlock(Properties p, String scientificName, Supplier<? extends SeagrassBlock> drop) {
+    public CustomTallSeagrassBlock(Properties p, Supplier<? extends SeagrassBlock> drop) {
         super(p);
-        this.scientificName = scientificName;
         this.drop = drop;
     }
 
@@ -31,12 +25,7 @@ public class CustomTallSeagrassBlock extends TallSeagrassBlock {
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.literal(scientificName).withStyle(ChatFormatting.AQUA, ChatFormatting.ITALIC));
-    }
-
-    @Override
-    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
+    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData, Player player) {
         return new ItemStack(drop.get());
     }
 }

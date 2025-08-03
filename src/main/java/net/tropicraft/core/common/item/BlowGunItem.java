@@ -1,11 +1,11 @@
 package net.tropicraft.core.common.item;
 
+import net.minecraft.SharedConstants;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -27,9 +27,10 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 public class BlowGunItem extends ProjectileWeaponItem {
-    private static final PotionContents POTION_CONTENTS = new PotionContents(Optional.empty(), Optional.empty(), List.of(
-            new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 3 * 20, 20)
-    ));
+    private static final List<MobEffectInstance> EFFECTS = List.of(
+            new MobEffectInstance(MobEffects.SLOWNESS, 3 * SharedConstants.TICKS_PER_SECOND, 20)
+    );
+    private static final PotionContents POTION_CONTENTS = new PotionContents(Optional.empty(), Optional.empty(), EFFECTS, Optional.empty());
 
     public BlowGunItem(Properties properties) {
         super(properties);
@@ -41,7 +42,7 @@ public class BlowGunItem extends ProjectileWeaponItem {
             if (itemStack.getItem() == Items.TIPPED_ARROW) {
                 PotionContents contents = itemStack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY);
                 for (MobEffectInstance effectInstance : contents.getAllEffects()) {
-                    if (effectInstance.getEffect() == MobEffects.MOVEMENT_SLOWDOWN) {
+                    if (effectInstance.getEffect() == MobEffects.SLOWNESS) {
                         return true;
                     }
                 }
@@ -60,14 +61,14 @@ public class BlowGunItem extends ProjectileWeaponItem {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+    public InteractionResult use(Level world, Player player, InteractionHand hand) {
         ItemStack heldStack = player.getItemInHand(hand);
         ItemStack ammo = getAmmo(player, heldStack);
         if (!ammo.isEmpty()) {
             fireProjectile(world, player, hand, heldStack, ammo, 1.0f, player.getAbilities().instabuild, 10, 0);
-            return new InteractionResultHolder<>(InteractionResult.SUCCESS, heldStack);
+            return InteractionResult.SUCCESS;
         } else {
-            return new InteractionResultHolder<>(InteractionResult.FAIL, heldStack);
+            return InteractionResult.FAIL;
         }
     }
 

@@ -3,8 +3,6 @@ package net.tropicraft.core.client;
 import net.minecraft.client.model.CowModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -32,7 +30,6 @@ import net.tropicraft.core.client.entity.model.ManateeModel;
 import net.tropicraft.core.client.entity.model.MarlinModel;
 import net.tropicraft.core.client.entity.model.PapyrusCanaryModel;
 import net.tropicraft.core.client.entity.model.PapyrusGonolekModel;
-import net.tropicraft.core.client.entity.model.PlayerHeadpieceModel;
 import net.tropicraft.core.client.entity.model.SeaTurtleModel;
 import net.tropicraft.core.client.entity.model.SeaUrchinModel;
 import net.tropicraft.core.client.entity.model.SeahorseModel;
@@ -57,9 +54,10 @@ import net.tropicraft.core.client.scuba.ModelScubaGear;
 
 import java.util.function.Supplier;
 
-@EventBusSubscriber(modid = Tropicraft.ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(modid = Tropicraft.ID, value = Dist.CLIENT)
 public class TropicraftRenderLayers {
     public static ModelLayerLocation KOA_HUNTER_LAYER;
+    public static ModelLayerLocation KOA_HUNTER_BABY_LAYER;
     public static ModelLayerLocation TROPI_CREEPER_LAYER;
     public static ModelLayerLocation IGUANA_LAYER;
     public static ModelLayerLocation UMBRELLA_LAYER;
@@ -90,10 +88,7 @@ public class TropicraftRenderLayers {
     public static ModelLayerLocation MAN_O_WAR_OUTER_LAYER;
     public static ModelLayerLocation MAN_O_WAR_GEL_LAYER;
     public static ModelLayerLocation BAMBOO_MUG;
-    public static ModelLayerLocation HEADPIECE_LAYER;
-    public static ModelLayerLocation BAMBOO_CHEST;
-    public static ModelLayerLocation BAMBOO_DOUBLE_CHEST_LEFT;
-    public static ModelLayerLocation BAMBOO_DOUBLE_CHEST_RIGHT;
+    public static ModelLayerLocation BAMBOO_MUG_LIQUID;
     public static ModelLayerLocation EIHMACHINE_LAYER = new ModelLayerLocation(Tropicraft.location("drink_mixer"), "main");
     public static ModelLayerLocation AIRCOMPRESSOR_LAYER = new ModelLayerLocation(Tropicraft.location("air_compressor"), "main");
     public static ModelLayerLocation BASILISK_LIZARD_LAYER;
@@ -101,12 +96,17 @@ public class TropicraftRenderLayers {
     public static ModelLayerLocation FIDDLER_CRAB_LAYER;
     public static ModelLayerLocation HUMMINGBIRD_LAYER;
     public static ModelLayerLocation JAGUAR_LAYER;
+    public static ModelLayerLocation JAGUAR_BABY_LAYER;
     public static ModelLayerLocation TAPIR_LAYER;
+    public static ModelLayerLocation TAPIR_BABY_LAYER;
     public static ModelLayerLocation SPIDER_MONKEY_LAYER;
     public static ModelLayerLocation WHITE_LIPPED_PECCARY_LAYER;
+    public static ModelLayerLocation WHITE_LIPPED_PECCARY_BABY_LAYER;
     public static ModelLayerLocation GIBNUT_LAYER;
+    public static ModelLayerLocation GIBNUT_BABY_LAYER;
     public static ModelLayerLocation MANATEE_LAYER;
     public static ModelLayerLocation SLENDER_HARVEST_MOUSE_LAYER;
+    public static ModelLayerLocation SLENDER_HARVEST_MOUSE_BABY_LAYER;
     public static ModelLayerLocation TOUCAN_LAYER;
     public static ModelLayerLocation PAPYRUS_CANARY_LAYER;
     public static ModelLayerLocation PAPYRUS_GONOLEK_LAYER;
@@ -123,6 +123,7 @@ public class TropicraftRenderLayers {
     @SubscribeEvent
     public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
         KOA_HUNTER_LAYER = registerMain("koa_hunter", KoaModel::create, event);
+        KOA_HUNTER_BABY_LAYER = registerMain("koa_hunter_baby", KoaModel::createBaby, event);
         TROPI_CREEPER_LAYER = registerMain("tropi_creeper", TropiCreeperModel::create, event);
         IGUANA_LAYER = registerMain("iguana", IguanaModel::create, event);
         UMBRELLA_LAYER = registerMain("umbrella", UmbrellaModel::create, event);
@@ -154,10 +155,8 @@ public class TropicraftRenderLayers {
         MAN_O_WAR_GEL_LAYER = registerMain("man_o_war_gel", ManOWarModel::createGelLayerModel, event);
 
         BAMBOO_MUG = registerMain("bamboo_mug", BambooMugModel::create, event);
+        BAMBOO_MUG_LIQUID = registerLayer("bamboo_mug", "liquid", BambooMugModel::createLiquid, event);
 
-        //BAMBOO_CHEST = registerMain("bamboo_chest", BambooChestRenderer);
-        //BAMBOO_DOUBLE_CHEST_LEFT = registerMain("bamboo_double_chest_left", () -> BambooChestBlockEntityRenderer.getLeftDoubleTexturedModelData());
-        //BAMBOO_DOUBLE_CHEST_RIGHT = registerMain("bamboo_double_chest_right", () -> BambooChestBlockEntityRenderer.getRightDoubleTexturedModelData());
         EIHMACHINE_LAYER = registerMain("drink_mixer", EIHMachineModel::create, event);
         AIRCOMPRESSOR_LAYER = registerMain("air_compressor", EIHMachineModel::create, event);
         BASILISK_LIZARD_LAYER = registerMain("basilisk_lizard", BasiliskLizardModel::create, event);
@@ -165,12 +164,17 @@ public class TropicraftRenderLayers {
         FIDDLER_CRAB_LAYER = registerMain("fiddler_crab", FiddlerCrabModel::create, event);
         HUMMINGBIRD_LAYER = registerMain("hummingbird", HummingbirdModel::create, event);
         JAGUAR_LAYER = registerMain("jaguar", JaguarModel::create, event);
+        JAGUAR_BABY_LAYER = registerMain("jaguar_baby", JaguarModel::createBaby, event);
         TAPIR_LAYER = registerMain("tapir", TapirModel::create, event);
+        TAPIR_BABY_LAYER = registerMain("tapir_baby", TapirModel::createBaby, event);
         SPIDER_MONKEY_LAYER = registerMain("spider_monkey", SpiderMonkeyModel::create, event);
         WHITE_LIPPED_PECCARY_LAYER = registerMain("white_lipped_peccary", WhiteLippedPeccaryModel::create, event);
+        WHITE_LIPPED_PECCARY_BABY_LAYER = registerMain("white_lipped_peccary_baby", WhiteLippedPeccaryModel::createBaby, event);
         GIBNUT_LAYER = registerMain("gibnut", GibnutModel::create, event);
+        GIBNUT_BABY_LAYER = registerMain("gibnut_baby", GibnutModel::createBaby, event);
         MANATEE_LAYER = registerMain("manatee", ManateeModel::create, event);
         SLENDER_HARVEST_MOUSE_LAYER = registerMain("slender_harvest_mouse", SlenderHarvestMouseModel::create, event);
+        SLENDER_HARVEST_MOUSE_BABY_LAYER = registerMain("slender_harvest_mouse_baby", SlenderHarvestMouseModel::createBaby, event);
         TOUCAN_LAYER = registerMain("toucan", ToucanModel::create, event);
         PAPYRUS_CANARY_LAYER = registerMain("papyrus_canary", PapyrusCanaryModel::createBodyLayer, event);
         PAPYRUS_GONOLEK_LAYER = registerMain("papyrus_gonolek", PapyrusGonolekModel::createBodyLayer, event);
@@ -178,26 +182,19 @@ public class TropicraftRenderLayers {
         WHITE_COLLARED_OLIVEBACK_LAYER = registerMain("white_collared_oliveback", WhiteCollaredOlivebackModel::createBodyLayer, event);
         WHITE_WINGED_WARBLER_LAYER = registerMain("white_winged_warbler", WhiteWingedWarblerModel::createBodyLayer, event);
 
-        HEADPIECE_LAYER = registerMain("headpiece", PlayerHeadpieceModel::create, event);
-        HEAD_SCUBA_LAYER = registerMain("scuba_goggles", ModelScubaGear::create, event);
-        CHEST_SCUBA_LAYER = registerMain("scuba_harness", ModelScubaGear::create, event);
-        FEET_SCUBA_LAYER = registerMain("scuba_flippers", ModelScubaGear::create, event);
-        TANK_SCUBA_LAYER = registerMain("pony_bottle", ModelScubaGear::create, event);
-
-        setupScubaGearModels();
+        HEAD_SCUBA_LAYER = registerMain("scuba_goggles", ModelScubaGear::createGoggles, event);
+        CHEST_SCUBA_LAYER = registerMain("scuba_harness", ModelScubaGear::createHarness, event);
+        FEET_SCUBA_LAYER = registerMain("scuba_flippers", ModelScubaGear::createFlippers, event);
+        TANK_SCUBA_LAYER = registerMain("pony_bottle", ModelScubaGear::createTank, event);
     }
 
     private static ModelLayerLocation registerMain(String id, Supplier<LayerDefinition> layerDefinition, EntityRenderersEvent.RegisterLayerDefinitions event) {
-        ModelLayerLocation modelLayer = new ModelLayerLocation(Tropicraft.location(id), "main");
-        event.registerLayerDefinition(modelLayer, layerDefinition);
-        return modelLayer;
+        return registerLayer(id, "main", layerDefinition, event);
     }
 
-    public static void setupScubaGearModels() {
-        ModelScubaGear.HEAD = ModelScubaGear.createModel(HEAD_SCUBA_LAYER, null, EquipmentSlot.HEAD);
-        ModelScubaGear.CHEST = ModelScubaGear.createModel(CHEST_SCUBA_LAYER, null, EquipmentSlot.CHEST);
-        ModelScubaGear.FEET = ModelScubaGear.createModel(FEET_SCUBA_LAYER, null, EquipmentSlot.FEET);
-
-        ModelScubaGear.tankModel = ModelScubaGear.createModel(TANK_SCUBA_LAYER, null, EquipmentSlot.CHEST);
+    private static ModelLayerLocation registerLayer(String id, String layer, Supplier<LayerDefinition> layerDefinition, EntityRenderersEvent.RegisterLayerDefinitions event) {
+        ModelLayerLocation modelLayer = new ModelLayerLocation(Tropicraft.location(id), layer);
+        event.registerLayerDefinition(modelLayer, layerDefinition);
+        return modelLayer;
     }
 }

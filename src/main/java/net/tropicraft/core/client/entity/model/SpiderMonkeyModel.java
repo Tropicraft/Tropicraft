@@ -1,16 +1,17 @@
 package net.tropicraft.core.client.entity.model;
 
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.MeshTransformer;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import net.tropicraft.core.common.entity.passive.monkey.SpiderMonkeyEntity;
+import net.tropicraft.core.client.entity.render.state.SpiderMonkeyRenderState;
 
-public class SpiderMonkeyModel<T extends SpiderMonkeyEntity> extends HierarchicalModel<T> {
+public class SpiderMonkeyModel extends EntityModel<SpiderMonkeyRenderState> {
     private final ModelPart body_base;
     private final ModelPart head_base;
     private final ModelPart tail_a;
@@ -21,6 +22,7 @@ public class SpiderMonkeyModel<T extends SpiderMonkeyEntity> extends Hierarchica
     private final ModelPart arm_right_a;
 
     public SpiderMonkeyModel(ModelPart root) {
+        super(root);
         body_base = root.getChild("body_base");
         head_base = body_base.getChild("head_base");
 
@@ -104,19 +106,17 @@ public class SpiderMonkeyModel<T extends SpiderMonkeyEntity> extends Hierarchica
                         .addBox(-1.5f, -0.5f, -1.0f, 2.0f, 8.0f, 2.0f, false),
                 PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, -75.0f * Mth.DEG_TO_RAD, -5.0f * Mth.DEG_TO_RAD, 2.5f * Mth.DEG_TO_RAD));
 
-        return LayerDefinition.create(mesh, 64, 64);
+        return LayerDefinition.create(mesh, 64, 64).apply(MeshTransformer.scaling(0.7f));
     }
 
     @Override
-    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float age, float headYaw, float headPitch) {
-        root().getAllParts().forEach(ModelPart::resetPose);
+    public void setupAnim(SpiderMonkeyRenderState state) {
+        super.setupAnim(state);
 
-        head_base.xRot += headPitch * ModelAnimator.DEG_TO_RAD;
-        head_base.zRot -= headYaw * ModelAnimator.DEG_TO_RAD;
+        head_base.xRot += state.xRot * ModelAnimator.DEG_TO_RAD;
+        head_base.zRot -= state.yRot * ModelAnimator.DEG_TO_RAD;
 
-        float partialTicks = age - entity.tickCount;
-        float standAnimation = entity.getStandAnimation(partialTicks);
-        float standAngle = standAnimation * 70.0f * ModelAnimator.DEG_TO_RAD;
+        float standAngle = state.standAnimation * 70.0f * ModelAnimator.DEG_TO_RAD;
 
         body_base.xRot -= standAngle;
         head_base.xRot += standAngle;
@@ -125,21 +125,16 @@ public class SpiderMonkeyModel<T extends SpiderMonkeyEntity> extends Hierarchica
         leg_left_a_r1.xRot += standAngle;
         leg_right_a_r1.xRot += standAngle;
 
-        try (ModelAnimator.Cycle walk = ModelAnimator.cycle(limbSwing * 0.2f, limbSwingAmount)) {
+        try (ModelAnimator.Cycle walk = ModelAnimator.cycle(state.walkAnimationPos * 0.2f, state.walkAnimationSpeed)) {
             arm_left_a.xRot += walk.eval(1.0f, 1.0f);
             arm_right_a.xRot += walk.eval(-1.0f, 1.0f);
             leg_left_a_r1.xRot += walk.eval(-1.0f, 1.0f);
             leg_right_a_r1.xRot += walk.eval(1.0f, 1.0f);
         }
 
-        try (ModelAnimator.Cycle idle = ModelAnimator.cycle(age * 0.025f, 0.05f)) {
+        try (ModelAnimator.Cycle idle = ModelAnimator.cycle(state.ageInTicks * 0.025f, 0.05f)) {
             tail_a.xRot += idle.eval(1.0f, 1.0f, 0.0f, 0.0f);
             tail_b.xRot += idle.eval(1.0f, 1.0f, 0.2f, 0.0f);
         }
-    }
-
-    @Override
-    public ModelPart root() {
-        return body_base;
     }
 }

@@ -1,32 +1,15 @@
 package net.tropicraft.core.common.item.scuba;
 
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.tropicraft.core.client.data.TropicraftLangKeys;
-import net.tropicraft.core.client.scuba.ScubaHUD;
-import net.tropicraft.core.common.item.TropicraftDataComponents;
-
-import java.util.List;
+import net.minecraft.world.item.equipment.ArmorType;
+import net.tropicraft.core.common.item.TropicraftArmorMaterials;
+import net.tropicraft.core.common.item.component.TropicraftDataComponents;
 
 public class ScubaHarnessItem extends ScubaArmorItem {
-
     public ScubaHarnessItem(ScubaType type, Properties properties) {
-        super(type, Type.CHESTPLATE, properties);
-    }
-
-    @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, context, tooltip, flagIn);
-        int airRemaining = getRemainingAir(stack);
-        tooltip.add(TropicraftLangKeys.SCUBA_AIR_TIME
-                .format(Component.literal(ScubaHUD.formatTime(airRemaining))
-                        .withStyle(ScubaHUD.getAirTimeColor(airRemaining)))
-                .copy()
-                .withStyle(ChatFormatting.GRAY));
+        super(type, TropicraftArmorMaterials.applySafe(properties, type.material(), ArmorType.CHESTPLATE));
     }
 
     @Override

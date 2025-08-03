@@ -1,23 +1,18 @@
 package net.tropicraft.core.client.entity.model;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.util.Mth;
-import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
 
-public class BeachFloatModel extends HierarchicalModel<BeachFloatEntity> {
-    private final ModelPart root;
-
+public class BeachFloatModel extends EntityModel<EntityRenderState> {
     public BeachFloatModel(ModelPart root) {
-        this.root = root;
+        super(root);
     }
 
     public static LayerDefinition create() {
@@ -38,23 +33,6 @@ public class BeachFloatModel extends HierarchicalModel<BeachFloatEntity> {
         root.addOrReplaceChild("topBed", CubeListBuilder.create().texOffs(0, 19).addBox(-6.0f, -0.5f, -6.0f, 14, 1, 12), PartPose.offset(-6.0f, 22.0f, 0.0f));
         root.addOrReplaceChild("bottomBed", CubeListBuilder.create().texOffs(0, 19).addBox(-6.0f, -0.5f, -6.0f, 14, 1, 12), PartPose.offset(8.0f, 22.0f, 0.0f));
 
-        return LayerDefinition.create(mesh, 64, 32);
-    }
-
-    @Override
-    public void setupAnim(BeachFloatEntity beachFloat, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-    }
-
-    @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
-        poseStack.pushPose();
-        poseStack.mulPose(Axis.YP.rotationDegrees(-90));
-        super.renderToBuffer(poseStack, buffer, packedLight, packedOverlay, color);
-        poseStack.popPose();
-    }
-
-    @Override
-    public ModelPart root() {
-        return root;
+        return LayerDefinition.create(mesh.transformed(pose -> PartPose.rotation(0.0f, -Mth.HALF_PI, 0.0f)), 64, 32);
     }
 }

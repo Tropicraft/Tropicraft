@@ -1,6 +1,6 @@
 package net.tropicraft.core.client.entity.model;
 
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -9,10 +9,9 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import net.tropicraft.core.common.entity.passive.ToucanEntity;
+import net.tropicraft.core.client.entity.render.state.BirdRenderState;
 
-public class ToucanModel extends HierarchicalModel<ToucanEntity> {
-    private final ModelPart root;
+public class ToucanModel extends EntityModel<BirdRenderState> {
     private final ModelPart body;
     private final ModelPart legLeft;
     private final ModelPart legRight;
@@ -25,7 +24,7 @@ public class ToucanModel extends HierarchicalModel<ToucanEntity> {
     private final ModelPart tailBottomRight;
 
     public ToucanModel(ModelPart root) {
-        this.root = root;
+        super(root);
         body = root.getChild("body_base");
         legLeft = body.getChild("leg_left");
         legRight = body.getChild("leg_right");
@@ -64,14 +63,13 @@ public class ToucanModel extends HierarchicalModel<ToucanEntity> {
     }
 
     @Override
-    public void setupAnim(ToucanEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch) {
-        body.getAllParts().forEach(ModelPart::resetPose);
+    public void setupAnim(BirdRenderState state) {
+        super.setupAnim(state);
 
-        neck.xRot = (headPitch - 65.0f) * ModelAnimator.DEG_TO_RAD;
-        head.zRot = headYaw * ModelAnimator.DEG_TO_RAD;
+        neck.xRot = (state.xRot - 65.0f) * ModelAnimator.DEG_TO_RAD;
+        head.zRot = state.yRot * ModelAnimator.DEG_TO_RAD;
 
-        float partialTicks = ageInTicks - entity.tickCount;
-        float flightAnimation = entity.getFlightAnimation(partialTicks);
+        float flightAnimation = state.flightAnimation;
         float walkAnimation = 1.0f - flightAnimation;
 
         if (flightAnimation > 0.0f) {
@@ -91,7 +89,7 @@ public class ToucanModel extends HierarchicalModel<ToucanEntity> {
             wingLeft.xRot += 90.0f * Mth.DEG_TO_RAD * flightAnimation;
             wingRight.xRot += 90.0f * Mth.DEG_TO_RAD * flightAnimation;
 
-            try (ModelAnimator.Cycle fly = ModelAnimator.cycle(ageInTicks * 0.15f, flightAnimation)) {
+            try (ModelAnimator.Cycle fly = ModelAnimator.cycle(state.ageInTicks * 0.15f, flightAnimation)) {
                 body.y += fly.eval(1.0f, 0.2f, 0.06f, 0.0f);
                 body.xRot += fly.eval(1.0f, -0.04f, 0.06f, -0.04f);
 
@@ -105,15 +103,10 @@ public class ToucanModel extends HierarchicalModel<ToucanEntity> {
         }
 
         if (walkAnimation > 0.0f) {
-            try (ModelAnimator.Cycle walk = ModelAnimator.cycle(limbSwing, limbSwingAmount * walkAnimation)) {
+            try (ModelAnimator.Cycle walk = ModelAnimator.cycle(state.walkAnimationPos, state.walkAnimationSpeed * walkAnimation)) {
                 legLeft.xRot += walk.eval(1.0f, 1.0f);
                 legRight.xRot += walk.eval(1.0f, -1.0f);
             }
         }
-    }
-
-    @Override
-    public ModelPart root() {
-        return root;
     }
 }

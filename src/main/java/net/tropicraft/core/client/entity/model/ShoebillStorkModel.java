@@ -1,6 +1,6 @@
 package net.tropicraft.core.client.entity.model;
 
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -9,12 +9,13 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
+import net.tropicraft.core.client.entity.render.state.ShoebillStorkRenderState;
 import net.tropicraft.core.common.entity.IkWalker;
 import net.tropicraft.core.common.entity.passive.ShoebillStorkEntity;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-public class ShoebillStorkModel extends HierarchicalModel<ShoebillStorkEntity> {
+public class ShoebillStorkModel extends EntityModel<ShoebillStorkRenderState> {
     private final ModelPart body;
     private final ModelPart wingLeft1a;
     private final ModelPart wingLeft1b;
@@ -49,6 +50,7 @@ public class ShoebillStorkModel extends HierarchicalModel<ShoebillStorkEntity> {
     private final TwoJointSolver headSolver;
 
     public ShoebillStorkModel(ModelPart root) {
+        super(root);
         body = root.getChild("body_main");
         wingLeft1a = body.getChild("wing_left1a");
         wingLeft1b = wingLeft1a.getChild("wing_left1b");
@@ -109,87 +111,77 @@ public class ShoebillStorkModel extends HierarchicalModel<ShoebillStorkEntity> {
         PartDefinition neckTop = neckBase.addOrReplaceChild("neck_top", CubeListBuilder.create().texOffs(0, 21).addBox(-1.5F, -2.0F, -4.0F, 3.0F, 2.0F, 4.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.0F, -4.0F, -0.829F, 0.0F, 0.0F));
 
         PartDefinition head = neckTop.addOrReplaceChild("head_main", CubeListBuilder.create().texOffs(14, 14).addBox(-2.0F, -1.0F, -1.8F, 4.0F, 4.0F, 3.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, -0.5F, -4.0F, 0.9163F, 0.0F, 0.0F));
-		head.addOrReplaceChild("beak_top", CubeListBuilder.create().texOffs(14, 21).addBox(-1.5F, 0.0F, 0.0F, 3.0F, 5.0F, 3.0F, new CubeDeformation(0.01F)), PartPose.offsetAndRotation(0.0F, 3.0F, -1.8F, 0.5672F, 0.0F, 0.0F));
-		head.addOrReplaceChild("beak_bottom", CubeListBuilder.create().texOffs(16, 29).addBox(-1.5F, -0.25F, 0.0F, 3.0F, 4.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 3.0F, 0.2F, 0.4363F, 0.0F, 0.0F));
-		head.addOrReplaceChild("fancy_lad", CubeListBuilder.create().texOffs(0, 4).addBox(-2.0F, -2.0F, 0.0F, 4.0F, 2.0F, 0.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, -1.0F, -1.8F, 0.3927F, 0.0F, 0.0F));
+        head.addOrReplaceChild("beak_top", CubeListBuilder.create().texOffs(14, 21).addBox(-1.5F, 0.0F, 0.0F, 3.0F, 5.0F, 3.0F, new CubeDeformation(0.01F)), PartPose.offsetAndRotation(0.0F, 3.0F, -1.8F, 0.5672F, 0.0F, 0.0F));
+        head.addOrReplaceChild("beak_bottom", CubeListBuilder.create().texOffs(16, 29).addBox(-1.5F, -0.25F, 0.0F, 3.0F, 4.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 3.0F, 0.2F, 0.4363F, 0.0F, 0.0F));
+        head.addOrReplaceChild("fancy_lad", CubeListBuilder.create().texOffs(0, 4).addBox(-2.0F, -2.0F, 0.0F, 4.0F, 2.0F, 0.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, -1.0F, -1.8F, 0.3927F, 0.0F, 0.0F));
 
-		PartDefinition legLeft1a = body.addOrReplaceChild("leg_left1a", CubeListBuilder.create().texOffs(52, 0).addBox(-0.5F, -1.0F, 0.0F, 1.0F, 5.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(1.5F, 0.0F, -1.0F, 0.8727F, -0.0436F, -0.0873F));
-		PartDefinition legLeft1b = legLeft1a.addOrReplaceChild("leg_left1b", CubeListBuilder.create().texOffs(53, 6).addBox(-0.5F, 0.0F, 0.0F, 1.0F, 8.0F, 0.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 4.0F, 1.0F, -0.2618F, 0.0F, 0.0F));
-		legLeft1b.addOrReplaceChild("claw_left", CubeListBuilder.create().texOffs(48, 14).addBox(-2.0F, 0.0F, -3.0F, 4.0F, 0.0F, 4.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 8.0F, 0.0F, 0.1745F, -0.1745F, 0.0F));
+        PartDefinition legLeft1a = body.addOrReplaceChild("leg_left1a", CubeListBuilder.create().texOffs(52, 0).addBox(-0.5F, -1.0F, 0.0F, 1.0F, 5.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(1.5F, 0.0F, -1.0F, 0.8727F, -0.0436F, -0.0873F));
+        PartDefinition legLeft1b = legLeft1a.addOrReplaceChild("leg_left1b", CubeListBuilder.create().texOffs(53, 6).addBox(-0.5F, 0.0F, 0.0F, 1.0F, 8.0F, 0.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 4.0F, 1.0F, -0.2618F, 0.0F, 0.0F));
+        legLeft1b.addOrReplaceChild("claw_left", CubeListBuilder.create().texOffs(48, 14).addBox(-2.0F, 0.0F, -3.0F, 4.0F, 0.0F, 4.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 8.0F, 0.0F, 0.1745F, -0.1745F, 0.0F));
 
-		PartDefinition legRight1a = body.addOrReplaceChild("leg_right1a", CubeListBuilder.create().texOffs(44, 0).addBox(-0.5F, -1.0F, 0.0F, 1.0F, 5.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-1.5F, 0.0F, -1.0F, 0.8727F, 0.0436F, 0.0873F));
-		PartDefinition legRight1b = legRight1a.addOrReplaceChild("leg_right1b", CubeListBuilder.create().texOffs(45, 6).addBox(-0.5F, 0.0F, 0.0F, 1.0F, 8.0F, 0.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 4.0F, 1.0F, -0.2618F, 0.0F, 0.0F));
-		legRight1b.addOrReplaceChild("claw_right", CubeListBuilder.create().texOffs(40, 14).addBox(-2.0F, 0.0F, -3.0F, 4.0F, 0.0F, 4.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 8.0F, 0.0F, 0.1745F, 0.1745F, 0.0F));
+        PartDefinition legRight1a = body.addOrReplaceChild("leg_right1a", CubeListBuilder.create().texOffs(44, 0).addBox(-0.5F, -1.0F, 0.0F, 1.0F, 5.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-1.5F, 0.0F, -1.0F, 0.8727F, 0.0436F, 0.0873F));
+        PartDefinition legRight1b = legRight1a.addOrReplaceChild("leg_right1b", CubeListBuilder.create().texOffs(45, 6).addBox(-0.5F, 0.0F, 0.0F, 1.0F, 8.0F, 0.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 4.0F, 1.0F, -0.2618F, 0.0F, 0.0F));
+        legRight1b.addOrReplaceChild("claw_right", CubeListBuilder.create().texOffs(40, 14).addBox(-2.0F, 0.0F, -3.0F, 4.0F, 0.0F, 4.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 8.0F, 0.0F, 0.1745F, 0.1745F, 0.0F));
 
-		PartDefinition wingRight1a = body.addOrReplaceChild("wing_right1a", CubeListBuilder.create(), PartPose.offsetAndRotation(-2.0F, -2.4F, -5.45F, 0.0F, 0.48F, -0.0873F));
-		wingRight1a.addOrReplaceChild("wing_right1a_r1", CubeListBuilder.create().texOffs(0, 46).addBox(-1.0F, -0.9F, -1.0F, 1.0F, 4.0F, 3.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, -0.6F, 0.0F, 0.0F, 0.0F, 0.0F));
+        PartDefinition wingRight1a = body.addOrReplaceChild("wing_right1a", CubeListBuilder.create(), PartPose.offsetAndRotation(-2.0F, -2.4F, -5.45F, 0.0F, 0.48F, -0.0873F));
+        wingRight1a.addOrReplaceChild("wing_right1a_r1", CubeListBuilder.create().texOffs(0, 46).addBox(-1.0F, -0.9F, -1.0F, 1.0F, 4.0F, 3.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, -0.6F, 0.0F, 0.0F, 0.0F, 0.0F));
 
-		PartDefinition wingRight1b = wingRight1a.addOrReplaceChild("wing_right1b", CubeListBuilder.create(), PartPose.offsetAndRotation(-1.0F, -0.6F, 2.0F, 0.0F, 2.5744F, 0.0F));
-		wingRight1b.addOrReplaceChild("wing_right1b_r1", CubeListBuilder.create().texOffs(8, 45).addBox(0.0F, -0.9F, -1.0F, 1.0F, 4.0F, 4.0F, new CubeDeformation(0.01F)), PartPose.offsetAndRotation(0.0F, 0.0F, 1.0F, 0.0F, 0.0F, 0.0F));
+        PartDefinition wingRight1b = wingRight1a.addOrReplaceChild("wing_right1b", CubeListBuilder.create(), PartPose.offsetAndRotation(-1.0F, -0.6F, 2.0F, 0.0F, 2.5744F, 0.0F));
+        wingRight1b.addOrReplaceChild("wing_right1b_r1", CubeListBuilder.create().texOffs(8, 45).addBox(0.0F, -0.9F, -1.0F, 1.0F, 4.0F, 4.0F, new CubeDeformation(0.01F)), PartPose.offsetAndRotation(0.0F, 0.0F, 1.0F, 0.0F, 0.0F, 0.0F));
 
-		PartDefinition wingRight1c = wingRight1b.addOrReplaceChild("wing_right1c", CubeListBuilder.create(), PartPose.offsetAndRotation(1.0F, 0.0F, 4.0F, 0.0F, -2.9671F, 0.0F));
-		wingRight1c.addOrReplaceChild("wing_right1c_r1", CubeListBuilder.create().texOffs(18, 41).addBox(-1.0F, -0.9F, -1.0F, 1.0F, 4.0F, 8.0F, new CubeDeformation(0.02F)), PartPose.offsetAndRotation(0.0F, 0.0F, 1.0F, 0.0F, 0.0F, 0.0F));
+        PartDefinition wingRight1c = wingRight1b.addOrReplaceChild("wing_right1c", CubeListBuilder.create(), PartPose.offsetAndRotation(1.0F, 0.0F, 4.0F, 0.0F, -2.9671F, 0.0F));
+        wingRight1c.addOrReplaceChild("wing_right1c_r1", CubeListBuilder.create().texOffs(18, 41).addBox(-1.0F, -0.9F, -1.0F, 1.0F, 4.0F, 8.0F, new CubeDeformation(0.02F)), PartPose.offsetAndRotation(0.0F, 0.0F, 1.0F, 0.0F, 0.0F, 0.0F));
 
-		PartDefinition wingRightTip = wingRight1c.addOrReplaceChild("wing_right_tip", CubeListBuilder.create(), PartPose.offset(0.0F, 1.0F, 8.0F));
-		wingRightTip.addOrReplaceChild("wing_right_tip_r1", CubeListBuilder.create().texOffs(36, 48).addBox(-1.0F, -0.9F, -1.0F, 1.0F, 3.0F, 2.0F, new CubeDeformation(0.02F)), PartPose.offsetAndRotation(0.0F, 0.0F, 1.0F, 0.0F, 0.0F, 0.0F));
+        PartDefinition wingRightTip = wingRight1c.addOrReplaceChild("wing_right_tip", CubeListBuilder.create(), PartPose.offset(0.0F, 1.0F, 8.0F));
+        wingRightTip.addOrReplaceChild("wing_right_tip_r1", CubeListBuilder.create().texOffs(36, 48).addBox(-1.0F, -0.9F, -1.0F, 1.0F, 3.0F, 2.0F, new CubeDeformation(0.02F)), PartPose.offsetAndRotation(0.0F, 0.0F, 1.0F, 0.0F, 0.0F, 0.0F));
 
-		return LayerDefinition.create(mesh, 64, 64);
-	}
+        return LayerDefinition.create(mesh, 64, 64);
+    }
 
-	@Override
-	public ModelPart root() {
-		return body;
-	}
+    @Override
+    public void setupAnim(ShoebillStorkRenderState state) {
+        super.setupAnim(state);
 
-	@Override
-	public void setupAnim(ShoebillStorkEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch) {
-		body.getAllParts().forEach(ModelPart::resetPose);
+        float groundAnimation = 1.0f - state.flightAnimation;
 
-		float partialTicks = ageInTicks - entity.tickCount;
-		float flightAnimation = entity.getFlightAnimation(partialTicks);
-		float groundAnimation = 1.0f - flightAnimation;
+        float headRoll = 0.0f;
 
-		float headRoll = 0.0f;
+        float ageInTicks = state.ageInTicks;
+        if (groundAnimation > 0.0f) {
+            try (ModelAnimator.Cycle idle = ModelAnimator.cycle(ageInTicks, 1.0f)) {
+                headRoll += idle.periodic(400.0f, 5.0f, 20.0f, 20.0f);
+                headRoll += idle.periodic(500.0f, 5.0f, 20.0f, -20.0f);
 
-		if (groundAnimation > 0.0f) {
-			try (ModelAnimator.Cycle idle = ModelAnimator.cycle(ageInTicks, 1.0f)) {
-				headRoll += idle.periodic(400.0f, 5.0f, 20.0f, 20.0f);
-				headRoll += idle.periodic(500.0f, 5.0f, 20.0f, -20.0f);
+                body.y += idle.eval(0.01f, 0.075f);
 
-				body.y += idle.eval(0.01f, 0.075f);
+                float wingTwitch = idle.twitchAsymmetric(100.0f, 0.1f, 0.5f);
+                wingLeft1a.yRot += wingTwitch;
+                wingRight1a.yRot -= wingTwitch;
+            }
 
-				float wingTwitch = idle.twitchAsymmetric(100.0f, 0.1f, 0.5f);
-				wingLeft1a.yRot += wingTwitch;
-				wingRight1a.yRot -= wingTwitch;
-			}
+            float footDeltaX = (state.leftFootPos.x + state.rightFootPos.x) / 2.0f;
+            float footDeltaZ = (state.leftFootPos.z + state.rightFootPos.z) / 2.0f - ShoebillStorkEntity.BASE_FOOT_Z;
+            body.xRot += footDeltaZ * 0.6f * groundAnimation;
+            body.zRot += footDeltaX * 0.6f * groundAnimation;
 
-			IkWalker.EntitySpace entitySpace = IkWalker.EntitySpace.from(entity, partialTicks);
-			Vector3f leftFootPos = entity.leftFoot().solveModelPosition(entitySpace, partialTicks);
-			Vector3f rightFootPos = entity.rightFoot().solveModelPosition(entitySpace, partialTicks);
+            leftLegSolver.apply(state.leftFootPos, groundAnimation);
+            rightLegSolver.apply(state.rightFootPos, groundAnimation);
+        }
 
-			float footDeltaX = (leftFootPos.x + rightFootPos.x) / 2.0f;
-			float footDeltaZ = (leftFootPos.z + rightFootPos.z) / 2.0f - ShoebillStorkEntity.BASE_FOOT_Z;
-			body.xRot += footDeltaZ * 0.6f * groundAnimation;
-			body.zRot += footDeltaX * 0.6f * groundAnimation;
+        // Try to keep the head stable in the same position - very Shoebill-like
+        headSolver.applyRelativeToBase(0.35f, 0.0f, 0.0f, 0.0f);
 
-			leftLegSolver.apply(leftFootPos, groundAnimation);
-			rightLegSolver.apply(rightFootPos, groundAnimation);
-		}
-
-		// Try to keep the head stable in the same position - very Shoebill-like
-		headSolver.applyRelativeToBase(0.35f, 0.0f, 0.0f, 0.0f);
-
-		Quaternionf neckRotation = new Quaternionf().rotationZYX(
-				0.0f,
-				headYaw * Mth.DEG_TO_RAD * 0.75f,
-				headPitch * Mth.DEG_TO_RAD * 0.75f
-		);
-		Quaternionf headRotation = new Quaternionf().rotationZYX(
-				headRoll * Mth.DEG_TO_RAD,
-				headYaw * Mth.DEG_TO_RAD * 0.25f,
-				headPitch * Mth.DEG_TO_RAD * 0.25f
-		);
-		ModelAnimator.rotateByInModelSpace(new ModelPart[]{body}, neckBase, neckRotation);
-		ModelAnimator.rotateByInModelSpace(neckChain, head, headRotation);
-	}
+        Quaternionf neckRotation = new Quaternionf().rotationZYX(
+                0.0f,
+                state.yRot * Mth.DEG_TO_RAD * 0.75f,
+                state.xRot * Mth.DEG_TO_RAD * 0.75f
+        );
+        Quaternionf headRotation = new Quaternionf().rotationZYX(
+                headRoll * Mth.DEG_TO_RAD,
+                state.yRot * Mth.DEG_TO_RAD * 0.25f,
+                state.xRot * Mth.DEG_TO_RAD * 0.25f
+        );
+        ModelAnimator.rotateByInModelSpace(new ModelPart[]{body}, neckBase, neckRotation);
+        ModelAnimator.rotateByInModelSpace(neckChain, head, headRotation);
+    }
 }

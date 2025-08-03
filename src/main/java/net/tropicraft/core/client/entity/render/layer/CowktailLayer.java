@@ -9,25 +9,25 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.world.level.block.state.BlockState;
-import net.tropicraft.core.common.entity.passive.CowktailEntity;
+import net.tropicraft.core.client.entity.render.state.CowktailRenderState;
 
-public class CowktailLayer<T extends CowktailEntity> extends RenderLayer<T, CowModel<T>> {
+public class CowktailLayer<S extends CowktailRenderState> extends RenderLayer<S, CowModel> {
     private final BlockRenderDispatcher blockRenderDispatcher;
 
-    public CowktailLayer(RenderLayerParent<T, CowModel<T>> renderer, BlockRenderDispatcher blockRenderDispatcher) {
+    public CowktailLayer(RenderLayerParent<S, CowModel> renderer, BlockRenderDispatcher blockRenderDispatcher) {
         super(renderer);
         this.blockRenderDispatcher = blockRenderDispatcher;
     }
 
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (entity.isBaby() || entity.isInvisible()) {
+    public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, S state, float yRot, float xRot) {
+        if (state.isBaby || state.isInvisible) {
             return;
         }
 
-        CowModel<T> model = getParentModel();
-        BlockState blockState = entity.getCowktailType().getRenderState();
-        int overlayCoords = LivingEntityRenderer.getOverlayCoords(entity, 0.0f);
+        CowModel model = getParentModel();
+        BlockState blockState = state.type.getRenderState();
+        int overlayCoords = LivingEntityRenderer.getOverlayCoords(state, 0.0f);
 
         poseStack.pushPose();
         poseStack.translate(0.2f, -0.35f, 0.5);

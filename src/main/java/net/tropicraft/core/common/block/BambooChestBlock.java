@@ -67,7 +67,7 @@ public final class BambooChestBlock extends ChestBlock {
     };
 
     protected BambooChestBlock(Block.Properties props) {
-        super(props, () -> TropicraftBlocks.BAMBOO_CHEST_ENTITY.get());
+        super(() -> TropicraftBlocks.BAMBOO_CHEST_ENTITY.get(), props);
     }
 
     @Override

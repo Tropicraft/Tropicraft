@@ -14,8 +14,6 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.tropicraft.core.common.TropicraftTags;
 
 public final class MudBlock extends Block implements BonemealableBlock {
@@ -54,7 +52,6 @@ public final class MudBlock extends Block implements BonemealableBlock {
 
     @Override
     @Deprecated
-    @OnlyIn(Dist.CLIENT)
     public float getShadeBrightness(BlockState state, BlockGetter world, BlockPos pos) {
         return 0.2f;
     }

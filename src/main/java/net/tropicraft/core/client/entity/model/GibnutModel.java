@@ -1,5 +1,6 @@
 package net.tropicraft.core.client.entity.model;
 
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -7,10 +8,10 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.tropicraft.core.common.entity.passive.GibnutEntity;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.tropicraft.core.client.entity.render.state.GibnutRenderState;
 
-public class GibnutModel extends TropicraftAgeableHierarchicalModel<GibnutEntity> {
-    private final ModelPart root;
+public class GibnutModel extends EntityModel<GibnutRenderState> {
     private final ModelPart body;
     private final ModelPart head;
     private final ModelPart legBackLeft;
@@ -25,7 +26,7 @@ public class GibnutModel extends TropicraftAgeableHierarchicalModel<GibnutEntity
     private final ModelPart whiskerRight2;
 
     public GibnutModel(ModelPart root) {
-        this.root = root;
+        super(root);
         body = root.getChild("body_base");
         head = body.getChild("head_base");
         legBackLeft = body.getChild("leg_back_left");
@@ -79,13 +80,17 @@ public class GibnutModel extends TropicraftAgeableHierarchicalModel<GibnutEntity
         return LayerDefinition.create(meshdefinition, 64, 64);
     }
 
+    public static LayerDefinition createBaby() {
+        return create().apply(ModelAnimator.hierarchicalBaby("head_base", 0.5f));
+    }
+
     @Override
-    public void setupAnim(GibnutEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch) {
-        body.getAllParts().forEach(ModelPart::resetPose);
+    public void setupAnim(GibnutRenderState state) {
+        super.setupAnim(state);
 
-        ModelAnimator.look(head, headYaw, headPitch);
+        ModelAnimator.look(head, state);
 
-        try (ModelAnimator.Cycle walk = ModelAnimator.cycle(limbSwing * 0.125f, limbSwingAmount)) {
+        try (ModelAnimator.Cycle walk = ModelAnimator.cycle(state.walkAnimationPos * 0.125f, state.walkAnimationSpeed)) {
             legFrontLeft.xRot = walk.eval(1.0f, 1.0f);
             legFrontRight.xRot = walk.eval(-1.0f, 1.0f);
             legBackLeft.xRot = walk.eval(-1.0f, 1.0f);
@@ -94,36 +99,26 @@ public class GibnutModel extends TropicraftAgeableHierarchicalModel<GibnutEntity
             body.zRot += walk.eval(1.0f, 0.15f);
         }
 
-        if (entity.isVibing()) {
-            try (ModelAnimator.Cycle vibe = ModelAnimator.cycle(ageInTicks * 0.1f, 1.0f)) {
+        if (state.vibing) {
+            try (ModelAnimator.Cycle vibe = ModelAnimator.cycle(state.ageInTicks * 0.1f, 1.0f)) {
                 head.xRot += vibe.eval(1.0f, 0.1f);
             }
         } else {
-            try (ModelAnimator.Cycle sniff = ModelAnimator.cycle(ageInTicks, 1.0f)) {
+            try (ModelAnimator.Cycle sniff = ModelAnimator.cycle(state.ageInTicks, 1.0f)) {
                 head.xRot += sniff.twitchSymmetric(40.0f, 0.15f, -0.08f);
             }
         }
 
-        try (ModelAnimator.Cycle whiskers = ModelAnimator.cycle(ageInTicks * 0.3f, 0.025f)) {
+        try (ModelAnimator.Cycle whiskers = ModelAnimator.cycle(state.ageInTicks * 0.3f, 0.025f)) {
             whiskerLeft1.xRot += whiskers.eval(1.0f, 1.0f, 0.25f, 0.0f);
             whiskerLeft2.xRot += whiskers.eval(1.0f, 1.0f, 0.0f, 0.0f);
             whiskerRight1.xRot += whiskers.eval(1.0f, 1.0f, 0.0f, 0.0f);
             whiskerRight2.xRot += whiskers.eval(1.0f, 1.0f, 0.25f, 0.0f);
         }
 
-        try (ModelAnimator.Cycle idle = ModelAnimator.cycle(ageInTicks, 1.0f)) {
+        try (ModelAnimator.Cycle idle = ModelAnimator.cycle(state.ageInTicks, 1.0f)) {
             earLeft.xRot += idle.twitchSymmetric(7.0f, 0.22f, 1.0f);
             earRight.xRot += idle.twitchSymmetric(7.0f, 0.18f, 1.0f);
         }
-    }
-
-    @Override
-    protected ModelPart head() {
-        return head;
-    }
-
-    @Override
-    protected ModelPart root() {
-        return root;
     }
 }

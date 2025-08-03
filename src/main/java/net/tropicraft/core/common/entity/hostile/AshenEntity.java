@@ -1,20 +1,20 @@
 package net.tropicraft.core.common.entity.hostile;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -31,6 +31,8 @@ import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.ai.ashen.AIAshenChaseAndPickupLostMask;
 import net.tropicraft.core.common.entity.ai.ashen.AIAshenShootDart;
@@ -72,7 +74,7 @@ public class AshenEntity extends PathfinderMob implements RangedAttackMob {
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData spawnData) {
         setItemInHand(InteractionHand.OFF_HAND, new ItemStack(TropicraftItems.BLOW_GUN.get()));
         setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(TropicraftItems.DAGGER.get()));
         setMaskType((byte) AshenMasks.VALUES[world.getRandom().nextInt(AshenMasks.VALUES.length)].ordinal());
@@ -155,38 +157,35 @@ public class AshenEntity extends PathfinderMob implements RangedAttackMob {
     }
 
     @Override
-    public boolean hurt(DamageSource source, float amt) {
-        boolean wasHit = super.hurt(source, amt);
-
-        if (!level().isClientSide) {
-            if (hasMask() && wasHit && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
-                dropMask();
-            }
+    public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
+        boolean wasHit = super.hurtServer(level, source, amount);
+        if (hasMask() && wasHit && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+            dropMask(level);
         }
 
         return wasHit;
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag nbt) {
-        super.addAdditionalSaveData(nbt);
-        nbt.putByte("MaskType", getMaskType());
-        nbt.putByte("ActionState", getActionStateValue());
+    public void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putByte("MaskType", getMaskType());
+        output.putByte("ActionState", getActionStateValue());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag nbt) {
-        super.readAdditionalSaveData(nbt);
-        setMaskType(nbt.getByte("MaskType"));
-        setActionState(AshenState.VALUES[nbt.getByte("ActionState")]);
+    public void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        setMaskType(input.getByteOr("MaskType",  (byte) 0));
+        setActionState(AshenState.VALUES[input.getByteOr("ActionState", (byte) 0)]);
     }
 
-    public void dropMask() {
+    public void dropMask(ServerLevel level) {
         setActionState(AshenState.LOST_MASK);
         maskToTrack = new AshenMaskEntity(TropicraftEntities.ASHEN_MASK.get(), level());
         maskToTrack.setMaskType(getMaskType());
-        maskToTrack.absMoveTo(getX(), getY(), getZ(), getYRot(), 0);
-        level().addFreshEntity(maskToTrack);
+        maskToTrack.absSnapTo(getX(), getY(), getZ(), getYRot(), 0);
+        level.addFreshEntity(maskToTrack);
     }
 
     public void pickupMask(AshenMaskEntity mask) {

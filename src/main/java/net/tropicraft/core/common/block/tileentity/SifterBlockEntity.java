@@ -18,11 +18,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.TropicraftTags;
-import net.tropicraft.core.common.item.TropicraftDataComponents;
 import net.tropicraft.core.common.item.TropicraftItems;
+import net.tropicraft.core.common.item.component.TropicraftDataComponents;
 import net.tropicraft.core.common.network.message.ClientboundSifterInventoryPacket;
 import net.tropicraft.core.common.network.message.ClientboundSifterStartPacket;
 
@@ -132,7 +134,7 @@ public class SifterBlockEntity extends BlockEntity {
     private ItemStack getCommonItem() {
         // Random from -1 to size-1
 
-        HolderSet.Named<Item> tag = level.registryAccess().registryOrThrow(Registries.ITEM).getOrCreateTag(TropicraftTags.Items.SHELLS);
+        HolderSet.Named<Item> tag = level.registryAccess().lookupOrThrow(Registries.ITEM).getOrThrow(TropicraftTags.Items.SHELLS);
 
         int shellIndex = rand.nextInt(tag.size() + 1) - 1;
         if (shellIndex < 0) {
@@ -155,7 +157,7 @@ public class SifterBlockEntity extends BlockEntity {
     }
 
     public void addItemToSifter(ItemStack stack) {
-        siftItem = stack.copy().split(1);
+        siftItem = stack.copyWithCount(1);
         syncInventory();
     }
 
@@ -191,31 +193,27 @@ public class SifterBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
-        super.loadAdditional(nbt, registries);
-        isSifting = nbt.getBoolean("isSifting");
-        currentSiftTime = nbt.getInt("currentSiftTime");
+    public void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
+        isSifting = input.getBooleanOr("isSifting", false);
+        currentSiftTime = input.getIntOr("currentSiftTime", 0);
 
-        if (nbt.contains("Item", 10)) {
-            siftItem = ItemStack.parse(registries, nbt.getCompound("Item")).orElse(ItemStack.EMPTY);
-        } else {
-            siftItem = ItemStack.EMPTY;
-        }
+        siftItem = input.read("Item", ItemStack.CODEC).orElse(ItemStack.EMPTY);
     }
 
     @Override
-    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
-        super.saveAdditional(nbt, registries);
-        nbt.putBoolean("isSifting", isSifting);
-        nbt.putInt("currentSiftTime", currentSiftTime);
+    public void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
+        output.putBoolean("isSifting", isSifting);
+        output.putInt("currentSiftTime", currentSiftTime);
         if (!siftItem.isEmpty()) {
-            nbt.put("Item", siftItem.save(registries, new CompoundTag()));
+            output.store("Item", ItemStack.CODEC, siftItem);
         }
     }
 
     @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider registries) {
-        loadAdditional(pkt.getTag(), registries);
+    public void onDataPacket(Connection net, ValueInput input) {
+        loadAdditional(input);
     }
 
     protected void syncInventory() {
@@ -232,15 +230,10 @@ public class SifterBlockEntity extends BlockEntity {
 
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        return writeItems(new CompoundTag(), registries);
-    }
-
-    private CompoundTag writeItems(CompoundTag nbt, HolderLookup.Provider registries) {
-        saveAdditional(nbt, registries);
-        return nbt;
+        return saveCustomOnly(registries);
     }
 
     public void setSiftItem(ItemStack siftItem) {
-        this.siftItem = siftItem.copy().split(1);
+        this.siftItem = siftItem.copyWithCount(1);
     }
 }

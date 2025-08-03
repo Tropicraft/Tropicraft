@@ -58,23 +58,19 @@ public class MapBiomesCommand {
 
         BufferedImage img = new BufferedImage(SIZE, SIZE, BufferedImage.TYPE_INT_RGB);
 
-        Optional<? extends Registry<Biome>> biomes = source.getLevel().registryAccess().registry(Registries.BIOME);
-        if (biomes.isPresent()) {
-            for (int x = -SIZE2; x < SIZE2; x++) {
-                if (x % SIZE8 == 0) {
-                    double progress = (x + SIZE2) / (double) SIZE;
-                    source.sendSuccess(() -> Component.literal(progress * 100 + "%"), false);
-                }
-
-                for (int z = -SIZE2; z < SIZE2; z++) {
-                    Biome biome = source.getLevel().getUncachedNoiseBiome(x, 0, z).value();
-                    ResourceLocation name = biomes.get().getKey(biome);
-
-                    img.setRGB(x + SIZE2, z + SIZE2, COLORS.getOrDefault(name, 0xFFFFFF));
-                }
+        Registry<Biome> biomes = source.getLevel().registryAccess().lookupOrThrow(Registries.BIOME);
+        for (int x = -SIZE2; x < SIZE2; x++) {
+            if (x % SIZE8 == 0) {
+                double progress = (x + SIZE2) / (double) SIZE;
+                source.sendSuccess(() -> Component.literal(progress * 100 + "%"), false);
             }
-        } else {
-            source.sendFailure(Component.literal("Biomes Registry was null!"));
+
+            for (int z = -SIZE2; z < SIZE2; z++) {
+                Biome biome = source.getLevel().getUncachedNoiseBiome(x, 0, z).value();
+                ResourceLocation name = biomes.getKey(biome);
+
+                img.setRGB(x + SIZE2, z + SIZE2, COLORS.getOrDefault(name, 0xFFFFFF));
+            }
         }
 
         Path p = Paths.get("biome_colors.png");

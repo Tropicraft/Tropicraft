@@ -1,16 +1,16 @@
 package net.tropicraft.core.common.entity.neutral;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -24,6 +24,8 @@ import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.projectile.PoisonBlotEntity;
@@ -59,7 +61,7 @@ public class TreeFrogEntity extends PathfinderMob implements Enemy, RangedAttack
     private int attackTime;
 
     public TreeFrogEntity(EntityType<? extends PathfinderMob> type, Level world) {
-        super((EntityType<? extends TreeFrogEntity>) type, world);
+        super(type, world);
         //TODO 1.17 fix - pushthrough = 0.8f;
         xpReward = 5;
     }
@@ -83,8 +85,8 @@ public class TreeFrogEntity extends PathfinderMob implements Enemy, RangedAttack
     }
 
     @Override
-    protected void customServerAiStep() {
-        super.customServerAiStep();
+    protected void customServerAiStep(ServerLevel level) {
+        super.customServerAiStep(level);
         if (!getNavigation().isDone() || getTarget() != null) {
             if (onGround() || isInWater()) {
                 if (jumpDelay > 0)
@@ -95,9 +97,7 @@ public class TreeFrogEntity extends PathfinderMob implements Enemy, RangedAttack
                     // this.jump();
                     // this.motionY += -0.01 + rand.nextDouble() * 0.1;
                     Vec3 motion = getDeltaMovement();
-
-                    double speed = Math.sqrt(motion.x * motion.x + motion.z * motion.z);
-                    if (speed > 0.02) {
+                    if (motion.horizontalDistanceSqr() > 0.02 * 0.02) {
                         double motionY = motion.y + 0.4d;
                         double motionX = motion.x * 1.1d;
                         double motionZ = motion.z * 1.1d;
@@ -118,20 +118,20 @@ public class TreeFrogEntity extends PathfinderMob implements Enemy, RangedAttack
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag nbt) {
-        super.addAdditionalSaveData(nbt);
-        nbt.putInt("Type", getFrogType());
+    public void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putInt("Type", getFrogType().ordinal());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag nbt) {
-        super.readAdditionalSaveData(nbt);
-        setFrogType(nbt.getInt("Type"));
+    public void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        setFrogType(input.getIntOr("Type", Type.GREEN.ordinal()));
     }
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData spawnData) {
         int type = random.nextInt(Type.values().length);
         setFrogType(type);
 
@@ -147,12 +147,8 @@ public class TreeFrogEntity extends PathfinderMob implements Enemy, RangedAttack
         entityData.set(TYPE, i);
     }
 
-    public int getFrogType() {
-        return entityData.get(TYPE);
-    }
-
-    public String getColor() {
-        return Type.values()[getFrogType()].getColor();
+    public Type getFrogType() {
+        return Type.values()[entityData.get(TYPE)];
     }
 
     @Override
@@ -161,11 +157,12 @@ public class TreeFrogEntity extends PathfinderMob implements Enemy, RangedAttack
             double d = entity.getX() - getX();
             double d1 = entity.getZ() - getZ();
 
-            PoisonBlotEntity poison = new PoisonBlotEntity(TropicraftEntities.POISON_BLOT.get(), this, level());
+            PoisonBlotEntity poison = new PoisonBlotEntity(TropicraftEntities.POISON_BLOT.get(), level());
+            poison.setOwner(this);
             poison.setPos(poison.getX(), poison.getY() + 1.3999999761581421, poison.getZ());
             double shotHeight = (entity.getY() + (double) entity.getEyeHeight()) - 0.20000000298023224 - poison.getY();
             float f1 = Mth.sqrt((float) (d * d + d1 * d1)) * 0.2f;
-            entity.getCommandSenderWorld().playSound(null, entity.blockPosition(), Sounds.FROG_SPIT.get(), SoundSource.HOSTILE, 1, 1);
+            entity.level().playSound(null, entity.blockPosition(), Sounds.FROG_SPIT.get(), SoundSource.HOSTILE, 1, 1);
             level().addFreshEntity(poison);
             poison.shoot(d, shotHeight + (double) f1, d1, 0.6f, 12.0f);
             attackTime = 50;

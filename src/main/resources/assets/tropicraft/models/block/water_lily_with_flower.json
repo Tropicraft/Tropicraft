@@ -1,9 +1,8 @@
 {
   "ambientocclusion": false,
   "textures": {
-    "particle": "block/lily_pad",
-    "texture": "block/lily_pad",
-    "flower": "tropicraft:block/water_lily"
+    "particle": "#texture",
+    "texture": "block/lily_pad"
   },
   "elements": [
     {
@@ -20,8 +19,8 @@
     "rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 45, "rescale": true },
     "shade": false,
     "faces": {
-      "north": { "uv": [ 0, 0, 16, 16 ], "texture": "#flower" },
-      "south": { "uv": [ 0, 0, 16, 16 ], "texture": "#flower" }
+      "north": { "uv": [ 0, 0, 16, 16 ], "texture": "#plant" },
+      "south": { "uv": [ 0, 0, 16, 16 ], "texture": "#plant" }
     }
     },
     {   "from": [ 8, 0, 0.8 ],
@@ -29,8 +28,8 @@
       "rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 45, "rescale": true },
       "shade": false,
       "faces": {
-        "west": { "uv": [ 0, 0, 16, 16 ], "texture": "#flower" },
-        "east": { "uv": [ 0, 0, 16, 16 ], "texture": "#flower" }
+        "west": { "uv": [ 0, 0, 16, 16 ], "texture": "#plant" },
+        "east": { "uv": [ 0, 0, 16, 16 ], "texture": "#plant" }
       }
     }
   ]

@@ -7,6 +7,6 @@ import net.tropicraft.core.common.entity.underdasea.SardineEntity;
 
 public class SardineRenderer extends TropicraftFishRenderer<SardineEntity> {
     public SardineRenderer(EntityRendererProvider.Context context) {
-        super(context, new TropicraftFishModel<>(context.bakeLayer(TropicraftRenderLayers.RIVER_SARDINE_LAYER)), 0.2f);
+        super(context, new TropicraftFishModel(context.bakeLayer(TropicraftRenderLayers.RIVER_SARDINE_LAYER)), 0.2f);
     }
 }

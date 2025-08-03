@@ -2,6 +2,7 @@ package net.tropicraft.core.common.block;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -34,17 +35,17 @@ public class VolcanicSandBlock extends BlockTropicraftSand {
     }
 
     @Override
-    public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity) {
-        if (state.getValue(HOT)) {
+    public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
+        if (state.getValue(HOT) && level instanceof ServerLevel serverLevel) {
             if (entity instanceof LivingEntity living) {
                 ItemStack stack = living.getItemBySlot(EquipmentSlot.FEET);
 
                 // If entity isn't wearing anything on their feetsies
                 if (stack.isEmpty()) {
-                    living.hurt(entity.damageSources().lava(), 0.5f);
+                    living.hurtServer(serverLevel, entity.damageSources().lava(), 0.5f);
                 }
             } else {
-                entity.hurt(entity.damageSources().lava(), 0.5f);
+                entity.hurtServer(serverLevel, entity.damageSources().lava(), 0.5f);
             }
         }
     }

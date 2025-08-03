@@ -1,8 +1,5 @@
 package net.tropicraft.core.client.entity.model;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -12,9 +9,9 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import net.tropicraft.core.common.entity.passive.EntityKoaBase;
+import net.tropicraft.core.client.entity.render.state.KoaRenderState;
 
-public class KoaModel extends HumanoidModel<EntityKoaBase> {
+public class KoaModel extends HumanoidModel<KoaRenderState> {
     private final ModelPart headband;
     private final ModelPart armbandR;
     private final ModelPart leaf1;
@@ -116,6 +113,10 @@ public class KoaModel extends HumanoidModel<EntityKoaBase> {
         return LayerDefinition.create(mesh, 64, 32);
     }
 
+    public static LayerDefinition createBaby() {
+        return create().apply(ModelAnimator.hierarchicalBaby("head", 0.5f, 0.75f));
+    }
+
     public static CubeListBuilder leafModelBuilder() {
         return CubeListBuilder.create()
                 .texOffs(0, 0)
@@ -124,55 +125,20 @@ public class KoaModel extends HumanoidModel<EntityKoaBase> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
-        poseStack.pushPose();
+    public void setupAnim(KoaRenderState state) {
+        boolean isPassenger = state.isPassenger;
+        // Bit of a hack to force sitting pose
+        state.isPassenger |= state.isSitting;
+        super.setupAnim(state);
+        state.isPassenger = isPassenger;
 
-        if (young) {
-            poseStack.pushPose();
-            poseStack.scale(0.75f, 0.75f, 0.75f);
-            poseStack.translate(0.0f, 1.0f, 0.0f);
-            head.render(poseStack, buffer, packedLight, packedOverlay);
-            poseStack.popPose();
-            poseStack.pushPose();
-            poseStack.scale(0.5f, 0.5f, 0.5f);
-            poseStack.translate(0.0f, 1.5f, 0.0f);
-            body.render(poseStack, buffer, packedLight, packedOverlay);
-            rightArm.render(poseStack, buffer, packedLight, packedOverlay);
-            leftArm.render(poseStack, buffer, packedLight, packedOverlay);
-            rightLeg.render(poseStack, buffer, packedLight, packedOverlay);
-            leftLeg.render(poseStack, buffer, packedLight, packedOverlay);
-            poseStack.popPose();
-        } else {
-            head.render(poseStack, buffer, packedLight, packedOverlay);
-            body.render(poseStack, buffer, packedLight, packedOverlay);
-            rightArm.render(poseStack, buffer, packedLight, packedOverlay);
-            leftArm.render(poseStack, buffer, packedLight, packedOverlay);
-            rightLeg.render(poseStack, buffer, packedLight, packedOverlay);
-            leftLeg.render(poseStack, buffer, packedLight, packedOverlay);
-        }
-        poseStack.popPose();
-    }
-
-    @Override
-    public void setupAnim(EntityKoaBase entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         hat.visible = false;
 
-        riding = entity.isSitting() || entity.isPassenger();
-        boolean isDancing = entity.isDancing();
-
-        float ticks = (entity.tickCount + Minecraft.getInstance().getTimer().getGameTimeDeltaTicks()) % 360;
-
-        float headRot = Mth.cos(ticks * 35.0f * Mth.DEG_TO_RAD);
-        if (isDancing) {
+        if (state.isDancing) {
+            float danceAnimation = state.ageInTicks * 35.0f * Mth.DEG_TO_RAD;
+            float headRot = Mth.cos(danceAnimation);
             head.zRot = headRot * 0.05f;
-        } else {
-            head.zRot = 0;
-        }
-
-        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-
-        if (isDancing) {
-            head.xRot += Mth.sin((entity.level().getGameTime() % 360) * 35.0f * Mth.DEG_TO_RAD) * 0.05f;
+            head.xRot += Mth.sin(danceAnimation) * 0.05f;
 
             float amp = 0.5f;
             float x = Mth.PI + Mth.PI / 4 + headRot * amp;

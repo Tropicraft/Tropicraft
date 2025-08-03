@@ -37,28 +37,28 @@ public interface TropicraftDrinks {
                 LEMONADE,
                 TropicraftLangKeys.LEMONADE.component(ChatFormatting.YELLOW),
                 0xfadb41,
-                List.of(new PotionDrinkAction(MobEffects.MOVEMENT_SPEED, 5, 1)),
+                List.of(new PotionDrinkAction(MobEffects.SPEED, 5, 1)),
                 List.of(TropicraftDrinkIngredients.LEMON, TropicraftDrinkIngredients.SUGAR, TropicraftDrinkIngredients.WATER_BUCKET)
         );
         register(context, ingredientLookup,
                 LIMEADE,
                 TropicraftLangKeys.LIMEADE.component(ChatFormatting.GREEN),
                 0x84e88a,
-                List.of(new PotionDrinkAction(MobEffects.MOVEMENT_SPEED, 5, 1)),
+                List.of(new PotionDrinkAction(MobEffects.SPEED, 5, 1)),
                 List.of(TropicraftDrinkIngredients.LIME, TropicraftDrinkIngredients.SUGAR, TropicraftDrinkIngredients.WATER_BUCKET)
         );
         register(context, ingredientLookup,
                 ORANGEADE,
                 TropicraftLangKeys.ORANGEADE.component(ChatFormatting.GOLD),
                 0xf3be36,
-                List.of(new PotionDrinkAction(MobEffects.MOVEMENT_SPEED, 5, 1)),
+                List.of(new PotionDrinkAction(MobEffects.SPEED, 5, 1)),
                 List.of(TropicraftDrinkIngredients.ORANGE, TropicraftDrinkIngredients.SUGAR, TropicraftDrinkIngredients.WATER_BUCKET)
         );
         register(context, ingredientLookup,
                 CAIPIRINHA,
                 TropicraftLangKeys.CAIPIRINHA.component(ChatFormatting.GREEN),
                 0x94ff36,
-                List.of(new PotionDrinkAction(MobEffects.MOVEMENT_SPEED, 5, 1)),
+                List.of(new PotionDrinkAction(MobEffects.SPEED, 5, 1)),
                 List.of(TropicraftDrinkIngredients.LIME, TropicraftDrinkIngredients.SUGAR_CANE, TropicraftDrinkIngredients.WATER_BUCKET)
         );
         register(context, ingredientLookup,
@@ -67,7 +67,7 @@ public interface TropicraftDrinks {
                 0x68442c,
                 List.of(
                         new PotionDrinkAction(MobEffects.REGENERATION, 5, 1),
-                        new PotionDrinkAction(MobEffects.MOVEMENT_SPEED, 5, 2)
+                        new PotionDrinkAction(MobEffects.SPEED, 5, 2)
                 ),
                 List.of(TropicraftDrinkIngredients.ROASTED_COFFEE_BEAN, TropicraftDrinkIngredients.WATER_BUCKET)
         );
@@ -76,7 +76,7 @@ public interface TropicraftDrinks {
                 TropicraftLangKeys.PINA_COLADA.component(ChatFormatting.GOLD),
                 0xefefef,
                 List.of(
-                        new PotionDrinkAction(MobEffects.CONFUSION, 10, 0),
+                        new PotionDrinkAction(MobEffects.NAUSEA, 10, 0),
                         new PortalDrinkAction(
                                 TropicraftDimension.WORLD,
                                 Optional.of(HolderSet.direct(TropicraftEntities.CHAIR)),
@@ -91,14 +91,14 @@ public interface TropicraftDrinks {
                 COCONUT_WATER,
                 TropicraftLangKeys.COCONUT_WATER.component(ChatFormatting.WHITE),
                 0xdfdfdf,
-                List.of(new PotionDrinkAction(MobEffects.MOVEMENT_SPEED, 5, 1)),
+                List.of(new PotionDrinkAction(MobEffects.SPEED, 5, 1)),
                 List.of(TropicraftDrinkIngredients.COCONUT, TropicraftDrinkIngredients.WATER_BUCKET)
         );
         register(context, ingredientLookup,
                 MAI_TAI,
                 TropicraftLangKeys.MAI_TAI.component(ChatFormatting.GOLD),
                 0xff772e,
-                List.of(new PotionDrinkAction(MobEffects.CONFUSION, 5, 0)),
+                List.of(new PotionDrinkAction(MobEffects.NAUSEA, 5, 0)),
                 List.of(TropicraftDrinkIngredients.ORANGE, TropicraftDrinkIngredients.LIME, TropicraftDrinkIngredients.WATER_BUCKET)
         );
     }

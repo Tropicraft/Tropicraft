@@ -12,7 +12,7 @@ import net.tropicraft.core.common.network.message.ClientboundSifterInventoryPack
 import net.tropicraft.core.common.network.message.ClientboundSifterStartPacket;
 import net.tropicraft.core.common.network.message.ClientboundUpdateScubaDataPacket;
 
-@EventBusSubscriber(modid = Tropicraft.ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Tropicraft.ID)
 public class TropicraftPackets {
     @SubscribeEvent
     public static void registerPackets(RegisterPayloadHandlersEvent event) {

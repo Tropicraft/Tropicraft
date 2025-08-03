@@ -116,7 +116,7 @@ public class StructureConverter implements DataProvider {
     }
 
     private static CompoundTag upgradeStructureTag(CompoundTag tag) {
-        int currentVersion = SharedConstants.getCurrentVersion().getDataVersion().getVersion();
+        int currentVersion = SharedConstants.getCurrentVersion().dataVersion().version();
         int dataVersion = NbtUtils.getDataVersion(tag, 500);
         if (dataVersion == currentVersion) {
             return tag;
@@ -125,7 +125,7 @@ public class StructureConverter implements DataProvider {
         CompoundTag updatedTag = DataFixTypes.STRUCTURE.update(DataFixers.getDataFixer(), tag, dataVersion, currentVersion);
 
         StructureTemplate template = new StructureTemplate();
-        template.load(BuiltInRegistries.BLOCK.asLookup(), updatedTag);
+        template.load(BuiltInRegistries.BLOCK, updatedTag);
         return template.save(new CompoundTag());
     }
 

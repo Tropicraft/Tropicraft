@@ -32,10 +32,10 @@ public abstract class PathStructureProcessor extends CheatyStructureProcessor {
         PathVector(BlockPos start, Direction dir) {
             Preconditions.checkArgument(dir.getAxis().isHorizontal(), "Invalid direction for path vector at " + start);
             this.dir = dir;
-            Vec3 ortho = Vec3.atLowerCornerOf(dir.getClockWise().getNormal());
+            Vec3 ortho = dir.getClockWise().getUnitVec3();
             bb = toMutable(new AABB(start)
                     // Expand 16 blocks in front of the vector
-                    .expandTowards(Vec3.atLowerCornerOf(dir.getNormal()).scale(16))
+                    .expandTowards(dir.getUnitVec3().scale(16))
                     // Add 1 block to each side
                     .expandTowards(ortho).expandTowards(ortho.reverse())
                     // Cover a good amount of vertical space

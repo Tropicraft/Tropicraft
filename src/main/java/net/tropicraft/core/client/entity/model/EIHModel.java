@@ -1,20 +1,18 @@
 package net.tropicraft.core.client.entity.model;
 
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
-import net.tropicraft.core.common.entity.neutral.EIHEntity;
 
-public class EIHModel extends HierarchicalModel<EIHEntity> {
-    private final ModelPart root;
-
+public class EIHModel extends EntityModel<LivingEntityRenderState> {
     public EIHModel(ModelPart root) {
-        this.root = root;
+        super(root);
     }
 
     public static LayerDefinition create() {
@@ -29,16 +27,11 @@ public class EIHModel extends HierarchicalModel<EIHEntity> {
         root.addOrReplaceChild("leye", CubeListBuilder.create().texOffs(56, 7).mirror().addBox(0.0f, 0.0f, 0.0f, 3, 3, 1), PartPose.offset(1.0f, -1.0f, -2.0f));
         root.addOrReplaceChild("reye", CubeListBuilder.create().texOffs(56, 7).addBox(-1.5f, -1.0f, -1.0f, 3, 3, 1), PartPose.offset(-2.5f, 0.0f, -1.0f));
 
-        return LayerDefinition.create(mesh, 64, 32);
+        return LayerDefinition.create(mesh, 64, 32).apply(ModelAnimator.scaling(2.0f, 1.75f, 2.0f));
     }
 
     @Override
-    public void setupAnim(EIHEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(LivingEntityRenderState state) {
         // it's a statue, what do you want from me
-    }
-
-    @Override
-    public ModelPart root() {
-        return root;
     }
 }

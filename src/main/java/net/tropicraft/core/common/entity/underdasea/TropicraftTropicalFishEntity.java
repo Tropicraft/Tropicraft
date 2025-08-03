@@ -14,8 +14,8 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -27,6 +27,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nullable;
@@ -83,7 +85,7 @@ public class TropicraftTropicalFishEntity extends AbstractSchoolingFish implemen
 
     @Override
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficultyInstance, MobSpawnType spawnReason, @Nullable SpawnGroupData entityData) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficultyInstance, EntitySpawnReason spawnReason, @Nullable SpawnGroupData entityData) {
         entityData = super.finalizeSpawn(world, difficultyInstance, spawnReason, entityData);
         setFishType(FishType.getRandomType(random));
         return entityData;
@@ -168,23 +170,21 @@ public class TropicraftTropicalFishEntity extends AbstractSchoolingFish implemen
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag compound) {
-        super.addAdditionalSaveData(compound);
-        compound.putInt("FishType", getFishType().id);
+    public void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putInt("FishType", getFishType().id);
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compound) {
-        super.readAdditionalSaveData(compound);
-        setFishType(FishType.getById(compound.getInt("FishType")));
+    public void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        setFishType(FishType.getById(input.getIntOr("FishType", 0)));
     }
 
     @Override
     public void loadFromBucketTag(CompoundTag nbt) {
         super.loadFromBucketTag(nbt);
-        if (nbt.contains("BucketVariantTag", 3)) {
-            setFishType(FishType.getById(nbt.getInt("BucketVariantTag")));
-        }
+        nbt.getInt("BucketVariantTag").ifPresent(id -> setFishType(FishType.getById(id)));
     }
 
     @Override
@@ -194,6 +194,6 @@ public class TropicraftTropicalFishEntity extends AbstractSchoolingFish implemen
     }
 
     private boolean isFishHolder(ItemStack stack) {
-        return !stack.isEmpty() && (stack.getItem() == Items.WATER_BUCKET || stack.getItem() == TropicraftItems.TROPICAL_FISH_BUCKET.get());
+        return stack.is(Items.WATER_BUCKET) || stack.is(TropicraftItems.TROPICAL_FISH_BUCKET);
     }
 }

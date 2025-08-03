@@ -52,7 +52,7 @@ public class SingleUndergrowthFeature extends Feature<SimpleTreeFeatureConfig> {
 
         int count = 0;
 
-        if (isValidPosition(level, pos) && pos.getY() < level.getMaxBuildHeight() - 1) {
+        if (isValidPosition(level, pos) && pos.getY() < level.getMaxY()) {
             for (int y = pos.getY(); y < pos.getY() + size; y++) {
                 int bushWidth = size - (y - pos.getY());
                 for (int x = pos.getX() - bushWidth; x < pos.getX() + bushWidth; x++) {

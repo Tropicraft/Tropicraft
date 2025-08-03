@@ -1,12 +1,12 @@
 package net.tropicraft.core.common.entity.egg;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.underdasea.StarfishEntity;
@@ -40,15 +40,15 @@ public class StarfishEggEntity extends EchinodermEggEntity implements IEntityWit
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag nbt) {
-        super.addAdditionalSaveData(nbt);
-        nbt.putByte("StarfishType", (byte) getStarfishType().ordinal());
+    public void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putByte("StarfishType", (byte) getStarfishType().ordinal());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag nbt) {
-        super.readAdditionalSaveData(nbt);
-        setStarfishType(StarfishType.values()[nbt.getByte("StarfishType")]);
+    public void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        setStarfishType(StarfishType.values()[input.getByteOr("StarfishType", (byte) 0)]);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class StarfishEggEntity extends EchinodermEggEntity implements IEntityWit
     }
 
     @Override
-    public ItemStack getPickedResult(HitResult target) {
+    public ItemStack getPickResult() {
         return new ItemStack(TropicraftItems.STARFISH.get());
     }
 }

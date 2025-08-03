@@ -1,5 +1,6 @@
 package net.tropicraft.core.client.entity.model;
 
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -7,10 +8,9 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 
-public class JaguarModel<T extends Entity> extends TropicraftAgeableHierarchicalModel<T> {
-    private final ModelPart root;
+public class JaguarModel extends EntityModel<LivingEntityRenderState> {
     private final ModelPart leg_back_left;
     private final ModelPart leg_front_left;
     private final ModelPart head_base;
@@ -18,7 +18,7 @@ public class JaguarModel<T extends Entity> extends TropicraftAgeableHierarchical
     private final ModelPart leg_back_right;
 
     public JaguarModel(ModelPart root) {
-        this.root = root;
+        super(root);
         ModelPart body_base = root.getChild("body_base");
         leg_back_left = body_base.getChild("leg_back_left");
         ModelPart torso_main = body_base.getChild("torso_main");
@@ -119,25 +119,21 @@ public class JaguarModel<T extends Entity> extends TropicraftAgeableHierarchical
         return LayerDefinition.create(mesh, 128, 128);
     }
 
-    @Override
-    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float age, float headYaw, float headPitch) {
-        ModelAnimator.look(head_base, headYaw, headPitch);
+    public static LayerDefinition createBaby() {
+        return create().apply(ModelAnimator.hierarchicalBaby("head_base", 0.5f));
+    }
 
-        try (ModelAnimator.Cycle walk = ModelAnimator.cycle(limbSwing * 0.1f, limbSwingAmount)) {
+    @Override
+    public void setupAnim(LivingEntityRenderState state) {
+        super.setupAnim(state);
+
+        ModelAnimator.look(head_base, state);
+
+        try (ModelAnimator.Cycle walk = ModelAnimator.cycle(state.walkAnimationPos * 0.1f, state.walkAnimationSpeed)) {
             leg_front_left.xRot = walk.eval(1.0f, 0.8f);
             leg_front_right.xRot = walk.eval(-1.0f, 0.8f);
             leg_back_left.xRot = walk.eval(-1.0f, 0.8f);
             leg_back_right.xRot = walk.eval(1.0f, 0.8f);
         }
-    }
-
-    @Override
-    protected ModelPart root() {
-        return root;
-    }
-
-    @Override
-    protected ModelPart head() {
-        return head_base;
     }
 }

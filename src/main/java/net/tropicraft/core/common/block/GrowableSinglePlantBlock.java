@@ -29,7 +29,7 @@ public final class GrowableSinglePlantBlock extends BushBlock implements Bonemea
     }
 
     @Override
-    protected MapCodec<GrowableSinglePlantBlock> codec() {
+    public MapCodec<BushBlock> codec() {
         throw new UnsupportedOperationException();
     }
 

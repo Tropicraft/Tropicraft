@@ -4,19 +4,20 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.ConversionParams;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.animal.Cow;
 import net.minecraft.world.entity.player.Player;
@@ -28,9 +29,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.common.IShearable;
+import net.neoforged.neoforge.event.EventHooks;
 import net.tropicraft.core.common.TropicraftRegistries;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.block.TropicraftFlower;
@@ -40,9 +42,11 @@ import net.tropicraft.core.common.item.CocktailItem;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CowktailEntity extends Cow implements IShearable {
+    // TODO: Replace string with network id & custom serializer
     private static final EntityDataAccessor<String> COWKTAIL_TYPE = SynchedEntityData.defineId(CowktailEntity.class, EntityDataSerializers.STRING);
 
     public CowktailEntity(EntityType<? extends CowktailEntity> type, Level worldIn) {
@@ -63,10 +67,10 @@ public class CowktailEntity extends Cow implements IShearable {
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
-        if (itemStack.getItem() == TropicraftItems.BAMBOO_MUG.get() && !isBaby()) {
+        if (itemStack.is(TropicraftItems.BAMBOO_MUG) && !isBaby()) {
             itemStack.consume(1, player);
 
-            Registry<Drink> drinks = registryAccess().registryOrThrow(TropicraftRegistries.DRINK);
+            Registry<Drink> drinks = registryAccess().lookupOrThrow(TropicraftRegistries.DRINK);
             ItemStack cocktailItem = drinks.getRandom(random)
                     .map(CocktailItem::makeDrink)
                     .orElse(ItemStack.EMPTY);
@@ -85,15 +89,15 @@ public class CowktailEntity extends Cow implements IShearable {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag compound) {
-        super.addAdditionalSaveData(compound);
-        compound.putString("Type", getCowktailType().name);
+    public void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putString("Type", getCowktailType().name);
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compound) {
-        super.readAdditionalSaveData(compound);
-        setCowktailType(CowktailEntity.Type.getTypeByName(compound.getString("Type")));
+    public void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        setCowktailType(input.read("Type", Type.CODEC).orElse(Type.IRIS));
     }
 
     private void setCowktailType(CowktailEntity.Type typeIn) {
@@ -101,27 +105,27 @@ public class CowktailEntity extends Cow implements IShearable {
     }
 
     public CowktailEntity.Type getCowktailType() {
-        return CowktailEntity.Type.getTypeByName(entityData.get(COWKTAIL_TYPE));
+        return Type.CODEC.byName(entityData.get(COWKTAIL_TYPE), Type.IRIS);
     }
 
     @Override
-    public CowktailEntity getBreedOffspring(ServerLevel world, AgeableMob ageable) {
-        CowktailEntity child = TropicraftEntities.COWKTAIL.get().create(level());
-        child.setCowktailType(getOffspringType((CowktailEntity) ageable));
+    @Nullable
+    public CowktailEntity getBreedOffspring(ServerLevel level, AgeableMob partner) {
+        CowktailEntity child = TropicraftEntities.COWKTAIL.get().create(level, EntitySpawnReason.BREEDING);
+        if (child != null) {
+            child.setCowktailType(getOffspringType((CowktailEntity) partner));
+        }
         return child;
     }
 
-    private CowktailEntity.Type getOffspringType(CowktailEntity cowktail) {
-        CowktailEntity.Type CowktailEntity$type = getCowktailType();
-        CowktailEntity.Type CowktailEntity$type1 = cowktail.getCowktailType();
-        CowktailEntity.Type CowktailEntity$type2;
-        if (CowktailEntity$type == CowktailEntity$type1 && random.nextInt(1024) == 0) {
-            CowktailEntity$type2 = Type.getRandomType(random);
+    private CowktailEntity.Type getOffspringType(CowktailEntity partner) {
+        CowktailEntity.Type type = getCowktailType();
+        CowktailEntity.Type parnerType = partner.getCowktailType();
+        if (type == parnerType && random.nextInt(1024) == 0) {
+             return Type.getRandomType(random);
         } else {
-            CowktailEntity$type2 = random.nextBoolean() ? CowktailEntity$type : CowktailEntity$type1;
+             return random.nextBoolean() ? type : parnerType;
         }
-
-        return CowktailEntity$type2;
     }
 
     @Override
@@ -131,37 +135,35 @@ public class CowktailEntity extends Cow implements IShearable {
 
     @Override
     public List<ItemStack> onSheared(@Nullable Player player, ItemStack item, Level level, BlockPos pos) {
-        java.util.List<ItemStack> ret = new java.util.ArrayList<>();
-        level().addParticle(ParticleTypes.EXPLOSION, getX(), getY(0.5), getZ(), 0.0, 0.0, 0.0);
-        if (!level().isClientSide) {
-            remove(RemovalReason.DISCARDED);
-            Cow cowentity = EntityType.COW.create(level());
-            cowentity.moveTo(getX(), getY(), getZ(), getYRot(), getXRot());
-            cowentity.setHealth(getHealth());
-            cowentity.yBodyRot = yBodyRot;
-            if (hasCustomName()) {
-                cowentity.setCustomName(getCustomName());
-                cowentity.setCustomNameVisible(isCustomNameVisible());
-            }
-            level().addFreshEntity(cowentity);
-            for (int i = 0; i < 5; ++i) {
-                ret.add(new ItemStack(getCowktailType().renderState.getBlock()));
-            }
-            playSound(SoundEvents.MOOSHROOM_SHEAR, 1.0f, 1.0f);
+        playSound(SoundEvents.MOOSHROOM_SHEAR, 1.0f, 1.0f);
+        List<ItemStack> items = new ArrayList<>();
+        if (!EventHooks.canLivingConvert(this, EntityType.COW, timer -> {})) {
+            return items;
         }
-        return ret;
+        if (!level.isClientSide()) {
+            convertTo(EntityType.COW, ConversionParams.single(this, false, false), cow -> {
+                EventHooks.onLivingConvert(this, cow);
+                level.addParticle(ParticleTypes.EXPLOSION, getX(), getY(0.5), getZ(), 0.0, 0.0, 0.0);
+                for (int i = 0; i < 5; ++i) {
+                    items.add(new ItemStack(getCowktailType().renderState.getBlock()));
+                }
+            });
+        }
+        return items;
     }
 
     @Override
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficultyInstance, MobSpawnType spawnReason, @Nullable SpawnGroupData data) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficultyInstance, EntitySpawnReason spawnReason, @Nullable SpawnGroupData data) {
         setCowktailType(Type.getRandomType(random));
         return super.finalizeSpawn(world, difficultyInstance, spawnReason, data);
     }
 
-    public enum Type {
+    public enum Type implements StringRepresentable {
         IRIS("iris", TropicraftBlocks.IRIS.get().defaultBlockState().setValue(DoublePlantBlock.HALF, DoubleBlockHalf.UPPER)),
         ANEMONE("anemone", TropicraftBlocks.FLOWERS.get(TropicraftFlower.ANEMONE).get().defaultBlockState());
+
+        public static final EnumCodec<Type> CODEC = StringRepresentable.fromEnum(Type::values);
 
         private final String name;
         private final BlockState renderState;
@@ -175,22 +177,16 @@ public class CowktailEntity extends Cow implements IShearable {
             return Util.getRandom(values(), rand);
         }
 
+        @Override
+        public String getSerializedName() {
+            return name;
+        }
+
         /**
          * A block state that is rendered on the back of the mooshroom.
          */
-        @OnlyIn(Dist.CLIENT)
         public BlockState getRenderState() {
             return renderState;
-        }
-
-        private static CowktailEntity.Type getTypeByName(String nameIn) {
-            for (CowktailEntity.Type CowktailEntity$type : values()) {
-                if (CowktailEntity$type.name.equals(nameIn)) {
-                    return CowktailEntity$type;
-                }
-            }
-
-            return IRIS;
         }
     }
 }

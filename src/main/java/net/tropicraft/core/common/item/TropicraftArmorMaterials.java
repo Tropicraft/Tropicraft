@@ -1,95 +1,111 @@
 package net.tropicraft.core.common.item;
 
-import net.minecraft.Util;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
-import net.tropicraft.Tropicraft;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.equipment.ArmorMaterial;
+import net.minecraft.world.item.equipment.ArmorType;
+import net.minecraft.world.item.equipment.EquipmentAsset;
+import net.minecraft.world.item.equipment.Equippable;
+import net.tropicraft.core.client.TropicraftEquipmentAssets;
 import net.tropicraft.core.common.TropicraftTags;
 
-import java.util.EnumMap;
-import java.util.List;
 import java.util.Map;
 
 public class TropicraftArmorMaterials {
-    public static final DeferredRegister<ArmorMaterial> REGISTER = DeferredRegister.create(Registries.ARMOR_MATERIAL, Tropicraft.ID);
-
-    // Ignored, replaced with custom models with IClientItemExtensions
-    private static final List<ArmorMaterial.Layer> DUMMY_LAYERS = List.of(new ArmorMaterial.Layer(
-            Tropicraft.location("dummy")
-    ));
-
-    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> ASHEN_MASK = REGISTER.register("ashen_mask", () -> new ArmorMaterial(
+    public static final ArmorMaterial ASHEN_MASK = new ArmorMaterial(
+            0,
             Map.of(
-                    ArmorItem.Type.HELMET, 1
+                    ArmorType.HELMET, 1
             ),
             15,
             SoundEvents.ARMOR_EQUIP_LEATHER,
-            () -> Ingredient.of(TropicraftTags.Items.ASHEN_MASKS),
-            DUMMY_LAYERS,
             0,
-            0
-    ));
-    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> NIGEL_STACHE = REGISTER.register("nigel_stache", () -> new ArmorMaterial(
+            0,
+            TropicraftTags.Items.ASHEN_MASKS,
+            TropicraftEquipmentAssets.NONE
+    );
+    public static final ArmorMaterial NIGEL_STACHE = new ArmorMaterial(
+            0,
             Map.of(
-                    ArmorItem.Type.HELMET, 1
+                    ArmorType.HELMET, 1
             ),
             15,
             SoundEvents.ARMOR_EQUIP_LEATHER,
-            () -> Ingredient.of(TropicraftItems.NIGEL_STACHE.get()),
-            DUMMY_LAYERS,
             0,
-            0
-    ));
-    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> SCALE_ARMOR = REGISTER.register("scale_armor", () -> new ArmorMaterial(
-            Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
-                map.put(ArmorItem.Type.BOOTS, 2);
-                map.put(ArmorItem.Type.LEGGINGS, 5);
-                map.put(ArmorItem.Type.CHESTPLATE, 6);
-                map.put(ArmorItem.Type.HELMET, 2);
-            }),
+            0,
+            TropicraftTags.Items.REPAIRS_NIGEL_STACHE,
+            TropicraftEquipmentAssets.NONE
+    );
+    public static final ArmorMaterial SCALE_ARMOR = new ArmorMaterial(
+            18,
+            Map.of(
+                    ArmorType.BOOTS, 2,
+                    ArmorType.LEGGINGS, 5,
+                    ArmorType.CHESTPLATE, 6,
+                    ArmorType.HELMET, 2
+            ),
             9,
             SoundEvents.ARMOR_EQUIP_CHAIN,
-            () -> Ingredient.of(TropicraftItems.SCALE.get()),
-            List.of(new ArmorMaterial.Layer(
-                    Tropicraft.location("scale")
-            )),
             0.5f,
-            0.0f
-    ));
-    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> FIRE_ARMOR = REGISTER.register("fire_armor", () -> new ArmorMaterial(
-            Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
-                map.put(ArmorItem.Type.BOOTS, 2);
-                map.put(ArmorItem.Type.LEGGINGS, 4);
-                map.put(ArmorItem.Type.CHESTPLATE, 5);
-                map.put(ArmorItem.Type.HELMET, 2);
-            }),
+            0.0f,
+            TropicraftTags.Items.REPAIRS_SCALE_ARMOR,
+            TropicraftEquipmentAssets.SCALE
+    );
+    public static final ArmorMaterial FIRE_ARMOR = new ArmorMaterial(
+            12,
+            Map.of(
+                    ArmorType.BOOTS, 2,
+                    ArmorType.LEGGINGS, 4,
+                    ArmorType.CHESTPLATE, 5,
+                    ArmorType.HELMET, 2
+            ),
             9,
             SoundEvents.ARMOR_EQUIP_IRON,
-            () -> Ingredient.of(TropicraftTags.Items.REPAIRS_FIRE_ARMOR),
-            List.of(new ArmorMaterial.Layer(
-                    Tropicraft.location("fire")
-            )),
             0.1f,
-            0.0f
-    ));
-    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> SCUBA = REGISTER.register("scuba", () -> new ArmorMaterial(
-            Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
-                map.put(ArmorItem.Type.BOOTS, 0);
-                map.put(ArmorItem.Type.LEGGINGS, 0);
-                map.put(ArmorItem.Type.CHESTPLATE, 0);
-                map.put(ArmorItem.Type.HELMET, 0);
-            }),
-            0,
-            SoundEvents.ARMOR_EQUIP_GENERIC,
-            () -> Ingredient.of(TropicraftTags.Items.REPAIRS_SCUBA_GEAR),
-            DUMMY_LAYERS,
-            0,
-            0.0f
-    ));
+            0.0f,
+            TropicraftTags.Items.REPAIRS_FIRE_ARMOR,
+            TropicraftEquipmentAssets.FIRE
+    );
+    public static final ArmorMaterial SCUBA_PINK = createScuba(TropicraftEquipmentAssets.PINK_SCUBA);
+    public static final ArmorMaterial SCUBA_YELLOW = createScuba(TropicraftEquipmentAssets.YELLOW_SCUBA);
+
+    private static ArmorMaterial createScuba(ResourceKey<EquipmentAsset> asset) {
+        return new ArmorMaterial(
+                10,
+                Map.of(
+                        ArmorType.BOOTS, 0,
+                        ArmorType.LEGGINGS, 0,
+                        ArmorType.CHESTPLATE, 0,
+                        ArmorType.HELMET, 0
+                ),
+                0,
+                SoundEvents.ARMOR_EQUIP_GENERIC,
+                0,
+                0.0f,
+                TropicraftTags.Items.REPAIRS_SCUBA_GEAR,
+                asset
+        );
+    }
+
+    public static Item.Properties applyNoDurability(Item.Properties properties, ArmorMaterial material, ArmorType armorType) {
+        Equippable.Builder equippable = Equippable.builder(armorType.getSlot())
+                .setEquipSound(material.equipSound());
+        if (material.assetId() != TropicraftEquipmentAssets.NONE) {
+            equippable.setAsset(material.assetId());
+        }
+        if (material.enchantmentValue() != 0) {
+            properties.enchantable(material.enchantmentValue());
+        }
+        return properties
+                .attributes(material.createAttributes(armorType))
+                .component(DataComponents.EQUIPPABLE, equippable.build())
+                .repairable(material.repairIngredient());
+    }
+
+    public static Item.Properties applySafe(Item.Properties properties, ArmorMaterial material, ArmorType armorType) {
+        return applyNoDurability(properties, material, armorType)
+                .durability(armorType.getDurability(material.durability()));
+    }
 }

@@ -3,6 +3,7 @@ package net.tropicraft.core.common.entity.passive;
 import net.minecraft.SharedConstants;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -16,11 +17,9 @@ import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.BinaryAnimation;
-import net.tropicraft.core.common.Easings;
 import net.tropicraft.core.common.entity.IkWalker;
 
 public class ShoebillStorkEntity extends Animal {
@@ -36,7 +35,7 @@ public class ShoebillStorkEntity extends Animal {
     private final IkWalker.Foot leftFoot = walker.addFoot(BASE_FOOT_Z, -0.1168f);
     private final IkWalker.Foot rightFoot = walker.addFoot(BASE_FOOT_Z, 0.1168f);
 
-    private final BinaryAnimation flightAnimation = new BinaryAnimation(3, Easings::inOutSine);
+    private final BinaryAnimation flightAnimation = new BinaryAnimation(3, Mth::easeInOutSine);
 
     public ShoebillStorkEntity(EntityType<? extends ShoebillStorkEntity> type, Level world) {
         super(type, world);
@@ -54,7 +53,7 @@ public class ShoebillStorkEntity extends Animal {
         goalSelector.addGoal(0, new PanicGoal(this, 1.25));
         goalSelector.addGoal(0, new FloatGoal(this));
         goalSelector.addGoal(1, new LookAtPlayerGoal(this, Player.class, 8.0f));
-        goalSelector.addGoal(2, new TemptGoal(this, 1.25, Ingredient.of(ItemTags.FISHES), false));
+        goalSelector.addGoal(2, new TemptGoal(this, 1.25, item -> item.is(ItemTags.FISHES), false));
         goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0));
     }
 
@@ -79,14 +78,14 @@ public class ShoebillStorkEntity extends Animal {
     }
 
     @Override
-    public void absMoveTo(double x, double y, double z) {
-        super.absMoveTo(x, y, z);
+    public void absSnapTo(double x, double y, double z) {
+        super.absSnapTo(x, y, z);
         walker.reset(this);
     }
 
     @Override
-    public void moveTo(double x, double y, double z, float yRot, float xRot) {
-        super.moveTo(x, y, z, yRot, xRot);
+    public void snapTo(double x, double y, double z, float yRot, float xRot) {
+        super.snapTo(x, y, z, yRot, xRot);
         walker.reset(this);
     }
 

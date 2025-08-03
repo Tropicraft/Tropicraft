@@ -129,7 +129,7 @@ public class EntityAIMeleeAndRangedAttack extends Goal {
                 rangedAttackEntityHost.performRangedAttack(attackTarget, f1);
                 rangedAttackTime = maxRangedAttackTime;
             } else if (d0 <= meleeHitRange * meleeHitRange) {
-                entityHost.doHurtTarget(attackTarget);
+                entityHost.doHurtTarget(getServerLevel(entityHost), attackTarget);
                 entityHost.swing(InteractionHand.MAIN_HAND);
                 rangedAttackTime = maxMeleeAttackTime;
             }

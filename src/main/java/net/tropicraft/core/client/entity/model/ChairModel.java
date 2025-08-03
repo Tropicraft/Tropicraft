@@ -1,20 +1,18 @@
 package net.tropicraft.core.client.entity.model;
 
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.util.Mth;
-import net.tropicraft.core.common.entity.placeable.ChairEntity;
 
-public class ChairModel extends HierarchicalModel<ChairEntity> {
-    private final ModelPart root;
-
+public class ChairModel extends EntityModel<EntityRenderState> {
     public ChairModel(ModelPart root) {
-        this.root = root;
+        super(root);
     }
 
     public static LayerDefinition create() {
@@ -31,14 +29,5 @@ public class ChairModel extends HierarchicalModel<ChairEntity> {
         root.addOrReplaceChild("leftArm", CubeListBuilder.create().texOffs(0, 29).addBox(0.0f, 0.0f, 0.0f, 14, 1, 2), PartPose.offsetAndRotation(8.0f, -5.0f, 11.0f, 0.0f, Mth.HALF_PI, 0.0f));
 
         return LayerDefinition.create(mesh, 64, 32);
-    }
-
-    @Override
-    public void setupAnim(ChairEntity chair, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-    }
-
-    @Override
-    public ModelPart root() {
-        return root;
     }
 }

@@ -1,24 +1,27 @@
 package net.tropicraft.core.common.entity.placeable;
 
 import com.tterrag.registrate.util.entry.RegistryEntry;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.util.Mth;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.InterpolationHandler;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
@@ -37,12 +40,7 @@ public abstract class FurnitureEntity extends Entity {
 
     private final Function<DyeColor, Item> itemLookup;
 
-    protected int lerpSteps;
-    protected double lerpX;
-    protected double lerpY;
-    protected double lerpZ;
-    protected double lerpYaw = Double.NaN; // Force first-time sync even if packet is incomplete
-    protected double lerpPitch;
+    private final InterpolationHandler interpolation = new InterpolationHandler(this, 10);
 
     protected FurnitureEntity(EntityType<?> entityTypeIn, Level worldIn, Map<DyeColor, ? extends RegistryEntry<? extends Item, ? extends Item>> items) {
         this(entityTypeIn, worldIn, c -> items.get(c).get());
@@ -56,14 +54,8 @@ public abstract class FurnitureEntity extends Entity {
         // this.pushthrough = 0.95f;
     }
 
-    @Override
-    public boolean isInvulnerableTo(DamageSource pSource) {
-        return entityData.get(GLUED_DOWN) || super.isInvulnerableTo(pSource);
-    }
-
-    public void setRotation(float yaw) {
-        lerpYaw = Mth.wrapDegrees(yaw);
-        setYRot((float) lerpYaw);
+    public boolean isInvulnerableTo(DamageSource source) {
+        return entityData.get(GLUED_DOWN) || super.isInvulnerableToBase(source);
     }
 
     @Override
@@ -94,7 +86,7 @@ public abstract class FurnitureEntity extends Entity {
 
         super.tick();
 
-        tickLerp();
+        interpolation.interpolate();
 
         if (preventMotion()) {
             setDeltaMovement(Vec3.ZERO);
@@ -102,7 +94,7 @@ public abstract class FurnitureEntity extends Entity {
 
         //updateRocking();
 
-        checkInsideBlocks();
+        applyEffectsFromBlocks();
         List<Entity> list = level().getEntities(this, getBoundingBox().inflate((double) 0.2f, (double) -0.01f, (double) 0.2f), EntitySelector.pushableBy(this));
         if (!list.isEmpty()) {
             for (Entity entity : list) {
@@ -117,32 +109,9 @@ public abstract class FurnitureEntity extends Entity {
         return true;
     }
 
-    /* Following two methods mostly copied from EntityBoat interpolation code */
     @Override
-    public void lerpTo(double x, double y, double z, float yaw, float pitch, int posRotationIncrements) {
-        lerpX = x;
-        lerpY = y;
-        lerpZ = z;
-        // Avoid "jumping" back to the client's rotation due to vanilla's dumb incomplete packets
-        if (yaw != getYRot() || Double.isNaN(lerpYaw)) {
-            lerpYaw = Mth.wrapDegrees((double) yaw);
-        }
-        lerpSteps = 10;
-        setXRot(pitch);
-    }
-
-    private void tickLerp() {
-        if (lerpSteps > 0) {
-            double d0 = getX() + (lerpX - getX()) / (double) lerpSteps;
-            double d1 = getY() + (lerpY - getY()) / (double) lerpSteps;
-            double d2 = getZ() + (lerpZ - getZ()) / (double) lerpSteps;
-            double d3 = Mth.wrapDegrees(lerpYaw - (double) getYRot());
-            setYRot((float) ((double) getYRot() + d3 / (double) lerpSteps));
-            setXRot((float) ((double) getXRot() + (lerpPitch - (double) getXRot()) / (double) lerpSteps));
-            --lerpSteps;
-            setPos(d0, d1, d2);
-            setRot(getYRot(), getXRot());
-        }
+    public InterpolationHandler getInterpolation() {
+        return interpolation;
     }
 
     @Override
@@ -156,9 +125,9 @@ public abstract class FurnitureEntity extends Entity {
 
     public InteractionResult invulnerablityCheck(Player pPlayer, InteractionHand pHand) {
         if (pPlayer.getItemInHand(pHand).is(Items.DEBUG_STICK)) {
-            if (!level().isClientSide) {
+            if (pPlayer instanceof ServerPlayer serverPlayer) {
                 entityData.set(GLUED_DOWN, !entityData.get(GLUED_DOWN));
-                pPlayer.sendSystemMessage(Component.translatable("Invulnerability Mode: " + (entityData.get(GLUED_DOWN) ? "On" : "Off")));
+                serverPlayer.sendSystemMessage(Component.translatable("Invulnerability Mode: " + (entityData.get(GLUED_DOWN) ? "On" : "Off")), true);
             }
 
             return InteractionResult.SUCCESS;
@@ -168,7 +137,7 @@ public abstract class FurnitureEntity extends Entity {
     }
 
     @Override
-    public boolean hurt(DamageSource damageSource, float amount) {
+    public boolean hurtServer(ServerLevel serverLevel, DamageSource damageSource, float amount) {
         if (isInvulnerableTo(damageSource)) {
             if (damageSource.getEntity() instanceof Player player) {
                 return player.getMainHandItem().is(Items.DEBUG_STICK);
@@ -191,7 +160,7 @@ public abstract class FurnitureEntity extends Entity {
                 }
 
                 if (!flag) {
-                    spawnAtLocation(getItemStack(), 0.0f);
+                    spawnAtLocation(serverLevel, getItemStack(), 0.0f);
                 }
 
                 remove(RemovalReason.KILLED);
@@ -223,19 +192,16 @@ public abstract class FurnitureEntity extends Entity {
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag nbt) {
-        setColor(DyeColor.byId(nbt.getInt("Color")));
-
-        if (nbt.contains("GluedDown")) {
-            entityData.set(GLUED_DOWN, nbt.getBoolean("GluedDown"));
-        }
+    protected void readAdditionalSaveData(ValueInput input) {
+        setColor(input.read("Color", DyeColor.LEGACY_ID_CODEC).orElse(DyeColor.WHITE));
+        entityData.set(GLUED_DOWN, input.getBooleanOr("GluedDown", false));
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag nbt) {
-        nbt.putInt("Color", getColor().ordinal());
+    protected void addAdditionalSaveData(ValueOutput output) {
+        output.store("Color", DyeColor.LEGACY_ID_CODEC, getColor());
 
-        nbt.putBoolean("GluedDown", entityData.get(GLUED_DOWN));
+        output.putBoolean("GluedDown", entityData.get(GLUED_DOWN));
     }
 
     public void setColor(DyeColor color) {

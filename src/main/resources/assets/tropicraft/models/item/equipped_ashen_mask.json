@@ -1,0 +1,9 @@
+{
+  "parent": "tropicraft:item/generated_with_back",
+  "display": {
+    "head": {
+      "translation": [0.75, 3.0, -6.75],
+      "scale": [3.0, 3.0, 1.0]
+    }
+  }
+}

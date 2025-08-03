@@ -1,6 +1,5 @@
 package net.tropicraft.core.common.entity.underdasea;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -9,8 +8,8 @@ import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -27,6 +26,8 @@ import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -68,7 +69,7 @@ public class SharkEntity extends WaterAnimal {
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, EntitySpawnReason pReason, @Nullable SpawnGroupData pSpawnData) {
         setAirSupply(getMaxAirSupply());
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData);
     }
@@ -86,8 +87,8 @@ public class SharkEntity extends WaterAnimal {
                 .add(Attributes.ATTACK_DAMAGE, 4.0);
     }
 
-    public void setBoss() {
-        getEntityData().set(IS_BOSS, true);
+    public void setBoss(boolean boss) {
+        getEntityData().set(IS_BOSS, boss);
     }
 
     public boolean isBoss() {
@@ -164,17 +165,15 @@ public class SharkEntity extends WaterAnimal {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag n) {
-        n.putBoolean("isBoss", isBoss());
-        super.addAdditionalSaveData(n);
+    public void addAdditionalSaveData(ValueOutput output) {
+        output.putBoolean("isBoss", isBoss());
+        super.addAdditionalSaveData(output);
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag n) {
-        if (n.getBoolean("isBoss")) {
-            setBoss();
-        }
-        super.readAdditionalSaveData(n);
+    public void readAdditionalSaveData(ValueInput input) {
+        setBoss(input.getBooleanOr("isBoss", false));
+        super.readAdditionalSaveData(input);
     }
 
     @Override
