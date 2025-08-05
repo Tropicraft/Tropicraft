@@ -69,7 +69,7 @@ sourceSets.main.resources {
 
 repositories {
     maven {
-        url = 'https://maven.gegy.dev/'
+        url = 'https://maven.gegy.dev/releases/'
         content { includeGroup 'com.tterrag.registrate' }
     }
     mavenLocal()
