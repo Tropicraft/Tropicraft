@@ -751,13 +751,13 @@ public class EntityKoaBase extends Villager {
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, EntitySpawnReason reason, @Nullable SpawnGroupData spawnDataIn) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData spawnData) {
         setHomeTo(blockPosition(), MAX_HOME_DISTANCE);
 
-        rollDiceChild();
-
-        rollDiceRole();
-        rollDiceGender();
+        RandomSource random = level.getRandom();
+        rollDiceChild(random);
+        rollDiceRole(random);
+        rollDiceGender(random);
 
         updateUniqueEntityAI();
 
@@ -769,18 +769,18 @@ public class EntityKoaBase extends Villager {
         //TODO: 1.14 make sure not needed, overwritten with getOfferMap now
         //initTrades();
 
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
+        return super.finalizeSpawn(level, difficulty, reason, spawnData);
     }
 
-    public void rollDiceChild() {
+    public void rollDiceChild(RandomSource random) {
         int childChance = 20;
-        if (childChance >= level().random.nextInt(100)) {
+        if (childChance >= random.nextInt(100)) {
             setAge(-24000);
         }
     }
 
-    public void rollDiceRole() {
-        int randValRole = level().random.nextInt(Roles.values().length);
+    public void rollDiceRole(RandomSource random) {
+        int randValRole = random.nextInt(Roles.values().length);
         if (randValRole == Roles.FISHERMAN.ordinal()) {
             setFisher();
         } else if (randValRole == Roles.HUNTER.ordinal()) {
@@ -788,7 +788,7 @@ public class EntityKoaBase extends Villager {
         }
     }
 
-    public void rollDiceGender() {
+    public void rollDiceGender(RandomSource random) {
         getEntityData().set(GENDER, random.nextInt(Genders.values().length));
     }
 
@@ -850,11 +850,11 @@ public class EntityKoaBase extends Villager {
 
         input.getInt("role_id").ifPresentOrElse(
                 roleId -> getEntityData().set(ROLE, roleId),
-                this::rollDiceRole
+                () -> rollDiceRole(random)
         );
         input.getInt("gender_id").ifPresentOrElse(
                 genderId -> getEntityData().set(GENDER, genderId),
-                this::rollDiceGender
+                () -> rollDiceGender(random)
         );
 
         lastTradeTime = input.getLongOr("lastTradeTime", 0);
@@ -1526,7 +1526,7 @@ public class EntityKoaBase extends Villager {
 
         if (isPartyNight()) {
             int chance = 90;
-            if (chance >= level().random.nextInt(100)) {
+            if (chance >= random.nextInt(100)) {
                 wantsToParty = true;
                 //System.out.println("roll dice party: " + wantsToParty);
                 return;
