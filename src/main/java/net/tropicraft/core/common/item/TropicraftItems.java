@@ -15,11 +15,7 @@ import net.minecraft.advancements.critereon.DamageSourcePredicate;
 import net.minecraft.advancements.critereon.TagPredicate;
 import net.minecraft.client.color.item.Constant;
 import net.minecraft.client.data.models.ItemModelGenerators;
-import net.minecraft.client.data.models.model.ModelLocationUtils;
-import net.minecraft.client.data.models.model.ModelTemplate;
-import net.minecraft.client.data.models.model.ModelTemplates;
-import net.minecraft.client.data.models.model.TextureMapping;
-import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.data.models.model.*;
 import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.properties.select.DisplayContext;
 import net.minecraft.core.Holder;
@@ -40,22 +36,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.animal.AbstractFish;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.AxeItem;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.EitherHolder;
-import net.minecraft.world.item.HoeItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.JukeboxPlayable;
-import net.minecraft.world.item.JukeboxSong;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.ShovelItem;
-import net.minecraft.world.item.SignItem;
-import net.minecraft.world.item.SpawnEggItem;
-import net.minecraft.world.item.ToolMaterial;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.item.component.Consumables;
 import net.minecraft.world.item.equipment.ArmorMaterial;
@@ -63,15 +44,9 @@ import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.item.equipment.EquipmentAsset;
 import net.minecraft.world.item.equipment.Equippable;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.FlowerPotBlock;
-import net.minecraft.world.level.block.StandingSignBlock;
-import net.minecraft.world.level.block.WallSignBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.Fluids;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.registries.RegisterEvent;
@@ -100,7 +75,6 @@ import net.tropicraft.core.common.item.scuba.ScubaArmorItem;
 import net.tropicraft.core.common.item.scuba.ScubaHarnessItem;
 import net.tropicraft.core.common.item.scuba.ScubaType;
 
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -332,8 +306,8 @@ public class TropicraftItems {
             .recipe((ctx, prov) -> prov.food(DataIngredient.tag(prov.itemLookup().getOrThrow(TropicraftTags.Items.PLANTAIN)), RecipeCategory.FOOD, ctx, 0.1f))
             .register();
 
-    public static final ItemEntry<FoodDishItem> MOFONGO = REGISTRATE.item("mofongo", p -> new FoodDishItem(p, BAMBOO_BOWL))
-            .properties(p -> p.food(Foods.MOFONGO).craftRemainder(BAMBOO_BOWL.get()))
+    public static final ItemEntry<Item> MOFONGO = REGISTRATE.item("mofongo", p -> new Item(p))
+            .properties(p -> p.food(Foods.MOFONGO).craftRemainder(BAMBOO_BOWL.get()).usingConvertsTo(BAMBOO_BOWL.get()))
             .recipe((ctx, prov) -> ShapelessRecipeBuilder.shapeless(prov.itemLookup(), RecipeCategory.FOOD, ctx.get())
                     .requires(DRIED_PLANTAINS, 2)
                     .requires(BAMBOO_BOWL)
