@@ -61,7 +61,7 @@ public class VolcanoBlockEntity extends BlockEntity {
     }
 
     private void tick() {
-        if (!TropicsConfigs.allowVolcanoEruption) {
+        if (!TropicsConfigs.COMMON.allowActiveVolcano.get()) {
             return;
         }
 
