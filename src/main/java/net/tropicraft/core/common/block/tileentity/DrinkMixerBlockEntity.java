@@ -176,7 +176,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
     }
 
     public boolean canMix() {
-        return !mixing && isMixerFull();
+        return !mixing && !drinkIngredients.isEmpty();
     }
 
     @Override
