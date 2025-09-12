@@ -138,7 +138,7 @@ public class AirCompressorBlockEntity extends BlockEntity implements IMachineBlo
     }
 
     public boolean isDoneCompressing() {
-        return ticks > 0 && !compressing;
+        return ticks == 0 && !compressing && this.tank != null;
     }
 
     public float getTickRatio(float partialTicks) {
