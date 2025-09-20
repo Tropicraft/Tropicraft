@@ -419,7 +419,8 @@ public class TropicraftItems {
     private static ItemBuilder<Item, Registrate> musicDisc(ResourceKey<JukeboxSong> song) {
         return REGISTRATE.item("music_disc_" + song.location().getPath(), Item::new)
                 .properties(p -> p.rarity(Rarity.RARE).component(DataComponents.JUKEBOX_PLAYABLE, new JukeboxPlayable(new EitherHolder<>(song))))
-                .lang("Music Disc");
+                .lang("Music Disc")
+                .tag(Tags.Items.MUSIC_DISCS);
     }
 
     public static final ItemEntry<Item> TROPICAL_FISH_BUCKET = fishBucket("tropical_fish_bucket", TropicraftEntities.TROPICAL_FISH).register();
