@@ -3,12 +3,14 @@ package net.tropicraft.core.common.block.tileentity;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
@@ -20,6 +22,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.tropicraft.core.common.block.DrinkMixerBlock;
+import net.tropicraft.core.common.drinks.Cocktail;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.DrinkIngredient;
 import net.tropicraft.core.common.network.message.ClientboundMixerInventoryPacket;
@@ -102,12 +105,24 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         drinkIngredients.addAll(ingredients);
     }
 
-    public void startMixing() {
+    public boolean tryStartMixing() {
+        if (mixing) {
+            return false;
+        }
+        if (Drink.makeCocktail(level.registryAccess(), drinkIngredients) == null) {
+            return false;
+        }
         ticks = 0;
         mixing = true;
         if (level instanceof ServerLevel serverLevel) {
             PacketDistributor.sendToPlayersTrackingChunk(serverLevel, new ChunkPos(getBlockPos()), new ClientboundMixerStartPacket(getBlockPos()));
         }
+        return true;
+    }
+
+    public void setMixing() {
+        ticks = 0;
+        mixing = true;
     }
 
     private void dropItem(ItemStack stack, @Nullable Player at) {
@@ -155,12 +170,13 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         syncInventory();
     }
 
-    public boolean addToMixer(Level level, ItemStack itemStack) {
-        if (isMixerFull()) {
+    public boolean tryTransferToMixer(Level level, ItemStack itemStack, LivingEntity entity) {
+        if (mixing || drinkIngredients.size() >= Drink.MAX_INGREDIENTS) {
             return false;
         }
-        if (DrinkIngredient.findMatchingIngredient(level.registryAccess(), itemStack) != null) {
-            drinkIngredients.add(itemStack);
+        Holder<DrinkIngredient> ingredient = DrinkIngredient.findMatchingIngredient(level.registryAccess(), itemStack);
+        if (ingredient != null) {
+            drinkIngredients.add(itemStack.consumeAndReturn(1, entity));
             syncInventory();
             return true;
         }
@@ -169,14 +185,6 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
 
     public boolean isMixing() {
         return mixing;
-    }
-
-    private boolean isMixerFull() {
-        return drinkIngredients.size() >= Drink.MAX_INGREDIENTS;
-    }
-
-    public boolean canMix() {
-        return !mixing && !drinkIngredients.isEmpty();
     }
 
     @Override

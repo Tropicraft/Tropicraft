@@ -58,15 +58,6 @@ public record Drink(
                 .orElse(null);
     }
 
-    @Nullable
-    public static Holder<Drink> getMatchingDrinkByItems(HolderLookup.Provider registries, List<ItemStack> itemStacks) {
-        List<Holder<DrinkIngredient>> ingredients = getIngredientsFromItems(registries, itemStacks);
-        if (ingredients.isEmpty()) {
-            return null;
-        }
-        return getMatchingDrink(registries, ingredients);
-    }
-
     public void onDrink(ServerPlayer player) {
         for (DrinkAction action : actions) {
             action.onDrink(player);
@@ -80,15 +71,21 @@ public record Drink(
     }
 
     public static ItemStack getResult(HolderLookup.Provider registries, List<ItemStack> ingredientItems) {
+        Cocktail cocktail = makeCocktail(registries, ingredientItems);
+        return cocktail != null ? CocktailItem.makeCocktail(cocktail) : ItemStack.EMPTY;
+    }
+
+    @Nullable
+    public static Cocktail makeCocktail(HolderLookup.Provider registries, List<ItemStack> ingredientItems) {
         List<Holder<DrinkIngredient>> drinkIngredients = getIngredientsFromItems(registries, ingredientItems);
         if (drinkIngredients.isEmpty()) {
-            return ItemStack.EMPTY;
+            return null;
         }
         Holder<Drink> matchingDrink = getMatchingDrink(registries, drinkIngredients);
         if (matchingDrink != null) {
-            return CocktailItem.makeDrink(matchingDrink);
+            return Cocktail.ofDrink(matchingDrink);
         }
-        return CocktailItem.makeCocktail(Cocktail.ofIngredients(drinkIngredients));
+        return Cocktail.ofIngredients(drinkIngredients);
     }
 
     private static List<Holder<DrinkIngredient>> getIngredientsFromItems(HolderLookup.Provider registries, List<ItemStack> ingredientItems) {
