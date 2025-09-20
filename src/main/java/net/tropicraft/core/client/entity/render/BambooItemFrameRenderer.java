@@ -28,7 +28,7 @@ import net.tropicraft.core.common.entity.BambooItemFrame;
 
 public class BambooItemFrameRenderer extends ItemFrameRenderer<BambooItemFrame> {
     public static final StateDefinition<Block, BlockState> FAKE_BLOCK_STATE = new StateDefinition.Builder<Block, BlockState>(Blocks.AIR)
-            .add(BooleanProperty.create("map"))
+            .add(BlockStateProperties.MAP)
             .create(Block::defaultBlockState, BlockState::new);
 
     private final MapRenderer mapRenderer;
