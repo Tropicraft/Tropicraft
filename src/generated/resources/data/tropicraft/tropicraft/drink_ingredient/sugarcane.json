@@ -3,6 +3,6 @@
   "description": {
     "translate": "block.minecraft.sugar_cane"
   },
-  "items": "minecraft:sugar_cane",
+  "items": "#c:crops/sugar_cane",
   "weight": 0.1
 }

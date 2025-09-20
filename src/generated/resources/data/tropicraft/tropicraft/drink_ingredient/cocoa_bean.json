@@ -3,6 +3,6 @@
   "description": {
     "translate": "item.minecraft.cocoa_beans"
   },
-  "items": "minecraft:cocoa_beans",
+  "items": "#c:crops/cocoa_bean",
   "weight": 0.95
 }

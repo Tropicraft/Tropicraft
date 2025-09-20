@@ -2,12 +2,14 @@ package net.tropicraft.core.common.drinks;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.neoforged.neoforge.common.Tags;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.TropicraftRegistries;
 import net.tropicraft.core.common.block.TropicraftBlocks;
@@ -39,19 +41,27 @@ public interface TropicraftDrinkIngredients {
         register(context, GRAPEFRUIT, TropicraftItems.GRAPEFRUIT, 0xff6347, 1.0f);
         register(context, PINEAPPLE, TropicraftBlocks.PINEAPPLE.asItem().builtInRegistryHolder(), 0xeeff00, 1.0f, TropicraftItems.PINEAPPLE_CUBES);
         register(context, COCONUT, TropicraftBlocks.COCONUT.asItem().builtInRegistryHolder(), 0xefefef, 1.0f, TropicraftItems.COCONUT_CHUNK);
-        register(context, SUGAR_CANE, Items.SUGAR_CANE.builtInRegistryHolder(), 0xb1ff6b, 0.1f);
+        register(context, SUGAR_CANE, Tags.Items.CROPS_SUGAR_CANE, Items.SUGAR_CANE, 0xb1ff6b, 0.1f);
         register(context, ROASTED_COFFEE_BEAN, TropicraftItems.ROASTED_COFFEE_BEAN, 0x68442c, 0.95f);
         register(context, WATER_BUCKET, Items.WATER_BUCKET.builtInRegistryHolder(), 0xffffff, 1.0f);
         register(context, MILK_BUCKET, Items.MILK_BUCKET.builtInRegistryHolder(), 0xffffff, 0.1f);
-        register(context, COCOA_BEAN, Items.COCOA_BEANS.builtInRegistryHolder(), 0x805A3E, 0.95f);
+        register(context, COCOA_BEAN, Tags.Items.CROPS_COCOA_BEAN, Items.COCOA_BEANS, 0x805A3E, 0.95f);
         register(context, PASSIONFRUIT, TropicraftItems.PASSIONFRUIT, 0x690b2d, 1.0f);
         register(context, JOCOTE, TropicraftItems.JOCOTE, 0xc1cd02, 1.0f);
         register(context, PAPAYA, TropicraftItems.PAPAYA, 0x3fbf3f, 1.0f);
     }
 
+    @SafeVarargs
     private static void register(BootstrapContext<DrinkIngredient> context, ResourceKey<DrinkIngredient> key, Holder<Item> item, int color, float weight, Holder<Item>... extraItems) {
         Component description = Component.translatable(item.value().getDescriptionId());
-        HolderSet.Direct<Item> validItems = HolderSet.direct(ArrayUtils.add(extraItems, item));
+        HolderSet<Item> validItems = HolderSet.direct(ArrayUtils.add(extraItems, item));
+        context.register(key, new DrinkIngredient(description, validItems, color, weight));
+    }
+
+    @SafeVarargs
+    private static void register(BootstrapContext<DrinkIngredient> context, ResourceKey<DrinkIngredient> key, TagKey<Item> itemTag, Item nameSource, int color, float weight, Holder<Item>... extraItems) {
+        Component description = Component.translatable(nameSource.getDescriptionId());
+        HolderSet<Item> validItems = context.lookup(Registries.ITEM).getOrThrow(itemTag);
         context.register(key, new DrinkIngredient(description, validItems, color, weight));
     }
 

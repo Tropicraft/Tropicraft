@@ -2,10 +2,11 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": "minecraft:bamboo"
+    "#": "minecraft:bamboo",
+    "D": "minecraft:dirt"
   },
   "pattern": [
-    "# #",
+    "#D#",
     " # "
   ],
   "result": {
