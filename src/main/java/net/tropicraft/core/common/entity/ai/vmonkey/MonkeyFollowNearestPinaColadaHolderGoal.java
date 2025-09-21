@@ -31,9 +31,15 @@ public class MonkeyFollowNearestPinaColadaHolderGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (monkey.isOrderedToSit()) return false;
-        if (monkey.isTame()) return false;
-        if (monkey.selfHoldingDrink(TropicraftDrinks.PINA_COLADA)) return false;
+        if (monkey.isOrderedToSit()) {
+            return false;
+        }
+        if (monkey.isTame()) {
+            return false;
+        }
+        if (monkey.selfHoldingDrink(TropicraftDrinks.PINA_COLADA)) {
+            return false;
+        }
 
         List<Player> list = monkey.level().getEntitiesOfClass(Player.class, monkey.getBoundingBox().inflate(areaSize), VMonkeyEntity.FOLLOW_PREDICATE);
 

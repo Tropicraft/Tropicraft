@@ -225,6 +225,5 @@ public class FireArmorItem extends Item {
                 }
             }
         }
-
     }
 }

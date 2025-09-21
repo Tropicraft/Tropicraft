@@ -157,7 +157,9 @@ public class EntityAIEatToHeal extends Goal {
 
     public boolean hasFoodSource() {
 
-        if (hasFoodSource(entityObj.inventory)) return true;
+        if (hasFoodSource(entityObj.inventory)) {
+            return true;
+        }
 
         return hasFoodAtHome();
     }
@@ -167,7 +169,9 @@ public class EntityAIEatToHeal extends Goal {
             BlockPos blockposGoal = entityObj.getHomePosition();
             BlockEntity tile = entityObj.level().getBlockEntity(blockposGoal);
             if (tile instanceof ChestBlockEntity chest) {
-                if (hasFoodSource(chest)) return true;
+                if (hasFoodSource(chest)) {
+                    return true;
+                }
             }
         }
         return false;

@@ -262,7 +262,9 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
         }
 
         private boolean canFeedFrom(BlockState state) {
-            if (state.isAir()) return false;
+            if (state.isAir()) {
+                return false;
+            }
             return state.is(BlockTags.LEAVES) || state.is(BlockTags.FLOWERS) || state.is(BlockTags.BEE_GROWABLES);
         }
     }

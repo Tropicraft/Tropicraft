@@ -94,7 +94,9 @@ public final class BoardwalkBlock extends Block implements SimpleWaterloggedBloc
         if (tall) {
             boolean front = connectsTo(level, pos, axis, Direction.AxisDirection.POSITIVE);
             boolean back = connectsTo(level, pos, axis, Direction.AxisDirection.NEGATIVE);
-            if (front || back) posted = true;
+            if (front || back) {
+                posted = true;
+            }
 
             Type type = Type.tall(posted, front, back);
             return state.setValue(TYPE, type);
@@ -163,10 +165,15 @@ public final class BoardwalkBlock extends Block implements SimpleWaterloggedBloc
 
         public static Type tall(boolean posted, boolean front, boolean back) {
             if (posted) {
-                if (front && back) return Type.TALL_POST_FRONT_BACK;
-                else if (front) return Type.TALL_POST_FRONT;
-                else if (back) return Type.TALL_POST_BACK;
-                else return Type.TALL_POST;
+                if (front && back) {
+                    return Type.TALL_POST_FRONT_BACK;
+                } else if (front) {
+                    return Type.TALL_POST_FRONT;
+                } else if (back) {
+                    return Type.TALL_POST_BACK;
+                } else {
+                    return Type.TALL_POST;
+                }
             } else {
                 return Type.TALL;
             }

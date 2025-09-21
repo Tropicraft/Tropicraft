@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
 

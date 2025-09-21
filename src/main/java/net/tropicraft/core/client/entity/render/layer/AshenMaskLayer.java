@@ -12,7 +12,6 @@ import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
 import net.tropicraft.core.client.entity.model.AshenModel;
 import net.tropicraft.core.client.entity.render.AshenRenderer;
 import net.tropicraft.core.client.entity.render.state.AshenRenderState;
-import net.tropicraft.core.common.entity.hostile.AshenEntity;
 
 public class AshenMaskLayer extends RenderLayer<AshenRenderState, AshenModel> {
     private static final ResourceLocation TEXTURE_LOCATION = Tropicraft.location("textures/entity/ashen/mask.png");

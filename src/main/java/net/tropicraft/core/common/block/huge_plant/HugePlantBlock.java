@@ -62,7 +62,9 @@ public final class HugePlantBlock extends BushBlock {
         BlockPos pos = context.getClickedPos();
 
         for (BlockPos plantPos : Shape.fromSeed(this, pos)) {
-            if (plantPos.equals(pos)) continue;
+            if (plantPos.equals(pos)) {
+                continue;
+            }
 
             if (!world.getBlockState(plantPos).canBeReplaced(context)) {
                 return null;

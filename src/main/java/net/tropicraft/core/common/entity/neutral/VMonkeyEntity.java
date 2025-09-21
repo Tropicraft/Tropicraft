@@ -52,8 +52,12 @@ public class VMonkeyEntity extends TamableAnimal {
     private static final int FLAG_CLIMBING = 1 << 0;
 
     public static final Predicate<LivingEntity> FOLLOW_PREDICATE = ent -> {
-        if (ent == null) return false;
-        if (!(ent instanceof Player player)) return false;
+        if (ent == null) {
+            return false;
+        }
+        if (!(ent instanceof Player player)) {
+            return false;
+        }
 
         return CocktailItem.hasDrink(player.getMainHandItem(), TropicraftDrinks.PINA_COLADA)
                 || CocktailItem.hasDrink(player.getOffhandItem(), TropicraftDrinks.PINA_COLADA);

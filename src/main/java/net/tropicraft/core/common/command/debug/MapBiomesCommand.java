@@ -16,7 +16,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Optional;
 
 import static net.minecraft.commands.Commands.literal;
 

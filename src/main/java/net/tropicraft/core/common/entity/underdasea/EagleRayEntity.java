@@ -14,7 +14,6 @@ import net.minecraft.world.level.Level;
 
 public class EagleRayEntity extends AbstractFish {
 
-
     public EagleRayEntity(EntityType<? extends EagleRayEntity> type, Level world) {
         super(type, world);
     }

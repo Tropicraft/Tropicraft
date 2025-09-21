@@ -176,7 +176,7 @@ public class AshenEntity extends PathfinderMob implements RangedAttackMob {
     @Override
     public void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
-        setMaskType(input.getByteOr("MaskType",  (byte) 0));
+        setMaskType(input.getByteOr("MaskType", (byte) 0));
         setActionState(AshenState.VALUES[input.getByteOr("ActionState", (byte) 0)]);
     }
 

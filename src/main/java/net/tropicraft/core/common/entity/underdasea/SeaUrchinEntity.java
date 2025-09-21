@@ -1,7 +1,6 @@
 package net.tropicraft.core.common.entity.underdasea;
 
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;

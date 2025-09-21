@@ -145,7 +145,9 @@ public class MonkeyAngryThrowGoal extends Goal {
     }
 
     private void leapTowardTarget(@Nullable LivingEntity leapTarget) {
-        if (leapTarget == null) return;
+        if (leapTarget == null) {
+            return;
+        }
 
         double d0 = leapTarget.getX() - entity.getX();
         double d1 = leapTarget.getZ() - entity.getZ();

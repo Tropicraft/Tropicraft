@@ -91,8 +91,9 @@ public class AirCompressorBlockEntity extends BlockEntity implements IMachineBlo
     }
 
     private void tick() {
-        if (tank == null)
+        if (tank == null) {
             return;
+        }
 
         int airContained = tank.getRemainingAir(getTankStack());
         int maxAir = tank.getMaxAir(getTankStack());

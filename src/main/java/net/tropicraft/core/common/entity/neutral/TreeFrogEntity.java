@@ -89,8 +89,9 @@ public class TreeFrogEntity extends PathfinderMob implements Enemy, RangedAttack
         super.customServerAiStep(level);
         if (!getNavigation().isDone() || getTarget() != null) {
             if (onGround() || isInWater()) {
-                if (jumpDelay > 0)
+                if (jumpDelay > 0) {
                     jumpDelay--;
+                }
                 if (jumpDelay <= 0) {
                     jumpDelay = 5 + random.nextInt(4);
 
@@ -107,8 +108,9 @@ public class TreeFrogEntity extends PathfinderMob implements Enemy, RangedAttack
             }
         }
 
-        if (attackTime > 0)
+        if (attackTime > 0) {
             attackTime--;
+        }
     }
 
     @Override

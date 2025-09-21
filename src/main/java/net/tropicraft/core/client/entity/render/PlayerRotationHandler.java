@@ -28,10 +28,10 @@ public class PlayerRotationHandler {
     private static final ContextKey<TurtleState> TURTLE_KEY = new ContextKey<>(Tropicraft.location("sea_turtle"));
 
     private record BeachFloatState(
-        float yRot,
-        float offsetX,
-        float offsetY,
-        float offsetZ
+            float yRot,
+            float offsetX,
+            float offsetY,
+            float offsetZ
     ) {
     }
 

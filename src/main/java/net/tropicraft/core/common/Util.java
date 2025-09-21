@@ -94,7 +94,9 @@ public class Util {
 
                 BlockPos pos = new BlockPos(gatherX, gatherY, gatherZ);
 
-                if (!world.hasChunkAt(pos)) return false;
+                if (!world.hasChunkAt(pos)) {
+                    return false;
+                }
 
                 BlockState state = world.getBlockState(pos);
                 int tries = 0;
@@ -246,7 +248,9 @@ public class Util {
 
     @Nullable
     public static BlockPos findLowestBlock(List<BlockPos> blocks) {
-        if (blocks.isEmpty()) return null;
+        if (blocks.isEmpty()) {
+            return null;
+        }
 
         BlockPos lowest = blocks.getFirst();
         for (int i = 1; i < blocks.size(); i++) {

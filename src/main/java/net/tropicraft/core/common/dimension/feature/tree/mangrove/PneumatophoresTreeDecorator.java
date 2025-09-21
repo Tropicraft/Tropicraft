@@ -44,7 +44,9 @@ public class PneumatophoresTreeDecorator extends TreeDecorator {
     @Override
     public void place(Context context) {
         BlockPos origin = Util.findLowestBlock(context.logs());
-        if (origin == null) return;
+        if (origin == null) {
+            return;
+        }
 
         LevelSimulatedReader level = context.level();
         RandomSource random = context.random();
@@ -63,7 +65,9 @@ public class PneumatophoresTreeDecorator extends TreeDecorator {
         for (int i = 0; i < count; i++) {
             int dx = random.nextInt(spread) - random.nextInt(spread);
             int dz = random.nextInt(spread) - random.nextInt(spread);
-            if (dx == 0 && dz == 0) continue;
+            if (dx == 0 && dz == 0) {
+                continue;
+            }
             mutablePos.setWithOffset(origin, dx, 0, dz);
 
             // Don't generate pneumatophores if there isn't a solid block in the column to attach onto

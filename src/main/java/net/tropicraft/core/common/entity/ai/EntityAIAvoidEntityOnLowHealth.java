@@ -49,7 +49,9 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal {
     @Override
     public boolean canUse() {
 
-        if (theEntity.getHealth() > healthToAvoid) return false;
+        if (theEntity.getHealth() > healthToAvoid) {
+            return false;
+        }
 
         List<T> list = theEntity.level().getEntitiesOfClass(classToAvoid,
                 theEntity.getBoundingBox().expandTowards((double) avoidDistance, 3.0, (double) avoidDistance),

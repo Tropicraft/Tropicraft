@@ -3,7 +3,6 @@ package net.tropicraft.core.client.entity.render;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.entity.AgeableMobRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.resources.ResourceLocation;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.TropicraftRenderLayers;

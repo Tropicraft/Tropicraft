@@ -84,7 +84,9 @@ public final class ModelAnimator {
         Cycle cycle = ModelAnimator.cycle;
         ModelAnimator.cycle = null;
 
-        if (cycle == null) cycle = new Cycle();
+        if (cycle == null) {
+            cycle = new Cycle();
+        }
 
         return cycle.set(time, scale);
     }

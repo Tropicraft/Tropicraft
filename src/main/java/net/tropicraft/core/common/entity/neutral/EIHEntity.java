@@ -74,7 +74,9 @@ public class EIHEntity extends PathfinderMob {
         goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0, false) {
             @Override
             public boolean canUse() {
-                if (!isAngry()) return false;
+                if (!isAngry()) {
+                    return false;
+                }
                 return super.canUse();
             }
         });
@@ -86,7 +88,9 @@ public class EIHEntity extends PathfinderMob {
         goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.8) {
             @Override
             public boolean canUse() {
-                if (!isAngry()) return false;
+                if (!isAngry()) {
+                    return false;
+                }
                 return super.canUse();
             }
         });

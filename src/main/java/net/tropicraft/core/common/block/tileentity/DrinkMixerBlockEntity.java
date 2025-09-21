@@ -22,7 +22,6 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.tropicraft.core.common.block.DrinkMixerBlock;
-import net.tropicraft.core.common.drinks.Cocktail;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.DrinkIngredient;
 import net.tropicraft.core.common.network.message.ClientboundMixerInventoryPacket;

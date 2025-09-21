@@ -1144,7 +1144,8 @@ public class TropicraftBlocks {
                         }
                     })
                     .initialProperties(() -> Blocks.REDSTONE_TORCH)
-                    .setData(ProviderType.LANG, (ctx, prov) -> {})
+                    .setData(ProviderType.LANG, (ctx, prov) -> {
+                    })
                     .addLayer(() -> () -> ChunkSectionLayer.CUTOUT_MIPPED)
                     .blockstate(() -> (ctx, prov) ->
                             Models.generateJigarbovTorch(ctx, prov, type)

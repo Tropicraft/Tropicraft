@@ -121,7 +121,7 @@ public class ChairEntity extends FurnitureEntity {
                 }
             }
 
-            if (getComeSailAway())
+            if (getComeSailAway()) {
                 for (int i = 0; i < 4; ++i) {
                     int x = Mth.floor(getX() + ((double) (i % 2) - 0.5) * 0.8);
                     int z = Mth.floor(getZ() + ((double) (i / 2) - 0.5) * 0.8);
@@ -138,6 +138,7 @@ public class ChairEntity extends FurnitureEntity {
                         }
                     }
                 }
+            }
 
             if (onGround()) {
                 setDeltaMovement(getDeltaMovement().multiply(0.5, 1.0, 0.5));

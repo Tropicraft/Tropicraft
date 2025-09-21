@@ -102,10 +102,18 @@ public class TropicsPortalLinker {
 
             BlockPos pos = new BlockPos(foundX, foundY, foundZ);
 
-            if (world.getBlockState(pos.west()).is(PORTAL_BLOCK)) newLocX -= 0.5;
-            if (world.getBlockState(pos.east()).is(PORTAL_BLOCK)) newLocX += 0.5;
-            if (world.getBlockState(pos.north()).is(PORTAL_BLOCK)) newLocZ -= 0.5;
-            if (world.getBlockState(pos.south()).is(PORTAL_BLOCK)) newLocZ += 0.5;
+            if (world.getBlockState(pos.west()).is(PORTAL_BLOCK)) {
+                newLocX -= 0.5;
+            }
+            if (world.getBlockState(pos.east()).is(PORTAL_BLOCK)) {
+                newLocX += 0.5;
+            }
+            if (world.getBlockState(pos.north()).is(PORTAL_BLOCK)) {
+                newLocZ -= 0.5;
+            }
+            if (world.getBlockState(pos.south()).is(PORTAL_BLOCK)) {
+                newLocZ += 0.5;
+            }
 
             return new PortalInfo(new Vec3(newLocX, newLocY + 2, newLocZ), entity.getYRot(), entity.getXRot());
         } else {

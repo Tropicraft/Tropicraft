@@ -10,10 +10,8 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.tropicraft.core.client.entity.render.state.ShoebillStorkRenderState;
-import net.tropicraft.core.common.entity.IkWalker;
 import net.tropicraft.core.common.entity.passive.ShoebillStorkEntity;
 import org.joml.Quaternionf;
-import org.joml.Vector3f;
 
 public class ShoebillStorkModel extends EntityModel<ShoebillStorkRenderState> {
     private final ModelPart body;

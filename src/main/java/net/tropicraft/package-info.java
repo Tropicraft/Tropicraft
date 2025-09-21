@@ -1,4 +1,3 @@
-
 @MethodsReturnNonnullByDefault
 @FieldsAreNonnullByDefault
 @ParametersAreNonnullByDefault

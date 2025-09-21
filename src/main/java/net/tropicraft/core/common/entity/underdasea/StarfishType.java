@@ -87,8 +87,11 @@ public enum StarfishType implements StringRepresentable {
 
     public static StarfishType getRandomType() {
         int type = RandomSource.create().nextInt(2);
-        if (type == 0) return StarfishType.RED;
-        else return StarfishType.ROYAL;
+        if (type == 0) {
+            return StarfishType.RED;
+        } else {
+            return StarfishType.ROYAL;
+        }
     }
 
     @Override

@@ -307,8 +307,9 @@ public abstract class TropicraftFishEntity extends WaterAnimal {
             if (random.nextInt(50) == 0) {
                 Player closest = level().getNearestPlayer(this, 32.0);
                 if (closest != null) {
-                    if (closest.isInWater())
+                    if (closest.isInWater()) {
                         result = setTargetHeading(closest.getX(), closest.getY(), closest.getZ(), true);
+                    }
                 }
             }
         }

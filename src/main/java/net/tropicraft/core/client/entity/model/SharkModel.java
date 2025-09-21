@@ -10,7 +10,6 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
-import net.tropicraft.core.common.entity.underdasea.SharkEntity;
 
 public class SharkModel extends EntityModel<LivingEntityRenderState> {
     private final ModelPart Body3UpperLeft;

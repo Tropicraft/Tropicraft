@@ -306,7 +306,9 @@ public class EntityAIGoneFishin extends Goal {
                 }
 
                 if (walkingTimeout <= 0 || (entity.getNavigation().isDone() && entity.level().getGameTime() % 20 == 0)) {
-                    if (!retryPathOrAbort(homePosition)) return;
+                    if (!retryPathOrAbort(homePosition)) {
+                        return;
+                    }
                 }
 
                 if (walkingTimeout > 0) {
@@ -331,9 +333,13 @@ public class EntityAIGoneFishin extends Goal {
                         debug("pathing having no path, pf find failed?");
                     }
                     if (Util.getDistance(entity, posLastLandFound.getX(), posLastLandFound.getY(), posLastLandFound.getZ()) < 64) {
-                        if (!retryPathOrAbort(posLastLandFound)) return;
+                        if (!retryPathOrAbort(posLastLandFound)) {
+                            return;
+                        }
                     } else {
-                        if (!retryPathOrAbort(posLastWaterFound)) return;
+                        if (!retryPathOrAbort(posLastWaterFound)) {
+                            return;
+                        }
                     }
                 }
 
@@ -430,7 +436,9 @@ public class EntityAIGoneFishin extends Goal {
     }
 
     private void retractLine() {
-        if (entity.getLure() != null) entity.getLure().remove(Entity.RemovalReason.DISCARDED);
+        if (entity.getLure() != null) {
+            entity.getLure().remove(Entity.RemovalReason.DISCARDED);
+        }
     }
 
     public void faceCoord(BlockPos coord, float maxDeltaYaw, float maxDeltaPitch) {

@@ -166,7 +166,9 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
             int root = roots.get(pos);
 
             int distance = RootSystem.distance(root);
-            if (distance >= length || random.nextInt(8) == 0) continue;
+            if (distance >= length || random.nextInt(8) == 0) {
+                continue;
+            }
 
             Direction side = RootSystem.side(root);
             Direction flow = RootSystem.flow(root);
@@ -194,7 +196,9 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         int radius = length / 2;
         for (int z = -radius; z <= radius; z++) {
             for (int x = -radius; x <= radius; x++) {
-                if (x == 0 && z == 0) continue;
+                if (x == 0 && z == 0) {
+                    continue;
+                }
                 int distance = (Math.abs(x) + Math.abs(z) - 1) * 2;
                 roots.set(RootSystem.pos(x, z), RootSystem.root(distance));
             }
@@ -214,7 +218,9 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
                 mutablePos.set(origin.getX() + x, 0, origin.getZ() + z);
 
                 int rootHeight = rootLength - RootSystem.distance(root);
-                if (rootHeight <= 0) continue;
+                if (rootHeight <= 0) {
+                    continue;
+                }
 
                 int maxY = origin.getY() + rootHeight;
                 int minY = maxY - 8;

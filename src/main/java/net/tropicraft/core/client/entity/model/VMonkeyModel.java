@@ -13,7 +13,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.HumanoidArm;
 import net.tropicraft.core.client.entity.render.state.VMonkeyRenderState;
-import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
 
 import javax.annotation.Nullable;
 

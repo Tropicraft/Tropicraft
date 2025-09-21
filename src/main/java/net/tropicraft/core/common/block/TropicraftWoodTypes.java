@@ -1,6 +1,5 @@
 package net.tropicraft.core.common.block;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.tropicraft.Tropicraft;

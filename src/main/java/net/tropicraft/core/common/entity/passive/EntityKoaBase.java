@@ -265,7 +265,9 @@ public class EntityKoaBase extends Villager {
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
         super.onSyncedDataUpdated(key);
 
-        if (!level().isClientSide) return;
+        if (!level().isClientSide) {
+            return;
+        }
 
         if (key == LURE_ID) {
             int id = getEntityData().get(LURE_ID);
@@ -666,7 +668,9 @@ public class EntityKoaBase extends Villager {
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (hand != InteractionHand.MAIN_HAND) return InteractionResult.PASS;
+        if (hand != InteractionHand.MAIN_HAND) {
+            return InteractionResult.PASS;
+        }
 
         InteractionResult ret = InteractionResult.PASS;
         boolean doTrade = true;
@@ -956,7 +960,9 @@ public class EntityKoaBase extends Villager {
 
     public void findAndSetHomeToCloseChest(boolean force) {
 
-        if (!force && (level().getGameTime() + getId()) % (20 * 30) != 0) return;
+        if (!force && (level().getGameTime() + getId()) % (20 * 30) != 0) {
+            return;
+        }
 
         //validate home position
         boolean tryFind = false;
@@ -990,7 +996,9 @@ public class EntityKoaBase extends Villager {
     }
 
     public boolean findAndSetTownID(boolean force) {
-        if (!force && (level().getGameTime() + getId()) % (20 * 30) != 0) return false;
+        if (!force && (level().getGameTime() + getId()) % (20 * 30) != 0) {
+            return false;
+        }
 
         boolean tryFind = false;
 
@@ -1018,7 +1026,9 @@ public class EntityKoaBase extends Villager {
 
         //this.setHomePosAndDistance(this.getRestrictCenter(), 128);
 
-        if (!force && (level().getGameTime() + getId()) % (20 * 30) != 0) return;
+        if (!force && (level().getGameTime() + getId()) % (20 * 30) != 0) {
+            return;
+        }
 
         //validate fire source
         boolean tryFind = false;
@@ -1066,7 +1076,9 @@ public class EntityKoaBase extends Villager {
 
     //for other system not used
     public void syncBPM() {
-        if ((level().getGameTime() + getId()) % (20) != 0) return;
+        if ((level().getGameTime() + getId()) % (20) != 0) {
+            return;
+        }
 
         List<EntityKoaBase> listEnts = level().getEntitiesOfClass(EntityKoaBase.class, new AABB(blockPosition()).inflate(10, 5, 10));
         //Collections.shuffle(listEnts);
@@ -1090,7 +1102,9 @@ public class EntityKoaBase extends Villager {
 
         //this.setHomePosAndDistance(this.getRestrictCenter(), 128);
 
-        if (!force && (level().getGameTime() + getId()) % (20 * 30) != 0) return;
+        if (!force && (level().getGameTime() + getId()) % (20 * 30) != 0) {
+            return;
+        }
 
         listPosDrums.removeIf(pos -> !isInstrument(pos));
 

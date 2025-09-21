@@ -41,7 +41,9 @@ public class ReplaceInSoilDecorator extends TreeDecorator {
     @Override
     public void place(Context context) {
         BlockPos lowestLog = Util.findLowestBlock(context.logs());
-        if (lowestLog == null) return;
+        if (lowestLog == null) {
+            return;
+        }
 
         WorldGenLevel level = (WorldGenLevel) context.level();
         RandomSource random = context.random();

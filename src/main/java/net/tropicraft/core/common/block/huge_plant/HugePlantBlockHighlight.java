@@ -20,7 +20,9 @@ public final class HugePlantBlockHighlight {
     @SubscribeEvent
     public static void onHighlightBlock(RenderHighlightEvent.Block event) {
         ClientLevel world = Minecraft.getInstance().level;
-        if (world == null) return;
+        if (world == null) {
+            return;
+        }
 
         BlockPos pos = event.getTarget().getBlockPos();
         BlockState state = world.getBlockState(pos);
@@ -31,7 +33,9 @@ public final class HugePlantBlockHighlight {
 
     private static void renderHugePlantHighlight(RenderHighlightEvent.Block event, ClientLevel world, BlockPos pos, BlockState state) {
         HugePlantBlock.Shape shape = HugePlantBlock.Shape.matchIncomplete(state.getBlock(), world, pos);
-        if (shape == null) return;
+        if (shape == null) {
+            return;
+        }
 
         VertexConsumer builder = event.getMultiBufferSource().getBuffer(RenderType.lines());
 

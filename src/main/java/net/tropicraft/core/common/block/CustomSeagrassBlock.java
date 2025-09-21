@@ -31,7 +31,9 @@ public final class CustomSeagrassBlock extends SeagrassBlock {
 
     @Override
     public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
-        if (tall == null) return;
+        if (tall == null) {
+            return;
+        }
 
         BlockState bottomState = tall.get().defaultBlockState();
         BlockState topState = bottomState.setValue(TallSeagrassBlock.HALF, DoubleBlockHalf.UPPER);

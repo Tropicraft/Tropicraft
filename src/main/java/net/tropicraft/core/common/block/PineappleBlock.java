@@ -8,7 +8,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
@@ -60,8 +59,12 @@ public class PineappleBlock extends TallFlowerBlock implements BonemealableBlock
             BlockState above = world.getBlockState(pos.above());
 
             // Don't bother placing if it's already there
-            if (above.is(this)) return;
-            if (state.getValue(HALF) == DoubleBlockHalf.UPPER) return;
+            if (above.is(this)) {
+                return;
+            }
+            if (state.getValue(HALF) == DoubleBlockHalf.UPPER) {
+                return;
+            }
 
             // Place actual pineapple plant above stem
             BlockState fullGrowth = state.setValue(HALF, DoubleBlockHalf.UPPER);

@@ -37,8 +37,12 @@ public class TargetPreyGoal extends Goal {
             if (!list.isEmpty()) {
                 Entity ent = list.get(rand.nextInt(list.size()));
                 boolean skip = false;
-                if (ent.equals(entity)) skip = true;
-                if (ent.getClass().getName().equals(entity.getClass().getName())) skip = true;
+                if (ent.equals(entity)) {
+                    skip = true;
+                }
+                if (ent.getClass().getName().equals(entity.getClass().getName())) {
+                    skip = true;
+                }
 //                    if(entity instanceof IPredatorDiet) {
 //                        Class[] prey = ((IPredatorDiet)entity).getPreyClasses();
 //                        boolean contains = false;
@@ -51,8 +55,12 @@ public class TargetPreyGoal extends Goal {
 //                            skip = true;
 //                        }
 //                    }
-                if (!ent.isInWater()) skip = true;
-                if (!entity.hasLineOfSight(ent)) skip = true;
+                if (!ent.isInWater()) {
+                    skip = true;
+                }
+                if (!entity.hasLineOfSight(ent)) {
+                    skip = true;
+                }
 
                 if (!skip) {
                     if (ent instanceof LivingEntity) {

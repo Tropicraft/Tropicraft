@@ -70,7 +70,9 @@ public final class PropaguleBlock extends WaterloggableSaplingBlock {
 
     @Override
     public void randomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
-        if (!world.isAreaLoaded(pos, 1)) return;
+        if (!world.isAreaLoaded(pos, 1)) {
+            return;
+        }
 
         if (world.getMaxLocalRawBrightness(pos.above()) >= 9 && random.nextInt(GROW_CHANCE) == 0) {
             advanceTree(world, pos, state, random);

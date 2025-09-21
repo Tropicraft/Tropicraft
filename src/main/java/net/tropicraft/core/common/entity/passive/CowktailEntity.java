@@ -122,9 +122,9 @@ public class CowktailEntity extends Cow implements IShearable {
         CowktailEntity.Type type = getCowktailType();
         CowktailEntity.Type parnerType = partner.getCowktailType();
         if (type == parnerType && random.nextInt(1024) == 0) {
-             return Type.getRandomType(random);
+            return Type.getRandomType(random);
         } else {
-             return random.nextBoolean() ? type : parnerType;
+            return random.nextBoolean() ? type : parnerType;
         }
     }
 
@@ -137,7 +137,8 @@ public class CowktailEntity extends Cow implements IShearable {
     public List<ItemStack> onSheared(@Nullable Player player, ItemStack item, Level level, BlockPos pos) {
         playSound(SoundEvents.MOOSHROOM_SHEAR, 1.0f, 1.0f);
         List<ItemStack> items = new ArrayList<>();
-        if (!EventHooks.canLivingConvert(this, EntityType.COW, timer -> {})) {
+        if (!EventHooks.canLivingConvert(this, EntityType.COW, timer -> {
+        })) {
             return items;
         }
         if (!level.isClientSide()) {

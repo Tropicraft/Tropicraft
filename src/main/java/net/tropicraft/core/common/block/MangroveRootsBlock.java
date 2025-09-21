@@ -11,7 +11,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
@@ -90,10 +89,18 @@ public final class MangroveRootsBlock extends Block implements SimpleWaterlogged
         double height = tall ? 16.0 : 10.0;
 
         VoxelShape shape = Block.box(6.0, 0.0, 6.0, 10.0, height, 10.0);
-        if (north) shape = Shapes.or(shape, Block.box(6.0, 0.0, 0.0, 10.0, height, 6.0));
-        if (east) shape = Shapes.or(shape, Block.box(10.0, 0.0, 6.0, 16.0, height, 10.0));
-        if (south) shape = Shapes.or(shape, Block.box(6.0, 0.0, 10.0, 10.0, height, 16.0));
-        if (west) shape = Shapes.or(shape, Block.box(0.0, 0.0, 6.0, 6.0, height, 10.0));
+        if (north) {
+            shape = Shapes.or(shape, Block.box(6.0, 0.0, 0.0, 10.0, height, 6.0));
+        }
+        if (east) {
+            shape = Shapes.or(shape, Block.box(10.0, 0.0, 6.0, 16.0, height, 10.0));
+        }
+        if (south) {
+            shape = Shapes.or(shape, Block.box(6.0, 0.0, 10.0, 10.0, height, 16.0));
+        }
+        if (west) {
+            shape = Shapes.or(shape, Block.box(0.0, 0.0, 6.0, 6.0, height, 10.0));
+        }
 
         return shape;
     }
@@ -190,10 +197,18 @@ public final class MangroveRootsBlock extends Block implements SimpleWaterlogged
 
     private boolean isTall(BlockState state) {
         int count = 0;
-        if (state.getValue(NORTH).exists()) count++;
-        if (state.getValue(EAST).exists()) count++;
-        if (state.getValue(SOUTH).exists()) count++;
-        if (state.getValue(WEST).exists()) count++;
+        if (state.getValue(NORTH).exists()) {
+            count++;
+        }
+        if (state.getValue(EAST).exists()) {
+            count++;
+        }
+        if (state.getValue(SOUTH).exists()) {
+            count++;
+        }
+        if (state.getValue(WEST).exists()) {
+            count++;
+        }
         return count > 1;
     }
 

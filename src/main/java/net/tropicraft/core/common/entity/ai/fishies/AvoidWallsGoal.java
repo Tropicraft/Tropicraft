@@ -39,8 +39,9 @@ public class AvoidWallsGoal extends Goal {
             entity.isMovingAwayFromWall = true;
         }
 
-        if (entity.tickCount % 20 == 0 && entity.isMovingAwayFromWall)
+        if (entity.tickCount % 20 == 0 && entity.isMovingAwayFromWall) {
             entity.isMovingAwayFromWall = false;
+        }
 
         if (entity.targetVector != null && entity.isMovingAwayFromWall) {
             bp = new BlockPos((int) entity.targetVector.x, (int) entity.targetVector.y, (int) entity.targetVector.z);
