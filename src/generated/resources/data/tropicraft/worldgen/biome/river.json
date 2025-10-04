@@ -187,12 +187,6 @@
         "weight": 20
       },
       {
-        "type": "minecraft:squid",
-        "maxCount": 4,
-        "minCount": 1,
-        "weight": 8
-      },
-      {
         "type": "minecraft:cod",
         "maxCount": 5,
         "minCount": 1,
@@ -211,6 +205,12 @@
         "maxCount": 12,
         "minCount": 1,
         "weight": 15
+      },
+      {
+        "type": "minecraft:squid",
+        "maxCount": 4,
+        "minCount": 1,
+        "weight": 8
       }
     ]
   },

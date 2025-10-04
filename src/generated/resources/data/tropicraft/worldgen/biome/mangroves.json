@@ -142,6 +142,12 @@
         "weight": 10
       },
       {
+        "type": "tropicraft:jaguar",
+        "maxCount": 3,
+        "minCount": 2,
+        "weight": 8
+      },
+      {
         "type": "tropicraft:hummingbird",
         "maxCount": 5,
         "minCount": 3,
@@ -233,12 +239,6 @@
         "maxCount": 1,
         "minCount": 1,
         "weight": 5
-      },
-      {
-        "type": "tropicraft:jaguar",
-        "maxCount": 3,
-        "minCount": 2,
-        "weight": 8
       }
     ],
     "underground_water_creature": [

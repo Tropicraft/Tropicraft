@@ -366,7 +366,7 @@ public final class TropicraftBiomes {
         spawns.addSpawn(MobCategory.CREATURE, 15, new MobSpawnSettings.SpawnerData(TropicraftEntities.TAPIR.get(), 2, 4));
         spawns.addSpawn(MobCategory.CREATURE, 15, new MobSpawnSettings.SpawnerData(TropicraftEntities.WHITE_LIPPED_PECCARY.get(), 2, 4));
         spawns.addSpawn(MobCategory.CREATURE, 10, new MobSpawnSettings.SpawnerData(TropicraftEntities.GIBNUT.get(), 3, 8));
-        spawns.addSpawn(MobCategory.MONSTER, 8, new MobSpawnSettings.SpawnerData(TropicraftEntities.JAGUAR.get(), 2, 3));
+        spawns.addSpawn(MobCategory.CREATURE, 8, new MobSpawnSettings.SpawnerData(TropicraftEntities.JAGUAR.get(), 2, 3));
         spawns.addSpawn(MobCategory.CREATURE, 12, new MobSpawnSettings.SpawnerData(TropicraftEntities.HUMMINGBIRD.get(), 3, 5));
         spawns.addSpawn(MobCategory.CREATURE, 15, new MobSpawnSettings.SpawnerData(TropicraftEntities.SPIDER_MONKEY.get(), 5, 8));
         spawns.addSpawn(MobCategory.CREATURE, 10, new MobSpawnSettings.SpawnerData(TropicraftEntities.BROWN_BASILISK_LIZARD.get(), 2, 3));

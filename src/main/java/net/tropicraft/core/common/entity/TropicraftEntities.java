@@ -664,7 +664,7 @@ public class TropicraftEntities {
 //                .setShouldReceiveVelocityUpdates(true);
 //    }
 
-    public static final RegistryEntry<EntityType<?>, EntityType<GibnutEntity>> GIBNUT = REGISTRATE.entity("gibnut", GibnutEntity::new, MobCategory.MONSTER)
+    public static final RegistryEntry<EntityType<?>, EntityType<GibnutEntity>> GIBNUT = REGISTRATE.entity("gibnut", GibnutEntity::new, MobCategory.CREATURE)
             .properties(b -> b.sized(0.7f, 0.3f)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
@@ -697,7 +697,7 @@ public class TropicraftEntities {
             .renderer(() -> SlenderHarvestMouseRenderer::new)
             .register();
 
-    public static final RegistryEntry<EntityType<?>, EntityType<ToucanEntity>> TOUCAN = REGISTRATE.entity("toucan", ToucanEntity::new, MobCategory.MONSTER)
+    public static final RegistryEntry<EntityType<?>, EntityType<ToucanEntity>> TOUCAN = REGISTRATE.entity("toucan", ToucanEntity::new, MobCategory.CREATURE)
             .properties(b -> b.sized(0.5f, 0.5f)
                     .setTrackingRange(8)
                     .setUpdateInterval(3)
