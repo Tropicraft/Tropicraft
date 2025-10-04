@@ -408,7 +408,7 @@ public final class TropicraftBiomes {
         spawns.addSpawn(MobCategory.CREATURE, 20, new MobSpawnSettings.SpawnerData(TropicraftEntities.FIDDLER_CRAB.get(), 2, 6));
         spawns.addSpawn(MobCategory.WATER_CREATURE, 15, new MobSpawnSettings.SpawnerData(TropicraftEntities.PIRANHA.get(), 1, 12));
         spawns.addSpawn(MobCategory.WATER_AMBIENT, 20, new MobSpawnSettings.SpawnerData(TropicraftEntities.RIVER_SARDINE.get(), 1, 8));
-        spawns.addSpawn(MobCategory.WATER_AMBIENT, 8, new MobSpawnSettings.SpawnerData(EntityType.SQUID, 1, 4));
+        spawns.addSpawn(MobCategory.WATER_CREATURE, 8, new MobSpawnSettings.SpawnerData(EntityType.SQUID, 1, 4));
         spawns.addSpawn(MobCategory.WATER_AMBIENT, 4, new MobSpawnSettings.SpawnerData(EntityType.COD, 1, 5));
         spawns.addSpawn(MobCategory.WATER_AMBIENT, 4, new MobSpawnSettings.SpawnerData(EntityType.SALMON, 1, 5));
     }
