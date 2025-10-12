@@ -55,7 +55,8 @@
       "tropicraft:tropi_seagrass",
       "minecraft:warm_ocean_vegetation",
       "minecraft:seagrass_warm",
-      "minecraft:sea_pickle"
+      "minecraft:sea_pickle",
+      "minecraft:patch_dry_grass_desert"
     ]
   ],
   "has_precipitation": true,

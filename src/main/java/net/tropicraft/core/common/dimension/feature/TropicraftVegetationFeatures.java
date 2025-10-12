@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.dimension.feature;
 
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
@@ -23,6 +24,7 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStatePr
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.block.TropicraftBlocks;
+import net.tropicraft.core.common.block.TropicraftFlower;
 import net.tropicraft.core.common.dimension.feature.block_state_provider.NoiseFromTagBlockStateProvider;
 import net.tropicraft.core.common.dimension.feature.config.RainforestVinesConfig;
 
@@ -40,7 +42,8 @@ public final class TropicraftVegetationFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_FRUIT = createKey("trees_fruit");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_PALM = createKey("trees_palm");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_MANGROVE = createKey("trees_mangroves");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_RAINFOREST = createKey("trees_rainforest");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_RAINFOREST_CANOPY = createKey("trees_rainforest_canopy");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_RAINFOREST_UNDERSTORY = createKey("trees_rainforest_understory");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_PAPAYA = createKey("trees_papaya");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_PLEODENDRON = createKey("trees_pleodendron");
 
@@ -53,6 +56,7 @@ public final class TropicraftVegetationFeatures {
 
     public static final ResourceKey<ConfiguredFeature<?, ?>> FLOWERS_TROPICS = createKey("flowers_tropics");
     public static final ResourceKey<ConfiguredFeature<?, ?>> FLOWERS_RAINFOREST = createKey("flowers_rainforest");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> MUSHROOMS_RAINFOREST = createKey("mushrooms_rainforest");
 
     public static final ResourceKey<ConfiguredFeature<?, ?>> COFFEE_BUSH = createKey("coffee_bush");
 
@@ -84,11 +88,13 @@ public final class TropicraftVegetationFeatures {
         registerRandomPlaced(context, TREES_FRUIT, TropicraftTreePlacements.GRAPEFRUIT_TREE_CHECKED, TropicraftTreePlacements.ORANGE_TREE_CHECKED, TropicraftTreePlacements.LEMON_TREE_CHECKED, TropicraftTreePlacements.LIME_TREE_CHECKED);
         registerRandomPlaced(context, TREES_PALM, TropicraftTreePlacements.PALM_TREE_CHECKED);
         registerRandomPlaced(context, TREES_MANGROVE, TropicraftTreePlacements.RED_MANGROVE_CHECKED, TropicraftTreePlacements.LIGHT_MANGROVES_CHECKED);
-        registerRandom(context, TREES_RAINFOREST, List.of(
-                Pair.of(TropicraftTreePlacements.RAINFOREST_UP_TREE_CHECKED, 0.2f),
-                Pair.of(TropicraftTreePlacements.RAINFOREST_SMALL_TUALUNG_CHECKED, 0.25f),
-                Pair.of(TropicraftTreePlacements.RAINFOREST_LARGE_TUALUNG_CHECKED, 0.5f)
+        registerRandom(context, TREES_RAINFOREST_CANOPY, List.of(
+                Pair.of(TropicraftTreePlacements.RAINFOREST_LARGE_TUALUNG_CHECKED, 0.3f)
         ), TropicraftTreePlacements.RAINFOREST_TALL_TREE_CHECKED);
+        registerRandom(context, TREES_RAINFOREST_UNDERSTORY, List.of(
+                Pair.of(TropicraftTreePlacements.RAINFOREST_UP_TREE_CHECKED, 0.9f)
+//        ), TropicraftTreePlacements.RAINFOREST_SMALL_TUALUNG_CHECKED);
+        ), TropicraftTreePlacements.RAINFOREST_UP_TREE_CHECKED);
         registerRandomPlaced(context, TREES_PAPAYA, TropicraftTreePlacements.PAPAYA_CHECKED);
         registerRandomPlaced(context, TREES_PLEODENDRON, TropicraftTreePlacements.PLEODENDRON_CHECKED);
 
@@ -108,6 +114,7 @@ public final class TropicraftVegetationFeatures {
 
         register(context, FLOWERS_TROPICS, Feature.FLOWER, randomPatch(new NoiseFromTagBlockStateProvider(blocks.getOrThrow(TropicraftTags.Blocks.TROPICS_FLOWERS))));
         register(context, FLOWERS_RAINFOREST, Feature.FLOWER, randomPatch(new NoiseFromTagBlockStateProvider(blocks.getOrThrow(TropicraftTags.Blocks.RAINFOREST_FLOWERS))));
+        register(context, MUSHROOMS_RAINFOREST, Feature.FLOWER, randomPatch(TropicraftBlocks.FLOWERS.get(TropicraftFlower.MAGIC_MUSHROOM)));
 
         register(context, COFFEE_BUSH, TropicraftFeatures.COFFEE_BUSH);
 

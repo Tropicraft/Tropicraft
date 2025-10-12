@@ -8,7 +8,7 @@
         "distribution": [
           {
             "data": 0,
-            "weight": 4
+            "weight": 3
           },
           {
             "data": 1,
@@ -22,7 +22,7 @@
     },
     {
       "type": "minecraft:heightmap",
-      "heightmap": "MOTION_BLOCKING"
+      "heightmap": "MOTION_BLOCKING_NO_LEAVES"
     },
     {
       "type": "minecraft:biome"

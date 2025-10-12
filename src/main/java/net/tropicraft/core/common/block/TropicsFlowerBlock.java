@@ -13,10 +13,12 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class TropicsFlowerBlock extends FlowerBlock {
 
+    private final TropicraftFlower flower;
     private final VoxelShape shape;
 
-    public TropicsFlowerBlock(Holder<MobEffect> effect, int effectDuration, VoxelShape shape, Properties properties) {
+    public TropicsFlowerBlock(TropicraftFlower flower, Holder<MobEffect> effect, int effectDuration, VoxelShape shape, Properties properties) {
         super(effect, effectDuration, properties);
+        this.flower = flower;
         this.shape = shape;
     }
 
@@ -29,5 +31,14 @@ public class TropicsFlowerBlock extends FlowerBlock {
     public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         Vec3 offset = state.getOffset(pos);
         return shape.move(offset.x, offset.y, offset.z);
+    }
+
+    @Override
+    public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
+        if (this.flower == TropicraftFlower.MAGIC_MUSHROOM) {
+            return 10;
+        }
+
+        return super.getLightEmission(state, level, pos);
     }
 }

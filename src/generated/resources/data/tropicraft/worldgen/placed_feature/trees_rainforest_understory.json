@@ -1,5 +1,5 @@
 {
-  "feature": "tropicraft:trees_pleodendron",
+  "feature": "tropicraft:trees_rainforest_understory",
   "placement": [
     {
       "type": "minecraft:count",
@@ -7,11 +7,11 @@
         "type": "minecraft:weighted_list",
         "distribution": [
           {
-            "data": 0,
-            "weight": 9
+            "data": 4,
+            "weight": 1
           },
           {
-            "data": 1,
+            "data": 5,
             "weight": 1
           }
         ]

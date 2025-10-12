@@ -52,7 +52,8 @@
     [],
     [
       "minecraft:glow_lichen",
-      "tropicraft:trees_rainforest",
+      "tropicraft:trees_rainforest_canopy",
+      "tropicraft:trees_rainforest_understory",
       "tropicraft:trees_papaya",
       "tropicraft:tropi_seagrass",
       "minecraft:seagrass_normal",
@@ -62,7 +63,9 @@
       "tropicraft:rainforest_vines",
       "tropicraft:coffee_bush",
       "tropicraft:single_undergrowth",
+      "tropicraft:mushrooms_rainforest",
       "tropicraft:flowers_rainforest",
+      "tropicraft:grass_rainforest",
       "tropicraft:undergrowth"
     ]
   ],

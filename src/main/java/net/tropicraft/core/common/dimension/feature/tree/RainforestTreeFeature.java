@@ -55,6 +55,10 @@ public abstract class RainforestTreeFeature extends Feature<NoneFeatureConfigura
         setState(positions, world, new BlockPos(x, y, z), getLog());
     }
 
+    protected void placeLog(@Nullable Set<BlockPos> positions, LevelSimulatedRW world, BlockPos pos) {
+        setState(positions, world, pos, getLog());
+    }
+
     protected boolean genCircle(Set<BlockPos> positions, LevelSimulatedRW world, int x, int y, int z, double outerRadius, double innerRadius, BlockState state, boolean solid) {
         return genCircle(positions, world, new BlockPos(x, y, z), outerRadius, innerRadius, state, solid);
     }

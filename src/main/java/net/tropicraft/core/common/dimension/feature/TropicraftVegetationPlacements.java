@@ -3,6 +3,7 @@ package net.tropicraft.core.common.dimension.feature;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.AquaticFeatures;
+import net.minecraft.data.worldgen.features.VegetationFeatures;
 import net.minecraft.data.worldgen.placement.AquaticPlacements;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
@@ -10,6 +11,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.placement.BiomeFilter;
 import net.minecraft.world.level.levelgen.placement.CountPlacement;
 import net.minecraft.world.level.levelgen.placement.HeightmapPlacement;
@@ -42,7 +44,8 @@ public final class TropicraftVegetationPlacements {
     public static final ResourceKey<PlacedFeature> TREES_FRUIT = createKey("trees_fruit");
     public static final ResourceKey<PlacedFeature> TREES_PALM = createKey("trees_palm");
     public static final ResourceKey<PlacedFeature> TREES_PALM_OVERWORLD = createKey("trees_palm_overworld");
-    public static final ResourceKey<PlacedFeature> TREES_RAINFOREST = createKey("trees_rainforest");
+    public static final ResourceKey<PlacedFeature> TREES_RAINFOREST_CANOPY = createKey("trees_rainforest_canopy");
+    public static final ResourceKey<PlacedFeature> TREES_RAINFOREST_UNDERSTORY = createKey("trees_rainforest_understory");
 
     public static final ResourceKey<PlacedFeature> TREES_PLEODENDRON = createKey("trees_pleodendron");
     public static final ResourceKey<PlacedFeature> TREES_PAPAYA = createKey("trees_papaya");
@@ -61,6 +64,8 @@ public final class TropicraftVegetationPlacements {
 
     public static final ResourceKey<PlacedFeature> FLOWERS_TROPICS = createKey("flowers_tropics");
     public static final ResourceKey<PlacedFeature> FLOWERS_RAINFOREST = createKey("flowers_rainforest");
+    public static final ResourceKey<PlacedFeature> MUSHROOMS_RAINFOREST = createKey("mushrooms_rainforest");
+    public static final ResourceKey<PlacedFeature> GRASS_RAINFOREST = createKey("grass_rainforest");
 
     public static final ResourceKey<PlacedFeature> PATCH_IRIS = createKey("patch_iris");
 
@@ -80,7 +85,7 @@ public final class TropicraftVegetationPlacements {
 
     public static void bootstrap(BootstrapContext<PlacedFeature> context) {
         register(context, RAINFOREST_VINES, TropicraftVegetationFeatures.RAINFOREST_VINES, List.of(
-                CountPlacement.of(50),
+                CountPlacement.of(75),
                 InSquarePlacement.spread(),
                 BiomeFilter.biome()
         ));
@@ -135,10 +140,11 @@ public final class TropicraftVegetationPlacements {
         register(context, TREES_FRUIT, TropicraftVegetationFeatures.TREES_FRUIT, sparseTreePlacement(0.1f));
         register(context, TREES_PALM, TropicraftVegetationFeatures.TREES_PALM, sparseTreePlacement(1.0f / 2.0f));
         register(context, TREES_PALM_OVERWORLD, TropicraftVegetationFeatures.TREES_PALM, sparseTreePlacement(1.0f / 10.0f));
-        register(context, TREES_RAINFOREST, TropicraftVegetationFeatures.TREES_RAINFOREST, treePlacement(1, 1.0f / 2.0f, 1));
+        register(context, TREES_RAINFOREST_CANOPY, TropicraftVegetationFeatures.TREES_RAINFOREST_CANOPY, treePlacement(2, 1.0f / 4.0f, 1));
+        register(context, TREES_RAINFOREST_UNDERSTORY, TropicraftVegetationFeatures.TREES_RAINFOREST_UNDERSTORY, treePlacement(4, 1.0f / 2.0f, 1));
 
         register(context, TREES_PLEODENDRON, TropicraftVegetationFeatures.TREES_PLEODENDRON, treePlacement(0, 0.1f, 1));
-        register(context, TREES_PAPAYA, TropicraftVegetationFeatures.TREES_PAPAYA, treePlacement(0, 0.2f, 1));
+        register(context, TREES_PAPAYA, TropicraftVegetationFeatures.TREES_PAPAYA, treePlacement(0, 0.25f, 1));
 
         register(context, BUSH_FLOWERING_COMMON, TropicraftVegetationFeatures.BUSH_FLOWERING, treePlacement(0, 1.0f / 4.0f, 1));
         register(context, BUSH_FLOWERING_RARE, TropicraftVegetationFeatures.BUSH_FLOWERING, treePlacement(0, 1.0f / 8.0f, 1));
@@ -173,15 +179,31 @@ public final class TropicraftVegetationPlacements {
                 BiomeFilter.biome()
         ));
 
-        register(context, FLOWERS_TROPICS, TropicraftVegetationFeatures.FLOWERS_TROPICS, List.of(RarityFilter.onAverageOnceEvery(2),
+        register(context, FLOWERS_TROPICS, TropicraftVegetationFeatures.FLOWERS_TROPICS, List.of(
+                RarityFilter.onAverageOnceEvery(2),
                 InSquarePlacement.spread(),
                 PlacementUtils.HEIGHTMAP,
                 BiomeFilter.biome()
         ));
 
-        register(context, FLOWERS_RAINFOREST, TropicraftVegetationFeatures.FLOWERS_RAINFOREST, List.of(RarityFilter.onAverageOnceEvery(6),
+        register(context, FLOWERS_RAINFOREST, TropicraftVegetationFeatures.FLOWERS_RAINFOREST, List.of(
+                RarityFilter.onAverageOnceEvery(4),
                 InSquarePlacement.spread(),
-                PlacementUtils.HEIGHTMAP,
+                PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
+                BiomeFilter.biome()
+        ));
+
+        register(context, MUSHROOMS_RAINFOREST, TropicraftVegetationFeatures.MUSHROOMS_RAINFOREST, List.of(
+                RarityFilter.onAverageOnceEvery(8),
+                InSquarePlacement.spread(),
+                PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
+                BiomeFilter.biome()
+        ));
+
+        register(context, GRASS_RAINFOREST, VegetationFeatures.PATCH_GRASS_JUNGLE, List.of(
+                CountPlacement.of(40),
+                InSquarePlacement.spread(),
+                PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
                 BiomeFilter.biome()
         ));
 
@@ -234,7 +256,8 @@ public final class TropicraftVegetationPlacements {
     }
 
     public static void addRainforestTrees(BiomeGenerationSettings.Builder generation) {
-        addVegetalDecoration(generation, TREES_RAINFOREST);
+        addVegetalDecoration(generation, TREES_RAINFOREST_CANOPY);
+        addVegetalDecoration(generation, TREES_RAINFOREST_UNDERSTORY);
     }
 
     public static void addRainforestPlants(BiomeGenerationSettings.Builder generation) {
@@ -242,7 +265,10 @@ public final class TropicraftVegetationPlacements {
         addVegetalDecoration(generation, RAINFOREST_VINES);
         addVegetalDecoration(generation, COFFEE_BUSH);
         addVegetalDecoration(generation, SINGLE_UNDERGROWTH);
+        addVegetalDecoration(generation, MUSHROOMS_RAINFOREST);
         addVegetalDecoration(generation, FLOWERS_RAINFOREST);
+        // Grass should be placed after flowers
+        addVegetalDecoration(generation, GRASS_RAINFOREST);
     }
 
     public static void addUndergrowth(BiomeGenerationSettings.Builder generation) {
@@ -279,6 +305,7 @@ public final class TropicraftVegetationPlacements {
 
     public static void addTropicsGrass(BiomeGenerationSettings.Builder generation) {
         addVegetalDecoration(generation, TROPICS_GRASS);
+        addVegetalDecoration(generation, VegetationPlacements.PATCH_DRY_GRASS_DESERT);
     }
 
     public static void addBamboo(BiomeGenerationSettings.Builder generation) {
@@ -297,6 +324,10 @@ public final class TropicraftVegetationPlacements {
     public static void addSeagrass(BiomeGenerationSettings.Builder generation) {
         addVegetalDecoration(generation, TROPI_SEAGRASS);
         addVegetalDecoration(generation, AquaticPlacements.SEAGRASS_NORMAL);
+    }
+
+    public static void addBeachGrass(BiomeGenerationSettings.Builder generation) {
+        addVegetalDecoration(generation, VegetationPlacements.PATCH_DRY_GRASS_DESERT);
     }
 
     public static void addKelp(BiomeGenerationSettings.Builder generation) {

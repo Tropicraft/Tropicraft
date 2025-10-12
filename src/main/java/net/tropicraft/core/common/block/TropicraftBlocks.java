@@ -345,7 +345,7 @@ public class TropicraftBlocks {
     public static final Map<TropicraftFlower, BlockEntry<TropicsFlowerBlock>> FLOWERS = Arrays.stream(TropicraftFlower.values())
             .collect(ImmutableMap.toImmutableMap(Function.identity(), flower -> {
                 BlockBuilder<TropicsFlowerBlock, Registrate> builder = REGISTRATE
-                        .block(flower.getId(), p -> new TropicsFlowerBlock(flower.getEffect(), flower.getEffectDuration(), flower.getShape(), p))
+                        .block(flower.getId(), p -> new TropicsFlowerBlock(flower, flower.getEffect(), flower.getEffectDuration(), flower.getShape(), p))
                         .initialProperties(() -> Blocks.POPPY)
                         .addLayer(() -> () -> ChunkSectionLayer.CUTOUT)
                         .tag(flower.getTags())

@@ -53,7 +53,8 @@
       "tropicraft:flowers_tropics",
       "tropicraft:patch_iris",
       "tropicraft:tropi_seagrass",
-      "minecraft:seagrass_normal"
+      "minecraft:seagrass_normal",
+      "minecraft:patch_dry_grass_desert"
     ]
   ],
   "has_precipitation": true,

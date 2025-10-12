@@ -35,7 +35,7 @@ public class TropicraftPlacementUtil {
         return List.of(
                 PlacementUtils.countExtra(count, extraChance, extraCount),
                 InSquarePlacement.spread(),
-                PlacementUtils.HEIGHTMAP,
+                PlacementUtils.HEIGHTMAP_NO_LEAVES,
                 BiomeFilter.biome()
         );
     }

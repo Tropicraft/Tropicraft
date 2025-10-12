@@ -139,6 +139,7 @@ public final class TropicraftBiomes {
         TropicraftVegetationPlacements.addPalmTrees(generation);
         TropicraftVegetationPlacements.addTropicsFlowers(generation);
         TropicraftVegetationPlacements.addSeagrass(generation);
+        TropicraftVegetationPlacements.addBeachGrass(generation);
 
         MobSpawnSettings.Builder spawns = defaultSpawns();
         spawns.addSpawn(MobCategory.CREATURE, 10, new MobSpawnSettings.SpawnerData(TropicraftEntities.FIDDLER_CRAB.get(), 1, 2));
@@ -172,7 +173,6 @@ public final class TropicraftBiomes {
         TropicraftVegetationPlacements.addSeagrass(generation);
         TropicraftVegetationPlacements.addTropicsGrass(generation);
         BiomeDefaultFeatures.addFerns(generation);
-        BiomeDefaultFeatures.addSavannaGrass(generation);
 
         TropicraftVegetationPlacements.addRainforestPlants(generation);
 
@@ -211,7 +211,6 @@ public final class TropicraftBiomes {
         TropicraftVegetationPlacements.addPapaya(generation);
         TropicraftVegetationPlacements.addSeagrass(generation);
 
-        BiomeDefaultFeatures.addJungleGrass(generation);
         BiomeDefaultFeatures.addLightBambooVegetation(generation);
 
         TropicraftVegetationPlacements.addRainforestPlants(generation);
@@ -259,6 +258,8 @@ public final class TropicraftBiomes {
 
         generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AquaticPlacements.SEA_PICKLE);
 
+        TropicraftVegetationPlacements.addBeachGrass(generation);
+
         MobSpawnSettings.Builder spawns = defaultSpawns();
         addOceanWaterCreatures(spawns);
         spawns.addSpawn(MobCategory.AMBIENT, 15, new MobSpawnSettings.SpawnerData(TropicraftEntities.FAILGULL.get(), 5, 10));
@@ -279,6 +280,8 @@ public final class TropicraftBiomes {
         TropicraftVegetationPlacements.addPalmTrees(generation);
 
         TropicraftVegetationPlacements.addSeagrass(generation);
+        TropicraftVegetationPlacements.addBeachGrass(generation);
+
         // KELP!
         TropicraftVegetationPlacements.addKelp(generation);
 
@@ -300,6 +303,7 @@ public final class TropicraftBiomes {
 
         TropicraftVegetationPlacements.addTropicsFlowers(generation);
         TropicraftVegetationPlacements.addSeagrass(generation);
+        TropicraftVegetationPlacements.addBeachGrass(generation);
 
         MobSpawnSettings.Builder spawns = defaultSpawns();
         addRiverWaterCreatures(spawns);

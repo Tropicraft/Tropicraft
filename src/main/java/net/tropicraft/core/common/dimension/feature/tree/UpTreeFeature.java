@@ -27,7 +27,7 @@ public class UpTreeFeature extends RainforestTreeFeature {
         BlockPos pos = context.origin();
 
         pos = pos.immutable();
-        int height = rand.nextInt(4) + 6;
+        int height = rand.nextInt(6) + 8;
         int i = pos.getX();
         int j = pos.getY();
         int k = pos.getZ();
@@ -70,9 +70,11 @@ public class UpTreeFeature extends RainforestTreeFeature {
 
         int radius = rand.nextInt(2) + 3;
 
+        int mul = rand.nextBoolean() ? -1 : 1;
+
         genCircle(leaves, world, i, j + height, k, radius, 0, getLeaf(), false);
-        genCircle(leaves, world, i, j + height + 1, k, radius + 2, radius, getLeaf(), false);
-        genCircle(leaves, world, i, j + height + 2, k, radius + 3, radius + 2, getLeaf(), false);
+        genCircle(leaves, world, i, j + height + (1 * mul), k, radius + 2, radius, getLeaf(), false);
+        genCircle(leaves, world, i, j + height + (2 * mul), k, radius + 3, radius + 2, getLeaf(), false);
 
         return TropicraftLeavesFixer.updateLeaves(world, logs, leaves, getLeaf());
     }

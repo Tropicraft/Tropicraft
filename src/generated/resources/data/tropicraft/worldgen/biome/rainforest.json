@@ -57,17 +57,19 @@
     [
       "minecraft:glow_lichen",
       "tropicraft:bush_flowering_rare",
-      "tropicraft:trees_rainforest",
+      "tropicraft:trees_rainforest_canopy",
+      "tropicraft:trees_rainforest_understory",
       "tropicraft:trees_papaya",
       "tropicraft:tropi_seagrass",
       "minecraft:seagrass_normal",
-      "minecraft:patch_grass_jungle",
       "minecraft:bamboo_light",
       "minecraft:patch_melon",
       "tropicraft:rainforest_vines",
       "tropicraft:coffee_bush",
       "tropicraft:single_undergrowth",
+      "tropicraft:mushrooms_rainforest",
       "tropicraft:flowers_rainforest",
+      "tropicraft:grass_rainforest",
       "tropicraft:undergrowth"
     ]
   ],

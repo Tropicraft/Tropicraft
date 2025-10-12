@@ -1,5 +1,5 @@
 {
-  "feature": "tropicraft:trees_rainforest",
+  "feature": "tropicraft:trees_rainforest_canopy",
   "placement": [
     {
       "type": "minecraft:count",
@@ -7,11 +7,11 @@
         "type": "minecraft:weighted_list",
         "distribution": [
           {
-            "data": 1,
-            "weight": 1
+            "data": 2,
+            "weight": 3
           },
           {
-            "data": 2,
+            "data": 3,
             "weight": 1
           }
         ]
@@ -22,7 +22,7 @@
     },
     {
       "type": "minecraft:heightmap",
-      "heightmap": "MOTION_BLOCKING"
+      "heightmap": "MOTION_BLOCKING_NO_LEAVES"
     },
     {
       "type": "minecraft:biome"

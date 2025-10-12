@@ -61,7 +61,8 @@
       "tropicraft:huge_golden_leather_fern",
       "tropicraft:bush_flowering_common",
       "tropicraft:trees_pleodendron",
-      "tropicraft:trees_rainforest",
+      "tropicraft:trees_rainforest_canopy",
+      "tropicraft:trees_rainforest_understory",
       "tropicraft:trees_papaya",
       "tropicraft:flowers_tropics",
       "tropicraft:patch_iris",
@@ -69,13 +70,15 @@
       "tropicraft:tropi_seagrass",
       "minecraft:seagrass_normal",
       "tropicraft:tropics_grass",
+      "minecraft:patch_dry_grass_desert",
       "minecraft:patch_large_fern",
-      "minecraft:patch_tall_grass",
       "minecraft:patch_melon",
       "tropicraft:rainforest_vines",
       "tropicraft:coffee_bush",
       "tropicraft:single_undergrowth",
-      "tropicraft:flowers_rainforest"
+      "tropicraft:mushrooms_rainforest",
+      "tropicraft:flowers_rainforest",
+      "tropicraft:grass_rainforest"
     ]
   ],
   "has_precipitation": true,
