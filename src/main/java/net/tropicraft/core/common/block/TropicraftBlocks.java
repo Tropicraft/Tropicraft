@@ -734,7 +734,8 @@ public class TropicraftBlocks {
             .recipe((ctx, prov) -> prov.wall(DataIngredient.items(CHUNK.get()), RecipeCategory.DECORATIONS, ctx))
             .item()
             .tag(ItemTags.WALLS)
-            .model(() -> (ctx, prov) -> prov.generateWithTemplate(ctx.get(), ModelTemplates.FENCE_INVENTORY, TextureMapping.defaultTexture(prov.modLoc("block/" + CHUNK.getId().getPath()))))
+            .model(() -> (ctx, prov) -> prov.generateWithTemplate(ctx.get(), ModelTemplates.WALL_INVENTORY, new TextureMapping()
+                    .put(TextureSlot.WALL, prov.modLoc("block/" + CHUNK.getId().getPath()))))
             .build()
             .register();
 
