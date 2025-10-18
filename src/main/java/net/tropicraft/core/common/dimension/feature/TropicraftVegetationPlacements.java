@@ -216,9 +216,9 @@ public final class TropicraftVegetationPlacements {
 
         register(context, COFFEE_BUSH, TropicraftVegetationFeatures.COFFEE_BUSH, worldSurfaceSquaredWithChance(25));
 
-        register(context, UNDERGROWTH, TropicraftVegetationFeatures.UNDERGROWTH, worldSurfaceSquaredWithChance(5));
+        register(context, UNDERGROWTH, TropicraftVegetationFeatures.UNDERGROWTH, worldSurfaceSquaredWithChance(1));
 
-        register(context, SINGLE_UNDERGROWTH, TropicraftVegetationFeatures.SINGLE_UNDERGROWTH, worldSurfaceSquaredWithCount(2));
+        register(context, SINGLE_UNDERGROWTH, TropicraftVegetationFeatures.SINGLE_UNDERGROWTH, worldSurfaceSquaredWithCount(5));
 
         register(context, MANGROVE_REEDS, TropicraftVegetationFeatures.MANGROVE_REEDS, List.of(
                 CountPlacement.of(2),

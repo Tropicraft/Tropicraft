@@ -152,7 +152,7 @@ public class TallRainforestTreeFeature extends RainforestTreeFeature {
                 placeLog(logs, world, local);
 
                 if (w == branchSize - 1) {
-                    int canopySize = 5 + rand.nextInt(3);
+                    int canopySize = 4 + rand.nextInt(3);
                     genCircle(leaves, world, local.above(), canopySize, 0, getLeaf(), false);
                     genCircle(leaves, world, local, canopySize + 1, canopySize, getLeaf(), false);
                     genCircle(leaves, world, local.below(), canopySize + 2, canopySize + 1, getLeaf(), false);

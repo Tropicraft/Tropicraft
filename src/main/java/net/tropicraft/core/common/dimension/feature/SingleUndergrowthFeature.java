@@ -8,9 +8,12 @@ import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.LegacyRandomSource;
+import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
+import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftLeavesFixer;
 
 import java.util.Set;
@@ -42,6 +45,12 @@ public class SingleUndergrowthFeature extends Feature<SimpleTreeFeatureConfig> {
         }
 
         if (!TropicraftFeatureUtil.isSoil(level, pos.below())) {
+            return false;
+        }
+
+        WorldgenRandom wrandom = new WorldgenRandom(new LegacyRandomSource(level.getSeed()));
+        NormalNoise noise = NormalNoise.create(wrandom, -7, 1.0F);
+        if (Math.abs(noise.getValue(pos.getX(), 0, pos.getZ())) < 0.03) {
             return false;
         }
 

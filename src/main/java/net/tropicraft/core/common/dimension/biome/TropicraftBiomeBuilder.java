@@ -112,8 +112,8 @@ public class TropicraftBiomeBuilder {
         addSurfaceBiome(consumer, fullRange, fullRange, nearInlandContinentalness, Climate.Parameter.span(erosions[0], erosions[1]), weirdness, 0.0f, TropicraftBiomes.RIVER);
         addSurfaceBiome(consumer, fullRange, Climate.Parameter.span(humidities[3], humidities[4]), landContinentalness, erosions[6], weirdness, 0.0f, TropicraftBiomes.MANGROVES);
         addSurfaceBiome(consumer, fullRange, Climate.Parameter.span(humidities[3], humidities[4]), landContinentalness, erosions[4], weirdness, 0.0f, TropicraftBiomes.MANGROVES);
-        addSurfaceBiome(consumer, fullRange, fullRange, Climate.Parameter.span(coastContinentalness, farInlandContinentalness), Climate.Parameter.span(erosions[2], erosions[3]), weirdness, 0.0f, TropicraftBiomes.RIVER);
-        addSurfaceBiome(consumer, fullRange, fullRange, Climate.Parameter.span(coastContinentalness, farInlandContinentalness), Climate.Parameter.span(erosions[5], erosions[5]), weirdness, 0.0f, TropicraftBiomes.RIVER);
+        addSurfaceBiome(consumer, fullRange, fullRange, Climate.Parameter.span(coastContinentalness, farInlandContinentalness), Climate.Parameter.span(erosions[2], erosions[3]), weirdness, 0.0f, TropicraftBiomes.TROPICS);
+        addSurfaceBiome(consumer, fullRange, fullRange, Climate.Parameter.span(coastContinentalness, farInlandContinentalness), Climate.Parameter.span(erosions[5], erosions[5]), weirdness, 0.0f, TropicraftBiomes.TROPICS);
 
         addSurfaceBiome(consumer, fullRange, fullRange, coastContinentalness, erosions[6], weirdness, 0.0f, TropicraftBiomes.RIVER);
 
@@ -132,7 +132,8 @@ public class TropicraftBiomeBuilder {
             addSurfaceBiome(consumer, fullRange, Climate.Parameter.span(humidities[3], humidities[4]), landContinentalness, erosions[4], weirdness, 0.0f, TropicraftBiomes.MANGROVES);
         }
 
-        addSurfaceBiome(consumer, fullRange, fullRange, landContinentalness, erosions[3], weirdness, 0.0f, TropicraftBiomes.TROPICS);
+        addSurfaceBiome(consumer, fullRange, humidities[4], landContinentalness, erosions[3], weirdness, 0.0f, TropicraftBiomes.RAINFOREST);
+        addSurfaceBiome(consumer, fullRange, Climate.Parameter.span(humidities[0], humidities[3]), landContinentalness, erosions[3], weirdness, 0.0f, TropicraftBiomes.TROPICS);
 
         if (weirdness.max() < 0) {
             addSurfaceBiome(consumer, fullRange, wet, landContinentalness, erosions[3], weirdness, 0.0f, TropicraftBiomes.OSA_RAINFOREST);
@@ -142,11 +143,11 @@ public class TropicraftBiomeBuilder {
         addSurfaceBiome(consumer, fullRange, lessWet, landContinentalness, erosions[2], weirdness, 0.0f, TropicraftBiomes.TROPICS);
 
         if (weirdness.max() < 0) {
-            addSurfaceBiome(consumer, fullRange, wet, landContinentalness, erosions[1], weirdness, 0.0f, TropicraftBiomes.OSA_RAINFOREST);
-            addSurfaceBiome(consumer, fullRange, wet, landContinentalness, erosions[0], weirdness, 0.0f, TropicraftBiomes.OSA_RAINFOREST);
+            addSurfaceBiome(consumer, fullRange, fullRange, landContinentalness, erosions[1], weirdness, 0.0f, TropicraftBiomes.OSA_RAINFOREST);
+            addSurfaceBiome(consumer, fullRange, fullRange, landContinentalness, erosions[0], weirdness, 0.0f, TropicraftBiomes.OSA_RAINFOREST);
         } else {
-            addSurfaceBiome(consumer, fullRange, wet, landContinentalness, erosions[1], weirdness, 0.0f, TropicraftBiomes.RAINFOREST);
-            addSurfaceBiome(consumer, fullRange, wet, landContinentalness, erosions[0], weirdness, 0.0f, TropicraftBiomes.RAINFOREST);
+            addSurfaceBiome(consumer, fullRange, fullRange, landContinentalness, erosions[1], weirdness, 0.0f, TropicraftBiomes.RAINFOREST);
+            addSurfaceBiome(consumer, fullRange, fullRange, landContinentalness, erosions[0], weirdness, 0.0f, TropicraftBiomes.RAINFOREST);
         }
     }
 
@@ -177,7 +178,8 @@ public class TropicraftBiomeBuilder {
 
         addSurfaceBiome(consumer, fullRange, lessWet, coastInwards, erosions[5], weirdness, 0.0f, TropicraftBiomes.TROPICS);
 
-        addSurfaceBiome(consumer, fullRange, fullRange, coastInwards, erosions[4], weirdness, 0.0f, TropicraftBiomes.TROPICS);
+        addSurfaceBiome(consumer, fullRange, wet, coastInwards, erosions[4], weirdness, 0.0f, TropicraftBiomes.RAINFOREST);
+        addSurfaceBiome(consumer, fullRange, lessWet, coastInwards, erosions[4], weirdness, 0.0f, TropicraftBiomes.TROPICS);
 
         if (weirdness.max() < 0) {
             addSurfaceBiome(consumer, fullRange, fullRange, midInwards, erosions[3], weirdness, 0.0f, TropicraftBiomes.RAINFOREST);

@@ -8,10 +8,13 @@ import net.minecraft.world.level.LevelSimulatedRW;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.LegacyRandomSource;
+import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftLeavesFixer;
 
@@ -49,6 +52,9 @@ public class UndergrowthFeature extends Feature<NoneFeatureConfiguration> {
             return false;
         }
 
+        WorldgenRandom wrandom = new WorldgenRandom(new LegacyRandomSource(world.getSeed()));
+        NormalNoise noise = NormalNoise.create(wrandom, -7, 1.0F);
+
         world.setBlock(pos.below(), Blocks.DIRT.defaultBlockState(), 3);
         setBlock(world, pos, TropicraftBlocks.MAHOGANY_LOG.get().defaultBlockState());
 
@@ -59,6 +65,11 @@ public class UndergrowthFeature extends Feature<NoneFeatureConfiguration> {
 
         for (int round = 0; round < 64; ++round) {
             BlockPos posTemp = pos.offset(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
+
+            if (Math.abs(noise.getValue(posTemp.getX(), 0, posTemp.getZ())) < 0.03) {
+                return false;
+            }
+
             if (isValidPosition(world, posTemp) && posTemp.getY() < 255) {
                 for (int y = posTemp.getY(); y < posTemp.getY() + size; y++) {
                     int bushWidth = size - (y - posTemp.getY());
