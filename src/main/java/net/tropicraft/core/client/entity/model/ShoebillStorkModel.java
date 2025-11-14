@@ -1,6 +1,8 @@
 package net.tropicraft.core.client.entity.model;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -12,6 +14,7 @@ import net.minecraft.util.Mth;
 import net.tropicraft.core.client.entity.render.state.ShoebillStorkRenderState;
 import net.tropicraft.core.common.entity.passive.ShoebillStorkEntity;
 import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 public class ShoebillStorkModel extends EntityModel<ShoebillStorkRenderState> {
     private final ModelPart body;
@@ -181,5 +184,25 @@ public class ShoebillStorkModel extends EntityModel<ShoebillStorkRenderState> {
         );
         ModelAnimator.rotateByInModelSpace(new ModelPart[]{body}, neckBase, neckRotation);
         ModelAnimator.rotateByInModelSpace(neckChain, head, headRotation);
+    }
+
+    public void copyShoesPoseTo(HumanoidModel<?> target) {
+        copyShoePose(target.leftLeg, legLeft1a, legLeft1b, clawLeft, 1.0f);
+        copyShoePose(target.rightLeg, legRight1a, legRight1b, clawRight, -1.0f);
+    }
+
+    private void copyShoePose(ModelPart targetLeg, ModelPart leg1a, ModelPart leg1b, ModelPart claw, float outX) {
+        PoseStack poseStack = new PoseStack();
+        body.translateAndRotate(poseStack);
+        leg1a.translateAndRotate(poseStack);
+        leg1b.translateAndRotate(poseStack);
+        claw.translateAndRotate(poseStack);
+        Vector3f footPos = poseStack.last().pose().transformPosition(new Vector3f()).mul(16.0f);
+
+        float scale = 0.75f;
+        targetLeg.setPos(footPos.x + outX * 0.5f, footPos.y - 12.0f * scale, footPos.z - 1.0f);
+        targetLeg.xScale = scale;
+        targetLeg.yScale = scale;
+        targetLeg.zScale = scale;
     }
 }

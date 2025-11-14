@@ -316,6 +316,9 @@ ij_json_spaces_within_braces = false
 ij_json_spaces_within_brackets = false
 ij_json_wrap_long_lines = false
 
+[*.toml]
+ij_toml_keep_indents_on_empty_lines = false
+
 [{*.yaml,*.yml}]
 indent_size = 2
 ij_yaml_align_values_properties = do_not_align
