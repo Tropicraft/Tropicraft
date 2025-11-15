@@ -34,6 +34,7 @@ public class ShoebillStorkRenderer extends MobRenderer<ShoebillStorkEntity, Shoe
     public void extractRenderState(ShoebillStorkEntity entity, ShoebillStorkRenderState state, float partialTicks) {
         super.extractRenderState(entity, state, partialTicks);
         state.flightAnimation = entity.getFlightAnimation(partialTicks);
+        state.kickAnimation = entity.getKickAnimation(partialTicks);
 
         IkWalker.EntitySpace entitySpace = IkWalker.EntitySpace.from(entity, partialTicks);
         state.leftFootPos.set(entity.leftFoot().solveModelPosition(entitySpace, partialTicks));

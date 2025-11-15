@@ -169,6 +169,13 @@ public class ShoebillStorkModel extends EntityModel<ShoebillStorkRenderState> {
             rightLegSolver.apply(state.rightFootPos, groundAnimation);
         }
 
+        if (state.kickAnimation > 0.0f) {
+            float kickLeftIntensity = Mth.sin(Mth.PI * Mth.clampedMap(state.kickAnimation, 0.0f, 0.5f, 0.0f, 1.0f));
+            float kickRightIntensity = Mth.sin(Mth.PI * Mth.clampedMap(state.kickAnimation, 0.5f, 1.0f, 0.0f, 1.0f));
+            legLeft1a.xRot += Mth.sin(state.ageInTicks) * kickLeftIntensity;
+            legRight1a.xRot += Mth.sin(state.ageInTicks) * kickRightIntensity;
+        }
+
         // Try to keep the head stable in the same position - very Shoebill-like
         headSolver.applyRelativeToBase(0.35f, 0.0f, 0.0f, 0.0f);
 

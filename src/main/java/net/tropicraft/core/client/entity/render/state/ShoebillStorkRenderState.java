@@ -6,6 +6,7 @@ import org.joml.Vector3f;
 
 public class ShoebillStorkRenderState extends LivingEntityRenderState {
     public float flightAnimation;
+    public float kickAnimation;
     public final Vector3f leftFootPos = new Vector3f();
     public final Vector3f rightFootPos = new Vector3f();
     public ItemStack feetEquipment = ItemStack.EMPTY;
