@@ -8,14 +8,16 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
 
-public class TropicraftFishModel extends EntityModel<EntityRenderState> {
+public class TropicraftFishModel extends EntityModel<LivingEntityRenderState> {
+    public final ModelPart body;
     public final ModelPart tail;
 
     public TropicraftFishModel(ModelPart root) {
         super(root);
-        ModelPart body = root.getChild("body");
+        body = root.getChild("body");
         tail = body.getChild("tail");
     }
 
@@ -29,7 +31,7 @@ public class TropicraftFishModel extends EntityModel<EntityRenderState> {
     }
 
     @Override
-    public void setupAnim(EntityRenderState state) {
+    public void setupAnim(LivingEntityRenderState state) {
         super.setupAnim(state);
         tail.yRot = Mth.sin(state.ageInTicks * 0.25f) * 0.25f;
     }

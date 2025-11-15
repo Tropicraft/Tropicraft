@@ -41,7 +41,7 @@ public abstract class TropicraftFishRenderer<T extends AbstractFish> extends Mob
 
     protected void renderFishy(FishRenderState state, PoseStack stack, VertexConsumer buffer, int light, int overlay) {
         stack.pushPose();
-        stack.mulPose(Axis.YP.rotationDegrees(-90.0f - state.yRot));
+        stack.mulPose(Axis.YP.rotationDegrees(state.yRot));
         stack.mulPose(Axis.XP.rotationDegrees(180));
         stack.scale(0.3f, 0.3f, 0.5f);
         stack.translate(0.85f, -0.3f, 0.0f);
