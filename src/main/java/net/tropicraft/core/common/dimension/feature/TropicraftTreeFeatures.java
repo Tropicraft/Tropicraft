@@ -123,7 +123,7 @@ public final class TropicraftTreeFeatures {
         register(context, RAINFOREST_SMALL_TUALUNG, TropicraftFeatures.SMALL_TUALUNG);
         register(context, RAINFOREST_LARGE_TUALUNG, TropicraftFeatures.LARGE_TUALUNG);
         register(context, RAINFOREST_TALL_TREE, TropicraftFeatures.TALL_TREE);
-        registerRandom(context, RAINFOREST_TREE, RAINFOREST_UP_TREE, RAINFOREST_SMALL_TUALUNG, LARGE_PALM_TREE, RAINFOREST_TALL_TREE);
+        registerRandom(context, RAINFOREST_TREE, RAINFOREST_UP_TREE, RAINFOREST_SMALL_TUALUNG, RAINFOREST_LARGE_TUALUNG, RAINFOREST_TALL_TREE);
 
         register(context, PLEODENDRON, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
                 BlockStateProvider.simple(Blocks.JUNGLE_LOG.defaultBlockState()),
