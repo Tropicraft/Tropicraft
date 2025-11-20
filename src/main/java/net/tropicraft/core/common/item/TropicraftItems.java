@@ -340,7 +340,7 @@ public class TropicraftItems {
             .register();
 
     public static final ItemEntry<CocktailItem> COCKTAIL = REGISTRATE.item("cocktail", CocktailItem::new)
-            .properties(p -> p.durability(0).stacksTo(1).craftRemainder(BAMBOO_MUG.get()))
+            .properties(p -> p.durability(0).stacksTo(1).component(DataComponents.CONSUMABLE, Consumables.DEFAULT_DRINK).craftRemainder(BAMBOO_MUG.get()))
             .model(() -> Models::generateCocktail)
             .tab(Tropicraft.CREATIVE_TAB, (ctx, modifier) -> {
                 HolderLookup.RegistryLookup<Drink> drinks = modifier.getParameters().holders().lookupOrThrow(TropicraftRegistries.DRINK);
