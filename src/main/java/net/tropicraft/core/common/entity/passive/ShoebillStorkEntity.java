@@ -57,6 +57,7 @@ public class ShoebillStorkEntity extends Animal {
 
     @Nullable
     private HolderSet<Item> wantedShoes;
+    private boolean pickyAboutShoes;
 
     private boolean kickingShoes;
     private int kickingShoesTicks;
@@ -181,12 +182,14 @@ public class ShoebillStorkEntity extends Animal {
     protected void addAdditionalSaveData(ValueOutput output) {
         super.addAdditionalSaveData(output);
         output.storeNullable("wanted_shoes", ITEM_SET_CODEC, wantedShoes);
+        output.putBoolean("picky_about_shoes", pickyAboutShoes);
     }
 
     @Override
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
         wantedShoes = input.read("wanted_shoes", ITEM_SET_CODEC).orElse(null);
+        pickyAboutShoes = input.getBooleanOr("picky_about_shoes", false);
     }
 
     private class RejectShoesGoal extends Goal {
@@ -202,7 +205,7 @@ public class ShoebillStorkEntity extends Animal {
             if (feetItem.isEmpty() || wantsShoes(feetItem)) {
                 return false;
             }
-            return random.nextInt(adjustedTickDelay(CHANCE_PER_TICK)) == 0;
+            return pickyAboutShoes || random.nextInt(adjustedTickDelay(CHANCE_PER_TICK)) == 0;
         }
 
         @Override
