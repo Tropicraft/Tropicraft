@@ -41,7 +41,7 @@ public class EmbeddedPackSource implements RepositorySource {
         }
 
         PackLocationInfo locationInfo = new PackLocationInfo(packId, packName, PackSource.BUILT_IN, Optional.empty());
-        PackSelectionConfig selectionConfig = new PackSelectionConfig(false, Pack.Position.TOP, false);
+        PackSelectionConfig selectionConfig = new PackSelectionConfig(true, Pack.Position.TOP, false);
         Pack.ResourcesSupplier resourcesSupplier = new PathPackResources.PathResourcesSupplier(packPath);
         Pack pack = Pack.readMetaAndCreate(locationInfo, resourcesSupplier, type, selectionConfig);
         if (pack != null) {
