@@ -3,7 +3,7 @@
   "bed_works": true,
   "cloud_height": 256,
   "coordinate_scale": 1.0,
-  "effects": "tropicraft:tropics",
+  "effects": "minecraft:overworld",
   "has_ceiling": false,
   "has_raids": true,
   "has_skylight": true,
