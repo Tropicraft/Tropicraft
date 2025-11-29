@@ -105,7 +105,7 @@ public final class HomeTreeBranchPiece extends StructurePoolElement implements I
         int branchY2 = rand.nextInt(4) + 4;
 
         BlockState wood = TropicraftBlocks.MAHOGANY_LOG.get().defaultBlockState();
-        BlockState leaf = TropicraftBlocks.MAHOGANY_LEAVES.get().defaultBlockState();
+        BlockState leaf = TropicraftBlocks.KAPOK_LEAVES.get().defaultBlockState();
         final int leafCircleSizeConstant = 3;
         int y2 = origin.getY() + branchY2;
 

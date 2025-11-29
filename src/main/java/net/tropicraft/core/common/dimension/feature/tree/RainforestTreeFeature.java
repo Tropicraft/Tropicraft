@@ -44,7 +44,7 @@ public abstract class RainforestTreeFeature extends Feature<NoneFeatureConfigura
     }
 
     protected final BlockState getLeaf() {
-        return TropicraftBlocks.KAPOK_LEAVES.get().defaultBlockState();
+        return TropicraftBlocks.MAHOGANY_LEAVES.get().defaultBlockState();
     }
 
     protected final BlockState getLog() {

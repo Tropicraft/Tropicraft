@@ -59,7 +59,7 @@ public class UndergrowthFeature extends Feature<NoneFeatureConfiguration> {
         setBlock(world, pos, TropicraftBlocks.MAHOGANY_LOG.get().defaultBlockState());
 
         Set<BlockPos> leaves = new ObjectOpenHashSet<>();
-        BlockState leavesState = TropicraftBlocks.KAPOK_LEAVES.get().defaultBlockState();
+        BlockState leavesState = TropicraftBlocks.MAHOGANY_LEAVES.get().defaultBlockState();
 
         int count = 0;
 
