@@ -2,7 +2,7 @@
   "type": "tropicraft:single_undergrowth",
   "config": {
     "leaves": {
-      "Name": "tropicraft:kapok_leaves",
+      "Name": "tropicraft:mahogany_leaves",
       "Properties": {
         "distance": "1",
         "persistent": "false",
