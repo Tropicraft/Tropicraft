@@ -21,10 +21,6 @@ public class LavaBallEntity extends Entity {
     public final boolean held;
     public int lifeTimer;
 
-    public double accelerationX;
-    public double accelerationY;
-    public double accelerationZ;
-
     public LavaBallEntity(EntityType<? extends LavaBallEntity> type, Level world) {
         super(type, world);
         setFire = false;
@@ -37,12 +33,13 @@ public class LavaBallEntity extends Entity {
         super(type, world);
         setFire = false;
         snapTo(i, j, k, 0, 0);
-        accelerationX = motX;
-        accelerationY = motY;
-        accelerationZ = motZ;
         size = 1;
         held = false;
         lifeTimer = 0;
+        this.reapplyPosition();
+        Vec3 motion = new Vec3(motX, motY, motZ);
+        setDeltaMovement(motion);
+        this.hasImpulse = true;
     }
 
     public LavaBallEntity(EntityType<? extends LavaBallEntity> type, Level world, float startSize) {
@@ -144,10 +141,10 @@ public class LavaBallEntity extends Entity {
             }
         }
 
-        Vec3 motion = new Vec3(motionX + accelerationX, motionY + accelerationY, motionZ + accelerationZ);
+        Vec3 motion = new Vec3(motionX, motionY, motionZ);
         setDeltaMovement(motion);
-
-        move(MoverType.SELF, motion);
+        this.move(MoverType.SELF, this.getDeltaMovement());
+        this.reapplyPosition();
     }
 
     @Override
