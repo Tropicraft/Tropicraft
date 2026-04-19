@@ -5,7 +5,6 @@
   "experience": 0.1,
   "ingredient": "tropicraft:raw_coffee_bean",
   "result": {
-    "count": 1,
     "id": "tropicraft:roasted_coffee_bean"
   }
 }

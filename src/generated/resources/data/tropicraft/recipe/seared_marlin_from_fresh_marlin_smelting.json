@@ -5,7 +5,6 @@
   "experience": 0.15,
   "ingredient": "tropicraft:fresh_marlin",
   "result": {
-    "count": 1,
     "id": "tropicraft:seared_marlin"
   }
 }

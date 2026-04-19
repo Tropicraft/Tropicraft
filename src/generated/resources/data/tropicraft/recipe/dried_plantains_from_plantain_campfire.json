@@ -5,7 +5,6 @@
   "experience": 0.1,
   "ingredient": "#tropicraft:plantain",
   "result": {
-    "count": 1,
     "id": "tropicraft:dried_plantains"
   }
 }

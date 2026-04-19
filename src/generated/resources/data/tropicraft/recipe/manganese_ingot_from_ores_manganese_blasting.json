@@ -5,7 +5,6 @@
   "experience": 0.5,
   "ingredient": "#c:ores/manganese",
   "result": {
-    "count": 1,
     "id": "tropicraft:manganese_ingot"
   }
 }

@@ -1,0 +1,8 @@
+{
+  "amount": 2.0,
+  "random_sequence": "tropicraft:koa_fisher/level_2",
+  "trades": [
+    "tropicraft:koa_fisher/2/cooked_fish",
+    "tropicraft:koa_fisher/2/cooked_ray"
+  ]
+}

@@ -5,7 +5,6 @@
   "experience": 0.5,
   "ingredient": "#c:ores/shaka",
   "result": {
-    "count": 1,
     "id": "tropicraft:shaka_ingot"
   }
 }

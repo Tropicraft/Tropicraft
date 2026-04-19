@@ -1,0 +1,37 @@
+{
+  "given_item_modifiers": [
+    {
+      "function": "minecraft:enchant_with_levels",
+      "include_additional_cost_component": true,
+      "levels": {
+        "type": "minecraft:uniform",
+        "max": 15.0,
+        "min": 5.0
+      },
+      "options": "#minecraft:on_traded_equipment"
+    },
+    {
+      "function": "minecraft:filtered",
+      "item_filter": {
+        "items": "tropicraft:scale_chestplate",
+        "predicates": {
+          "minecraft:enchantments": [
+            {}
+          ]
+        }
+      },
+      "on_fail": {
+        "function": "minecraft:discard"
+      }
+    }
+  ],
+  "gives": {
+    "id": "tropicraft:scale_chestplate"
+  },
+  "reputation_discount": 0.05,
+  "wants": {
+    "count": 6.0,
+    "id": "tropicraft:white_pearl"
+  },
+  "xp": 15.0
+}

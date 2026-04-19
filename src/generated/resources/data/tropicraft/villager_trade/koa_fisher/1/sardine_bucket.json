@@ -1,0 +1,10 @@
+{
+  "gives": {
+    "id": "tropicraft:white_pearl"
+  },
+  "reputation_discount": 0.05,
+  "wants": {
+    "id": "tropicraft:sardine_bucket"
+  },
+  "xp": 2.0
+}

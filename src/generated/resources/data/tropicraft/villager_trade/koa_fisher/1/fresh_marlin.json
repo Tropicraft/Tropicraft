@@ -1,0 +1,12 @@
+{
+  "gives": {
+    "id": "tropicraft:white_pearl"
+  },
+  "max_uses": 8.0,
+  "reputation_discount": 0.05,
+  "wants": {
+    "count": 3.0,
+    "id": "tropicraft:fresh_marlin"
+  },
+  "xp": 2.0
+}

@@ -1,0 +1,12 @@
+{
+  "gives": {
+    "id": "tropicraft:white_pearl"
+  },
+  "max_uses": 8.0,
+  "reputation_discount": 0.05,
+  "wants": {
+    "count": 20.0,
+    "id": "minecraft:tropical_fish"
+  },
+  "xp": 2.0
+}

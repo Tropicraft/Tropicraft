@@ -5,7 +5,6 @@
   "experience": 0.15,
   "ingredient": "tropicraft:raw_ray",
   "result": {
-    "count": 1,
     "id": "tropicraft:cooked_ray"
   }
 }

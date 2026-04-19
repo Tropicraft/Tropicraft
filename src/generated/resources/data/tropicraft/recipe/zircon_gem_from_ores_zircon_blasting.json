@@ -5,7 +5,6 @@
   "experience": 0.5,
   "ingredient": "#c:ores/zircon",
   "result": {
-    "count": 1,
     "id": "tropicraft:zircon_gem"
   }
 }

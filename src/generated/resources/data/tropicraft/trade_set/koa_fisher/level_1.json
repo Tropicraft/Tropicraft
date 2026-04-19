@@ -1,0 +1,13 @@
+{
+  "amount": 2.0,
+  "random_sequence": "tropicraft:koa_fisher/level_1",
+  "trades": [
+    "tropicraft:koa_fisher/1/tropical_fish",
+    "tropicraft:koa_fisher/1/fishing_net",
+    "tropicraft:koa_fisher/1/fishing_rod",
+    "tropicraft:koa_fisher/1/fresh_marlin",
+    "tropicraft:koa_fisher/1/sardine_bucket",
+    "tropicraft:koa_fisher/1/piranha_bucket",
+    "tropicraft:koa_fisher/1/tropical_fertilizer"
+  ]
+}

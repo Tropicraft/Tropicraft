@@ -4,6 +4,11 @@
       {
         "texture": "tropicraft:textures/models/armor/scuba_gear_yellow.png"
       }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "tropicraft:textures/models/armor/scuba_gear_yellow.png"
+      }
     ]
   }
 }

@@ -1,15 +1,33 @@
 {
+  "attributes": {
+    "minecraft:audio/background_music": {
+      "creative": {
+        "max_delay": 24000,
+        "min_delay": 12000,
+        "sound": "minecraft:music.creative"
+      },
+      "default": {
+        "max_delay": 24000,
+        "min_delay": 12000,
+        "sound": "minecraft:music.game"
+      },
+      "underwater": {
+        "max_delay": 24000,
+        "min_delay": 12000,
+        "sound": "minecraft:music.under_water"
+      }
+    },
+    "minecraft:visual/fog_color": "#c0d8ff",
+    "minecraft:visual/sky_color": "#78a7ff",
+    "minecraft:visual/water_fog_color": "#041f33"
+  },
   "carvers": [
     "tropicraft:cave",
     "tropicraft:canyon"
   ],
   "downfall": 1.25,
   "effects": {
-    "fog_color": 12638463,
-    "music_volume": 1.0,
-    "sky_color": 7907327,
-    "water_color": 5172447,
-    "water_fog_color": 270131
+    "water_color": "#4eecdf"
   },
   "features": [
     [],

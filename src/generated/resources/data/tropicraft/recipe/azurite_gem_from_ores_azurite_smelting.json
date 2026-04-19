@@ -5,7 +5,6 @@
   "experience": 0.3,
   "ingredient": "#c:ores/azurite",
   "result": {
-    "count": 1,
     "id": "tropicraft:azurite_gem"
   }
 }

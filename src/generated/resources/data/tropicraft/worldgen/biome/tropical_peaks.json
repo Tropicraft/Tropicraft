@@ -1,12 +1,13 @@
 {
+  "attributes": {
+    "minecraft:visual/fog_color": "#bae6c3",
+    "minecraft:visual/sky_color": "#78a7ff",
+    "minecraft:visual/water_fog_color": "#041f33"
+  },
   "carvers": [],
   "downfall": 1.25,
   "effects": {
-    "fog_color": 12248771,
-    "music_volume": 1.0,
-    "sky_color": 7907327,
-    "water_color": 5172447,
-    "water_fog_color": 270131
+    "water_color": "#4eecdf"
   },
   "features": [
     [],

@@ -1,0 +1,12 @@
+{
+  "gives": {
+    "count": 6,
+    "id": "tropicraft:cooked_ray"
+  },
+  "max_uses": 8.0,
+  "reputation_discount": 0.05,
+  "wants": {
+    "id": "tropicraft:white_pearl"
+  },
+  "xp": 10.0
+}

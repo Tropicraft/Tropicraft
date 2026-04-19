@@ -1,0 +1,9 @@
+{
+  "amount": 2.0,
+  "random_sequence": "tropicraft:koa_hunter/level_1",
+  "trades": [
+    "tropicraft:koa_hunter/1/frog_leg",
+    "tropicraft:koa_hunter/1/iguana_leather",
+    "tropicraft:koa_hunter/1/scale"
+  ]
+}

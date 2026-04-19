@@ -1,0 +1,11 @@
+{
+  "gives": {
+    "id": "tropicraft:white_pearl"
+  },
+  "max_uses": 8.0,
+  "reputation_discount": 0.05,
+  "wants": {
+    "id": "minecraft:fishing_rod"
+  },
+  "xp": 2.0
+}

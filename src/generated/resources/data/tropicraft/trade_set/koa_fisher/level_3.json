@@ -1,0 +1,9 @@
+{
+  "amount": 2.0,
+  "random_sequence": "tropicraft:koa_fisher/level_3",
+  "trades": [
+    "tropicraft:koa_fisher/3/grapefruit",
+    "tropicraft:koa_fisher/3/lemon",
+    "tropicraft:koa_fisher/3/lime"
+  ]
+}

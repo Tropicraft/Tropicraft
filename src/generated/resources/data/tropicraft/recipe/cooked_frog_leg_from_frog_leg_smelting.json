@@ -5,7 +5,6 @@
   "experience": 0.1,
   "ingredient": "tropicraft:frog_leg",
   "result": {
-    "count": 1,
     "id": "tropicraft:cooked_frog_leg"
   }
 }

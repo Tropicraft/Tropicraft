@@ -8,10 +8,26 @@
     },
     {
       "type": "tropicraft:portal",
-      "dimension": "tropicraft:tropics",
-      "max_time_of_day": 14000,
-      "min_time_of_day": 12200,
-      "while_riding": "tropicraft:chair"
+      "condition": {
+        "condition": "minecraft:all_of",
+        "terms": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "vehicle": {
+                "type": "tropicraft:chair"
+              }
+            }
+          },
+          {
+            "attribute": "tropicraft:can_teleport_to_tropics",
+            "condition": "minecraft:environment_attribute_check",
+            "value": true
+          }
+        ]
+      },
+      "dimension": "tropicraft:tropics"
     }
   ],
   "color": 15724527,
