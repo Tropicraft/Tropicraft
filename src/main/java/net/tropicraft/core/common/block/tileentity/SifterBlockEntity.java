@@ -27,9 +27,7 @@ import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.item.component.TropicraftDataComponents;
 import net.tropicraft.core.common.network.message.ClientboundSifterInventoryPacket;
 import net.tropicraft.core.common.network.message.ClientboundSifterStartPacket;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class SifterBlockEntity extends BlockEntity {
 
@@ -53,7 +51,6 @@ public class SifterBlockEntity extends BlockEntity {
     public double yaw;
     public double yaw2 = 0.0;
 
-    @Nonnull
     private ItemStack siftItem = ItemStack.EMPTY;
 
     public SifterBlockEntity(BlockEntityType<SifterBlockEntity> type, BlockPos pos, BlockState state) {
@@ -62,7 +59,6 @@ public class SifterBlockEntity extends BlockEntity {
         currentSiftTime = SIFT_TIME;
     }
 
-    @Nonnull
     public ItemStack getSiftItem() {
         return siftItem;
     }
@@ -78,7 +74,7 @@ public class SifterBlockEntity extends BlockEntity {
         }
 
         // Rotation animation
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             yaw2 = yaw % 360.0;
             yaw += 45.45454502105713;
         }
@@ -123,7 +119,7 @@ public class SifterBlockEntity extends BlockEntity {
     }
 
     private void spawnItem(ItemStack stack, BlockPos pos) {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return;
         }
 
@@ -166,16 +162,17 @@ public class SifterBlockEntity extends BlockEntity {
         currentSiftTime = SIFT_TIME;
 
         if (level instanceof ServerLevel serverLevel) {
-            PacketDistributor.sendToPlayersTrackingChunk(serverLevel, new ChunkPos(getBlockPos()), new ClientboundSifterStartPacket(getBlockPos()));
+            PacketDistributor.sendToPlayersTrackingChunk(serverLevel, ChunkPos.containing(getBlockPos()), new ClientboundSifterStartPacket(getBlockPos()));
         }
     }
 
     private void stopSifting() {
-        double x = worldPosition.getX() + level.random.nextDouble() * 1.4;
-        double y = worldPosition.getY() + level.random.nextDouble() * 1.4;
-        double z = worldPosition.getZ() + level.random.nextDouble() * 1.4;
+        RandomSource random = level.getRandom();
+        double x = worldPosition.getX() + random.nextDouble() * 1.4;
+        double y = worldPosition.getY() + random.nextDouble() * 1.4;
+        double z = worldPosition.getZ() + random.nextDouble() * 1.4;
 
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             dumpResults(BlockPos.containing(x, y, z));
         }
         currentSiftTime = SIFT_TIME;
@@ -218,7 +215,7 @@ public class SifterBlockEntity extends BlockEntity {
 
     protected void syncInventory() {
         if (level instanceof ServerLevel serverLevel) {
-            PacketDistributor.sendToPlayersTrackingChunk(serverLevel, new ChunkPos(getBlockPos()), new ClientboundSifterInventoryPacket(this));
+            PacketDistributor.sendToPlayersTrackingChunk(serverLevel, ChunkPos.containing(getBlockPos()), new ClientboundSifterInventoryPacket(this));
         }
     }
 

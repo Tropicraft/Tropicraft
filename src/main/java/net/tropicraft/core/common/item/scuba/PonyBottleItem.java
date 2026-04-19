@@ -1,6 +1,5 @@
 package net.tropicraft.core.common.item.scuba;
 
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -10,10 +9,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.level.Level;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
 public class PonyBottleItem extends Item {
 
     private static final int FILL_RATE = 6;
@@ -48,7 +43,7 @@ public class PonyBottleItem extends Item {
         // Wait for drink sound to start, and don't add air that won't fit
         if (player.getUseItemRemainingTicks() <= 25 && player.getAirSupply() < player.getMaxAirSupply() - fillAmt) {
             player.setAirSupply(player.getAirSupply() + fillAmt);
-            stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(player.getUsedItemHand()));
+            stack.hurtAndBreak(1, player, player.getUsedItemHand());
         }
     }
 

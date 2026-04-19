@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class SinkInGroundProcessor extends CheatyStructureProcessor {
     public static final MapCodec<SinkInGroundProcessor> CODEC = MapCodec.unit(new SinkInGroundProcessor());

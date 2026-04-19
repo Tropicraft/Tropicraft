@@ -2,10 +2,11 @@ package net.tropicraft.core.client.data;
 
 import com.tterrag.registrate.providers.RegistrateLangProvider;
 import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.util.Util;
 import net.tropicraft.Tropicraft;
+import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 
 public enum TropicraftLangKeys {
     NA("general", "na", "N/A"),
@@ -36,7 +37,7 @@ public enum TropicraftLangKeys {
     private final Component component;
 
     TropicraftLangKeys(String type, String key, String value) {
-        this.key = Util.makeDescriptionId(type, Tropicraft.location(key));
+        this.key = Util.makeDescriptionId(type, Tropicraft.id(key));
         this.value = value;
         component = Component.translatable(this.key);
     }
@@ -61,5 +62,7 @@ public enum TropicraftLangKeys {
         for (TropicraftLangKeys lang : values()) {
             prov.add(lang.key, lang.value);
         }
+
+        EntityKoaBase.generateLangKeys(prov);
     }
 }

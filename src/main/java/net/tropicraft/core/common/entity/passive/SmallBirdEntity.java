@@ -2,6 +2,8 @@ package net.tropicraft.core.common.entity.passive;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Ease;
+import net.minecraft.util.EasingType;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.AgeableMob;
@@ -28,16 +30,17 @@ import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.BinaryAnimation;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.entity.ai.BirdWanderInTreesGoal;
+import org.jspecify.annotations.Nullable;
 
 public class SmallBirdEntity extends Animal implements FlyingAnimal {
-    private final BinaryAnimation flightAnimation = new BinaryAnimation(3, Mth::easeInOutSine);
+    private final BinaryAnimation flightAnimation = new BinaryAnimation(3, Ease::inOutSine);
 
     public SmallBirdEntity(EntityType<? extends SmallBirdEntity> type, Level world) {
         super(type, world);
 
         moveControl = new BirdMoveControl(this);
-        setPathfindingMalus(PathType.DANGER_FIRE, -1.0f);
-        setPathfindingMalus(PathType.DAMAGE_FIRE, -1.0f);
+        setPathfindingMalus(PathType.FIRE_IN_NEIGHBOR, -1.0f);
+        setPathfindingMalus(PathType.FIRE, -1.0f);
         setPathfindingMalus(PathType.COCOA, -1.0f);
         setPathfindingMalus(PathType.WATER, -1.0f);
         setPathfindingMalus(PathType.FENCE, -1.0f);
@@ -101,7 +104,7 @@ public class SmallBirdEntity extends Animal implements FlyingAnimal {
     }
 
     @Override
-    public SmallBirdEntity getBreedOffspring(ServerLevel world, AgeableMob mate) {
+    public @Nullable SmallBirdEntity getBreedOffspring(ServerLevel world, AgeableMob mate) {
         return null;
     }
 

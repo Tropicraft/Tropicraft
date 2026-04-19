@@ -1,9 +1,10 @@
 package net.tropicraft.core.client.entity.render;
 
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.phys.Vec3;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.TropicraftRenderLayers;
@@ -11,14 +12,14 @@ import net.tropicraft.core.client.entity.model.KoaModel;
 import net.tropicraft.core.client.entity.render.state.KoaRenderState;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class KoaRenderer extends HumanoidMobRenderer<EntityKoaBase, KoaRenderState, KoaModel> {
 
-    private static final ResourceLocation MALE_FISHER = Tropicraft.location("textures/entity/koa/koa_man_fisher.png");
-    private static final ResourceLocation FEMALE_FISHER = Tropicraft.location("textures/entity/koa/koa_woman_fisher.png");
-    private static final ResourceLocation MALE_HUNTER = Tropicraft.location("textures/entity/koa/koa_man_hunter.png");
-    private static final ResourceLocation FEMALE_HUNTER = Tropicraft.location("textures/entity/koa/koa_woman_hunter.png");
+    private static final Identifier MALE_FISHER = Tropicraft.id("textures/entity/koa/koa_man_fisher.png");
+    private static final Identifier FEMALE_FISHER = Tropicraft.id("textures/entity/koa/koa_woman_fisher.png");
+    private static final Identifier MALE_HUNTER = Tropicraft.id("textures/entity/koa/koa_man_hunter.png");
+    private static final Identifier FEMALE_HUNTER = Tropicraft.id("textures/entity/koa/koa_woman_hunter.png");
 
     public KoaRenderer(EntityRendererProvider.Context context) {
         super(context, new KoaModel(context.bakeLayer(TropicraftRenderLayers.KOA_HUNTER_LAYER)), new KoaModel(context.bakeLayer(TropicraftRenderLayers.KOA_HUNTER_BABY_LAYER)), 0.5f);
@@ -40,7 +41,7 @@ public class KoaRenderer extends HumanoidMobRenderer<EntityKoaBase, KoaRenderSta
     }
 
     @Override
-    public ResourceLocation getTextureLocation(KoaRenderState state) {
+    public Identifier getTextureLocation(KoaRenderState state) {
         return switch (state.gender) {
             case MALE -> switch (state.role) {
                 case HUNTER -> MALE_HUNTER;
@@ -68,6 +69,6 @@ public class KoaRenderer extends HumanoidMobRenderer<EntityKoaBase, KoaRenderSta
     @Nullable
     @Override
     protected RenderType getRenderType(KoaRenderState state, boolean p_230496_2_, boolean p_230496_3_, boolean p_230496_4_) {
-        return RenderType.entityCutout(getTextureLocation(state));
+        return RenderTypes.entityCutout(getTextureLocation(state));
     }
 }

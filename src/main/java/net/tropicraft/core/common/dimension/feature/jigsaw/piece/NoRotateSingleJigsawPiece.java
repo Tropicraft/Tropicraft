@@ -6,7 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.StructureManager;
@@ -34,11 +34,11 @@ public class NoRotateSingleJigsawPiece extends SinglePoolElement {
             templateCodec(), processorsCodec(), projectionCodec(), overrideLiquidSettingsCodec()
     ).apply(i, NoRotateSingleJigsawPiece::new));
 
-    public NoRotateSingleJigsawPiece(Either<ResourceLocation, StructureTemplate> template, Holder<StructureProcessorList> processors, StructureTemplatePool.Projection placementBehaviour, Optional<LiquidSettings> overrideLiquidSettings) {
+    public NoRotateSingleJigsawPiece(Either<Identifier, StructureTemplate> template, Holder<StructureProcessorList> processors, StructureTemplatePool.Projection placementBehaviour, Optional<LiquidSettings> overrideLiquidSettings) {
         super(template, processors, placementBehaviour, overrideLiquidSettings);
     }
 
-    public static Function<StructureTemplatePool.Projection, NoRotateSingleJigsawPiece> createNoRotate(ResourceLocation id, Holder<StructureProcessorList> processors) {
+    public static Function<StructureTemplatePool.Projection, NoRotateSingleJigsawPiece> createNoRotate(Identifier id, Holder<StructureProcessorList> processors) {
         return placementBehaviour -> new NoRotateSingleJigsawPiece(Either.left(id), processors, placementBehaviour, Optional.empty());
     }
 

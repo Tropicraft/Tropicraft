@@ -16,6 +16,7 @@ import net.minecraft.world.level.levelgen.structure.pools.DimensionPadding;
 import net.minecraft.world.level.levelgen.structure.pools.JigsawPlacement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.pools.alias.PoolAliasLookup;
+import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
 import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
 
 import java.util.Optional;
@@ -63,7 +64,7 @@ public class HomeTreeStructure extends Structure {
         if (!checkLocation(context, startPos)) {
             return Optional.empty();
         }
-        return JigsawPlacement.addPieces(context, startPool, Optional.empty(), maxDepth, startPos, false, Optional.of(Heightmap.Types.WORLD_SURFACE_WG), 80, PoolAliasLookup.EMPTY, DimensionPadding.ZERO, LiquidSettings.APPLY_WATERLOGGING);
+        return JigsawPlacement.addPieces(context, startPool, Optional.empty(), maxDepth, startPos, false, Optional.of(Heightmap.Types.WORLD_SURFACE_WG), new JigsawStructure.MaxDistance(80), PoolAliasLookup.EMPTY, DimensionPadding.ZERO, LiquidSettings.APPLY_WATERLOGGING);
     }
 
     @Override

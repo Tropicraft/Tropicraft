@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.dimension.feature;
 
+import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.AquaticFeatures;
@@ -8,17 +9,21 @@ import net.minecraft.data.worldgen.placement.AquaticPlacements;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.Util;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.placement.BiomeFilter;
+import net.minecraft.world.level.levelgen.placement.BlockPredicateFilter;
 import net.minecraft.world.level.levelgen.placement.CountPlacement;
 import net.minecraft.world.level.levelgen.placement.HeightmapPlacement;
 import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
 import net.minecraft.world.level.levelgen.placement.NoiseBasedCountPlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
+import net.minecraft.world.level.levelgen.placement.RandomOffsetPlacement;
 import net.minecraft.world.level.levelgen.placement.RarityFilter;
 import net.tropicraft.Tropicraft;
 
@@ -94,21 +99,30 @@ public final class TropicraftVegetationPlacements {
                 RarityFilter.onAverageOnceEvery(4),
                 InSquarePlacement.spread(),
                 PlacementUtils.HEIGHTMAP,
-                BiomeFilter.biome()
+                BiomeFilter.biome(),
+                CountPlacement.of(96),
+                RandomOffsetPlacement.ofTriangle(7, 3),
+                BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE)
         ));
 
         register(context, TALL_GOLDEN_LEATHER_FERN, TropicraftVegetationFeatures.TALL_GOLDEN_LEATHER_FERN, List.of(
                 RarityFilter.onAverageOnceEvery(8),
                 InSquarePlacement.spread(),
                 PlacementUtils.HEIGHTMAP,
-                BiomeFilter.biome()
+                BiomeFilter.biome(),
+                CountPlacement.of(96),
+                RandomOffsetPlacement.ofTriangle(7, 3),
+                BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE)
         ));
 
         register(context, HUGE_GOLDEN_LEATHER_FERN, TropicraftVegetationFeatures.HUGE_GOLDEN_LEATHER_FERN, List.of(
                 RarityFilter.onAverageOnceEvery(12),
                 InSquarePlacement.spread(),
                 PlacementUtils.HEIGHTMAP,
-                BiomeFilter.biome()
+                BiomeFilter.biome(),
+                CountPlacement.of(96),
+                RandomOffsetPlacement.ofTriangle(7, 3),
+                BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE)
         ));
 
         register(context, OVERGROWN_SMALL_GOLDEN_LEATHER_FERN, TropicraftVegetationFeatures.SMALL_GOLDEN_LEATHER_FERN, List.of(
@@ -116,7 +130,10 @@ public final class TropicraftVegetationPlacements {
                 CountPlacement.of(3),
                 InSquarePlacement.spread(),
                 PlacementUtils.HEIGHTMAP,
-                BiomeFilter.biome()
+                BiomeFilter.biome(),
+                CountPlacement.of(96),
+                RandomOffsetPlacement.ofTriangle(7, 3),
+                BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE)
         ));
 
         register(context, OVERGROWN_TALL_GOLDEN_LEATHER_FERN, TropicraftVegetationFeatures.TALL_GOLDEN_LEATHER_FERN, List.of(
@@ -124,14 +141,20 @@ public final class TropicraftVegetationPlacements {
                 CountPlacement.of(1),
                 InSquarePlacement.spread(),
                 PlacementUtils.HEIGHTMAP,
-                BiomeFilter.biome()
+                BiomeFilter.biome(),
+                CountPlacement.of(96),
+                RandomOffsetPlacement.ofTriangle(7, 3),
+                BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE)
         ));
 
         register(context, OVERGROWN_HUGE_GOLDEN_LEATHER_FERN, TropicraftVegetationFeatures.HUGE_GOLDEN_LEATHER_FERN, List.of(RarityFilter.onAverageOnceEvery(90),
                 CountPlacement.of(6),
                 InSquarePlacement.spread(),
                 PlacementUtils.HEIGHTMAP,
-                BiomeFilter.biome()
+                BiomeFilter.biome(),
+                CountPlacement.of(96),
+                RandomOffsetPlacement.ofTriangle(7, 3),
+                BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE)
         ));
 
         register(context, TREES_MANGROVE, TropicraftVegetationFeatures.TREES_MANGROVE, mangrovePlacement(7, 200.0, 1.5));
@@ -149,7 +172,12 @@ public final class TropicraftVegetationPlacements {
         register(context, BUSH_FLOWERING_COMMON, TropicraftVegetationFeatures.BUSH_FLOWERING, treePlacement(0, 1.0f / 4.0f, 1));
         register(context, BUSH_FLOWERING_RARE, TropicraftVegetationFeatures.BUSH_FLOWERING, treePlacement(0, 1.0f / 8.0f, 1));
 
-        register(context, TROPICS_GRASS, TropicraftVegetationFeatures.PATCH_GRASS_TROPICS, worldSurfaceSquaredWithCount(10));
+        register(context, TROPICS_GRASS, TropicraftVegetationFeatures.GRASS_TROPICS, Util.copyAndAdd(
+                worldSurfaceSquaredWithCount(10),
+                CountPlacement.of(32),
+                RandomOffsetPlacement.ofTriangle(7, 3),
+                BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE)
+        ));
 
         register(context, BAMBOO, TropicraftVegetationFeatures.BAMBOO, List.of(
                 NoiseBasedCountPlacement.of(50, 140.0, 0.5),
@@ -172,46 +200,64 @@ public final class TropicraftVegetationPlacements {
                 BiomeFilter.biome()
         ));
 
-        register(context, PATCH_PINEAPPLE, TropicraftVegetationFeatures.PATCH_PINEAPPLE, List.of(
+        register(context, PATCH_PINEAPPLE, TropicraftVegetationFeatures.PINEAPPLE, List.of(
                 RarityFilter.onAverageOnceEvery(6),
                 InSquarePlacement.spread(),
                 PlacementUtils.HEIGHTMAP,
-                BiomeFilter.biome()
+                BiomeFilter.biome(),
+                CountPlacement.of(96),
+                RandomOffsetPlacement.ofTriangle(7, 3),
+                BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE)
         ));
 
         register(context, FLOWERS_TROPICS, TropicraftVegetationFeatures.FLOWERS_TROPICS, List.of(
                 RarityFilter.onAverageOnceEvery(2),
                 InSquarePlacement.spread(),
                 PlacementUtils.HEIGHTMAP,
-                BiomeFilter.biome()
+                BiomeFilter.biome(),
+                CountPlacement.of(96),
+                RandomOffsetPlacement.ofTriangle(7, 3),
+                BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE)
         ));
 
         register(context, FLOWERS_RAINFOREST, TropicraftVegetationFeatures.FLOWERS_RAINFOREST, List.of(
                 RarityFilter.onAverageOnceEvery(4),
                 InSquarePlacement.spread(),
                 PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
-                BiomeFilter.biome()
+                BiomeFilter.biome(),
+                CountPlacement.of(96),
+                RandomOffsetPlacement.ofTriangle(7, 3),
+                BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE)
         ));
 
         register(context, MUSHROOMS_RAINFOREST, TropicraftVegetationFeatures.MUSHROOMS_RAINFOREST, List.of(
                 RarityFilter.onAverageOnceEvery(8),
                 InSquarePlacement.spread(),
                 PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
-                BiomeFilter.biome()
+                BiomeFilter.biome(),
+                CountPlacement.of(96),
+                RandomOffsetPlacement.ofTriangle(7, 3),
+                BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE)
         ));
 
-        register(context, GRASS_RAINFOREST, VegetationFeatures.PATCH_GRASS_JUNGLE, List.of(
-                CountPlacement.of(40),
-                InSquarePlacement.spread(),
-                PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
-                BiomeFilter.biome()
+        register(context, GRASS_RAINFOREST, VegetationFeatures.GRASS_JUNGLE, Util.copyAndAdd(
+                worldSurfaceSquaredWithCount(40),
+                CountPlacement.of(32),
+                RandomOffsetPlacement.ofTriangle(7, 3),
+                BlockPredicateFilter.forPredicate(BlockPredicate.allOf(
+                        BlockPredicate.ONLY_IN_AIR_PREDICATE,
+                        BlockPredicate.not(BlockPredicate.matchesBlocks(Direction.DOWN.getUnitVec3i(), Blocks.PODZOL))
+                ))
         ));
 
-        register(context, PATCH_IRIS, TropicraftVegetationFeatures.PATCH_IRIS, List.of(
+        register(context, PATCH_IRIS, TropicraftVegetationFeatures.IRIS, List.of(
                 RarityFilter.onAverageOnceEvery(3),
                 InSquarePlacement.spread(),
                 PlacementUtils.HEIGHTMAP,
-                BiomeFilter.biome()
+                BiomeFilter.biome(),
+                CountPlacement.of(96),
+                RandomOffsetPlacement.ofTriangle(7, 3),
+                BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE)
         ));
 
         register(context, COFFEE_BUSH, TropicraftVegetationFeatures.COFFEE_BUSH, worldSurfaceSquaredWithChance(25));

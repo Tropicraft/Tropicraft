@@ -9,8 +9,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.LevelSimulatedRW;
 import net.minecraft.world.level.LevelSimulatedReader;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -58,12 +58,12 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
     }
 
     @Override
-    public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> acceptor, RandomSource random, int height, BlockPos origin, TreeConfiguration config) {
-        int rootLength = Mth.clamp(height - 5, MIN_LENGTH, MAX_LENGTH);
+    public List<FoliagePlacer.FoliageAttachment> placeTrunk(WorldGenLevel level, BiConsumer<BlockPos, BlockState> trunkSetter, RandomSource random, int treeHeight, BlockPos origin, TreeConfiguration config) {
+        int rootLength = Mth.clamp(treeHeight - 5, MIN_LENGTH, MAX_LENGTH);
 
-        boolean placeDirtOnOrigin = world.isStateAtPosition(origin.below(), b -> b.is(Blocks.GRASS_BLOCK));
+        boolean placeDirtOnOrigin = level.isStateAtPosition(origin.below(), b -> b.is(Blocks.GRASS_BLOCK));
         if (canGenerateRaised) {
-            int waterDepth = getWaterDepthAbove(world, origin, 3);
+            int waterDepth = getWaterDepthAbove(level, origin, 3);
 
             // If we're in 1 or 2 deep water or land, we have a 1/2 chance of making the mangrove raised from the surface of the water
             if (waterDepth <= 2 && random.nextInt(2) == 0) {
@@ -80,32 +80,32 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
             growRoots(roots, random, rootLength);
         }
 
-        placeRoots((LevelSimulatedRW) world, origin, rootLength, roots, random);
+        placeRoots(level, origin, rootLength, roots, random);
 
         if (placeDirtOnOrigin) {
             // Set ground to dirt
-            setDirtAt(world, acceptor, random, origin.below(), config);
+            placeBelowTrunkBlock(level, trunkSetter, random, origin.below(), config);
         }
 
-        for (int i = 0; i < height; ++i) {
-            placeLog(world, acceptor, random, origin.above(i), config);
+        for (int i = 0; i < treeHeight; ++i) {
+            placeLog(level, trunkSetter, random, origin.above(i), config);
         }
 
         List<FoliagePlacer.FoliageAttachment> leafNodes = new ArrayList<>();
-        leafNodes.add(new FoliagePlacer.FoliageAttachment(origin.above(height), 1, false));
+        leafNodes.add(new FoliagePlacer.FoliageAttachment(origin.above(treeHeight), 1, false));
 
-        growBranches((LevelSimulatedRW) world, acceptor, random, height, origin, config, leafNodes);
+        growBranches(level, trunkSetter, random, treeHeight, origin, config, leafNodes);
 
         return leafNodes;
     }
 
-    private int getWaterDepthAbove(LevelSimulatedReader world, BlockPos origin, int maxDepth) {
+    private int getWaterDepthAbove(LevelSimulatedReader level, BlockPos origin, int maxDepth) {
         BlockPos.MutableBlockPos pos = origin.mutable();
 
         int depth = 0;
         while (depth <= maxDepth) {
             pos.setY(origin.getY() + depth);
-            if (!isWaterAt(world, pos)) {
+            if (!isWaterAt(level, pos)) {
                 break;
             }
             depth++;
@@ -114,7 +114,7 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         return depth;
     }
 
-    private void growBranches(LevelSimulatedRW world, BiConsumer<BlockPos, BlockState> acceptor, RandomSource random, int height, BlockPos origin, TreeConfiguration config, List<FoliagePlacer.FoliageAttachment> leafNodes) {
+    private void growBranches(WorldGenLevel level, BiConsumer<BlockPos, BlockState> trunkSetter, RandomSource random, int height, BlockPos origin, TreeConfiguration config, List<FoliagePlacer.FoliageAttachment> leafNodes) {
         int count = 2 + random.nextInt(3);
 
         Direction lastDirection = null;
@@ -135,7 +135,7 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
 
             for (int j = 1; j <= length + 1; j++) {
                 if (j == length) {
-                    placeLog(world, acceptor, random, base.relative(direction, j).above(), config);
+                    placeLog(level, trunkSetter, random, base.relative(direction, j).above(), config);
                     leafNodes.add(new FoliagePlacer.FoliageAttachment(base.relative(direction, j).above(), random.nextInt(2), false));
                     break;
                 }
@@ -145,11 +145,11 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
                     hasBranch = true;
                     Direction branchBranchDir = random.nextBoolean() ? direction.getClockWise() : direction.getCounterClockWise();
 
-                    placeLog(world, acceptor, random, base.relative(direction, j).relative(branchBranchDir), config);
+                    placeLog(level, trunkSetter, random, base.relative(direction, j).relative(branchBranchDir), config);
                     leafNodes.add(new FoliagePlacer.FoliageAttachment(base.relative(direction, j).relative(branchBranchDir), 0, false));
                 }
 
-                placeLog(world, acceptor, random, base.relative(direction, j), config);
+                placeLog(level, trunkSetter, random, base.relative(direction, j), config);
             }
         }
     }
@@ -205,7 +205,7 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         }
     }
 
-    private void placeRoots(LevelSimulatedRW world, BlockPos origin, int rootLength, RootSystem roots, RandomSource random) {
+    private void placeRoots(WorldGenLevel level, BlockPos origin, int rootLength, RootSystem roots, RandomSource random) {
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
 
         for (int z = -MAX_RADIUS; z <= MAX_RADIUS; z++) {
@@ -228,7 +228,7 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
                 int y = maxY;
                 while (y >= minY) {
                     mutablePos.setY(y--);
-                    if (!setRootsAt(world, mutablePos, random)) {
+                    if (!setRootsAt(level, mutablePos, random)) {
                         break;
                     }
                 }
@@ -236,26 +236,26 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         }
     }
 
-    private boolean setRootsAt(LevelSimulatedRW world, BlockPos pos, RandomSource random) {
-        return setRootsAt(world, pos, rootsBlock.getState(random, pos));
+    private boolean setRootsAt(WorldGenLevel level, BlockPos pos, RandomSource random) {
+        return setRootsAt(level, pos, rootsBlock.getState(level, random, pos));
     }
 
-    public static boolean setRootsAt(LevelSimulatedRW world, BlockPos pos, BlockState rootsBlock) {
-        if (isReplaceableAt(world, pos)) {
-            BlockState state = rootsBlock.setValue(MangroveRootsBlock.WATERLOGGED, isWaterAt(world, pos));
-            world.setBlock(pos, state, Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_ALL);
+    public static boolean setRootsAt(WorldGenLevel level, BlockPos pos, BlockState rootsBlock) {
+        if (isReplaceableAt(level, pos)) {
+            BlockState state = rootsBlock.setValue(MangroveRootsBlock.WATERLOGGED, isWaterAt(level, pos));
+            level.setBlock(pos, state, Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_ALL);
             return true;
         } else {
             return false;
         }
     }
 
-    public static boolean isReplaceableAt(LevelSimulatedReader world, BlockPos pos) {
-        return world.isStateAtPosition(pos, state -> state.isAir() || state.is(BlockTags.REPLACEABLE_BY_TREES) || state.is(TropicraftTags.Blocks.ROOTS));
+    public static boolean isReplaceableAt(LevelSimulatedReader level, BlockPos pos) {
+        return level.isStateAtPosition(pos, state -> state.isAir() || state.is(BlockTags.REPLACEABLE_BY_TREES) || state.is(TropicraftTags.Blocks.ROOTS));
     }
 
-    public static boolean isWaterAt(LevelSimulatedReader world, BlockPos pos) {
-        return world.isStateAtPosition(pos, state -> state.getFluidState().getType() == Fluids.WATER);
+    public static boolean isWaterAt(LevelSimulatedReader level, BlockPos pos) {
+        return level.isStateAtPosition(pos, state -> state.getFluidState().getType() == Fluids.WATER);
     }
 
     static final class RootGrower {

@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.level.LevelSimulatedReader;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
@@ -25,9 +26,9 @@ public final class SmallMangroveFoliagePlacer extends FoliagePlacer {
     }
 
     @Override
-    protected void createFoliage(LevelSimulatedReader world, FoliageSetter setter, RandomSource random, TreeConfiguration config, int maxFreeTreeHeight, FoliageAttachment attachment, int foliageHeight, int foliageRadius, int offset) {
-        placeLeavesRow(world, setter, random, config, attachment.pos(), foliageRadius, 0, attachment.doubleTrunk());
-        placeLeavesRow(world, setter, random, config, attachment.pos(), foliageRadius, 1, attachment.doubleTrunk());
+    protected void createFoliage(WorldGenLevel level, FoliageSetter setter, RandomSource random, TreeConfiguration config, int maxFreeTreeHeight, FoliageAttachment attachment, int foliageHeight, int foliageRadius, int offset) {
+        placeLeavesRow(level, setter, random, config, attachment.pos(), foliageRadius, 0, attachment.doubleTrunk());
+        placeLeavesRow(level, setter, random, config, attachment.pos(), foliageRadius, 1, attachment.doubleTrunk());
     }
 
     @Override

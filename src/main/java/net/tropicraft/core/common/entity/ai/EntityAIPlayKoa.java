@@ -6,7 +6,7 @@ import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -77,7 +77,7 @@ public class EntityAIPlayKoa extends Goal {
     public void tick() {
         --playTime;
 
-        if (villagerObj.onGround() && villagerObj.level().random.nextInt(30) == 0) {
+        if (villagerObj.onGround() && villagerObj.getRandom().nextInt(30) == 0) {
             villagerObj.getJumpControl().jump();
         }
 

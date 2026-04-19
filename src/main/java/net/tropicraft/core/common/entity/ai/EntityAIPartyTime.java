@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.util.FakePlayerFactory;
 import net.tropicraft.core.common.Util;
+import net.tropicraft.core.common.attribute.TropicraftEnvironmentAttributes;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 
 import java.util.EnumSet;
@@ -55,7 +56,7 @@ public class EntityAIPartyTime extends Goal {
 
         if ((entityObj.druggedTime > 0 || !entityObj.level().isBrightOutside() || entityObj.level().isRaining() && entityObj.level().getBiome(blockpos).value().getPrecipitationAt(blockpos, entityObj.level().getSeaLevel()) != Biome.Precipitation.RAIN)) {
             if (!isTooClose()) {
-                if (entityObj.level().random.nextInt(20) == 0) {
+                if (entityObj.getRandom().nextInt(20) == 0) {
                     return true;
                 } else {
                     return false;
@@ -75,7 +76,7 @@ public class EntityAIPartyTime extends Goal {
         if ((entityObj.druggedTime > 0 || !entityObj.level().isBrightOutside() || entityObj.level().isRaining() && entityObj.level().getBiome(blockpos).value().getPrecipitationAt(blockpos, entityObj.level().getSeaLevel()) != Biome.Precipitation.RAIN)) {
             return !isTooClose();
         } else {
-            return entityObj.level().random.nextInt(60) != 0;
+            return entityObj.getRandom().nextInt(60) != 0;
         }
     }
 
@@ -92,10 +93,10 @@ public class EntityAIPartyTime extends Goal {
 
         if (entityObj.level().getGameTime() % 200 == 0) {
             if (!entityObj.listPosDrums.isEmpty()) {
-                assignedDrumIndex = entityObj.level().random.nextInt(entityObj.listPosDrums.size());
+                assignedDrumIndex = entityObj.getRandom().nextInt(entityObj.listPosDrums.size());
             }
             //if (wasClose) {
-            bangDrum = entityObj.level().random.nextBoolean();
+            bangDrum = entityObj.getRandom().nextBoolean();
             //}
         }
 
@@ -116,7 +117,7 @@ public class EntityAIPartyTime extends Goal {
                 //entityObj.setSitting(true);
                 entityObj.setDancing(true);
                 entityObj.getJumpControl().jump();
-                entityObj.setYRot(entityObj.level().random.nextInt(360));
+                entityObj.setYRot(entityObj.getRandom().nextInt(360));
             } else {
                 entityObj.setDancing(false);
                 if (true || lookUpdateTimer <= 0) {
@@ -124,7 +125,6 @@ public class EntityAIPartyTime extends Goal {
                     entityObj.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
 
                     //keep for testing, was neat sounding
-                    int amp = 1;//entityObj.level.random.nextInt(10) + 1;
                     int rate = 4 + (entityObj.getId() % 7);
 
                     int index1 = 0;
@@ -139,24 +139,7 @@ public class EntityAIPartyTime extends Goal {
 
                     lookupStateToSequence.put(index1++, Lists.newArrayList(9, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 12));
 
-                    int nightStart = 12500;
-                    int nightEnd = 23500;
-                    int phases = 4;
-                    int phaseSplit = (nightEnd - nightStart) / phases;
-
-                    int timeOfDay = (int) (entityObj.level().getDayTime() % 24000);
-                    int nightTime = (timeOfDay - nightStart);
-
-                    if (nightTime > phaseSplit * 3) {
-                        amp = 1;
-                    } else if (nightTime > phaseSplit * 2) {
-                        amp = 2;
-                    } else if (nightTime > phaseSplit * 1) {
-                        amp = 3;
-                    } else {
-                        amp = 4;
-                    }
-
+                    int amp = entityObj.level().environmentAttributes().getValue(TropicraftEnvironmentAttributes.KOA_PARTY_AMP.get(), entityObj.position());
                     if (entityObj.hitIndex2 >= lookupStateToSequence.get(entityObj.hitIndex).size()) {
                         entityObj.hitIndex2 = 0;
                         entityObj.hitIndex++;
@@ -199,8 +182,8 @@ public class EntityAIPartyTime extends Goal {
                             entityObj.swingArm(Hand.MAIN_HAND);
                         } else */
                         if (state.getBlock() instanceof NoteBlock) {
-                            if (entityObj.level().random.nextInt(10) == 0) {
-                                for (int i = 0; i < 1 + entityObj.level().random.nextInt(4); i++) {
+                            if (entityObj.getRandom().nextInt(10) == 0) {
+                                for (int i = 0; i < 1 + entityObj.getRandom().nextInt(4); i++) {
                                     //note.changePitch();
                                     state.cycle(NoteBlock.NOTE).getValue(NoteBlock.NOTE);
                                 }
@@ -278,7 +261,7 @@ public class EntityAIPartyTime extends Goal {
         //reset any previous path so tick can start with a fresh path
         entityObj.getNavigation().stop();
         if (!entityObj.listPosDrums.isEmpty()) {
-            assignedDrumIndex = entityObj.level().random.nextInt(entityObj.listPosDrums.size());
+            assignedDrumIndex = entityObj.getRandom().nextInt(entityObj.listPosDrums.size());
         }
         //System.out.println("start party mode");
     }

@@ -23,7 +23,7 @@ import net.tropicraft.core.common.block.AirCompressorBlock;
 import net.tropicraft.core.common.item.scuba.ScubaArmorItem;
 import net.tropicraft.core.common.network.message.ClientboundAirCompressorInventoryPacket;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class AirCompressorBlockEntity extends BlockEntity implements IMachineBlock {
 
@@ -120,7 +120,7 @@ public class AirCompressorBlockEntity extends BlockEntity implements IMachineBlo
 
     public void ejectTank() {
         if (!stack.isEmpty()) {
-            if (!level.isClientSide) {
+            if (!level.isClientSide()) {
                 ItemEntity tankItem = new ItemEntity(level, getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), stack);
                 level.addFreshEntity(tankItem);
             }
@@ -195,7 +195,7 @@ public class AirCompressorBlockEntity extends BlockEntity implements IMachineBlo
 
     protected void syncInventory() {
         if (level instanceof ServerLevel serverLevel) {
-            PacketDistributor.sendToPlayersTrackingChunk(serverLevel, new ChunkPos(getBlockPos()), new ClientboundAirCompressorInventoryPacket(this));
+            PacketDistributor.sendToPlayersTrackingChunk(serverLevel, ChunkPos.containing(getBlockPos()), new ClientboundAirCompressorInventoryPacket(this));
         }
     }
 

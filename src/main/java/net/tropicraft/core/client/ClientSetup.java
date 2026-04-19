@@ -1,15 +1,10 @@
 package net.tropicraft.core.client;
 
-import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.RegisterDimensionSpecialEffectsEvent;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.entity.render.EggRenderer;
-import net.tropicraft.core.common.dimension.TropicraftDimension;
 
 @EventBusSubscriber(modid = Tropicraft.ID, value = Dist.CLIENT)
 public class ClientSetup {

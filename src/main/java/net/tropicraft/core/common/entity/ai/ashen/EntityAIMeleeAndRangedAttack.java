@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.tropicraft.core.common.entity.hostile.AshenEntity;
 import net.tropicraft.core.common.item.AshenMaskItem;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import java.util.EnumSet;
 
 public class EntityAIMeleeAndRangedAttack extends Goal {

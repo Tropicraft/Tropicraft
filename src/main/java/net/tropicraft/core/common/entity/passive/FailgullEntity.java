@@ -29,7 +29,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
@@ -281,7 +281,7 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
                 oldestFailgull.setIsFlockLeader(true);
                 oldestFailgull.flockLeader = null;
                 mob.setIsFlockLeader(false);
-                mob.flockLeader = new EntityReference<>(oldestFailgull);
+                mob.flockLeader = EntityReference.of(oldestFailgull);
             }
         }
     }

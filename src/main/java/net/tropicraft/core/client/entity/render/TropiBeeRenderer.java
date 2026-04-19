@@ -3,7 +3,7 @@ package net.tropicraft.core.client.entity.render;
 import net.minecraft.client.renderer.entity.AgeableMobRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.BeeRenderState;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.entity.model.TropiBeeModel;
@@ -11,8 +11,8 @@ import net.tropicraft.core.client.entity.render.layer.SunglassesLayer;
 import net.tropicraft.core.common.entity.TropiBeeEntity;
 
 public class TropiBeeRenderer extends AgeableMobRenderer<TropiBeeEntity, BeeRenderState, TropiBeeModel> {
-    private static final ResourceLocation TEXTURE_LOCATION = Tropicraft.location("textures/entity/tropibee.png");
-    private static final ResourceLocation NECTAR_TEXTURE_LOCATION = Tropicraft.location("textures/entity/tropibee_nectar.png");
+    private static final Identifier TEXTURE_LOCATION = Tropicraft.id("textures/entity/tropibee.png");
+    private static final Identifier NECTAR_TEXTURE_LOCATION = Tropicraft.id("textures/entity/tropibee_nectar.png");
 
     public TropiBeeRenderer(EntityRendererProvider.Context context) {
         super(context, new TropiBeeModel(context.bakeLayer(TropicraftRenderLayers.TROPI_BEE_LAYER)), new TropiBeeModel(context.bakeLayer(TropicraftRenderLayers.TROPI_BEE_BABY_LAYER)), 0.4f);
@@ -44,7 +44,7 @@ public class TropiBeeRenderer extends AgeableMobRenderer<TropiBeeEntity, BeeRend
     }
 
     @Override
-    public ResourceLocation getTextureLocation(BeeRenderState state) {
+    public Identifier getTextureLocation(BeeRenderState state) {
         return state.hasNectar ? NECTAR_TEXTURE_LOCATION : TEXTURE_LOCATION;
     }
 }

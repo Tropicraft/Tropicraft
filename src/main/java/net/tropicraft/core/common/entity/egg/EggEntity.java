@@ -15,7 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public abstract class EggEntity extends LivingEntity {
 
@@ -98,11 +98,11 @@ public abstract class EggEntity extends LivingEntity {
         super.aiStep();
 
         if (isNearHatching()) {
-            rotationRand += 0.1707f * level().random.nextFloat();
+            rotationRand += 0.1707f * getRandom().nextFloat();
 
             // Hatch time!
             if (tickCount >= getHatchTime()) {
-                if (!level().isClientSide) {
+                if (!level().isClientSide()) {
                     Entity ent = onHatch();
                     ent.snapTo(getX(), getY(), getZ(), 0.0f, 0.0f);
                     level().addFreshEntity(ent);

@@ -19,7 +19,7 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.BlobFoliagePlac
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.RandomizedIntStateProvider;
-import net.minecraft.world.level.levelgen.feature.stateproviders.RuleBasedBlockStateProvider;
+import net.minecraft.world.level.levelgen.feature.stateproviders.RuleBasedStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import net.minecraft.world.level.levelgen.feature.treedecorators.AttachedToLeavesDecorator;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
@@ -98,8 +98,10 @@ public final class TropicraftTreeFeatures {
     private static ReplaceInSoilDecorator addPianguasInMud(int count, int spread) {
         return new ReplaceInSoilDecorator(count,
                 spread,
-                RuleBasedBlockStateProvider.simple(TropicraftBlocks.MUD_WITH_PIANGUAS.get()),
-                BlockPredicate.matchesBlocks(TropicraftBlocks.MUD.get())
+                RuleBasedStateProvider.ifTrueThenProvide(
+                        BlockPredicate.matchesBlocks(TropicraftBlocks.MUD.get()),
+                        TropicraftBlocks.MUD_WITH_PIANGUAS.get()
+                )
         );
     }
 

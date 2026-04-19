@@ -26,8 +26,8 @@ import java.util.Map;
 public class TropicraftItemTintSources {
     @SubscribeEvent
     public static void register(RegisterColorHandlersEvent.ItemTintSources event) {
-        event.register(Tropicraft.location("cocktail"), Cocktail.CODEC);
-        event.register(Tropicraft.location("love_tropics_shell"), LoveTropicsShell.CODEC);
+        event.register(Tropicraft.id("cocktail"), Cocktail.CODEC);
+        event.register(Tropicraft.id("love_tropics_shell"), LoveTropicsShell.CODEC);
     }
 
     public record Cocktail() implements ItemTintSource {

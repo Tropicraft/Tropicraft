@@ -2,7 +2,7 @@ package net.tropicraft.core.client.entity.render;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.entity.model.SeahorseModel;
@@ -27,7 +27,7 @@ public class SeahorseRenderer extends MobRenderer<SeahorseEntity, SeahorseRender
     }
 
     @Override
-    public ResourceLocation getTextureLocation(SeahorseRenderState state) {
-        return Tropicraft.location("textures/entity/seahorse/" + state.texture + ".png");
+    public Identifier getTextureLocation(SeahorseRenderState state) {
+        return Tropicraft.id("textures/entity/seahorse/" + state.texture + ".png");
     }
 }

@@ -10,7 +10,7 @@ import net.tropicraft.Tropicraft;
 public final class TropicraftSpecialRenderers {
     @SubscribeEvent
     public static void register(RegisterSpecialModelRendererEvent event) {
-        event.register(Tropicraft.location("drink_mixer"), DrinkMixerSpecialRenderer.Unbaked.MAP_CODEC);
-        event.register(Tropicraft.location("air_compressor"), AirCompressorSpecialRenderer.Unbaked.MAP_CODEC);
+        event.register(Tropicraft.id("drink_mixer"), DrinkMixerSpecialRenderer.Unbaked.MAP_CODEC);
+        event.register(Tropicraft.id("air_compressor"), AirCompressorSpecialRenderer.Unbaked.MAP_CODEC);
     }
 }

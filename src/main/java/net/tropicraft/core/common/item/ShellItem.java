@@ -30,7 +30,7 @@ public class ShellItem extends Item {
             return InteractionResult.FAIL;
         } else {
             if (hangingEntity.survives()) {
-                if (!world.isClientSide) {
+                if (!world.isClientSide()) {
                     world.addFreshEntity(hangingEntity);
                 }
 

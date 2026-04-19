@@ -8,7 +8,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.animal.WaterAnimal;
+import net.minecraft.world.entity.animal.fish.WaterAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.tropicraft.core.common.entity.TropicraftEntities;
@@ -60,9 +60,9 @@ public class SeaUrchinEntity extends EchinodermEntity {
     public void push(Entity ent) {
         super.push(ent);
 
-        if (!level().isClientSide) {
+        if (level() instanceof ServerLevel serverLevel) {
             if (ent instanceof LivingEntity && !(ent instanceof SeaUrchinEntity) && !(ent instanceof SeaUrchinEggEntity)) {
-                ent.hurt(damageSources().mobAttack(this), 2);
+                ent.hurtServer(serverLevel, damageSources().mobAttack(this), 2);
             }
         }
     }

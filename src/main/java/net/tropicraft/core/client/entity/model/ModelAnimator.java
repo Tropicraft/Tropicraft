@@ -14,7 +14,8 @@ import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-import javax.annotation.Nullable;
+import org.joml.Vector3fc;
+import org.jspecify.annotations.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.function.UnaryOperator;
@@ -119,13 +120,13 @@ public final class ModelAnimator {
 
     public static PartPose toPose(Matrix4f matrix) {
         Transformation transformation = new Transformation(matrix);
-        Vector3f translation = transformation.getTranslation();
+        Vector3fc translation = transformation.translation();
         Vector3f rotation = new Matrix3f()
-                .rotation(transformation.getLeftRotation())
-                .rotate(transformation.getRightRotation())
+                .rotation(transformation.leftRotation())
+                .rotate(transformation.rightRotation())
                 .getEulerAnglesZYX(new Vector3f());
-        Vector3f scale = transformation.getScale();
-        return new PartPose(translation.x, translation.y, translation.z, rotation.x, rotation.y, rotation.z, scale.x, scale.y, scale.z);
+        Vector3fc scale = transformation.scale();
+        return new PartPose(translation.x(), translation.y(), translation.z(), rotation.x, rotation.y, rotation.z, scale.x(), scale.y(), scale.z());
     }
 
     public static final class Cycle implements AutoCloseable {

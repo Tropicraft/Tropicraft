@@ -7,6 +7,7 @@ import com.mojang.datafixers.schemas.Schema;
 import com.mojang.logging.LogUtils;
 import it.unimi.dsi.fastutil.ints.Int2ObjectSortedMap;
 import net.minecraft.util.datafix.DataFixers;
+import net.minecraft.util.filefix.FileFixerUpper;
 import net.tropicraft.core.common.datafix.TropicraftDataFixers;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;
@@ -24,7 +25,7 @@ public class DataFixersMixin {
 
     @SuppressWarnings("unchecked")
     @Inject(method = "addFixers", at = @At("RETURN"))
-    private static void addFixers(DataFixerBuilder builder, CallbackInfo ci) {
+    private static void addFixers(DataFixerBuilder builder, FileFixerUpper.Builder fileFixerBuilder, CallbackInfo ci) {
         Int2ObjectSortedMap<Schema> schemas;
         try {
             Field schemasField = DataFixerBuilder.class.getDeclaredField("schemas");

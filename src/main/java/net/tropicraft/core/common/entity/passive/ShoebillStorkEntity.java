@@ -7,6 +7,8 @@ import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.Ease;
+import net.minecraft.util.EasingType;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityEvent;
@@ -31,7 +33,7 @@ import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.BinaryAnimation;
 import net.tropicraft.core.common.entity.IkWalker;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import java.util.EnumSet;
 
 public class ShoebillStorkEntity extends Animal {
@@ -53,7 +55,7 @@ public class ShoebillStorkEntity extends Animal {
     private final IkWalker.Foot leftFoot = walker.addFoot(BASE_FOOT_Z, -0.1168f);
     private final IkWalker.Foot rightFoot = walker.addFoot(BASE_FOOT_Z, 0.1168f);
 
-    private final BinaryAnimation flightAnimation = new BinaryAnimation(3, Mth::easeInOutSine);
+    private final BinaryAnimation flightAnimation = new BinaryAnimation(3, Ease::inOutSine);
 
     @Nullable
     private HolderSet<Item> wantedShoes;

@@ -2,7 +2,7 @@ package net.tropicraft.core.client.entity.render;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.entity.model.TreeFrogModel;
@@ -29,7 +29,7 @@ public class TreeFrogRenderer extends MobRenderer<TreeFrogEntity, TreeFrogRender
     }
 
     @Override
-    public ResourceLocation getTextureLocation(TreeFrogRenderState state) {
-        return Tropicraft.location("textures/entity/treefrog/treefrog" + state.type.getColor() + ".png");
+    public Identifier getTextureLocation(TreeFrogRenderState state) {
+        return Tropicraft.id("textures/entity/treefrog/treefrog" + state.type.getColor() + ".png");
     }
 }

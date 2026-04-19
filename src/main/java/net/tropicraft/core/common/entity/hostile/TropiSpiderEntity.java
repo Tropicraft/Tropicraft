@@ -14,7 +14,7 @@ import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.monster.Spider;
+import net.minecraft.world.entity.monster.spider.Spider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -26,7 +26,7 @@ import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.ai.EntityAIWanderNotLazy;
 import net.tropicraft.core.common.entity.egg.TropiSpiderEggEntity;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class TropiSpiderEntity extends Spider {
 
@@ -119,14 +119,14 @@ public class TropiSpiderEntity extends Spider {
                 Util.tryMoveToEntityLivingLongDist(this, attackTarget, 0.8f);
             }
         }
-        if (!level().isClientSide && attackTarget != null && onGround() && random.nextInt(3) == 0 && attackTarget.distanceTo(this) < 5) {
+        if (!level().isClientSide() && attackTarget != null && onGround() && random.nextInt(3) == 0 && attackTarget.distanceTo(this) < 5) {
             getNavigation().stop();
             jumpFromGround();
             jumping = true;
         } else {
             jumping = false;
         }
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             if (getSpiderType() == Type.CHILD) {
                 if (tickCount >= SPIDER_MATURE_AGE) {
                     setSpiderType(Type.ADULT);
@@ -195,7 +195,7 @@ public class TropiSpiderEntity extends Spider {
     }
 
     public void buildNest() {
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             setSpiderType(Type.MOTHER);
             int r = random.nextInt(SPIDER_MAX_EGGS) + 1;
 

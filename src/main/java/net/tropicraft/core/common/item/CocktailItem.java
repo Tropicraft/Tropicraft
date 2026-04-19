@@ -2,6 +2,7 @@ package net.tropicraft.core.common.item;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.network.chat.Style;
@@ -15,6 +16,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.level.Level;
 import net.tropicraft.core.common.drinks.Cocktail;
@@ -22,7 +24,7 @@ import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.TropicraftDrinks;
 import net.tropicraft.core.common.item.component.TropicraftDataComponents;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class CocktailItem extends Item {
     public CocktailItem(Properties properties) {
@@ -33,13 +35,13 @@ public class CocktailItem extends Item {
         return itemStack.getOrDefault(TropicraftDataComponents.COCKTAIL, Cocktail.EMPTY);
     }
 
-    public static ItemStack makeCocktail(Cocktail cocktail) {
-        ItemStack stack = new ItemStack(TropicraftItems.COCKTAIL.get());
-        stack.set(TropicraftDataComponents.COCKTAIL, cocktail);
-        return stack;
+    public static ItemStackTemplate makeCocktail(Cocktail cocktail) {
+        return new ItemStackTemplate(TropicraftItems.COCKTAIL.get(), DataComponentPatch.builder()
+                .set(TropicraftDataComponents.COCKTAIL.get(), cocktail)
+                .build());
     }
 
-    public static ItemStack makeDrink(Holder<Drink> drink) {
+    public static ItemStackTemplate makeDrink(Holder<Drink> drink) {
         return makeCocktail(Cocktail.ofDrink(drink));
     }
 
@@ -68,7 +70,7 @@ public class CocktailItem extends Item {
     }
 
     public ItemStack onFoodEaten(ItemStack itemstack, Level world, Player player) {
-        world.playSound(player, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_BURP, SoundSource.PLAYERS, 0.5f, world.random.nextFloat() * 0.1f + 0.9f);
+        world.playSound(player, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_BURP, SoundSource.PLAYERS, 0.5f, player.getRandom().nextFloat() * 0.1f + 0.9f);
 
         if (player instanceof ServerPlayer serverPlayer) {
             Cocktail cocktail = itemstack.get(TropicraftDataComponents.COCKTAIL);

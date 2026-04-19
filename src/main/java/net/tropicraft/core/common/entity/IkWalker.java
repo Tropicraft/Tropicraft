@@ -5,7 +5,7 @@ import net.minecraft.world.entity.Mob;
 import org.joml.Vector2d;
 import org.joml.Vector3f;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 

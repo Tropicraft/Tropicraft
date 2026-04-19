@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.tropicraft.core.common.block.tileentity.SifterBlockEntity;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class SifterBlock extends BaseEntityBlock {
     public static final MapCodec<SifterBlock> CODEC = simpleCodec(SifterBlock::new);

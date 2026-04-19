@@ -40,7 +40,7 @@ public class TropicraftAttributes {
             }
 
             Camera camera = event.getCamera();
-            if (camera.getEntity() instanceof LocalPlayer player) {
+            if (camera.entity() instanceof LocalPlayer player) {
                 double visibility = player.getAttributeValue(TropicraftAttributes.UNDERWATER_VISIBILITY);
                 if (visibility != 1.0) {
                     event.scaleFarPlaneDistance((float) visibility);

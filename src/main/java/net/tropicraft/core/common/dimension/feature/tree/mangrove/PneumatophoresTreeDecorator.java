@@ -8,6 +8,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelSimulatedRW;
 import net.minecraft.world.level.LevelSimulatedReader;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
@@ -48,7 +49,7 @@ public class PneumatophoresTreeDecorator extends TreeDecorator {
             return;
         }
 
-        LevelSimulatedReader level = context.level();
+        WorldGenLevel level = context.level();
         RandomSource random = context.random();
         int spread = this.spread;
         int count = random.nextInt(maxCount - minCount + 1) + minCount;
@@ -90,7 +91,7 @@ public class PneumatophoresTreeDecorator extends TreeDecorator {
             int y = topY;
             while (y >= minY) {
                 mutablePos.setY(y--);
-                MangroveTrunkPlacer.setRootsAt((LevelSimulatedRW) level, mutablePos, rootsBlock.getState(random, mutablePos));
+                MangroveTrunkPlacer.setRootsAt(level, mutablePos, rootsBlock.getState(level, random, mutablePos));
             }
         }
     }

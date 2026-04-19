@@ -4,6 +4,8 @@ import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.Ease;
+import net.minecraft.util.EasingType;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.AgeableMob;
@@ -29,16 +31,17 @@ import net.minecraft.world.level.pathfinder.PathType;
 import net.tropicraft.core.common.BinaryAnimation;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.entity.ai.BirdWanderInTreesGoal;
+import org.jspecify.annotations.Nullable;
 
 public class ToucanEntity extends Animal implements FlyingAnimal {
-    private final BinaryAnimation flightAnimation = new BinaryAnimation(SharedConstants.TICKS_PER_SECOND / 4, Mth::easeInOutSine);
+    private final BinaryAnimation flightAnimation = new BinaryAnimation(SharedConstants.TICKS_PER_SECOND / 4, Ease::inOutSine);
 
     public ToucanEntity(EntityType<? extends ToucanEntity> type, Level world) {
         super(type, world);
 
         moveControl = new BirdMoveControl(this);
-        setPathfindingMalus(PathType.DANGER_FIRE, -1.0f);
-        setPathfindingMalus(PathType.DAMAGE_FIRE, -1.0f);
+        setPathfindingMalus(PathType.FIRE_IN_NEIGHBOR, -1.0f);
+        setPathfindingMalus(PathType.FIRE, -1.0f);
         setPathfindingMalus(PathType.COCOA, -1.0f);
         setPathfindingMalus(PathType.WATER, -1.0f);
         setPathfindingMalus(PathType.FENCE, -1.0f);
@@ -97,7 +100,7 @@ public class ToucanEntity extends Animal implements FlyingAnimal {
     }
 
     @Override
-    public ToucanEntity getBreedOffspring(ServerLevel world, AgeableMob mate) {
+    public @Nullable ToucanEntity getBreedOffspring(ServerLevel world, AgeableMob mate) {
         return null;
     }
 

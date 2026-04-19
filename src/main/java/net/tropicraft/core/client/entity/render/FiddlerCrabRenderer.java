@@ -3,14 +3,14 @@ package net.tropicraft.core.client.entity.render;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.entity.model.FiddlerCrabModel;
 import net.tropicraft.core.common.entity.passive.FiddlerCrabEntity;
 
 public class FiddlerCrabRenderer extends MobRenderer<FiddlerCrabEntity, LivingEntityRenderState, FiddlerCrabModel> {
-    private static final ResourceLocation TEXTURE = Tropicraft.location("textures/entity/fiddler_crab.png");
+    private static final Identifier TEXTURE = Tropicraft.id("textures/entity/fiddler_crab.png");
 
     public FiddlerCrabRenderer(EntityRendererProvider.Context context) {
         super(context, new FiddlerCrabModel(context.bakeLayer(TropicraftRenderLayers.FIDDLER_CRAB_LAYER)), 0.3f);
@@ -22,7 +22,7 @@ public class FiddlerCrabRenderer extends MobRenderer<FiddlerCrabEntity, LivingEn
     }
 
     @Override
-    public ResourceLocation getTextureLocation(LivingEntityRenderState state) {
+    public Identifier getTextureLocation(LivingEntityRenderState state) {
         return TEXTURE;
     }
 }

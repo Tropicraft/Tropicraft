@@ -29,7 +29,7 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.Arrow;
+import net.minecraft.world.entity.projectile.arrow.Arrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
@@ -44,7 +44,7 @@ import net.tropicraft.core.common.entity.ai.vmonkey.MonkeySitInChairGoal;
 import net.tropicraft.core.common.entity.ai.vmonkey.MonkeyStealDrinkGoal;
 import net.tropicraft.core.common.item.CocktailItem;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class VMonkeyEntity extends TamableAnimal {
 
@@ -166,7 +166,7 @@ public class VMonkeyEntity extends TamableAnimal {
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (isTame()) {
-            if (isOwnedBy(player) && !level().isClientSide) {
+            if (isOwnedBy(player) && !level().isClientSide()) {
                 setOrderedToSit(!isOrderedToSit());
                 jumping = false;
                 navigation.stop();
@@ -178,7 +178,7 @@ public class VMonkeyEntity extends TamableAnimal {
                 stack.shrink(1);
             }
 
-            if (!level().isClientSide) {
+            if (!level().isClientSide()) {
                 if (random.nextInt(3) == 0) {
                     setTame(true, true);
                     navigation.stop();

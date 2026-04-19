@@ -31,9 +31,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.BreedGoal;
 import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
-import net.minecraft.world.entity.animal.Turtle;
+import net.minecraft.world.entity.animal.turtle.Turtle;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -41,6 +40,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
@@ -197,7 +197,7 @@ public class SeaTurtleEntity extends Turtle {
             return result;
         }
 
-        if (!level().isClientSide && !player.isShiftKeyDown() && canAddPassenger(player) && isMature()) {
+        if (!level().isClientSide() && !player.isShiftKeyDown() && canAddPassenger(player) && isMature()) {
             player.startRiding(this);
         }
 
@@ -229,7 +229,7 @@ public class SeaTurtleEntity extends Turtle {
             }
         }
 
-        if (level().isClientSide) {
+        if (level().isClientSide()) {
             if (isVehicle() && hasControllingPassenger()) {
                 if (isInWater() || getCanFly()) {
                     Vec3 movement = new Vec3(getX(), getY(), getZ()).subtract(xo, yo, zo);
@@ -389,7 +389,7 @@ public class SeaTurtleEntity extends Turtle {
                     turtle.setDigging(true);
                 } else if (turtle.digCounter > 200) {
                     Level world = turtle.level();
-                    world.playSound(null, blockpos, SoundEvents.TURTLE_LAY_EGG, SoundSource.BLOCKS, 0.3f, 0.9f + world.random.nextFloat() * 0.2f);
+                    world.playSound(null, blockpos, SoundEvents.TURTLE_LAY_EGG, SoundSource.BLOCKS, 0.3f, 0.9f + turtle.getRandom().nextFloat() * 0.2f);
                     //world.setBlockState(this.destinationBlock.up(), Blocks.TURTLE_EGG.defaultBlockState().with(TurtleEggBlock.EGGS, Integer.valueOf(this.turtle.rand.nextInt(4) + 1)), 3);
                     SeaTurtleEggEntity egg = TropicraftEntities.SEA_TURTLE_EGG.get().create(world, EntitySpawnReason.BREEDING);
                     BlockPos spawnPos = blockPos.above();
@@ -445,7 +445,7 @@ public class SeaTurtleEntity extends Turtle {
             animal.resetLove();
             partner.resetLove();
             RandomSource random = animal.getRandom();
-            if (level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
+            if (level.getGameRules().get(GameRules.MOB_DROPS)) {
                 level.addFreshEntity(new ExperienceOrb(level, animal.getX(), animal.getY(), animal.getZ(), random.nextInt(7) + 1));
             }
         }

@@ -2,11 +2,11 @@ package net.tropicraft.core.common.dimension.biome;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.Util;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Util;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.MultiNoiseBiomeSourceParameterList;
@@ -70,7 +70,7 @@ public class TropicraftBiomeBuilder {
     private final Climate.Parameter lessWet = Climate.Parameter.span(humidities[0], humidities[1]);
     private final Climate.Parameter mostWet = Climate.Parameter.span(humidities[3], humidities[4]);
 
-    private static MultiNoiseBiomeSourceParameterList.Preset registerMultiNoisePreset(ResourceLocation id, MultiNoiseBiomeSourceParameterList.Preset.SourceProvider sourceProvider) {
+    private static MultiNoiseBiomeSourceParameterList.Preset registerMultiNoisePreset(Identifier id, MultiNoiseBiomeSourceParameterList.Preset.SourceProvider sourceProvider) {
         MultiNoiseBiomeSourceParameterList.Preset preset = new MultiNoiseBiomeSourceParameterList.Preset(id, sourceProvider);
         MultiNoiseBiomeSourceParameterList.Preset.BY_NAME = Util.copyAndPut(
                 MultiNoiseBiomeSourceParameterList.Preset.BY_NAME,

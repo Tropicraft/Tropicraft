@@ -191,21 +191,21 @@ public final class TropicraftTemplatePools {
 
     private static WeightedPiece noAirSingle(String path, Holder<StructureProcessorList> processors, int weight) {
         return new WeightedPiece(
-                () -> SingleNoAirJigsawPiece.create(Tropicraft.location(path), processors, false),
+                () -> SingleNoAirJigsawPiece.create(Tropicraft.id(path), processors, false),
                 weight
         );
     }
 
     private static WeightedPiece noAirSingle(String path, int weight) {
         return new WeightedPiece(
-                () -> SingleNoAirJigsawPiece.create(Tropicraft.location(path)),
+                () -> SingleNoAirJigsawPiece.create(Tropicraft.id(path)),
                 weight
         );
     }
 
     private static WeightedPiece noRotateSingle(String path, Holder<StructureProcessorList> processors, int weight) {
         return new WeightedPiece(
-                () -> NoRotateSingleJigsawPiece.createNoRotate(Tropicraft.location(path), processors),
+                () -> NoRotateSingleJigsawPiece.createNoRotate(Tropicraft.id(path), processors),
                 weight
         );
     }
@@ -219,7 +219,7 @@ public final class TropicraftTemplatePools {
 
     private static WeightedPiece koaPath(String path, int weight, Holder<StructureProcessorList> processorList) {
         return new WeightedPiece(
-                () -> SingleNoAirJigsawPiece.create(Tropicraft.location(path), processorList, true),
+                () -> SingleNoAirJigsawPiece.create(Tropicraft.id(path), processorList, true),
                 weight
         );
     }

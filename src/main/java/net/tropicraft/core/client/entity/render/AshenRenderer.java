@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.state.ArmedEntityRenderState;
 import net.minecraft.client.renderer.item.ItemModelResolver;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.entity.model.AshenModel;
@@ -14,7 +14,7 @@ import net.tropicraft.core.client.entity.render.state.AshenRenderState;
 import net.tropicraft.core.common.entity.hostile.AshenEntity;
 
 public class AshenRenderer extends MobRenderer<AshenEntity, AshenRenderState, AshenModel> {
-    private static final ResourceLocation TEXTURE = Tropicraft.location("textures/entity/ashen/ashen.png");
+    private static final Identifier TEXTURE = Tropicraft.id("textures/entity/ashen/ashen.png");
 
     private final ItemModelResolver itemModelResolver;
 
@@ -36,7 +36,7 @@ public class AshenRenderer extends MobRenderer<AshenEntity, AshenRenderState, As
     @Override
     public void extractRenderState(AshenEntity entity, AshenRenderState state, float partialTicks) {
         super.extractRenderState(entity, state, partialTicks);
-        ArmedEntityRenderState.extractArmedEntityRenderState(entity, state, itemModelResolver);
+        ArmedEntityRenderState.extractArmedEntityRenderState(entity, state, itemModelResolver, partialTicks);
         state.actionState = entity.getActionState();
         // TODO: Shared state ;-; How is this intended to work?
         if (entity.getTarget() != null && entity.closerThan(entity.getTarget(), 5.0) && !entity.swinging) {
@@ -49,7 +49,7 @@ public class AshenRenderer extends MobRenderer<AshenEntity, AshenRenderState, As
     }
 
     @Override
-    public ResourceLocation getTextureLocation(AshenRenderState state) {
+    public Identifier getTextureLocation(AshenRenderState state) {
         return TEXTURE;
     }
 }

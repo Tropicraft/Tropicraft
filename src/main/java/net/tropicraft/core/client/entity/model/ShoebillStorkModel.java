@@ -2,7 +2,6 @@ package net.tropicraft.core.client.entity.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -193,9 +192,9 @@ public class ShoebillStorkModel extends EntityModel<ShoebillStorkRenderState> {
         ModelAnimator.rotateByInModelSpace(neckChain, head, headRotation);
     }
 
-    public void copyShoesPoseTo(HumanoidModel<?> target) {
-        copyShoePose(target.leftLeg, legLeft1a, legLeft1b, clawLeft, 1.0f);
-        copyShoePose(target.rightLeg, legRight1a, legRight1b, clawRight, -1.0f);
+    public void copyShoesPoseTo(ModelPart leftLeg, ModelPart rightLeg) {
+        copyShoePose(leftLeg, legLeft1a, legLeft1b, clawLeft, 1.0f);
+        copyShoePose(rightLeg, legRight1a, legRight1b, clawRight, -1.0f);
     }
 
     private void copyShoePose(ModelPart targetLeg, ModelPart leg1a, ModelPart leg1b, ModelPart claw, float outX) {

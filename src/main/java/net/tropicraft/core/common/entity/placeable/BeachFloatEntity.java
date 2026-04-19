@@ -25,17 +25,15 @@ import net.minecraft.world.level.levelgen.synth.PerlinSimplexNoise;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.item.TropicraftItems;
+import org.jspecify.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class BeachFloatEntity extends FurnitureEntity {
 
-    @Nonnull
     private static final RandomSource rand = RandomSource.create(298457L);
-    @Nonnull
     private static final PerlinSimplexNoise windNoise = new PerlinSimplexNoise(new WorldgenRandom(new LegacyRandomSource(298457L)), ImmutableList.of(0));
 
     /* Wind */
@@ -67,7 +65,7 @@ public class BeachFloatEntity extends FurnitureEntity {
     @Override
     public void tick() {
         Entity rider = getControllingPassenger();
-        if (level().isClientSide && rider instanceof Player controller) {
+        if (level().isClientSide() && rider instanceof Player controller) {
             float move = controller.zza;
             float rot = -controller.xxa;
             rotationSpeed += rot * 0.25f;
@@ -118,7 +116,7 @@ public class BeachFloatEntity extends FurnitureEntity {
         setDeltaMovement(getDeltaMovement().multiply(0.9, 0.9, 0.9));
         rotationSpeed *= 0.9f;
 
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             List<Entity> list = level().getEntities(this, getBoundingBox().inflate(0.20000000298023224, 0.0, 0.20000000298023224));
             for (Entity entity : list) {
                 if (entity != getControllingPassenger() && entity.isPushable()) {
@@ -149,39 +147,15 @@ public class BeachFloatEntity extends FurnitureEntity {
     }
 
     @Override
-    protected boolean updateInWaterStateAndDoFluidPushing() {
-        fluidHeight.clear();
-        updateWaterState();
-        boolean lava = updateFluidHeightAndDoFluidPushing(FluidTags.LAVA, level().dimensionType().ultraWarm() ? 0.007 : 0.0023333333333333335);
-        return isInWater() || lava;
-    }
-
-    void updateWaterState() {
-        AABB temp = getBoundingBox();
-        setBoundingBox(temp.contract(1, 0, 1).contract(-1, 0.125, -1));
-
-        try {
-            if (updateFluidHeightAndDoFluidPushing(FluidTags.WATER, 0.014)) {
-                if (!wasTouchingWater && !firstTick) {
-                    doWaterSplashEffect();
-                }
-
-                fallDistance = 0.0f;
-                wasTouchingWater = true;
-                clearFire();
-            } else {
-                wasTouchingWater = false;
-            }
-        } finally {
-            setBoundingBox(temp);
-        }
+    public @Nullable AABB getFluidInteractionBox() {
+        return getBoundingBox().contract(1, 0, 1).contract(-1, 0.125, -1);
     }
 
     @Override
-    public InteractionResult interact(Player player, InteractionHand hand) {
+    public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
         if (invulnerablityCheck(player, hand) == InteractionResult.SUCCESS) {
             return InteractionResult.SUCCESS;
-        } else if (!level().isClientSide && !player.isShiftKeyDown()) {
+        } else if (!level().isClientSide() && !player.isShiftKeyDown()) {
             player.startRiding(this);
             return InteractionResult.SUCCESS;
         }
@@ -194,7 +168,7 @@ public class BeachFloatEntity extends FurnitureEntity {
     @Override
     protected void positionRider(Entity passenger, Entity.MoveFunction move) {
         super.positionRider(passenger, move);
-        if (!passenger.getType().is(EntityTypeTags.CAN_TURN_IN_BOATS)) {
+        if (!passenger.is(EntityTypeTags.CAN_TURN_IN_BOATS)) {
             passenger.setYRot(passenger.getYRot() + rotationSpeed);
             passenger.setYHeadRot(passenger.getYHeadRot() + rotationSpeed);
             applyYawToEntity(passenger);
@@ -210,7 +184,7 @@ public class BeachFloatEntity extends FurnitureEntity {
     }
 
     protected void applyYawToEntity(Entity entityToUpdate) {
-        if (!entityToUpdate.level().isClientSide || isClientFirstPerson(entityToUpdate)) {
+        if (!entityToUpdate.level().isClientSide() || isClientFirstPerson(entityToUpdate)) {
             entityToUpdate.setYBodyRot(getYRot());
             float yaw = Mth.wrapDegrees(entityToUpdate.getYRot() - getYRot());
             float pitch = Mth.wrapDegrees(entityToUpdate.getXRot() - getXRot());
@@ -227,13 +201,13 @@ public class BeachFloatEntity extends FurnitureEntity {
     }
 
     @Override
-    public void onPassengerTurned(@Nonnull Entity entityToUpdate) {
+    public void onPassengerTurned(Entity entityToUpdate) {
         applyYawToEntity(entityToUpdate);
     }
 
     private static boolean isClientFirstPerson(Entity entity) {
         Minecraft client = Minecraft.getInstance();
-        return client.cameraEntity == entity && client.options.getCameraType() == CameraType.FIRST_PERSON;
+        return client.getCameraEntity() == entity && client.options.getCameraType() == CameraType.FIRST_PERSON;
     }
 
     /* Again, from entity boat, for water checks */

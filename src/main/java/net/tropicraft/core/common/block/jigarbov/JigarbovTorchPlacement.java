@@ -12,7 +12,7 @@ import net.neoforged.neoforge.event.level.BlockEvent;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 @EventBusSubscriber(modid = Tropicraft.ID)
 public final class JigarbovTorchPlacement {

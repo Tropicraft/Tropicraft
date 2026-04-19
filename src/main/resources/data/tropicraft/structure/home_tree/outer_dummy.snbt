@@ -1,5 +1,5 @@
 {
-    DataVersion: 4440,
+    DataVersion: 4790,
     size: [32, 1, 32],
     data: [
         {pos: [0, 0, 15], state: "minecraft:jigsaw{orientation:west_up}", nbt: {final_state: "minecraft:structure_void", id: "minecraft:jigsaw", name: "minecraft:dummy_to_dummy", pool: "minecraft:empty", target: "minecraft:dummy_to_dummy"}}

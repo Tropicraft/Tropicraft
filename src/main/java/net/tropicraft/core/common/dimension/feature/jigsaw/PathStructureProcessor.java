@@ -14,7 +14,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.tropicraft.Tropicraft;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import java.util.List;
 import java.util.WeakHashMap;
 import java.util.stream.Collectors;
@@ -54,8 +54,7 @@ public abstract class PathStructureProcessor extends CheatyStructureProcessor {
     // Cache vectors for this structure to avoid redoing work
     private static final WeakHashMap<StructurePlaceSettings, List<PathVector>> VECTOR_CACHE = new WeakHashMap<>();
 
-    @Nullable
-    protected Direction.Axis getPathDirection(LevelReader level, BlockPos seedPos, StructureTemplate.StructureBlockInfo current, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
+    protected Direction.@Nullable Axis getPathDirection(LevelReader level, BlockPos seedPos, StructureTemplate.StructureBlockInfo current, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
         /*
          *  Use special marker jigsaw blocks to represent "vectors" of paths.
          *

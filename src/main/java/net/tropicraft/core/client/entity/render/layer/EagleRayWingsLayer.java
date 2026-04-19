@@ -4,11 +4,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.util.CommonColors;
 import net.minecraft.util.Mth;
 import net.tropicraft.core.client.entity.model.EagleRayModel;
@@ -44,11 +45,14 @@ public class EagleRayWingsLayer extends RenderLayer<LivingEntityRenderState, Eag
     }
 
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource bufferSource, int lightCoords, LivingEntityRenderState state, float yRot, float xRot) {
-        VertexConsumer buffer = bufferSource.getBuffer(RenderType.entityCutoutNoCull(EagleRayRenderer.TEXTURE));
-        int overlayCoords = LivingEntityRenderer.getOverlayCoords(state, 0.0f);
-        renderWings(state, poseStack, buffer, lightCoords, overlayCoords, CommonColors.WHITE);
-        renderTailSimple(poseStack, buffer, lightCoords, overlayCoords, CommonColors.WHITE);
+    public void submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, LivingEntityRenderState state, float yRot, float xRot) {
+        submitNodeCollector.submitCustomGeometry(poseStack, RenderTypes.entityCutout(EagleRayRenderer.TEXTURE), (pose, buffer) -> {
+            PoseStack stack = new PoseStack();
+            stack.mulPose(pose.pose());
+            int overlayCoords = LivingEntityRenderer.getOverlayCoords(state, 0.0f);
+            renderWings(state, stack, buffer, lightCoords, overlayCoords, CommonColors.WHITE);
+            renderTailSimple(stack, buffer, lightCoords, overlayCoords, CommonColors.WHITE);
+        });
     }
 
     private void renderTailSimple(PoseStack stack, VertexConsumer buffer, int packedLightIn, int packedOverlayIn, int color) {

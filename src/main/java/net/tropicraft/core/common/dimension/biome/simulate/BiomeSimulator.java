@@ -8,7 +8,7 @@ import it.unimi.dsi.fastutil.objects.Reference2IntOpenHashMap;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.Bootstrap;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
@@ -45,7 +45,7 @@ public class BiomeSimulator {
     }
 
     private static ResourceKey<Biome> biomeKey(String name) {
-        return ResourceKey.create(Registries.BIOME, new ResourceLocation(Constants.MODID, name));
+        return ResourceKey.create(Registries.BIOME, new Identifier(Constants.MODID, name));
     }
 
     public static void main(String[] args) {

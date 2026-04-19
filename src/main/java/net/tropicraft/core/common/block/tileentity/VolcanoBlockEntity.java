@@ -24,7 +24,7 @@ import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.projectile.LavaBallEntity;
 import net.tropicraft.core.common.volcano.VolcanoState;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class VolcanoBlockEntity extends BlockEntity {
     private static final int RAND_DORMANT_DURATION = 4000;
@@ -65,7 +65,7 @@ public class VolcanoBlockEntity extends BlockEntity {
             return;
         }
 
-        if (!getLevel().isClientSide) {
+        if (!getLevel().isClientSide()) {
             //System.out.println(radius + " Volcano Update: " + pos.getX() + " " + pos.getZ() + " State:" + state + " lvl: " + lavaLevel);
             //System.out.println("smoking: " + ticksUntilSmoking + " rising: " + ticksUntilRising + " eruption: " + ticksUntilEruption + " retreating: " + ticksUntilRetreating + " dormant: " + ticksUntilDormant);
         }
@@ -89,16 +89,16 @@ public class VolcanoBlockEntity extends BlockEntity {
             case DORMANT:
                 break;
             case ERUPTING:
-                if (!getLevel().isClientSide) {
+                if (!getLevel().isClientSide()) {
                     //    if ((ticksUntilRetreating % (getWorld().rand.nextInt(40) + 10) == 0)/* && time > 800 && !falling*/) {
-                    if (getLevel().random.nextInt(15) == 0) {
-                        throwLavaFromCaldera(0.05 + Math.abs(getLevel().random.nextGaussian()) * (lavaLevel > 90 ? LAVA_ERUPT_LEVEL + heightOffset : 0.75));
+                    if (getLevel().getRandom().nextInt(15) == 0) {
+                        throwLavaFromCaldera(0.05 + Math.abs(getLevel().getRandom().nextGaussian()) * (lavaLevel > 90 ? LAVA_ERUPT_LEVEL + heightOffset : 0.75));
                     }
                     //    }
 
                     //    if ((ticksUntilRetreating % (getWorld().rand.nextInt(40) + 10) == 0) && lavaLevel > 90) {
-                    if (getLevel().random.nextInt(15) == 0) {
-                        throwLavaFromCaldera(0.05 + Math.abs(getLevel().random.nextGaussian()) * (lavaLevel > LAVA_ERUPT_LEVEL + heightOffset ? 1 : 0.75));
+                    if (getLevel().getRandom().nextInt(15) == 0) {
+                        throwLavaFromCaldera(0.05 + Math.abs(getLevel().getRandom().nextGaussian()) * (lavaLevel > LAVA_ERUPT_LEVEL + heightOffset ? 1 : 0.75));
                     }
                     //    }
                 }
@@ -109,7 +109,7 @@ public class VolcanoBlockEntity extends BlockEntity {
                 }
                 break;
             case RISING:
-                if (getLevel().isClientSide) {
+                if (getLevel().isClientSide()) {
                     spewSmoke();
                 }
 
@@ -118,11 +118,11 @@ public class VolcanoBlockEntity extends BlockEntity {
                         raiseLavaLevels();
                     } else {
                         ticksUntilEruption = 0;
-                        getLevel().playLocalSound(worldPosition.getX(), 73, worldPosition.getY(), SoundEvents.GENERIC_EXPLODE.value(), SoundSource.NEUTRAL, 1.0f, getLevel().random.nextFloat() / 4 + 0.825f, false);
-                        int balls = getLevel().random.nextInt(25) + 15;
+                        getLevel().playLocalSound(worldPosition.getX(), 73, worldPosition.getY(), SoundEvents.GENERIC_EXPLODE.value(), SoundSource.NEUTRAL, 1.0f, getLevel().getRandom().nextFloat() / 4 + 0.825f, false);
+                        int balls = getLevel().getRandom().nextInt(25) + 15;
 
                         for (int i = 0; i < balls; i++) {
-                            throwLavaFromCaldera((getLevel().random.nextDouble() * 0.5) + 1.25);
+                            throwLavaFromCaldera((getLevel().getRandom().nextDouble() * 0.5) + 1.25);
                         }
                         break;
                     }
@@ -130,7 +130,7 @@ public class VolcanoBlockEntity extends BlockEntity {
                 break;
             case SMOKING:
                 // TODO: Client only in the future if this is particles
-                if (getLevel().isClientSide) {
+                if (getLevel().isClientSide()) {
                     //if (ticksUntilRising % 100 == 0) {
                     //if (getWorld().rand.nextInt(10) == 0)
                     spewSmoke();
@@ -160,9 +160,9 @@ public class VolcanoBlockEntity extends BlockEntity {
 
     public void throwLavaFromCaldera(double force) {
         // Create vector at center facing in the +x direction
-        Vec3 pos = new Vec3(((getLevel().random.nextDouble() / 2) + 0.3) * radius, lavaLevel + 2, 0);
+        Vec3 pos = new Vec3(((getLevel().getRandom().nextDouble() / 2) + 0.3) * radius, lavaLevel + 2, 0);
         // Get a random angle from 0 to 2PI (radians)
-        float angle = getLevel().random.nextFloat() * (float) Math.PI * 2;
+        float angle = getLevel().getRandom().nextFloat() * (float) Math.PI * 2;
         // Rotate the center vector to this angle, and offset it to the volcano's position
         pos = pos.yRot(angle).add(Vec3.atCenterOf(getBlockPos()));
         // Compute x/y components of angle
@@ -172,7 +172,7 @@ public class VolcanoBlockEntity extends BlockEntity {
     }
 
     public void throwLava(double i, double j, double k, double xMot, double yMot, double zMot) {
-        if (!getLevel().isClientSide) {
+        if (!getLevel().isClientSide()) {
             getLevel().addFreshEntity(new LavaBallEntity(TropicraftEntities.LAVA_BALL.get(), getLevel(), i, j, k, xMot, yMot, zMot));
         }
     }
@@ -223,12 +223,12 @@ public class VolcanoBlockEntity extends BlockEntity {
 
     public void spewSmoke() {
         // System.out.println("Spewing smoke");
-        int n = getLevel().random.nextInt(100) + 4;
+        int n = getLevel().getRandom().nextInt(100) + 4;
         for (int i = 0; i < n; i++) {
             // getWorld().spawnEntity(new EntitySmoke(getWorld(), xPos + rand.nextInt(10) - 5, lavaLevel + rand.nextInt(4), zPos + rand.nextInt(10) - 5));
-            double x = worldPosition.getX() + getLevel().random.nextInt(radius) * (getLevel().random.nextBoolean() ? -1 : 1);
-            double y = lavaLevel + getLevel().random.nextInt(6);
-            double z = worldPosition.getZ() + getLevel().random.nextInt(radius) * (getLevel().random.nextBoolean() ? -1 : 1);
+            double x = worldPosition.getX() + getLevel().getRandom().nextInt(radius) * (getLevel().getRandom().nextBoolean() ? -1 : 1);
+            double y = lavaLevel + getLevel().getRandom().nextInt(6);
+            double z = worldPosition.getZ() + getLevel().getRandom().nextInt(radius) * (getLevel().getRandom().nextBoolean() ? -1 : 1);
             getLevel().addParticle(ParticleTypes.LARGE_SMOKE, true, true, x, y, z, 0.0, 0.7, 0.0);
             //System.out.println("Spewing smoke " + x + " " + z);
         }
@@ -284,7 +284,7 @@ public class VolcanoBlockEntity extends BlockEntity {
                 if (ticksUntilDormant <= 0) {
                     // cleanUpFromEruption();
                     state = VolcanoState.DORMANT;
-                    ticksUntilDormant = VolcanoState.getTimeBefore(VolcanoState.DORMANT) + getLevel().random.nextInt(RAND_DORMANT_DURATION);
+                    ticksUntilDormant = VolcanoState.getTimeBefore(VolcanoState.DORMANT) + getLevel().getRandom().nextInt(RAND_DORMANT_DURATION);
                 }
                 break;
             default:

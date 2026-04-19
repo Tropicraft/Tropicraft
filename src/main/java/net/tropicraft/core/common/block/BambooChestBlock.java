@@ -3,6 +3,7 @@ package net.tropicraft.core.common.block;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.CompoundContainer;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
@@ -21,7 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.block.tileentity.BambooChestBlockEntity;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import java.util.Optional;
 
 public final class BambooChestBlock extends ChestBlock {
@@ -67,7 +68,7 @@ public final class BambooChestBlock extends ChestBlock {
     };
 
     protected BambooChestBlock(Block.Properties props) {
-        super(() -> TropicraftBlocks.BAMBOO_CHEST_ENTITY.get(), props);
+        super(() -> TropicraftBlocks.BAMBOO_CHEST_ENTITY.get(), SoundEvents.CHEST_OPEN, SoundEvents.CHEST_CLOSE, props);
     }
 
     @Override

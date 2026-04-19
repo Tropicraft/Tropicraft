@@ -43,7 +43,7 @@ public class FireArmorItem extends Item {
     }
 
     private void onArmorTick(ItemStack stack, Level world, Player player, EquipmentSlot slot) {
-        if (world.isClientSide) {
+        if (world.isClientSide()) {
             ClientLogic.tick(player, slot);
         } else {
             if (player.isOnFire()) {

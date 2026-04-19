@@ -7,6 +7,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelSimulatedRW;
 import net.minecraft.world.level.LevelSimulatedReader;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
@@ -35,26 +36,26 @@ public class PleodendronTrunkPlacer extends TrunkPlacer {
     }
 
     @Override
-    public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> acceptor, RandomSource random, int height, BlockPos origin, TreeConfiguration config) {
-        setDirtAt(world, acceptor, random, origin.below(), config);
+    public List<FoliagePlacer.FoliageAttachment> placeTrunk(WorldGenLevel level, BiConsumer<BlockPos, BlockState> trunkSetter, RandomSource random, int treeHeight, BlockPos origin, TreeConfiguration config) {
+        placeBelowTrunkBlock(level, trunkSetter, random, origin.below(), config);
         List<FoliagePlacer.FoliageAttachment> leafNodes = new ArrayList<>();
 
-        for (int i = 0; i < height; ++i) {
-            placeLog(world, acceptor, random, origin.above(i), config);
+        for (int i = 0; i < treeHeight; ++i) {
+            placeLog(level, trunkSetter, random, origin.above(i), config);
         }
 
-        leafNodes.add(new FoliagePlacer.FoliageAttachment(origin.above(height + 1), -1, false));
+        leafNodes.add(new FoliagePlacer.FoliageAttachment(origin.above(treeHeight + 1), -1, false));
 
-        for (int i = 5; i < height - 4; ++i) {
+        for (int i = 5; i < treeHeight - 4; ++i) {
             if (random.nextInt(4) == 0) {
-                growBranches((LevelSimulatedRW) world, acceptor, random, origin.above(i), config, leafNodes);
+                growBranches(level, trunkSetter, random, origin.above(i), config, leafNodes);
             }
         }
 
         return leafNodes;
     }
 
-    private void growBranches(LevelSimulatedRW world, BiConsumer<BlockPos, BlockState> acceptor, RandomSource random, BlockPos origin, TreeConfiguration config, List<FoliagePlacer.FoliageAttachment> leafNodes) {
+    private void growBranches(WorldGenLevel level, BiConsumer<BlockPos, BlockState> trunkSetter, RandomSource random, BlockPos origin, TreeConfiguration config, List<FoliagePlacer.FoliageAttachment> leafNodes) {
         int count = random.nextInt(2) + 1;
         double thetaOffset = random.nextDouble() * 2 * Math.PI;
 
@@ -78,7 +79,7 @@ public class PleodendronTrunkPlacer extends TrunkPlacer {
                 Direction.Axis axis = Util.getAxisBetween(origin, local);
 
                 // Place branch and add to logs
-                acceptor.accept(local, config.trunkProvider.getState(random, local).setValue(RotatedPillarBlock.AXIS, axis));
+                trunkSetter.accept(local, config.trunkProvider.getState(level, random, local).setValue(RotatedPillarBlock.AXIS, axis));
 
                 // Add leaves around the branch
                 if (j == dist) {

@@ -3,9 +3,10 @@ package net.tropicraft.core.common.entity.projectile;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
+import net.minecraft.world.entity.projectile.throwableitemprojectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -36,7 +37,7 @@ public class ExplodingCoconutEntity extends ThrowableItemProjectile {
 
     @Override
     protected void onHit(HitResult result) {
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             level().explode(
                     this,
                     level().damageSources().explosion(this, getOwner()),
@@ -47,6 +48,7 @@ public class ExplodingCoconutEntity extends ThrowableItemProjectile {
                     destroysBlocks ? Level.ExplosionInteraction.BLOCK : Level.ExplosionInteraction.NONE,
                     ParticleTypes.EXPLOSION,
                     ParticleTypes.EXPLOSION_EMITTER,
+                    WeightedList.of(),
                     SoundEvents.GENERIC_EXPLODE
             );
             remove(RemovalReason.KILLED);

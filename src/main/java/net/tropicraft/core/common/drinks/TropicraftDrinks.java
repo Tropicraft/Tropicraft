@@ -1,15 +1,24 @@
 package net.tropicraft.core.common.drinks;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.advancements.criterion.EntityPredicate;
+import net.minecraft.advancements.criterion.EntityTypePredicate;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.predicates.EnvironmentAttributeCheck;
+import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.data.TropicraftLangKeys;
 import net.tropicraft.core.common.TropicraftRegistries;
+import net.tropicraft.core.common.attribute.TropicraftEnvironmentAttributes;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 import net.tropicraft.core.common.drinks.action.DrinkAction;
 import net.tropicraft.core.common.drinks.action.PortalDrinkAction;
@@ -19,6 +28,10 @@ import net.tropicraft.core.common.entity.TropicraftEntities;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static net.minecraft.advancements.criterion.EntityPredicate.Builder.entity;
+import static net.minecraft.world.level.storage.loot.predicates.EnvironmentAttributeCheck.environmentAttribute;
+import static net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition.hasProperties;
 
 public interface TropicraftDrinks {
     ResourceKey<Drink> LEMONADE = createKey("lemonade");
@@ -32,6 +45,7 @@ public interface TropicraftDrinks {
 
     static void bootstrap(BootstrapContext<Drink> context) {
         HolderGetter<DrinkIngredient> ingredientLookup = context.lookup(TropicraftRegistries.DRINK_INGREDIENT);
+        HolderGetter<EntityType<?>> entityTypes = context.lookup(Registries.ENTITY_TYPE);
 
         register(context, ingredientLookup,
                 LEMONADE,
@@ -79,9 +93,12 @@ public interface TropicraftDrinks {
                         new PotionDrinkAction(MobEffects.NAUSEA, 10, 0),
                         new PortalDrinkAction(
                                 TropicraftDimension.WORLD,
-                                Optional.of(HolderSet.direct(TropicraftEntities.CHAIR)),
-                                12200,
-                                14000
+                                Optional.of(hasProperties(
+                                        LootContext.EntityTarget.THIS,
+                                        entity().vehicle(entity().entityType(EntityTypePredicate.of(entityTypes, TropicraftEntities.CHAIR.get())))
+                                ).and(
+                                        environmentAttribute(TropicraftEnvironmentAttributes.CAN_TELEPORT_TO_TROPICS.get(), true)
+                                ).build())
                         )
                 ),
                 List.of(TropicraftDrinkIngredients.PINEAPPLE, TropicraftDrinkIngredients.COCONUT)

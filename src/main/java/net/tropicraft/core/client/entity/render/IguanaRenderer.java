@@ -2,7 +2,7 @@ package net.tropicraft.core.client.entity.render;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.entity.model.IguanaModel;
@@ -12,8 +12,8 @@ import net.tropicraft.core.common.entity.neutral.IguanaEntity;
 public class IguanaRenderer extends MobRenderer<IguanaEntity, IguanaRenderState, IguanaModel> {
     private static final String IGOR = "igor";
 
-    private static final ResourceLocation DEFAULT_TEXTURE = Tropicraft.location("textures/entity/iggy.png");
-    private static final ResourceLocation IGOR_TEXTURE = Tropicraft.location("textures/entity/iggy_igor.png");
+    private static final Identifier DEFAULT_TEXTURE = Tropicraft.id("textures/entity/iggy.png");
+    private static final Identifier IGOR_TEXTURE = Tropicraft.id("textures/entity/iggy_igor.png");
 
     public IguanaRenderer(EntityRendererProvider.Context context) {
         super(context, new IguanaModel(context.bakeLayer(TropicraftRenderLayers.IGUANA_LAYER)), 0.5f);
@@ -32,7 +32,7 @@ public class IguanaRenderer extends MobRenderer<IguanaEntity, IguanaRenderState,
     }
 
     @Override
-    public ResourceLocation getTextureLocation(IguanaRenderState state) {
+    public Identifier getTextureLocation(IguanaRenderState state) {
         return state.igor ? IGOR_TEXTURE : DEFAULT_TEXTURE;
     }
 }

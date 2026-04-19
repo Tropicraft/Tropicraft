@@ -29,8 +29,8 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.animal.Cat;
-import net.minecraft.world.entity.animal.Ocelot;
+import net.minecraft.world.entity.animal.feline.Cat;
+import net.minecraft.world.entity.animal.feline.Ocelot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -179,9 +179,9 @@ public class TropiCreeperEntity extends PathfinderMob {
         if (itemstack.getItem() == Items.FLINT_AND_STEEL) {
             level().playSound(player, getX(), getY(), getZ(), SoundEvents.FLINTANDSTEEL_USE, getSoundSource(), 1.0f, random.nextFloat() * 0.4f + 0.8f);
             player.swing(hand);
-            if (!level().isClientSide) {
+            if (!level().isClientSide()) {
                 ignite();
-                itemstack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
+                itemstack.hurtAndBreak(1, player, hand);
                 return InteractionResult.SUCCESS;
             }
         }
@@ -193,7 +193,7 @@ public class TropiCreeperEntity extends PathfinderMob {
      * Creates an explosion as determined by this creeper's power and explosion radius.
      */
     private void explode() {
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             dead = true;
             //this.world.createExplosion(this, this.posX, this.posY, this.posZ, (float)this.explosionRadius, Explosion.Mode.NONE);
             //TODO: readd coconut bomb drop for creeper

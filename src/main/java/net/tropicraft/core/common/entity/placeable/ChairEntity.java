@@ -20,9 +20,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.item.TropicraftItems;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import java.util.List;
 
 public class ChairEntity extends FurnitureEntity {
@@ -81,7 +82,7 @@ public class ChairEntity extends FurnitureEntity {
         }
 
         LivingEntity passenger = getControllingPassenger();
-        if (!level().isClientSide || getComeSailAway()) {
+        if (!level().isClientSide() || getComeSailAway()) {
             if (waterHeight < 1.0) {
                 double d2 = waterHeight * 2.0 - 1.0;
                 setDeltaMovement(getDeltaMovement().add(0, 0.04 * d2, 0));
@@ -167,7 +168,7 @@ public class ChairEntity extends FurnitureEntity {
             setYRot((float) (getYRot() + yRotStep));
             setRot(getYRot(), getXRot());
 
-            if (!level().isClientSide) {
+            if (!level().isClientSide()) {
                 List<Entity> entities = level().getEntities(this, getBoundingBox().inflate(0.2, 0.0, 0.2));
                 for (Entity entity : entities) {
                     if (entity != passenger && entity.isPushable() && entity instanceof ChairEntity) {
@@ -185,7 +186,7 @@ public class ChairEntity extends FurnitureEntity {
 
         rotationDelta *= FRICTION;
 
-        if (level().isClientSide && passenger instanceof Player controller) {
+        if (level().isClientSide() && passenger instanceof Player controller) {
             rotationDelta += -controller.xxa * ROTATION_SPEED;
             setYRot(getYRot() + rotationDelta);
         }
@@ -229,10 +230,10 @@ public class ChairEntity extends FurnitureEntity {
     }
 
     @Override
-    public InteractionResult interact(Player player, InteractionHand hand) {
+    public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
         if (invulnerablityCheck(player, hand) == InteractionResult.SUCCESS) {
             return InteractionResult.SUCCESS;
-        } else if (!level().isClientSide && !player.isShiftKeyDown()) {
+        } else if (!level().isClientSide() && !player.isShiftKeyDown()) {
             player.startRiding(this);
             return InteractionResult.SUCCESS;
         }

@@ -3,10 +3,11 @@ package net.tropicraft.core.common.command.debug;
 import com.mojang.brigadier.CommandDispatcher;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.biome.Biome;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
@@ -23,29 +24,29 @@ public class MapBiomesCommand {
     private static final int SIZE = 4096;
     private static final int SIZE2 = SIZE / 2;
     private static final int SIZE8 = SIZE / 8;
-    private static final Object2IntOpenHashMap<ResourceLocation> COLORS = new Object2IntOpenHashMap<>();
+    private static final Object2IntOpenHashMap<Identifier> COLORS = new Object2IntOpenHashMap<>();
 
     static {
-        COLORS.put(TropicraftBiomes.TROPICS.location(), 0x7cde73);
+        COLORS.put(TropicraftBiomes.TROPICS.identifier(), 0x7cde73);
 
-        COLORS.put(TropicraftBiomes.RAINFOREST.location(), 0x3fb535);
-        COLORS.put(TropicraftBiomes.OSA_RAINFOREST.location(), 0x58d14d);
-        COLORS.put(TropicraftBiomes.BAMBOO_RAINFOREST.location(), 0x57c23c);
+        COLORS.put(TropicraftBiomes.RAINFOREST.identifier(), 0x3fb535);
+        COLORS.put(TropicraftBiomes.OSA_RAINFOREST.identifier(), 0x58d14d);
+        COLORS.put(TropicraftBiomes.BAMBOO_RAINFOREST.identifier(), 0x57c23c);
 
-        COLORS.put(TropicraftBiomes.MANGROVES.location(), 0x448733);
-        COLORS.put(TropicraftBiomes.OVERGROWN_MANGROVES.location(), 0x5d8733);
+        COLORS.put(TropicraftBiomes.MANGROVES.identifier(), 0x448733);
+        COLORS.put(TropicraftBiomes.OVERGROWN_MANGROVES.identifier(), 0x5d8733);
 
-        COLORS.put(TropicraftBiomes.OCEAN.location(), 0x4fc1c9);
-        COLORS.put(TropicraftBiomes.RIVER.location(), 0x4fc1c9);
-        COLORS.put(TropicraftBiomes.KELP_FOREST.location(), 0x4fc9af);
+        COLORS.put(TropicraftBiomes.OCEAN.identifier(), 0x4fc1c9);
+        COLORS.put(TropicraftBiomes.RIVER.identifier(), 0x4fc1c9);
+        COLORS.put(TropicraftBiomes.KELP_FOREST.identifier(), 0x4fc9af);
 
-        COLORS.put(TropicraftBiomes.BEACH.location(), 0xe8e397);
+        COLORS.put(TropicraftBiomes.BEACH.identifier(), 0xe8e397);
     }
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(
                 literal("mapbiomes")
-                        .requires(s -> s.hasPermission(2))
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                         .executes(c -> execute(c.getSource()))
         );
     }
@@ -66,7 +67,7 @@ public class MapBiomesCommand {
 
             for (int z = -SIZE2; z < SIZE2; z++) {
                 Biome biome = source.getLevel().getUncachedNoiseBiome(x, 0, z).value();
-                ResourceLocation name = biomes.getKey(biome);
+                Identifier name = biomes.getKey(biome);
 
                 img.setRGB(x + SIZE2, z + SIZE2, COLORS.getOrDefault(name, 0xFFFFFF));
             }

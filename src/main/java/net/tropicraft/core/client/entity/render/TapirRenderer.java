@@ -3,7 +3,7 @@ package net.tropicraft.core.client.entity.render;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.entity.AgeableMobRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.entity.model.TapirModel;
@@ -12,8 +12,8 @@ import net.tropicraft.core.client.entity.render.state.TapirRenderState;
 import net.tropicraft.core.common.entity.passive.TapirEntity;
 
 public class TapirRenderer extends AgeableMobRenderer<TapirEntity, TapirRenderState, TapirModel> {
-    private static final ResourceLocation TEXTURE = Tropicraft.location("textures/entity/tapir.png");
-    private static final ResourceLocation BABY_TEXTURE = Tropicraft.location("textures/entity/tapir_baby.png");
+    private static final Identifier TEXTURE = Tropicraft.id("textures/entity/tapir.png");
+    private static final Identifier BABY_TEXTURE = Tropicraft.id("textures/entity/tapir_baby.png");
 
     public TapirRenderer(EntityRendererProvider.Context context) {
         super(context, new TapirModel(context.bakeLayer(TropicraftRenderLayers.TAPIR_LAYER)), new TapirModel(context.bakeLayer(TropicraftRenderLayers.TAPIR_BABY_LAYER)), 0.6f);
@@ -38,7 +38,7 @@ public class TapirRenderer extends AgeableMobRenderer<TapirEntity, TapirRenderSt
     }
 
     @Override
-    public ResourceLocation getTextureLocation(TapirRenderState state) {
+    public Identifier getTextureLocation(TapirRenderState state) {
         return state.isBaby ? BABY_TEXTURE : TEXTURE;
     }
 }

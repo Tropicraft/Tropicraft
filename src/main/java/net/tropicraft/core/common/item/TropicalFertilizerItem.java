@@ -6,15 +6,14 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.Util;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 import java.util.List;
@@ -30,11 +29,10 @@ public class TropicalFertilizerItem extends BoneMealItem {
     public InteractionResult useOn(UseOnContext context) {
         BlockState state = context.getLevel().getBlockState(context.getClickedPos());
         if (state.is(Blocks.GRASS_BLOCK)) {
-            if (!context.getLevel().isClientSide) {
+            if (context.getLevel() instanceof ServerLevel level) {
                 // Logic from GrassBlock#grow, with probability for grass significantly reduced
                 BlockPos blockpos = context.getClickedPos().above();
                 BlockState blockstate = Blocks.TALL_GRASS.defaultBlockState();
-                Level level = context.getLevel();
                 RandomSource rand = level.getRandom();
                 Optional<Holder.Reference<PlacedFeature>> grassBonemeal = level.registryAccess().lookupOrThrow(Registries.PLACED_FEATURE).get(VegetationPlacements.GRASS_BONEMEAL);
                 for (int i = 0; i < 128; ++i) {
@@ -45,31 +43,21 @@ public class TropicalFertilizerItem extends BoneMealItem {
                         if (j >= i / 16) {
                             BlockState blockstate2 = level.getBlockState(blockpos1);
                             if (blockstate2.is(blockstate.getBlock()) && rand.nextInt(10) == 0) {
-                                if (level instanceof ServerLevel) {
-                                    ((BonemealableBlock) blockstate.getBlock()).performBonemeal((ServerLevel) level, rand, blockpos1, blockstate2);
-                                }
+                                ((BonemealableBlock) blockstate.getBlock()).performBonemeal(level, rand, blockpos1, blockstate2);
                             }
 
                             if (!blockstate2.isAir()) {
                                 break;
                             }
 
-                            Holder<PlacedFeature> holder;
                             if (rand.nextInt(8) > 0) { // Modification here, == changed to > to invert chances
-                                List<ConfiguredFeature<?, ?>> list = level.getBiome(blockpos1).value().getGenerationSettings().getFlowerFeatures();
-                                if (list.isEmpty()) {
-                                    break;
+                                List<ConfiguredFeature<?, ?>> features = level.getBiome(blockpos1).value().getGenerationSettings().getBoneMealFeatures();
+                                if (!features.isEmpty()) {
+                                    ConfiguredFeature<?, ?> placementFeature = Util.getRandom(features, rand);
+                                    placementFeature.place(level, level.getChunkSource().getGenerator(), rand, blockpos1);
                                 }
-                                holder = ((RandomPatchConfiguration) list.getFirst().config()).feature();
-                            } else {
-                                if (grassBonemeal.isEmpty()) {
-                                    continue;
-                                }
-                                holder = grassBonemeal.get();
-                            }
-
-                            if (level instanceof ServerLevel serverLevel) {
-                                holder.value().place(serverLevel, serverLevel.getChunkSource().getGenerator(), rand, blockpos1);
+                            } else if (grassBonemeal.isPresent()) {
+                                grassBonemeal.get().value().place(level, level.getChunkSource().getGenerator(), rand, blockpos1);
                             }
                             break;
                         }

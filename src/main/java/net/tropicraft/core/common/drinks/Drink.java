@@ -18,7 +18,7 @@ import net.tropicraft.core.common.TropicraftRegistries;
 import net.tropicraft.core.common.drinks.action.DrinkAction;
 import net.tropicraft.core.common.item.CocktailItem;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -71,7 +71,7 @@ public record Drink(
 
     public static ItemStack getResult(HolderLookup.Provider registries, List<ItemStack> ingredientItems) {
         Cocktail cocktail = makeCocktail(registries, ingredientItems);
-        return cocktail != null ? CocktailItem.makeCocktail(cocktail) : ItemStack.EMPTY;
+        return cocktail != null ? CocktailItem.makeCocktail(cocktail).create() : ItemStack.EMPTY;
     }
 
     @Nullable

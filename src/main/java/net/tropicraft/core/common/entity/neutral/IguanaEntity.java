@@ -28,7 +28,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.sound.Sounds;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class IguanaEntity extends PathfinderMob {
 
@@ -39,7 +39,7 @@ public class IguanaEntity extends PathfinderMob {
     @Nullable
     private EntityReference<Player> angerTarget;
 
-    private static final AttributeModifier ATTACK_SPEED_BOOST_MODIFIER = new AttributeModifier(Tropicraft.location("attack_speed_boost"), 0.05, AttributeModifier.Operation.ADD_VALUE);
+    private static final AttributeModifier ATTACK_SPEED_BOOST_MODIFIER = new AttributeModifier(Tropicraft.id("attack_speed_boost"), 0.05, AttributeModifier.Operation.ADD_VALUE);
 
     public IguanaEntity(EntityType<? extends PathfinderMob> type, Level world) {
         super(type, world);
@@ -49,7 +49,7 @@ public class IguanaEntity extends PathfinderMob {
     public void setLastHurtByMob(@Nullable LivingEntity entity) {
         super.setLastHurtByMob(entity);
         if (entity instanceof Player player) {
-            angerTarget = new EntityReference<>(player);
+            angerTarget = EntityReference.of(player);
         }
     }
 
@@ -92,10 +92,10 @@ public class IguanaEntity extends PathfinderMob {
 
         angerTarget = EntityReference.read(input, "HurtBy");
 
-        Player player = EntityReference.get(angerTarget, level()::getPlayerByUUID, Player.class);
+        Player player = EntityReference.getPlayer(angerTarget, level());
         setLastHurtByMob(player);
         if (player != null) {
-            lastHurtByPlayer = new EntityReference<>(player);
+            lastHurtByPlayer = EntityReference.of(player);
             lastHurtByPlayerMemoryTime = getLastHurtByMobTimestamp();
         }
     }
@@ -115,7 +115,7 @@ public class IguanaEntity extends PathfinderMob {
         }
 
         if (angerLevel > 0 && angerTarget != null && getLastHurtByMob() == null) {
-            Player player = EntityReference.get(angerTarget, level()::getPlayerByUUID, Player.class);
+            Player player = EntityReference.getPlayer(angerTarget, level);
             setLastHurtByMob(player);
             if (player != null) {
                 setLastHurtByPlayer(player, PLAYER_HURT_EXPERIENCE_TIME);

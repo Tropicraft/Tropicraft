@@ -1,14 +1,14 @@
 package net.tropicraft.core.client.entity.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
 import net.tropicraft.core.client.entity.render.state.StarfishRenderState;
@@ -45,7 +45,7 @@ public class StarfishRenderer extends EntityRenderer<StarfishEntity, StarfishRen
     }
 
     @Override
-    public void render(StarfishRenderState state, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+    public void submit(StarfishRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
         StarfishType type = state.type;
 
         float f = 0.0f;
@@ -64,14 +64,15 @@ public class StarfishRenderer extends EntityRenderer<StarfishEntity, StarfishRen
 
         int packedOverlay = OverlayTexture.pack(OverlayTexture.u(0.0f), OverlayTexture.v(state.hasRedOverlay));
         for (int i = 0; i < type.getLayerCount(); i++) {
-            ResourceLocation texture = type.getTextures().get(i);
-            VertexConsumer ivertexbuilder = bufferSource.getBuffer(RenderType.entityCutout(texture));
-            final float red = 1;
-            float green = state.hasRedOverlay ? 0 : 1;
-            float blue = state.hasRedOverlay ? 0 : 1;
-            final float alpha = 1;
+            Identifier texture = type.getTextures().get(i);
             float layerHeight = type.getLayerHeights()[i];
-            TropicraftSpecialRenderHelper.popper(f1, f2, f, f3, f1shifted, f3shifted, layerHeight, poseStack, ivertexbuilder, packedLight, packedOverlay, red, green, blue, alpha);
+            submitNodeCollector.submitCustomGeometry(poseStack, RenderTypes.entityCutout(texture), (pose, buffer) -> {
+                final float red = 1;
+                float green = state.hasRedOverlay ? 0 : 1;
+                float blue = state.hasRedOverlay ? 0 : 1;
+                final float alpha = 1;
+                TropicraftSpecialRenderHelper.popper(f1, f2, f, f3, f1shifted, f3shifted, layerHeight, buffer, state.lightCoords, packedOverlay, red, green, blue, alpha, pose);
+            });
             poseStack.translate(0.0f, 0.0f, -layerHeight);
         }
 

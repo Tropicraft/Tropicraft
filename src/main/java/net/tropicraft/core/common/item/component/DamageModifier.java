@@ -2,7 +2,7 @@ package net.tropicraft.core.common.item.component;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.advancements.critereon.DamageSourcePredicate;
+import net.minecraft.advancements.criterion.DamageSourcePredicate;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.damagesource.DamageSource;

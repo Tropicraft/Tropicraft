@@ -10,9 +10,9 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.Arrow;
 import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -91,7 +91,7 @@ public class BlowGunItem extends ProjectileWeaponItem {
     }
 
     public static void fireProjectile(Level world, LivingEntity shooter, InteractionHand hand, ItemStack heldItem, ItemStack projectile, float soundPitch, boolean isCreativeMode, float dmg, float pitch) {
-        if (!world.isClientSide) {
+        if (!world.isClientSide()) {
             AbstractArrow arrowEntity = createArrow(world, shooter, projectile, heldItem);
             if (isCreativeMode) {
                 arrowEntity.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
@@ -100,7 +100,7 @@ public class BlowGunItem extends ProjectileWeaponItem {
             Vector3f look = shooter.getViewVector(1.0f).toVector3f();
             arrowEntity.shoot(look.x(), look.y(), look.z(), dmg, pitch);
 
-            heldItem.hurtAndBreak(1, shooter, LivingEntity.getSlotForHand(hand));
+            heldItem.hurtAndBreak(1, shooter, hand);
 
             projectile.split(1);
             if (projectile.isEmpty() && shooter instanceof Player) {

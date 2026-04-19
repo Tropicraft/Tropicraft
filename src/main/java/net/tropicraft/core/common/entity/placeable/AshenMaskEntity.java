@@ -62,7 +62,7 @@ public class AshenMaskEntity extends Entity {
 
     @Override
     public void tick() {
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             // Remove masks that have been on the ground abandoned for over a day
             if (tickCount >= MAX_TICKS_ALIVE) {
                 remove(RemovalReason.DISCARDED);

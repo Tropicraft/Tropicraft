@@ -3,9 +3,12 @@ package net.tropicraft.core.client.entity.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.item.ItemModelResolver;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.tropicraft.core.client.entity.render.state.SpearRenderState;
@@ -33,7 +36,7 @@ public class SpearRenderer<T extends SpearEntity> extends EntityRenderer<T, Spea
     }
 
     @Override
-    public void render(SpearRenderState state, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+    public void submit(SpearRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
         poseStack.pushPose();
 
         poseStack.mulPose(Axis.YP.rotationDegrees(state.yRot));
@@ -43,9 +46,9 @@ public class SpearRenderer<T extends SpearEntity> extends EntityRenderer<T, Spea
 
         poseStack.scale(2.5f, 2.5f, 2.5f);
 
-        state.item.render(poseStack, bufferSource, packedLight, OverlayTexture.NO_OVERLAY);
+        state.item.submit(poseStack, submitNodeCollector, state.lightCoords, OverlayTexture.NO_OVERLAY, EntityRenderState.NO_OUTLINE);
         poseStack.popPose();
 
-        super.render(state, poseStack, bufferSource, packedLight);
+        super.submit(state, poseStack, submitNodeCollector, camera);
     }
 }

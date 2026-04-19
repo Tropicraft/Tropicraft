@@ -1,6 +1,6 @@
 package net.tropicraft.core.common.item.scuba;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.item.TropicraftArmorMaterials;
@@ -11,18 +11,18 @@ public enum ScubaType {
     ;
 
     private final ArmorMaterial material;
-    private final ResourceLocation textureLocation;
+    private final Identifier textureLocation;
 
     ScubaType(ArmorMaterial material, String textureName) {
         this.material = material;
-        textureLocation = Tropicraft.location("textures/models/armor/scuba_gear_" + textureName + ".png");
+        textureLocation = Tropicraft.id("textures/models/armor/scuba_gear_" + textureName + ".png");
     }
 
     public ArmorMaterial material() {
         return material;
     }
 
-    public ResourceLocation textureLocation() {
+    public Identifier textureLocation() {
         return textureLocation;
     }
 }

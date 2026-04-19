@@ -14,7 +14,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class SteepPathProcessor extends PathStructureProcessor {
     public static final MapCodec<SteepPathProcessor> CODEC = MapCodec.unit(new SteepPathProcessor());

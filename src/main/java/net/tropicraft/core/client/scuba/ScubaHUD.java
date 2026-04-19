@@ -1,13 +1,13 @@
 package net.tropicraft.core.client.scuba;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.CommonColors;
+import net.minecraft.util.Util;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -30,11 +30,11 @@ public class ScubaHUD {
 
     @SubscribeEvent
     public static void registerOverlayRenderer(RegisterGuiLayersEvent event) {
-        event.registerBelow(VanillaGuiLayers.DEBUG_OVERLAY, Tropicraft.location("scuba_hud"), ScubaHUD::draw);
+        event.registerBelow(VanillaGuiLayers.EFFECTS, Tropicraft.id("scuba_hud"), ScubaHUD::draw);
     }
 
-    private static void draw(GuiGraphics graphics, DeltaTracker deltaTracker) {
-        Entity renderViewEntity = Minecraft.getInstance().cameraEntity;
+    private static void draw(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
+        Entity renderViewEntity = Minecraft.getInstance().getCameraEntity();
         if (renderViewEntity instanceof Player player) {
             // TODO support other slots than chest?
             ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
@@ -74,13 +74,13 @@ public class ScubaHUD {
         }
     }
 
-    private static void drawHUDStrings(GuiGraphics graphics, Component... lines) {
+    private static void drawHUDStrings(GuiGraphicsExtractor graphics, Component... lines) {
         Font font = Minecraft.getInstance().font;
 
         int x = graphics.guiWidth() - 5;
         int y = graphics.guiHeight() - 5 - (font.lineHeight * lines.length);
         for (Component line : lines) {
-            graphics.drawString(font, line, x - font.width(line), y, CommonColors.WHITE);
+            graphics.text(font, line, x - font.width(line), y, CommonColors.WHITE);
             y += font.lineHeight;
         }
     }

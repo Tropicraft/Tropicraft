@@ -33,6 +33,6 @@ public class TropicraftRegistries {
     }
 
     private static <T> ResourceKey<Registry<T>> createKey(String path) {
-        return ResourceKey.createRegistryKey(Tropicraft.location(path));
+        return ResourceKey.createRegistryKey(Tropicraft.id(path));
     }
 }

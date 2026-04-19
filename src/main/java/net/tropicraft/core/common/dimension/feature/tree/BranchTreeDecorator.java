@@ -49,7 +49,7 @@ public class BranchTreeDecorator extends TreeDecorator {
                 if (random.nextFloat() <= probability) {
                     BlockPos pos = log.relative(direction.getOpposite());
                     if (context.isAir(pos)) {
-                        context.setBlock(pos, branch.getState(random, pos).trySetValue(FruitingBranchBlock.FACING, direction.getOpposite()));
+                        context.setBlock(pos, branch.getState(context.level(), random, pos).trySetValue(FruitingBranchBlock.FACING, direction.getOpposite()));
                     }
                 }
             }

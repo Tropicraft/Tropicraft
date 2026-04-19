@@ -65,26 +65,26 @@ public class ScubaData {
         ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
         if (chestStack.getItem() instanceof ScubaArmorItem scubaItem) {
             ScubaData data = player.getData(ATTACHMENT);
-            if (!world.isClientSide) {
+            if (!world.isClientSide()) {
                 underwaterPlayers.add((ServerPlayer) player);
             }
             if (isUnderWater(player)) {
                 data.tick(player);
-                if (!world.isClientSide) {
+                if (!world.isClientSide()) {
                     data.updateClient((ServerPlayer) player, false);
                 }
                 scubaItem.tickAir(player, EquipmentSlot.CHEST, chestStack);
-                if (!world.isClientSide && world.getGameTime() % 60 == 0) {
+                if (!world.isClientSide() && world.getGameTime() % 60 == 0) {
                     // TODO this effect could be better, custom packet?
                     Vec3 eyePos = player.getEyePosition(0);
                     Vec3 motion = player.getDeltaMovement();
                     Vec3 particlePos = eyePos.add(motion.reverse());
                     ((ServerLevel) world).sendParticles(ParticleTypes.BUBBLE,
                             particlePos.x(), particlePos.y(), particlePos.z(),
-                            4 + world.random.nextInt(3),
+                            4 + player.getRandom().nextInt(3),
                             0.25, 0.25, 0.25, motion.length());
                 }
-            } else if (!world.isClientSide && underwaterPlayers.remove(player)) { // Update client state as they leave the water
+            } else if (!world.isClientSide() && underwaterPlayers.remove(player)) { // Update client state as they leave the water
                 data.updateClient((ServerPlayer) player, false);
             }
         }

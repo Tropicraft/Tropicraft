@@ -30,7 +30,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 import net.tropicraft.core.common.item.TropicraftItems;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class TropiSkellyEntity extends Monster {
     public TropiSkellyEntity(EntityType<? extends Monster> type, Level world) {
@@ -55,7 +55,7 @@ public class TropiSkellyEntity extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (!level().isClientSide && level().getDifficulty() == Difficulty.PEACEFUL) {
+        if (!level().isClientSide() && level().getDifficulty() == Difficulty.PEACEFUL) {
             remove(RemovalReason.KILLED);
         }
     }

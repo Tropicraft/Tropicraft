@@ -4,14 +4,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.animal.WaterAnimal;
+import net.minecraft.world.entity.animal.fish.WaterAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public abstract class TropicraftFishEntity extends WaterAnimal {
 
@@ -69,7 +69,7 @@ public abstract class TropicraftFishEntity extends WaterAnimal {
         super.tick();
 
         // Client Side
-        if (level().isClientSide) {
+        if (level().isClientSide()) {
             // TODO if we ever use this class with turtles again - if(!(this instanceof IAmphibian)) {
             setXRot(-swimPitch);
             setYRot(-swimYaw);

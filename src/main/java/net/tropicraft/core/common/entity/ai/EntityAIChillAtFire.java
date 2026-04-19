@@ -42,7 +42,7 @@ public class EntityAIChillAtFire extends Goal {
 
         if (!entityObj.level().isBrightOutside() || entityObj.level().isRaining() && entityObj.level().getBiome(blockpos).value().getPrecipitationAt(blockpos, entityObj.level().getSeaLevel()) != Biome.Precipitation.RAIN) {
             if (!isTooClose()) {
-                return entityObj.level().random.nextInt(20) == 0;
+                return entityObj.getRandom().nextInt(20) == 0;
             } else {
                 return false;
             }
@@ -63,7 +63,7 @@ public class EntityAIChillAtFire extends Goal {
         if (!entityObj.level().isBrightOutside() || entityObj.level().isRaining() && entityObj.level().getBiome(blockpos).value().getPrecipitationAt(blockpos, entityObj.level().getSeaLevel()) != Biome.Precipitation.RAIN) {
             return !isTooClose();
         } else {
-            return entityObj.level().random.nextInt(60) != 0;
+            return entityObj.getRandom().nextInt(60) != 0;
         }
     }
 
@@ -92,16 +92,16 @@ public class EntityAIChillAtFire extends Goal {
             entityObj.getNavigation().stop();
             isClose = true;
             if (lookUpdateTimer <= 0) {
-                lookUpdateTimer = 200 + entityObj.level().random.nextInt(100);
+                lookUpdateTimer = 200 + entityObj.getRandom().nextInt(100);
                 int range = 2;
-                randXPos = entityObj.level().random.nextInt(range) - entityObj.level().random.nextInt(range);
+                randXPos = entityObj.getRandom().nextInt(range) - entityObj.getRandom().nextInt(range);
                 //stargaze
-                if (entityObj.level().random.nextInt(3) == 0) {
-                    randYPos = 5 + entityObj.level().random.nextInt(5);
+                if (entityObj.getRandom().nextInt(3) == 0) {
+                    randYPos = 5 + entityObj.getRandom().nextInt(5);
                 } else {
                     randYPos = 0;
                 }
-                randZPos = entityObj.level().random.nextInt(range) - entityObj.level().random.nextInt(range);
+                randZPos = entityObj.getRandom().nextInt(range) - entityObj.getRandom().nextInt(range);
 
                 if (entityObj.getId() % 3 == 0) {
                     entityObj.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TropicraftItems.BAMBOO_MUG.get()));

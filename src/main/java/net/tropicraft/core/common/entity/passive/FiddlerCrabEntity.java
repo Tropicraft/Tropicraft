@@ -156,7 +156,7 @@ public final class FiddlerCrabEntity extends Animal implements OwnableEntity {
         }
 
         FluidState fluid = level().getFluidState(blockPosition());
-        if (isAffectedByFluids() && !canStandOnFluid(fluid) && (isInWater() || isInLava() || isInFluidType(fluid))) {
+        if (isAffectedByFluids() && !canStandOnFluid(fluid) && (isInWater() || isInLava())) {
             super.travel(input);
             return;
         }

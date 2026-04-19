@@ -13,7 +13,7 @@ import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.hostile.TropiSpiderEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class TropiSpiderEggEntity extends EggEntity {
     @Nullable
@@ -24,7 +24,7 @@ public class TropiSpiderEggEntity extends EggEntity {
     }
 
     public void setMother(TropiSpiderEntity entity) {
-        mother = new EntityReference<>(entity);
+        mother = EntityReference.of(entity);
     }
 
     @Override

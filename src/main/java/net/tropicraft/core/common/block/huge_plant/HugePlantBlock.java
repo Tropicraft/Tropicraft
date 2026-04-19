@@ -28,7 +28,7 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.AABB;
 import net.tropicraft.core.client.ParticleEffects;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -143,7 +143,7 @@ public final class HugePlantBlock extends BushBlock {
             return state;
         }
 
-        if (!world.isClientSide) {
+        if (!world.isClientSide()) {
             if (!player.isCreative()) {
                 BlockPos seedPos = shape.seed();
                 dropResources(world.getBlockState(seedPos), world, seedPos, null, player, player.getMainHandItem());

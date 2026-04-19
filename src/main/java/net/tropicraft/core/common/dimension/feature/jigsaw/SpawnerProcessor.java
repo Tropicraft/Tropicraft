@@ -4,7 +4,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -14,7 +14,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import java.util.List;
 
 public class SpawnerProcessor extends StructureProcessor {
@@ -24,12 +24,12 @@ public class SpawnerProcessor extends StructureProcessor {
     public static final SpawnerProcessor IGUANA_AND_ASHEN = new SpawnerProcessor(List.of(TropicraftEntities.ASHEN.getId(), TropicraftEntities.IGUANA.getId()));
 
     public static final MapCodec<SpawnerProcessor> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
-            ResourceLocation.CODEC.listOf().fieldOf("entity_types").forGetter(p -> p.entityTypes)
+            Identifier.CODEC.listOf().fieldOf("entity_types").forGetter(p -> p.entityTypes)
     ).apply(i, SpawnerProcessor::new));
 
-    private final List<ResourceLocation> entityTypes;
+    private final List<Identifier> entityTypes;
 
-    public SpawnerProcessor(List<ResourceLocation> entityTypes) {
+    public SpawnerProcessor(List<Identifier> entityTypes) {
         this.entityTypes = entityTypes;
     }
 
@@ -39,8 +39,7 @@ public class SpawnerProcessor extends StructureProcessor {
     }
 
     @Override
-    @Nullable
-    public StructureTemplate.StructureBlockInfo process(LevelReader world, BlockPos pos, BlockPos pos2, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo blockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
+    public StructureTemplate.@Nullable StructureBlockInfo process(LevelReader world, BlockPos pos, BlockPos pos2, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo blockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
         Block block = blockInfo.state().getBlock();
         if (block != Blocks.SPAWNER) {
             return blockInfo;

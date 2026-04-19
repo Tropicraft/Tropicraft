@@ -1,12 +1,16 @@
 package net.tropicraft.core.client.entity.render;
 
+import com.google.common.reflect.TypeToken;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.minecraft.client.renderer.entity.player.PlayerRenderer;
-import net.minecraft.client.renderer.entity.state.PlayerRenderState;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.player.AvatarRenderer;
+import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.util.Mth;
 import net.minecraft.util.TriState;
 import net.minecraft.util.context.ContextKey;
+import net.minecraft.world.entity.Avatar;
 import net.minecraft.world.entity.EntityAttachment;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.phys.Vec3;
@@ -22,10 +26,12 @@ import net.tropicraft.core.common.entity.SeaTurtleEntity;
 import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
 import org.joml.Quaternionf;
 
+import java.util.function.BiConsumer;
+
 @EventBusSubscriber(value = Dist.CLIENT, modid = Tropicraft.ID)
 public class PlayerRotationHandler {
-    private static final ContextKey<BeachFloatState> BEACH_FLOAT_KEY = new ContextKey<>(Tropicraft.location("beach_float"));
-    private static final ContextKey<TurtleState> TURTLE_KEY = new ContextKey<>(Tropicraft.location("sea_turtle"));
+    private static final ContextKey<BeachFloatState> BEACH_FLOAT_KEY = new ContextKey<>(Tropicraft.id("beach_float"));
+    private static final ContextKey<TurtleState> TURTLE_KEY = new ContextKey<>(Tropicraft.id("sea_turtle"));
 
     private record BeachFloatState(
             float yRot,
@@ -46,25 +52,25 @@ public class PlayerRotationHandler {
 
     @SubscribeEvent
     public static void onRegisterRenderStateModifiers(RegisterRenderStateModifiersEvent event) {
-        event.registerEntityModifier(PlayerRenderer.class, (player, state) -> {
-            if (player.getVehicle() instanceof BeachFloatEntity beachFloat) {
+        event.registerEntityModifier((Class<EntityRenderer<Avatar, AvatarRenderState>>) (Class<?>) AvatarRenderer.class, (avatar, state) -> {
+            if (avatar.getVehicle() instanceof BeachFloatEntity beachFloat) {
                 state.yRot = 0.0f;
                 state.xRot = 10.0f;
                 state.walkAnimationPos = 0.0f;
                 state.walkAnimationSpeed = 0.0f;
 
                 Vec3 attachment = beachFloat.getAttachments().getClamped(EntityAttachment.PASSENGER, 0, 0.0f);
-                float playerHeight = player.getDimensions(Pose.STANDING).height();
+                float playerHeight = avatar.getDimensions(Pose.STANDING).height();
                 state.setRenderData(BEACH_FLOAT_KEY, new BeachFloatState(
                         Mth.rotLerp(state.partialTick, beachFloat.yRotO, beachFloat.getYRot()),
                         (float) -attachment.x,
                         (float) (-attachment.y + 13.0 / 16.0),
                         (float) (playerHeight / 2.0 - attachment.z)
                 ));
-            } else if (player.getVehicle() instanceof SeaTurtleEntity turtle) {
+            } else if (avatar.getVehicle() instanceof SeaTurtleEntity turtle) {
                 state.xRot = 10.0f;
 
-                Vec3 sitOffset = player.getAttachments().getClamped(EntityAttachment.VEHICLE, 0, 0);
+                Vec3 sitOffset = avatar.getAttachments().getClamped(EntityAttachment.VEHICLE, 0, 0);
                 state.setRenderData(TURTLE_KEY, new TurtleState(
                         Mth.rotLerp(state.partialTick, turtle.xRotO, turtle.getXRot()),
                         Mth.rotLerp(state.partialTick, turtle.yHeadRotO, turtle.yHeadRot),
@@ -77,9 +83,9 @@ public class PlayerRotationHandler {
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void onRenderPlayer(RenderPlayerEvent.Pre event) {
+    public static void onRenderPlayer(RenderPlayerEvent.Pre<AbstractClientPlayer> event) {
         PoseStack stack = event.getPoseStack();
-        PlayerRenderState state = event.getRenderState();
+        AvatarRenderState state = event.getRenderState();
 
         BeachFloatState floatState = state.getRenderData(BEACH_FLOAT_KEY);
         if (floatState != null) {
@@ -108,8 +114,8 @@ public class PlayerRotationHandler {
     }
 
     @SubscribeEvent
-    public static void onRenderPlayerPost(RenderPlayerEvent.Post event) {
-        PlayerRenderState state = event.getRenderState();
+    public static void onRenderPlayerPost(RenderPlayerEvent.Post<AbstractClientPlayer> event) {
+        AvatarRenderState state = event.getRenderState();
         if (state.getRenderData(BEACH_FLOAT_KEY) != null || state.getRenderData(TURTLE_KEY) != null) {
             event.getPoseStack().popPose();
         }

@@ -20,7 +20,7 @@ public final class HugePlantFeature extends Feature<SimpleBlockConfiguration> {
         SimpleBlockConfiguration config = context.config();
         WorldGenLevel level = context.level();
         BlockPos origin = context.origin();
-        BlockState state = config.toPlace().getState(context.random(), origin);
+        BlockState state = config.toPlace().getState(level, context.random(), origin);
         if (state.getBlock() instanceof HugePlantBlock hugePlant && state.canSurvive(level, origin)) {
             hugePlant.placeAt(level, origin, Block.UPDATE_CLIENTS);
             return true;

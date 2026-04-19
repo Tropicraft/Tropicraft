@@ -1,19 +1,19 @@
 package net.tropicraft.core.client.entity.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.model.SpiderModel;
 import net.minecraft.client.model.geom.ModelLayers;
+import net.minecraft.client.model.monster.spider.SpiderModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.entity.render.state.TropiSpiderRenderState;
 import net.tropicraft.core.common.entity.hostile.TropiSpiderEntity;
 
 public class TropiSpiderRenderer extends MobRenderer<TropiSpiderEntity, TropiSpiderRenderState, SpiderModel> {
-    private static final ResourceLocation ADULT_TEXTURE_LOCATION = Tropicraft.location("textures/entity/spideradult.png");
-    private static final ResourceLocation MOTHER_TEXTURE_LOCATION = Tropicraft.location("textures/entity/spidermother.png");
-    private static final ResourceLocation CHILD_TEXTURE_LOCATION = Tropicraft.location("textures/entity/spiderchild.png");
+    private static final Identifier ADULT_TEXTURE_LOCATION = Tropicraft.id("textures/entity/spideradult.png");
+    private static final Identifier MOTHER_TEXTURE_LOCATION = Tropicraft.id("textures/entity/spidermother.png");
+    private static final Identifier CHILD_TEXTURE_LOCATION = Tropicraft.id("textures/entity/spiderchild.png");
 
     public TropiSpiderRenderer(EntityRendererProvider.Context context) {
         super(context, new SpiderModel(context.bakeLayer(ModelLayers.SPIDER)), 0.8f);
@@ -44,7 +44,7 @@ public class TropiSpiderRenderer extends MobRenderer<TropiSpiderEntity, TropiSpi
     }
 
     @Override
-    public ResourceLocation getTextureLocation(TropiSpiderRenderState state) {
+    public Identifier getTextureLocation(TropiSpiderRenderState state) {
         return switch (state.type) {
             case CHILD -> CHILD_TEXTURE_LOCATION;
             case MOTHER -> MOTHER_TEXTURE_LOCATION;

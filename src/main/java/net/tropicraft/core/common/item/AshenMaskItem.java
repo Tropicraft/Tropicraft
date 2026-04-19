@@ -31,7 +31,7 @@ public class AshenMaskItem extends Item {
             wallItem.setItem(itemStack);
 
             if (wallItem.survives()) {
-                if (!world.isClientSide) {
+                if (!world.isClientSide()) {
                     wallItem.playPlacementSound();
                     world.addFreshEntity(wallItem);
                 }

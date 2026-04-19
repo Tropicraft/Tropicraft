@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.level.LevelSimulatedReader;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
@@ -24,13 +25,13 @@ public final class CitrusFoliagePlacer extends FoliagePlacer {
     }
 
     @Override
-    protected void createFoliage(LevelSimulatedReader level, FoliageSetter setter, RandomSource random, TreeConfiguration config, int p_230372_4_, FoliageAttachment node, int p_230372_6_, int radius, int offset) {
-        placeLeavesRow(level, setter, random, config, node.pos(), 1, 1, node.doubleTrunk());
-        placeLeavesRow(level, setter, random, config, node.pos(), 2, 0, node.doubleTrunk());
+    protected void createFoliage(WorldGenLevel level, FoliageSetter foliageSetter, RandomSource random, TreeConfiguration config, int treeHeight, FoliageAttachment foliageAttachment, int foliageHeight, int leafRadius, int offset) {
+        placeLeavesRow(level, foliageSetter, random, config, foliageAttachment.pos(), 1, 1, foliageAttachment.doubleTrunk());
+        placeLeavesRow(level, foliageSetter, random, config, foliageAttachment.pos(), 2, 0, foliageAttachment.doubleTrunk());
 
-        if (node.radiusOffset() == 1) {
+        if (foliageAttachment.radiusOffset() == 1) {
             // Center leaf cluster, add another layer at the bottom
-            placeLeavesRow(level, setter, random, config, node.pos(), 3, -1, node.doubleTrunk());
+            placeLeavesRow(level, foliageSetter, random, config, foliageAttachment.pos(), 3, -1, foliageAttachment.doubleTrunk());
         }
     }
 

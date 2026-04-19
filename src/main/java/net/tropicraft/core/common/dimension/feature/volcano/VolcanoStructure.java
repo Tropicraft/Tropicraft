@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.valueproviders.IntProvider;
+import net.minecraft.util.valueproviders.IntProviders;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.WorldGenerationContext;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
@@ -18,7 +19,7 @@ public class VolcanoStructure extends Structure {
     public static final MapCodec<VolcanoStructure> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
             settingsCodec(i),
             HeightProvider.CODEC.fieldOf("height").forGetter(s -> s.height),
-            IntProvider.CODEC.fieldOf("radius").forGetter(s -> s.radius)
+            IntProviders.CODEC.fieldOf("radius").forGetter(s -> s.radius)
     ).apply(i, VolcanoStructure::new));
 
     private final HeightProvider height;

@@ -5,12 +5,13 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
@@ -18,7 +19,7 @@ import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
 import java.util.function.Predicate;
 
 public class SunglassesLayer<S extends EntityRenderState, M extends EntityModel<S>> extends RenderLayer<S, M> {
-    private static final ResourceLocation TEXTURE = Tropicraft.location("textures/entity/sunglasses.png");
+    private static final Identifier TEXTURE = Tropicraft.id("textures/entity/sunglasses.png");
 
     private final TropicraftSpecialRenderHelper mask;
     private final M model;
@@ -34,19 +35,22 @@ public class SunglassesLayer<S extends EntityRenderState, M extends EntityModel<
     }
 
     @Override
-    public void render(PoseStack stack, MultiBufferSource bufferSource, int packedLight, S renderState, float yRot, float xRot) {
-        if (!predicate.test(renderState)) {
+    public void submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, S state, float yRot, float xRot) {
+        if (!predicate.test(state)) {
             return;
         }
 
-        stack.pushPose();
-        model.setupAnim(renderState);
-        transform.apply(stack, renderState, model);
+        poseStack.pushPose();
+        model.setupAnim(state);
+        transform.apply(poseStack, state, model);
 
-        stack.mulPose(Axis.YP.rotation(Mth.PI));
-        VertexConsumer consumer = bufferSource.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
-        mask.renderMask(stack, consumer, 0, packedLight, OverlayTexture.NO_OVERLAY);
-        stack.popPose();
+        poseStack.mulPose(Axis.YP.rotation(Mth.PI));
+        submitNodeCollector.submitCustomGeometry(poseStack, RenderTypes.entityCutout(TEXTURE), (pose, buffer) -> {
+            PoseStack stack = new PoseStack();
+            stack.mulPose(pose.pose());
+            mask.renderMask(stack, buffer, 0, state.lightCoords, OverlayTexture.NO_OVERLAY);
+        });
+        poseStack.popPose();
     }
 
     public interface Transform<S, M> {

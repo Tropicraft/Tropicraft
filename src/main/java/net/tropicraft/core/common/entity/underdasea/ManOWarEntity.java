@@ -17,7 +17,8 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.animal.WaterAnimal;
+import net.minecraft.world.entity.animal.fish.WaterAnimal;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -82,7 +83,7 @@ public class ManOWarEntity extends WaterAnimal {
         lastTentacleAngle = tentacleAngle;
         squidRotation += rotationVelocity;
         if ((double) squidRotation > Mth.TWO_PI) {
-            if (level().isClientSide) {
+            if (level().isClientSide()) {
                 squidRotation = Mth.TWO_PI;
             } else {
                 squidRotation = (float) ((double) squidRotation - Mth.TWO_PI);
@@ -126,7 +127,7 @@ public class ManOWarEntity extends WaterAnimal {
                 rotateSpeed *= 0.99f;
             }
 
-            if (!level().isClientSide) {
+            if (!level().isClientSide()) {
                 setDeltaMovement(randomMotionVecX * randomMotionSpeed, randomMotionVecY * randomMotionSpeed, randomMotionVecZ * randomMotionSpeed);
             }
 
@@ -138,7 +139,7 @@ public class ManOWarEntity extends WaterAnimal {
             squidPitch += (-((float) Mth.atan2(horizontalDistance, motion.y)) * Mth.RAD_TO_DEG - squidPitch) * 0.1f;
         } else {
             tentacleAngle = Mth.abs(Mth.sin(squidRotation)) * Mth.PI * 0.25f;
-            if (!level().isClientSide) {
+            if (!level().isClientSide()) {
                 double lvt_1_3_ = getDeltaMovement().y;
                 if (hasEffect(MobEffects.LEVITATION)) {
                     lvt_1_3_ = 0.05 * (double) (getEffect(MobEffects.LEVITATION).getAmplifier() + 1);
@@ -161,7 +162,7 @@ public class ManOWarEntity extends WaterAnimal {
             int numDrops = 3 + random.nextInt(1);
 
             for (int i = 0; i < numDrops; i++) {
-                spawnAtLocation(serverLevel, Items.SLIME_BALL, 1);
+                spawnAtLocation(serverLevel, new ItemStack(Items.SLIME_BALL));
             }
         }
     }

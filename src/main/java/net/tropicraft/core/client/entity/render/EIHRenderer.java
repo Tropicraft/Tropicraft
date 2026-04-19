@@ -2,7 +2,7 @@ package net.tropicraft.core.client.entity.render;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.entity.model.EIHModel;
@@ -11,9 +11,9 @@ import net.tropicraft.core.common.entity.neutral.EIHEntity;
 
 public class EIHRenderer extends MobRenderer<EIHEntity, EIHRenderState, EIHModel> {
 
-    private static final ResourceLocation TEXTURE_SLEEP = Tropicraft.location("textures/entity/eih/headtext.png");
-    private static final ResourceLocation TEXTURE_AWARE = Tropicraft.location("textures/entity/eih/headawaretext.png");
-    private static final ResourceLocation TEXTURE_ANGRY = Tropicraft.location("textures/entity/eih/headangrytext.png");
+    private static final Identifier TEXTURE_SLEEP = Tropicraft.id("textures/entity/eih/headtext.png");
+    private static final Identifier TEXTURE_AWARE = Tropicraft.id("textures/entity/eih/headawaretext.png");
+    private static final Identifier TEXTURE_ANGRY = Tropicraft.id("textures/entity/eih/headangrytext.png");
 
     public EIHRenderer(EntityRendererProvider.Context context) {
         super(context, new EIHModel(context.bakeLayer(TropicraftRenderLayers.EIH_LAYER)), 1.2f);
@@ -32,7 +32,7 @@ public class EIHRenderer extends MobRenderer<EIHEntity, EIHRenderState, EIHModel
     }
 
     @Override
-    public ResourceLocation getTextureLocation(EIHRenderState state) {
+    public Identifier getTextureLocation(EIHRenderState state) {
         if (state.aware) {
             return TEXTURE_AWARE;
         } else if (state.angry) {

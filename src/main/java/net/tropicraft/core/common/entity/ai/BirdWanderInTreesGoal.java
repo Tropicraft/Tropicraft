@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.TropicraftTags;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class BirdWanderInTreesGoal extends RandomStrollGoal {
     private static final int INTERVAL = SharedConstants.TICKS_PER_SECOND * 4;

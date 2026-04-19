@@ -18,13 +18,13 @@ import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.item.scuba.ScubaArmorItem;
 import net.tropicraft.core.common.item.scuba.ScubaData;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 @EventBusSubscriber(value = Dist.CLIENT, modid = Tropicraft.ID)
 public class ScubaAmbienceTicker {
 
-    public static final SoundEvent SHALLOW_SCUBA = SoundEvent.createVariableRangeEvent(Tropicraft.location("scuba.shallow"));
-    public static final SoundEvent DEEP_SCUBA = SoundEvent.createVariableRangeEvent(Tropicraft.location("scuba.deep"));
+    public static final SoundEvent SHALLOW_SCUBA = SoundEvent.createVariableRangeEvent(Tropicraft.id("scuba.shallow"));
+    public static final SoundEvent DEEP_SCUBA = SoundEvent.createVariableRangeEvent(Tropicraft.id("scuba.deep"));
 
     @Nullable
     private static SoundEvent currentSound;

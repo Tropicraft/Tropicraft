@@ -12,7 +12,7 @@ import net.tropicraft.core.common.drinks.TropicraftDrinks;
 import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
 import net.tropicraft.core.common.item.CocktailItem;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import java.util.EnumSet;
 
 public class MonkeyPickUpPinaColadaGoal extends Goal {

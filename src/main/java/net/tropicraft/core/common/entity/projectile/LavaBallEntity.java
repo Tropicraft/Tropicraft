@@ -95,7 +95,7 @@ public class LavaBallEntity extends Entity {
 
         if (!onGround()) {
             motionY -= 0.05f;
-            if (level().isClientSide) {
+            if (level().isClientSide()) {
                 for (int i = 0; i < 5 + random.nextInt(3); i++) {
                     level().addParticle(ParticleTypes.LAVA, getX(), getY(), getZ(), getDeltaMovement().x, -1.5f, getDeltaMovement().z);
                 }

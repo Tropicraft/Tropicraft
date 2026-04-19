@@ -12,6 +12,6 @@ public class TropicraftWoodTypes {
     public static final WoodType MANGROVE = register("mangrove");
 
     private static WoodType register(String name) {
-        return WoodType.register(new WoodType(Tropicraft.location(name).toString(), BlockSetType.OAK));
+        return WoodType.register(new WoodType(Tropicraft.id(name).toString(), BlockSetType.OAK));
     }
 }

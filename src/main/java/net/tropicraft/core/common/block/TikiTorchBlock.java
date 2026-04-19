@@ -28,7 +28,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import java.util.Locale;
 
 public final class TikiTorchBlock extends Block {
@@ -143,24 +143,24 @@ public final class TikiTorchBlock extends Block {
             BlockState state2 = world.getBlockState(pos2);
             if (state2.is(this) && state2.getValue(SECTION) == otherSection) {
                 super.playerDestroy(world, player, pos2, state2, te, stack);
-                world.setBlock(pos2, world.getFluidState(pos2).createLegacyBlock(), world.isClientSide ? 11 : 3);
+                world.setBlock(pos2, world.getFluidState(pos2).createLegacyBlock(), world.isClientSide() ? 11 : 3);
             }
         }
     }
 
     @Override
-    public boolean onDestroyedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+    public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, ItemStack toolStack, boolean willHarvest, FluidState fluid) {
         boolean ret = false;
         TorchSection section = state.getValue(SECTION);
         BlockPos base = pos.below(section.height);
         for (TorchSection otherSection : TorchSection.values()) {
             BlockPos pos2 = base.above(otherSection.height);
-            BlockState state2 = world.getBlockState(pos2);
+            BlockState state2 = level.getBlockState(pos2);
             if (state2.is(this) && state2.getValue(SECTION) == otherSection) {
                 if (player.isCreative()) {
-                    ret |= super.onDestroyedByPlayer(state2, world, pos2, player, willHarvest, fluid);
+                    ret |= super.onDestroyedByPlayer(state, level, pos, player, toolStack, willHarvest, fluid);
                 } else {
-                    playerWillDestroy(world, pos2, state2, player);
+                    playerWillDestroy(level, pos2, state2, player);
                     ret = true;
                 }
             }

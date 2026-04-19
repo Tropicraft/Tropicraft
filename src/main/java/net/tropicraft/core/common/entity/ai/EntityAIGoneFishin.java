@@ -14,7 +14,7 @@ import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 import net.tropicraft.core.common.entity.passive.FishingBobberEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -101,7 +101,7 @@ public class EntityAIGoneFishin extends Goal {
         }
 
         boolean result = false;//state != FISHING_STATE.IDLE || (entity.ticksExisted % 100 == 0 && findWater() != null);
-        if (entity.lastTimeFished < entity.level().getGameTime() && entity.level().random.nextInt(3) == 0) {
+        if (entity.lastTimeFished < entity.level().getGameTime() && rand.nextInt(3) == 0) {
             BlockPos posWater = findWater();
 
             //find close if failed

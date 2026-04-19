@@ -13,7 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import java.util.List;
 import java.util.function.BiPredicate;
 
@@ -83,7 +83,7 @@ public class Util {
 
                 LivingEntity center = ent;
 
-                RandomSource rand = world.random;
+                RandomSource rand = world.getRandom();
 
                 float randLook = rand.nextInt(90) - 45;
                 //int height = 10;
@@ -158,9 +158,9 @@ public class Util {
                 scanSize = scanRange;
                 scanSizeY = scanRange / 2;
             }
-            tryX = Mth.floor(entity.getX()) + (entity.level().random.nextInt(scanSize) - scanSize / 2);
-            int i = tryY + entity.level().random.nextInt(scanSizeY) - (scanSizeY / 2);
-            tryZ = Mth.floor(entity.getZ()) + entity.level().random.nextInt(scanSize) - scanSize / 2;
+            tryX = Mth.floor(entity.getX()) + (entity.level().getRandom().nextInt(scanSize) - scanSize / 2);
+            int i = tryY + entity.level().getRandom().nextInt(scanSizeY) - (scanSizeY / 2);
+            tryZ = Mth.floor(entity.getZ()) + entity.level().getRandom().nextInt(scanSize) - scanSize / 2;
             BlockPos posTry = new BlockPos(tryX, tryY, tryZ);
 
             boolean foundBlock = false;

@@ -30,11 +30,11 @@ public class TropicraftEquipmentAssets {
         @Override
         protected void registerModels(BiConsumer<ResourceKey<EquipmentAsset>, EquipmentClientInfo> output) {
             output.accept(SCALE, EquipmentClientInfo.builder()
-                    .addHumanoidLayers(Tropicraft.location("scale"))
+                    .addHumanoidLayers(Tropicraft.id("scale"))
                     .build()
             );
             output.accept(FIRE, EquipmentClientInfo.builder()
-                    .addHumanoidLayers(Tropicraft.location("fire"))
+                    .addHumanoidLayers(Tropicraft.id("fire"))
                     .build()
             );
 

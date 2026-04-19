@@ -1,11 +1,9 @@
 package net.tropicraft.core.client.entity.render;
 
-import net.minecraft.client.model.HumanoidArmorModel;
-import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -18,11 +16,11 @@ import net.tropicraft.core.common.entity.IkWalker;
 import net.tropicraft.core.common.entity.passive.ShoebillStorkEntity;
 
 public class ShoebillStorkRenderer extends MobRenderer<ShoebillStorkEntity, ShoebillStorkRenderState, ShoebillStorkModel> {
-    private static final ResourceLocation TEXTURE = Tropicraft.location("textures/entity/shoebill_stork.png");
+    private static final Identifier TEXTURE = Tropicraft.id("textures/entity/shoebill_stork.png");
 
     public ShoebillStorkRenderer(EntityRendererProvider.Context context) {
         super(context, new ShoebillStorkModel(context.bakeLayer(TropicraftRenderLayers.SHOEBILL_STORK_LAYER)), 0.3f);
-        addLayer(new ShoebillShoesLayer(this, new HumanoidArmorModel<>(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)), context.getEquipmentRenderer()));
+        addLayer(new ShoebillShoesLayer(this, context));
     }
 
     @Override
@@ -48,7 +46,7 @@ public class ShoebillStorkRenderer extends MobRenderer<ShoebillStorkEntity, Shoe
     }
 
     @Override
-    public ResourceLocation getTextureLocation(ShoebillStorkRenderState state) {
+    public Identifier getTextureLocation(ShoebillStorkRenderState state) {
         return TEXTURE;
     }
 }

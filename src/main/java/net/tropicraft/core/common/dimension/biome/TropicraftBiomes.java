@@ -9,8 +9,13 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.placement.AquaticPlacements;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.Musics;
 import net.minecraft.tags.BiomeTags;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
+import net.minecraft.world.attribute.BackgroundMusic;
+import net.minecraft.world.attribute.EnvironmentAttributeMap;
+import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biome;
@@ -29,10 +34,10 @@ import net.tropicraft.core.common.entity.TropicraftEntities;
 import java.util.function.Consumer;
 
 public final class TropicraftBiomes {
-    public static final int TROPICS_WATER_COLOR = 0x4eecdf;
-    public static final int TROPICS_WATER_FOG_COLOR = 0x041f33;
-    public static final int TROPICS_FOG_COLOR = 0xC0D8FF;
-    public static final int RAINFOREST_FOG_COLOR = 0xbae6c3;
+    public static final int TROPICS_WATER_COLOR = 0xff4eecdf;
+    public static final int TROPICS_WATER_FOG_COLOR = 0xff041f33;
+    public static final int TROPICS_FOG_COLOR = 0xffC0D8FF;
+    public static final int RAINFOREST_FOG_COLOR = 0xffbae6c3;
     public static final int TROPICS_SKY_COLOR = getSkyColor(0.8f);
 
     public static final ResourceKey<Biome> TROPICS = createKey("tropics");
@@ -70,7 +75,6 @@ public final class TropicraftBiomes {
             prov.tag(Tags.Biomes.IS_OCEAN).add(OCEAN, KELP_FOREST);
             prov.tag(Tags.Biomes.IS_AQUATIC).add(OCEAN, KELP_FOREST, RIVER);
 
-            prov.tag(BiomeTags.PLAYS_UNDERWATER_MUSIC).add(OCEAN, KELP_FOREST, RIVER);
             prov.tag(BiomeTags.SPAWNS_WARM_VARIANT_FROGS).add(RAINFOREST, OSA_RAINFOREST, BAMBOO_RAINFOREST);
             prov.tag(BiomeTags.WATER_ON_MAP_OUTLINES).add(OCEAN, KELP_FOREST, RIVER, MANGROVES, OVERGROWN_MANGROVES);
 
@@ -130,7 +134,8 @@ public final class TropicraftBiomes {
                 .temperature(2.0f).downfall(1.5f)
                 .generationSettings(generation.build())
                 .mobSpawnSettings(spawns.build())
-                .specialEffects(defaultAmbience(true).build())
+                .specialEffects(defaultAmbience().build())
+                .putAttributes(defaultAttributes(true))
                 .build();
     }
 
@@ -149,7 +154,8 @@ public final class TropicraftBiomes {
                 .temperature(1.5f).downfall(1.25f)
                 .generationSettings(generation.build())
                 .mobSpawnSettings(spawns.build())
-                .specialEffects(defaultAmbience(false).build())
+                .specialEffects(defaultAmbience().build())
+                .putAttributes(defaultAttributes(false))
                 .build();
     }
 
@@ -196,7 +202,8 @@ public final class TropicraftBiomes {
                 .temperature(1.5f).downfall(2.0f)
                 .generationSettings(generation.build())
                 .mobSpawnSettings(spawns.build())
-                .specialEffects(defaultAmbience(true).build())
+                .specialEffects(defaultAmbience().build())
+                .putAttributes(defaultAttributes(true))
                 .build();
     }
 
@@ -239,7 +246,8 @@ public final class TropicraftBiomes {
                 .temperature(1.5f).downfall(2.0f)
                 .generationSettings(generation.build())
                 .mobSpawnSettings(spawns.build())
-                .specialEffects(defaultAmbience(true).build())
+                .specialEffects(defaultAmbience().build())
+                .putAttributes(defaultAttributes(true))
                 .build();
     }
 
@@ -269,7 +277,9 @@ public final class TropicraftBiomes {
                 .temperature(1.5f).downfall(1.25f)
                 .generationSettings(generation.build())
                 .mobSpawnSettings(spawns.build())
-                .specialEffects(defaultAmbience(false).build())
+                .specialEffects(defaultAmbience().build())
+                .putAttributes(defaultAttributes(false))
+                .setAttribute(EnvironmentAttributes.BACKGROUND_MUSIC, BackgroundMusic.OVERWORLD.withUnderwater(Musics.UNDER_WATER))
                 .build();
     }
 
@@ -293,7 +303,9 @@ public final class TropicraftBiomes {
                 .temperature(1.5f).downfall(1.25f)
                 .generationSettings(generation.build())
                 .mobSpawnSettings(spawns.build())
-                .specialEffects(defaultAmbience(false).build())
+                .specialEffects(defaultAmbience().build())
+                .putAttributes(defaultAttributes(false))
+                .setAttribute(EnvironmentAttributes.BACKGROUND_MUSIC, BackgroundMusic.OVERWORLD.withUnderwater(Musics.UNDER_WATER))
                 .build();
     }
 
@@ -313,7 +325,9 @@ public final class TropicraftBiomes {
                 .temperature(1.5f).downfall(1.25f)
                 .generationSettings(generation.build())
                 .mobSpawnSettings(spawns.build())
-                .specialEffects(defaultAmbience(false).build())
+                .specialEffects(defaultAmbience().build())
+                .putAttributes(defaultAttributes(false))
+                .setAttribute(EnvironmentAttributes.BACKGROUND_MUSIC, BackgroundMusic.OVERWORLD.withUnderwater(Musics.UNDER_WATER))
                 .build();
     }
 
@@ -338,7 +352,8 @@ public final class TropicraftBiomes {
                 .temperature(1.5f).downfall(1.25f)
                 .generationSettings(generation.build())
                 .mobSpawnSettings(spawns.build())
-                .specialEffects(defaultAmbience(true).build())
+                .specialEffects(defaultAmbience().build())
+                .putAttributes(defaultAttributes(true))
                 .build();
     }
 
@@ -378,9 +393,9 @@ public final class TropicraftBiomes {
 
         addMangroveWaterCreatures(spawns);
 
-        BiomeSpecialEffects.Builder ambience = defaultAmbience(true);
-        ambience.waterColor(0x66C197).waterFogColor(0x0C3522);
-        ambience.grassColorOverride(0x6FB21C);
+        BiomeSpecialEffects.Builder ambience = defaultAmbience()
+                .waterColor(0x66C197)
+                .grassColorOverride(0x6FB21C);
 
         spawns.creatureGenerationProbability(0.3f);
 
@@ -390,6 +405,8 @@ public final class TropicraftBiomes {
                 .generationSettings(generation.build())
                 .mobSpawnSettings(spawns.build())
                 .specialEffects(ambience.build())
+                .putAttributes(defaultAttributes(true))
+                .setAttribute(EnvironmentAttributes.WATER_FOG_COLOR, 0xff0C3522)
                 .build();
     }
 
@@ -459,17 +476,21 @@ public final class TropicraftBiomes {
         return spawns;
     }
 
-    private static BiomeSpecialEffects.Builder defaultAmbience(boolean greenFog) {
+    private static BiomeSpecialEffects.Builder defaultAmbience() {
         return new BiomeSpecialEffects.Builder()
-                .fogColor(greenFog ? RAINFOREST_FOG_COLOR : TROPICS_FOG_COLOR)
-                .skyColor(TROPICS_SKY_COLOR)
-                .waterColor(TROPICS_WATER_COLOR)
-                .waterFogColor(TROPICS_WATER_FOG_COLOR);
+                .waterColor(TROPICS_WATER_COLOR);
+    }
+
+    private static EnvironmentAttributeMap.Builder defaultAttributes(boolean greenFog) {
+        return EnvironmentAttributeMap.builder()
+                .set(EnvironmentAttributes.FOG_COLOR, greenFog ? RAINFOREST_FOG_COLOR : TROPICS_FOG_COLOR)
+                .set(EnvironmentAttributes.SKY_COLOR, TROPICS_SKY_COLOR)
+                .set(EnvironmentAttributes.WATER_FOG_COLOR, TROPICS_WATER_FOG_COLOR);
     }
 
     private static int getSkyColor(float temperature) {
         float shift = Mth.clamp(temperature / 3.0f, -1.0f, 1.0f);
-        return Mth.hsvToRgb((224.0f / 360.0f) - shift * 0.05f, 0.5f + shift * 0.1f, 1.0f);
+        return ARGB.opaque(Mth.hsvToRgb((224.0f / 360.0f) - shift * 0.05f, 0.5f + shift * 0.1f, 1.0f));
     }
 
     private static ResourceKey<Biome> createKey(String name) {

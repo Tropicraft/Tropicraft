@@ -19,7 +19,7 @@ public class ScubaHarnessItem extends ScubaArmorItem {
 
     @Override
     public void tickAir(Player player, EquipmentSlot slot, ItemStack stack) {
-        if (player.level().isClientSide || player.getAbilities().instabuild) {
+        if (player.level().isClientSide() || player.getAbilities().instabuild) {
             return;
         }
         int remainingAir = getRemainingAir(stack);

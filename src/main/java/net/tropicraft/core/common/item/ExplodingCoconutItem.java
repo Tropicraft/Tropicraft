@@ -34,7 +34,7 @@ public class ExplodingCoconutItem extends Item {
 
         boolean canPlayerThrow = player.isCreative() || player.canUseGameMasterBlocks() || TropicsConfigs.COMMON.allowExplodingCoconutsByNonOPs.get();
         if (requiresPermission && !canPlayerThrow) {
-            player.displayClientMessage(TropicraftLangKeys.EXPLODING_COCONUT_WARNING.component(), false);
+            player.sendSystemMessage(TropicraftLangKeys.EXPLODING_COCONUT_WARNING.component());
             return InteractionResult.FAIL;
         }
 

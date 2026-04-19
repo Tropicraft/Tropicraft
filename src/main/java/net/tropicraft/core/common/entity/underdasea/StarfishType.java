@@ -1,11 +1,11 @@
 package net.tropicraft.core.common.entity.underdasea;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.tropicraft.Tropicraft;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +46,7 @@ public enum StarfishType implements StringRepresentable {
         this.textures = new ArrayList<>(textures.length);
 
         for (String texture : textures) {
-            this.textures.add(Tropicraft.location("textures/entity/" + texture + ".png"));
+            this.textures.add(Tropicraft.id("textures/entity/" + texture + ".png"));
         }
     }
 
@@ -62,7 +62,7 @@ public enum StarfishType implements StringRepresentable {
 
     private final String unlocalizedName;
     private final String displayName;
-    private final List<ResourceLocation> textures;
+    private final List<Identifier> textures;
     private final float[] layerHeights;
 
     public String getUnlocalizedName() {
@@ -73,7 +73,7 @@ public enum StarfishType implements StringRepresentable {
         return displayName;
     }
 
-    public List<ResourceLocation> getTextures() {
+    public List<Identifier> getTextures() {
         return textures;
     }
 

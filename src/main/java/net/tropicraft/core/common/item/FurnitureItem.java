@@ -70,7 +70,7 @@ public class FurnitureItem<T extends FurnitureEntity> extends Item {
                 return InteractionResult.FAIL;
             }
 
-            if (!level.isClientSide) {
+            if (!level.isClientSide()) {
                 level.addFreshEntity(entity);
             }
 

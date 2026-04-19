@@ -29,7 +29,7 @@ public interface TropicraftJukeboxSongs {
     }
 
     private static void register(BootstrapContext<JukeboxSong> context, ResourceKey<JukeboxSong> key, Holder<SoundEvent> sound, String author, String url, int lengthInSeconds) {
-        String name = RegistrateLangProvider.toEnglishName(key.location().getPath());
+        String name = RegistrateLangProvider.toEnglishName(key.identifier().getPath());
         Component description = Component.literal(name + " - " + author);
         context.register(key, new JukeboxSong(sound, description, lengthInSeconds, 13));
     }

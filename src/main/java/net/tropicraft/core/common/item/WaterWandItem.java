@@ -22,17 +22,16 @@ public class WaterWandItem extends Item {
         double inc = Math.PI / 12;
 
         ItemStack itemstack = player.getItemInHand(hand);
-        EquipmentSlot slot = LivingEntity.getSlotForHand(hand);
 
         player.swing(hand);
-        if (!world.isClientSide) {
+        if (!world.isClientSide()) {
             for (double lat = 0; lat < 2 * Math.PI; lat += inc) {
                 for (double lng = 0; lng < 2 * Math.PI; lng += inc) {
                     for (double len = 1; len < 3; len += 0.5) {
                         int x1 = (int) (Math.cos(lat) * len);
                         int z1 = (int) (Math.sin(lat) * len);
                         int y1 = (int) (Math.sin(lng) * len);
-                        if (!removeWater(world, itemstack, player, new BlockPos(player.blockPosition().offset(x1, y1, z1)), slot)) {
+                        if (!removeWater(world, itemstack, player, new BlockPos(player.blockPosition().offset(x1, y1, z1)), hand)) {
                             break;
                         }
                     }
@@ -43,10 +42,10 @@ public class WaterWandItem extends Item {
         return InteractionResult.PASS;
     }
 
-    private boolean removeWater(Level world, ItemStack itemstack, Player player, BlockPos pos, EquipmentSlot slot) {
-        if (!world.isClientSide) {
+    private boolean removeWater(Level world, ItemStack itemstack, Player player, BlockPos pos, InteractionHand hand) {
+        if (!world.isClientSide()) {
             if (world.getFluidState(pos).is(FluidTags.WATER)) {
-                itemstack.hurtAndBreak(1, player, slot);
+                itemstack.hurtAndBreak(1, player, hand);
                 world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
                 return true;
             }

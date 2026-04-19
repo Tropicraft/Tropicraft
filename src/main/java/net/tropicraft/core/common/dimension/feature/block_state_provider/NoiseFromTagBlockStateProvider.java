@@ -9,6 +9,7 @@ import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,7 +33,7 @@ public final class NoiseFromTagBlockStateProvider extends BlockStateProvider {
     }
 
     @Override
-    public BlockState getState(RandomSource random, BlockPos pos) {
+    public BlockState getState(WorldGenLevel level, RandomSource random, BlockPos pos) {
         double noise = Biome.BIOME_INFO_NOISE.getValue(pos.getX() / 48.0, pos.getZ() / 48.0, false);
         noise = Mth.clamp((1.0 + noise) / 2.0, 0.0, 0.9999);
 

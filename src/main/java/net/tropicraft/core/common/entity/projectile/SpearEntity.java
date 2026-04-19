@@ -13,7 +13,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
@@ -25,7 +25,7 @@ import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.item.TropicraftItems;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class SpearEntity extends AbstractArrow {
     private static final EntityDataAccessor<Byte> ID_LOYALTY = SynchedEntityData.defineId(SpearEntity.class, EntityDataSerializers.BYTE);
@@ -75,7 +75,7 @@ public class SpearEntity extends AbstractArrow {
                 setNoPhysics(true);
                 Vec3 vec3 = entity.getEyePosition().subtract(position());
                 setPosRaw(getX(), getY() + vec3.y * 0.015 * (double) i, getZ());
-                if (level().isClientSide) {
+                if (level().isClientSide()) {
                     yOld = getY();
                 }
 

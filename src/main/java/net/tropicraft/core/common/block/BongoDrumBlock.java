@@ -95,7 +95,7 @@ public final class BongoDrumBlock extends Block {
             return InteractionResult.PASS;
         }
 
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return InteractionResult.SUCCESS;
         }
 
@@ -105,7 +105,7 @@ public final class BongoDrumBlock extends Block {
 
     @Override
     protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, @Nullable Orientation orientation, boolean movedByPiston) {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return;
         }
         boolean flag = level.hasNeighborSignal(pos);

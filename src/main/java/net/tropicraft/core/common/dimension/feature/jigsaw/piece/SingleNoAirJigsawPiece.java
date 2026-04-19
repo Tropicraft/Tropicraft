@@ -5,7 +5,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pools.SinglePoolElement;
@@ -35,16 +35,16 @@ public class SingleNoAirJigsawPiece extends SinglePoolElement {
 
     private final boolean unprojected;
 
-    public SingleNoAirJigsawPiece(Either<ResourceLocation, StructureTemplate> template, Holder<StructureProcessorList> processors, StructureTemplatePool.Projection placementBehaviour, Optional<LiquidSettings> overrideLiquidSettings, boolean unproject) {
+    public SingleNoAirJigsawPiece(Either<Identifier, StructureTemplate> template, Holder<StructureProcessorList> processors, StructureTemplatePool.Projection placementBehaviour, Optional<LiquidSettings> overrideLiquidSettings, boolean unproject) {
         super(template, processors, placementBehaviour, overrideLiquidSettings);
         unprojected = unproject;
     }
 
-    public static Function<StructureTemplatePool.Projection, SingleNoAirJigsawPiece> create(ResourceLocation id, Holder<StructureProcessorList> processors, boolean unprojected) {
+    public static Function<StructureTemplatePool.Projection, SingleNoAirJigsawPiece> create(Identifier id, Holder<StructureProcessorList> processors, boolean unprojected) {
         return placementBehaviour -> new SingleNoAirJigsawPiece(Either.left(id), processors, placementBehaviour, Optional.empty(), unprojected);
     }
 
-    public static Function<StructureTemplatePool.Projection, SingleNoAirJigsawPiece> create(ResourceLocation id) {
+    public static Function<StructureTemplatePool.Projection, SingleNoAirJigsawPiece> create(Identifier id) {
         return create(id, EMPTY_PROCESSOR_LIST, false);
     }
 

@@ -14,9 +14,9 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.HumanoidArm;
 import net.tropicraft.core.client.entity.render.state.VMonkeyRenderState;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
-public class VMonkeyModel extends EntityModel<VMonkeyRenderState> implements ArmedModel {
+public class VMonkeyModel extends EntityModel<VMonkeyRenderState> implements ArmedModel<VMonkeyRenderState> {
     private final ModelPart body;
     private final ModelPart lLegUpper;
     private final ModelPart rLegUpper;
@@ -266,7 +266,7 @@ public class VMonkeyModel extends EntityModel<VMonkeyRenderState> implements Arm
     }
 
     @Override
-    public void translateToHand(HumanoidArm side, PoseStack stack) {
-        stack.translate(0.09375f, 0.1875f, 0.0f);
+    public void translateToHand(VMonkeyRenderState state, HumanoidArm arm, PoseStack poseStack) {
+        poseStack.translate(0.09375f, 0.1875f, 0.0f);
     }
 }

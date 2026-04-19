@@ -31,7 +31,7 @@ import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.projectile.PoisonBlotEntity;
 import net.tropicraft.core.common.sound.Sounds;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class TreeFrogEntity extends PathfinderMob implements Enemy, RangedAttackMob {
 
@@ -155,7 +155,7 @@ public class TreeFrogEntity extends PathfinderMob implements Enemy, RangedAttack
 
     @Override
     public void performRangedAttack(LivingEntity entity, float dist) {
-        if (dist < 4.0f && !level().isClientSide && attackTime == 0 && level().getDifficulty() != Difficulty.PEACEFUL) {
+        if (dist < 4.0f && !level().isClientSide() && attackTime == 0 && level().getDifficulty() != Difficulty.PEACEFUL) {
             double d = entity.getX() - getX();
             double d1 = entity.getZ() - getZ();
 

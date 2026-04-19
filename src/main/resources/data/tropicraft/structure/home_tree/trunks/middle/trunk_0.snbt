@@ -1,5 +1,5 @@
 {
-    DataVersion: 4440,
+    DataVersion: 4790,
     size: [17, 6, 17],
     data: [
         {pos: [0, 0, 8], state: "tropicraft:mahogany_log{axis:y}"},

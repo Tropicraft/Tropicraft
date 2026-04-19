@@ -7,19 +7,22 @@ import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.providers.DataProviderInitializer;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateTagsProvider;
-import net.minecraft.Util;
 import net.minecraft.client.resources.model.BlockStateDefinitions;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.server.packs.repository.PackSource;
+import net.minecraft.util.Util;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.timeline.Timeline;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -35,14 +38,14 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
-import net.neoforged.neoforgespi.locating.IModFile;
-import net.tropicraft.core.client.EmbeddedPackSource;
 import net.tropicraft.core.client.TropicraftEquipmentAssets;
 import net.tropicraft.core.client.data.TropicraftLangKeys;
 import net.tropicraft.core.client.entity.render.BambooItemFrameRenderer;
 import net.tropicraft.core.common.TropicraftPackRegistries;
 import net.tropicraft.core.common.TropicsConfigs;
 import net.tropicraft.core.common.attribute.TropicraftAttributes;
+import net.tropicraft.core.common.attribute.TropicraftEnvironmentAttributes;
+import net.tropicraft.core.common.attribute.TropicraftTimelines;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.command.TropicraftCommands;
 import net.tropicraft.core.common.command.debug.MapBiomesCommand;
@@ -85,12 +88,13 @@ public class Tropicraft {
     public static final String ID = "tropicraft";
 
     public static final ProviderType<RegistrateTagsProvider.Impl<Biome>> BIOME_TAGS = ProviderType.registerDynamicTag("tags/biome", "biome", Registries.BIOME);
+    public static final ProviderType<RegistrateTagsProvider.Impl<Timeline>> TIMELINE_TAGS = ProviderType.registerDynamicTag("tags/timeline", "timeline", Registries.TIMELINE);
 
     public static final ResourceKey<CreativeModeTab> CREATIVE_TAB = resourceKey(Registries.CREATIVE_MODE_TAB, ID);
 
     private static final Supplier<Registrate> REGISTRATE = Suppliers.memoize(() -> {
         Registrate registrate = Registrate.create(ID)
-                .defaultCreativeTab(CREATIVE_TAB.location().getPath(), builder -> builder.icon(() -> new ItemStack(TropicraftBlocks.PALM_SAPLING.get()))).build()
+                .defaultCreativeTab(CREATIVE_TAB.identifier().getPath(), builder -> builder.icon(() -> new ItemStack(TropicraftBlocks.PALM_SAPLING.get()))).build()
                 .addDataGenerator(ProviderType.LANG, TropicraftLangKeys::generate)
                 .addDataGenerator(ProviderType.GENERIC_CLIENT, prov -> prov.add(data ->
                         new TropicraftEquipmentAssets.Provider(data.output()))
@@ -101,7 +105,9 @@ public class Tropicraft {
         initializer.addDependency(ProviderType.ADVANCEMENT, ProviderType.DYNAMIC);
         initializer.addDependency(ProviderType.RECIPE_RUNNER, ProviderType.DYNAMIC);
         initializer.addDependency(BIOME_TAGS, ProviderType.DYNAMIC);
+        initializer.addDependency(TIMELINE_TAGS, ProviderType.DYNAMIC);
         TropicraftBiomes.setup(registrate);
+        TropicraftTimelines.bootstrapTags(registrate);
         return registrate;
     });
 
@@ -109,12 +115,12 @@ public class Tropicraft {
         return REGISTRATE.get();
     }
 
-    public static ResourceLocation location(String path) {
-        return ResourceLocation.fromNamespaceAndPath(ID, path);
+    public static Identifier id(String path) {
+        return Identifier.fromNamespaceAndPath(ID, path);
     }
 
     public static <T> ResourceKey<T> resourceKey(ResourceKey<? extends Registry<T>> registry, String path) {
-        return ResourceKey.create(registry, location(path));
+        return ResourceKey.create(registry, id(path));
     }
 
     public Tropicraft(ModContainer container, IEventBus modBus) {
@@ -127,6 +133,7 @@ public class Tropicraft {
         // Registry objects
         Sounds.REGISTER.register(modBus);
         TropicraftAttributes.REGISTER.register(modBus);
+        TropicraftEnvironmentAttributes.REGISTER.register(modBus);
         TropicraftCarvers.CARVERS.register(modBus);
         TropicraftFoliagePlacers.REGISTER.register(modBus);
         TropicraftTrunkPlacers.REGISTER.register(modBus);
@@ -143,12 +150,9 @@ public class Tropicraft {
 
         modBus.addListener(TropicraftItems::onItemRegister);
 
-        IModFile modFile = container.getModInfo().getOwningFile().getFile();
-        modBus.addListener((AddPackFindersEvent event) -> {
-            if (event.getPackType() == PackType.CLIENT_RESOURCES) {
-                event.addRepositorySource(new EmbeddedPackSource(modFile, PackType.CLIENT_RESOURCES, "tropicraft_texture_update", TropicraftLangKeys.TEXTURE_UPDATE_PACK.component()));
-            }
-        });
+        modBus.addListener((AddPackFindersEvent event) ->
+                event.addPackFinders(id("resourcepacks/tropicraft_texture_update"), PackType.CLIENT_RESOURCES, TropicraftLangKeys.TEXTURE_UPDATE_PACK.component(), PackSource.BUILT_IN, false, Pack.Position.TOP)
+        );
     }
 
     private static final Pattern QUALIFIER = Pattern.compile("-\\w+\\+\\d+");
@@ -187,7 +191,7 @@ public class Tropicraft {
         TropicraftCommands.register(dispatcher);
 
         // Dev only debug!
-        if (!FMLEnvironment.production) {
+        if (!FMLEnvironment.isProduction()) {
             MapBiomesCommand.register(dispatcher);
         }
     }

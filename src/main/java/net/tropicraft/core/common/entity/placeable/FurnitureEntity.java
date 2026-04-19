@@ -115,12 +115,12 @@ public abstract class FurnitureEntity extends Entity {
     }
 
     @Override
-    public InteractionResult interact(Player pPlayer, InteractionHand pHand) {
-        if (invulnerablityCheck(pPlayer, pHand) == InteractionResult.SUCCESS) {
+    public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
+        if (invulnerablityCheck(player, hand) == InteractionResult.SUCCESS) {
             return InteractionResult.SUCCESS;
         }
 
-        return super.interact(pPlayer, pHand);
+        return super.interact(player, hand, location);
     }
 
     public InteractionResult invulnerablityCheck(Player pPlayer, InteractionHand pHand) {
@@ -146,7 +146,7 @@ public abstract class FurnitureEntity extends Entity {
             return false;
         }
 
-        if (!level().isClientSide && isAlive()) {
+        if (!level().isClientSide() && isAlive()) {
             setForwardDirection(-getForwardDirection());
             setTimeSinceHit(10);
             setDamage(getDamage() + amount * 10.0f);

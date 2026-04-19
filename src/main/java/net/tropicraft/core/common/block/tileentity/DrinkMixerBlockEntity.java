@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.block.tileentity;
 
 import com.mojang.logging.LogUtils;
+import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -13,6 +14,7 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -26,19 +28,19 @@ import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.DrinkIngredient;
 import net.tropicraft.core.common.network.message.ClientboundMixerInventoryPacket;
 import net.tropicraft.core.common.network.message.ClientboundMixerStartPacket;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock {
-    private static final Logger LOGGER = LogUtils.getLogger();
-
     /**
      * Number of ticks to mix
      */
     private static final int TICKS_TO_MIX = 4 * 20;
+
+    private static final Codec<List<ItemStack>> INGREDIENTS_CODEC = ItemStack.CODEC.listOf();
 
     /**
      * Number of ticks the mixer has been mixin'
@@ -60,7 +62,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         ticks = input.getIntOr("MixTicks", 0);
         mixing = input.getBooleanOr("Mixing", false);
 
-        setDrinkIngredients(input.read("ingredients", ItemStack.SINGLE_ITEM_CODEC.listOf()).orElse(List.of()));
+        setDrinkIngredients(input.read("ingredients", INGREDIENTS_CODEC).orElse(List.of()));
         result = input.read("Result", ItemStack.CODEC).orElse(ItemStack.EMPTY);
     }
 
@@ -71,7 +73,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         output.putInt("MixTicks", ticks);
         output.putBoolean("Mixing", mixing);
 
-        output.store("ingredients", ItemStack.SINGLE_ITEM_CODEC.listOf(), drinkIngredients);
+        output.store("ingredients", INGREDIENTS_CODEC, drinkIngredients);
 
         if (!result.isEmpty()) {
             output.store("Result", ItemStack.CODEC, result);
@@ -114,7 +116,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         ticks = 0;
         mixing = true;
         if (level instanceof ServerLevel serverLevel) {
-            PacketDistributor.sendToPlayersTrackingChunk(serverLevel, new ChunkPos(getBlockPos()), new ClientboundMixerStartPacket(getBlockPos()));
+            PacketDistributor.sendToPlayersTrackingChunk(serverLevel, ChunkPos.containing(getBlockPos()), new ClientboundMixerStartPacket(getBlockPos()));
         }
         return true;
     }
@@ -152,9 +154,9 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
         dropItem(result, at);
 
         for (ItemStack ingredient : drinkIngredients) {
-            ItemStack container = ingredient.getCraftingRemainder();
-            if (!container.isEmpty()) {
-                dropItem(container, at);
+            ItemStackTemplate container = ingredient.getCraftingRemainder();
+            if (container != null) {
+                dropItem(container.create(), at);
             }
         }
         drinkIngredients.clear();
@@ -208,7 +210,7 @@ public class DrinkMixerBlockEntity extends BlockEntity implements IMachineBlock 
 
     protected void syncInventory() {
         if (level instanceof ServerLevel serverLevel) {
-            PacketDistributor.sendToPlayersTrackingChunk(serverLevel, new ChunkPos(getBlockPos()), new ClientboundMixerInventoryPacket(this));
+            PacketDistributor.sendToPlayersTrackingChunk(serverLevel, ChunkPos.containing(getBlockPos()), new ClientboundMixerInventoryPacket(this));
         }
         setChanged();
     }

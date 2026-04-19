@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.dimension.feature;
 
 import com.mojang.datafixers.util.Pair;
+import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
@@ -23,7 +24,6 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomBooleanFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomFeatureConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.SimpleRandomFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
@@ -92,14 +92,6 @@ public class TropicraftFeatureUtil {
         return registerRandom(context, key, Arrays.stream(choices).map(placedFeatures::getOrThrow).collect(Collectors.toList()));
     }
 
-    public static RandomPatchConfiguration randomPatch(Supplier<? extends Block> block) {
-        return randomPatch(BlockStateProvider.simple(block.get()));
-    }
-
-    public static RandomPatchConfiguration randomPatch(BlockStateProvider blockStateProvider) {
-        return FeatureUtils.simplePatchConfiguration(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(blockStateProvider));
-    }
-
     public static OreConfiguration ore(int blobSize, Supplier<? extends Block> block) {
         // TODO add deepslate / tropicraft equivalent replacement here
         RuleTest stoneOreReplaceables = new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES);
@@ -139,6 +131,10 @@ public class TropicraftFeatureUtil {
     }
 
     public static boolean isSoil(LevelAccessor level, BlockPos pos) {
-        return level.getBlockState(pos).is(BlockTags.DIRT);
+        return level.getBlockState(pos).is(BlockTags.SUBSTRATE_OVERWORLD);
+    }
+
+    public static SimpleBlockConfiguration simpleBlock(BlockEntry<?> block) {
+        return new SimpleBlockConfiguration(stateProvider(block));
     }
 }

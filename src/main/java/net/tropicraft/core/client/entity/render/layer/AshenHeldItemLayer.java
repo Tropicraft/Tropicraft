@@ -4,9 +4,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.entity.HumanoidArm;
@@ -14,7 +15,7 @@ import net.tropicraft.core.client.entity.model.AshenModel;
 import net.tropicraft.core.client.entity.render.state.AshenRenderState;
 import net.tropicraft.core.common.entity.hostile.AshenEntity;
 
-public class AshenHeldItemLayer<T extends AshenRenderState, M extends EntityModel<T> & ArmedModel> extends ItemInHandLayer<T, M> {
+public class AshenHeldItemLayer<T extends AshenRenderState, M extends EntityModel<T> & ArmedModel<T>> extends ItemInHandLayer<T, M> {
     private final AshenModel model;
 
     public AshenHeldItemLayer(RenderLayerParent<T, M> renderer, AshenModel model) {
@@ -23,9 +24,9 @@ public class AshenHeldItemLayer<T extends AshenRenderState, M extends EntityMode
     }
 
     @Override
-    public void render(PoseStack stack, MultiBufferSource bufferSource, int lightCoords, T state, float yRot, float xRot) {
-        ItemStackRenderState blowGunHand = state.getMainHandItem();
-        ItemStackRenderState daggerHand = state.mainArm == HumanoidArm.RIGHT ? state.leftHandItem : state.rightHandItem;
+    public void submit(PoseStack stack, SubmitNodeCollector submitNodeCollector, int lightCoords, T state, float yRot, float xRot) {
+        ItemStackRenderState blowGunHand = state.getMainHandItemState();
+        ItemStackRenderState daggerHand = state.mainArm == HumanoidArm.RIGHT ? state.leftHandItemState : state.rightHandItemState;
 
         if (!blowGunHand.isEmpty() || !daggerHand.isEmpty()) {
             stack.pushPose();
@@ -37,15 +38,15 @@ public class AshenHeldItemLayer<T extends AshenRenderState, M extends EntityMode
             }
 
             HumanoidArm side = state.mainArm;
-            renderHeldItem(state, blowGunHand, side, stack, bufferSource, lightCoords);
+            submitHeldItem(state, blowGunHand, side, stack, submitNodeCollector, lightCoords);
             side = side.getOpposite();
-            renderHeldItem(state, daggerHand, side, stack, bufferSource, lightCoords);
+            submitHeldItem(state, daggerHand, side, stack, submitNodeCollector, lightCoords);
 
             stack.popPose();
         }
     }
 
-    private void renderHeldItem(AshenRenderState state, ItemStackRenderState item, HumanoidArm handSide, PoseStack stack, MultiBufferSource buffer, int combinedLightIn) {
+    private void submitHeldItem(AshenRenderState state, ItemStackRenderState item, HumanoidArm handSide, PoseStack stack, SubmitNodeCollector submitNodeCollector, int combinedLightIn) {
         if (item.isEmpty()) {
             return;
         }
@@ -62,7 +63,7 @@ public class AshenHeldItemLayer<T extends AshenRenderState, M extends EntityMode
                 stack.mulPose(Axis.ZP.rotationDegrees(10.0f));
 
                 stack.scale(scale, scale, scale);
-                item.render(stack, buffer, combinedLightIn, OverlayTexture.NO_OVERLAY);
+                item.submit(stack, submitNodeCollector, combinedLightIn, OverlayTexture.NO_OVERLAY, EntityRenderState.NO_OUTLINE);
                 stack.popPose();
             } else {
                 stack.pushPose();
@@ -72,7 +73,7 @@ public class AshenHeldItemLayer<T extends AshenRenderState, M extends EntityMode
                 stack.mulPose(Axis.YP.rotationDegrees(90.0f));
                 stack.scale(scale, scale, scale);
 
-                item.render(stack, buffer, combinedLightIn, OverlayTexture.NO_OVERLAY);
+                item.submit(stack, submitNodeCollector, combinedLightIn, OverlayTexture.NO_OVERLAY, EntityRenderState.NO_OUTLINE);
                 stack.popPose();
             }
         }

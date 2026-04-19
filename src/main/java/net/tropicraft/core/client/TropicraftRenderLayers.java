@@ -1,6 +1,6 @@
 package net.tropicraft.core.client;
 
-import net.minecraft.client.model.CowModel;
+import net.minecraft.client.model.animal.cow.CowModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.neoforged.api.distmarker.Dist;
@@ -91,8 +91,8 @@ public class TropicraftRenderLayers {
     public static ModelLayerLocation MAN_O_WAR_GEL_LAYER;
     public static ModelLayerLocation BAMBOO_MUG;
     public static ModelLayerLocation BAMBOO_MUG_LIQUID;
-    public static ModelLayerLocation EIHMACHINE_LAYER = new ModelLayerLocation(Tropicraft.location("drink_mixer"), "main");
-    public static ModelLayerLocation AIRCOMPRESSOR_LAYER = new ModelLayerLocation(Tropicraft.location("air_compressor"), "main");
+    public static ModelLayerLocation EIHMACHINE_LAYER = new ModelLayerLocation(Tropicraft.id("drink_mixer"), "main");
+    public static ModelLayerLocation AIRCOMPRESSOR_LAYER = new ModelLayerLocation(Tropicraft.id("air_compressor"), "main");
     public static ModelLayerLocation BASILISK_LIZARD_LAYER;
     public static ModelLayerLocation CUBERA_LAYER;
     public static ModelLayerLocation FIDDLER_CRAB_LAYER;
@@ -197,7 +197,7 @@ public class TropicraftRenderLayers {
     }
 
     private static ModelLayerLocation registerLayer(String id, String layer, Supplier<LayerDefinition> layerDefinition, EntityRenderersEvent.RegisterLayerDefinitions event) {
-        ModelLayerLocation modelLayer = new ModelLayerLocation(Tropicraft.location(id), layer);
+        ModelLayerLocation modelLayer = new ModelLayerLocation(Tropicraft.id(id), layer);
         event.registerLayerDefinition(modelLayer, layerDefinition);
         return modelLayer;
     }

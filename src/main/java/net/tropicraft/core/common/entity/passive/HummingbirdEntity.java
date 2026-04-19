@@ -39,7 +39,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import java.util.EnumSet;
 
 public class HummingbirdEntity extends Animal implements FlyingAnimal {
@@ -53,8 +53,8 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
         super(type, world);
 
         moveControl = new FlyingMoveControl(this, 20, true);
-        setPathfindingMalus(PathType.DANGER_FIRE, -1.0f);
-        setPathfindingMalus(PathType.DAMAGE_FIRE, -1.0f);
+        setPathfindingMalus(PathType.FIRE_IN_NEIGHBOR, -1.0f);
+        setPathfindingMalus(PathType.FIRE, -1.0f);
         setPathfindingMalus(PathType.COCOA, -1.0f);
         setPathfindingMalus(PathType.WATER, -1.0f);
         setPathfindingMalus(PathType.FENCE, -1.0f);

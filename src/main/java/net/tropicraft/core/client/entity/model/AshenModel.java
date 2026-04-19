@@ -13,7 +13,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import net.tropicraft.core.client.entity.render.state.AshenRenderState;
 
-public class AshenModel extends EntityModel<AshenRenderState> implements ArmedModel {
+public class AshenModel extends EntityModel<AshenRenderState> implements ArmedModel<AshenRenderState> {
     public final ModelPart rightLeg;
     public final ModelPart leftLeg;
     public final ModelPart body;
@@ -109,7 +109,7 @@ public class AshenModel extends EntityModel<AshenRenderState> implements ArmedMo
     }
 
     @Override
-    public void translateToHand(HumanoidArm side, PoseStack stack) {
-        stack.translate(0.09375f, 0.1875f, 0.0f);
+    public void translateToHand(AshenRenderState state, HumanoidArm arm, PoseStack poseStack) {
+        poseStack.translate(0.09375f, 0.1875f, 0.0f);
     }
 }

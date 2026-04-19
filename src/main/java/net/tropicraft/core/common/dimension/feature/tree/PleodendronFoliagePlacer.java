@@ -6,6 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.level.LevelSimulatedReader;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
@@ -30,12 +31,12 @@ public class PleodendronFoliagePlacer extends FoliagePlacer {
     }
 
     @Override
-    protected void createFoliage(LevelSimulatedReader world, FoliageSetter setter, RandomSource random, TreeConfiguration config, int offset, FoliageAttachment foliage, int y, int radius, int start) {
-        int i = foliage.doubleTrunk() ? offset : 2;
+    protected void createFoliage(WorldGenLevel level, FoliageSetter foliageSetter, RandomSource random, TreeConfiguration config, int treeHeight, FoliageAttachment foliageAttachment, int foliageHeight, int leafRadius, int offset) {
+        int i = foliageAttachment.doubleTrunk() ? offset : 2;
 
-        for (int j = start; j >= start - i; --j) {
-            int k = y + foliage.radiusOffset() + 1 - j;
-            placeLeavesRow(world, setter, random, config, foliage.pos(), k, j, foliage.doubleTrunk());
+        for (int j = offset; j >= offset - i; --j) {
+            int k = foliageHeight + foliageAttachment.radiusOffset() + 1 - j;
+            placeLeavesRow(level, foliageSetter, random, config, foliageAttachment.pos(), k, j, foliageAttachment.doubleTrunk());
         }
     }
 

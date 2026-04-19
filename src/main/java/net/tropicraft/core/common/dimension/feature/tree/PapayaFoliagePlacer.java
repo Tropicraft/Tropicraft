@@ -8,6 +8,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.level.LevelSimulatedRW;
 import net.minecraft.world.level.LevelSimulatedReader;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
@@ -29,11 +30,11 @@ public final class PapayaFoliagePlacer extends FoliagePlacer {
     }
 
     @Override
-    protected void createFoliage(LevelSimulatedReader world, FoliageSetter setter, RandomSource random, TreeConfiguration config, int pMaxFreeTreeHeight, FoliageAttachment node, int pFoliageHeight, int radius, int pOffset) {
+    protected void createFoliage(WorldGenLevel level, FoliageSetter foliageSetter, RandomSource random, TreeConfiguration config, int treeHeight, FoliageAttachment foliageAttachment, int foliageHeight, int leafRadius, int offset) {
         // Top + shape
-        placeLeavesRow(world, setter, random, config, node.pos(), 1, 1, node.doubleTrunk());
+        placeLeavesRow(level, foliageSetter, random, config, foliageAttachment.pos(), 1, 1, foliageAttachment.doubleTrunk());
 
-        BlockPos origin = node.pos();
+        BlockPos origin = foliageAttachment.pos();
         // Center leaves
         for (int x = -1; x <= 1; x++) {
             for (int z = -1; z <= 1; z++) {
@@ -43,23 +44,23 @@ public final class PapayaFoliagePlacer extends FoliagePlacer {
                     }
 
                     BlockPos local = origin.offset(x, y, z);
-                    set(world, local, random, config);
+                    set(level, local, random, config);
                 }
             }
         }
 
         // Arms
         for (Direction direction : DIRECTIONS) {
-            set(world, origin.relative(direction, 2), random, config);
-            set(world, origin.relative(direction, 3), random, config);
-            set(world, origin.relative(direction, 3).below(), random, config);
-            set(world, origin.relative(direction, 4).below(), random, config);
+            set(level, origin.relative(direction, 2), random, config);
+            set(level, origin.relative(direction, 3), random, config);
+            set(level, origin.relative(direction, 3).below(), random, config);
+            set(level, origin.relative(direction, 4).below(), random, config);
         }
     }
 
-    private static void set(LevelSimulatedReader world, BlockPos pos, RandomSource random, TreeConfiguration config) {
-        if (TreeFeature.isAirOrLeaves(world, pos)) {
-            ((LevelSimulatedRW) world).setBlock(pos, config.foliageProvider.getState(random, pos), 19);
+    private static void set(WorldGenLevel level, BlockPos pos, RandomSource random, TreeConfiguration config) {
+        if (TreeFeature.isAirOrLeaves(level, pos)) {
+            level.setBlock(pos, config.foliageProvider.getState(level, random, pos), 19);
         }
     }
 

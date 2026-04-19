@@ -9,6 +9,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelSimulatedRW;
 import net.minecraft.world.level.LevelSimulatedReader;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -42,30 +43,30 @@ public class SmallMangroveTrunkPlacer extends TrunkPlacer {
     }
 
     @Override
-    public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> acceptor, RandomSource random, int height, BlockPos origin, TreeConfiguration config) {
-        if (world.isStateAtPosition(origin.below(), b -> b.is(Blocks.GRASS_BLOCK))) {
-            setDirtAt(world, acceptor, random, origin.below(), config);
+    public List<FoliagePlacer.FoliageAttachment> placeTrunk(WorldGenLevel level, BiConsumer<BlockPos, BlockState> trunkSetter, RandomSource random, int treeHeight, BlockPos origin, TreeConfiguration config) {
+        if (level.isStateAtPosition(origin.below(), b -> b.is(Blocks.GRASS_BLOCK))) {
+            placeBelowTrunkBlock(level, trunkSetter, random, origin.below(), config);
         }
 
-        for (int i = 0; i < height; ++i) {
-            placeLog(world, acceptor, random, origin.above(i), config);
+        for (int i = 0; i < treeHeight; ++i) {
+            placeLog(level, trunkSetter, random, origin.above(i), config);
         }
 
-        generateRoots((LevelSimulatedRW) world, random, origin, 0);
+        generateRoots(level, random, origin, 0);
 
-        return ImmutableList.of(new FoliagePlacer.FoliageAttachment(origin.above(height - 1), 1, false));
+        return ImmutableList.of(new FoliagePlacer.FoliageAttachment(origin.above(treeHeight - 1), 1, false));
     }
 
-    private void generateRoots(LevelSimulatedRW world, RandomSource random, BlockPos origin, int depth) {
+    private void generateRoots(LevelSimulatedRW level, RandomSource random, BlockPos origin, int depth) {
         for (Direction direction : Direction.Plane.HORIZONTAL) {
             BlockPos offset = origin.relative(direction);
 
-            if (world.isStateAtPosition(offset, BlockBehaviour.BlockStateBase::isAir)) {
-                if (world.isStateAtPosition(offset.below(), BlockBehaviour.BlockStateBase::isSolid)) {
-                    world.setBlock(offset, rootsBlock.defaultBlockState(), 19);
+            if (level.isStateAtPosition(offset, BlockBehaviour.BlockStateBase::isAir)) {
+                if (level.isStateAtPosition(offset.below(), BlockBehaviour.BlockStateBase::isSolid)) {
+                    level.setBlock(offset, rootsBlock.defaultBlockState(), 19);
 
                     if (depth < 2 && random.nextInt(depth + 2) == 0) {
-                        generateRoots(world, random, offset, depth + 1);
+                        generateRoots(level, random, offset, depth + 1);
                     }
                 }
             }

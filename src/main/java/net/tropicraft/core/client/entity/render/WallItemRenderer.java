@@ -2,11 +2,13 @@ package net.tropicraft.core.client.entity.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.entity.state.ItemFrameRenderState;
 import net.minecraft.client.renderer.item.ItemModelResolver;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.tropicraft.core.common.entity.placeable.WallItemEntity;
@@ -33,7 +35,7 @@ public class WallItemRenderer extends EntityRenderer<WallItemEntity, ItemFrameRe
     }
 
     @Override
-    public void render(ItemFrameRenderState state, PoseStack stack, MultiBufferSource bufferSource, int lightCoords) {
+    public void submit(ItemFrameRenderState state, PoseStack stack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
         stack.pushPose();
 
         if (state.direction.getAxis().isHorizontal()) {
@@ -44,10 +46,10 @@ public class WallItemRenderer extends EntityRenderer<WallItemEntity, ItemFrameRe
 
         stack.mulPose(Axis.ZP.rotationDegrees(state.rotation * 360 / 8.0f));
         if (!state.item.isEmpty()) {
-            state.item.render(stack, bufferSource, lightCoords, OverlayTexture.NO_OVERLAY);
+            state.item.submit(stack, submitNodeCollector, state.lightCoords, OverlayTexture.NO_OVERLAY, EntityRenderState.NO_OUTLINE);
         }
         stack.popPose();
 
-        super.render(state, stack, bufferSource, lightCoords);
+        super.submit(state, stack, submitNodeCollector, camera);
     }
 }

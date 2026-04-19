@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.tropicraft.core.common.block.tileentity.VolcanoBlockEntity;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class VolcanoBlock extends BaseEntityBlock {
     public static final MapCodec<VolcanoBlock> CODEC = simpleCodec(VolcanoBlock::new);

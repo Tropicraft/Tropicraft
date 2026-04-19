@@ -81,7 +81,7 @@ public final class CoffeeBushBlock extends CropBlock {
             for (height = 1; worldIn.getBlockState(ground = ground.below()).is(this); ++height) ;
 
             BlockState blockState = worldIn.getBlockState(ground);
-            if (height < MAX_HEIGHT && worldIn.random.nextInt(blockState.getBlock().isFertile(blockState, worldIn, ground) ? GROWTH_RATE_FERTILE : GROWTH_RATE_INFERTILE) == 0) {
+            if (height < MAX_HEIGHT && rand.nextInt(blockState.getBlock().isFertile(blockState, worldIn, ground) ? GROWTH_RATE_FERTILE : GROWTH_RATE_INFERTILE) == 0) {
                 worldIn.setBlockAndUpdate(pos.above(), defaultBlockState());
             }
         }
@@ -96,7 +96,7 @@ public final class CoffeeBushBlock extends CropBlock {
             int count = 1 + player.getRandom().nextInt(3);
             ItemStack stack = new ItemStack(TropicraftItems.RAW_COFFEE_BEAN.get(), count);
             popResource(world, pos, stack);
-            return world.isClientSide ? InteractionResult.SUCCESS : InteractionResult.CONSUME;
+            return world.isClientSide() ? InteractionResult.SUCCESS : InteractionResult.CONSUME;
         }
         return InteractionResult.PASS;
     }
@@ -108,6 +108,6 @@ public final class CoffeeBushBlock extends CropBlock {
 
     @Override
     protected boolean mayPlaceOn(BlockState state, BlockGetter worldIn, BlockPos pos) {
-        return state.is(Blocks.GRASS_BLOCK) || state.is(BlockTags.DIRT) || state.is(Blocks.FARMLAND) || state.is(this);
+        return state.is(BlockTags.SUBSTRATE_OVERWORLD) || state.is(Blocks.FARMLAND) || state.is(this);
     }
 }

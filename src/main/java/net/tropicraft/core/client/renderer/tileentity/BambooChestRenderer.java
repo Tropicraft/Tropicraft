@@ -3,27 +3,19 @@ package net.tropicraft.core.client.renderer.tileentity;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.ChestRenderer;
-import net.minecraft.client.resources.model.Material;
-import net.minecraft.world.level.block.state.properties.ChestType;
+import net.minecraft.client.renderer.blockentity.state.ChestRenderState;
+import net.minecraft.client.resources.model.sprite.SpriteId;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.block.tileentity.BambooChestBlockEntity;
+import org.jspecify.annotations.Nullable;
 
 public class BambooChestRenderer extends ChestRenderer<BambooChestBlockEntity> {
+    public static final SpriteId SPRITE = sprite("bamboo");
+    public static final SpriteId LEFT_SPRITE = sprite("bamboo_left");
+    public static final SpriteId RIGHT_SPRITE = sprite("bamboo_right");
 
-    public static final Material BAMBOO_CHEST_MATERIAL = getChestMaterial("bamboo");
-    public static final Material BAMBOO_CHEST_LEFT_MATERIAL = getChestMaterial("bamboo_left");
-    public static final Material BAMBOO_CHEST_RIGHT_MATERIAL = getChestMaterial("bamboo_right");
-
-    private static Material getChestMaterial(ChestType chestType, Material normalMaterial, Material leftMaterial, Material rightMaterial) {
-        return switch (chestType) {
-            case LEFT -> leftMaterial;
-            case RIGHT -> rightMaterial;
-            default -> normalMaterial;
-        };
-    }
-
-    private static Material getChestMaterial(String chestName) {
-        return new Material(Sheets.CHEST_SHEET, Tropicraft.location("entity/chest/" + chestName));
+    private static SpriteId sprite(String chestName) {
+        return new SpriteId(Sheets.CHEST_SHEET, Tropicraft.id("entity/chest/" + chestName));
     }
 
     public BambooChestRenderer(BlockEntityRendererProvider.Context context) {
@@ -31,7 +23,11 @@ public class BambooChestRenderer extends ChestRenderer<BambooChestBlockEntity> {
     }
 
     @Override
-    protected Material getMaterial(BambooChestBlockEntity tileEntity, ChestType chestType) {
-        return getChestMaterial(chestType, BAMBOO_CHEST_MATERIAL, BAMBOO_CHEST_LEFT_MATERIAL, BAMBOO_CHEST_RIGHT_MATERIAL);
+    protected @Nullable SpriteId getCustomSprite(BambooChestBlockEntity blockEntity, ChestRenderState renderState) {
+        return switch (renderState.type) {
+            case LEFT -> LEFT_SPRITE;
+            case RIGHT -> RIGHT_SPRITE;
+            default -> SPRITE;
+        };
     }
 }

@@ -2,19 +2,20 @@ package net.tropicraft.core.client.entity.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
 import net.tropicraft.core.client.entity.render.state.AshenMaskRenderState;
 import net.tropicraft.core.common.entity.placeable.AshenMaskEntity;
 
 public class AshenMaskRenderer extends EntityRenderer<AshenMaskEntity, AshenMaskRenderState> {
-    private static final ResourceLocation TEXTURE = Tropicraft.location("textures/entity/ashen/mask.png");
+    private static final Identifier TEXTURE = Tropicraft.id("textures/entity/ashen/mask.png");
 
     private final TropicraftSpecialRenderHelper mask;
 
@@ -37,10 +38,14 @@ public class AshenMaskRenderer extends EntityRenderer<AshenMaskEntity, AshenMask
     }
 
     @Override
-    public void render(AshenMaskRenderState state, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+    public void submit(AshenMaskRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
         poseStack.pushPose();
         poseStack.mulPose(Axis.XN.rotationDegrees(90));
-        mask.renderMask(poseStack, bufferSource.getBuffer(RenderType.entityCutout(TEXTURE)), state.maskType, packedLight, OverlayTexture.NO_OVERLAY);
+        submitNodeCollector.submitCustomGeometry(poseStack, RenderTypes.entityCutout(TEXTURE), (pose, buffer) -> {
+            PoseStack stack = new PoseStack();
+            stack.mulPose(pose.pose());
+            mask.renderMask(stack, buffer, state.maskType, state.lightCoords, OverlayTexture.NO_OVERLAY);
+        });
         poseStack.popPose();
     }
 }

@@ -1,43 +1,47 @@
 package net.tropicraft.core.client.renderer.tileentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.Model;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemEntityRenderer;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.entity.state.ItemClusterRenderState;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.item.ItemModelResolver;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.client.resources.model.Material;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.resources.model.sprite.SpriteId;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.Unit;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.entity.model.EIHMachineModel;
 import net.tropicraft.core.common.block.tileentity.DrinkMixerBlockEntity;
+import net.tropicraft.core.common.drinks.Cocktail;
 import net.tropicraft.core.common.item.CocktailItem;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
+import org.jspecify.annotations.Nullable;
 
-import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class DrinkMixerBlockEntityRenderer extends MachineBlockEntityRenderer<DrinkMixerBlockEntity> {
-    private static final ResourceLocation MUG_TEXTURE = Tropicraft.location("textures/block/te/bamboo_mug.png");
-    public static final Material MATERIAL = new Material(TextureAtlas.LOCATION_BLOCKS, Tropicraft.location("block/te/drink_mixer"));
+public class DrinkMixerBlockEntityRenderer extends MachineBlockEntityRenderer<DrinkMixerBlockEntity, DrinkMixerBlockEntityRenderer.RenderState> {
+    private static final Identifier MUG_TEXTURE = Tropicraft.id("textures/block/te/bamboo_mug.png");
+    public static final SpriteId SPRITE = new SpriteId(TextureAtlas.LOCATION_BLOCKS, Tropicraft.id("block/te/drink_mixer"));
 
-    private final Model mugModel;
-    private final Model mugLiquidModel;
+    private final Model<Unit> mugModel;
+    private final Model<Unit> mugLiquidModel;
     private final ItemModelResolver itemModelResolver;
     private final RandomSource random = RandomSource.create();
-    private final ItemClusterRenderState clusterState = new ItemClusterRenderState();
 
     private static final Vector3fc[] INGREDIENT_OFFSETS = new Vector3fc[]{
             new Vector3f(0.3f, -0.5f, 0.05f),
@@ -52,45 +56,60 @@ public class DrinkMixerBlockEntityRenderer extends MachineBlockEntityRenderer<Dr
     };
 
     public DrinkMixerBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
-        super(new EIHMachineModel(context.bakeLayer(TropicraftRenderLayers.EIHMACHINE_LAYER)));
-        itemModelResolver = context.getItemModelResolver();
-        mugModel = new Model.Simple(context.bakeLayer(TropicraftRenderLayers.BAMBOO_MUG), RenderType::entityCutout);
-        mugLiquidModel = new Model.Simple(context.bakeLayer(TropicraftRenderLayers.BAMBOO_MUG_LIQUID), RenderType::entityCutout);
+        super(new EIHMachineModel(context.bakeLayer(TropicraftRenderLayers.EIHMACHINE_LAYER)), context.sprites());
+        itemModelResolver = context.itemModelResolver();
+        mugModel = new Model.Simple(context.bakeLayer(TropicraftRenderLayers.BAMBOO_MUG), RenderTypes::entityCutoutCull);
+        mugLiquidModel = new Model.Simple(context.bakeLayer(TropicraftRenderLayers.BAMBOO_MUG_LIQUID), RenderTypes::entityCutoutCull);
     }
 
     @Override
-    protected Material getMaterial() {
-        return MATERIAL;
+    protected SpriteId getSprite() {
+        return SPRITE;
     }
 
     @Override
-    public void renderIngredients(DrinkMixerBlockEntity blockEntity, PoseStack poseStack, MultiBufferSource bufferSource, int lightCoords, int overlayCoords) {
+    public RenderState createRenderState() {
+        return new RenderState();
+    }
+
+    @Override
+    public void extractRenderState(DrinkMixerBlockEntity blockEntity, RenderState state, float partialTicks, Vec3 cameraPosition, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
+        super.extractRenderState(blockEntity, state, partialTicks, cameraPosition, breakProgress);
+        state.mixing = blockEntity.isMixing();
+        state.ingredients.clear();
         if (!blockEntity.isDoneMixing()) {
-            List<ItemStack> ingredients = blockEntity.getDrinkIngredients();
-            for (int index = 0; index < ingredients.size(); index++) {
-                ItemStack ingredient = ingredients.get(index);
-                renderIngredient(blockEntity.getLevel(), poseStack, bufferSource, lightCoords, ingredient, index);
+            for (ItemStack ingredient : blockEntity.getDrinkIngredients()) {
+                ItemClusterRenderState cluster = new ItemClusterRenderState();
+                itemModelResolver.updateForTopItem(cluster.item, ingredient, ItemDisplayContext.FIXED, blockEntity.getLevel(), null, 0);
+                cluster.count = ItemClusterRenderState.getRenderedAmount(ingredient.getCount());
+                cluster.seed = ItemClusterRenderState.getSeedForItemStack(ingredient);
+                state.ingredients.add(cluster);
             }
         }
+        state.result = blockEntity.isDoneMixing() ? CocktailItem.getCocktail(blockEntity.result) : null;
+    }
 
-        if (blockEntity.isMixing() || !blockEntity.result.isEmpty()) {
+    @Override
+    protected void submitIngredients(RenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
+        List<ItemClusterRenderState> ingredients = state.ingredients;
+        for (int index = 0; index < ingredients.size(); index++) {
+            ItemClusterRenderState ingredient = ingredients.get(index);
+            renderIngredient(ingredient, poseStack, submitNodeCollector, state.lightCoords, index);
+        }
+
+        if (state.mixing || state.result != null) {
             poseStack.pushPose();
             poseStack.translate(-0.2f, -0.25f, 0.0f);
-            VertexConsumer consumer = bufferSource.getBuffer(mugModel.renderType(MUG_TEXTURE));
-            mugModel.renderToBuffer(poseStack, consumer, lightCoords, overlayCoords);
-            if (blockEntity.isDoneMixing()) {
-                int liquidColor = CocktailItem.getCocktail(blockEntity.result).color();
-                mugLiquidModel.renderToBuffer(poseStack, consumer, lightCoords, overlayCoords, ARGB.opaque(liquidColor));
+            submitNodeCollector.submitModel(mugModel, Unit.INSTANCE, poseStack, MUG_TEXTURE, state.lightCoords, OverlayTexture.NO_OVERLAY, EntityRenderState.NO_OUTLINE, null);
+            if (state.result != null) {
+                int liquidColor = ARGB.opaque(state.result.color());
+                submitNodeCollector.submitModel(mugLiquidModel, Unit.INSTANCE, poseStack, mugLiquidModel.renderType(MUG_TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, liquidColor, null, EntityRenderState.NO_OUTLINE, null);
             }
             poseStack.popPose();
         }
     }
 
-    private void renderIngredient(@Nullable Level level, PoseStack stack, MultiBufferSource buffer, int combinedLight, ItemStack ingredient, int ingredientIndex) {
-        itemModelResolver.updateForTopItem(clusterState.item, ingredient, ItemDisplayContext.FIXED, level, null, 0);
-        clusterState.count = ItemClusterRenderState.getRenderedAmount(ingredient.getCount());
-        clusterState.seed = ItemClusterRenderState.getSeedForItemStack(ingredient);
-
+    private void renderIngredient(ItemClusterRenderState item, PoseStack stack, SubmitNodeCollector submitNodeCollector, int combinedLight, int ingredientIndex) {
         stack.pushPose();
         stack.mulPose(Axis.XP.rotationDegrees(90));
         stack.mulPose(Axis.YP.rotationDegrees(90));
@@ -99,7 +118,13 @@ public class DrinkMixerBlockEntityRenderer extends MachineBlockEntityRenderer<Dr
         Vector3fc scales = INGREDIENT_SCALES[ingredientIndex];
         stack.translate(offsets.x(), offsets.y(), offsets.z());
         stack.scale(scales.x(), scales.y(), scales.z());
-        ItemEntityRenderer.renderMultipleFromCount(stack, buffer, combinedLight, clusterState, random);
+        ItemEntityRenderer.renderMultipleFromCount(stack, submitNodeCollector, combinedLight, item, random);
         stack.popPose();
+    }
+
+    public static class RenderState extends MachineBlockEntityRenderer.RenderState {
+        public boolean mixing;
+        public final List<ItemClusterRenderState> ingredients = new ArrayList<>();
+        public @Nullable Cocktail result;
     }
 }

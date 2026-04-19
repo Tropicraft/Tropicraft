@@ -1,7 +1,6 @@
 package net.tropicraft.core.client.entity.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.model.AbstractZombieModel;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -10,10 +9,12 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.model.monster.zombie.AbstractZombieModel;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.client.renderer.entity.state.ZombieRenderState;
 import net.minecraft.world.entity.HumanoidArm;
 
-public class TropiSkellyModel extends AbstractZombieModel<ZombieRenderState> implements ArmedModel {
+public class TropiSkellyModel extends AbstractZombieModel<ZombieRenderState> implements ArmedModel<ZombieRenderState> {
 
     public TropiSkellyModel(ModelPart root) {
         super(root);
@@ -54,8 +55,8 @@ public class TropiSkellyModel extends AbstractZombieModel<ZombieRenderState> imp
     }
 
     @Override
-    public void translateToHand(HumanoidArm side, PoseStack stack) {
-        super.translateToHand(side, stack);
-        stack.translate((side == HumanoidArm.LEFT ? -1 : 1) * 0.1f, 0, 0.0f);
+    public void translateToHand(ZombieRenderState state, HumanoidArm arm, PoseStack poseStack) {
+        super.translateToHand(state, arm, poseStack);
+        poseStack.translate((arm == HumanoidArm.LEFT ? -1 : 1) * 0.1f, 0, 0.0f);
     }
 }

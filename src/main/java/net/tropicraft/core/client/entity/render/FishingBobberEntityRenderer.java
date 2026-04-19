@@ -2,14 +2,17 @@ package net.tropicraft.core.client.entity.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.FishingHookRenderState;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.CommonColors;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
@@ -19,8 +22,8 @@ import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 import net.tropicraft.core.common.entity.passive.FishingBobberEntity;
 
 public class FishingBobberEntityRenderer extends EntityRenderer<FishingBobberEntity, FishingHookRenderState> {
-    private static final ResourceLocation TEXTURE_LOCATION = ResourceLocation.withDefaultNamespace("textures/entity/fishing_hook.png");
-    private static final RenderType RENDER_TYPE = RenderType.entityCutout(TEXTURE_LOCATION);
+    private static final Identifier TEXTURE_LOCATION = Identifier.withDefaultNamespace("textures/entity/fishing/fishing_hook.png");
+    private static final RenderType RENDER_TYPE = RenderTypes.entityCutout(TEXTURE_LOCATION);
 
     public FishingBobberEntityRenderer(EntityRendererProvider.Context context) {
         super(context);
@@ -71,33 +74,36 @@ public class FishingBobberEntityRenderer extends EntityRenderer<FishingBobberEnt
     }
 
     @Override
-    public void render(FishingHookRenderState state, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+    public void submit(FishingHookRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
         poseStack.pushPose();
         poseStack.pushPose();
         poseStack.scale(0.5f, 0.5f, 0.5f);
-        poseStack.mulPose(entityRenderDispatcher.cameraOrientation());
-
-        PoseStack.Pose bobberPose = poseStack.last();
-        VertexConsumer bobberBuffer = bufferSource.getBuffer(RENDER_TYPE);
-        vertex(bobberBuffer, bobberPose, packedLight, 0.0f, 0, 0, 1);
-        vertex(bobberBuffer, bobberPose, packedLight, 1.0f, 0, 1, 1);
-        vertex(bobberBuffer, bobberPose, packedLight, 1.0f, 1, 1, 0);
-        vertex(bobberBuffer, bobberPose, packedLight, 0.0f, 1, 0, 0);
+        poseStack.mulPose(camera.orientation);
+        submitNodeCollector.submitCustomGeometry(poseStack, RENDER_TYPE, (pose, buffer) -> {
+            vertex(buffer, pose, state.lightCoords, 0.0f, 0, 0, 1);
+            vertex(buffer, pose, state.lightCoords, 1.0f, 0, 1, 1);
+            vertex(buffer, pose, state.lightCoords, 1.0f, 1, 1, 0);
+            vertex(buffer, pose, state.lightCoords, 0.0f, 1, 0, 0);
+        });
         poseStack.popPose();
 
         float originX = (float) state.lineOriginOffset.x;
         float originY = (float) state.lineOriginOffset.y;
         float originZ = (float) state.lineOriginOffset.z;
-        VertexConsumer lineBuffer = bufferSource.getBuffer(RenderType.lineStrip());
-        PoseStack.Pose linePose = poseStack.last();
 
-        int steps = 16;
-        for (int i = 0; i <= steps; i++) {
-            stringVertex(originX, originY, originZ, lineBuffer, linePose, fraction(i, steps), fraction(i + 1, steps));
-        }
+        float width = Minecraft.getInstance().gameRenderer.getGameRenderState().windowRenderState.appropriateLineWidth;
+        submitNodeCollector.submitCustomGeometry(poseStack, RenderTypes.lines(), (pose, buffer) -> {
+            int steps = 16;
+            for (int i = 0; i < steps; i++) {
+                float a0 = fraction(i, steps);
+                float a1 = fraction(i + 1, steps);
+                stringVertex(originX, originY, originZ, buffer, pose, a0, a1, width);
+                stringVertex(originX, originY, originZ, buffer, pose, a1, a0, width);
+            }
+        });
 
         poseStack.popPose();
-        super.render(state, poseStack, bufferSource, packedLight);
+        super.submit(state, poseStack, submitNodeCollector, camera);
     }
 
     private static float fraction(int numerator, int denominator) {
@@ -113,7 +119,7 @@ public class FishingBobberEntityRenderer extends EntityRenderer<FishingBobberEnt
                 .setNormal(pose, 0.0f, 1.0f, 0.0f);
     }
 
-    private static void stringVertex(float originX, float originY, float originZ, VertexConsumer consumer, PoseStack.Pose pose, float stringFraction, float nextStringFraction) {
+    private static void stringVertex(float originX, float originY, float originZ, VertexConsumer consumer, PoseStack.Pose pose, float stringFraction, float nextStringFraction, float width) {
         float x = originX * stringFraction;
         float y = originY * (stringFraction * stringFraction + stringFraction) * 0.5f + 0.25f;
         float z = originZ * stringFraction;
@@ -124,6 +130,6 @@ public class FishingBobberEntityRenderer extends EntityRenderer<FishingBobberEnt
         normalX /= normalLength;
         normalY /= normalLength;
         normalZ /= normalLength;
-        consumer.addVertex(pose, x, y, z).setColor(CommonColors.BLACK).setNormal(pose, normalX, normalY, normalZ);
+        consumer.addVertex(pose, x, y, z).setColor(CommonColors.BLACK).setNormal(pose, normalX, normalY, normalZ).setLineWidth(width);
     }
 }

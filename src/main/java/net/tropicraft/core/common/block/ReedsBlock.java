@@ -98,9 +98,7 @@ public final class ReedsBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     private boolean canGrowOn(BlockState state) {
-        return state.is(Blocks.GRASS_BLOCK)
-                || state.is(BlockTags.SAND) || state.is(BlockTags.DIRT) || state.is(Tags.Blocks.GRAVELS)
-                || state.is(Blocks.CLAY);
+        return state.is(BlockTags.SAND) || state.is(BlockTags.SUBSTRATE_OVERWORLD) || state.is(Tags.Blocks.GRAVELS) || state.is(Blocks.CLAY);
     }
 
     @Override

@@ -4,12 +4,13 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.DensityFunctions;
 import net.minecraft.world.level.levelgen.NoiseRouter;
 import net.minecraft.world.level.levelgen.NoiseRouterData;
+import net.minecraft.world.level.levelgen.NoiseSettings;
 import net.minecraft.world.level.levelgen.Noises;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.tropicraft.Tropicraft;
@@ -59,7 +60,7 @@ public final class TropicraftNoiseRouterData {
                 ridgesFolded
         )), BLENDING_FACTOR));
 
-        Holder.Reference<DensityFunction> depth = context.register(DEPTH, DensityFunctions.add(DensityFunctions.yClampedGradient(-64, 320, 1.5, -1.5), wrap(offset)));
+        Holder.Reference<DensityFunction> depth = context.register(DEPTH, offsetToDepth(wrap(offset)));
 
         Holder.Reference<DensityFunction> jaggedness = context.register(JAGGEDNESS, splineWithBlending(DensityFunctions.spline(TropicraftTerrainProvider.jaggedness(
                 continents,
@@ -91,8 +92,8 @@ public final class TropicraftNoiseRouterData {
         DensityFunction temperature = DensityFunctions.shiftedNoise2d(shiftX, shiftZ, 0.25, noiseParameters.getOrThrow(Noises.TEMPERATURE));
         DensityFunction vegetation = DensityFunctions.shiftedNoise2d(shiftX, shiftZ, 0.25, noiseParameters.getOrThrow(Noises.VEGETATION));
         DensityFunction factor = getFunction(densityFunctions, FACTOR);
+        DensityFunction offset = getFunction(densityFunctions, OFFSET);
         DensityFunction depth = getFunction(densityFunctions, DEPTH);
-        DensityFunction initialDensityWithoutJaggedness = noiseGradientDensity(DensityFunctions.cache2d(factor), depth);
         DensityFunction slopedCheese = getFunction(densityFunctions, SLOPED_CHEESE);
         DensityFunction densityfunction12 = DensityFunctions.min(slopedCheese, DensityFunctions.mul(DensityFunctions.constant(5.0), getFunction(densityFunctions, ENTRANCES)));
         DensityFunction densityfunction13 = DensityFunctions.rangeChoice(slopedCheese, -1000000.0, 1.5625, densityfunction12, underground(densityFunctions, noiseParameters, slopedCheese));
@@ -116,12 +117,39 @@ public final class TropicraftNoiseRouterData {
                 getFunction(densityFunctions, NoiseRouterData.EROSION),
                 depth,
                 getFunction(densityFunctions, NoiseRouterData.RIDGES),
-                initialDensityWithoutJaggedness,
+                preliminarySurfaceLevel(offset, factor),
                 finalDensity,
                 veinToggle,
                 veinRidged,
                 veinGap
         );
+    }
+
+    private static DensityFunction offsetToDepth(DensityFunction offset) {
+        return DensityFunctions.add(DensityFunctions.yClampedGradient(-64, 320, 1.5, -1.5), offset);
+    }
+
+    private static DensityFunction preliminarySurfaceLevel(DensityFunction offset, DensityFunction factor) {
+        DensityFunction cachedFactor = DensityFunctions.cache2d(factor);
+        DensityFunction cachedOffset = DensityFunctions.cache2d(offset);
+        DensityFunction density = noiseGradientDensity(cachedFactor, offsetToDepth(cachedOffset));
+
+        // This is actually an exact value for the density that we are matching, but keeping findTopSurface to preserve rounding
+        // Not sure that this is a good approximation of surface level generally, we should probably consider changing it
+        DensityFunction upperBound = remap(
+                DensityFunctions.mul(DensityFunctions.constant(-1.0), cachedOffset),
+                1.5,
+                -1.5,
+                -64.0,
+                320.0
+        );
+        return DensityFunctions.findTopSurface(density, upperBound, -64, 8);
+    }
+
+    private static DensityFunction remap(DensityFunction input, double fromMin, double fromMax, double toMin, double toMax) {
+        double factor = (toMax - toMin) / (fromMax - fromMin);
+        double offset = toMin - fromMin * factor;
+        return DensityFunctions.add(DensityFunctions.mul(input, DensityFunctions.constant(factor)), DensityFunctions.constant(offset));
     }
 
     private static DensityFunction postProcess(DensityFunction function) {
@@ -151,9 +179,11 @@ public final class TropicraftNoiseRouterData {
         return DensityFunctions.interpolated(DensityFunctions.rangeChoice(p_209472_, p_209474_, p_209475_ + 1, p_209473_, DensityFunctions.constant(p_209476_)));
     }
 
-    private static DensityFunction noiseGradientDensity(DensityFunction p_212272_, DensityFunction p_212273_) {
-        DensityFunction densityfunction = DensityFunctions.mul(p_212273_, p_212272_);
-        return DensityFunctions.mul(DensityFunctions.constant(4.0), densityfunction.quarterNegative());
+    private static DensityFunction noiseGradientDensity(DensityFunction factor, DensityFunction depth) {
+        return DensityFunctions.mul(
+                DensityFunctions.constant(4.0),
+                DensityFunctions.mul(depth, factor).quarterNegative()
+        );
     }
 
     private static DensityFunction underground(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters, DensityFunction slopedCheese) {
@@ -180,7 +210,7 @@ public final class TropicraftNoiseRouterData {
     }
 
     private static ResourceKey<DensityFunction> vanillaKey(String name) {
-        return ResourceKey.create(Registries.DENSITY_FUNCTION, ResourceLocation.withDefaultNamespace(name));
+        return ResourceKey.create(Registries.DENSITY_FUNCTION, Identifier.withDefaultNamespace(name));
     }
 
     private static ResourceKey<DensityFunction> createKey(String name) {

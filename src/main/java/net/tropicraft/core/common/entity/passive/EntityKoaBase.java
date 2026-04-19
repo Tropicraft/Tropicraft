@@ -3,9 +3,9 @@ package net.tropicraft.core.common.entity.passive;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.tterrag.registrate.providers.RegistrateLangProvider;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.RegistryAccess;
@@ -51,9 +51,8 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.npc.Villager;
-import net.minecraft.world.entity.npc.VillagerData;
-import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.entity.npc.villager.Villager;
+import net.minecraft.world.entity.npc.villager.VillagerData;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -61,6 +60,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.trading.ItemCost;
 import net.minecraft.world.item.trading.MerchantOffer;
+import net.minecraft.world.item.trading.TradeSet;
+import net.minecraft.world.item.trading.VillagerTrades;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -73,6 +74,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.tropicraft.core.common.TropicraftTags;
+import net.tropicraft.core.common.attribute.TropicraftEnvironmentAttributes;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.ai.EntityAIAvoidEntityOnLowHealth;
 import net.tropicraft.core.common.entity.ai.EntityAIChillAtFire;
@@ -85,7 +87,8 @@ import net.tropicraft.core.common.entity.ai.EntityAITemptHelmet;
 import net.tropicraft.core.common.entity.ai.EntityAIWanderNotLazy;
 import net.tropicraft.core.common.item.TropicraftItems;
 
-import javax.annotation.Nullable;
+import net.tropicraft.core.common.trade.TropicraftTradeSets;
+import org.jspecify.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -170,6 +173,13 @@ public class EntityKoaBase extends Villager {
             //TODO: 1.14 fix
             (input, level) -> (input instanceof Monster/* && !(input instanceof CreeperEntity)) || input instanceof EntityTropiSkeleton || input instanceof EntityIguana || input instanceof EntityAshen*/);
 
+    public static void generateLangKeys(RegistrateLangProvider prov) {
+        for (Roles role : Roles.values()) {
+            String id = role.id();
+            prov.add("entity.tropicraft.koa." + id + ".name", "Koa " + RegistrateLangProvider.toEnglishName(id));
+        }
+    }
+
     public enum Genders {
         MALE,
         FEMALE;
@@ -201,6 +211,28 @@ public class EntityKoaBase extends Villager {
 
         public static Roles get(int intValue) {
             return lookup.get(intValue);
+        }
+
+        public @Nullable ResourceKey<TradeSet> getTradesForLevel(int level) {
+            return switch (this) {
+                case HUNTER -> switch (level) {
+                    case 1 -> TropicraftTradeSets.KOA_HUNTER_LEVEL_1;
+                    case 2 -> TropicraftTradeSets.KOA_HUNTER_LEVEL_2;
+                    case 3 -> TropicraftTradeSets.KOA_HUNTER_LEVEL_3;
+                    case 4 -> TropicraftTradeSets.KOA_HUNTER_LEVEL_4;
+                    default -> null;
+                };
+                case FISHERMAN -> switch (level) {
+                    case 1 -> TropicraftTradeSets.KOA_FISHER_LEVEL_1;
+                    case 2 -> TropicraftTradeSets.KOA_FISHER_LEVEL_2;
+                    case 3 -> TropicraftTradeSets.KOA_FISHER_LEVEL_3;
+                    default -> null;
+                };
+            };
+        }
+
+        public String id() {
+            return name().toLowerCase(Locale.ROOT);
         }
     }
 
@@ -265,7 +297,7 @@ public class EntityKoaBase extends Villager {
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
         super.onSyncedDataUpdated(key);
 
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             return;
         }
 
@@ -284,141 +316,12 @@ public class EntityKoaBase extends Villager {
         //TODO: old 1.12 style tasks go here
     }
 
-    static class PearlToEnchantItemTrade implements VillagerTrades.ItemListing {
-        private final Item item;
-        private final int sellCount;
-        private final int maxUses;
-        private final int givenXP;
-        private final float priceMultiplier;
-
-        public PearlToEnchantItemTrade(ItemLike item, int sellCount, int maxUses, int givenXP) {
-            this.item = item.asItem();
-            this.sellCount = sellCount;
-            this.maxUses = maxUses;
-            this.givenXP = givenXP;
-            priceMultiplier = 0.05f;
-        }
-
-        @Override
-        @Nullable
-        public MerchantOffer getOffer(Entity entity, RandomSource random) {
-            int enchantLevel = random.nextInt(10) + 5;
-            int cost = Mth.floor(enchantLevel / 1.5f);
-
-            RegistryAccess registries = entity.registryAccess();
-            ItemStack stack = new ItemStack(item, 1);
-            stack = EnchantmentHelper.enchantItem(random, stack, enchantLevel, registries, registries.lookupOrThrow(Registries.ENCHANTMENT).get(EnchantmentTags.ON_TRADED_EQUIPMENT));
-
-            return new MerchantOffer(new ItemCost(TropicraftItems.WHITE_PEARL.get(), sellCount + cost), stack, maxUses, givenXP, priceMultiplier);
-        }
-    }
-
-    static class PearlToItemTrade implements VillagerTrades.ItemListing {
-        private final Item item;
-        private final int count;
-        private final int sellCount;
-        private final int maxUses;
-        private final int givenXP;
-        private final float priceMultiplier;
-
-        public PearlToItemTrade(ItemLike item, int count, int sellCount, int maxUses, int givenXP) {
-            this.item = item.asItem();
-            this.count = count;
-            this.sellCount = sellCount;
-            this.maxUses = maxUses;
-            this.givenXP = givenXP;
-            priceMultiplier = 0.05f;
-        }
-
-        @Override
-        public MerchantOffer getOffer(Entity entity, RandomSource random) {
-            ItemStack stack = new ItemStack(item, count);
-            return new MerchantOffer(new ItemCost(TropicraftItems.WHITE_PEARL.get(), sellCount), stack, maxUses, givenXP, priceMultiplier);
-        }
-    }
-
-    static class ItemToPearlTrade implements VillagerTrades.ItemListing {
-        private final Item item;
-        private final int count;
-        private final int maxUses;
-        private final int givenXP;
-        private final float priceMultiplier;
-
-        public ItemToPearlTrade(ItemLike item, int count, int maxUses, int givenXP) {
-            this.item = item.asItem();
-            this.count = count;
-            this.maxUses = maxUses;
-            this.givenXP = givenXP;
-            priceMultiplier = 0.05f;
-        }
-
-        @Override
-        public MerchantOffer getOffer(Entity entity, RandomSource random) {
-            ItemCost cost = new ItemCost(item, count);
-            return new MerchantOffer(cost, new ItemStack(TropicraftItems.WHITE_PEARL.get()), maxUses, givenXP, priceMultiplier);
-        }
-    }
-
-    private Int2ObjectMap<VillagerTrades.ItemListing[]> getTradesByLevel() {
-        //TODO: 1.14 fix missing tropical and river fish entries from tropicrafts fix
-        //- consider adding vanillas ones too now
-        return switch (getRole()) {
-            case FISHERMAN -> getFishermanTrades();
-            case HUNTER -> getHunterTrades();
-        };
-    }
-
-    private static Int2ObjectMap<VillagerTrades.ItemListing[]> getFishermanTrades() {
-        Int2ObjectMap<VillagerTrades.ItemListing[]> tradesByLevel = new Int2ObjectOpenHashMap<>();
-        tradesByLevel.put(1, new VillagerTrades.ItemListing[]{
-                new ItemToPearlTrade(Items.TROPICAL_FISH, 20, 8, 2),
-                new ItemToPearlTrade(TropicraftItems.FISHING_NET.get(), 1, 8, 2),
-                new ItemToPearlTrade(Items.FISHING_ROD, 1, 8, 2),
-                new ItemToPearlTrade(TropicraftItems.FRESH_MARLIN.get(), 3, 8, 2),
-                new ItemToPearlTrade(TropicraftItems.SARDINE_BUCKET.get(), 1, 4, 2),
-                new ItemToPearlTrade(TropicraftItems.PIRANHA_BUCKET.get(), 1, 3, 2),
-                new ItemToPearlTrade(TropicraftItems.TROPICAL_FERTILIZER.get(), 5, 8, 2)
-        });
-        tradesByLevel.put(2, new VillagerTrades.ItemListing[]{
-                new PearlToItemTrade(TropicraftItems.COOKED_FISH.get(), 8, 1, 8, 10),
-                new PearlToItemTrade(TropicraftItems.COOKED_RAY.get(), 6, 1, 8, 10)
-        });
-        tradesByLevel.put(3, new VillagerTrades.ItemListing[]{
-                new ItemToPearlTrade(TropicraftItems.GRAPEFRUIT.get(), 12, 12, 15),
-                new ItemToPearlTrade(TropicraftItems.LEMON.get(), 12, 12, 15),
-                new ItemToPearlTrade(TropicraftItems.LIME.get(), 12, 12, 15)
-        });
-        return tradesByLevel;
-    }
-
-    private static Int2ObjectMap<VillagerTrades.ItemListing[]> getHunterTrades() {
-        Int2ObjectMap<VillagerTrades.ItemListing[]> tradesByLevel = new Int2ObjectOpenHashMap<>();
-        tradesByLevel.put(1, new VillagerTrades.ItemListing[]{
-                new ItemToPearlTrade(TropicraftItems.FROG_LEG.get(), 5, 8, 2),
-                new ItemToPearlTrade(TropicraftItems.IGUANA_LEATHER.get(), 2, 8, 2),
-                new ItemToPearlTrade(TropicraftItems.SCALE.get(), 5, 8, 2)
-        });
-        tradesByLevel.put(2, new VillagerTrades.ItemListing[]{
-                new PearlToEnchantItemTrade(TropicraftItems.BAMBOO_SPEAR.get(), 1, 8, 10),
-                new ItemToPearlTrade(TropicraftItems.BAMBOO_STICK.get(), 32, 12, 8)
-        });
-        tradesByLevel.put(3, new VillagerTrades.ItemListing[]{
-                new PearlToEnchantItemTrade(TropicraftItems.SCALE_HELMET.get(), 4, 4, 15),
-                new PearlToEnchantItemTrade(TropicraftItems.SCALE_CHESTPLATE.get(), 6, 4, 15)
-        });
-        tradesByLevel.put(4, new VillagerTrades.ItemListing[]{
-                new PearlToEnchantItemTrade(TropicraftItems.SCALE_LEGGINGS.get(), 5, 4, 20),
-                new PearlToEnchantItemTrade(TropicraftItems.SCALE_BOOTS.get(), 4, 4, 20)
-        });
-        return tradesByLevel;
-    }
-
     @Override
-    protected void updateTrades() {
+    protected void updateTrades(ServerLevel level) {
         VillagerData data = getVillagerData();
-        VillagerTrades.ItemListing[] possibleTrades = getTradesByLevel().get(data.level());
-        if (possibleTrades != null) {
-            addOffersFromItemListings(getOffers(), possibleTrades, 2);
+        ResourceKey<TradeSet> trades = getRole().getTradesForLevel(data.level());
+        if (trades != null) {
+            addOffersFromTradeSet(level, getOffers(), trades);
         }
     }
 
@@ -603,7 +506,7 @@ public class EntityKoaBase extends Villager {
         if (!isTrading() && updateMerchantTimer > 0) {
             if (--updateMerchantTimer <= 0) {
                 if (increaseProfessionLevelOnUpdate) {
-                    increaseMerchantCareer();
+                    increaseMerchantCareer(level);
                     increaseProfessionLevelOnUpdate = false;
                 }
 
@@ -674,7 +577,7 @@ public class EntityKoaBase extends Villager {
 
         InteractionResult ret = InteractionResult.PASS;
         boolean doTrade = true;
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
 
             ItemStack stack = player.getItemInHand(InteractionHand.MAIN_HAND);
             if (!stack.isEmpty() && stack.is(TropicraftItems.POISON_FROG_SKIN)) {
@@ -819,7 +722,7 @@ public class EntityKoaBase extends Villager {
         output.putInt("village_id", villageID);
 
         if (villageDimension != null) {
-            output.putString("village_dimension", villageDimension.location().toString());
+            output.store("village_dimension", ResourceKey.codec(Registries.DIMENSION), villageDimension);
         }
 
         output.putLong("lastTradeTime", lastTradeTime);
@@ -1260,9 +1163,9 @@ public class EntityKoaBase extends Villager {
         return VillagerData.canLevelUp(level) && getVillagerXp() >= VillagerData.getMaxXpPerLevel(level);
     }
 
-    private void increaseMerchantCareer() {
+    private void increaseMerchantCareer(ServerLevel level) {
         setVillagerData(getVillagerData().withLevel(getVillagerData().level() + 1));
-        updateTrades();
+        updateTrades(level);
     }
 
     @Override
@@ -1336,7 +1239,7 @@ public class EntityKoaBase extends Villager {
 
         wasNightLastTick = !level().isBrightOutside();
 
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             //if (world.getGameTime() % (20*5) == 0) {
             //this.heal(5);
             //}
@@ -1346,7 +1249,7 @@ public class EntityKoaBase extends Villager {
             }
         }
 
-        if (level().isClientSide) {
+        if (level().isClientSide()) {
             //heal indicator, has a bug that spawns a heart on reload into world but not a big deal
             if (clientHealthLastTracked != getHealth()) {
                 if (getHealth() > clientHealthLastTracked) {
@@ -1459,9 +1362,9 @@ public class EntityKoaBase extends Villager {
     }*/
 
     @Override
-    public void remove(Entity.RemovalReason pReason) {
+    public void remove(RemovalReason pReason) {
         super.remove(pReason);
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             //System.out.println("hook dead " + this);
             //TODO: 1.14 readd
             /*TownKoaVillage village = getVillage();
@@ -1473,7 +1376,7 @@ public class EntityKoaBase extends Villager {
 
     //TODO: 1.14 readd listener for unload
     public void hookUnloaded() {
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             //System.out.println("hook unloaded " + this);
             //TODO: 1.14 readd
             /*TownKoaVillage village = getVillage();
@@ -1490,7 +1393,7 @@ public class EntityKoaBase extends Villager {
 
     public void setLure(@Nullable FishingBobberEntity lure) {
         this.lure = lure;
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             if (lure != null) {
                 getEntityData().set(LURE_ID, lure.getId());
             } else {
@@ -1528,27 +1431,13 @@ public class EntityKoaBase extends Villager {
 
     //do not constantly use throughout night, as the night doesnt happen all on the same day
     //use asap and store value
-    public boolean isPartyNight() {
-        long time = level().getDayTime();
-        long day = time / 24000;
-        //party every 3rd night
-        //System.out.println(time + " - " + day + " - " + (day % 3 == 0));
-        return day % 3 == 0;
-    }
-
     public void rollDiceParty() {
-
-        if (isPartyNight()) {
-            int chance = 90;
-            if (chance >= random.nextInt(100)) {
-                wantsToParty = true;
-                //System.out.println("roll dice party: " + wantsToParty);
-                return;
-            }
+        float chance = level().environmentAttributes().getValue(TropicraftEnvironmentAttributes.KOA_PARTY_CHANCE.get(), position());
+        if (chance > 0.0f && random.nextFloat() < chance) {
+            wantsToParty = true;
+            return;
         }
         wantsToParty = false;
-
-        //System.out.println("roll dice party: " + wantsToParty);
     }
 
     public boolean getWantsToParty() {
@@ -1557,10 +1446,7 @@ public class EntityKoaBase extends Villager {
 
     @Override
     public Component getTypeName() {
-        return Component.translatable("entity.tropicraft.koa." +
-                getGender().toString().toLowerCase(Locale.ROOT) + "." +
-                getRole().toString().toLowerCase(Locale.ROOT) + ".name"
-        );
+        return Component.translatable("entity.tropicraft.koa." + getRole().id() + ".name");
     }
 
     @Override

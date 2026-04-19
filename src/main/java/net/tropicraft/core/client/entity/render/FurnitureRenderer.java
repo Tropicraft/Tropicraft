@@ -1,14 +1,14 @@
 package net.tropicraft.core.client.entity.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.entity.render.state.FurnitureRenderState;
@@ -18,8 +18,8 @@ import org.joml.Quaternionf;
 public abstract class FurnitureRenderer<T extends FurnitureEntity, S extends FurnitureRenderState> extends EntityRenderer<T, S> {
     private static final Axis DEFAULT_ROCKING_AXIS = angle -> new Quaternionf().rotationAxis(angle, 1.0f, 0.0f, 1.0f);
 
-    private final ResourceLocation baseTexture;
-    private final ResourceLocation colorTexture;
+    private final Identifier baseTexture;
+    private final Identifier colorTexture;
     private final EntityModel<? super S> model;
     private final float scale;
 
@@ -29,8 +29,8 @@ public abstract class FurnitureRenderer<T extends FurnitureEntity, S extends Fur
 
     public FurnitureRenderer(EntityRendererProvider.Context context, String textureName, EntityModel<? super S> model, float scale) {
         super(context);
-        baseTexture = Tropicraft.location("textures/entity/" + textureName + "_base_layer.png");
-        colorTexture = Tropicraft.location("textures/entity/" + textureName + "_color_layer.png");
+        baseTexture = Tropicraft.id("textures/entity/" + textureName + "_base_layer.png");
+        colorTexture = Tropicraft.id("textures/entity/" + textureName + "_color_layer.png");
         this.model = model;
         this.scale = scale;
     }
@@ -44,7 +44,7 @@ public abstract class FurnitureRenderer<T extends FurnitureEntity, S extends Fur
     }
 
     @Override
-    public void render(S state, PoseStack stack, MultiBufferSource buffer, int packedLightIn) {
+    public void submit(S state, PoseStack stack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
         stack.pushPose();
         stack.translate(0, getYOffset(), 0);
         stack.mulPose(Axis.YP.rotationDegrees(180 - state.yRot));
@@ -60,15 +60,13 @@ public abstract class FurnitureRenderer<T extends FurnitureEntity, S extends Fur
         int color = state.color.getTextureDiffuseColor();
 
         // Draw uncolored layer
-        VertexConsumer builder = buffer.getBuffer(model.renderType(baseTexture));
         stack.scale(-1.0f, -1.0f, 1.0f);
-        model.renderToBuffer(stack, builder, packedLightIn, OverlayTexture.NO_OVERLAY);
+        submitNodeCollector.submitModel(model, state, stack, baseTexture, state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor, null);
 
         // Draw the colored part
-        builder = buffer.getBuffer(model.renderType(colorTexture));
-        model.renderToBuffer(stack, builder, packedLightIn, OverlayTexture.NO_OVERLAY, color);
+        submitNodeCollector.submitModel(model, state, stack, model.renderType(colorTexture), state.lightCoords, OverlayTexture.NO_OVERLAY, color, null, state.outlineColor, null);
 
-        super.render(state, stack, buffer, packedLightIn);
+        super.submit(state, stack, submitNodeCollector, camera);
         stack.popPose();
     }
 

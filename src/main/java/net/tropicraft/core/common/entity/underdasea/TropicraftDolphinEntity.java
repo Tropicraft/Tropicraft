@@ -8,14 +8,14 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnGroupData;
-import net.minecraft.world.entity.animal.Dolphin;
+import net.minecraft.world.entity.animal.dolphin.Dolphin;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.tropicraft.core.common.sound.Sounds;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class TropicraftDolphinEntity extends Dolphin {
 
@@ -71,7 +71,7 @@ public class TropicraftDolphinEntity extends Dolphin {
     @Override
     public void tick() {
         super.tick();
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             if (ambientSoundTime < -(getAmbientSoundInterval() - 20)) {
                 if (tickCount % 3 > 1) {
                     if (!getMouthOpen()) {

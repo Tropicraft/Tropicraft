@@ -1,6 +1,5 @@
 package net.tropicraft.core.client.scuba;
 
-import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartNames;
 import net.minecraft.client.model.geom.PartPose;
@@ -9,6 +8,7 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.model.player.PlayerModel;
 import net.minecraft.util.Mth;
 import net.tropicraft.core.client.entity.model.ModelAnimator;
 
@@ -73,7 +73,7 @@ public class ModelScubaGear extends PlayerModel {
                 CubeListBuilder.create().mirror()
                         .texOffs(0, 0)
                         .addBox(-4.0f, -4.0f, -4.0f, 8, 8, 8),
-                PartPose.offsetAndRotation(0.0f, -4.0f, 0.0f, 0.0f, 0.0f, 0.0f));
+                PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f));
 
         head.addOrReplaceChild("Mask",
                 CubeListBuilder.create()
@@ -381,7 +381,7 @@ public class ModelScubaGear extends PlayerModel {
                 CubeListBuilder.create()
                         .texOffs(0, 16)
                         .addBox(-2.0f, -6.0f, -2.0f, 4, 12, 4),
-                PartPose.offset(-2.0f, 18.0f, 0.0f));
+                PartPose.offset(-2.0f, 12.0f, 0.0f));
 
         PartDefinition rightFin = rightLeg.addOrReplaceChild("Fin1",
                 CubeListBuilder.create().mirror()
@@ -417,7 +417,7 @@ public class ModelScubaGear extends PlayerModel {
                 CubeListBuilder.create()
                         .texOffs(16, 16)
                         .addBox(-2.0f, -6.0f, -2.0f, 4, 12, 4),
-                PartPose.offset(2.0f, 18.0f, 0.0f));
+                PartPose.offset(2.0f, 12.0f, 0.0f));
 
         PartDefinition leftFin = leftLeg.addOrReplaceChild("Fin2",
                 CubeListBuilder.create().mirror()

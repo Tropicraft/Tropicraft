@@ -2,7 +2,7 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'java-library'
-    id 'net.neoforged.moddev' version '2.0.103'
+    id 'net.neoforged.moddev' version '2.0.141'
 }
 
 group = 'net.tropicraft'
@@ -22,15 +22,10 @@ if (System.getenv('GHA_RELEASE_WORKFLOW')) {
     version = "${mod_version}-${release_type}+${buildnumber}"
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+java.toolchain.languageVersion = JavaLanguageVersion.of(25)
 
 neoForge {
     version = project.neo_version
-
-    parchment {
-        minecraftVersion = minecraft_version
-        mappingsVersion = parchment_version
-    }
 
     runs {
         client {
@@ -76,10 +71,10 @@ repositories {
 }
 
 dependencies {
-    jarJar(implementation("com.tterrag.registrate:Registrate-LT:MC1.21.8-${registrate_version}")) {
+    jarJar(implementation("com.tterrag.registrate:Registrate-LT:MC26.1-${registrate_version}")) {
         version {
-            strictly "[MC1.21.8-${registrate_version},MC1.22)"
-            prefer "MC1.21.8-${registrate_version}"
+            strictly "[MC26.1-${registrate_version},MC26.2)"
+            prefer "MC26.1-${registrate_version}"
         }
     }
 }

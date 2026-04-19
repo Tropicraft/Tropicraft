@@ -6,7 +6,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.TridentItem;
@@ -25,8 +25,8 @@ public class SpearItem extends TridentItem {
         if (entity instanceof Player player) {
             int i = getUseDuration(stack, entity) - timeLeft;
             if (i >= 10) {
-                if (!level.isClientSide) {
-                    stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(entity.getUsedItemHand()));
+                if (!level.isClientSide()) {
+                    stack.hurtAndBreak(1, player, entity.getUsedItemHand());
 
                     SpearEntity spear = new SpearEntity(level, player, stack);
                     spear.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0f, 2.5f, 1.0f);

@@ -7,7 +7,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.item.component.TypedEntityData;
 import net.minecraft.world.level.block.BeehiveBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
@@ -74,9 +76,8 @@ public class TropibeehiveDecorator extends TreeDecorator {
         }
     }
 
-    public static BeehiveBlockEntity.Occupant tropibeeOccupant(int pTicksInHive) {
-        CompoundTag compoundtag = new CompoundTag();
-        compoundtag.putString("id", BuiltInRegistries.ENTITY_TYPE.getKey(TropicraftEntities.TROPI_BEE.get()).toString());
-        return new BeehiveBlockEntity.Occupant(CustomData.of(compoundtag), pTicksInHive, 600);
+    public static BeehiveBlockEntity.Occupant tropibeeOccupant(int ticksInHive) {
+        TypedEntityData<EntityType<?>> data = TypedEntityData.of(TropicraftEntities.TROPI_BEE.get(), new CompoundTag());
+        return new BeehiveBlockEntity.Occupant(data, ticksInHive, 600);
     }
 }

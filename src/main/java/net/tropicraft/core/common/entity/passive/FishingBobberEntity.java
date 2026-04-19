@@ -17,7 +17,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.animal.AbstractFish;
+import net.minecraft.world.entity.animal.fish.AbstractFish;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -32,7 +32,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class FishingBobberEntity extends Entity implements IEntityWithComplexSpawn {
     private static final EntityDataAccessor<Integer> DATA_HOOKED_ENTITY = SynchedEntityData.defineId(FishingBobberEntity.class, EntityDataSerializers.INT);
@@ -116,7 +116,7 @@ public class FishingBobberEntity extends Entity implements IEntityWithComplexSpa
             return;
         }
 
-        if (level().isClientSide || !shouldStopFishing()) {
+        if (level().isClientSide() || !shouldStopFishing()) {
             if (inGround) {
                 ++ticksInGround;
                 if (ticksInGround >= 1200) {
@@ -145,7 +145,7 @@ public class FishingBobberEntity extends Entity implements IEntityWithComplexSpa
                     return;
                 }
 
-                if (!level().isClientSide) {
+                if (!level().isClientSide()) {
                     checkCollision();
                 }
 
@@ -178,7 +178,7 @@ public class FishingBobberEntity extends Entity implements IEntityWithComplexSpa
                     }
 
                     setDeltaMovement(Vector3d.x * 0.9, Vector3d.y - d0 * (double) random.nextFloat() * 0.2, Vector3d.z * 0.9);
-                    if (!level().isClientSide && f > 0.0f) {
+                    if (!level().isClientSide() && f > 0.0f) {
                         catchingFish(blockpos);
                     }
                 }
@@ -342,7 +342,7 @@ public class FishingBobberEntity extends Entity implements IEntityWithComplexSpa
 
     @Override
     public void handleEntityEvent(byte id) {
-        if (id == EntityEvent.FISHING_ROD_REEL_IN && level().isClientSide && caughtEntity instanceof Player && ((Player) caughtEntity).isLocalPlayer()) {
+        if (id == EntityEvent.FISHING_ROD_REEL_IN && level().isClientSide() && caughtEntity instanceof Player && ((Player) caughtEntity).isLocalPlayer()) {
             bringInHookedEntity();
         }
 

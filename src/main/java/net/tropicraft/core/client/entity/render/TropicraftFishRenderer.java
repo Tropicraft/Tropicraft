@@ -3,11 +3,12 @@ package net.tropicraft.core.client.entity.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.animal.AbstractFish;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.animal.fish.AbstractFish;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
 import net.tropicraft.core.client.entity.model.TropicraftFishModel;
@@ -16,7 +17,7 @@ import net.tropicraft.core.common.entity.underdasea.IAtlasFish;
 
 // TODO: Please rework this :(
 public abstract class TropicraftFishRenderer<T extends AbstractFish> extends MobRenderer<T, FishRenderState, TropicraftFishModel> {
-    private static final ResourceLocation TEXTURE = Tropicraft.location("textures/entity/tropical_fish.png");
+    private static final Identifier TEXTURE = Tropicraft.id("textures/entity/tropical_fish.png");
 
     private final TropicraftSpecialRenderHelper renderHelper;
 
@@ -28,15 +29,19 @@ public abstract class TropicraftFishRenderer<T extends AbstractFish> extends Mob
     /**
      * This override is a hack
      */
+
     @Override
-    public void render(FishRenderState state, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+    public void submit(FishRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
         boolean isVisible = isBodyVisible(state);
         boolean shouldRender = !isVisible && !state.isInvisibleToPlayer;
         if (isVisible || shouldRender) {
-            VertexConsumer buffer = bufferSource.getBuffer(getRenderType(state, isVisible, shouldRender, state.appearsGlowing));
-            renderFishy(state, poseStack, buffer, packedLight, getOverlayCoords(state, 0.0f));
+            submitNodeCollector.submitCustomGeometry(poseStack, getRenderType(state, isVisible, shouldRender, state.appearsGlowing()), (pose, buffer) -> {
+                PoseStack stack = new PoseStack();
+                stack.mulPose(pose.pose());
+                renderFishy(state, stack, buffer, state.lightCoords, getOverlayCoords(state, 0.0f));
+            });
         }
-        super.render(state, poseStack, bufferSource, packedLight);
+        super.submit(state, poseStack, submitNodeCollector, camera);
     }
 
     protected void renderFishy(FishRenderState state, PoseStack stack, VertexConsumer buffer, int light, int overlay) {
@@ -75,7 +80,7 @@ public abstract class TropicraftFishRenderer<T extends AbstractFish> extends Mob
     }
 
     @Override
-    public ResourceLocation getTextureLocation(FishRenderState state) {
+    public Identifier getTextureLocation(FishRenderState state) {
         return TEXTURE;
     }
 }

@@ -1,15 +1,18 @@
 package net.tropicraft.core.client.entity.model;
 
-import net.minecraft.client.model.BeeModel;
+import net.minecraft.client.model.animal.bee.BeeModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.MeshTransformer;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 
 public class TropiBeeModel extends BeeModel {
+    public static final MeshTransformer BABY_TRANSFORMER = MeshTransformer.scaling(0.5f);
+
     private final ModelPart body;
 
     public TropiBeeModel(ModelPart root) {

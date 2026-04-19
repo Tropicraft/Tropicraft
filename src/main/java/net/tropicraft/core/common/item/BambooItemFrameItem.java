@@ -11,6 +11,7 @@ import net.minecraft.world.item.HangingEntityItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.item.component.TypedEntityData;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.tropicraft.core.common.entity.BambooItemFrame;
@@ -35,13 +36,13 @@ public class BambooItemFrameItem extends HangingEntityItem {
         Level level = context.getLevel();
         HangingEntity itemFrame = new BambooItemFrame(level, relativePos, clickedFace);
 
-        CustomData entityData = itemStack.getOrDefault(DataComponents.ENTITY_DATA, CustomData.EMPTY);
-        if (!entityData.isEmpty()) {
+        TypedEntityData<EntityType<?>> entityData = itemStack.get(DataComponents.ENTITY_DATA);
+        if (entityData != null) {
             EntityType.updateCustomEntityTag(level, player, itemFrame, entityData);
         }
 
         if (itemFrame.survives()) {
-            if (!level.isClientSide) {
+            if (!level.isClientSide()) {
                 itemFrame.playPlacementSound();
                 level.addFreshEntity(itemFrame);
             }

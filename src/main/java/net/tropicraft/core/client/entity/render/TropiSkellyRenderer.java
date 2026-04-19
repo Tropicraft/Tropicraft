@@ -3,14 +3,14 @@ package net.tropicraft.core.client.entity.render;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.entity.state.ZombieRenderState;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.entity.model.TropiSkellyModel;
 import net.tropicraft.core.common.entity.hostile.TropiSkellyEntity;
 
 public class TropiSkellyRenderer extends HumanoidMobRenderer<TropiSkellyEntity, ZombieRenderState, TropiSkellyModel> {
-    private static final ResourceLocation TEXTURE = Tropicraft.location("textures/entity/tropiskeleton.png");
+    private static final Identifier TEXTURE = Tropicraft.id("textures/entity/tropiskeleton.png");
 
     public TropiSkellyRenderer(EntityRendererProvider.Context context) {
         super(context, new TropiSkellyModel(context.bakeLayer(TropicraftRenderLayers.TROPI_SKELLY_LAYER)), 0.5f);
@@ -28,7 +28,7 @@ public class TropiSkellyRenderer extends HumanoidMobRenderer<TropiSkellyEntity, 
     }
 
     @Override
-    public ResourceLocation getTextureLocation(ZombieRenderState state) {
+    public Identifier getTextureLocation(ZombieRenderState state) {
         return TEXTURE;
     }
 }

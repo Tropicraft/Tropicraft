@@ -3,14 +3,23 @@ package net.tropicraft.core.common.dimension;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.data.worldgen.biome.OverworldBiomes;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.attribute.AmbientSounds;
+import net.minecraft.world.attribute.BackgroundMusic;
+import net.minecraft.world.attribute.BedRule;
+import net.minecraft.world.attribute.EnvironmentAttributeMap;
+import net.minecraft.world.attribute.EnvironmentAttributes;
+import net.minecraft.world.clock.WorldClocks;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.CardinalLighting;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
@@ -22,6 +31,7 @@ import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.portal.TeleportTransition;
 import net.minecraft.world.phys.Vec3;
 import net.tropicraft.Tropicraft;
+import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomeBuilder;
 import net.tropicraft.core.common.dimension.noise.TropicraftNoiseGenSettings;
 import org.apache.logging.log4j.LogManager;
@@ -29,13 +39,11 @@ import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
-import java.util.OptionalLong;
 
 public class TropicraftDimension {
     private static final Logger LOGGER = LogManager.getLogger(TropicraftDimension.class);
 
-    public static final ResourceLocation ID = Tropicraft.location("tropics");
-    public static final ResourceLocation EFFECTS_ID = ID;
+    public static final Identifier ID = Tropicraft.id("tropics");
 
     public static final ResourceKey<Level> WORLD = ResourceKey.create(Registries.DIMENSION, ID);
     public static final ResourceKey<LevelStem> DIMENSION = ResourceKey.create(Registries.LEVEL_STEM, ID);
@@ -44,23 +52,35 @@ public class TropicraftDimension {
     public static final int SEA_LEVEL = 127;
 
     public static void bootstrapDimensionType(BootstrapContext<DimensionType> context) {
+        EnvironmentAttributeMap attributes = EnvironmentAttributeMap.builder()
+                .set(EnvironmentAttributes.FOG_COLOR, 0xffc0d8ff)
+                .set(EnvironmentAttributes.SKY_COLOR, OverworldBiomes.calculateSkyColor(0.8F))
+                .set(EnvironmentAttributes.AMBIENT_LIGHT_COLOR, 0xff0a0a0a)
+                .set(EnvironmentAttributes.CLOUD_COLOR, ARGB.white(0.8f))
+                .set(EnvironmentAttributes.CLOUD_HEIGHT, 256.33f)
+                .set(EnvironmentAttributes.BACKGROUND_MUSIC, BackgroundMusic.OVERWORLD)
+                .set(EnvironmentAttributes.BED_RULE, BedRule.CAN_SLEEP_WHEN_DARK)
+                .set(EnvironmentAttributes.RESPAWN_ANCHOR_WORKS, false)
+                .set(EnvironmentAttributes.NETHER_PORTAL_SPAWNS_PIGLINS, true)
+                .set(EnvironmentAttributes.AMBIENT_SOUNDS, AmbientSounds.LEGACY_CAVE_SETTINGS)
+                .build();
         context.register(DIMENSION_TYPE, new DimensionType(
-                OptionalLong.empty(),
+                false,
                 true,
                 false,
                 false,
-                true,
                 1.0,
-                true,
-                false,
                 -64,
                 384,
                 384,
                 BlockTags.INFINIBURN_OVERWORLD,
-                EFFECTS_ID,
                 0.0f,
-                Optional.of(256),
-                new DimensionType.MonsterSettings(false, true, UniformInt.of(0, 7), 0)
+                new DimensionType.MonsterSettings(UniformInt.of(0, 7), 0),
+                DimensionType.Skybox.OVERWORLD,
+                CardinalLighting.Type.DEFAULT,
+                attributes,
+                context.lookup(Registries.TIMELINE).getOrThrow(TropicraftTags.Timelines.IN_TROPICS),
+                Optional.of(context.lookup(Registries.WORLD_CLOCK).getOrThrow(WorldClocks.OVERWORLD))
         ));
     }
 
@@ -158,7 +178,7 @@ public class TropicraftDimension {
 
         ServerLevel destLevel = sourceLevel.getServer().getLevel(destination);
         if (destLevel == null) {
-            LOGGER.error("Cannot teleport player to dimension {} as it does not exist!", destination.location());
+            LOGGER.error("Cannot teleport player to dimension {} as it does not exist!", destination.identifier());
             return null;
         }
         return destLevel;

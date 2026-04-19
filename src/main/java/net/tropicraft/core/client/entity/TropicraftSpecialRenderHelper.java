@@ -56,62 +56,62 @@ public class TropicraftSpecialRenderHelper {
     }
 
     // TODO: This is pretty inefficient to render, can we rather bake it? (maybe even reuse item model baking)
-    public static void popper(float f, float f1, float f2, float f3, float f1shifted, float f3shifted, float layerHeight, PoseStack stack, VertexConsumer buffer, int packedLightIn, int overlayLightIn, float red, float green, float blue, float alpha) {
+    public static void popper(float f, float f1, float f2, float f3, float f1shifted, float f3shifted, float layerHeight, VertexConsumer buffer, int packedLightIn, int overlayLightIn, float red, float green, float blue, float alpha, PoseStack.Pose pose) {
         float f4 = 1.0f;
 
-        vertex(buffer, stack.last(), 0.0, 0.0, 0.0, red, green, blue, alpha, f, f3shifted, Direction.SOUTH, packedLightIn, overlayLightIn);
-        vertex(buffer, stack.last(), f4, 0.0, 0.0, red, green, blue, alpha, f2, f3shifted, Direction.SOUTH, packedLightIn, overlayLightIn);
-        vertex(buffer, stack.last(), f4, 1.0, 0.0, red, green, blue, alpha, f2, f1shifted, Direction.SOUTH, packedLightIn, overlayLightIn);
-        vertex(buffer, stack.last(), 0.0, 1.0, 0.0, red, green, blue, alpha, f, f1shifted, Direction.SOUTH, packedLightIn, overlayLightIn);
+        vertex(buffer, pose, 0.0, 0.0, 0.0, red, green, blue, alpha, f, f3shifted, Direction.SOUTH, packedLightIn, overlayLightIn);
+        vertex(buffer, pose, f4, 0.0, 0.0, red, green, blue, alpha, f2, f3shifted, Direction.SOUTH, packedLightIn, overlayLightIn);
+        vertex(buffer, pose, f4, 1.0, 0.0, red, green, blue, alpha, f2, f1shifted, Direction.SOUTH, packedLightIn, overlayLightIn);
+        vertex(buffer, pose, 0.0, 1.0, 0.0, red, green, blue, alpha, f, f1shifted, Direction.SOUTH, packedLightIn, overlayLightIn);
 
-        vertex(buffer, stack.last(), 0.0, 1.0, 0.0f - layerHeight, red, green, blue, alpha, f, f1, Direction.NORTH, packedLightIn, overlayLightIn);
-        vertex(buffer, stack.last(), f4, 1.0, 0.0f - layerHeight, red, green, blue, alpha, f2, f1, Direction.NORTH, packedLightIn, overlayLightIn);
-        vertex(buffer, stack.last(), f4, 0.0, 0.0f - layerHeight, red, green, blue, alpha, f2, f3, Direction.NORTH, packedLightIn, overlayLightIn);
-        vertex(buffer, stack.last(), 0.0, 0.0, 0.0f - layerHeight, red, green, blue, alpha, f, f3, Direction.NORTH, packedLightIn, overlayLightIn);
+        vertex(buffer, pose, 0.0, 1.0, 0.0f - layerHeight, red, green, blue, alpha, f, f1, Direction.NORTH, packedLightIn, overlayLightIn);
+        vertex(buffer, pose, f4, 1.0, 0.0f - layerHeight, red, green, blue, alpha, f2, f1, Direction.NORTH, packedLightIn, overlayLightIn);
+        vertex(buffer, pose, f4, 0.0, 0.0f - layerHeight, red, green, blue, alpha, f2, f3, Direction.NORTH, packedLightIn, overlayLightIn);
+        vertex(buffer, pose, 0.0, 0.0, 0.0f - layerHeight, red, green, blue, alpha, f, f3, Direction.NORTH, packedLightIn, overlayLightIn);
 
         for (int i = 0; i < 32; i++) {
             float f6 = (float) i / 32.0f;
             float f10 = (f + (f2 - f) * f6) - 0.001953125f;
             float f14 = f4 * f6;
-            vertex(buffer, stack.last(), f14, 0.0, 0.0f - layerHeight, red, green, blue, alpha, f10, f3, Direction.EAST, packedLightIn, overlayLightIn);
-            vertex(buffer, stack.last(), f14, 0.0, 0.0, red, green, blue, alpha, f10, f3, Direction.EAST, packedLightIn, overlayLightIn);
-            vertex(buffer, stack.last(), f14, 1.0, 0.0, red, green, blue, alpha, f10, f1, Direction.EAST, packedLightIn, overlayLightIn);
-            vertex(buffer, stack.last(), f14, 1.0, 0.0f - layerHeight, red, green, blue, alpha, f10, f1, Direction.EAST, packedLightIn, overlayLightIn);
+            vertex(buffer, pose, f14, 0.0, 0.0f - layerHeight, red, green, blue, alpha, f10, f3, Direction.EAST, packedLightIn, overlayLightIn);
+            vertex(buffer, pose, f14, 0.0, 0.0, red, green, blue, alpha, f10, f3, Direction.EAST, packedLightIn, overlayLightIn);
+            vertex(buffer, pose, f14, 1.0, 0.0, red, green, blue, alpha, f10, f1, Direction.EAST, packedLightIn, overlayLightIn);
+            vertex(buffer, pose, f14, 1.0, 0.0f - layerHeight, red, green, blue, alpha, f10, f1, Direction.EAST, packedLightIn, overlayLightIn);
         }
 
         for (int j = 0; j < 32; j++) {
             float f7 = (float) j / 32.0f;
             float f11 = (f + (f2 - f) * f7) - 0.001953125f;
             float f15 = f4 * f7 + 0.03125f;
-            vertex(buffer, stack.last(), f15, 1.0, 0.0f - layerHeight, red, green, blue, alpha, f11, f1, Direction.WEST, packedLightIn, overlayLightIn);
-            vertex(buffer, stack.last(), f15, 1.0, 0.0, red, green, blue, alpha, f11, f1, Direction.WEST, packedLightIn, overlayLightIn);
-            vertex(buffer, stack.last(), f15, 0.0, 0.0, red, green, blue, alpha, f11, f3, Direction.WEST, packedLightIn, overlayLightIn);
-            vertex(buffer, stack.last(), f15, 0.0, 0.0f - layerHeight, red, green, blue, alpha, f11, f3, Direction.WEST, packedLightIn, overlayLightIn);
+            vertex(buffer, pose, f15, 1.0, 0.0f - layerHeight, red, green, blue, alpha, f11, f1, Direction.WEST, packedLightIn, overlayLightIn);
+            vertex(buffer, pose, f15, 1.0, 0.0, red, green, blue, alpha, f11, f1, Direction.WEST, packedLightIn, overlayLightIn);
+            vertex(buffer, pose, f15, 0.0, 0.0, red, green, blue, alpha, f11, f3, Direction.WEST, packedLightIn, overlayLightIn);
+            vertex(buffer, pose, f15, 0.0, 0.0f - layerHeight, red, green, blue, alpha, f11, f3, Direction.WEST, packedLightIn, overlayLightIn);
         }
 
         for (int k = 0; k < 32; k++) {
             float f8 = (float) k / 32.0f;
             float f12 = (f3 + (f1 - f3) * f8) - 0.001953125f;
             float f16 = f4 * f8 + 0.03125f;
-            vertex(buffer, stack.last(), 0.0, f16, 0.0, red, green, blue, alpha, f, f12, Direction.UP, packedLightIn, overlayLightIn);
-            vertex(buffer, stack.last(), f4, f16, 0.0, red, green, blue, alpha, f2, f12, Direction.UP, packedLightIn, overlayLightIn);
-            vertex(buffer, stack.last(), f4, f16, 0.0f - layerHeight, red, green, blue, alpha, f2, f12, Direction.UP, packedLightIn, overlayLightIn);
-            vertex(buffer, stack.last(), 0.0, f16, 0.0f - layerHeight, red, green, blue, alpha, f, f12, Direction.UP, packedLightIn, overlayLightIn);
+            vertex(buffer, pose, 0.0, f16, 0.0, red, green, blue, alpha, f, f12, Direction.UP, packedLightIn, overlayLightIn);
+            vertex(buffer, pose, f4, f16, 0.0, red, green, blue, alpha, f2, f12, Direction.UP, packedLightIn, overlayLightIn);
+            vertex(buffer, pose, f4, f16, 0.0f - layerHeight, red, green, blue, alpha, f2, f12, Direction.UP, packedLightIn, overlayLightIn);
+            vertex(buffer, pose, 0.0, f16, 0.0f - layerHeight, red, green, blue, alpha, f, f12, Direction.UP, packedLightIn, overlayLightIn);
         }
 
         for (int l = 0; l < 32; l++) {
             float f9 = (float) l / 32.0f;
             float f13 = (f3 + (f1 - f3) * f9) - 0.001953125f;
             float f17 = f4 * f9;
-            vertex(buffer, stack.last(), f4, f17, 0.0, red, green, blue, alpha, f2, f13, Direction.DOWN, packedLightIn, overlayLightIn);
-            vertex(buffer, stack.last(), 0.0, f17, 0.0, red, green, blue, alpha, f, f13, Direction.DOWN, packedLightIn, overlayLightIn);
-            vertex(buffer, stack.last(), 0.0, f17, 0.0f - layerHeight, red, green, blue, alpha, f, f13, Direction.DOWN, packedLightIn, overlayLightIn);
-            vertex(buffer, stack.last(), f4, f17, 0.0f - layerHeight, red, green, blue, alpha, f2, f13, Direction.DOWN, packedLightIn, overlayLightIn);
+            vertex(buffer, pose, f4, f17, 0.0, red, green, blue, alpha, f2, f13, Direction.DOWN, packedLightIn, overlayLightIn);
+            vertex(buffer, pose, 0.0, f17, 0.0, red, green, blue, alpha, f, f13, Direction.DOWN, packedLightIn, overlayLightIn);
+            vertex(buffer, pose, 0.0, f17, 0.0f - layerHeight, red, green, blue, alpha, f, f13, Direction.DOWN, packedLightIn, overlayLightIn);
+            vertex(buffer, pose, f4, f17, 0.0f - layerHeight, red, green, blue, alpha, f2, f13, Direction.DOWN, packedLightIn, overlayLightIn);
         }
     }
 
     public static void popper(float f, float f1, float f2, float f3, float f1shifted, float f3shifted, float layerHeight, PoseStack stack, VertexConsumer buffer, int packedLightIn, int overlayLightIn) {
-        popper(f, f1, f2, f3, f1shifted, f3shifted, layerHeight, stack, buffer, packedLightIn, overlayLightIn, 1, 1, 1, 1);
+        popper(f, f1, f2, f3, f1shifted, f3shifted, layerHeight, buffer, packedLightIn, overlayLightIn, 1, 1, 1, 1, stack.last());
     }
 
     public static void popper(float f, float f1, float f2, float f3, float f1shifted, float f3shifted, PoseStack stack, VertexConsumer buffer, int packedLightIn, int overlayLightIn) {

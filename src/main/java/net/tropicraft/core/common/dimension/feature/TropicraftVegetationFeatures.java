@@ -1,25 +1,19 @@
 package net.tropicraft.core.common.dimension.feature;
 
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.core.Direction;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
-import net.minecraft.data.worldgen.features.FeatureUtils;
-import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.ProbabilityFeatureConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
-import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.TropicraftTags;
@@ -47,10 +41,9 @@ public final class TropicraftVegetationFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_PAPAYA = createKey("trees_papaya");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_PLEODENDRON = createKey("trees_pleodendron");
 
-    public static final ResourceKey<ConfiguredFeature<?, ?>> PATCH_GRASS_TROPICS = createKey("patch_grass_tropics");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> GRASS_TROPICS = createKey("grass_tropics");
     public static final ResourceKey<ConfiguredFeature<?, ?>> PINEAPPLE = createKey("pineapple");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> PATCH_PINEAPPLE = createKey("patch_pineapple");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> PATCH_IRIS = createKey("iris_flowers");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> IRIS = createKey("iris");
 
     public static final ResourceKey<ConfiguredFeature<?, ?>> BAMBOO = createKey("bamboo");
 
@@ -78,12 +71,9 @@ public final class TropicraftVegetationFeatures {
 
         register(context, RAINFOREST_VINES, TropicraftFeatures.VINES, new RainforestVinesConfig());
 
-        register(context, SMALL_GOLDEN_LEATHER_FERN, Feature.RANDOM_PATCH, randomPatch(TropicraftBlocks.GOLDEN_LEATHER_FERN));
-        register(context, TALL_GOLDEN_LEATHER_FERN, Feature.RANDOM_PATCH, randomPatch(TropicraftBlocks.TALL_GOLDEN_LEATHER_FERN));
-        register(context, HUGE_GOLDEN_LEATHER_FERN, Feature.RANDOM_PATCH, FeatureUtils.simplePatchConfiguration(
-                TropicraftFeatures.HUGE_PLANT.get(),
-                new SimpleBlockConfiguration(BlockStateProvider.simple(TropicraftBlocks.LARGE_GOLDEN_LEATHER_FERN.get()))
-        ));
+        register(context, SMALL_GOLDEN_LEATHER_FERN, Feature.SIMPLE_BLOCK, simpleBlock(TropicraftBlocks.GOLDEN_LEATHER_FERN));
+        register(context, TALL_GOLDEN_LEATHER_FERN, Feature.SIMPLE_BLOCK, simpleBlock(TropicraftBlocks.TALL_GOLDEN_LEATHER_FERN));
+        register(context, HUGE_GOLDEN_LEATHER_FERN, TropicraftFeatures.HUGE_PLANT.get(), simpleBlock(TropicraftBlocks.LARGE_GOLDEN_LEATHER_FERN));
 
         registerRandomPlaced(context, TREES_FRUIT, TropicraftTreePlacements.GRAPEFRUIT_TREE_CHECKED, TropicraftTreePlacements.ORANGE_TREE_CHECKED, TropicraftTreePlacements.LEMON_TREE_CHECKED, TropicraftTreePlacements.LIME_TREE_CHECKED);
         registerRandomPlaced(context, TREES_PALM, TropicraftTreePlacements.PALM_TREE_CHECKED);
@@ -98,23 +88,19 @@ public final class TropicraftVegetationFeatures {
         registerRandomPlaced(context, TREES_PAPAYA, TropicraftTreePlacements.PAPAYA_CHECKED);
         registerRandomPlaced(context, TREES_PLEODENDRON, TropicraftTreePlacements.PLEODENDRON_CHECKED);
 
-        register(context, PATCH_GRASS_TROPICS, Feature.RANDOM_PATCH, new RandomPatchConfiguration(32, 7, 3, PlacementUtils.filtered(
-                Feature.SIMPLE_BLOCK,
+        register(context, GRASS_TROPICS, Feature.SIMPLE_BLOCK,
                 new SimpleBlockConfiguration(new WeightedStateProvider(WeightedList.<BlockState>builder()
                         .add(Blocks.SHORT_GRASS.defaultBlockState(), 3)
                         .add(Blocks.FERN.defaultBlockState(), 1)
-                )),
-                BlockPredicate.ONLY_IN_AIR_PREDICATE
-        )));
-        register(context, PINEAPPLE, Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(stateProvider(TropicraftBlocks.PINEAPPLE)));
-        register(context, PATCH_PINEAPPLE, Feature.RANDOM_PATCH, randomPatch(TropicraftBlocks.PINEAPPLE));
-        register(context, PATCH_IRIS, Feature.RANDOM_PATCH, randomPatch(TropicraftBlocks.IRIS));
+                )));
+        register(context, PINEAPPLE, Feature.SIMPLE_BLOCK, simpleBlock(TropicraftBlocks.PINEAPPLE));
+        register(context, IRIS, Feature.SIMPLE_BLOCK, simpleBlock(TropicraftBlocks.IRIS));
 
         register(context, BAMBOO, Feature.BAMBOO, new ProbabilityFeatureConfiguration(0.15f));
 
-        register(context, FLOWERS_TROPICS, Feature.FLOWER, randomPatch(new NoiseFromTagBlockStateProvider(blocks.getOrThrow(TropicraftTags.Blocks.TROPICS_FLOWERS))));
-        register(context, FLOWERS_RAINFOREST, Feature.FLOWER, randomPatch(new NoiseFromTagBlockStateProvider(blocks.getOrThrow(TropicraftTags.Blocks.RAINFOREST_FLOWERS))));
-        register(context, MUSHROOMS_RAINFOREST, Feature.FLOWER, randomPatch(TropicraftBlocks.FLOWERS.get(TropicraftFlower.MAGIC_MUSHROOM)));
+        register(context, FLOWERS_TROPICS, Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(new NoiseFromTagBlockStateProvider(blocks.getOrThrow(TropicraftTags.Blocks.TROPICS_FLOWERS))));
+        register(context, FLOWERS_RAINFOREST, Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(new NoiseFromTagBlockStateProvider(blocks.getOrThrow(TropicraftTags.Blocks.RAINFOREST_FLOWERS))));
+        register(context, MUSHROOMS_RAINFOREST, Feature.SIMPLE_BLOCK, simpleBlock(TropicraftBlocks.FLOWERS.get(TropicraftFlower.MAGIC_MUSHROOM)));
 
         register(context, COFFEE_BUSH, TropicraftFeatures.COFFEE_BUSH);
 

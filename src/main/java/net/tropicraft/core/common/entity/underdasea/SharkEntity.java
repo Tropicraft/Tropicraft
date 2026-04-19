@@ -22,7 +22,7 @@ import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.world.entity.ai.goal.TryFindWaterGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
-import net.minecraft.world.entity.animal.WaterAnimal;
+import net.minecraft.world.entity.animal.fish.WaterAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -31,12 +31,13 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class SharkEntity extends WaterAnimal {
 
     private static final EntityDataAccessor<Boolean> IS_BOSS = SynchedEntityData.defineId(SharkEntity.class, EntityDataSerializers.BOOLEAN);
 
-    private final ServerBossEvent bossInfo = new ServerBossEvent(getDisplayName(), BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS);
+    private final ServerBossEvent bossInfo = new ServerBossEvent(UUID.randomUUID(), getDisplayName(), BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS);
     private final ArrayList<ServerPlayer> bossTargets = new ArrayList<>();
     private boolean hasSetBoss = false;
 
@@ -103,7 +104,7 @@ public class SharkEntity extends WaterAnimal {
 //        setSwimSpeeds(1.1f, 2.2f, 1.5f, 3.0f, 5.0f);
         getAttribute(Attributes.MAX_HEALTH).setBaseValue(20);
         // TODO in renderer - this.setTexture("hammerhead4");
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             bossInfo.setName(Component.literal("Elder Hammerhead"));
         }
         hasSetBoss = true;
@@ -118,7 +119,7 @@ public class SharkEntity extends WaterAnimal {
 //                setBossTraits();
 //            }
 //
-//            if (!level.isClientSide) {
+//            if (!level.isClientSide()) {
 //                // Search for suitable target
 //                Player nearest = level.getNearestPlayer(this, 64.0);
 //                if (nearest != null) {

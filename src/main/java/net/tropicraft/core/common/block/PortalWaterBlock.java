@@ -17,7 +17,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.portal.TeleportTransition;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public final class PortalWaterBlock extends LiquidBlock implements Portal {
     public PortalWaterBlock(Properties builder) {
@@ -41,7 +41,7 @@ public final class PortalWaterBlock extends LiquidBlock implements Portal {
     }
 
     @Override
-    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier) {
+    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier, boolean isPrecise) {
         if (entity.canUsePortal(false)) {
             entity.setAsInsidePortal(this, pos);
         }

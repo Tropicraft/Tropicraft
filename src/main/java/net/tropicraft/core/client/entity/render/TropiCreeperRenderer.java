@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.state.CreeperRenderState;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.TropicraftRenderLayers;
@@ -12,7 +12,7 @@ import net.tropicraft.core.client.entity.model.TropiCreeperModel;
 import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
 
 public class TropiCreeperRenderer extends MobRenderer<TropiCreeperEntity, CreeperRenderState, TropiCreeperModel> {
-    private static final ResourceLocation TEXTURE = Tropicraft.location("textures/entity/tropicreeper.png");
+    private static final Identifier TEXTURE = Tropicraft.id("textures/entity/tropicreeper.png");
 
     public TropiCreeperRenderer(EntityRendererProvider.Context context) {
         super(context, new TropiCreeperModel(context.bakeLayer(TropicraftRenderLayers.TROPI_CREEPER_LAYER)), 0.5f);
@@ -50,7 +50,7 @@ public class TropiCreeperRenderer extends MobRenderer<TropiCreeperEntity, Creepe
     }
 
     @Override
-    public ResourceLocation getTextureLocation(CreeperRenderState state) {
+    public Identifier getTextureLocation(CreeperRenderState state) {
         return TEXTURE;
     }
 }

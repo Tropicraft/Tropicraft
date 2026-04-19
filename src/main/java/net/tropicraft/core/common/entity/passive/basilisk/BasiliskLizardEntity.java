@@ -9,6 +9,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.Ease;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
@@ -42,7 +43,7 @@ public final class BasiliskLizardEntity extends Animal {
     private final BinaryAnimation runningAnimation = new BinaryAnimation(
             SharedConstants.TICKS_PER_SECOND / 2,
             SharedConstants.TICKS_PER_SECOND / 4,
-            Mth::easeInOutSine
+            Ease::inOutSine
     );
 
     public BasiliskLizardEntity(EntityType<? extends BasiliskLizardEntity> type, Level world) {
