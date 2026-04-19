@@ -52,7 +52,7 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
     public static AttributeSupplier.Builder createAttributes() {
         return Animal.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 3.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.6)
+                .add(Attributes.MOVEMENT_SPEED, 0.3)
                 .add(Attributes.FLYING_SPEED, 0.9)
                 .add(Attributes.FOLLOW_RANGE, 12.0);
     }
