@@ -14,6 +14,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.JigsawBlock;
+import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.JigsawBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -105,7 +106,7 @@ public final class HomeTreeBranchPiece extends StructurePoolElement implements I
         int branchY2 = rand.nextInt(4) + 4;
 
         BlockState wood = TropicraftBlocks.MAHOGANY_LOG.get().defaultBlockState();
-        BlockState leaf = TropicraftBlocks.MAHOGANY_LEAVES.get().defaultBlockState();
+        BlockState leaf = TropicraftBlocks.MAHOGANY_LEAVES.get().defaultBlockState().setValue(LeavesBlock.PERSISTENT, true);
         final int leafCircleSizeConstant = 3;
         int y2 = origin.getY() + branchY2;
 
