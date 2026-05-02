@@ -71,7 +71,7 @@ repositories {
 }
 
 dependencies {
-    jarJar(implementation("com.tterrag.registrate:Registrate-LT:MC26.1-${registrate_version}")) {
+    jarJar(implementation("com.tterrag.registrate:Registrate:MC26.1-${registrate_version}")) {
         version {
             strictly "[MC26.1-${registrate_version},MC26.2)"
             prefer "MC26.1-${registrate_version}"
