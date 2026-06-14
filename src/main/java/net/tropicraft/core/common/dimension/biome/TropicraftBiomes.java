@@ -288,6 +288,7 @@ public final class TropicraftBiomes {
 
         // Needed as oceans can sometimes produce land above sea level
         TropicraftVegetationPlacements.addPalmTrees(generation);
+        TropicraftMiscPlacements.addTropicsMetals(generation);
 
         TropicraftVegetationPlacements.addSeagrass(generation);
         TropicraftVegetationPlacements.addBeachGrass(generation);
