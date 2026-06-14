@@ -9,3 +9,5 @@ plugins {
 }
 
 rootProject.name = 'Tropicraft'
+
+include ':tools'

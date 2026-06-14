@@ -101,7 +101,7 @@ public class Tropicraft {
                 );
 
         DataProviderInitializer initializer = registrate.getDataGenInitializer();
-        TropicraftPackRegistries.addTo(initializer);
+        TropicraftPackRegistries.addTo(initializer::add);
         initializer.addDependency(ProviderType.ADVANCEMENT, ProviderType.DYNAMIC);
         initializer.addDependency(ProviderType.RECIPE_RUNNER, ProviderType.DYNAMIC);
         initializer.addDependency(BIOME_TAGS, ProviderType.DYNAMIC);

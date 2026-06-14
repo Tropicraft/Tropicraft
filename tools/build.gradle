@@ -1,0 +1,48 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.moddev'
+}
+
+group = 'net.tropicraft'
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(25)
+
+neoForge {
+    version = project.neo_version
+
+    runs {
+        dfView {
+            type = 'server'
+            mainClass = 'ToolRunner'
+            programArgument 'net.tropicraft.DfView'
+        }
+    }
+
+    mods {
+        "${project.mod_id}" {
+            sourceSet rootProject.sourceSets.main
+            sourceSet sourceSets.main
+        }
+    }
+}
+
+sourceSets {
+    // Not going to pretend this is in any way good
+    bootstrap {
+        compileClasspath += main.compileClasspath
+    }
+    main {
+        runtimeClasspath += bootstrap.output
+    }
+}
+
+repositories {
+    maven {
+        url = 'https://maven.gegy.dev/releases/'
+        content { includeGroup 'com.tterrag.registrate' }
+    }
+}
+
+dependencies {
+    implementation rootProject
+}

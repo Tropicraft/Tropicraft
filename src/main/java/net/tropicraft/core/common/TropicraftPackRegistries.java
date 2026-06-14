@@ -1,7 +1,9 @@
 package net.tropicraft.core.common;
 
-import com.tterrag.registrate.providers.DataProviderInitializer;
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.tropicraft.core.common.attribute.TropicraftTimelines;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
@@ -28,34 +30,45 @@ import net.tropicraft.core.common.trade.TropicraftTradeSets;
 import net.tropicraft.core.common.trade.TropicraftTrades;
 
 public class TropicraftPackRegistries {
-    public static void addTo(DataProviderInitializer initializer) {
-        initializer.add(Registries.CONFIGURED_FEATURE, context -> {
+    public static void addTo(Output output) {
+        output.add(Registries.CONFIGURED_FEATURE, context -> {
             TropicraftTreeFeatures.bootstrap(context);
             TropicraftVegetationFeatures.bootstrap(context);
             TropicraftMiscFeatures.bootstrap(context);
         });
-        initializer.add(Registries.PLACED_FEATURE, context -> {
+        output.add(Registries.PLACED_FEATURE, context -> {
             TropicraftTreePlacements.boostrap(context);
             TropicraftVegetationPlacements.bootstrap(context);
             TropicraftMiscPlacements.boostrap(context);
         });
-        initializer.add(Registries.PROCESSOR_LIST, TropicraftProcessorLists::bootstrap);
-        initializer.add(Registries.CONFIGURED_CARVER, TropicraftConfiguredCarvers::bootstrap);
-        initializer.add(Registries.TEMPLATE_POOL, TropicraftTemplatePools::bootstrap);
-        initializer.add(Registries.STRUCTURE, TropicraftStructures::bootstrap);
-        initializer.add(Registries.STRUCTURE_SET, TropicraftStructureSets::bootstrap);
-        initializer.add(Registries.DENSITY_FUNCTION, TropicraftNoiseRouterData::bootstrap);
-        initializer.add(Registries.NOISE_SETTINGS, TropicraftNoiseGenSettings::bootstrap);
-        initializer.add(Registries.BIOME, TropicraftBiomes::bootstrap);
-        initializer.add(Registries.DIMENSION_TYPE, TropicraftDimension::bootstrapDimensionType);
-        initializer.add(Registries.LEVEL_STEM, TropicraftDimension::bootstrapLevelStem);
-        initializer.add(Registries.MULTI_NOISE_BIOME_SOURCE_PARAMETER_LIST, TropicraftBiomeBuilder::bootstrap);
-        initializer.add(Registries.JUKEBOX_SONG, TropicraftJukeboxSongs::bootstrap);
-        initializer.add(Registries.TIMELINE, TropicraftTimelines::bootstrap);
-        initializer.add(Registries.TRADE_SET, TropicraftTradeSets::bootstrap);
-        initializer.add(Registries.VILLAGER_TRADE, TropicraftTrades::bootstrap);
-        initializer.add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, TropicraftBiomeModifiers::bootstrap);
-        initializer.add(TropicraftRegistries.DRINK_INGREDIENT, TropicraftDrinkIngredients::bootstrap);
-        initializer.add(TropicraftRegistries.DRINK, TropicraftDrinks::bootstrap);
+        output.add(Registries.PROCESSOR_LIST, TropicraftProcessorLists::bootstrap);
+        output.add(Registries.CONFIGURED_CARVER, TropicraftConfiguredCarvers::bootstrap);
+        output.add(Registries.TEMPLATE_POOL, TropicraftTemplatePools::bootstrap);
+        output.add(Registries.STRUCTURE, TropicraftStructures::bootstrap);
+        output.add(Registries.STRUCTURE_SET, TropicraftStructureSets::bootstrap);
+        output.add(Registries.DENSITY_FUNCTION, TropicraftNoiseRouterData::bootstrap);
+        output.add(Registries.NOISE_SETTINGS, TropicraftNoiseGenSettings::bootstrap);
+        output.add(Registries.BIOME, TropicraftBiomes::bootstrap);
+        output.add(Registries.DIMENSION_TYPE, TropicraftDimension::bootstrapDimensionType);
+        output.add(Registries.LEVEL_STEM, TropicraftDimension::bootstrapLevelStem);
+        output.add(Registries.MULTI_NOISE_BIOME_SOURCE_PARAMETER_LIST, TropicraftBiomeBuilder::bootstrap);
+        output.add(Registries.JUKEBOX_SONG, TropicraftJukeboxSongs::bootstrap);
+        output.add(Registries.TIMELINE, TropicraftTimelines::bootstrap);
+        output.add(Registries.TRADE_SET, TropicraftTradeSets::bootstrap);
+        output.add(Registries.VILLAGER_TRADE, TropicraftTrades::bootstrap);
+        output.add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, TropicraftBiomeModifiers::bootstrap);
+        output.add(TropicraftRegistries.DRINK_INGREDIENT, TropicraftDrinkIngredients::bootstrap);
+        output.add(TropicraftRegistries.DRINK, TropicraftDrinks::bootstrap);
+    }
+
+    public static RegistrySetBuilder createRegistrySet() {
+        RegistrySetBuilder builder = new RegistrySetBuilder();
+        addTo(builder::add);
+        return builder;
+    }
+
+    @FunctionalInterface
+    public interface Output {
+        <T> void add(ResourceKey<Registry<T>> registry, RegistrySetBuilder.RegistryBootstrap<T> bootstrap);
     }
 }
