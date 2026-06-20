@@ -40,7 +40,7 @@ public final class ModelAnimator {
     public static MeshTransformer hierarchicalBaby(String headName, float scale, float headScale) {
         MeshTransformer bodyScaling = MeshTransformer.scaling(scale);
         return mesh -> bodyScaling.apply(
-                transformChildPart(mesh, headName, pose -> pose.scaled(headScale / scale))
+                transformChildPart(mesh, headName, pose -> pose.withScale(headScale / scale))
         );
     }
 
