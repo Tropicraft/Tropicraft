@@ -15,8 +15,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "vehicle": {
-                "type": "tropicraft:chair"
+              "minecraft:vehicle": {
+                "minecraft:entity_type": "tropicraft:chair"
               }
             }
           },

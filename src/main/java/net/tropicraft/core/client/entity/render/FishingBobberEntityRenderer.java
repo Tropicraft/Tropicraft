@@ -91,7 +91,7 @@ public class FishingBobberEntityRenderer extends EntityRenderer<FishingBobberEnt
         float originY = (float) state.lineOriginOffset.y;
         float originZ = (float) state.lineOriginOffset.z;
 
-        float width = Minecraft.getInstance().gameRenderer.getGameRenderState().windowRenderState.appropriateLineWidth;
+        float width = Minecraft.getInstance().gameRenderer.gameRenderState().windowRenderState.appropriateLineWidth;
         submitNodeCollector.submitCustomGeometry(poseStack, RenderTypes.lines(), (pose, buffer) -> {
             int steps = 16;
             for (int i = 0; i < steps; i++) {

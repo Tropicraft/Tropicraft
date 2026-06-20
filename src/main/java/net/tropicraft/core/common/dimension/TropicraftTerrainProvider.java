@@ -1,22 +1,22 @@
 package net.tropicraft.core.common.dimension;
 
+import it.unimi.dsi.fastutil.floats.Float2FloatFunction;
 import net.minecraft.util.BoundedFloatFunction;
 import net.minecraft.util.CubicSpline;
 import net.minecraft.util.Mth;
-import net.minecraft.util.BoundedFloatFunction;
 
 public final class TropicraftTerrainProvider {
-    private static final BoundedFloatFunction<Float> NO_TRANSFORM = BoundedFloatFunction.IDENTITY;
+    private static final Float2FloatFunction NO_TRANSFORM = Float2FloatFunction.identity();
 
-    public static <C, I extends BoundedFloatFunction<C>> CubicSpline<C, I> offset(I continents, I erosion, I ridgesFolded) {
-        BoundedFloatFunction<Float> offsetTransform = BoundedFloatFunction.createUnlimited(offset -> offset + 0.52f);
+    public static <I extends BoundedFloatFunction<?>> CubicSpline<I> offset(I continents, I erosion, I ridgesFolded) {
+        Float2FloatFunction offsetTransform = offset -> offset + 0.52f;
 
-        CubicSpline<C, I> nearInlandDepth = buildErosionOffsetSpline(erosion, ridgesFolded, -0.15f, 0.0f, 0.0f, 0.1f, 0.0f, -0.03f, false, false, offsetTransform);
-        CubicSpline<C, I> midInlandDepth = buildErosionOffsetSpline(erosion, ridgesFolded, -0.1f, 0.03f, 0.1f, 0.1f, 0.01f, -0.03f, false, false, offsetTransform);
-        CubicSpline<C, I> farInlandDepth = buildErosionOffsetSpline(erosion, ridgesFolded, -0.1f, 0.03f, 0.1f, 0.7f, 0.01f, -0.03f, true, true, offsetTransform);
-        CubicSpline<C, I> peaksDepth = buildErosionOffsetSpline(erosion, ridgesFolded, -0.05f, 0.03f, 0.1f, 1.0f, 0.01f, 0.01f, true, true, offsetTransform);
+        CubicSpline<I> nearInlandDepth = buildErosionOffsetSpline(erosion, ridgesFolded, -0.15f, 0.0f, 0.0f, 0.1f, 0.0f, -0.03f, false, false, offsetTransform);
+        CubicSpline<I> midInlandDepth = buildErosionOffsetSpline(erosion, ridgesFolded, -0.1f, 0.03f, 0.1f, 0.1f, 0.01f, -0.03f, false, false, offsetTransform);
+        CubicSpline<I> farInlandDepth = buildErosionOffsetSpline(erosion, ridgesFolded, -0.1f, 0.03f, 0.1f, 0.7f, 0.01f, -0.03f, true, true, offsetTransform);
+        CubicSpline<I> peaksDepth = buildErosionOffsetSpline(erosion, ridgesFolded, -0.05f, 0.03f, 0.1f, 1.0f, 0.01f, 0.01f, true, true, offsetTransform);
 
-        CubicSpline<C, I> lagoonSpline = buildLagoonOffset(erosion, offsetTransform);
+        CubicSpline<I> lagoonSpline = buildLagoonOffset(erosion, offsetTransform);
 
         // Depth sampler
         return CubicSpline.builder(continents, offsetTransform)
@@ -33,14 +33,14 @@ public final class TropicraftTerrainProvider {
                 .build();
     }
 
-    public static <C, I extends BoundedFloatFunction<C>> CubicSpline<C, I> factor(I continents, I erosion, I weirdness, I ridgesFolded) {
+    public static <I extends BoundedFloatFunction<?>> CubicSpline<I> factor(I continents, I erosion, I weirdness, I ridgesFolded) {
         final float beachFactorStrength = 6.25f;
         final float nearinlandFactorStrength = 4.22f; // 5.47
         final float midInlandFactorStrength = 3.8f; // Was 5.08
         final float furtherInlandFactorStrength = 2.44f; // Was 4.69
 
         // Scale sampler
-        return CubicSpline.builder(continents, NO_TRANSFORM)
+        return CubicSpline.builder(continents)
                 .addPoint(-1.1f, 0.54f)
                 .addPoint(-0.92f, 3.95f)
                 .addPoint(-0.19f, 3.95f)
@@ -51,9 +51,9 @@ public final class TropicraftTerrainProvider {
                 .build();
     }
 
-    public static <C, I extends BoundedFloatFunction<C>> CubicSpline<C, I> jaggedness(I continents, I erosion, I weirdness, I ridges) {
+    public static <I extends BoundedFloatFunction<?>> CubicSpline<I> jaggedness(I continents, I erosion, I weirdness, I ridges) {
         float jaggednessMax = 0.65f;
-        return CubicSpline.builder(continents, NO_TRANSFORM)
+        return CubicSpline.builder(continents)
                 .addPoint(-0.11f, 0.0f)
                 .addPoint(0.03f, buildErosionJaggednessSpline(weirdness, erosion, ridges, 1.0f, 0.5f, 0.0f, 0.0f, NO_TRANSFORM))
                 .addPoint(jaggednessMax, buildErosionJaggednessSpline(weirdness, erosion, ridges, 1.0f, 1.0f, 1.0f, 0.0f, NO_TRANSFORM))
@@ -65,10 +65,10 @@ public final class TropicraftTerrainProvider {
         return -(Math.abs(Math.abs(weirdness) - 0.6666667f) - 0.33333334f) * 3.0f;
     }
 
-    private static <C, I extends BoundedFloatFunction<C>> CubicSpline<C, I> buildErosionJaggednessSpline(I weirdness, I erosion, I ridges, float p_187295_, float p_187296_, float p_187297_, float p_187298_, BoundedFloatFunction<Float> p_187299_) {
+    private static <I extends BoundedFloatFunction<?>> CubicSpline<I> buildErosionJaggednessSpline(I weirdness, I erosion, I ridges, float p_187295_, float p_187296_, float p_187297_, float p_187298_, Float2FloatFunction p_187299_) {
         float f = -0.5775f;
-        CubicSpline<C, I> cubicspline = buildRidgeJaggednessSpline(weirdness, ridges, p_187295_, p_187297_, p_187299_);
-        CubicSpline<C, I> cubicspline1 = buildRidgeJaggednessSpline(weirdness, ridges, p_187296_, p_187298_, p_187299_);
+        CubicSpline<I> cubicspline = buildRidgeJaggednessSpline(weirdness, ridges, p_187295_, p_187297_, p_187299_);
+        CubicSpline<I> cubicspline1 = buildRidgeJaggednessSpline(weirdness, ridges, p_187296_, p_187298_, p_187299_);
         return CubicSpline.builder(erosion, p_187299_)
                 .addPoint(-1.0f, cubicspline)
                 .addPoint(-0.78f, cubicspline1)
@@ -77,12 +77,12 @@ public final class TropicraftTerrainProvider {
                 .build();
     }
 
-    private static <C, I extends BoundedFloatFunction<C>> CubicSpline<C, I> buildRidgeJaggednessSpline(I weirdness, I ridges, float p_187301_, float p_187302_, BoundedFloatFunction<Float> p_187303_) {
+    private static <I extends BoundedFloatFunction<?>> CubicSpline<I> buildRidgeJaggednessSpline(I weirdness, I ridges, float p_187301_, float p_187302_, Float2FloatFunction p_187303_) {
         float f = peaksAndValleys(0.4f);          // 0.2
         float f1 = peaksAndValleys(0.56666666f);  // 0.7
 
         float f2 = (f + f1) / 2.0f; // 0.45
-        CubicSpline.Builder<C, I> builder = CubicSpline.builder(ridges, p_187303_);
+        CubicSpline.Builder<I> builder = CubicSpline.builder(ridges, p_187303_);
         builder.addPoint(f, 0.0f);
         if (p_187302_ > 0.0f) {
             builder.addPoint(f2, buildWeirdnessJaggednessSpline(weirdness, p_187302_, p_187303_));
@@ -99,7 +99,7 @@ public final class TropicraftTerrainProvider {
         return builder.build();
     }
 
-    private static <C, I extends BoundedFloatFunction<C>> CubicSpline<C, I> buildWeirdnessJaggednessSpline(I weirdness, float p_187305_, BoundedFloatFunction<Float> p_187306_) {
+    private static <I extends BoundedFloatFunction<?>> CubicSpline<I> buildWeirdnessJaggednessSpline(I weirdness, float p_187305_, Float2FloatFunction p_187306_) {
         float f = 0.63f * p_187305_;
         float f1 = 0.3f * p_187305_;
         return CubicSpline.builder(weirdness, p_187306_)
@@ -108,25 +108,25 @@ public final class TropicraftTerrainProvider {
                 .build();
     }
 
-    private static <C, I extends BoundedFloatFunction<C>> CubicSpline<C, I> getErosionFactor(I weirdness, I erosion, I ridgesFolded, float strengthForContinentalness, boolean coastal, BoundedFloatFunction<Float> transform) {
+    private static <I extends BoundedFloatFunction<?>> CubicSpline<I> getErosionFactor(I weirdness, I erosion, I ridgesFolded, float strengthForContinentalness, boolean coastal, Float2FloatFunction transform) {
         final float defaultScale = 3.1f; // Was 6.3
         // More hilly, shattered terrain
         final float roughScale = 2.23f; // Was 2.67
 
-        CubicSpline<C, I> defaultPVScaleSpline = CubicSpline.builder(weirdness, transform)
+        CubicSpline<I> defaultPVScaleSpline = CubicSpline.builder(weirdness, transform)
                 .addPoint(-0.2f, defaultScale)
                 .addPoint(0.2f, strengthForContinentalness)
                 .build();
 
         // Invert the typical notion: become more shattered than normal near rivers to encourage deep mountain cuts
         // from looking overly smooth.
-        CubicSpline<C, I> coastalInvertedPVScaleSpline = CubicSpline.builder(ridgesFolded, transform)
+        CubicSpline<I> coastalInvertedPVScaleSpline = CubicSpline.builder(ridgesFolded, transform)
                 .addPoint(-0.6f, 2.2f)
                 .addPoint(-0.1f, 1.8f)
                 .addPoint(0.3f, strengthForContinentalness)
                 .build();
 
-        CubicSpline.Builder<C, I> erosionSplineBuilder = CubicSpline.builder(erosion, transform)
+        CubicSpline.Builder<I> erosionSplineBuilder = CubicSpline.builder(erosion, transform)
                 .addPoint(-0.6f, coastalInvertedPVScaleSpline)
                 .addPoint(-0.5f, CubicSpline.builder(weirdness, transform)
                         .addPoint(-0.05f, defaultScale)
@@ -142,12 +142,12 @@ public final class TropicraftTerrainProvider {
         // Extreme areas
 
         if (coastal) {
-            CubicSpline<C, I> coastalWeirdnessForShattered = CubicSpline.builder(weirdness, transform)
+            CubicSpline<I> coastalWeirdnessForShattered = CubicSpline.builder(weirdness, transform)
                     .addPoint(0.0f, strengthForContinentalness)
                     .addPoint(0.1f, 0.625f)
                     .build();
 
-            CubicSpline<C, I> coastalRidgeForShattered = CubicSpline.builder(ridgesFolded, transform)
+            CubicSpline<I> coastalRidgeForShattered = CubicSpline.builder(ridgesFolded, transform)
                     .addPoint(-0.9f, strengthForContinentalness)
                     .addPoint(-0.69f, coastalWeirdnessForShattered)
                     .build();
@@ -158,7 +158,7 @@ public final class TropicraftTerrainProvider {
                     .addPoint(0.55f, coastalRidgeForShattered)
                     .addPoint(0.62f, strengthForContinentalness);
         } else {
-            CubicSpline<C, I> ridgeLowShattered = CubicSpline.builder(ridgesFolded, transform)
+            CubicSpline<I> ridgeLowShattered = CubicSpline.builder(ridgesFolded, transform)
                     .addPoint(-0.7f, defaultPVScaleSpline)
                     .addPoint(-0.15f, 1.37f)
                     .build();
@@ -166,14 +166,14 @@ public final class TropicraftTerrainProvider {
             // A flatter peaks&valleys spline to handle mangrove areas, which should generate flatter.
             // PV values around -0.2 create the flattest areas, become less flat near the rivers to keep them more interesting
             // and across 0, to make mountainy areas more interesting.
-            CubicSpline<C, I> flatPVScaleSpline = CubicSpline.builder(weirdness, transform)
+            CubicSpline<I> flatPVScaleSpline = CubicSpline.builder(weirdness, transform)
                     .addPoint(-0.8f, defaultScale)
                     .addPoint(-0.2f, 6.5f)
                     .addPoint(-0.02f, 5.5f)
                     .addPoint(0.2f, strengthForContinentalness)
                     .build();
 
-            CubicSpline<C, I> ridgeHighShattered = CubicSpline.builder(ridgesFolded, transform)
+            CubicSpline<I> ridgeHighShattered = CubicSpline.builder(ridgesFolded, transform)
                     // Was 0.45
                     .addPoint(0.35f, flatPVScaleSpline)
                     .addPoint(0.7f, 1.56f)
@@ -190,7 +190,7 @@ public final class TropicraftTerrainProvider {
         return erosionSplineBuilder.build();
     }
 
-    private static <C, I extends BoundedFloatFunction<C>> CubicSpline<C, I> buildLagoonOffset(I erosion, BoundedFloatFunction<Float> offsetTransform) {
+    private static <I extends BoundedFloatFunction<?>> CubicSpline<I> buildLagoonOffset(I erosion, Float2FloatFunction offsetTransform) {
         return CubicSpline.builder(erosion, offsetTransform)
                 .addPoint(-1.0f, -0.14f)
                 .addPoint(0.4f, -0.08f)
@@ -198,8 +198,8 @@ public final class TropicraftTerrainProvider {
                 .build();
     }
 
-    private static <C, I extends BoundedFloatFunction<C>> CubicSpline<C, I> buildMountainRidgeSplineWithPoints(I ridges, float p_187331_, boolean p_187332_, BoundedFloatFunction<Float> transform) {
-        CubicSpline.Builder<C, I> builder = CubicSpline.builder(ridges, transform);
+    private static <I extends BoundedFloatFunction<?>> CubicSpline<I> buildMountainRidgeSplineWithPoints(I ridges, float p_187331_, boolean p_187332_, Float2FloatFunction transform) {
+        CubicSpline.Builder<I> builder = CubicSpline.builder(ridges, transform);
         float f2 = mountainContinentalness(-1.0f, p_187331_, -0.7f);
         float f4 = mountainContinentalness(1.0f, p_187331_, -0.7f);
         float f5 = calculateMountainRidgeZeroContinentalnessPoint(p_187331_);
@@ -252,23 +252,23 @@ public final class TropicraftTerrainProvider {
         return f3 / (0.46082947f * f2) - 1.17f;
     }
 
-    private static <C, I extends BoundedFloatFunction<C>> CubicSpline<C, I> buildErosionOffsetSpline(I erosion, I ridges, float p_187285_, float p_187286_, float p_187287_, float p_187288_, float p_187289_, float p_187290_, boolean buildSaddleValley, boolean p_187292_, BoundedFloatFunction<Float> transform) {
-        CubicSpline<C, I> lowestErosion = buildMountainRidgeSplineWithPoints(ridges, Mth.lerp(p_187288_, 0.6f, 1.5f), p_187292_, transform);
-        CubicSpline<C, I> cubicspline1 = buildMountainRidgeSplineWithPoints(ridges, Mth.lerp(p_187288_, 0.6f, 1.0f), p_187292_, transform);
-        CubicSpline<C, I> cubicspline2 = buildMountainRidgeSplineWithPoints(ridges, p_187288_, p_187292_, transform);
+    private static <I extends BoundedFloatFunction<?>> CubicSpline<I> buildErosionOffsetSpline(I erosion, I ridges, float p_187285_, float p_187286_, float p_187287_, float p_187288_, float p_187289_, float p_187290_, boolean buildSaddleValley, boolean p_187292_, Float2FloatFunction transform) {
+        CubicSpline<I> lowestErosion = buildMountainRidgeSplineWithPoints(ridges, Mth.lerp(p_187288_, 0.6f, 1.5f), p_187292_, transform);
+        CubicSpline<I> cubicspline1 = buildMountainRidgeSplineWithPoints(ridges, Mth.lerp(p_187288_, 0.6f, 1.0f), p_187292_, transform);
+        CubicSpline<I> cubicspline2 = buildMountainRidgeSplineWithPoints(ridges, p_187288_, p_187292_, transform);
 
-        CubicSpline<C, I> cubicspline3 = ridgeSpline(ridges, p_187285_ - 0.15f, 0.5f * p_187288_, Mth.lerp(0.5f, 0.5f, 0.5f) * p_187288_, 0.5f * p_187288_, 0.6f * p_187288_, 0.5f, transform);
-        CubicSpline<C, I> cubicspline4 = ridgeSpline(ridges, p_187285_, p_187289_ * p_187288_, p_187286_ * p_187288_, 0.5f * p_187288_, 0.6f * p_187288_, 0.5f, transform);
-        CubicSpline<C, I> cubicspline5 = ridgeSpline(ridges, p_187285_, p_187289_, p_187289_, p_187286_, p_187287_, 0.5f, transform);
+        CubicSpline<I> cubicspline3 = ridgeSpline(ridges, p_187285_ - 0.15f, 0.5f * p_187288_, Mth.lerp(0.5f, 0.5f, 0.5f) * p_187288_, 0.5f * p_187288_, 0.6f * p_187288_, 0.5f, transform);
+        CubicSpline<I> cubicspline4 = ridgeSpline(ridges, p_187285_, p_187289_ * p_187288_, p_187286_ * p_187288_, 0.5f * p_187288_, 0.6f * p_187288_, 0.5f, transform);
+        CubicSpline<I> cubicspline5 = ridgeSpline(ridges, p_187285_, p_187289_, p_187289_, p_187286_, p_187287_, 0.5f, transform);
 
-        CubicSpline<C, I> saddleValleySlope = ridgeSpline(ridges, p_187285_, p_187289_, p_187289_, p_187286_, p_187287_, 0.5f, transform);
-        CubicSpline<C, I> saddleValleyMin = CubicSpline.builder(ridges, transform)
+        CubicSpline<I> saddleValleySlope = ridgeSpline(ridges, p_187285_, p_187289_, p_187289_, p_187286_, p_187287_, 0.5f, transform);
+        CubicSpline<I> saddleValleyMin = CubicSpline.builder(ridges, transform)
                 .addPoint(-1.0f, p_187285_, 0.0f)
                 .addPoint(-0.4f, cubicspline5)
                 .addPoint(0.0f, p_187287_ + 0.07f, 0.0f).build();
-        CubicSpline<C, I> highErosion = ridgeSpline(ridges, -0.02f, p_187290_, p_187290_, p_187286_, p_187287_, 0.0f, transform);
+        CubicSpline<I> highErosion = ridgeSpline(ridges, -0.02f, p_187290_, p_187290_, p_187286_, p_187287_, 0.0f, transform);
 
-        CubicSpline.Builder<C, I> erosionBuilder = CubicSpline.builder(erosion, transform)
+        CubicSpline.Builder<I> erosionBuilder = CubicSpline.builder(erosion, transform)
                 .addPoint(-0.85f, lowestErosion)
                 .addPoint(-0.7f, cubicspline1)
                 .addPoint(-0.4f, cubicspline2)
@@ -289,7 +289,7 @@ public final class TropicraftTerrainProvider {
     }
 
     // Build a spline that uses the peaks and valleys type to go from bottom (river, valley) to top (mountain, peak)
-    private static <C, I extends BoundedFloatFunction<C>> CubicSpline<C, I> ridgeSpline(I ridges, float riverHeight, float riverSlope, float midSlope, float peakSlope, float peakHeight, float minRiverSlope, BoundedFloatFunction<Float> transform) {
+    private static <I extends BoundedFloatFunction<?>> CubicSpline<I> ridgeSpline(I ridges, float riverHeight, float riverSlope, float midSlope, float peakSlope, float peakHeight, float minRiverSlope, Float2FloatFunction transform) {
         float riverDerivative = Math.max(0.5f * (riverSlope - riverHeight), minRiverSlope);
         float slopeUpRiver = 5.0f * (midSlope - riverSlope);
         return CubicSpline.builder(ridges, transform)

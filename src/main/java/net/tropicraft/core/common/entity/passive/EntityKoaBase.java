@@ -5,10 +5,8 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.tterrag.registrate.providers.RegistrateLangProvider;
 import com.tterrag.registrate.util.entry.ItemEntry;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -19,7 +17,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -58,11 +55,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.trading.ItemCost;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.TradeSet;
-import net.minecraft.world.item.trading.VillagerTrades;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
@@ -86,9 +80,9 @@ import net.tropicraft.core.common.entity.ai.EntityAIPlayKoa;
 import net.tropicraft.core.common.entity.ai.EntityAITemptHelmet;
 import net.tropicraft.core.common.entity.ai.EntityAIWanderNotLazy;
 import net.tropicraft.core.common.item.TropicraftItems;
-
 import net.tropicraft.core.common.trade.TropicraftTradeSets;
 import org.jspecify.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -557,7 +551,10 @@ public class EntityKoaBase extends Villager {
                 livingentity.knockback(
                         knockback * 0.5f,
                         Mth.sin(getYRot() * Mth.DEG_TO_RAD),
-                        -Mth.cos(getYRot() * Mth.DEG_TO_RAD)
+                        -Mth.cos(getYRot() * Mth.DEG_TO_RAD),
+                        source,
+                        damage,
+                        false
                 );
                 // Changed: don't reduce own motion
             }

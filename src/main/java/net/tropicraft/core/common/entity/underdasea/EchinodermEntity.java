@@ -3,6 +3,7 @@ package net.tropicraft.core.common.entity.underdasea;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.fish.WaterAnimal;
@@ -100,8 +101,7 @@ public abstract class EchinodermEntity extends WaterAnimal {
     }
 
     @Override
-    public void knockback(double strength, double ratioX, double ratioZ) {
-
+    public void knockback(double power, double xd, double zd, DamageSource source, float damage, boolean comesFromEffect) {
     }
 
     @Override

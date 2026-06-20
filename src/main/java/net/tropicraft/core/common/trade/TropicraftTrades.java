@@ -1,8 +1,8 @@
 package net.tropicraft.core.common.trade;
 
-import net.minecraft.advancements.criterion.EnchantmentPredicate;
-import net.minecraft.advancements.criterion.ItemPredicate;
-import net.minecraft.advancements.criterion.MinMaxBounds;
+import net.minecraft.advancements.predicates.EnchantmentPredicate;
+import net.minecraft.advancements.predicates.ItemPredicate;
+import net.minecraft.advancements.predicates.MinMaxBounds;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.predicates.DataComponentPredicates;
@@ -26,7 +26,7 @@ import net.tropicraft.core.common.item.TropicraftItems;
 import java.util.List;
 import java.util.Optional;
 
-import static net.minecraft.advancements.criterion.DataComponentMatchers.Builder.components;
+import static net.minecraft.advancements.predicates.DataComponentMatchers.Builder.components;
 import static net.minecraft.core.component.predicates.EnchantmentsPredicate.enchantments;
 import static net.minecraft.world.level.storage.loot.functions.DiscardItem.discardItem;
 import static net.minecraft.world.level.storage.loot.providers.number.UniformGenerator.between;

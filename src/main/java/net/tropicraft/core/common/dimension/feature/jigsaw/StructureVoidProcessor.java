@@ -6,14 +6,17 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
-
 import org.jspecify.annotations.Nullable;
 
-public class StructureVoidProcessor extends StructureProcessor {
+public record StructureVoidProcessor() implements StructureProcessor {
     public static final MapCodec<StructureVoidProcessor> CODEC = MapCodec.unit(new StructureVoidProcessor());
+
+    @Override
+    public MapCodec<StructureVoidProcessor> codec() {
+        return CODEC;
+    }
 
     @Override
     public StructureBlockInfo process(LevelReader world, BlockPos pos, BlockPos p_230386_3_, StructureBlockInfo originalInfo, StructureBlockInfo blockInfo, StructurePlaceSettings placementSettings, @Nullable StructureTemplate template) {
@@ -21,10 +24,5 @@ public class StructureVoidProcessor extends StructureProcessor {
             return new StructureBlockInfo(blockInfo.pos(), Blocks.AIR.defaultBlockState(), blockInfo.nbt());
         }
         return blockInfo;
-    }
-
-    @Override
-    protected StructureProcessorType<?> getType() {
-        return TropicraftProcessorTypes.STRUCTURE_VOID.get();
     }
 }

@@ -15,28 +15,26 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
-
 import org.jspecify.annotations.Nullable;
 
-public class StructureSupportsProcessor extends CheatyStructureProcessor {
+public record StructureSupportsProcessor(
+        boolean canReplaceLand,
+        HolderSet<Block> blocksToExtend
+) implements CheatyStructureProcessor {
     public static final MapCodec<StructureSupportsProcessor> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
             Codec.BOOL.optionalFieldOf("can_replace_land", false).forGetter(p -> p.canReplaceLand),
             RegistryCodecs.homogeneousList(Registries.BLOCK).fieldOf("blocks_to_extend").forGetter(p -> p.blocksToExtend)
     ).apply(i, StructureSupportsProcessor::new));
 
-    private final boolean canReplaceLand;
-    private final HolderSet<Block> blocksToExtend;
-
-    public StructureSupportsProcessor(boolean canReplaceLand, HolderSet<Block> blocksToExtend) {
-        this.canReplaceLand = canReplaceLand;
-        this.blocksToExtend = blocksToExtend;
+    @Override
+    public MapCodec<StructureSupportsProcessor> codec() {
+        return CODEC;
     }
 
     @Override
-    public StructureBlockInfo process(LevelReader world, BlockPos seedPos, BlockPos pos2, StructureBlockInfo originalInfo, StructureBlockInfo blockInfo, StructurePlaceSettings placement, @Nullable StructureTemplate template) {
+    public @Nullable StructureBlockInfo process(LevelReader world, BlockPos seedPos, BlockPos pos2, StructureBlockInfo originalInfo, StructureBlockInfo blockInfo, StructurePlaceSettings placement, @Nullable StructureTemplate template) {
         BlockPos pos = blockInfo.pos();
         if (originalInfo.pos().getY() <= 1 && blockInfo.state().is(blocksToExtend)) {
             if (!canReplaceLand && !canPassThrough(world, pos)) {
@@ -65,10 +63,5 @@ public class StructureSupportsProcessor extends CheatyStructureProcessor {
 
     protected boolean canPassThrough(LevelReader world, BlockPos pos) {
         return isAirOrWater(world, pos) || world.getHeightmapPos(Types.WORLD_SURFACE, pos).getY() < pos.getY();
-    }
-
-    @Override
-    protected StructureProcessorType<?> getType() {
-        return TropicraftProcessorTypes.STRUCTURE_SUPPORTS.get();
     }
 }

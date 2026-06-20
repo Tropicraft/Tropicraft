@@ -18,6 +18,7 @@ import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.ConversionParams;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.animal.cow.Cow;
 import net.minecraft.world.entity.player.Player;
@@ -139,12 +140,12 @@ public class CowktailEntity extends Cow implements IShearable {
     public List<ItemStack> onSheared(@Nullable Player player, ItemStack item, Level level, BlockPos pos) {
         playSound(SoundEvents.MOOSHROOM_SHEAR, 1.0f, 1.0f);
         List<ItemStack> items = new ArrayList<>();
-        if (!EventHooks.canLivingConvert(this, EntityType.COW, timer -> {
+        if (!EventHooks.canLivingConvert(this, EntityTypes.COW, timer -> {
         })) {
             return items;
         }
         if (!level.isClientSide()) {
-            convertTo(EntityType.COW, ConversionParams.single(this, false, false), cow -> {
+            convertTo(EntityTypes.COW, ConversionParams.single(this, false, false), cow -> {
                 EventHooks.onLivingConvert(this, cow);
                 level.addParticle(ParticleTypes.EXPLOSION, getX(), getY(0.5), getZ(), 0.0, 0.0, 0.0);
                 for (int i = 0; i < 5; ++i) {

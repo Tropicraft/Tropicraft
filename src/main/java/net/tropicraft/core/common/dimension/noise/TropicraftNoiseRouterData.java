@@ -10,7 +10,6 @@ import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.DensityFunctions;
 import net.minecraft.world.level.levelgen.NoiseRouter;
 import net.minecraft.world.level.levelgen.NoiseRouterData;
-import net.minecraft.world.level.levelgen.NoiseSettings;
 import net.minecraft.world.level.levelgen.Noises;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.tropicraft.Tropicraft;
@@ -39,10 +38,10 @@ public final class TropicraftNoiseRouterData {
     public static void bootstrap(BootstrapContext<DensityFunction> context) {
         HolderGetter<DensityFunction> densityFunctions = context.lookup(Registries.DENSITY_FUNCTION);
 
-        DensityFunctions.Spline.Coordinate continents = new DensityFunctions.Spline.Coordinate(densityFunctions.getOrThrow(NoiseRouterData.CONTINENTS));
-        DensityFunctions.Spline.Coordinate erosion = new DensityFunctions.Spline.Coordinate(densityFunctions.getOrThrow(NoiseRouterData.EROSION));
-        DensityFunctions.Spline.Coordinate ridgesFolded = new DensityFunctions.Spline.Coordinate(densityFunctions.getOrThrow(NoiseRouterData.RIDGES_FOLDED));
-        DensityFunctions.Spline.Coordinate weirdness = new DensityFunctions.Spline.Coordinate(densityFunctions.getOrThrow(NoiseRouterData.RIDGES));
+        DensityFunctions.Spline.Coordinate continents = new DensityFunctions.Spline.Coordinate(getFunction(densityFunctions, NoiseRouterData.CONTINENTS));
+        DensityFunctions.Spline.Coordinate erosion = new DensityFunctions.Spline.Coordinate(getFunction(densityFunctions, NoiseRouterData.EROSION));
+        DensityFunctions.Spline.Coordinate ridgesFolded = new DensityFunctions.Spline.Coordinate(getFunction(densityFunctions, NoiseRouterData.RIDGES_FOLDED));
+        DensityFunctions.Spline.Coordinate weirdness = new DensityFunctions.Spline.Coordinate(getFunction(densityFunctions, NoiseRouterData.RIDGES));
 
         Holder.Reference<DensityFunction> offset = context.register(OFFSET, splineWithBlending(DensityFunctions.add(
                 DensityFunctions.constant(-0.50375f),

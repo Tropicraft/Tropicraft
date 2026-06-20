@@ -1,12 +1,14 @@
 package net.tropicraft.core.common.dimension.feature;
 
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -81,7 +83,7 @@ public final class TropicraftTreeFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> TEA_MANGROVE = createKey("tea_mangrove");
     public static final ResourceKey<ConfiguredFeature<?, ?>> BLACK_MANGROVE = createKey("black_mangrove");
 
-    private static TreeConfiguration fruitTree(Supplier<? extends Block> fruitLeaves) {
+    private static TreeConfiguration fruitTree(Supplier<? extends Block> fruitLeaves, HolderGetter<Biome> biomes) {
         return new TreeConfiguration.TreeConfigurationBuilder(
                 BlockStateProvider.simple(Blocks.OAK_LOG.defaultBlockState()),
                 new CitrusTrunkPlacer(6, 3, 0),
@@ -91,7 +93,8 @@ public final class TropicraftTreeFeatures {
                         .build()
                 ),
                 new CitrusFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0)),
-                new TwoLayersFeatureSize(1, 0, 2)
+                new TwoLayersFeatureSize(1, 0, 2),
+                TreeConfiguration.defaultPlaceBelowTreeTrunkProvider(biomes)
         ).build();
     }
 
@@ -111,10 +114,12 @@ public final class TropicraftTreeFeatures {
     private static final TwoLayersFeatureSize MANGROVE_MINIMUM_SIZE = new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4));
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
-        register(context, GRAPEFRUIT_TREE, Feature.TREE, fruitTree(TropicraftBlocks.GRAPEFRUIT_LEAVES));
-        register(context, ORANGE_TREE, Feature.TREE, fruitTree(TropicraftBlocks.ORANGE_LEAVES));
-        register(context, LEMON_TREE, Feature.TREE, fruitTree(TropicraftBlocks.LEMON_LEAVES));
-        register(context, LIME_TREE, Feature.TREE, fruitTree(TropicraftBlocks.LIME_LEAVES));
+        HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
+
+        register(context, GRAPEFRUIT_TREE, Feature.TREE, fruitTree(TropicraftBlocks.GRAPEFRUIT_LEAVES, biomes));
+        register(context, ORANGE_TREE, Feature.TREE, fruitTree(TropicraftBlocks.ORANGE_LEAVES, biomes));
+        register(context, LEMON_TREE, Feature.TREE, fruitTree(TropicraftBlocks.LEMON_LEAVES, biomes));
+        register(context, LIME_TREE, Feature.TREE, fruitTree(TropicraftBlocks.LIME_LEAVES, biomes));
 
         register(context, NORMAL_PALM_TREE, TropicraftFeatures.NORMAL_PALM_TREE);
         register(context, CURVED_PALM_TREE, TropicraftFeatures.CURVED_PALM_TREE);
@@ -132,7 +137,8 @@ public final class TropicraftTreeFeatures {
                 new PleodendronTrunkPlacer(10, 8, 0),
                 BlockStateProvider.simple(Blocks.JUNGLE_LEAVES.defaultBlockState()),
                 new PleodendronFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 1),
-                new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
+                new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4)),
+                TreeConfiguration.defaultPlaceBelowTreeTrunkProvider(biomes)
         ).build());
 
         register(context, PAPAYA, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
@@ -140,7 +146,8 @@ public final class TropicraftTreeFeatures {
                 new StraightTrunkPlacer(5, 2, 3),
                 BlockStateProvider.simple(TropicraftBlocks.PAPAYA_LEAVES.get().defaultBlockState()),
                 new PapayaFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0)),
-                new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
+                new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4)),
+                TreeConfiguration.defaultPlaceBelowTreeTrunkProvider(biomes)
         )
                 .decorators(List.of(BEEHIVE_005, new PapayaTreeDecorator()))
                 .build());
@@ -150,7 +157,8 @@ public final class TropicraftTreeFeatures {
                 new StraightTrunkPlacer(3, 1, 1),
                 BlockStateProvider.simple(TropicraftBlocks.PLANTAIN_LEAVES.get().defaultBlockState()),
                 new SmallMangroveFoliagePlacer(ConstantInt.of(1), ConstantInt.of(0)),
-                new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
+                new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4)),
+                TreeConfiguration.defaultPlaceBelowTreeTrunkProvider(biomes)
         )
                 .decorators(List.of(new AttachedToLeavesDecorator(
                         0.5f,
@@ -170,7 +178,8 @@ public final class TropicraftTreeFeatures {
                 new StraightTrunkPlacer(3, 1, 1),
                 BlockStateProvider.simple(TropicraftBlocks.JOCOTE_LEAVES.get().defaultBlockState()),
                 new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
-                new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
+                new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4)),
+                TreeConfiguration.defaultPlaceBelowTreeTrunkProvider(biomes)
         )
                 .decorators(List.of(new BranchTreeDecorator(
                         0.1f,
@@ -188,7 +197,8 @@ public final class TropicraftTreeFeatures {
                 RED_MANGROVE_TRUNK.get(),
                 stateProvider(TropicraftBlocks.RED_MANGROVE_LEAVES),
                 MANGROVE_FOLIAGE.get(),
-                MANGROVE_MINIMUM_SIZE
+                MANGROVE_MINIMUM_SIZE,
+                TreeConfiguration.defaultPlaceBelowTreeTrunkProvider(biomes)
         )
                 .decorators(List.of(BEEHIVE_002, addPianguasInMud(8, 4)))
                 .build());
@@ -198,7 +208,8 @@ public final class TropicraftTreeFeatures {
                 new SmallMangroveTrunkPlacer(2, 1, 0, TropicraftBlocks.RED_MANGROVE_ROOTS.get()),
                 stateProvider(TropicraftBlocks.RED_MANGROVE_LEAVES),
                 new SmallMangroveFoliagePlacer(ConstantInt.of(1), ConstantInt.of(0)),
-                MANGROVE_MINIMUM_SIZE
+                MANGROVE_MINIMUM_SIZE,
+                TreeConfiguration.defaultPlaceBelowTreeTrunkProvider(biomes)
         )
                 .decorators(List.of(BEEHIVE_002, addPianguasInMud(2, 2)))
                 .build());
@@ -210,7 +221,8 @@ public final class TropicraftTreeFeatures {
                         new MangroveTrunkPlacer(7, 4, 2, stateProvider(TropicraftBlocks.LIGHT_MANGROVE_ROOTS), false, false),
                         stateProvider(TropicraftBlocks.TALL_MANGROVE_LEAVES),
                         MANGROVE_FOLIAGE.get(),
-                        MANGROVE_MINIMUM_SIZE
+                        MANGROVE_MINIMUM_SIZE,
+                        TreeConfiguration.defaultPlaceBelowTreeTrunkProvider(biomes)
                 )
                         .decorators(List.of(BEEHIVE_002, addPianguasInMud(8, 4)))
                         .build());
@@ -221,7 +233,8 @@ public final class TropicraftTreeFeatures {
                         new MangroveTrunkPlacer(5, 3, 0, stateProvider(TropicraftBlocks.LIGHT_MANGROVE_ROOTS), false, true),
                         stateProvider(TropicraftBlocks.TEA_MANGROVE_LEAVES),
                         MANGROVE_FOLIAGE.get(),
-                        MANGROVE_MINIMUM_SIZE
+                        MANGROVE_MINIMUM_SIZE,
+                        TreeConfiguration.defaultPlaceBelowTreeTrunkProvider(biomes)
                 )
                         .decorators(List.of(BEEHIVE_002, addPianguasInMud(8, 4), new PneumatophoresTreeDecorator(stateProvider(TropicraftBlocks.LIGHT_MANGROVE_ROOTS), 2, 6, 4)))
                         .build());
@@ -232,7 +245,8 @@ public final class TropicraftTreeFeatures {
                         new MangroveTrunkPlacer(4, 3, 0, stateProvider(TropicraftBlocks.BLACK_MANGROVE_ROOTS), true, false),
                         stateProvider(TropicraftBlocks.BLACK_MANGROVE_LEAVES),
                         MANGROVE_FOLIAGE.get(),
-                        MANGROVE_MINIMUM_SIZE
+                        MANGROVE_MINIMUM_SIZE,
+                        TreeConfiguration.defaultPlaceBelowTreeTrunkProvider(biomes)
                 )
                         .decorators(List.of(BEEHIVE_002, addPianguasInMud(8, 4), new PneumatophoresTreeDecorator(stateProvider(TropicraftBlocks.BLACK_MANGROVE_ROOTS), 8, 16, 6)))
                         .build());

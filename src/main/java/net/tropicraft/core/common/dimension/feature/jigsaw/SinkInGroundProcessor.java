@@ -7,20 +7,22 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
-
 import org.jspecify.annotations.Nullable;
 
-public class SinkInGroundProcessor extends CheatyStructureProcessor {
+public record SinkInGroundProcessor() implements CheatyStructureProcessor {
     public static final MapCodec<SinkInGroundProcessor> CODEC = MapCodec.unit(new SinkInGroundProcessor());
 
-    @SuppressWarnings("deprecation")
     @Override
-    public StructureBlockInfo process(LevelReader world, BlockPos worldPos, BlockPos sourcePos, StructureBlockInfo sourceInfo, StructureBlockInfo worldInfo, StructurePlaceSettings placement, @Nullable StructureTemplate template) {
+    public MapCodec<SinkInGroundProcessor> codec() {
+        return CODEC;
+    }
+
+    @Override
+    public @Nullable StructureBlockInfo process(LevelReader world, BlockPos worldPos, BlockPos sourcePos, StructureBlockInfo sourceInfo, StructureBlockInfo worldInfo, StructurePlaceSettings placement, @Nullable StructureTemplate template) {
         worldPos = worldInfo.pos();
 
         if (sourceInfo.pos().getY() == 0) {
@@ -58,10 +60,5 @@ public class SinkInGroundProcessor extends CheatyStructureProcessor {
         }
 
         return worldInfo;
-    }
-
-    @Override
-    protected StructureProcessorType<?> getType() {
-        return TropicraftProcessorTypes.SINK_IN_GROUND.get();
     }
 }

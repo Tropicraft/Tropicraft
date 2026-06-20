@@ -2,16 +2,15 @@
   "type": "minecraft:entity",
   "pools": [
     {
-      "bonus_rolls": 0.0,
       "conditions": [
         {
           "condition": "minecraft:entity_properties",
           "entity": "this",
           "predicate": {
-            "flags": {
+            "minecraft:flags": {
               "is_baby": false
             },
-            "nbt": "{Type:0}"
+            "minecraft:nbt": "{Type:0}"
           }
         }
       ],
@@ -24,7 +23,6 @@
       "rolls": 1.0
     },
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",

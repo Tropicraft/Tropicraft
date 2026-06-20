@@ -19,10 +19,10 @@ import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
-import net.minecraft.advancements.criterion.DataComponentMatchers;
-import net.minecraft.advancements.criterion.EnchantmentPredicate;
-import net.minecraft.advancements.criterion.ItemPredicate;
-import net.minecraft.advancements.criterion.MinMaxBounds;
+import net.minecraft.advancements.predicates.DataComponentMatchers;
+import net.minecraft.advancements.predicates.EnchantmentPredicate;
+import net.minecraft.advancements.predicates.ItemPredicate;
+import net.minecraft.advancements.predicates.MinMaxBounds;
 import net.minecraft.client.color.block.BlockTintSources;
 import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.ConditionBuilder;
@@ -53,9 +53,10 @@ import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.BlockItemTagId;
+import net.minecraft.tags.BlockItemTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.util.Unit;
 import net.minecraft.util.Util;
@@ -105,6 +106,7 @@ import net.minecraft.world.level.block.UntintedParticleLeavesBlock;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.BlockEntityTypes;
 import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
@@ -163,7 +165,7 @@ import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
-import static net.minecraft.advancements.criterion.StatePropertiesPredicate.Builder.properties;
+import static net.minecraft.advancements.predicates.StatePropertiesPredicate.Builder.properties;
 import static net.minecraft.client.data.models.BlockModelGenerators.*;
 import static net.minecraft.world.level.storage.loot.LootPool.lootPool;
 import static net.minecraft.world.level.storage.loot.LootTable.lootTable;
@@ -223,7 +225,7 @@ public class TropicraftBlocks {
 
         REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, prov -> {
             prov.tag(TropicraftTags.Blocks.CARVER_REPLACEABLES).addTags(BlockTags.OVERWORLD_CARVER_REPLACEABLES);
-            prov.tag(TropicraftTags.Blocks.BIRDS_LIKE_TO_STAND_ON).addTags(BlockTags.LOGS).addTags(BlockTags.LEAVES).addTags(TropicraftTags.Blocks.BRANCHES);
+            prov.tag(TropicraftTags.Blocks.BIRDS_LIKE_TO_STAND_ON).addTags(BlockItemTags.LOGS.block()).addTags(BlockTags.LEAVES).addTags(TropicraftTags.Blocks.BRANCHES);
         });
 
         // Misc recipes
@@ -349,9 +351,10 @@ public class TropicraftBlocks {
                         .block(flower.getId(), p -> new TropicsFlowerBlock(flower, flower.getEffect(), flower.getEffectDuration(), flower.getShape(), p))
                         .initialProperties(() -> Blocks.POPPY)
                         .tag(flower.getTags())
+                        .tag(BlockItemTags.FLOWERS.block())
                         .blockstate(() -> Models::generateFlower)
                         .item()
-                        .tag(ItemTags.FLOWERS)
+                        .tag(BlockItemTags.FLOWERS.item())
                         .model(() -> (ctx, prov) ->
                                 prov.generateFlatItem(ctx.get(), prov.modBlockTexture("flower/" + ctx.getName()))
                         )
@@ -747,7 +750,7 @@ public class TropicraftBlocks {
             .loot((loot, block) -> loot.add(block, createSinglePropConditionTable(loot, block, DoublePlantBlock.HALF, DoubleBlockHalf.LOWER)))
             .tag(BlockTags.FLOWERS)
             .blockstate(() -> Models::generateDoublePlant)
-            .recipe((ctx, prov) -> prov.singleItemUnfinished(DataIngredient.items(ctx.get()), RecipeCategory.MISC, () -> Items.PURPLE_DYE, 1, 4).save(prov, Tropicraft.resourceKey(Registries.RECIPE, name(Items.PURPLE_DYE))))
+            .recipe((ctx, prov) -> prov.singleItemUnfinished(DataIngredient.items(ctx.get()), RecipeCategory.MISC, () -> Items.DYE.purple(), 1, 4).save(prov, Tropicraft.resourceKey(Registries.RECIPE, name(Items.DYE.purple()))))
             .item()
             .model(() -> (ctx, prov) -> prov.generateFlatItem(ctx.get(), prov.modBlockTexture("iris_top")))
             .build()
@@ -1131,47 +1134,47 @@ public class TropicraftBlocks {
     ));
 
     private static BlockBuilder<StairBlock, Registrate> stoneStairs(String name, BlockEntry<? extends Block> block) {
-        return stairs(name, block, BlockTags.STAIRS, ItemTags.STAIRS)
+        return stairs(name, block, BlockItemTags.STAIRS)
                 .recipe((ctx, prov) -> prov.stairs(DataIngredient.items(block.get()), RecipeCategory.BUILDING_BLOCKS, ctx, null, true))
                 .tag(BlockTags.MINEABLE_WITH_PICKAXE);
     }
 
     private static BlockBuilder<StairBlock, Registrate> woodenStairs(String name, BlockEntry<? extends Block> block) {
-        return stairs(name, block, BlockTags.WOODEN_STAIRS, ItemTags.WOODEN_STAIRS)
+        return stairs(name, block, BlockItemTags.WOODEN_STAIRS)
                 .recipe((ctx, prov) -> prov.stairs(DataIngredient.items(block.get()), RecipeCategory.BUILDING_BLOCKS, ctx, "wooden_stairs", false))
                 .tag(BlockTags.MINEABLE_WITH_AXE);
     }
 
-    private static BlockBuilder<StairBlock, Registrate> stairs(String name, BlockEntry<? extends Block> block, TagKey<Block> blockTag, TagKey<Item> itemTag) {
+    private static BlockBuilder<StairBlock, Registrate> stairs(String name, BlockEntry<? extends Block> block, BlockItemTagId tag) {
         return REGISTRATE.block(name, p -> new StairBlock(block.get().defaultBlockState(), p))
                 .initialProperties(block)
-                .tag(blockTag)
+                .tag(tag.block())
                 .blockstate(() -> (ctx, prov) -> prov.generateStairsBlock(ctx.get(), prov.blockTexture(block.get())))
                 .item()
-                .tag(itemTag)
+                .tag(tag.item())
                 .build();
     }
 
     private static BlockBuilder<SlabBlock, Registrate> stoneSlab(String name, BlockEntry<? extends Block> block) {
-        return slab(name, block, BlockTags.SLABS, ItemTags.SLABS)
+        return slab(name, block, BlockItemTags.SLABS)
                 .recipe((ctx, prov) -> prov.slab(DataIngredient.items(block.get()), RecipeCategory.BUILDING_BLOCKS, ctx, null, true))
                 .tag(BlockTags.MINEABLE_WITH_PICKAXE);
     }
 
     private static BlockBuilder<SlabBlock, Registrate> woodenSlab(String name, BlockEntry<? extends Block> block) {
-        return slab(name, block, BlockTags.WOODEN_SLABS, ItemTags.WOODEN_SLABS)
+        return slab(name, block, BlockItemTags.WOODEN_SLABS)
                 .recipe((ctx, prov) -> prov.slab(DataIngredient.items(block.get()), RecipeCategory.BUILDING_BLOCKS, ctx, "wooden_slab", false))
                 .tag(BlockTags.MINEABLE_WITH_AXE);
     }
 
-    private static BlockBuilder<SlabBlock, Registrate> slab(String name, BlockEntry<? extends Block> block, TagKey<Block> blockTag, TagKey<Item> itemTag) {
+    private static BlockBuilder<SlabBlock, Registrate> slab(String name, BlockEntry<? extends Block> block, BlockItemTagId tag) {
         return REGISTRATE.block(name, SlabBlock::new)
                 .initialProperties(block)
                 .loot((loot, slab) -> loot.add(slab, loot.createSlabItemTable(slab)))
-                .tag(blockTag)
+                .tag(tag.block())
                 .blockstate(() -> (ctx, prov) -> Models.generateSlabBlock(ctx, prov, block))
                 .item()
-                .tag(itemTag)
+                .tag(tag.item())
                 .build();
     }
 
@@ -1216,7 +1219,7 @@ public class TropicraftBlocks {
                 )
                 .loot((loot, b) -> loot.dropOther(b, item.get()))
                 .setData(ProviderType.LANG, NonNullBiConsumer.noop())
-                .onRegisterAfter(Registries.BLOCK_ENTITY_TYPE, b -> extendBlockEntity(BlockEntityType.SIGN, b));
+                .onRegisterAfter(Registries.BLOCK_ENTITY_TYPE, b -> extendBlockEntity(BlockEntityTypes.SIGN, b));
     }
 
     private static BlockBuilder<WallSignBlock, Registrate> wallSign(WoodType woodType, Supplier<? extends Item> item, String texture) {
@@ -1229,7 +1232,7 @@ public class TropicraftBlocks {
                 )
                 .loot((loot, b) -> loot.dropOther(b, item.get()))
                 .setData(ProviderType.LANG, NonNullBiConsumer.noop())
-                .onRegisterAfter(Registries.BLOCK_ENTITY_TYPE, b -> extendBlockEntity(BlockEntityType.SIGN, b));
+                .onRegisterAfter(Registries.BLOCK_ENTITY_TYPE, b -> extendBlockEntity(BlockEntityTypes.SIGN, b));
     }
 
     @SafeVarargs
@@ -1255,7 +1258,7 @@ public class TropicraftBlocks {
                     }
                 })
                 .initialProperties(() -> Blocks.OAK_SAPLING)
-                .tag(BlockTags.SAPLINGS)
+                .tag(BlockItemTags.SAPLINGS.block())
                 .blockstate(() -> Models::generateSapling)
                 .item()
                 .model(() -> Models::generateFlatBlockItem)
@@ -1310,7 +1313,7 @@ public class TropicraftBlocks {
         return REGISTRATE.block(name, p -> strippedLog != null ? new TropicraftLogBlock(p, strippedLog) : new RotatedPillarBlock(p))
                 .initialProperties(() -> Blocks.OAK_LOG)
                 .properties(p -> rotatedPillarProperties(p, topColor, sideColor))
-                .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN, BlockTags.MINEABLE_WITH_AXE)
+                .tag(BlockTags.LOGS, BlockItemTags.LOGS_THAT_BURN.block(), BlockTags.MINEABLE_WITH_AXE)
                 .blockstate(() -> (ctx, prov) -> prov.generateLogBlock(ctx.get()))
                 .item()
                 .tag(ItemTags.LOGS, ItemTags.LOGS_THAT_BURN, TropicraftTags.Items.MANGROVE_LOGS)
@@ -1321,7 +1324,7 @@ public class TropicraftBlocks {
         return REGISTRATE.block(name, p -> strippedLog != null ? new TropicraftLogBlock(p, strippedLog) : new RotatedPillarBlock(p))
                 .initialProperties(() -> Blocks.OAK_LOG)
                 .properties(p -> rotatedPillarProperties(p, topColor, sideColor))
-                .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN, BlockTags.MINEABLE_WITH_AXE)
+                .tag(BlockTags.LOGS, BlockItemTags.LOGS_THAT_BURN.block(), BlockTags.MINEABLE_WITH_AXE)
                 .blockstate(() -> (ctx, prov) -> prov.generateLogBlock(ctx.get()))
                 .item()
                 .tag(ItemTags.LOGS, ItemTags.LOGS_THAT_BURN)
@@ -1335,7 +1338,7 @@ public class TropicraftBlocks {
     private static BlockBuilder<RotatedPillarBlock, Registrate> wood(String name, MapColor color, BlockEntry<? extends RotatedPillarBlock> bark, @Nullable Supplier<? extends RotatedPillarBlock> stripped) {
         return REGISTRATE.block(name, p -> stripped != null ? new TropicraftLogBlock(p, stripped) : new RotatedPillarBlock(p))
                 .properties(p -> p.sound(SoundType.WOOD).mapColor(color).strength(2.0f).ignitedByLava().instrument(NoteBlockInstrument.BASS))
-                .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN, BlockTags.MINEABLE_WITH_AXE)
+                .tag(BlockItemTags.LOGS.block(), BlockItemTags.LOGS_THAT_BURN.block(), BlockTags.MINEABLE_WITH_AXE)
                 .blockstate(() -> (ctx, prov) -> {
                     Material barkTexture = prov.blockTexture(bark.get());
                     prov.generateAxisBlock(ctx.get(), barkTexture, barkTexture);
@@ -1347,7 +1350,7 @@ public class TropicraftBlocks {
                         .unlockedBy("has_log", prov.has(Blocks.ACACIA_LOG)) // TODO: What? Why?
                         .save(prov))
                 .item()
-                .tag(ItemTags.LOGS, ItemTags.LOGS_THAT_BURN)
+                .tag(BlockItemTags.LOGS.item(), BlockItemTags.LOGS_THAT_BURN.item())
                 .build();
     }
 
@@ -1391,13 +1394,13 @@ public class TropicraftBlocks {
     private static BlockBuilder<PropaguleBlock, Registrate> propagule(String name, TreeGrower tree, String scientificName) {
         return REGISTRATE.block(name, p -> new PropaguleBlock(tree, p))
                 .initialProperties(() -> Blocks.OAK_SAPLING)
-                .tag(BlockTags.SAPLINGS)
+                .tag(BlockItemTags.SAPLINGS.block())
                 .blockstate(() -> Models::generatePropagule)
                 .setData(ProviderType.LANG, (ctx, prov) -> prov.addBlockWithTooltip(ctx, scientificName))
                 .item()
                 .properties(p -> p.component(TropicraftDataComponents.HAS_DESCRIPTION, Unit.INSTANCE))
                 .model(() -> Models::generateFlatBlockItem)
-                .tag(ItemTags.SAPLINGS)
+                .tag(BlockItemTags.SAPLINGS.item())
                 .build();
     }
 
@@ -1405,10 +1408,10 @@ public class TropicraftBlocks {
         return REGISTRATE.block(name, Block::new)
                 .initialProperties(() -> Blocks.OAK_PLANKS)
                 .properties(p -> p.mapColor(color))
-                .tag(BlockTags.PLANKS, BlockTags.MINEABLE_WITH_AXE)
+                .tag(BlockItemTags.PLANKS.block(), BlockTags.MINEABLE_WITH_AXE)
                 .recipe((ctx, prov) -> prov.planks(log.get(), RecipeCategory.BUILDING_BLOCKS, ctx))
                 .item()
-                .tag(ItemTags.PLANKS)
+                .tag(BlockItemTags.PLANKS.item())
                 .build();
     }
 

@@ -41,6 +41,7 @@ repositories {
         url = 'https://maven.gegy.dev/releases/'
         content { includeGroup 'com.tterrag.registrate' }
     }
+    mavenLocal()
 }
 
 dependencies {

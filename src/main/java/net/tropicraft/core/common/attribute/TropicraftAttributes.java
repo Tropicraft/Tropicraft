@@ -3,7 +3,7 @@ package net.tropicraft.core.common.attribute;
 import net.minecraft.client.Camera;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.level.material.FogType;
@@ -28,7 +28,7 @@ public class TropicraftAttributes {
 
     @SubscribeEvent
     public static void onRegisterAttributes(EntityAttributeModificationEvent event) {
-        event.add(EntityType.PLAYER, UNDERWATER_VISIBILITY);
+        event.add(EntityTypes.PLAYER, UNDERWATER_VISIBILITY);
     }
 
     @EventBusSubscriber(modid = Tropicraft.ID, value = Dist.CLIENT)

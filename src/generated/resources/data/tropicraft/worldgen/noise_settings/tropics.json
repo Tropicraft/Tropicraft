@@ -486,9 +486,7 @@
                               "type": "minecraft:condition",
                               "if_true": {
                                 "type": "minecraft:biome",
-                                "biome_is": [
-                                  "tropicraft:tropics"
-                                ]
+                                "biome_is": "tropicraft:tropics"
                               },
                               "then_run": {
                                 "type": "minecraft:condition",
@@ -628,9 +626,7 @@
                               "type": "minecraft:condition",
                               "if_true": {
                                 "type": "minecraft:biome",
-                                "biome_is": [
-                                  "tropicraft:tropical_peaks"
-                                ]
+                                "biome_is": "tropicraft:tropical_peaks"
                               },
                               "then_run": {
                                 "type": "minecraft:sequence",
@@ -782,9 +778,7 @@
                               "type": "minecraft:condition",
                               "if_true": {
                                 "type": "minecraft:biome",
-                                "biome_is": [
-                                  "tropicraft:tropics"
-                                ]
+                                "biome_is": "tropicraft:tropics"
                               },
                               "then_run": {
                                 "type": "minecraft:condition",
@@ -924,9 +918,7 @@
                               "type": "minecraft:condition",
                               "if_true": {
                                 "type": "minecraft:biome",
-                                "biome_is": [
-                                  "tropicraft:tropical_peaks"
-                                ]
+                                "biome_is": "tropicraft:tropical_peaks"
                               },
                               "then_run": {
                                 "type": "minecraft:sequence",

@@ -9,15 +9,18 @@ import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
-
 import org.jspecify.annotations.Nullable;
 
-public class SteepPathProcessor extends PathStructureProcessor {
+public record SteepPathProcessor() implements PathStructureProcessor {
     public static final MapCodec<SteepPathProcessor> CODEC = MapCodec.unit(new SteepPathProcessor());
+
+    @Override
+    public MapCodec<SteepPathProcessor> codec() {
+        return CODEC;
+    }
 
     @Override
     public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos seedPos, BlockPos pos2, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo blockInfo, StructurePlaceSettings placementSettingsIn, @Nullable StructureTemplate template) {
@@ -98,10 +101,5 @@ public class SteepPathProcessor extends PathStructureProcessor {
 
     private BlockState getLadderState(Direction dir) {
         return TropicraftBlocks.BAMBOO_LADDER.get().defaultBlockState().setValue(LadderBlock.FACING, dir.getOpposite());
-    }
-
-    @Override
-    protected StructureProcessorType<?> getType() {
-        return TropicraftProcessorTypes.STEEP_PATH.get();
     }
 }

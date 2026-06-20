@@ -19,13 +19,10 @@ import java.util.List;
 import java.util.WeakHashMap;
 import java.util.stream.Collectors;
 
-public abstract class PathStructureProcessor extends CheatyStructureProcessor {
-
-    protected PathStructureProcessor() {
-    }
+public interface PathStructureProcessor extends CheatyStructureProcessor {
 
     // Represents a section of the structure which is a path going in a certain direction
-    private static class PathVector {
+    class PathVector {
         final Direction dir;
         final BoundingBox bb;
 
@@ -52,9 +49,9 @@ public abstract class PathStructureProcessor extends CheatyStructureProcessor {
     }
 
     // Cache vectors for this structure to avoid redoing work
-    private static final WeakHashMap<StructurePlaceSettings, List<PathVector>> VECTOR_CACHE = new WeakHashMap<>();
+    WeakHashMap<StructurePlaceSettings, List<PathVector>> VECTOR_CACHE = new WeakHashMap<>();
 
-    protected Direction.@Nullable Axis getPathDirection(LevelReader level, BlockPos seedPos, StructureTemplate.StructureBlockInfo current, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
+    default Direction.@Nullable Axis getPathDirection(LevelReader level, BlockPos seedPos, StructureTemplate.StructureBlockInfo current, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
         /*
          *  Use special marker jigsaw blocks to represent "vectors" of paths.
          *

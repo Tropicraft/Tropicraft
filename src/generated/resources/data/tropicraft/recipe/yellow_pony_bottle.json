@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "X": "minecraft:yellow_stained_glass_pane",
     "Y": "minecraft:lever"

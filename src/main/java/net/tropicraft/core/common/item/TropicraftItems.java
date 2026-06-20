@@ -11,8 +11,8 @@ import com.tterrag.registrate.util.DataIngredient;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
-import net.minecraft.advancements.criterion.DamageSourcePredicate;
-import net.minecraft.advancements.criterion.TagPredicate;
+import net.minecraft.advancements.predicates.DamageSourcePredicate;
+import net.minecraft.advancements.predicates.TagPredicate;
 import net.minecraft.client.color.item.Constant;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
@@ -30,6 +30,8 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.references.BlockItemIds;
+import net.minecraft.references.ItemIds;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.DamageTypeTags;
@@ -110,34 +112,15 @@ import static net.minecraft.client.data.models.model.ItemModelUtils.*;
 public class TropicraftItems {
     public static final Registrate REGISTRATE = Tropicraft.registrate();
 
-    private static final Map<DyeColor, Item> WOOL_BY_DYE = Map.ofEntries(
-            Map.entry(DyeColor.BLACK, Items.BLACK_WOOL),
-            Map.entry(DyeColor.BLUE, Items.BLUE_WOOL),
-            Map.entry(DyeColor.BROWN, Items.BROWN_WOOL),
-            Map.entry(DyeColor.CYAN, Items.CYAN_WOOL),
-            Map.entry(DyeColor.GRAY, Items.GRAY_WOOL),
-            Map.entry(DyeColor.GREEN, Items.GREEN_WOOL),
-            Map.entry(DyeColor.LIGHT_BLUE, Items.LIGHT_BLUE_WOOL),
-            Map.entry(DyeColor.LIGHT_GRAY, Items.LIGHT_GRAY_WOOL),
-            Map.entry(DyeColor.LIME, Items.LIME_WOOL),
-            Map.entry(DyeColor.MAGENTA, Items.MAGENTA_WOOL),
-            Map.entry(DyeColor.ORANGE, Items.ORANGE_WOOL),
-            Map.entry(DyeColor.PINK, Items.PINK_WOOL),
-            Map.entry(DyeColor.PURPLE, Items.PURPLE_WOOL),
-            Map.entry(DyeColor.RED, Items.RED_WOOL),
-            Map.entry(DyeColor.YELLOW, Items.YELLOW_WOOL),
-            Map.entry(DyeColor.WHITE, Items.WHITE_WOOL)
-    );
-
     static {
         REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, prov -> {
             prov.tag(Tags.Items.GEMS).addTags(TropicraftTags.Items.AZURITE_GEM, TropicraftTags.Items.EUDIALYTE_GEM, TropicraftTags.Items.ZIRCON_GEM, TropicraftTags.Items.ZIRCONIUM_GEM);
             prov.tag(Tags.Items.INGOTS).addTags(TropicraftTags.Items.MANGANESE_INGOT, TropicraftTags.Items.SHAKA_INGOT);
 
-            prov.tag(TropicraftTags.Items.FRUITS).add(Items.APPLE);
-            prov.tag(TropicraftTags.Items.MEATS).add(Items.BEEF, Items.PORKCHOP, Items.CHICKEN, Items.RABBIT, Items.MUTTON);
+            prov.tag(TropicraftTags.Items.FRUITS).add(ItemIds.APPLE);
+            prov.tag(TropicraftTags.Items.MEATS).add(ItemIds.BEEF, ItemIds.PORKCHOP, ItemIds.CHICKEN, ItemIds.RABBIT, ItemIds.MUTTON);
 
-            prov.tag(TropicraftTags.Items.BAMBOO_TOOL_MATERIALS).add(Items.BAMBOO);
+            prov.tag(TropicraftTags.Items.BAMBOO_TOOL_MATERIALS).add(BlockItemIds.BAMBOO.item());
         });
     }
 
@@ -176,7 +159,7 @@ public class TropicraftItems {
             .collect(Maps.<DyeColor, DyeColor, ItemEntry<FurnitureItem<UmbrellaEntity>>>toImmutableEnumMap(Function.identity(), color ->
                     furniture("umbrella", TropicraftEntities.UMBRELLA, color)
                             .recipe((ctx, prov) -> {
-                                Item wool = WOOL_BY_DYE.get(color);
+                                Item wool = Items.WOOL.pick(color);
                                 ShapedRecipeBuilder.shaped(prov.itemLookup(), RecipeCategory.MISC, ctx.get())
                                         .pattern("WWW").pattern(" B ").pattern(" B ")
                                         .group(Tropicraft.ID + ":umbrellas")
@@ -191,7 +174,7 @@ public class TropicraftItems {
             .collect(Maps.<DyeColor, DyeColor, ItemEntry<FurnitureItem<ChairEntity>>>toImmutableEnumMap(Function.identity(), color ->
                     furniture("chair", TropicraftEntities.CHAIR, color)
                             .recipe((ctx, prov) -> {
-                                Item wool = WOOL_BY_DYE.get(color);
+                                Item wool = Items.WOOL.pick(color);
                                 ShapedRecipeBuilder.shaped(prov.itemLookup(), RecipeCategory.MISC, ctx.get())
                                         .pattern("BWB").pattern("BWB").pattern("BWB")
                                         .group(Tropicraft.ID + ":chairs")
@@ -206,7 +189,7 @@ public class TropicraftItems {
             .collect(Maps.<DyeColor, DyeColor, ItemEntry<FurnitureItem<BeachFloatEntity>>>toImmutableEnumMap(Function.identity(), color ->
                     furniture("beach_float", TropicraftEntities.BEACH_FLOAT, color)
                             .recipe((ctx, prov) -> {
-                                Item wool = WOOL_BY_DYE.get(color);
+                                Item wool = Items.WOOL.pick(color);
                                 ShapedRecipeBuilder.shaped(prov.itemLookup(), RecipeCategory.MISC, ctx.get())
                                         .pattern("WWW").pattern("BBB")
                                         .group(Tropicraft.ID + ":beach_floats")
@@ -683,12 +666,12 @@ public class TropicraftItems {
                     .save(prov))
             .register();
 
-    public static final ItemEntry<Item> YELLOW_SCUBA_GOGGLES = scubaGoggles("yellow_scuba_goggles", ScubaType.YELLOW, () -> Items.YELLOW_DYE).register();
-    public static final ItemEntry<ScubaHarnessItem> YELLOW_SCUBA_HARNESS = scubaHarness("yellow_scuba_harness", ScubaType.YELLOW, () -> Items.YELLOW_DYE).register();
-    public static final ItemEntry<Item> YELLOW_SCUBA_FLIPPERS = scubaFlippers("yellow_scuba_flippers", ScubaType.YELLOW, () -> Items.YELLOW_DYE).register();
-    public static final ItemEntry<Item> PINK_SCUBA_GOGGLES = scubaGoggles("pink_scuba_goggles", ScubaType.PINK, () -> Items.PINK_DYE).register();
-    public static final ItemEntry<ScubaHarnessItem> PINK_SCUBA_HARNESS = scubaHarness("pink_scuba_harness", ScubaType.PINK, () -> Items.PINK_DYE).register();
-    public static final ItemEntry<Item> PINK_SCUBA_FLIPPERS = scubaFlippers("pink_scuba_flippers", ScubaType.PINK, () -> Items.PINK_DYE).register();
+    public static final ItemEntry<Item> YELLOW_SCUBA_GOGGLES = scubaGoggles("yellow_scuba_goggles", ScubaType.YELLOW, () -> Items.DYE.yellow()).register();
+    public static final ItemEntry<ScubaHarnessItem> YELLOW_SCUBA_HARNESS = scubaHarness("yellow_scuba_harness", ScubaType.YELLOW, () -> Items.DYE.yellow()).register();
+    public static final ItemEntry<Item> YELLOW_SCUBA_FLIPPERS = scubaFlippers("yellow_scuba_flippers", ScubaType.YELLOW, () -> Items.DYE.yellow()).register();
+    public static final ItemEntry<Item> PINK_SCUBA_GOGGLES = scubaGoggles("pink_scuba_goggles", ScubaType.PINK, () -> Items.DYE.pink()).register();
+    public static final ItemEntry<ScubaHarnessItem> PINK_SCUBA_HARNESS = scubaHarness("pink_scuba_harness", ScubaType.PINK, () -> Items.DYE.pink()).register();
+    public static final ItemEntry<Item> PINK_SCUBA_FLIPPERS = scubaFlippers("pink_scuba_flippers", ScubaType.PINK, () -> Items.DYE.pink()).register();
 
     private static ItemBuilder<Item, Registrate> fireArmor(String name, ArmorType slotType) {
         return simpleItem(name)
@@ -785,8 +768,8 @@ public class TropicraftItems {
                 .clientExtension(() -> ScubaArmorItem.ClientExtensions::new);
     }
 
-    public static final ItemEntry<PonyBottleItem> YELLOW_PONY_BOTTLE = ponyBottle("yellow_pony_bottle", Blocks.YELLOW_STAINED_GLASS_PANE);
-    public static final ItemEntry<PonyBottleItem> PINK_PONY_BOTTLE = ponyBottle("pink_pony_bottle", Blocks.PINK_STAINED_GLASS_PANE);
+    public static final ItemEntry<PonyBottleItem> YELLOW_PONY_BOTTLE = ponyBottle("yellow_pony_bottle", Blocks.STAINED_GLASS_PANE.yellow());
+    public static final ItemEntry<PonyBottleItem> PINK_PONY_BOTTLE = ponyBottle("pink_pony_bottle", Blocks.STAINED_GLASS_PANE.pink());
 
     private static ItemEntry<PonyBottleItem> ponyBottle(String name, Block glassPane) {
         return REGISTRATE.item(name, PonyBottleItem::new)

@@ -137,15 +137,16 @@ public final class FiddlerCrabEntity extends Animal implements OwnableEntity {
     }
 
     @Override
-    public void knockback(double strength, double x, double z) {
+    public void knockback(double power, double xd, double zd, DamageSource source, float damage, boolean comesFromEffect) {
+        super.knockback(power, xd, zd, source, damage, comesFromEffect);
         if (rollingDownTown) {
             // Don't bounce up
             boolean onGround = onGround();
             setOnGround(false);
-            super.knockback(strength, x, z);
+            super.knockback(power, xd, zd, source, damage, comesFromEffect);
             setOnGround(onGround);
         } else {
-            super.knockback(strength, x, z);
+            super.knockback(power, xd, zd, source, damage, comesFromEffect);
         }
     }
 

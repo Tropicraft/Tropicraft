@@ -10,14 +10,15 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.tropicraft.core.common.entity.TropicraftEntities;
-
 import org.jspecify.annotations.Nullable;
+
 import java.util.List;
 
-public class SpawnerProcessor extends StructureProcessor {
+public record SpawnerProcessor(
+        List<Identifier> entityTypes
+) implements StructureProcessor {
     public static final SpawnerProcessor IGUANA = new SpawnerProcessor(List.of(TropicraftEntities.IGUANA.getId()));
     public static final SpawnerProcessor ASHEN = new SpawnerProcessor(List.of(TropicraftEntities.ASHEN.getId()));
     public static final SpawnerProcessor EIH = new SpawnerProcessor(List.of(TropicraftEntities.EIH.getId()));
@@ -27,15 +28,9 @@ public class SpawnerProcessor extends StructureProcessor {
             Identifier.CODEC.listOf().fieldOf("entity_types").forGetter(p -> p.entityTypes)
     ).apply(i, SpawnerProcessor::new));
 
-    private final List<Identifier> entityTypes;
-
-    public SpawnerProcessor(List<Identifier> entityTypes) {
-        this.entityTypes = entityTypes;
-    }
-
     @Override
-    protected StructureProcessorType<?> getType() {
-        return TropicraftProcessorTypes.SPAWNER.get();
+    public MapCodec<SpawnerProcessor> codec() {
+        return CODEC;
     }
 
     @Override

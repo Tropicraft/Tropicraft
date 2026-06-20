@@ -60,7 +60,7 @@ public class FurnitureItem<T extends FurnitureEntity> extends Item {
             T entity = entityType.get().create(level, EntitySpawnReason.SPAWN_ITEM_USE);
             entity.snapTo(BlockPos.containing(hitVec), placer.getYRot() + 180.0f, 0.0f);
             if (level instanceof ServerLevel serverlevel) {
-                EntityType.createDefaultStackConfig(serverlevel, heldItem, placer).accept(entity);
+                EntityType.createDefaultStackConfig(serverlevel, heldItem, placer).apply(entity);
             }
 
             entity.setDeltaMovement(Vec3.ZERO);

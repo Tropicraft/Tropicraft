@@ -1,20 +1,15 @@
 package net.tropicraft.core.common.drinks;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.advancements.criterion.EntityPredicate;
-import net.minecraft.advancements.criterion.EntityTypePredicate;
+import net.minecraft.advancements.predicates.entity.EntityTypePredicate;
 import net.minecraft.core.HolderGetter;
-import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.predicates.EnvironmentAttributeCheck;
-import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.data.TropicraftLangKeys;
 import net.tropicraft.core.common.TropicraftRegistries;
@@ -29,7 +24,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static net.minecraft.advancements.criterion.EntityPredicate.Builder.entity;
+import static net.minecraft.advancements.predicates.entity.EntityPredicate.Builder.entity;
 import static net.minecraft.world.level.storage.loot.predicates.EnvironmentAttributeCheck.environmentAttribute;
 import static net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition.hasProperties;
 

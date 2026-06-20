@@ -4,16 +4,14 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.component.TypedEntityData;
 import net.minecraft.world.level.block.BeehiveBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.BlockEntityTypes;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
 import net.tropicraft.core.common.entity.TropicraftEntities;
@@ -64,7 +62,7 @@ public class TropibeehiveDecorator extends TreeDecorator {
                         .findFirst();
                 if (!optional.isEmpty()) {
                     pContext.setBlock(optional.get(), Blocks.BEE_NEST.defaultBlockState().setValue(BeehiveBlock.FACING, WORLDGEN_FACING));
-                    pContext.level().getBlockEntity(optional.get(), BlockEntityType.BEEHIVE).ifPresent(p_330149_ -> {
+                    pContext.level().getBlockEntity(optional.get(), BlockEntityTypes.BEEHIVE).ifPresent(p_330149_ -> {
                         int j = 2 + randomsource.nextInt(2);
 
                         for (int k = 0; k < j; k++) {

@@ -73,6 +73,7 @@ import net.tropicraft.core.common.dimension.feature.tree.TropicraftFoliagePlacer
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftTreeDecorators;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftTrunkPlacers;
 import net.tropicraft.core.common.drinks.action.TropicraftDrinkActions;
+import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.item.component.TropicraftDataComponents;
 import net.tropicraft.core.common.item.scuba.ScubaData;
@@ -87,8 +88,8 @@ import java.util.regex.Pattern;
 public class Tropicraft {
     public static final String ID = "tropicraft";
 
-    public static final ProviderType<RegistrateTagsProvider.Impl<Biome>> BIOME_TAGS = ProviderType.registerDynamicTag("tags/biome", "biome", Registries.BIOME);
-    public static final ProviderType<RegistrateTagsProvider.Impl<Timeline>> TIMELINE_TAGS = ProviderType.registerDynamicTag("tags/timeline", "timeline", Registries.TIMELINE);
+    public static final ProviderType<RegistrateTagsProvider.Impl<Biome>> BIOME_TAGS = ProviderType.registerTag("tags/biome", "biome", Registries.BIOME);
+    public static final ProviderType<RegistrateTagsProvider.Impl<Timeline>> TIMELINE_TAGS = ProviderType.registerTag("tags/timeline", "timeline", Registries.TIMELINE);
 
     public static final ResourceKey<CreativeModeTab> CREATIVE_TAB = resourceKey(Registries.CREATIVE_MODE_TAB, ID);
 

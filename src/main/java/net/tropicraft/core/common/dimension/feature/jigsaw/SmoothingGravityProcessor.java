@@ -12,28 +12,22 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.level.levelgen.structure.templatesystem.GravityProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
-
 import org.jspecify.annotations.Nullable;
 
-public class SmoothingGravityProcessor extends PathStructureProcessor {
-
+public record SmoothingGravityProcessor(
+        Heightmap.Types heightmap,
+        int offset,
+        GravityProcessor baseline
+) implements PathStructureProcessor {
     public static final MapCodec<SmoothingGravityProcessor> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
             Types.CODEC.fieldOf("heightmap").forGetter(p -> p.heightmap),
             Codec.INT.fieldOf("offset").forGetter(p -> p.offset)
     ).apply(i, SmoothingGravityProcessor::new));
 
-    private final Heightmap.Types heightmap;
-    private final int offset;
-    private final GravityProcessor baseline;
-
     public SmoothingGravityProcessor(Types heightmap, int offset) {
-        super();
-        this.heightmap = heightmap;
-        this.offset = offset;
-        baseline = new GravityProcessor(heightmap, offset);
+        this(heightmap, offset, new GravityProcessor(heightmap, offset));
     }
 
     @Override
@@ -55,7 +49,7 @@ public class SmoothingGravityProcessor extends PathStructureProcessor {
     }
 
     @Override
-    protected StructureProcessorType<?> getType() {
-        return TropicraftProcessorTypes.SMOOTHING_GRAVITY.get();
+    public MapCodec<SmoothingGravityProcessor> codec() {
+        return CODEC;
     }
 }

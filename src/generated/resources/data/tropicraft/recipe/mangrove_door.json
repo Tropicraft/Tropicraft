@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "group": "wooden_door",
   "key": {
     "X": "tropicraft:mangrove_planks"

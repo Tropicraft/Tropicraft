@@ -22,7 +22,6 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
 import net.minecraft.world.entity.ai.util.HoverRandomPos;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -38,11 +37,11 @@ import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
-
 import org.jspecify.annotations.Nullable;
+
 import java.util.EnumSet;
 
-public class HummingbirdEntity extends Animal implements FlyingAnimal {
+public class HummingbirdEntity extends Animal {
     private static final Direction[] HORIZONTALS = new Direction[]{Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
 
     private static final int POLLINATE_THRESHOLD = 5;
@@ -91,7 +90,6 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
                 && world.getRawBrightness(pos, 0) > 8;
     }
 
-    @Override
     public boolean isFlying() {
         return !onGround();
     }
@@ -155,6 +153,11 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
     public void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
         pollenCollected = input.getByteOr("pollen_collected", (byte) 0);
+    }
+
+    @Override
+    protected boolean omnidirectionalAirMover() {
+        return true;
     }
 
     final class FeedFromPlantsGoal extends FlyingGoal {

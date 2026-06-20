@@ -14,7 +14,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.pathfinder.PathFinder;
-import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -96,11 +95,6 @@ public final class WaterWalking {
         protected PathFinder createPathFinder(int depth) {
             nodeEvaluator = new WalkNodeEvaluator();
             return new PathFinder(nodeEvaluator, depth);
-        }
-
-        @Override
-        protected boolean hasValidPathType(PathType type) {
-            return type == PathType.WATER || type == PathType.WATER_BORDER || super.hasValidPathType(type);
         }
 
         @Override

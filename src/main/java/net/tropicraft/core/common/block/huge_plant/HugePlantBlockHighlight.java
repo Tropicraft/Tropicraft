@@ -1,9 +1,7 @@
 package net.tropicraft.core.common.block.huge_plant;
 
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.ShapeRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.WindowRenderState;
 import net.minecraft.core.BlockPos;
@@ -43,13 +41,9 @@ public final class HugePlantBlockHighlight {
         Vec3 view = event.getCamera().position();
         VoxelShape aabb = Shapes.create(shape.asAabb().move(-view.x, -view.y, -view.z));
 
-        event.addCustomRenderer((renderState, bufferSource, poseStack, translucentPass, levelRenderState) -> {
-            VertexConsumer builder = bufferSource.getBuffer(RenderTypes.lines());
-
-            WindowRenderState windowRenderState = Minecraft.getInstance().gameRenderer.getGameRenderState().windowRenderState;
-            ShapeRenderer.renderShape(poseStack, builder, aabb, 0.0f, 0.0f, 0.0f, ARGB.black(0x66), windowRenderState.appropriateLineWidth);
-            bufferSource.endLastBatch();
-
+        event.addCustomRenderer((renderState, submitNodeCollector, poseStack, levelRenderState) -> {
+            WindowRenderState windowRenderState = Minecraft.getInstance().gameRenderer.gameRenderState().windowRenderState;
+            submitNodeCollector.submitShapeOutline(poseStack, aabb, RenderTypes.lines(), ARGB.black(0x66), windowRenderState.appropriateLineWidth, false);
             return true;
         });
     }

@@ -13,6 +13,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -214,7 +215,7 @@ public class VMonkeyEntity extends TamableAnimal {
     public boolean wantsToAttack(LivingEntity target, LivingEntity owner) {
         // Only attack players, and only when not tamed
         // NOTE: Maybe we want to attack other players though?
-        return !isTame() && target.getType() == EntityType.PLAYER;
+        return !isTame() && target.is(EntityTypes.PLAYER);
     }
 
     @Override
@@ -227,7 +228,7 @@ public class VMonkeyEntity extends TamableAnimal {
         setOrderedToSit(false);
 
         // TODO: This seems like it was copied from Wolves, but Wolves don't even do that anymore
-        if (entity != null && entity.getType() != EntityType.PLAYER && !(entity instanceof Arrow)) {
+        if (entity != null && !entity.is(EntityTypes.PLAYER) && !(entity instanceof Arrow)) {
             amount = (amount + 1.0f) / 2.0f;
         }
 

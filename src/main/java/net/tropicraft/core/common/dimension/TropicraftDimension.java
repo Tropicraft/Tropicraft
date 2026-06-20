@@ -73,7 +73,7 @@ public class TropicraftDimension {
                 -64,
                 384,
                 384,
-                BlockTags.INFINIBURN_OVERWORLD,
+                context.lookup(Registries.BLOCK).getOrThrow(BlockTags.INFINIBURN_OVERWORLD),
                 0.0f,
                 new DimensionType.MonsterSettings(UniformInt.of(0, 7), 0),
                 DimensionType.Skybox.OVERWORLD,

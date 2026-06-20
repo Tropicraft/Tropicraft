@@ -18,7 +18,6 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
 import net.minecraft.world.entity.ai.util.HoverRandomPos;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -28,14 +27,14 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.entity.TropicraftEntities;
-
 import org.jspecify.annotations.Nullable;
+
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 
-public class FailgullEntity extends Animal implements FlyingAnimal {
+public class FailgullEntity extends Animal {
     private boolean isFlockLeader;
     @Nullable
     private EntityReference<FailgullEntity> flockLeader;
@@ -167,8 +166,8 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
     }
 
     @Override
-    public boolean isFlying() {
-        return !onGround();
+    protected boolean omnidirectionalAirMover() {
+        return true;
     }
 
     class FollowLeaderGoal extends Goal {

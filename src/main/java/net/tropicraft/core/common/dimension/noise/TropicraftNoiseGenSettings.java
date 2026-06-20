@@ -5,6 +5,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.SurfaceRuleData;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
@@ -23,14 +24,15 @@ public final class TropicraftNoiseGenSettings {
     public static void bootstrap(BootstrapContext<NoiseGeneratorSettings> context) {
         HolderGetter<DensityFunction> densityFunctions = context.lookup(Registries.DENSITY_FUNCTION);
         HolderGetter<NormalNoise.NoiseParameters> noiseParameters = context.lookup(Registries.NOISE);
-        context.register(TROPICS, createNoise(densityFunctions, noiseParameters, true));
+        HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
+        context.register(TROPICS, createNoise(densityFunctions, noiseParameters, biomes, true));
     }
 
-    public static NoiseGeneratorSettings createNoise(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters, boolean tropisurface) {
+    public static NoiseGeneratorSettings createNoise(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters, HolderGetter<Biome> biomes, boolean tropisurface) {
         // Constant ternaries are amplified, keeping temporarily until we figure out good noise values
         NoiseSettings settings = NoiseSettings.create(-64, 384, 1, 2);
 
-        SurfaceRules.RuleSource surface = tropisurface ? TropicraftSurfaces.tropics() : SurfaceRuleData.overworld();
+        SurfaceRules.RuleSource surface = tropisurface ? TropicraftSurfaces.tropics(biomes) : SurfaceRuleData.overworld(biomes);
         return new NoiseGeneratorSettings(
                 settings,
                 Blocks.STONE.defaultBlockState(),

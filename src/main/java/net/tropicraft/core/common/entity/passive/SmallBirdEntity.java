@@ -3,8 +3,6 @@ package net.tropicraft.core.common.entity.passive;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Ease;
-import net.minecraft.util.EasingType;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntitySpawnReason;
@@ -18,7 +16,6 @@ import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -32,7 +29,7 @@ import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.entity.ai.BirdWanderInTreesGoal;
 import org.jspecify.annotations.Nullable;
 
-public class SmallBirdEntity extends Animal implements FlyingAnimal {
+public class SmallBirdEntity extends Animal {
     private final BinaryAnimation flightAnimation = new BinaryAnimation(3, Ease::inOutSine);
 
     public SmallBirdEntity(EntityType<? extends SmallBirdEntity> type, Level world) {
@@ -93,7 +90,6 @@ public class SmallBirdEntity extends Animal implements FlyingAnimal {
         return flightAnimation.get(partialTicks);
     }
 
-    @Override
     public boolean isFlying() {
         return !onGround();
     }
@@ -126,5 +122,10 @@ public class SmallBirdEntity extends Animal implements FlyingAnimal {
     @Override
     public int getMaxHeadYRot() {
         return 90;
+    }
+
+    @Override
+    protected boolean omnidirectionalAirMover() {
+        return true;
     }
 }

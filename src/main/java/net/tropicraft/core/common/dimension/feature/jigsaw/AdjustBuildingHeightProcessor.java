@@ -6,22 +6,21 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureEntityInfo;
-
 import org.jspecify.annotations.Nullable;
 
-public class AdjustBuildingHeightProcessor extends CheatyStructureProcessor {
+public record AdjustBuildingHeightProcessor(
+        int base
+) implements CheatyStructureProcessor {
     public static final MapCodec<AdjustBuildingHeightProcessor> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
             Codec.INT.optionalFieldOf("base", 126).forGetter(c -> c.base)
     ).apply(i, AdjustBuildingHeightProcessor::new));
 
-    private final int base;
-
-    public AdjustBuildingHeightProcessor(int base) {
-        this.base = base;
+    @Override
+    public MapCodec<AdjustBuildingHeightProcessor> codec() {
+        return CODEC;
     }
 
     @Override
@@ -38,10 +37,5 @@ public class AdjustBuildingHeightProcessor extends CheatyStructureProcessor {
             return new StructureEntityInfo(entityInfo.pos.add(0, 1, 0), entityInfo.blockPos.above(), entityInfo.nbt);
         }
         return entityInfo;
-    }
-
-    @Override
-    protected StructureProcessorType<?> getType() {
-        return TropicraftProcessorTypes.ADJUST_BUILDING_HEIGHT.get();
     }
 }
