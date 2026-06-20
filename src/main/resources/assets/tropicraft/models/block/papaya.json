@@ -1,8 +1,7 @@
 {
   "ambientocclusion": false,
   "textures": {
-    "particle": "tropicraft:block/papaya_stage1",
-    "papaya": "tropicraft:block/papaya_stage1"
+    "particle": "#papaya"
   },
   "elements": [
     {

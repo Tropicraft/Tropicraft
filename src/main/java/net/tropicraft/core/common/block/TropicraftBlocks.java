@@ -1549,6 +1549,7 @@ public class TropicraftBlocks {
         public static final TextureSlot JIGARBOV_SLOT = TextureSlot.create("jigarbov");
         public static final TextureSlot PLANKS_SLOT = TextureSlot.create("planks");
         public static final TextureSlot VINE_SLOT = TextureSlot.create("vine");
+        public static final TextureSlot PAPAYA_SLOT = TextureSlot.create("papaya");
 
         public static final ModelTemplate ITEM_FRAME_TEMPLATE = ModelTemplates.create("item_frame", WOOD_SLOT);
         public static final ModelTemplate ITEM_FRAME_MAP_TEMPLATE = ModelTemplates.create("item_frame_map", WOOD_SLOT);
@@ -1566,6 +1567,8 @@ public class TropicraftBlocks {
 
         public static final ModelTemplate LADDER_TEMPLATE = ModelTemplates.create("ladder", TextureSlot.TEXTURE, TextureSlot.PARTICLE);
         public static final ModelTemplate VINE_TEMPLATE = ModelTemplates.create("vine", VINE_SLOT, TextureSlot.PARTICLE);
+
+        public static final ModelTemplate PAPAYA_TEMPLATE = ModelTemplates.create(Tropicraft.id("papaya").toString(), PAPAYA_SLOT);
 
         private static final List<VariantMutator> ALL_Y_ROTATIONS = List.of(NOP, Y_ROT_90, Y_ROT_180, Y_ROT_270);
         private static final List<VariantMutator> ALL_ROTATIONS = List.of(
@@ -1782,13 +1785,16 @@ public class TropicraftBlocks {
         }
 
         private static void generatePapaya(DataGenContext<Block, PapayaBlock> ctx, RegistrateBlockModelGenerator prov) {
-            TextureSlot cocoaSlot = TextureSlot.create("cocoa");
-            TextureMapping texturesStage0 = TextureMapping.singleSlot(cocoaSlot, prov.modBlockTexture("papaya_stage0"));
-            MultiVariant stage0 = plainVariant(ModelTemplates.create("cocoa_stage2", cocoaSlot).createWithSuffix(ctx.get(), "_stage0", texturesStage0, prov.modelOutput));
             prov.blockStateOutput.accept(MultiVariantGenerator.dispatch(ctx.get())
                     .with(PropertyDispatch.initial(BlockStateProperties.AGE_1)
-                            .select(0, stage0)
-                            .select(1, plainVariant(ModelLocationUtils.getModelLocation(ctx.get(), "_stage1")))
+                            .select(0, plainVariant(PAPAYA_TEMPLATE.createWithSuffix(ctx.get(), "_stage0",
+                                    TextureMapping.singleSlot(PAPAYA_SLOT, prov.modBlockTexture("papaya_stage0")),
+                                    prov.modelOutput
+                            )))
+                            .select(1, plainVariant(PAPAYA_TEMPLATE.createWithSuffix(ctx.get(), "_stage1",
+                                    TextureMapping.singleSlot(PAPAYA_SLOT, prov.modBlockTexture("papaya_stage1")),
+                                    prov.modelOutput
+                            )))
                     )
                     .with(ROTATION_HORIZONTAL_FACING_ALT));
         }

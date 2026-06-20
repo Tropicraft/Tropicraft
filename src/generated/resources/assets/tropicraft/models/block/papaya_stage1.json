@@ -1,6 +1,6 @@
 {
   "parent": "tropicraft:block/papaya",
   "textures": {
-    "papaya": "tropicraft:block/papaya_stage0"
+    "papaya": "tropicraft:block/papaya_stage1"
   }
 }
