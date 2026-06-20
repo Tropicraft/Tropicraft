@@ -953,7 +953,8 @@ public class TropicraftItems {
 
         private static void generateTrimmedArmor(DataGenContext<Item, Item> ctx, RegistrateItemModelGenerator prov, ArmorType slotType, ResourceKey<EquipmentAsset> asset) {
             Identifier prefix = ItemModelGenerators.prefixForSlotTrim(slotType.getSerializedName());
-            prov.generateDynamicTrimmableItem(ctx.get(), prefix);
+            Identifier baseArmorModel = ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(ctx.get()), TextureMapping.layer0(ctx.get()), prov.modelOutput);
+            prov.generateDynamicTrimmableItem(ctx.get(), baseArmorModel, prefix, -1);
         }
 
         private static void generateHandheld(DataGenContext<Item, Item> ctx, RegistrateItemModelGenerator prov) {
