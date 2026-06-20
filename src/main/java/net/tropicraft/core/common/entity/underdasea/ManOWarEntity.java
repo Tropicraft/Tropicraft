@@ -47,7 +47,6 @@ public class ManOWarEntity extends WaterAnimal {
 
     public ManOWarEntity(EntityType<? extends ManOWarEntity> type, Level world) {
         super(type, world);
-        random.setSeed(getId());
         rotationVelocity = 1.0f / (random.nextFloat() + 1.0f) * 0.2f;
         xpReward = 7;
     }

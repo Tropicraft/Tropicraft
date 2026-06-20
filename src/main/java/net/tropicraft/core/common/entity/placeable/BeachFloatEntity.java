@@ -30,10 +30,9 @@ import net.tropicraft.core.common.item.TropicraftItems;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
+import java.util.UUID;
 
 public class BeachFloatEntity extends FurnitureEntity {
-
-    private static final RandomSource rand = RandomSource.create(298457L);
     private static final PerlinSimplexNoise windNoise = new PerlinSimplexNoise(new WorldgenRandom(new LegacyRandomSource(298457L)), ImmutableList.of(0));
 
     /* Wind */
@@ -52,14 +51,14 @@ public class BeachFloatEntity extends FurnitureEntity {
         super(type, worldIn, TropicraftItems.BEACH_FLOATS);
         isEmpty = true;
         blocksBuilding = true;
-        setId(getId());
     }
 
+    // This is so weird, why have a random modifier like this?
     @Override
-    public void setId(int id) {
-        super.setId(id);
-        rand.setSeed(id);
-        windModifier = (1 + (rand.nextGaussian() * 0.1)) - 0.05;
+    public void setUUID(UUID uuid) {
+        super.setUUID(uuid);
+        RandomSource random = RandomSource.create(uuid.getMostSignificantBits() ^ uuid.getLeastSignificantBits());
+        windModifier = (1 + (random.nextGaussian() * 0.1)) - 0.05;
     }
 
     @Override
