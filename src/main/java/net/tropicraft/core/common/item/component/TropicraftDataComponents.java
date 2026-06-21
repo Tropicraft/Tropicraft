@@ -2,12 +2,14 @@ package net.tropicraft.core.common.item.component;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Unit;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -55,6 +57,10 @@ public class TropicraftDataComponents {
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unit>> HAS_DESCRIPTION = REGISTER.registerComponentType(
             "has_description",
             builder -> builder.persistent(Unit.CODEC).networkSynchronized(Unit.STREAM_CODEC)
+    );
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Holder<Item>>> CONVERT_WITH_LAVA = REGISTER.registerComponentType(
+            "convert_with_lava",
+            builder -> builder.persistent(Item.CODEC).networkSynchronized(Item.STREAM_CODEC)
     );
 
     @SubscribeEvent
