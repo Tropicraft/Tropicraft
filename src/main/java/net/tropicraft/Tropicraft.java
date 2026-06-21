@@ -149,6 +149,7 @@ public class Tropicraft {
         TropicraftDrinkActions.REGISTER.register(modBus);
 
         modBus.addListener(TropicraftItems::onItemRegister);
+        Reflection.initialize(TropicraftBlocks.class);
 
         modBus.addListener((AddPackFindersEvent event) ->
                 event.addPackFinders(id("resourcepacks/tropicraft_texture_update"), PackType.CLIENT_RESOURCES, TropicraftLangKeys.TEXTURE_UPDATE_PACK.component(), PackSource.BUILT_IN, false, Pack.Position.TOP)

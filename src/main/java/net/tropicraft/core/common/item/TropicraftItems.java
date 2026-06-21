@@ -822,11 +822,12 @@ public class TropicraftItems {
 
     public static final ItemEntry<Item> PIANGUAS = simpleItem("pianguas").register();
 
-    public static final ItemEntry<SignItem> MAHOGANY_SIGN = sign(TropicraftWoodTypes.MAHOGANY, TropicraftBlocks.MAHOGANY_PLANKS, TropicraftBlocks.MAHOGANY_SIGN, TropicraftBlocks.MAHOGANY_WALL_SIGN).register();
-    public static final ItemEntry<SignItem> PALM_SIGN = sign(TropicraftWoodTypes.PALM, TropicraftBlocks.PALM_PLANKS, TropicraftBlocks.PALM_SIGN, TropicraftBlocks.PALM_WALL_SIGN).register();
-    public static final ItemEntry<SignItem> BAMBOO_SIGN = sign(TropicraftWoodTypes.BAMBOO, TropicraftBlocks.BAMBOO_BUNDLE, TropicraftBlocks.BAMBOO_SIGN, TropicraftBlocks.BAMBOO_WALL_SIGN).register();
-    public static final ItemEntry<SignItem> THATCH_SIGN = sign(TropicraftWoodTypes.THATCH, TropicraftBlocks.THATCH_BUNDLE, TropicraftBlocks.THATCH_SIGN, TropicraftBlocks.THATCH_WALL_SIGN).register();
-    public static final ItemEntry<SignItem> MANGROVE_SIGN = sign(TropicraftWoodTypes.MANGROVE, TropicraftBlocks.MANGROVE_PLANKS, TropicraftBlocks.MANGROVE_SIGN, TropicraftBlocks.MANGROVE_WALL_SIGN).register();
+    // Static references to blocks must be wrapped in suppliers to prevent static init loops
+    public static final ItemEntry<SignItem> MAHOGANY_SIGN = sign(TropicraftWoodTypes.MAHOGANY, () -> TropicraftBlocks.MAHOGANY_PLANKS, () -> TropicraftBlocks.MAHOGANY_SIGN, () -> TropicraftBlocks.MAHOGANY_WALL_SIGN).register();
+    public static final ItemEntry<SignItem> PALM_SIGN = sign(TropicraftWoodTypes.PALM, () -> TropicraftBlocks.PALM_PLANKS, () -> TropicraftBlocks.PALM_SIGN, () -> TropicraftBlocks.PALM_WALL_SIGN).register();
+    public static final ItemEntry<SignItem> BAMBOO_SIGN = sign(TropicraftWoodTypes.BAMBOO, () -> TropicraftBlocks.BAMBOO_BUNDLE, () -> TropicraftBlocks.BAMBOO_SIGN, () -> TropicraftBlocks.BAMBOO_WALL_SIGN).register();
+    public static final ItemEntry<SignItem> THATCH_SIGN = sign(TropicraftWoodTypes.THATCH, () -> TropicraftBlocks.THATCH_BUNDLE, () -> TropicraftBlocks.THATCH_SIGN, () -> TropicraftBlocks.THATCH_WALL_SIGN).register();
+    public static final ItemEntry<SignItem> MANGROVE_SIGN = sign(TropicraftWoodTypes.MANGROVE, () -> TropicraftBlocks.MANGROVE_PLANKS, () -> TropicraftBlocks.MANGROVE_SIGN, () -> TropicraftBlocks.MANGROVE_WALL_SIGN).register();
 
     private static ItemBuilder<Item, Registrate> simpleItem(String name) {
         return REGISTRATE.item(name, Item::new);
@@ -840,18 +841,18 @@ public class TropicraftItems {
         return simpleItem(name).properties(p -> p.food(food, consumable));
     }
 
-    private static ItemBuilder<SignItem, Registrate> sign(WoodType woodType, Supplier<? extends Block> planks, Supplier<? extends StandingSignBlock> standingSign, Supplier<? extends WallSignBlock> wallSign) {
+    private static ItemBuilder<SignItem, Registrate> sign(WoodType woodType, Supplier<Supplier<? extends Block>> planks, Supplier<Supplier<? extends StandingSignBlock>> standingSign, Supplier<Supplier<? extends WallSignBlock>> wallSign) {
         String woodName = Identifier.parse(woodType.name()).getPath();
-        return REGISTRATE.item(woodName + "_sign", p -> new SignItem(standingSign.get(), wallSign.get(), p))
+        return REGISTRATE.item(woodName + "_sign", p -> new SignItem(standingSign.get().get(), wallSign.get().get(), p))
                 .properties(p -> p.stacksTo(16).useBlockDescriptionPrefix())
                 .tag(ItemTags.SIGNS)
                 .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(prov.itemLookup(), RecipeCategory.DECORATIONS, ctx.get())
                         .pattern("###")
                         .pattern("###")
                         .pattern(" | ")
-                        .define('#', planks.get())
+                        .define('#', planks.get().get())
                         .define('|', Tags.Items.RODS_WOODEN)
-                        .unlockedBy("has_" + woodName, prov.has(planks.get()))
+                        .unlockedBy("has_" + woodName, prov.has(planks.get().get()))
                         .group("wooden_sign")
                         .save(prov));
     }
