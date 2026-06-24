@@ -108,7 +108,7 @@ public class VolcanoStructurePiece extends StructurePiece {
 
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
 
-        for (int y = level.getMaxBuildHeight(); y > level.getMinBuildHeight(); y--) {
+        for (int y = level.getMaxBuildHeight(); y > level.getMinBuildHeight() + 2; y--) {
             mutablePos.set(x, y, z);
 
             if (height + terrainY < calderaCutoffY) {
