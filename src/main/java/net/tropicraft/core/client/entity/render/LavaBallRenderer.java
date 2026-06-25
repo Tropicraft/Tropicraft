@@ -10,13 +10,13 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.entity.model.LavaBallModel;
 import net.tropicraft.core.common.entity.projectile.LavaBallEntity;
 
 public class LavaBallRenderer extends EntityRenderer<LavaBallEntity> {
-    public static final ResourceLocation LAVA_BALL_TEXTURE = Tropicraft.location("textures/entity/lavaball.png");
+    public static final ResourceLocation LAVA_BALL_TEXTURE = ResourceLocation.withDefaultNamespace("textures/block" +
+            "/lava_flow.png");
     private final EntityModel<LavaBallEntity> model;
 
     public LavaBallRenderer(EntityRendererProvider.Context context) {
