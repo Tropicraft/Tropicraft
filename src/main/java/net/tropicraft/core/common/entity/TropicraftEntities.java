@@ -170,8 +170,18 @@ public class TropicraftEntities {
                     .setShouldReceiveVelocityUpdates(false))
             .renderer(() -> BambooItemFrameRenderer::new)
             .register();
-    // TODO: Register again when volcano eruption is finished
-    public static final EntityEntry<LavaBallEntity> LAVA_BALL = null;//register("lava_ball", TropicraftEntities::lavaBall);
+
+    public static final EntityEntry<LavaBallEntity> LAVA_BALL =  REGISTRATE.entity("lava_ball",
+                    (EntityType.EntityFactory<LavaBallEntity>)
+                    LavaBallEntity::new,
+            MobCategory.MISC)
+            .properties(b -> b.sized(1f, 1f)
+                    .setTrackingRange(8)
+                    .setUpdateInterval(3)
+                    .setShouldReceiveVelocityUpdates(true))
+            .renderer(() -> LavaBallRenderer::new)
+            .register();
+
     public static final EntityEntry<SeaTurtleEntity> SEA_TURTLE = REGISTRATE.entity("turtle", SeaTurtleEntity::new, MobCategory.WATER_CREATURE)
             .properties(b -> b.sized(0.8f, 0.35f)
                     .setTrackingRange(8)
@@ -555,14 +565,6 @@ public class TropicraftEntities {
                     .setShouldReceiveVelocityUpdates(true))
             .renderer(() -> SpearRenderer::new)
             .register();
-
-    //    private static void lavaBall(EntityType.Builder<LavaBallEntity> b) {
-//        return EntityType.Builder.<LavaBallEntity>of(LavaBallEntity::new, MobCategory.MISC)
-//                .sized(1.0f, 1.0f)
-//                .setTrackingRange(8)
-//                .setUpdateInterval(3)
-//                .setShouldReceiveVelocityUpdates(true);
-//    }
 
     public static final RegistryEntry<EntityType<?>, EntityType<GibnutEntity>> GIBNUT = REGISTRATE.entity("gibnut", GibnutEntity::new, MobCategory.MONSTER)
             .properties(b -> b.sized(0.7f, 0.3f)

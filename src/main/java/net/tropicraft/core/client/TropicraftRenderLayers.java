@@ -10,49 +10,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.tropicraft.Tropicraft;
-import net.tropicraft.core.client.entity.model.AshenModel;
-import net.tropicraft.core.client.entity.model.BambooMugModel;
-import net.tropicraft.core.client.entity.model.BasiliskLizardModel;
-import net.tropicraft.core.client.entity.model.BeachFloatModel;
-import net.tropicraft.core.client.entity.model.ChairModel;
-import net.tropicraft.core.client.entity.model.CuberaModel;
-import net.tropicraft.core.client.entity.model.EIHMachineModel;
-import net.tropicraft.core.client.entity.model.EIHModel;
-import net.tropicraft.core.client.entity.model.EagleRayModel;
-import net.tropicraft.core.client.entity.model.EggModel;
-import net.tropicraft.core.client.entity.model.FailgullModel;
-import net.tropicraft.core.client.entity.model.FiddlerCrabModel;
-import net.tropicraft.core.client.entity.model.GibnutModel;
-import net.tropicraft.core.client.entity.model.HummingbirdModel;
-import net.tropicraft.core.client.entity.model.IguanaModel;
-import net.tropicraft.core.client.entity.model.JaguarModel;
-import net.tropicraft.core.client.entity.model.KoaModel;
-import net.tropicraft.core.client.entity.model.ManOWarModel;
-import net.tropicraft.core.client.entity.model.ManateeModel;
-import net.tropicraft.core.client.entity.model.MarlinModel;
-import net.tropicraft.core.client.entity.model.PapyrusCanaryModel;
-import net.tropicraft.core.client.entity.model.PapyrusGonolekModel;
-import net.tropicraft.core.client.entity.model.PlayerHeadpieceModel;
-import net.tropicraft.core.client.entity.model.SeaTurtleModel;
-import net.tropicraft.core.client.entity.model.SeaUrchinModel;
-import net.tropicraft.core.client.entity.model.SeahorseModel;
-import net.tropicraft.core.client.entity.model.SharkModel;
-import net.tropicraft.core.client.entity.model.ShoebillStorkModel;
-import net.tropicraft.core.client.entity.model.SlenderHarvestMouseModel;
-import net.tropicraft.core.client.entity.model.SpiderMonkeyModel;
-import net.tropicraft.core.client.entity.model.TapirModel;
-import net.tropicraft.core.client.entity.model.ToucanModel;
-import net.tropicraft.core.client.entity.model.TreeFrogModel;
-import net.tropicraft.core.client.entity.model.TropiBeeModel;
-import net.tropicraft.core.client.entity.model.TropiCreeperModel;
-import net.tropicraft.core.client.entity.model.TropiSkellyModel;
-import net.tropicraft.core.client.entity.model.TropicraftDolphinModel;
-import net.tropicraft.core.client.entity.model.TropicraftFishModel;
-import net.tropicraft.core.client.entity.model.UmbrellaModel;
-import net.tropicraft.core.client.entity.model.VMonkeyModel;
-import net.tropicraft.core.client.entity.model.WhiteCollaredOlivebackModel;
-import net.tropicraft.core.client.entity.model.WhiteLippedPeccaryModel;
-import net.tropicraft.core.client.entity.model.WhiteWingedWarblerModel;
+import net.tropicraft.core.client.entity.model.*;
 import net.tropicraft.core.client.scuba.ModelScubaGear;
 
 import java.util.function.Supplier;
@@ -113,6 +71,7 @@ public class TropicraftRenderLayers {
     public static ModelLayerLocation SHOEBILL_STORK_LAYER;
     public static ModelLayerLocation WHITE_COLLARED_OLIVEBACK_LAYER;
     public static ModelLayerLocation WHITE_WINGED_WARBLER_LAYER;
+    public static ModelLayerLocation LAVA_BALL_LAYER;
 
     // Scuba
     public static ModelLayerLocation CHEST_SCUBA_LAYER;
@@ -177,6 +136,7 @@ public class TropicraftRenderLayers {
 		SHOEBILL_STORK_LAYER = registerMain("shoebill_stork", ShoebillStorkModel::createBodyLayer, event);
 		WHITE_COLLARED_OLIVEBACK_LAYER = registerMain("white_collared_oliveback", WhiteCollaredOlivebackModel::createBodyLayer, event);
 		WHITE_WINGED_WARBLER_LAYER = registerMain("white_winged_warbler", WhiteWingedWarblerModel::createBodyLayer, event);
+        LAVA_BALL_LAYER = registerMain("lava_ball", LavaBallModel::create, event);
 
         HEADPIECE_LAYER = registerMain("headpiece", PlayerHeadpieceModel::create, event);
         HEAD_SCUBA_LAYER = registerMain("scuba_goggles", ModelScubaGear::create, event);

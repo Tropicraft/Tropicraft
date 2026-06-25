@@ -6,7 +6,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -15,16 +14,12 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
 public class LavaBallEntity extends Entity {
+    public final boolean held;
     public boolean setFire;
     public float size;
-    public final boolean held;
     public int lifeTimer;
 
-    public double accelerationX;
-    public double accelerationY;
-    public double accelerationZ;
-
-    public LavaBallEntity(EntityType<? extends LavaBallEntity> type, Level world) {
+    public LavaBallEntity(EntityType<? extends Entity> type, Level world) {
         super(type, world);
         setFire = false;
         held = false;
@@ -32,24 +27,15 @@ public class LavaBallEntity extends Entity {
         lifeTimer = 0;
     }
 
-    public LavaBallEntity(EntityType<? extends LavaBallEntity> type, Level world, double i, double j, double k, double motX, double motY, double motZ) {
-        super(type, world);
-        setFire = false;
-        moveTo(i, j, k, 0, 0);
-        accelerationX = motX;
-        accelerationY = motY;
-        accelerationZ = motZ;
-        size = 1;
-        held = false;
-        lifeTimer = 0;
+    public LavaBallEntity(EntityType<? extends LavaBallEntity> type, Level world, double x, double y, double z,
+                          double motX, double motY, double motZ) {
+        this(type,world);
+        moveTo(x, y, z, 0, 0);
+        setDeltaMovement(motX, motY, motZ);
     }
 
-    public LavaBallEntity(EntityType<? extends LavaBallEntity> type, Level world, float startSize) {
-        super(type, world);
-        size = startSize;
-        setFire = false;
-        held = true;
-        lifeTimer = 0;
+    public LavaBallEntity(EntityType<? extends LavaBallEntity> type, Level world, Vec3 pos, Vec3 deltaMovement) {
+        this(type, world, pos.x, pos.y, pos.z, deltaMovement.x, deltaMovement.y, deltaMovement.z);
     }
 
     @Override
@@ -80,31 +66,23 @@ public class LavaBallEntity extends Entity {
     @Override
     public void tick() {
         super.tick();
-        // System.out.println("laba ball: " + posX + " " + posY + " " + posZ);
-
         if (lifeTimer < 500) {
             lifeTimer++;
         } else {
             remove(RemovalReason.DISCARDED);
         }
 
-        double motionX = getDeltaMovement().x;
-        double motionY = getDeltaMovement().y;
-        double motionZ = getDeltaMovement().z;
+        var delta = getDeltaMovement();
+
+        double newX = getX() + delta.x;
+        double newY = getY() + delta.y;
+        double newZ = getZ() + delta.z;
 
         if (size < 1) {
             size += 0.025;
         }
 
-        if (onGround()) {
-            motionZ *= 0.95;
-            motionX *= 0.95;
-        }
-
-        motionY *= 0.99;
-
         if (!onGround()) {
-            motionY -= 0.05f;
             if (level().isClientSide) {
                 for (int i = 0; i < 5 + random.nextInt(3); i++) {
                     supahDrip();
@@ -112,17 +90,7 @@ public class LavaBallEntity extends Entity {
             }
         }
 
-        if (horizontalCollision) {
-            motionZ = 0;
-            motionX = 0;
-        }
-
-        //TODO: Note below, these used to be tempLavaMoving - maybe they still need to be?
-        int thisX = (int) Math.floor(getX());
-        int thisY = (int) Math.floor(getY());
-        int thisZ = (int) Math.floor(getZ());
-
-        BlockPos posCurrent = new BlockPos(thisX, thisY, thisZ);
+        BlockPos posCurrent = this.blockPosition();
         BlockPos posBelow = posCurrent.below();
         BlockState stateBelow = level().getBlockState(posBelow);
 
@@ -134,19 +102,19 @@ public class LavaBallEntity extends Entity {
 
             if (!setFire) {
                 if (level().isEmptyBlock(posCurrent.west())) {
-                    level().setBlock(posCurrent.west(), Blocks.LAVA.defaultBlockState(), 2);
+                    level().setBlock(posCurrent.west(), Blocks.LAVA.defaultBlockState(), 3);
                 }
 
                 if (level().isEmptyBlock(posCurrent.east())) {
-                    level().setBlock(posCurrent.east(), Blocks.LAVA.defaultBlockState(), 2);
+                    level().setBlock(posCurrent.east(), Blocks.LAVA.defaultBlockState(), 3);
                 }
 
                 if (level().isEmptyBlock(posCurrent.south())) {
-                    level().setBlock(posCurrent.south(), Blocks.LAVA.defaultBlockState(), 2);
+                    level().setBlock(posCurrent.south(), Blocks.LAVA.defaultBlockState(), 3);
                 }
 
                 if (level().isEmptyBlock(posCurrent.north())) {
-                    level().setBlock(posCurrent.north(), Blocks.LAVA.defaultBlockState(), 2);
+                    level().setBlock(posCurrent.north(), Blocks.LAVA.defaultBlockState(), 3);
                 }
 
                 level().setBlock(posCurrent, Blocks.LAVA.defaultBlockState(), 3);
@@ -154,19 +122,25 @@ public class LavaBallEntity extends Entity {
             }
         }
 
-        Vec3 motion = new Vec3(motionX + accelerationX, motionY + accelerationY, motionZ + accelerationZ);
-        setDeltaMovement(motion);
+        //Vec3 motion = new Vec3(motionX + accelerationX, motionY + accelerationY, motionZ + accelerationZ);
+        setDeltaMovement(delta.scale(0.999));
 
-        move(MoverType.SELF, motion);
+        this.applyGravity();
+        this.setPos(newX, newY, newZ);
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag nbt) {
+    protected double getDefaultGravity() {
+        return 0;
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag nbt) {
         lifeTimer = nbt.getInt("lifeTimer");
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag nbt) {
+    public void addAdditionalSaveData(CompoundTag nbt) {
         nbt.putInt("lifeTimer", lifeTimer);
     }
 }
