@@ -56,7 +56,7 @@ public class LavaBallEntity extends Entity {
         float z = (float) getZ();
 
         if (level().isClientSide) {
-            level().addParticle(ParticleTypes.LAVA, x, y, z, getDeltaMovement().x, -1.5f, getDeltaMovement().z);
+            level().addParticle(ParticleTypes.LAVA, x, y, z, -getDeltaMovement().x, -1.5f, -getDeltaMovement().z);
         }
     }
 
