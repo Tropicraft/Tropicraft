@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import net.tropicraft.core.common.block.TropicraftBlocks;
 
 public class LavaBallEntity extends Entity {
     public final boolean held;
@@ -29,7 +30,7 @@ public class LavaBallEntity extends Entity {
 
     public LavaBallEntity(EntityType<? extends LavaBallEntity> type, Level world, double x, double y, double z,
                           double motX, double motY, double motZ) {
-        this(type,world);
+        this(type, world);
         moveTo(x, y, z, 0, 0);
         setDeltaMovement(motX, motY, motZ);
     }
@@ -77,6 +78,10 @@ public class LavaBallEntity extends Entity {
         double newX = getX() + delta.x;
         double newY = getY() + delta.y;
         double newZ = getZ() + delta.z;
+        this.setPos(newX, newY, newZ);
+
+        setDeltaMovement(delta.scale(0.999));
+        this.applyGravity();
 
         if (size < 1) {
             size += 0.025;
@@ -91,42 +96,15 @@ public class LavaBallEntity extends Entity {
         }
 
         BlockPos posCurrent = this.blockPosition();
+        BlockState stateCurrent = level().getBlockState(posCurrent);
         BlockPos posBelow = posCurrent.below();
         BlockState stateBelow = level().getBlockState(posBelow);
 
-        if (!stateBelow.isAir() && !stateBelow.is(Blocks.LAVA) && !held) {
-            if (setFire) {
-                level().setBlock(posCurrent, Blocks.LAVA.defaultBlockState(), 3);
-                remove(RemovalReason.DISCARDED);
-            }
-
-            if (!setFire) {
-                if (level().isEmptyBlock(posCurrent.west())) {
-                    level().setBlock(posCurrent.west(), Blocks.LAVA.defaultBlockState(), 3);
-                }
-
-                if (level().isEmptyBlock(posCurrent.east())) {
-                    level().setBlock(posCurrent.east(), Blocks.LAVA.defaultBlockState(), 3);
-                }
-
-                if (level().isEmptyBlock(posCurrent.south())) {
-                    level().setBlock(posCurrent.south(), Blocks.LAVA.defaultBlockState(), 3);
-                }
-
-                if (level().isEmptyBlock(posCurrent.north())) {
-                    level().setBlock(posCurrent.north(), Blocks.LAVA.defaultBlockState(), 3);
-                }
-
-                level().setBlock(posCurrent, Blocks.LAVA.defaultBlockState(), 3);
-                setFire = true;
-            }
+        if (!stateBelow.isEmpty() && !held) {
+            if (stateCurrent.isEmpty())
+                level().setBlock(posCurrent, TropicraftBlocks.COOLING_LAVA.get().defaultBlockState(), 3);
+            remove(RemovalReason.DISCARDED);
         }
-
-        //Vec3 motion = new Vec3(motionX + accelerationX, motionY + accelerationY, motionZ + accelerationZ);
-        setDeltaMovement(delta.scale(0.999));
-
-        this.applyGravity();
-        this.setPos(newX, newY, newZ);
     }
 
     @Override
