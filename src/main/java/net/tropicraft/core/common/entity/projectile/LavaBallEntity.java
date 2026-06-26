@@ -109,7 +109,7 @@ public class LavaBallEntity extends Entity {
 
     @Override
     protected double getDefaultGravity() {
-        return 0;
+        return 0.15;
     }
 
     @Override
