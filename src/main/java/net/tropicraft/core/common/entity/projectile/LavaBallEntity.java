@@ -89,7 +89,7 @@ public class LavaBallEntity extends Entity {
 
         if (!onGround()) {
             if (level().isClientSide) {
-                for (int i = 0; i < 5 + random.nextInt(3); i++) {
+                for (int i = 0; i < 1 + random.nextInt(3); i++) {
                     supahDrip();
                 }
             }
