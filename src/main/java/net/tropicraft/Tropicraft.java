@@ -79,6 +79,7 @@ import net.tropicraft.core.common.item.TropicraftDataComponents;
 import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.item.scuba.ScubaData;
 import net.tropicraft.core.common.item.scuba.ScubaGogglesItem;
+import net.tropicraft.core.common.particle.TropicraftParticles;
 import net.tropicraft.core.common.sound.Sounds;
 
 import java.util.function.Supplier;
@@ -141,6 +142,7 @@ public class Tropicraft {
         TropicraftDataComponents.REGISTER.register(modBus);
         TropicraftArmorMaterials.REGISTER.register(modBus);
         TropicraftDrinkActions.REGISTER.register(modBus);
+        TropicraftParticles.PARTICLE_TYPES.register(modBus);
 
         IModFile modFile = container.getModInfo().getOwningFile().getFile();
         modBus.addListener((AddPackFindersEvent event) -> {

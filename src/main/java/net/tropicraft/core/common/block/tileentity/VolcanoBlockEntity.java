@@ -21,6 +21,7 @@ import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.dimension.feature.volcano.VolcanoStructurePiece;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.projectile.LavaBallEntity;
+import net.tropicraft.core.common.particle.TropicraftParticles;
 import net.tropicraft.core.common.volcano.VolcanoState;
 
 import javax.annotation.Nullable;
@@ -219,7 +220,7 @@ public class VolcanoBlockEntity extends BlockEntity {
             double x = worldPosition.getX() + level.random.nextInt(radius) * (level.random.nextBoolean() ? -1 : 1);
             double y = lavaLevel + level.random.nextInt(6);
             double z = worldPosition.getZ() + level.random.nextInt(radius) * (level.random.nextBoolean() ? -1 : 1);
-            level.addParticle(ParticleTypes.LARGE_SMOKE, true, x, y, z, 0.0, 0.7, 0.0);
+            level.addParticle(TropicraftParticles.VOLCANO_SMOKE_PARTICLE.get(), true, x, y, z, 0.0, 0.7, 0.0);
         }
     }
 
