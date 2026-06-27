@@ -1,28 +1,32 @@
 package net.tropicraft.core.common.entity.projectile;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class LavaBallEntity extends Entity {
+    private static final List<Direction> PLACEMENT_DIRECTIONS = Arrays.asList(Direction.NORTH, Direction.SOUTH,
+            Direction.EAST, Direction.WEST);
     public final boolean held;
-    public boolean setFire;
     public float size;
     public int lifeTimer;
 
     public LavaBallEntity(EntityType<? extends Entity> type, Level world) {
         super(type, world);
-        setFire = false;
         held = false;
         size = 1;
         lifeTimer = 0;
@@ -67,49 +71,78 @@ public class LavaBallEntity extends Entity {
     @Override
     public void tick() {
         super.tick();
-        if (lifeTimer < 500) {
+        if (lifeTimer < 500)
             lifeTimer++;
-        } else {
+        else
             remove(RemovalReason.DISCARDED);
+
+
+        if (size < 1)
+            size += 0.025F;
+
+        if (!onGround() && level().isClientSide) {
+            for (int i = 0; i < 1 + random.nextInt(3); i++)
+                supahDrip();
         }
 
         var delta = getDeltaMovement();
+        var deltaX = delta.x;
+        var deltaY = delta.y;
+        var deltaZ = delta.z;
 
-        double newX = getX() + delta.x;
-        double newY = getY() + delta.y;
-        double newZ = getZ() + delta.z;
-        this.setPos(newX, newY, newZ);
 
-        setDeltaMovement(delta.scale(0.999));
+        double newX = getX() + deltaX;
+        double newY = getY() + deltaY;
+        double newZ = getZ() + deltaZ;
+
+        if (horizontalCollision) {
+            deltaX = 0;
+            deltaZ = 0;
+        }
+        if (verticalCollision) {
+            deltaY = 0;
+        }
+
+        this.moveTo(new Vec3(newX, newY, newZ));
+        this.tryCheckInsideBlocks();
+        setDeltaMovement(new Vec3(deltaX, deltaY, deltaZ).scale(0.999));
         this.applyGravity();
 
-        if (size < 1) {
-            size += 0.025;
-        }
 
-        if (!onGround()) {
-            if (level().isClientSide) {
-                for (int i = 0; i < 1 + random.nextInt(3); i++) {
-                    supahDrip();
-                }
+        if (!level().isClientSide) {
+            BlockPos posCurrent = this.blockPosition();
+            if (maybeReplace(posCurrent)) {
+                for (var dir : PLACEMENT_DIRECTIONS)
+                    maybeReplace(posCurrent.relative(dir));
+                remove(RemovalReason.DISCARDED);
             }
-        }
-
-        BlockPos posCurrent = this.blockPosition();
-        BlockState stateCurrent = level().getBlockState(posCurrent);
-        BlockPos posBelow = posCurrent.below();
-        BlockState stateBelow = level().getBlockState(posBelow);
-
-        if (!stateBelow.isEmpty() && !held) {
-            if (stateCurrent.isEmpty())
-                level().setBlock(posCurrent, TropicraftBlocks.COOLING_LAVA.get().defaultBlockState(), 3);
-            remove(RemovalReason.DISCARDED);
         }
     }
 
     @Override
+    protected void onInsideBlock(BlockState blockstate) {
+        if (!blockstate.isEmpty() && !blockstate.is(TropicraftBlocks.COOLING_LAVA)) {
+            setPos(blockPosition().above().getBottomCenter());
+            setDeltaMovement(Vec3.ZERO);
+        }
+    }
+
+    private boolean maybeReplace(BlockPos pos) {
+        BlockState stateCurrent = level().getBlockState(pos);
+        BlockPos posBelow = pos.below();
+        BlockState stateBelow = level().getBlockState(posBelow);
+        if (!stateBelow.isEmpty() && !held) {
+            if (stateCurrent.isEmpty() || stateCurrent.is(BlockTags.REPLACEABLE)) {
+                level().setBlock(pos, TropicraftBlocks.COOLING_LAVA.get().defaultBlockState(), 3);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     protected double getDefaultGravity() {
-        return 0.15;
+        return 0.1;
     }
 
     @Override
