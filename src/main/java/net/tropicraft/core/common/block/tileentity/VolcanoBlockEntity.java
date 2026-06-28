@@ -2,7 +2,6 @@ package net.tropicraft.core.common.block.tileentity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -11,6 +10,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -84,9 +84,12 @@ public class VolcanoBlockEntity extends BlockEntity {
                 break;
 
             case ERUPTING:
-                if (!level.isClientSide) {
-                    if (level.random.nextInt(15) == 0)
+                if (level.random.nextInt(15) == 0) {
+                    if (!level.isClientSide)
                         throwLavaFromCaldera(4);
+                    level.playLocalSound(worldPosition.getX(), lavaLevel, worldPosition.getZ(),
+                            SoundEvents.BASALT_FALL, SoundSource.WEATHER, 50.0F,
+                            level.random.nextFloat() / 4 + 0.825f, true);
                 }
                 break;
 
@@ -105,7 +108,7 @@ public class VolcanoBlockEntity extends BlockEntity {
                         raiseLavaLevels();
                     } else {
                         ticksUntilEruption = 0;
-                        level.playLocalSound(worldPosition.getX(), lavaLevel, worldPosition.getY(),
+                        level.playLocalSound(worldPosition.getX(), lavaLevel, worldPosition.getZ(),
                                 SoundEvents.GENERIC_EXPLODE.value(), SoundSource.WEATHER, 10000.0F,
                                 level.random.nextFloat() / 4 + 0.825f, false);
 
@@ -125,21 +128,6 @@ public class VolcanoBlockEntity extends BlockEntity {
 
             default:
                 break;
-        }
-    }
-
-    public void cleanUpFromEruption() {
-        int xPos = worldPosition.getX();
-        int zPos = worldPosition.getZ();
-
-        for (int x = xPos - (radius * 2); x < xPos + (radius * 2); x++) {
-            for (int z = zPos - (radius * 2); z < zPos + (radius * 2); z++) {
-                for (int y = LAVA_BASE_LEVEL + heightOffset; y < 140; y++) {
-                    BlockPos outBlockPos = new BlockPos(x, y, z);
-                    if (level.getBlockState(outBlockPos).is(Blocks.LAVA))
-                        level.setBlockAndUpdate(outBlockPos, Blocks.AIR.defaultBlockState());
-                }
-            }
         }
     }
 
@@ -179,13 +167,13 @@ public class VolcanoBlockEntity extends BlockEntity {
     private void raiseLavaLevels() {
         if (lavaLevel < MAX_LAVA_LEVEL_DURING_ERUPTION + heightOffset) {
             lavaLevel++;
-            setBlocksOnLavaLevel(Blocks.LAVA.defaultBlockState(), 3);
+            setBlocksOnLavaLevel(Blocks.LAVA.defaultBlockState(), Block.UPDATE_ALL);
         }
     }
 
     private void lowerLavaLevels() {
         if (lavaLevel > LAVA_BASE_LEVEL + heightOffset) {
-            setBlocksOnLavaLevel(Blocks.AIR.defaultBlockState(), 3);
+            setBlocksOnLavaLevel(Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
             lavaLevel--;
         }
     }
@@ -215,10 +203,10 @@ public class VolcanoBlockEntity extends BlockEntity {
     }
 
     public void spewSmoke() {
-            double x = worldPosition.getX() + level.random.nextInt(radius) * (level.random.nextBoolean() ? -1 : 1);
-            double y = lavaLevel + level.random.nextInt(6);
-            double z = worldPosition.getZ() + level.random.nextInt(radius) * (level.random.nextBoolean() ? -1 : 1);
-            level.addParticle(TropicraftParticles.VOLCANO_SMOKE_PARTICLE.get(), true, x, y, z, 0.0, 0.7, 0.0);
+        double x = worldPosition.getX() + level.random.nextInt(radius) * (level.random.nextBoolean() ? -1 : 1);
+        double y = lavaLevel + level.random.nextInt(6);
+        double z = worldPosition.getZ() + level.random.nextInt(radius) * (level.random.nextBoolean() ? -1 : 1);
+        level.addParticle(TropicraftParticles.VOLCANO_SMOKE_PARTICLE.get(), true, x, y, z, 0.0, 0.7, 0.0);
     }
 
     private void updateStates() {
