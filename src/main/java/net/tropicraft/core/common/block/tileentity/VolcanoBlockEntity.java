@@ -100,7 +100,7 @@ public class VolcanoBlockEntity extends BlockEntity {
                     spewSmoke();
                 }
 
-                if (ticksUntilEruption % 20 == 0) {
+                if (ticksUntilEruption >= 20 && ticksUntilEruption % 20 == 0) {
                     if (lavaLevel < MAX_LAVA_LEVEL_DURING_ERUPTION + heightOffset) {
                         raiseLavaLevels();
                     } else {
@@ -215,13 +215,10 @@ public class VolcanoBlockEntity extends BlockEntity {
     }
 
     public void spewSmoke() {
-        int n = level.random.nextInt(100) + 4;
-        for (int i = 0; i < n; i++) {
             double x = worldPosition.getX() + level.random.nextInt(radius) * (level.random.nextBoolean() ? -1 : 1);
             double y = lavaLevel + level.random.nextInt(6);
             double z = worldPosition.getZ() + level.random.nextInt(radius) * (level.random.nextBoolean() ? -1 : 1);
             level.addParticle(TropicraftParticles.VOLCANO_SMOKE_PARTICLE.get(), true, x, y, z, 0.0, 0.7, 0.0);
-        }
     }
 
     private void updateStates() {

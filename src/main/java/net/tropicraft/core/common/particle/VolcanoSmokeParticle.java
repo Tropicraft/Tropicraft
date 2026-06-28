@@ -33,7 +33,7 @@ public class VolcanoSmokeParticle extends CampfireSmokeParticle {
             VolcanoSmokeParticle volcanoSmokeParticle = new VolcanoSmokeParticle(
                     level, x, y, z, xSpeed, ySpeed, zSpeed,true);
             volcanoSmokeParticle.setAlpha(0.9F);
-            volcanoSmokeParticle.scale(2f);
+            volcanoSmokeParticle.scale(12F);
             volcanoSmokeParticle.pickSprite(this.sprites);
             return volcanoSmokeParticle;
         }
