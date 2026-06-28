@@ -104,10 +104,9 @@ public class LavaBallEntity extends Entity {
         }
 
         this.moveTo(new Vec3(newX, newY, newZ));
-        this.tryCheckInsideBlocks();
         setDeltaMovement(new Vec3(deltaX, deltaY, deltaZ).scale(0.999));
         this.applyGravity();
-
+        this.tryCheckInsideBlocks();
 
         if (!level().isClientSide) {
             BlockPos posCurrent = this.blockPosition();
@@ -122,8 +121,8 @@ public class LavaBallEntity extends Entity {
     @Override
     protected void onInsideBlock(BlockState blockstate) {
         if (!blockstate.isEmpty() && !blockstate.is(TropicraftBlocks.COOLING_LAVA)) {
-            setPos(blockPosition().above().getBottomCenter());
             setDeltaMovement(Vec3.ZERO);
+            setPos(blockPosition().above().getBottomCenter());
         }
     }
 
