@@ -1,4 +1,4 @@
-package net.tropicraft;
+package net.tropicraft.densityfunction;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -9,8 +9,11 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.DensityFunctions;
+import net.minecraft.world.level.levelgen.NoiseRouterData;
 import net.minecraft.world.level.levelgen.PositionalRandomFactory;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
+import net.tropicraft.ColorRamp;
+import net.tropicraft.ColorRamps;
 import net.tropicraft.core.common.TropicraftPackRegistries;
 import net.tropicraft.core.common.dimension.noise.TropicraftNoiseRouterData;
 import net.tropicraft.map.MapController;
@@ -19,13 +22,15 @@ import net.tropicraft.map.feature.MapFeature;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Function;
 
-public class DfView {
+public class DfMap {
     private static final ForkJoinPool EXECUTOR = ForkJoinPool.commonPool();
 
     private static final long SEED = 123L;
@@ -38,31 +43,55 @@ public class DfView {
             throw new RuntimeException(e);
         }
 
-        HolderLookup.Provider registries = createRegistries();
-        HolderLookup<DensityFunction> functions = registries.lookupOrThrow(Registries.DENSITY_FUNCTION);
-
-        JFrame frame = new JFrame("Density Function Viewer");
+        JFrame frame = new JFrame("Density Function Mapper");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1600, 900);
 
-        List<FeatureEntry> features = List.of(
-                create2dFeature(functions, TropicraftNoiseRouterData.OFFSET, -0.5f, 1.0f),
-                create2dFeature(functions, TropicraftNoiseRouterData.FACTOR, 0.0f, 10.0f)
-        );
-
         JPanel leftSideBar = new JPanel();
-        JList<FeatureEntry> featureList = new JList<>(features.toArray(FeatureEntry[]::new));
+        JList<FeatureEntry> featureList = new JList<>(createFeatures().toArray(FeatureEntry[]::new));
         featureList.setSelectedIndex(0);
         leftSideBar.add(featureList);
 
         MapController mapController = new MapController();
         MapPanel map = new MapPanel(mapController, featureList.getSelectedValue().createFeature(ColorRamps.GRAYSCALE));
-        featureList.addListSelectionListener(_ -> map.setFeature(featureList.getSelectedValue().createFeature(ColorRamps.GRAYSCALE)));
+        featureList.addListSelectionListener(_ -> {
+            FeatureEntry selectedFeature = featureList.getSelectedValue();
+            if (selectedFeature != null) {
+                map.setFeature(selectedFeature.createFeature(ColorRamps.GRAYSCALE));
+            }
+        });
+        featureList.setFocusable(false);
+
+        frame.setFocusable(true);
+        frame.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_R) {
+                    FeatureEntry[] newFeatures = createFeatures().toArray(new FeatureEntry[0]);
+                    int oldIndex = featureList.getSelectedIndex();
+                    featureList.setListData(newFeatures);
+                    if (newFeatures.length > 0) {
+                        featureList.setSelectedIndex(Math.min(oldIndex, newFeatures.length - 1));
+                    }
+                }
+            }
+        });
 
         frame.getContentPane().add(BorderLayout.WEST, leftSideBar);
         frame.getContentPane().add(BorderLayout.CENTER, map);
 
         frame.setVisible(true);
+    }
+
+    private static List<FeatureEntry> createFeatures() {
+        HolderLookup.Provider registries = createRegistries();
+        HolderLookup<DensityFunction> functions = registries.lookupOrThrow(Registries.DENSITY_FUNCTION);
+
+        return List.of(
+                create2dFeature(functions, NoiseRouterData.OFFSET, -0.75f, 1.0f),
+                create2dFeature(functions, NoiseRouterData.FACTOR, 0.0f, 10.0f),
+                create2dFeature(functions, TropicraftNoiseRouterData.OFFSET, -1.0f, 1.0f)
+        );
     }
 
     private static FeatureEntry create2dFeature(HolderLookup<DensityFunction> functions, ResourceKey<DensityFunction> id, float minValue, float maxValue) {

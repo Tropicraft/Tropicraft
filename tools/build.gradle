@@ -11,10 +11,10 @@ neoForge {
     version = project.neo_version
 
     runs {
-        dfView {
+        dfMap {
             type = 'server'
             mainClass = 'ToolRunner'
-            programArgument 'net.tropicraft.DfView'
+            programArgument 'net.tropicraft.densityfunction.DfMap'
         }
     }
 

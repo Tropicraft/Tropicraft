@@ -106,6 +106,7 @@ public class MapPanel extends JPanel implements ComponentListener, MouseListener
     public void mapZoomed() {
         cascadedTileMaps.put(zoomLevel, tileMap);
         zoomLevel = controller.zoomLevel();
+        tileMap.cancelTasks();
         tileMap = createTileMap(zoomLevel);
         repaint();
     }

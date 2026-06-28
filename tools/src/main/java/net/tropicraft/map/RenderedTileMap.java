@@ -4,7 +4,6 @@ import net.minecraft.util.Mth;
 import org.jspecify.annotations.Nullable;
 
 import java.awt.image.BufferedImage;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public class RenderedTileMap {
@@ -48,6 +47,7 @@ public class RenderedTileMap {
             for (int tileX = frame.minX(); tileX <= frame.maxX(); tileX++) {
                 int index = frame.index(tileX, tileY);
                 if (!oldFrame.contains(tileX, tileY)) {
+                    tiles[index].cancelTask();
                     tiles[index] = loadTile(tileX, tileY);
                 }
             }
@@ -70,6 +70,10 @@ public class RenderedTileMap {
                 if (oldFrame.contains(tileX, tileY)) {
                     tiles[index] = oldTiles[oldFrame.index(tileX, tileY)];
                 } else {
+                    Tile oldTile = tiles[index];
+                    if (oldTile != null) {
+                        oldTile.cancelTask();
+                    }
                     tiles[index] = loadTile(tileX, tileY);
                 }
             }
@@ -89,6 +93,12 @@ public class RenderedTileMap {
             }
         }
         return true;
+    }
+
+    public void cancelTasks() {
+        for (Tile tile : tiles) {
+            tile.cancelTask();
+        }
     }
 
     public record Frame(int minX, int minY, int width, int height) {
@@ -115,9 +125,13 @@ public class RenderedTileMap {
         }
     }
 
-    private record Tile(CompletableFuture<BufferedImage> image) {
+    private record Tile(CompletableFuture<@Nullable BufferedImage> image) {
         public @Nullable BufferedImage getImage() {
             return image.getNow(null);
+        }
+
+        public void cancelTask() {
+            image.complete(null);
         }
     }
 
