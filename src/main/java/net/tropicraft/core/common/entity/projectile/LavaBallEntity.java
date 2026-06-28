@@ -5,10 +5,12 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
@@ -111,6 +113,7 @@ public class LavaBallEntity extends Entity {
         if (!level().isClientSide) {
             BlockPos posCurrent = this.blockPosition();
             if (maybeReplace(posCurrent)) {
+                playSound(SoundEvents.BUCKET_EMPTY_LAVA, 5.0F, random.nextFloat() / 4 + 0.425f);
                 for (var dir : PLACEMENT_DIRECTIONS)
                     maybeReplace(posCurrent.relative(dir));
                 remove(RemovalReason.DISCARDED);
@@ -132,7 +135,7 @@ public class LavaBallEntity extends Entity {
         BlockState stateBelow = level().getBlockState(posBelow);
         if (!stateBelow.isEmpty() && !held) {
             if (stateCurrent.isEmpty() || stateCurrent.is(BlockTags.REPLACEABLE)) {
-                level().setBlock(pos, TropicraftBlocks.COOLING_LAVA.get().defaultBlockState(), 3);
+                level().setBlock(pos, TropicraftBlocks.COOLING_LAVA.get().defaultBlockState(), Block.UPDATE_ALL);
                 return true;
             }
         }
