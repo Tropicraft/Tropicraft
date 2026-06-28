@@ -11,6 +11,11 @@ neoForge {
     version = project.neo_version
 
     runs {
+        dfExplorer {
+            type = 'server'
+            mainClass = 'ToolRunner'
+            programArgument 'net.tropicraft.densityfunction.explorer.DfExplorer'
+        }
         dfMap {
             type = 'server'
             mainClass = 'ToolRunner'
