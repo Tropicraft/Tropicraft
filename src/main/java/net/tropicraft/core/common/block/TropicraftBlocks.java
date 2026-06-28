@@ -129,11 +129,7 @@ import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.block.TikiTorchBlock.TorchSection;
 import net.tropicraft.core.common.block.huge_plant.HugePlantBlock;
 import net.tropicraft.core.common.block.jigarbov.JigarbovTorchType;
-import net.tropicraft.core.common.block.tileentity.AirCompressorBlockEntity;
-import net.tropicraft.core.common.block.tileentity.BambooChestBlockEntity;
-import net.tropicraft.core.common.block.tileentity.DrinkMixerBlockEntity;
-import net.tropicraft.core.common.block.tileentity.SifterBlockEntity;
-import net.tropicraft.core.common.block.tileentity.VolcanoBlockEntity;
+import net.tropicraft.core.common.block.tileentity.*;
 import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.mixin.BlockEntityTypeAccessor;
 import org.apache.commons.lang3.ArrayUtils;
@@ -562,6 +558,12 @@ public class TropicraftBlocks {
             .register();
     public static final BlockEntry<SlabBlock> CHUNK_SLAB = stoneSlab("chunk_slab", CHUNK).register();
     public static final BlockEntry<SlabBlock> PALM_SLAB = woodenSlab("palm_slab", PALM_PLANKS).register();
+
+    public static final BlockEntry<CoolingLavaBlock> COOLING_LAVA = REGISTRATE.block("cooling_lava",
+     p -> new CoolingLavaBlock(Fluids.LAVA, p)).initialProperties(() -> Blocks.LAVA).blockstate((ctx, prov) -> prov.simpleBlock(ctx.get(), prov.models().getExistingFile(prov.mcLoc("block/lava")))).simpleBlockEntity(CoolingLavaBlockEntity::new).register();
+    public static final BlockEntityEntry<CoolingLavaBlockEntity> COOLING_LAVA_ENTITY =
+     BlockEntityEntry.cast(COOLING_LAVA.getSibling(Registries.BLOCK_ENTITY_TYPE));
+
     public static final BlockEntry<SlabBlock> MAHOGANY_SLAB = woodenSlab("mahogany_slab", MAHOGANY_PLANKS).register();
 
     public static final BlockEntry<SaplingBlock> GRAPEFRUIT_SAPLING = sapling("grapefruit_sapling", TropicraftTreeGrowers.GRAPEFRUIT).register();
