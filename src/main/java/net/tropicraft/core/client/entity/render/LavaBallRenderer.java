@@ -27,7 +27,7 @@ public class LavaBallRenderer extends EntityRenderer<LavaBallEntity> {
     public void render(LavaBallEntity lavaBall, float entityYaw, float partialTicks, PoseStack stack,
                        MultiBufferSource buffer, int packedLightIn) {
         stack.pushPose();
-        stack.scale(1.5f, 1.5f, 1.5f);
+        stack.scale(2, 2f, 2f);
         stack.translate(0, -0.875, 0);
         stack.mulPose(Axis.YP.rotationDegrees(180 - entityYaw));
         VertexConsumer builder = buffer.getBuffer(model.renderType(LAVA_BALL_TEXTURE));
