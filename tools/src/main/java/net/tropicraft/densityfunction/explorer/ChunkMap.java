@@ -22,7 +22,7 @@ public class ChunkMap implements AutoCloseable {
     private static final int INDEX_MASK = SIZE - 1;
     private static final int INDEX_SHIFT = 6;
 
-    private final VoxelChunkGenerator generator;
+    private VoxelChunkGenerator generator;
     private final Chunk[] chunks = new Chunk[COUNT];
     private int centerX = Integer.MIN_VALUE;
     private int centerZ = Integer.MIN_VALUE;
@@ -39,6 +39,13 @@ public class ChunkMap implements AutoCloseable {
             chunks[i] = new Chunk();
         }
         setCenter(0, 0);
+    }
+
+    public void setChunkGenerator(VoxelChunkGenerator generator) {
+        this.generator = generator;
+        for (Chunk chunk : chunks) {
+            chunk.invalidateAndRebuild(generator);
+        }
     }
 
     public int centerX() {
@@ -111,8 +118,8 @@ public class ChunkMap implements AutoCloseable {
     }
 
     // Off-thread, and chunk might have been unloaded by the time we receive this!
-    private void onVoxelsReady(int x, int z) {
-        chunksToMesh.add(new ChunkPos(x, z));
+    private void onVoxelsReady(ChunkPos chunkPos) {
+        chunksToMesh.add(chunkPos);
     }
 
     public List<ChunkPos> getChunkPositions() {
@@ -138,23 +145,30 @@ public class ChunkMap implements AutoCloseable {
         private @Nullable ChunkPos pos;
 
         private @Nullable CompletableFuture<VoxelChunk> voxels;
-        private @Nullable CompletableFuture<ChunkMesh.@Nullable Data> meshData;
+        private @Nullable CompletableFuture<ChunkMesh.@Nullable Data> pendingMesh;
         private @Nullable ChunkMesh mesh;
+        private boolean meshInvalidated;
 
         public void updatePosition(int x, int z, VoxelChunkGenerator generator) {
             ChunkPos newPos = new ChunkPos(x, z);
-            if (newPos.equals(pos)) {
-                return;
+            if (!newPos.equals(pos)) {
+                pos = newPos;
+                clearPendingMesh();
+                clearMesh();
+                invalidateAndRebuild(generator);
             }
-            pos = newPos;
+        }
+
+        public void invalidateAndRebuild(VoxelChunkGenerator generator) {
+            ChunkPos chunkPos = pos();
+            meshInvalidated = true;
             clearVoxels();
-            clearMesh();
-            voxels = CompletableFuture.supplyAsync(() -> generator.generate(x, z), DfExplorer.GENERATE_EXECUTOR);
-            voxels.thenRun(() -> onVoxelsReady(x, z));
+            voxels = CompletableFuture.supplyAsync(() -> generator.generate(chunkPos.x(), chunkPos.z()), DfExplorer.GENERATE_EXECUTOR);
+            voxels.thenRun(() -> onVoxelsReady(chunkPos));
         }
 
         public void tryScheduleMesh() {
-            if (mesh != null || meshData != null) {
+            if (!meshInvalidated && (mesh != null || pendingMesh != null)) {
                 return;
             }
             VoxelChunk voxels = getVoxelsNow();
@@ -173,11 +187,12 @@ public class ChunkMap implements AutoCloseable {
             if (westVoxels == null || eastVoxels == null || northVoxels == null || southVoxels == null) {
                 return;
             }
-            clearMesh();
-            meshData = CompletableFuture.supplyAsync(
+            clearPendingMesh();
+            pendingMesh = CompletableFuture.supplyAsync(
                     () -> ChunkMesh.Data.generate(voxels, westVoxels, eastVoxels, northVoxels, southVoxels),
                     DfExplorer.MESH_EXECUTOR
             );
+            meshInvalidated = false;
         }
 
         private @Nullable VoxelChunk getVoxelsNow() {
@@ -185,14 +200,11 @@ public class ChunkMap implements AutoCloseable {
         }
 
         public @Nullable ChunkMesh getMeshOrUpload(GpuDevice device) {
-            if (mesh != null) {
-                return mesh;
-            }
-            if (meshData != null && meshData.isDone()) {
-                ChunkMesh.Data meshData = this.meshData.join();
-                this.meshData = null;
-                if (meshData != null) {
-                    mesh = meshData.upload(device);
+            if (pendingMesh != null && pendingMesh.isDone()) {
+                ChunkMesh.Data pendingMesh = this.pendingMesh.join();
+                this.pendingMesh = null;
+                if (pendingMesh != null) {
+                    mesh = pendingMesh.upload(device);
                 }
             }
             return mesh;
@@ -206,17 +218,20 @@ public class ChunkMap implements AutoCloseable {
         }
 
         private void clearMesh() {
-            if (meshData != null) {
-                meshData.thenAccept(mesh -> {
+            if (mesh != null) {
+                mesh.close();
+                mesh = null;
+            }
+        }
+
+        private void clearPendingMesh() {
+            if (pendingMesh != null) {
+                pendingMesh.thenAccept(mesh -> {
                     if (mesh != null) {
                         mesh.close();
                     }
                 });
-                meshData = null;
-            }
-            if (mesh != null) {
-                mesh.close();
-                mesh = null;
+                pendingMesh = null;
             }
         }
 
@@ -226,6 +241,7 @@ public class ChunkMap implements AutoCloseable {
 
         @Override
         public void close() {
+            clearPendingMesh();
             clearMesh();
         }
     }

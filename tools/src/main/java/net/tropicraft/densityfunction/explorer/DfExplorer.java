@@ -34,23 +34,19 @@ public class DfExplorer {
     public static final Executor GENERATE_EXECUTOR = Executors.newFixedThreadPool(14, Thread.ofPlatform().name("generate", 0).daemon().factory());
     public static final Executor MESH_EXECUTOR = Executors.newFixedThreadPool(2, Thread.ofPlatform().name("mesh", 0).daemon().factory());
 
-    private static HolderLookup.Provider createRegistries() {
-        HolderLookup.Provider vanillaRegistries = VanillaRegistries.createLookup();
-        return RegistryPatchGenerator.createLookup(
-                CompletableFuture.completedFuture(vanillaRegistries),
-                TropicraftPackRegistries.createRegistrySet()
-        ).join().full();
+    private static GeneratorInfo createGeneratorInfo() {
+        HolderLookup.Provider registries = createRegistries();
+        NoiseGeneratorSettings dimension = registries.getOrThrow(TropicraftNoiseGenSettings.TROPICS).value();
+        return new GeneratorInfo(
+                registries,
+                dimension.noiseRouter().finalDensity(),
+                dimension.seaLevel()
+        );
     }
 
     public static void run() throws BackendCreationException, SurfaceException, IOException {
-        HolderLookup.Provider registries = createRegistries();
-
-        NoiseGeneratorSettings dimension = registries.getOrThrow(TropicraftNoiseGenSettings.TROPICS).value();
-        DensityFunction density = dimension.noiseRouter().finalDensity();
-        float oceanY = dimension.seaLevel() - 0.2f - MIN_Y;
-
-        VoxelChunkGenerator chunkGenerator = new VoxelChunkGenerator(CHUNK_SIZE, MIN_Y, HEIGHT, registries, SEED, density);
-        ChunkMap chunkMap = new ChunkMap(chunkGenerator);
+        GeneratorInfo initialGeneratorInfo = createGeneratorInfo();
+        ChunkMap chunkMap = new ChunkMap(initialGeneratorInfo.createChunkGenerator());
 
         NativeLibrariesBootstrap.loadLibraries();
         RenderSystem.initRenderThread();
@@ -69,7 +65,7 @@ public class DfExplorer {
 
         long window = GLFW.glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE, 0, 0);
 
-        Renderer renderer = new Renderer(window, gpuBackend, oceanY);
+        Renderer renderer = new Renderer(window, gpuBackend, initialGeneratorInfo.oceanY());
 
         Camera camera = new Camera();
         camera.moveTo(0.0f, 200.0f, 0.0f);
@@ -80,10 +76,22 @@ public class DfExplorer {
 
         GLFW.glfwSetInputMode(window, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
 
+        boolean reloadPressed = false;
+
         while (!GLFW.glfwWindowShouldClose(window)) {
             GLFW.glfwPollEvents();
             if (GLFW.glfwGetKey(window, GLFW.GLFW_KEY_ESCAPE) == GLFW.GLFW_PRESS) {
                 break;
+            }
+
+            int reloadKey = GLFW.glfwGetKey(window, GLFW.GLFW_KEY_R);
+            if (reloadKey == GLFW.GLFW_PRESS) {
+                reloadPressed = true;
+            } else if (reloadPressed) {
+                GeneratorInfo newGeneratorInfo = createGeneratorInfo();
+                chunkMap.setChunkGenerator(newGeneratorInfo.createChunkGenerator());
+                renderer.setOceanY(newGeneratorInfo.oceanY());
+                reloadPressed = false;
             }
 
             double time = GLFW.glfwGetTime();
@@ -102,5 +110,27 @@ public class DfExplorer {
 
         renderer.close();
         GLFW.glfwDestroyWindow(window);
+    }
+
+    private static HolderLookup.Provider createRegistries() {
+        HolderLookup.Provider vanillaRegistries = VanillaRegistries.createLookup();
+        return RegistryPatchGenerator.createLookup(
+                CompletableFuture.completedFuture(vanillaRegistries),
+                TropicraftPackRegistries.createRegistrySet()
+        ).join().full();
+    }
+
+    private record GeneratorInfo(
+            HolderLookup.Provider registries,
+            DensityFunction density,
+            int seaLevel
+    ) {
+        public VoxelChunkGenerator createChunkGenerator() {
+            return new VoxelChunkGenerator(CHUNK_SIZE, MIN_Y, HEIGHT, registries, SEED, density);
+        }
+
+        public float oceanY() {
+            return seaLevel - 0.2f - MIN_Y;
+        }
     }
 }

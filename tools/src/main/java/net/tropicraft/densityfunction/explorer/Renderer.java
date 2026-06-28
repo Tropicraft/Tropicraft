@@ -196,7 +196,7 @@ public class Renderer implements AutoCloseable {
     private int lastCenterChunkX = Integer.MIN_VALUE;
     private int lastCenterChunkZ = Integer.MIN_VALUE;
 
-    private final GpuBuffer oceanUniformBuffer;
+    private GpuBuffer oceanUniformBuffer;
 
     public Renderer(long window, GpuBackend gpuBackend, float oceanY) throws BackendCreationException, SurfaceException {
         GpuDebugOptions debugOptions = new GpuDebugOptions(0, false, false, false);
@@ -225,14 +225,23 @@ public class Renderer implements AutoCloseable {
 
         chunkUniformBuffer = device.createBuffer(() -> "Chunk Info", GpuBuffer.USAGE_UNIFORM | GpuBuffer.USAGE_COPY_DST, CHUNK_UBO_SIZE);
 
+        oceanUniformBuffer = createOceanUniformBuffer(device, oceanY);
+    }
+
+    private static GpuBuffer createOceanUniformBuffer(GpuDevice device, float oceanY) {
         try (MemoryStack stack = MemoryStack.stackPush()) {
             ByteBuffer oceanBuffer = stack.malloc(OCEAN_UBO_SIZE)
                     .putFloat(OCEAN_COLOR.x()).putFloat(OCEAN_COLOR.y()).putFloat(OCEAN_COLOR.z()).putFloat(OCEAN_COLOR.z())
                     .putFloat(oceanY)
                     .putFloat(OCEAN_SIZE)
                     .flip();
-            oceanUniformBuffer = device.createBuffer(() -> "Ocean", GpuBuffer.USAGE_UNIFORM | GpuBuffer.USAGE_COPY_DST, oceanBuffer);
+            return device.createBuffer(() -> "Ocean", GpuBuffer.USAGE_UNIFORM | GpuBuffer.USAGE_COPY_DST, oceanBuffer);
         }
+    }
+
+    public void setOceanY(float oceanY) {
+        oceanUniformBuffer.close();
+        oceanUniformBuffer = createOceanUniformBuffer(device, oceanY);
     }
 
     public void renderFrame(Camera camera, ChunkMap chunkMap) throws SurfaceException {
