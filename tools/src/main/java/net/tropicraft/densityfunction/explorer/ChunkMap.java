@@ -3,11 +3,13 @@ package net.tropicraft.densityfunction.explorer;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.GpuDevice;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
@@ -43,7 +45,10 @@ public class ChunkMap implements AutoCloseable {
 
     public void setChunkGenerator(VoxelChunkGenerator generator) {
         this.generator = generator;
-        for (Chunk chunk : chunks) {
+        List<Chunk> sortedChunks = Arrays.stream(chunks)
+                .sorted(Comparator.comparingInt(chunk -> Mth.square(chunk.pos().x() - centerX) + Mth.square(chunk.pos().z() - centerZ)))
+                .toList();
+        for (Chunk chunk : sortedChunks) {
             chunk.invalidateAndRebuild(generator);
         }
     }
