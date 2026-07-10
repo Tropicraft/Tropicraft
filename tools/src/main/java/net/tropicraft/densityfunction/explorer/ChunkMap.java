@@ -16,11 +16,11 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class ChunkMap implements AutoCloseable {
-    public static final int SIZE = 64;
+    public static final int SIZE = 128;
     public static final int COUNT = SIZE * SIZE;
 
     private static final int INDEX_MASK = SIZE - 1;
-    private static final int INDEX_SHIFT = 6;
+    private static final int INDEX_SHIFT = 7;
 
     private VoxelChunkGenerator generator;
     private final Chunk[] chunks = new Chunk[COUNT];

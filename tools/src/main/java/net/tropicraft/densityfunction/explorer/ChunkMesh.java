@@ -102,4 +102,15 @@ public record ChunkMesh(
                     .put((byte) ARGB.alpha(color));
         }
     }
+
+    public static class Instance {
+        public static final VertexFormat FORMAT = VertexFormat.builder(1)
+                .addAttribute("a_ChunkOffset", GpuFormat.RG16_SINT)
+                .build();
+        public static final int SIZE = FORMAT.getVertexSize();
+
+        public static void put(ByteBuffer buffer, int x, int z) {
+            buffer.putShort((short) x).putShort((short) z);
+        }
+    }
 }

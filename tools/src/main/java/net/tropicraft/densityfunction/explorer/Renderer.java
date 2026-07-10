@@ -44,8 +44,8 @@ import java.util.OptionalDouble;
 public class Renderer implements AutoCloseable {
     private static final Vector4fc CLEAR_COLOR = new Vector4f(0.3f, 0.3f, 0.6f, 1.0f);
 
-    private static final float Z_NEAR = 0.1f;
-    private static final float Z_FAR = 1000.0f;
+    private static final float Z_NEAR = 0.25f;
+    private static final float Z_FAR = 1500.0f;
 
     private static final Vector4fc OCEAN_COLOR = new Vector4f(0.2f, 0.2f, 1.0f, 0.7f);
     private static final float OCEAN_SIZE = ChunkMap.SIZE * DfExplorer.CHUNK_SIZE;
@@ -55,10 +55,7 @@ public class Renderer implements AutoCloseable {
             
             in ivec4 a_Pos;
             in vec4 a_Color;
-            
-            layout(std140) uniform Chunk {
-                ivec2 u_ChunkOffset[CHUNK_COUNT];
-            };
+            in ivec2 a_ChunkOffset;
             
             layout(std140) uniform Camera {
                 mat4 u_ViewProjMat;
@@ -67,12 +64,11 @@ public class Renderer implements AutoCloseable {
             out vec4 v_Color;
             
             void main() {
-                ivec2 chunkOffset = u_ChunkOffset[gl_InstanceID];
                 ivec3 position = ivec3(
                     a_Pos.x,
                     a_Pos.w << 8 | a_Pos.y,
                     a_Pos.z
-                ) + ivec3(chunkOffset.x, 0, chunkOffset.y);
+                ) + ivec3(a_ChunkOffset.x, 0, a_ChunkOffset.y);
             
                 gl_Position = u_ViewProjMat * vec4(vec3(position), 1.0);
                 v_Color = a_Color;
@@ -143,7 +139,6 @@ public class Renderer implements AutoCloseable {
     private static final int CAMERA_UBO_SIZE = new Std140SizeCalculator()
             .putMat4f()
             .get();
-    private static final int CHUNK_UBO_SIZE = Float.BYTES * 4 * ChunkMap.COUNT;
     private static final int OCEAN_UBO_SIZE = new Std140SizeCalculator()
             .putVec4()
             .putFloat()
@@ -151,15 +146,14 @@ public class Renderer implements AutoCloseable {
             .get();
 
     private static final BindGroupLayout CHUNK_BIND_GROUP_LAYOUT = BindGroupLayout.builder()
-            .withUniform("Chunk", UniformType.UNIFORM_BUFFER)
             .withUniform("Camera", UniformType.UNIFORM_BUFFER)
             .build();
     private static final RenderPipeline CHUNK_PIPELINE = RenderPipeline.builder()
             .withLocation("chunk")
             .withVertexShader("chunk")
             .withFragmentShader("chunk")
-            .withShaderDefine("CHUNK_COUNT", ChunkMap.COUNT)
             .withVertexBinding(0, ChunkMesh.Vertex.FORMAT)
+            .withVertexBinding(1, ChunkMesh.Instance.FORMAT)
             .withPrimitiveTopology(PrimitiveTopology.QUADS)
             .withColorTargetState(ColorTargetState.DEFAULT)
             .withDepthStencilState(new DepthStencilState(CompareOp.LESS_THAN_OR_EQUAL, true))
@@ -192,7 +186,7 @@ public class Renderer implements AutoCloseable {
     private final MappableRingBuffer cameraUniformBuffer;
     private final Matrix4fc projectionMatrix;
 
-    private final GpuBuffer chunkUniformBuffer;
+    private final GpuBuffer chunkInstanceBuffer;
     private int lastCenterChunkX = Integer.MIN_VALUE;
     private int lastCenterChunkZ = Integer.MIN_VALUE;
 
@@ -223,7 +217,7 @@ public class Renderer implements AutoCloseable {
         cameraUniformBuffer = new MappableRingBuffer(() -> "Camera", GpuBuffer.USAGE_UNIFORM | GpuBuffer.USAGE_MAP_WRITE, CAMERA_UBO_SIZE);
         projectionMatrix = new Matrix4f().perspective(70.0f * Mth.DEG_TO_RAD, (float) windowWidth / windowHeight, Z_NEAR, Z_FAR, device.getDeviceInfo().isZZeroToOne());
 
-        chunkUniformBuffer = device.createBuffer(() -> "Chunk Info", GpuBuffer.USAGE_UNIFORM | GpuBuffer.USAGE_COPY_DST, CHUNK_UBO_SIZE);
+        chunkInstanceBuffer = device.createBuffer(() -> "Chunk Instances", GpuBuffer.USAGE_VERTEX | GpuBuffer.USAGE_COPY_DST, (long) ChunkMesh.Instance.SIZE * ChunkMap.COUNT);
 
         oceanUniformBuffer = createOceanUniformBuffer(device, oceanY);
     }
@@ -251,7 +245,7 @@ public class Renderer implements AutoCloseable {
         int centerChunkX = chunkMap.centerX();
         int centerChunkZ = chunkMap.centerZ();
         if (centerChunkX != lastCenterChunkX || centerChunkZ != lastCenterChunkZ) {
-            updateChunkBuffer(commandEncoder, centerChunkX, centerChunkZ, chunkMap.getChunkPositions());
+            updateChunkInstanceBuffer(commandEncoder, centerChunkX, centerChunkZ, chunkMap.getChunkPositions());
             lastCenterChunkX = centerChunkX;
             lastCenterChunkZ = centerChunkZ;
         }
@@ -276,17 +270,15 @@ public class Renderer implements AutoCloseable {
         surface.present();
     }
 
-    private void updateChunkBuffer(CommandEncoder commandEncoder, int centerChunkX, int centerChunkZ, List<ChunkPos> chunkPositions) {
-        GpuBufferSlice stagingChunkBuffer;
-        try (GpuBufferSlice.MappedView view = commandEncoder.transientMemory().allocateStaging(chunkUniformBuffer.size(), 1, GpuBuffer.USAGE_COPY_SRC)) {
-            stagingChunkBuffer = view.slice();
-            Std140Builder builder = Std140Builder.intoBuffer(view.data());
+    private void updateChunkInstanceBuffer(CommandEncoder commandEncoder, int centerChunkX, int centerChunkZ, List<ChunkPos> chunkPositions) {
+        GpuBufferSlice stagingBuffer;
+        try (GpuBufferSlice.MappedView view = commandEncoder.transientMemory().allocateStaging(chunkInstanceBuffer.size(), 1, GpuBuffer.USAGE_COPY_SRC)) {
+            stagingBuffer = view.slice();
             for (ChunkPos pos : chunkPositions) {
-                builder.align(16);
-                builder.putIVec2((pos.x() - centerChunkX) * DfExplorer.CHUNK_SIZE, (pos.z() - centerChunkZ) * DfExplorer.CHUNK_SIZE);
+                ChunkMesh.Instance.put(view.data(), (pos.x() - centerChunkX) * DfExplorer.CHUNK_SIZE, (pos.z() - centerChunkZ) * DfExplorer.CHUNK_SIZE);
             }
         }
-        commandEncoder.copyToBuffer(stagingChunkBuffer, chunkUniformBuffer.slice());
+        commandEncoder.copyToBuffer(stagingBuffer, chunkInstanceBuffer.slice());
     }
 
     private void renderChunks(ChunkMap chunkMap) {
@@ -310,7 +302,7 @@ public class Renderer implements AutoCloseable {
             renderPass.setIndexBuffer(indexBuffer, autoIndexBuffer.type());
 
             renderPass.setUniform("Camera", cameraUniformBuffer.currentBuffer());
-            renderPass.setUniform("Chunk", chunkUniformBuffer.slice());
+            renderPass.setVertexBuffer(1, chunkInstanceBuffer.slice());
 
             for (int i = 0; i < meshes.size(); i++) {
                 ChunkMesh mesh = meshes.get(i);
