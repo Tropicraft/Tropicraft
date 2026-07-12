@@ -2,17 +2,16 @@
   <img src="https://files.tropicraft.net/logo.png">
 <br>
   <a href="https://github.com/Tropicraft/Tropicraft/actions/workflows/gradle.yml">
-      <img src="https://img.shields.io/github/actions/workflow/status/Tropicraft/Tropicraft/gradle.yml?branch=1.18.2&style=square" alt="Build Status">
-  </a>
-  <a title="Crowdin" target="_blank" href="https://crowdin.com/project/tropicraftdev">
-    <img src="https://badges.crowdin.net/tropicraftdev/localized.svg">
+      <img src="https://img.shields.io/github/actions/workflow/status/Tropicraft/Tropicraft/gradle.yml?style=flat&logo=github&logoColor=ffffff&label=Build%20Status&labelColor=101411&color=0FBF3E" alt="Build Status">
   </a>
   <a href="https://discord.gg/Q24TRnx">
-      <img src="https://img.shields.io/discord/285234569375121409.svg?colorB=7289DA&label=Discord&style=square" alt="Discord">
+      <img src="https://img.shields.io/discord/285234569375121409?style=flat&logo=discord&logoColor=ffffff&label=Discord&labelColor=313131&color=5865f2" alt="Discord">
   </a>
   <a href="https://modrinth.com/mod/tropicraft">
-      <img src="https://img.shields.io/modrinth/dt/tropicraft?logo=Modrinth&colorB=1bd96a&label=​" alt="Minecraft Version">
-      <img src="https://cf.way2muchnoise.eu/short_tropicraft.svg" alt="Minecraft Version">
+      <img src="https://img.shields.io/modrinth/dt/20zpzIT1?style=flat&logo=Modrinth&label=Modrinth&labelColor=16181c&color=00af5c" alt="Modrinth Downloads">
+  </a>
+  <a href="https://curseforge.com/minecraft/mc-mods/tropicraft">
+      <img src="https://img.shields.io/curseforge/dt/254794?style=flat&logo=curseforge&label=CurseForge&labelColor=1c1c1c&color=f16436" alt="CurseForge Downloads">
   </a>
 </p>
 <!-- I apologize for the HTML but it looks so pretty :) -->
