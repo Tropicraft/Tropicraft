@@ -17,6 +17,7 @@ import com.mojang.blaze3d.shaders.ShaderSource;
 import com.mojang.blaze3d.shaders.UniformType;
 import com.mojang.blaze3d.systems.BackendCreationException;
 import com.mojang.blaze3d.systems.CommandEncoder;
+import com.mojang.blaze3d.systems.DeviceInfo;
 import com.mojang.blaze3d.systems.GpuBackend;
 import com.mojang.blaze3d.systems.GpuDevice;
 import com.mojang.blaze3d.systems.GpuSurface;
@@ -156,7 +157,7 @@ public class Renderer implements AutoCloseable {
             .withVertexBinding(1, ChunkMesh.Instance.FORMAT)
             .withPrimitiveTopology(PrimitiveTopology.QUADS)
             .withColorTargetState(ColorTargetState.DEFAULT)
-            .withDepthStencilState(new DepthStencilState(CompareOp.LESS_THAN_OR_EQUAL, true))
+            .withDepthStencilState(new DepthStencilState(CompareOp.GREATER_THAN_OR_EQUAL, true))
             .withBindGroupLayout(CHUNK_BIND_GROUP_LAYOUT)
             .withCull(true)
             .build();
@@ -171,7 +172,7 @@ public class Renderer implements AutoCloseable {
             .withFragmentShader("ocean")
             .withPrimitiveTopology(PrimitiveTopology.QUADS)
             .withColorTargetState(new ColorTargetState(BlendFunction.TRANSLUCENT))
-            .withDepthStencilState(new DepthStencilState(CompareOp.LESS_THAN_OR_EQUAL, true))
+            .withDepthStencilState(new DepthStencilState(CompareOp.GREATER_THAN_OR_EQUAL, true))
             .withBindGroupLayout(OCEAN_BIND_GROUP_LAYOUT)
             .withCull(false)
             .build();
@@ -198,7 +199,8 @@ public class Renderer implements AutoCloseable {
         });
         RenderSystem.initRenderer(device);
 
-        if (!device.getDeviceInfo().features().nonZeroFirstInstance()) {
+        DeviceInfo deviceInfo = device.getDeviceInfo();
+        if (!deviceInfo.features().nonZeroFirstInstance()) {
             throw new IllegalStateException("Device does not support non-zero first instance");
         }
 
@@ -215,7 +217,7 @@ public class Renderer implements AutoCloseable {
         mainDepthTextureView = device.createTextureView(mainDepthTexture);
 
         cameraUniformBuffer = new MappableRingBuffer(() -> "Camera", GpuBuffer.USAGE_UNIFORM | GpuBuffer.USAGE_MAP_WRITE, CAMERA_UBO_SIZE);
-        projectionMatrix = new Matrix4f().perspective(70.0f * Mth.DEG_TO_RAD, (float) windowWidth / windowHeight, Z_NEAR, Z_FAR, device.getDeviceInfo().isZZeroToOne());
+        projectionMatrix = new Matrix4f().perspective(70.0f * Mth.DEG_TO_RAD, (float) windowWidth / windowHeight, Z_FAR, Z_NEAR, deviceInfo.isZZeroToOne());
 
         chunkInstanceBuffer = device.createBuffer(() -> "Chunk Instances", GpuBuffer.USAGE_VERTEX | GpuBuffer.USAGE_COPY_DST, (long) ChunkMesh.Instance.SIZE * ChunkMap.COUNT);
 
@@ -240,7 +242,7 @@ public class Renderer implements AutoCloseable {
 
     public void renderFrame(Camera camera, ChunkMap chunkMap) throws SurfaceException {
         CommandEncoder commandEncoder = device.createCommandEncoder();
-        commandEncoder.clearColorAndDepthTextures(mainColorTexture, CLEAR_COLOR, mainDepthTexture, Z_FAR);
+        commandEncoder.clearColorAndDepthTextures(mainColorTexture, CLEAR_COLOR, mainDepthTexture, 0.0f);
 
         int centerChunkX = chunkMap.centerX();
         int centerChunkZ = chunkMap.centerZ();
