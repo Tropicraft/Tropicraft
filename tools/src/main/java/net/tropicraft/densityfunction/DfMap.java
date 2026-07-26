@@ -15,6 +15,7 @@ import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.tropicraft.ColorRamp;
 import net.tropicraft.ColorRamps;
 import net.tropicraft.core.common.TropicraftPackRegistries;
+import net.tropicraft.core.common.dimension.df.BakeableDensityFunction;
 import net.tropicraft.core.common.dimension.df.TropicraftDensityFunctions;
 import net.tropicraft.map.MapController;
 import net.tropicraft.map.MapPanel;
@@ -103,7 +104,11 @@ public class DfMap {
         DensityFunction function = functions.getOrThrow(id).value().mapAll(new DensityFunction.Visitor() {
             @Override
             public DensityFunction apply(DensityFunction input) {
-                return input instanceof DensityFunctions.HolderHolder(Holder<DensityFunction> inner) ? inner.value() : input;
+                return switch (input) {
+                    case BakeableDensityFunction bakeable -> bakeable.bake(seed -> RANDOM_FACTORY.fromHashOf(seed).forkPositional());
+                    case DensityFunctions.HolderHolder(Holder<DensityFunction> inner) -> inner.value();
+                    default -> input;
+                };
             }
 
             @Override

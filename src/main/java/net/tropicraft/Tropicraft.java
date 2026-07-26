@@ -53,6 +53,7 @@ import net.tropicraft.core.common.data.StructureConverter;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomeBuilder;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
 import net.tropicraft.core.common.dimension.carver.TropicraftCarvers;
+import net.tropicraft.core.common.dimension.df.TropicraftDensityFunctionTypes;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
 import net.tropicraft.core.common.dimension.feature.TropicraftStructureTypes;
 import net.tropicraft.core.common.dimension.feature.block_state_provider.TropicraftBlockStateProviders;
@@ -73,7 +74,6 @@ import net.tropicraft.core.common.dimension.feature.tree.TropicraftFoliagePlacer
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftTreeDecorators;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftTrunkPlacers;
 import net.tropicraft.core.common.drinks.action.TropicraftDrinkActions;
-import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.item.component.TropicraftDataComponents;
 import net.tropicraft.core.common.item.scuba.ScubaData;
@@ -148,6 +148,7 @@ public class Tropicraft {
         ScubaData.ATTACHMENT_TYPES.register(modBus);
         TropicraftDataComponents.REGISTER.register(modBus);
         TropicraftDrinkActions.REGISTER.register(modBus);
+        TropicraftDensityFunctionTypes.REGISTER.register(modBus);
 
         modBus.addListener(TropicraftItems::onItemRegister);
 

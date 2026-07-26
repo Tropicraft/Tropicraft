@@ -10,6 +10,7 @@
     "datafix.DataFixersMixin",
     "fix.StructureTemplateProjectionMixin",
     "worldgen.JigsawPlacerMixin",
+    "worldgen.RandomStateNoiseWirerMixin",
     "worldgen.WorldDimensionsMixin"
   ],
   "client": [
