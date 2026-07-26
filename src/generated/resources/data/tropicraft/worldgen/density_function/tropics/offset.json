@@ -3,22 +3,119 @@
   "argument": {
     "type": "minecraft:spline",
     "spline": {
-      "coordinate": "tropicraft:tropics/continents",
+      "coordinate": "tropicraft:tropics/erosion",
       "points": [
         {
           "derivative": 0.0,
-          "location": -1.0,
-          "value": -1.0
+          "location": -0.1,
+          "value": {
+            "coordinate": "tropicraft:tropics/continents",
+            "points": [
+              {
+                "derivative": 0.0,
+                "location": -1.0,
+                "value": -1.0
+              },
+              {
+                "derivative": 0.0,
+                "location": -0.4,
+                "value": -0.47826082
+              },
+              {
+                "derivative": 0.0,
+                "location": 0.1,
+                "value": -0.04347819
+              },
+              {
+                "derivative": 0.0,
+                "location": 0.15,
+                "value": 0.0
+              },
+              {
+                "derivative": 0.97499996,
+                "location": 0.2,
+                "value": 0.01
+              },
+              {
+                "derivative": 0.0,
+                "location": 0.6,
+                "value": 0.4
+              }
+            ]
+          }
         },
         {
-          "derivative": 0.86956525,
-          "location": 0.15,
-          "value": 0.0
+          "derivative": 0.0,
+          "location": 0.3,
+          "value": {
+            "coordinate": "tropicraft:tropics/continents",
+            "points": [
+              {
+                "derivative": 0.0,
+                "location": -1.0,
+                "value": -1.0
+              },
+              {
+                "derivative": 0.0,
+                "location": -0.4,
+                "value": -0.47826082
+              },
+              {
+                "derivative": 0.0,
+                "location": 0.1,
+                "value": -0.04347819
+              },
+              {
+                "derivative": 0.0,
+                "location": 0.15,
+                "value": 0.0
+              },
+              {
+                "derivative": 0.1,
+                "location": 0.2,
+                "value": 0.01
+              },
+              {
+                "derivative": 0.0,
+                "location": 0.6,
+                "value": 1.0
+              }
+            ]
+          }
         },
         {
           "derivative": 0.0,
           "location": 0.5,
-          "value": 1.0
+          "value": {
+            "coordinate": "tropicraft:tropics/continents",
+            "points": [
+              {
+                "derivative": 0.0,
+                "location": -1.0,
+                "value": -1.0
+              },
+              {
+                "derivative": 0.0,
+                "location": -0.4,
+                "value": -0.47826082
+              },
+              {
+                "derivative": 0.0,
+                "location": 0.1,
+                "value": -0.04347819
+              },
+              {
+                "derivative": 3.3333333,
+                "location": 0.15,
+                "value": 0.0
+              },
+              {
+                "derivative": 0.0,
+                "location": 0.6,
+                "value": 1.5
+              }
+            ]
+          }
         }
       ]
     }

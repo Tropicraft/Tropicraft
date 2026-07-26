@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:shifted_noise",
+  "noise": "tropicraft:tropics/erosion",
+  "shift_x": "tropicraft:tropics/high_freq_warp_x",
+  "shift_y": 0.0,
+  "shift_z": "tropicraft:tropics/high_freq_warp_z",
+  "xz_scale": 1.0,
+  "y_scale": 0.0
+}

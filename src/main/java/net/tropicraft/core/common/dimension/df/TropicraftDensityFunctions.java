@@ -7,6 +7,7 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.BoundedFloatFunction;
 import net.minecraft.util.CubicSpline;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.DensityFunctions;
 import net.minecraft.world.level.levelgen.NoiseRouter;
@@ -17,35 +18,51 @@ import net.tropicraft.core.common.dimension.noise.TropicraftNoises;
 import static net.minecraft.world.level.levelgen.DensityFunctions.*;
 
 public interface TropicraftDensityFunctions {
+    ResourceKey<DensityFunction> CONTINENT_WARP_X = createKey("tropics/continent_warp_x");
+    ResourceKey<DensityFunction> CONTINENT_WARP_Z = createKey("tropics/continent_warp_z");
+
     ResourceKey<DensityFunction> HIGH_FREQ_WARP_X = createKey("tropics/high_freq_warp_x");
     ResourceKey<DensityFunction> HIGH_FREQ_WARP_Z = createKey("tropics/high_freq_warp_z");
 
     ResourceKey<DensityFunction> CONTINENTS = createKey("tropics/continents");
+
+    ResourceKey<DensityFunction> EROSION = createKey("tropics/erosion");
+
     ResourceKey<DensityFunction> OFFSET = createKey("tropics/offset");
 
     ResourceKey<DensityFunction> FINAL_DENSITY = createKey("tropics/final_density");
 
+    float CONTINENTS_SHALLOW_OCEAN = 0.1f;
+    float CONTINENTS_BEACH_START = 0.15f;
+    float CONTINENTS_BEACH_END = 0.2f;
+    float CONTINENTS_MAX = 0.6f;
+
     static void bootstrap(BootstrapContext<DensityFunction> context) {
         HolderGetter<NormalNoise.NoiseParameters> noises = context.lookup(Registries.NOISE);
 
+        DensityFunction continentsWarpScale = constant(250.0);
+        DensityFunction continentWarpX = register(context, CONTINENT_WARP_X, mul(noise2d(noises, TropicraftNoises.CONTINENT_WARP_X), continentsWarpScale));
+        DensityFunction continentWarpZ = register(context, CONTINENT_WARP_Z, mul(noise2d(noises, TropicraftNoises.CONTINENT_WARP_Z), continentsWarpScale));
+
         DensityFunction highFreqWarpScale = constant(80.0);
-        DensityFunction highFreqWarpX = register(context, HIGH_FREQ_WARP_X, cache2d(mul(noise2d(noises, TropicraftNoises.HIGH_FREQ_WARP_X), highFreqWarpScale)));
-        DensityFunction highFreqWarpZ = register(context, HIGH_FREQ_WARP_Z, cache2d(mul(noise2d(noises, TropicraftNoises.HIGH_FREQ_WARP_Z), highFreqWarpScale)));
+        DensityFunction highFreqWarpX = register(context, HIGH_FREQ_WARP_X, flatCache(mul(noise2d(noises, TropicraftNoises.HIGH_FREQ_WARP_X), highFreqWarpScale)));
+        DensityFunction highFreqWarpZ = register(context, HIGH_FREQ_WARP_Z, flatCache(mul(noise2d(noises, TropicraftNoises.HIGH_FREQ_WARP_Z), highFreqWarpScale)));
 
-        DensityFunction continents = registerContinents(context, highFreqWarpX, highFreqWarpZ);
+        DensityFunction erosion = register(context, EROSION, shiftedNoise2d(highFreqWarpX, highFreqWarpZ, 1.0, noises.getOrThrow(TropicraftNoises.EROSION)));
 
-        DensityFunction offset = registerOffset(context, continents);
+        DensityFunction continents = registerContinents(context, add(continentWarpX, highFreqWarpX), add(continentWarpZ, highFreqWarpZ));
+
+        DensityFunction offset = registerOffset(context, continents, erosion);
 
         register(context, FINAL_DENSITY, interpolated(tropicsSlide(offsetToDepth(offset))));
     }
 
-    private static DensityFunction registerContinents(BootstrapContext<DensityFunction> context, DensityFunction highFreqWarpX, DensityFunction highFreqWarpZ) {
+    private static DensityFunction registerContinents(BootstrapContext<DensityFunction> context, DensityFunction continentWarpX, DensityFunction continentWarpZ) {
         HolderGetter<NormalNoise.NoiseParameters> noises = context.lookup(Registries.NOISE);
 
-        DensityFunction continentsWarpScale = constant(250.0);
         DensityFunction continents = cache2d(shiftedNoise2d(
-                add(mul(noise2d(noises, TropicraftNoises.CONTINENT_WARP_X), continentsWarpScale), highFreqWarpX),
-                add(mul(noise2d(noises, TropicraftNoises.CONTINENT_WARP_Z), continentsWarpScale), highFreqWarpZ),
+                continentWarpX,
+                continentWarpZ,
                 1.0,
                 noises.getOrThrow(TropicraftNoises.CONTINENTS)
         ));
@@ -55,20 +72,59 @@ public interface TropicraftDensityFunctions {
 
     private static DensityFunction registerOffset(
             BootstrapContext<DensityFunction> context,
-            DensityFunction continents
+            DensityFunction continents,
+            DensityFunction erosion
     ) {
-        DensityFunction offset = spline(createOffsetSpline(new Spline.Coordinate(continents)));
+        DensityFunction offset = spline(createOffsetSpline(new Spline.Coordinate(continents), new Spline.Coordinate(erosion)));
         return register(context, OFFSET, flatCache(offset));
     }
 
-    private static <I extends BoundedFloatFunction<?>> CubicSpline<I> createOffsetSpline(I continents) {
-        float continentX = 0.15f;
-        float oceanSlope = slope(-1.0f, -1.0f, continentX, 0.0f);
-        return CubicSpline.builder(continents)
-                .addPoint(-1.0f, -1.0f)
-                .addPoint(continentX, 0.0f, oceanSlope)
-                .addPoint(0.5f, 1.0f)
+    // TODO: Needs to be iterated upon a lot more :)
+    private static <I extends BoundedFloatFunction<?>> CubicSpline<I> createOffsetSpline(I continents, I erosion) {
+        // TODO: Inland lakes?
+        return CubicSpline.builder(erosion)
+                .addPoint(-0.1f, createLowlandsOffset(continents))
+                .addPoint(0.3f, createMidlandsOffset(continents))
+                .addPoint(0.5f, createHighlandsOffset(continents))
                 .build();
+    }
+
+    private static <I extends BoundedFloatFunction<?>> CubicSpline<I> createLowlandsOffset(I continents) {
+        CubicSpline.Builder<I> spline = addOceanOffset(CubicSpline.builder(continents));
+        float beachEndOffset = 0.01f;
+        float maxOffset = 0.4f;
+        return spline
+                .addPoint(CONTINENTS_BEACH_START, 0.0f)
+                .addPoint(CONTINENTS_BEACH_END, beachEndOffset, slope(CONTINENTS_BEACH_END, beachEndOffset, CONTINENTS_MAX, maxOffset))
+                .addPoint(CONTINENTS_MAX, maxOffset)
+                .build();
+    }
+
+    private static <I extends BoundedFloatFunction<?>> CubicSpline<I> createMidlandsOffset(I continents) {
+        CubicSpline.Builder<I> spline = addOceanOffset(CubicSpline.builder(continents));
+        float beachEndOffset = 0.01f;
+        float maxOffset = 1.0f;
+        return spline
+                .addPoint(CONTINENTS_BEACH_START, 0.0f)
+                .addPoint(CONTINENTS_BEACH_END, beachEndOffset, 0.1f)
+                .addPoint(CONTINENTS_MAX, maxOffset)
+                .build();
+    }
+
+    private static <I extends BoundedFloatFunction<?>> CubicSpline<I> createHighlandsOffset(I continents) {
+        CubicSpline.Builder<I> spline = addOceanOffset(CubicSpline.builder(continents));
+        float maxOffset = 1.5f;
+        return spline
+                .addPoint(CONTINENTS_BEACH_START, 0.0f, slope(CONTINENTS_BEACH_START, 0.0f, CONTINENTS_MAX, maxOffset))
+                .addPoint(CONTINENTS_MAX, maxOffset)
+                .build();
+    }
+
+    private static <I extends BoundedFloatFunction<?>> CubicSpline.Builder<I> addOceanOffset(CubicSpline.Builder<I> spline) {
+        return spline
+                .addPoint(-1.0f, -1.0f)
+                .addPoint(-0.4f, Mth.map(-0.4f, -1.0f, CONTINENTS_BEACH_START, -1.0f, 0.0f))
+                .addPoint(CONTINENTS_SHALLOW_OCEAN, Mth.map(CONTINENTS_SHALLOW_OCEAN, -1.0f, CONTINENTS_BEACH_START, -1.0f, 0.0f));
     }
 
     private static float slope(float x1, float y1, float x2, float y2) {

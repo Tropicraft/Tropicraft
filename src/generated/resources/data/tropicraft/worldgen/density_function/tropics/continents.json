@@ -5,31 +5,13 @@
     "noise": "tropicraft:tropics/continents",
     "shift_x": {
       "type": "minecraft:add",
-      "argument1": {
-        "type": "minecraft:mul",
-        "argument1": 250.0,
-        "argument2": {
-          "type": "minecraft:noise",
-          "noise": "tropicraft:tropics/continent_warp_x",
-          "xz_scale": 1.0,
-          "y_scale": 0.0
-        }
-      },
+      "argument1": "tropicraft:tropics/continent_warp_x",
       "argument2": "tropicraft:tropics/high_freq_warp_x"
     },
     "shift_y": 0.0,
     "shift_z": {
       "type": "minecraft:add",
-      "argument1": {
-        "type": "minecraft:mul",
-        "argument1": 250.0,
-        "argument2": {
-          "type": "minecraft:noise",
-          "noise": "tropicraft:tropics/continent_warp_z",
-          "xz_scale": 1.0,
-          "y_scale": 0.0
-        }
-      },
+      "argument1": "tropicraft:tropics/continent_warp_z",
       "argument2": "tropicraft:tropics/high_freq_warp_z"
     },
     "xz_scale": 1.0,
