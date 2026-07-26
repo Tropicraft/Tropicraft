@@ -91,6 +91,9 @@ public class DfMap {
         return List.of(
                 create2dFeature(functions, TropicraftDensityFunctions.OFFSET, -1.0f, 1.0f),
                 create2dFeature(functions, TropicraftDensityFunctions.CONTINENTS, -1.0f, 1.0f),
+                create2dFeature(functions, TropicraftDensityFunctions.ISLANDS, -1.0f, 1.0f),
+                create2dFeature(functions, TropicraftDensityFunctions.ISLANDS_SMOOTH, -1.0f, 1.0f),
+                create2dFeature(functions, TropicraftDensityFunctions.ISLANDS_RAW, -1.0f, 1.0f),
                 create2dFeature(functions, TropicraftDensityFunctions.EROSION, -1.0f, 1.0f),
                 create2dFeature(functions, NoiseRouterData.OFFSET, -0.75f, 1.0f),
                 create2dFeature(functions, NoiseRouterData.FACTOR, 0.0f, 10.0f),

@@ -15,6 +15,9 @@ public interface TropicraftNoises {
     ResourceKey<NormalNoise.NoiseParameters> HIGH_FREQ_WARP_X = createKey("tropics/high_freq_warp_x");
     ResourceKey<NormalNoise.NoiseParameters> HIGH_FREQ_WARP_Z = createKey("tropics/high_freq_warp_z");
 
+    ResourceKey<NormalNoise.NoiseParameters> ISLAND_MASK = createKey("tropics/island_mask");
+    ResourceKey<NormalNoise.NoiseParameters> ISLANDS = createKey("tropics/islands");
+
     ResourceKey<NormalNoise.NoiseParameters> EROSION = createKey("tropics/erosion");
 
     static void bootstrap(BootstrapContext<NormalNoise.NoiseParameters> context) {
@@ -24,6 +27,9 @@ public interface TropicraftNoises {
 
         register(context, HIGH_FREQ_WARP_X, -8, 1.0, 0.0, 1.0, 1.0);
         register(context, HIGH_FREQ_WARP_Z, -8, 1.0, 0.0, 1.0, 1.0);
+
+        register(context, ISLAND_MASK, -9, 1.0);
+        register(context, ISLANDS, -6, 1.0);
 
         register(context, EROSION, -10, 1.0, 1.0, 0.0, 1.0, 1.0);
     }

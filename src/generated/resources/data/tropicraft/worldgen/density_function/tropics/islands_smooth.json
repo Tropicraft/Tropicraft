@@ -1,0 +1,22 @@
+{
+  "type": "tropicraft:domain_warp",
+  "input": {
+    "type": "tropicraft:voronoi",
+    "cell_size": 80,
+    "distance": "euclidean_squared",
+    "jitter_scale": 0.75,
+    "jitter_seed": "tropicraft:island_jitter",
+    "scan_size": 6,
+    "smoothness": 5.0,
+    "value": {
+      "type": "minecraft:range_choice",
+      "input": "tropicraft:tropics/islands_raw",
+      "max_exclusive": 100.0,
+      "min_inclusive": 0.0,
+      "when_in_range": 1.0,
+      "when_out_of_range": -1.0
+    }
+  },
+  "x": "tropicraft:tropics/high_freq_warp_x",
+  "z": "tropicraft:tropics/high_freq_warp_z"
+}

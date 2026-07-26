@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:cache_2d",
+  "argument": {
+    "type": "minecraft:noise",
+    "noise": "tropicraft:tropics/island_mask",
+    "xz_scale": 1.0,
+    "y_scale": 0.0
+  }
+}

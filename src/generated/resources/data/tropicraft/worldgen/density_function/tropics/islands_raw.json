@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:cache_2d",
+  "argument": {
+    "type": "minecraft:range_choice",
+    "input": "tropicraft:tropics/island_mask",
+    "max_exclusive": 0.4,
+    "min_inclusive": -0.4,
+    "when_in_range": {
+      "type": "minecraft:range_choice",
+      "input": {
+        "type": "minecraft:cache_2d",
+        "argument": {
+          "type": "minecraft:noise",
+          "noise": "tropicraft:tropics/islands",
+          "xz_scale": 1.0,
+          "y_scale": 0.0
+        }
+      },
+      "max_exclusive": 100.0,
+      "min_inclusive": 0.3,
+      "when_in_range": {
+        "type": "minecraft:cache_2d",
+        "argument": {
+          "type": "minecraft:noise",
+          "noise": "tropicraft:tropics/islands",
+          "xz_scale": 1.0,
+          "y_scale": 0.0
+        }
+      },
+      "when_out_of_range": -1.0
+    },
+    "when_out_of_range": -1.0
+  }
+}

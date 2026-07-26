@@ -1,0 +1,15 @@
+{
+  "type": "tropicraft:domain_warp",
+  "input": {
+    "type": "tropicraft:voronoi",
+    "cell_size": 80,
+    "distance": "euclidean_squared",
+    "jitter_scale": 0.75,
+    "jitter_seed": "tropicraft:island_jitter",
+    "scan_size": 3,
+    "smoothness": 0.5,
+    "value": "tropicraft:tropics/islands_raw"
+  },
+  "x": "tropicraft:tropics/high_freq_warp_x",
+  "z": "tropicraft:tropics/high_freq_warp_z"
+}

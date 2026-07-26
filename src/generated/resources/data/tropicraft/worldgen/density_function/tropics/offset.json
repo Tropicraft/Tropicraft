@@ -9,7 +9,63 @@
           "derivative": 0.0,
           "location": -0.1,
           "value": {
-            "coordinate": "tropicraft:tropics/continents",
+            "coordinate": {
+              "type": "minecraft:add",
+              "argument1": {
+                "type": "minecraft:mul",
+                "argument1": "tropicraft:tropics/continents",
+                "argument2": {
+                  "type": "minecraft:add",
+                  "argument1": 1.0,
+                  "argument2": {
+                    "type": "minecraft:mul",
+                    "argument1": -1.0,
+                    "argument2": {
+                      "type": "minecraft:cache_once",
+                      "argument": {
+                        "type": "minecraft:add",
+                        "argument1": 2.0,
+                        "argument2": {
+                          "type": "minecraft:mul",
+                          "argument1": 2.0,
+                          "argument2": {
+                            "type": "minecraft:clamp",
+                            "input": "tropicraft:tropics/islands_smooth",
+                            "max": -0.5,
+                            "min": -1.0
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "argument2": {
+                "type": "minecraft:mul",
+                "argument1": {
+                  "type": "minecraft:max",
+                  "argument1": -0.05,
+                  "argument2": "tropicraft:tropics/continents"
+                },
+                "argument2": {
+                  "type": "minecraft:cache_once",
+                  "argument": {
+                    "type": "minecraft:add",
+                    "argument1": 2.0,
+                    "argument2": {
+                      "type": "minecraft:mul",
+                      "argument1": 2.0,
+                      "argument2": {
+                        "type": "minecraft:clamp",
+                        "input": "tropicraft:tropics/islands_smooth",
+                        "max": -0.5,
+                        "min": -1.0
+                      }
+                    }
+                  }
+                }
+              }
+            },
             "points": [
               {
                 "derivative": 0.0,
@@ -23,8 +79,51 @@
               },
               {
                 "derivative": 0.0,
+                "location": -0.3,
+                "value": {
+                  "coordinate": "tropicraft:tropics/islands",
+                  "points": [
+                    {
+                      "derivative": 0.0,
+                      "location": -1.0,
+                      "value": -0.39130437
+                    },
+                    {
+                      "derivative": 0.0,
+                      "location": 0.0,
+                      "value": 0.0
+                    },
+                    {
+                      "derivative": 0.0,
+                      "location": 1.0,
+                      "value": 0.1
+                    }
+                  ]
+                }
+              },
+              {
+                "derivative": 0.0,
                 "location": 0.1,
-                "value": -0.04347819
+                "value": {
+                  "coordinate": "tropicraft:tropics/islands",
+                  "points": [
+                    {
+                      "derivative": 0.0,
+                      "location": -1.0,
+                      "value": -0.04347819
+                    },
+                    {
+                      "derivative": 0.0,
+                      "location": 0.0,
+                      "value": 0.0
+                    },
+                    {
+                      "derivative": 0.0,
+                      "location": 1.0,
+                      "value": 0.1
+                    }
+                  ]
+                }
               },
               {
                 "derivative": 0.0,
@@ -48,7 +147,63 @@
           "derivative": 0.0,
           "location": 0.3,
           "value": {
-            "coordinate": "tropicraft:tropics/continents",
+            "coordinate": {
+              "type": "minecraft:add",
+              "argument1": {
+                "type": "minecraft:mul",
+                "argument1": "tropicraft:tropics/continents",
+                "argument2": {
+                  "type": "minecraft:add",
+                  "argument1": 1.0,
+                  "argument2": {
+                    "type": "minecraft:mul",
+                    "argument1": -1.0,
+                    "argument2": {
+                      "type": "minecraft:cache_once",
+                      "argument": {
+                        "type": "minecraft:add",
+                        "argument1": 2.0,
+                        "argument2": {
+                          "type": "minecraft:mul",
+                          "argument1": 2.0,
+                          "argument2": {
+                            "type": "minecraft:clamp",
+                            "input": "tropicraft:tropics/islands_smooth",
+                            "max": -0.5,
+                            "min": -1.0
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "argument2": {
+                "type": "minecraft:mul",
+                "argument1": {
+                  "type": "minecraft:max",
+                  "argument1": -0.05,
+                  "argument2": "tropicraft:tropics/continents"
+                },
+                "argument2": {
+                  "type": "minecraft:cache_once",
+                  "argument": {
+                    "type": "minecraft:add",
+                    "argument1": 2.0,
+                    "argument2": {
+                      "type": "minecraft:mul",
+                      "argument1": 2.0,
+                      "argument2": {
+                        "type": "minecraft:clamp",
+                        "input": "tropicraft:tropics/islands_smooth",
+                        "max": -0.5,
+                        "min": -1.0
+                      }
+                    }
+                  }
+                }
+              }
+            },
             "points": [
               {
                 "derivative": 0.0,
@@ -62,8 +217,51 @@
               },
               {
                 "derivative": 0.0,
+                "location": -0.3,
+                "value": {
+                  "coordinate": "tropicraft:tropics/islands",
+                  "points": [
+                    {
+                      "derivative": 0.0,
+                      "location": -1.0,
+                      "value": -0.39130437
+                    },
+                    {
+                      "derivative": 0.0,
+                      "location": 0.0,
+                      "value": 0.0
+                    },
+                    {
+                      "derivative": 0.0,
+                      "location": 1.0,
+                      "value": 0.25
+                    }
+                  ]
+                }
+              },
+              {
+                "derivative": 0.0,
                 "location": 0.1,
-                "value": -0.04347819
+                "value": {
+                  "coordinate": "tropicraft:tropics/islands",
+                  "points": [
+                    {
+                      "derivative": 0.0,
+                      "location": -1.0,
+                      "value": -0.04347819
+                    },
+                    {
+                      "derivative": 0.0,
+                      "location": 0.0,
+                      "value": 0.0
+                    },
+                    {
+                      "derivative": 0.0,
+                      "location": 1.0,
+                      "value": 0.25
+                    }
+                  ]
+                }
               },
               {
                 "derivative": 0.0,
@@ -87,7 +285,63 @@
           "derivative": 0.0,
           "location": 0.5,
           "value": {
-            "coordinate": "tropicraft:tropics/continents",
+            "coordinate": {
+              "type": "minecraft:add",
+              "argument1": {
+                "type": "minecraft:mul",
+                "argument1": "tropicraft:tropics/continents",
+                "argument2": {
+                  "type": "minecraft:add",
+                  "argument1": 1.0,
+                  "argument2": {
+                    "type": "minecraft:mul",
+                    "argument1": -1.0,
+                    "argument2": {
+                      "type": "minecraft:cache_once",
+                      "argument": {
+                        "type": "minecraft:add",
+                        "argument1": 2.0,
+                        "argument2": {
+                          "type": "minecraft:mul",
+                          "argument1": 2.0,
+                          "argument2": {
+                            "type": "minecraft:clamp",
+                            "input": "tropicraft:tropics/islands_smooth",
+                            "max": -0.5,
+                            "min": -1.0
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "argument2": {
+                "type": "minecraft:mul",
+                "argument1": {
+                  "type": "minecraft:max",
+                  "argument1": -0.05,
+                  "argument2": "tropicraft:tropics/continents"
+                },
+                "argument2": {
+                  "type": "minecraft:cache_once",
+                  "argument": {
+                    "type": "minecraft:add",
+                    "argument1": 2.0,
+                    "argument2": {
+                      "type": "minecraft:mul",
+                      "argument1": 2.0,
+                      "argument2": {
+                        "type": "minecraft:clamp",
+                        "input": "tropicraft:tropics/islands_smooth",
+                        "max": -0.5,
+                        "min": -1.0
+                      }
+                    }
+                  }
+                }
+              }
+            },
             "points": [
               {
                 "derivative": 0.0,
@@ -101,8 +355,51 @@
               },
               {
                 "derivative": 0.0,
+                "location": -0.3,
+                "value": {
+                  "coordinate": "tropicraft:tropics/islands",
+                  "points": [
+                    {
+                      "derivative": 0.0,
+                      "location": -1.0,
+                      "value": -0.39130437
+                    },
+                    {
+                      "derivative": 0.0,
+                      "location": 0.0,
+                      "value": 0.0
+                    },
+                    {
+                      "derivative": 0.0,
+                      "location": 1.0,
+                      "value": 0.3
+                    }
+                  ]
+                }
+              },
+              {
+                "derivative": 0.0,
                 "location": 0.1,
-                "value": -0.04347819
+                "value": {
+                  "coordinate": "tropicraft:tropics/islands",
+                  "points": [
+                    {
+                      "derivative": 0.0,
+                      "location": -1.0,
+                      "value": -0.04347819
+                    },
+                    {
+                      "derivative": 0.0,
+                      "location": 0.0,
+                      "value": 0.0
+                    },
+                    {
+                      "derivative": 0.0,
+                      "location": 1.0,
+                      "value": 0.3
+                    }
+                  ]
+                }
               },
               {
                 "derivative": 3.3333333,

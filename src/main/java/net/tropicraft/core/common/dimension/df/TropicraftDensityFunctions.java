@@ -26,16 +26,28 @@ public interface TropicraftDensityFunctions {
 
     ResourceKey<DensityFunction> CONTINENTS = createKey("tropics/continents");
 
+    ResourceKey<DensityFunction> ISLAND_MASK = createKey("tropics/island_mask");
+    ResourceKey<DensityFunction> ISLANDS = createKey("tropics/islands");
+    ResourceKey<DensityFunction> ISLANDS_RAW = createKey("tropics/islands_raw");
+    ResourceKey<DensityFunction> ISLANDS_SMOOTH = createKey("tropics/islands_smooth");
+
     ResourceKey<DensityFunction> EROSION = createKey("tropics/erosion");
 
     ResourceKey<DensityFunction> OFFSET = createKey("tropics/offset");
 
     ResourceKey<DensityFunction> FINAL_DENSITY = createKey("tropics/final_density");
 
+    float CONTINENTS_DEEP_OCEAN = -0.3f;
     float CONTINENTS_SHALLOW_OCEAN = 0.1f;
     float CONTINENTS_BEACH_START = 0.15f;
     float CONTINENTS_BEACH_END = 0.2f;
     float CONTINENTS_MAX = 0.6f;
+
+    VoronoiGrid ISLANDS_GRID = new VoronoiGrid(
+            80,
+            Tropicraft.id("island_jitter"),
+            0.75f
+    );
 
     static void bootstrap(BootstrapContext<DensityFunction> context) {
         HolderGetter<NormalNoise.NoiseParameters> noises = context.lookup(Registries.NOISE);
@@ -52,7 +64,13 @@ public interface TropicraftDensityFunctions {
 
         DensityFunction continents = registerContinents(context, add(continentWarpX, highFreqWarpX), add(continentWarpZ, highFreqWarpZ));
 
-        DensityFunction offset = registerOffset(context, continents, erosion);
+        double islandMaskRange = 0.4;
+        DensityFunction islandMask = register(context, ISLAND_MASK, cache2d(noise2d(noises, TropicraftNoises.ISLAND_MASK)));
+        DensityFunction islandsRaw = registerIslandsRaw(context, islandMask, islandMaskRange);
+        DensityFunction islands = registerIslands(context, islandsRaw, highFreqWarpX, highFreqWarpZ);
+        DensityFunction islandsSmooth = registerIslandsSmooth(context, islandsRaw, highFreqWarpX, highFreqWarpZ);
+
+        DensityFunction offset = registerOffset(context, continents, islands, islandsSmooth, erosion);
 
         register(context, FINAL_DENSITY, interpolated(tropicsSlide(offsetToDepth(offset))));
     }
@@ -60,37 +78,92 @@ public interface TropicraftDensityFunctions {
     private static DensityFunction registerContinents(BootstrapContext<DensityFunction> context, DensityFunction continentWarpX, DensityFunction continentWarpZ) {
         HolderGetter<NormalNoise.NoiseParameters> noises = context.lookup(Registries.NOISE);
 
-        DensityFunction continents = cache2d(shiftedNoise2d(
+        DensityFunction continents = shiftedNoise2d(
                 continentWarpX,
                 continentWarpZ,
                 1.0,
                 noises.getOrThrow(TropicraftNoises.CONTINENTS)
-        ));
+        );
 
-        return register(context, CONTINENTS, continents);
+        return register(context, CONTINENTS, cache2d(continents));
+    }
+
+    private static DensityFunction registerIslandsRaw(BootstrapContext<DensityFunction> context, DensityFunction islandMask, double islandMaskRange) {
+        HolderGetter<NormalNoise.NoiseParameters> noises = context.lookup(Registries.NOISE);
+
+        DensityFunction islands = cache2d(noise2d(noises, TropicraftNoises.ISLANDS));
+        islands = rangeChoice(
+                islands,
+                0.3, 100.0,
+                islands,
+                constant(-1.0)
+        );
+        islands = rangeChoice(
+                islandMask,
+                -islandMaskRange, islandMaskRange,
+                islands,
+                constant(-1.0)
+        );
+
+        return register(context, ISLANDS_RAW, cache2d(islands));
+    }
+
+    private static DensityFunction registerIslands(BootstrapContext<DensityFunction> context, DensityFunction islandsRaw, DensityFunction highFreqWarpX, DensityFunction highFreqWarpZ) {
+        DensityFunction islands = new Voronoi(
+                ISLANDS_GRID,
+                0.5f,
+                3,
+                Voronoi.DistanceMode.EUCLIDEAN_SQUARED,
+                islandsRaw
+        );
+        islands = new DomainWarp(islands, highFreqWarpX, zero(), highFreqWarpZ);
+        return register(context, ISLANDS, islands);
+    }
+
+    private static DensityFunction registerIslandsSmooth(BootstrapContext<DensityFunction> context, DensityFunction islandsRaw, DensityFunction highFreqWarpX, DensityFunction highFreqWarpZ) {
+        DensityFunction islandsSmooth = new Voronoi(
+                ISLANDS_GRID,
+                5.0f,
+                6,
+                Voronoi.DistanceMode.EUCLIDEAN_SQUARED,
+                rangeChoice(
+                        islandsRaw,
+                        0.0, 100.0,
+                        constant(1.0),
+                        constant(-1.0)
+                )
+        );
+        islandsSmooth = new DomainWarp(islandsSmooth, highFreqWarpX, zero(), highFreqWarpZ);
+        return register(context, ISLANDS_SMOOTH, islandsSmooth);
     }
 
     private static DensityFunction registerOffset(
             BootstrapContext<DensityFunction> context,
             DensityFunction continents,
+            DensityFunction islands,
+            DensityFunction islandsSmooth,
             DensityFunction erosion
     ) {
-        DensityFunction offset = spline(createOffsetSpline(new Spline.Coordinate(continents), new Spline.Coordinate(erosion)));
+        // TODO: Improve on this somehow? It looks quite flat.
+        DensityFunction islandFactor = clampedRemap(islandsSmooth, -1.0, -0.5, 0.0, 1.0);
+        continents = lerp(islandFactor, continents, max(constant(-0.05), continents));
+
+        DensityFunction offset = spline(createOffsetSpline(new Spline.Coordinate(continents), new Spline.Coordinate(islands), new Spline.Coordinate(erosion)));
         return register(context, OFFSET, flatCache(offset));
     }
 
     // TODO: Needs to be iterated upon a lot more :)
-    private static <I extends BoundedFloatFunction<?>> CubicSpline<I> createOffsetSpline(I continents, I erosion) {
+    private static <I extends BoundedFloatFunction<?>> CubicSpline<I> createOffsetSpline(I continents, I islands, I erosion) {
         // TODO: Inland lakes?
         return CubicSpline.builder(erosion)
-                .addPoint(-0.1f, createLowlandsOffset(continents))
-                .addPoint(0.3f, createMidlandsOffset(continents))
-                .addPoint(0.5f, createHighlandsOffset(continents))
+                .addPoint(-0.1f, createLowlandsOffset(continents, islands))
+                .addPoint(0.3f, createMidlandsOffset(continents, islands))
+                .addPoint(0.5f, createHighlandsOffset(continents, islands))
                 .build();
     }
 
-    private static <I extends BoundedFloatFunction<?>> CubicSpline<I> createLowlandsOffset(I continents) {
-        CubicSpline.Builder<I> spline = addOceanOffset(CubicSpline.builder(continents));
+    private static <I extends BoundedFloatFunction<?>> CubicSpline<I> createLowlandsOffset(I continents, I islands) {
+        CubicSpline.Builder<I> spline = addOceanAndIslandOffset(CubicSpline.builder(continents), islands, 0.1f);
         float beachEndOffset = 0.01f;
         float maxOffset = 0.4f;
         return spline
@@ -100,8 +173,8 @@ public interface TropicraftDensityFunctions {
                 .build();
     }
 
-    private static <I extends BoundedFloatFunction<?>> CubicSpline<I> createMidlandsOffset(I continents) {
-        CubicSpline.Builder<I> spline = addOceanOffset(CubicSpline.builder(continents));
+    private static <I extends BoundedFloatFunction<?>> CubicSpline<I> createMidlandsOffset(I continents, I islands) {
+        CubicSpline.Builder<I> spline = addOceanAndIslandOffset(CubicSpline.builder(continents), islands, 0.25f);
         float beachEndOffset = 0.01f;
         float maxOffset = 1.0f;
         return spline
@@ -111,8 +184,8 @@ public interface TropicraftDensityFunctions {
                 .build();
     }
 
-    private static <I extends BoundedFloatFunction<?>> CubicSpline<I> createHighlandsOffset(I continents) {
-        CubicSpline.Builder<I> spline = addOceanOffset(CubicSpline.builder(continents));
+    private static <I extends BoundedFloatFunction<?>> CubicSpline<I> createHighlandsOffset(I continents, I islands) {
+        CubicSpline.Builder<I> spline = addOceanAndIslandOffset(CubicSpline.builder(continents), islands, 0.3f);
         float maxOffset = 1.5f;
         return spline
                 .addPoint(CONTINENTS_BEACH_START, 0.0f, slope(CONTINENTS_BEACH_START, 0.0f, CONTINENTS_MAX, maxOffset))
@@ -120,11 +193,20 @@ public interface TropicraftDensityFunctions {
                 .build();
     }
 
-    private static <I extends BoundedFloatFunction<?>> CubicSpline.Builder<I> addOceanOffset(CubicSpline.Builder<I> spline) {
+    private static <I extends BoundedFloatFunction<?>> CubicSpline.Builder<I> addOceanAndIslandOffset(CubicSpline.Builder<I> spline, I islands, float islandScale) {
         return spline
                 .addPoint(-1.0f, -1.0f)
                 .addPoint(-0.4f, Mth.map(-0.4f, -1.0f, CONTINENTS_BEACH_START, -1.0f, 0.0f))
-                .addPoint(CONTINENTS_SHALLOW_OCEAN, Mth.map(CONTINENTS_SHALLOW_OCEAN, -1.0f, CONTINENTS_BEACH_START, -1.0f, 0.0f));
+                .addPoint(CONTINENTS_DEEP_OCEAN, createIslandOffset(islands, Mth.map(CONTINENTS_DEEP_OCEAN, -1.0f, CONTINENTS_BEACH_START, -1.0f, 0.0f), islandScale))
+                .addPoint(CONTINENTS_SHALLOW_OCEAN, createIslandOffset(islands, Mth.map(CONTINENTS_SHALLOW_OCEAN, -1.0f, CONTINENTS_BEACH_START, -1.0f, 0.0f), islandScale));
+    }
+
+    private static <I extends BoundedFloatFunction<?>> CubicSpline<I> createIslandOffset(I islands, float oceanOffset, float islandScale) {
+        return CubicSpline.builder(islands)
+                .addPoint(-1.0f, oceanOffset)
+                .addPoint(0.0f, 0.0f)
+                .addPoint(1.0f, islandScale)
+                .build();
     }
 
     private static float slope(float x1, float y1, float x2, float y2) {
@@ -157,6 +239,21 @@ public interface TropicraftDensityFunctions {
 
     private static DensityFunction offsetToDepth(DensityFunction offset) {
         return add(yClampedGradient(-64, 318, 1.5, -1.5), offset);
+    }
+
+    private static DensityFunction remap(DensityFunction input, double fromMin, double fromMax, double toMin, double toMax) {
+        double factor = (toMax - toMin) / (fromMax - fromMin);
+        double offset = toMin - fromMin * factor;
+        if (offset == 0.0) {
+            return mul(input, constant(factor));
+        } else if (factor == 1.0) {
+            return add(input, constant(offset));
+        }
+        return add(mul(input, constant(factor)), constant(offset));
+    }
+
+    private static DensityFunction clampedRemap(DensityFunction input, double fromMin, double fromMax, double toMin, double toMax) {
+        return remap(input.clamp(fromMin, fromMax), fromMin, fromMax, toMin, toMax);
     }
 
     private static DensityFunction tropicsSlide(DensityFunction function) {
