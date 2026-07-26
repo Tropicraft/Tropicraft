@@ -62,7 +62,7 @@ public interface TropicraftDensityFunctions {
 
         DensityFunction erosion = register(context, EROSION, shiftedNoise2d(highFreqWarpX, highFreqWarpZ, 1.0, noises.getOrThrow(TropicraftNoises.EROSION)));
 
-        DensityFunction continents = registerContinents(context, add(continentWarpX, highFreqWarpX), add(continentWarpZ, highFreqWarpZ));
+        DensityFunction continents = registerContinents(context, continentWarpX, continentWarpZ, highFreqWarpX, highFreqWarpZ);
 
         double islandMaskRange = 0.4;
         DensityFunction islandMask = register(context, ISLAND_MASK, cache2d(noise2d(noises, TropicraftNoises.ISLAND_MASK)));
@@ -75,7 +75,7 @@ public interface TropicraftDensityFunctions {
         register(context, FINAL_DENSITY, interpolated(tropicsSlide(offsetToDepth(offset))));
     }
 
-    private static DensityFunction registerContinents(BootstrapContext<DensityFunction> context, DensityFunction continentWarpX, DensityFunction continentWarpZ) {
+    private static DensityFunction registerContinents(BootstrapContext<DensityFunction> context, DensityFunction continentWarpX, DensityFunction continentWarpZ, DensityFunction highFreqWarpX, DensityFunction highFreqWarpZ) {
         HolderGetter<NormalNoise.NoiseParameters> noises = context.lookup(Registries.NOISE);
 
         DensityFunction continents = shiftedNoise2d(
@@ -84,8 +84,32 @@ public interface TropicraftDensityFunctions {
                 1.0,
                 noises.getOrThrow(TropicraftNoises.CONTINENTS)
         );
+        continents = applyShelves(continents, noises);
+        continents = new DomainWarp(
+                cache2d(continents),
+                highFreqWarpX,
+                zero(),
+                highFreqWarpZ
+        );
 
         return register(context, CONTINENTS, cache2d(continents));
+    }
+
+    // TODO: We might want to make these 3D and fall off as they get lower?
+    private static DensityFunction applyShelves(DensityFunction continents, HolderGetter<NormalNoise.NoiseParameters> noises) {
+        VoronoiGrid shelfGrid = new VoronoiGrid(80, Tropicraft.id("shelf_jitter"), 0.9f);
+        return max(continents, new Voronoi(
+                shelfGrid,
+                0.5f,
+                5,
+                Voronoi.DistanceMode.EUCLIDEAN_SQUARED,
+                rangeChoice(
+                        noise2d(noises, TropicraftNoises.SHELFINESS),
+                        0.0, 100.0,
+                        continents,
+                        constant(-1.0)
+                )
+        ));
     }
 
     private static DensityFunction registerIslandsRaw(BootstrapContext<DensityFunction> context, DensityFunction islandMask, double islandMaskRange) {

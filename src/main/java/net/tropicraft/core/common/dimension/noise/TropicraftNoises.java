@@ -12,6 +12,8 @@ public interface TropicraftNoises {
     ResourceKey<NormalNoise.NoiseParameters> CONTINENT_WARP_X = createKey("tropics/continent_warp_x");
     ResourceKey<NormalNoise.NoiseParameters> CONTINENT_WARP_Z = createKey("tropics/continent_warp_z");
 
+    ResourceKey<NormalNoise.NoiseParameters> SHELFINESS = createKey("tropics/shelfiness");
+
     ResourceKey<NormalNoise.NoiseParameters> HIGH_FREQ_WARP_X = createKey("tropics/high_freq_warp_x");
     ResourceKey<NormalNoise.NoiseParameters> HIGH_FREQ_WARP_Z = createKey("tropics/high_freq_warp_z");
 
@@ -24,6 +26,8 @@ public interface TropicraftNoises {
         register(context, CONTINENTS, -11, 0.5, 0.0, 2.0);
         register(context, CONTINENT_WARP_X, -9, 1.0);
         register(context, CONTINENT_WARP_Z, -9, 1.0);
+
+        register(context, SHELFINESS, -10, 0.5, 0.0, 2.0);
 
         register(context, HIGH_FREQ_WARP_X, -8, 1.0, 0.0, 1.0, 1.0);
         register(context, HIGH_FREQ_WARP_Z, -8, 1.0, 0.0, 1.0, 1.0);
