@@ -21,8 +21,9 @@ import net.tropicraft.core.common.dimension.feature.TropicraftVegetationFeatures
 import net.tropicraft.core.common.dimension.feature.TropicraftVegetationPlacements;
 import net.tropicraft.core.common.dimension.feature.jigsaw.TropicraftProcessorLists;
 import net.tropicraft.core.common.dimension.feature.pools.TropicraftTemplatePools;
+import net.tropicraft.core.common.dimension.df.TropicraftDensityFunctions;
 import net.tropicraft.core.common.dimension.noise.TropicraftNoiseGenSettings;
-import net.tropicraft.core.common.dimension.noise.TropicraftNoiseRouterData;
+import net.tropicraft.core.common.dimension.noise.TropicraftNoises;
 import net.tropicraft.core.common.drinks.TropicraftDrinkIngredients;
 import net.tropicraft.core.common.drinks.TropicraftDrinks;
 import net.tropicraft.core.common.item.TropicraftJukeboxSongs;
@@ -46,7 +47,8 @@ public class TropicraftPackRegistries {
         output.add(Registries.TEMPLATE_POOL, TropicraftTemplatePools::bootstrap);
         output.add(Registries.STRUCTURE, TropicraftStructures::bootstrap);
         output.add(Registries.STRUCTURE_SET, TropicraftStructureSets::bootstrap);
-        output.add(Registries.DENSITY_FUNCTION, TropicraftNoiseRouterData::bootstrap);
+        output.add(Registries.DENSITY_FUNCTION, TropicraftDensityFunctions::bootstrap);
+        output.add(Registries.NOISE, TropicraftNoises::bootstrap);
         output.add(Registries.NOISE_SETTINGS, TropicraftNoiseGenSettings::bootstrap);
         output.add(Registries.BIOME, TropicraftBiomes::bootstrap);
         output.add(Registries.DIMENSION_TYPE, TropicraftDimension::bootstrapDimensionType);

@@ -11,10 +11,10 @@ import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.NoiseSettings;
 import net.minecraft.world.level.levelgen.SurfaceRules;
-import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 import net.tropicraft.core.common.dimension.TropicraftSurfaces;
+import net.tropicraft.core.common.dimension.df.TropicraftDensityFunctions;
 
 import java.util.List;
 
@@ -23,12 +23,11 @@ public final class TropicraftNoiseGenSettings {
 
     public static void bootstrap(BootstrapContext<NoiseGeneratorSettings> context) {
         HolderGetter<DensityFunction> densityFunctions = context.lookup(Registries.DENSITY_FUNCTION);
-        HolderGetter<NormalNoise.NoiseParameters> noiseParameters = context.lookup(Registries.NOISE);
         HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
-        context.register(TROPICS, createNoise(densityFunctions, noiseParameters, biomes, true));
+        context.register(TROPICS, createNoise(densityFunctions, biomes, true));
     }
 
-    public static NoiseGeneratorSettings createNoise(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters, HolderGetter<Biome> biomes, boolean tropisurface) {
+    public static NoiseGeneratorSettings createNoise(HolderGetter<DensityFunction> densityFunctions, HolderGetter<Biome> biomes, boolean tropisurface) {
         // Constant ternaries are amplified, keeping temporarily until we figure out good noise values
         NoiseSettings settings = NoiseSettings.create(-64, 384, 1, 2);
 
@@ -37,13 +36,15 @@ public final class TropicraftNoiseGenSettings {
                 settings,
                 Blocks.STONE.defaultBlockState(),
                 Blocks.WATER.defaultBlockState(),
-                TropicraftNoiseRouterData.tropics(densityFunctions, noiseParameters),
-                surface,
+                TropicraftDensityFunctions.tropics(densityFunctions),
+                // TODO: Re-introduce
+                SurfaceRules.state(Blocks.STONE.defaultBlockState()),
                 List.of(),
                 TropicraftDimension.SEA_LEVEL,
                 false,
-                true,
-                true,
+                // TODO: Re-introduce
+                false,
+                false,
                 true
         );
     }

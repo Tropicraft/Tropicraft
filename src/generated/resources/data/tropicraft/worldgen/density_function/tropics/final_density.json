@@ -1,0 +1,50 @@
+{
+  "type": "minecraft:interpolated",
+  "argument": {
+    "type": "minecraft:add",
+    "argument1": 0.1171875,
+    "argument2": {
+      "type": "minecraft:mul",
+      "argument1": {
+        "type": "minecraft:y_clamped_gradient",
+        "from_value": 0.0,
+        "from_y": -64,
+        "to_value": 1.0,
+        "to_y": -40
+      },
+      "argument2": {
+        "type": "minecraft:add",
+        "argument1": -0.1171875,
+        "argument2": {
+          "type": "minecraft:add",
+          "argument1": -0.078125,
+          "argument2": {
+            "type": "minecraft:mul",
+            "argument1": {
+              "type": "minecraft:y_clamped_gradient",
+              "from_value": 1.0,
+              "from_y": 240,
+              "to_value": 0.0,
+              "to_y": 256
+            },
+            "argument2": {
+              "type": "minecraft:add",
+              "argument1": 0.078125,
+              "argument2": {
+                "type": "minecraft:add",
+                "argument1": {
+                  "type": "minecraft:y_clamped_gradient",
+                  "from_value": 1.5,
+                  "from_y": -64,
+                  "to_value": -1.5,
+                  "to_y": 318
+                },
+                "argument2": "tropicraft:tropics/offset"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

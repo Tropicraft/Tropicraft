@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.tropicraft.ColorRamp;
 import net.tropicraft.ColorRamps;
 import net.tropicraft.core.common.TropicraftPackRegistries;
-import net.tropicraft.core.common.dimension.noise.TropicraftNoiseRouterData;
+import net.tropicraft.core.common.dimension.df.TropicraftDensityFunctions;
 import net.tropicraft.map.MapController;
 import net.tropicraft.map.MapPanel;
 import net.tropicraft.map.feature.MapFeature;
@@ -88,9 +88,13 @@ public class DfMap {
         HolderLookup<DensityFunction> functions = registries.lookupOrThrow(Registries.DENSITY_FUNCTION);
 
         return List.of(
+                create2dFeature(functions, TropicraftDensityFunctions.OFFSET, -1.0f, 1.0f),
+                create2dFeature(functions, TropicraftDensityFunctions.CONTINENTS, -1.0f, 1.0f),
                 create2dFeature(functions, NoiseRouterData.OFFSET, -0.75f, 1.0f),
                 create2dFeature(functions, NoiseRouterData.FACTOR, 0.0f, 10.0f),
-                create2dFeature(functions, TropicraftNoiseRouterData.OFFSET, -1.0f, 1.0f)
+                create2dFeature(functions, NoiseRouterData.CONTINENTS, -1.0f, 1.0f),
+                create2dFeature(functions, NoiseRouterData.EROSION, -1.0f, 1.0f),
+                create2dFeature(functions, NoiseRouterData.RIDGES, -1.0f, 1.0f)
         );
     }
 
