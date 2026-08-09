@@ -13,6 +13,7 @@
     "worldgen.WorldDimensionsMixin"
   ],
   "client": [
+    "client.HumanoidModelMixin"
   ],
   "injectors": {
     "defaultRequire": 1
