@@ -25,7 +25,7 @@ import net.tropicraft.Tropicraft;
 @EventBusSubscriber(modid = Tropicraft.ID)
 public class FireArmorItem extends Item {
     public FireArmorItem(ArmorType slotType, Properties properties) {
-        super(properties.humanoidArmor(TropicraftArmorMaterials.FIRE_ARMOR, slotType));
+        super(properties.fireResistant().humanoidArmor(TropicraftArmorMaterials.FIRE_ARMOR, slotType));
     }
 
     @SubscribeEvent
