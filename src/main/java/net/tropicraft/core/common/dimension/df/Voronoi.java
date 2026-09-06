@@ -76,7 +76,7 @@ public record Voronoi(
                 float cellSeedOffsetX = cellRandom.nextFloat() * jitterScale;
                 float cellSeedOffsetZ = cellRandom.nextFloat() * jitterScale;
 
-                float cellDistance = computeCellDistance(deltaX + cellSeedOffsetX, deltaZ + cellSeedOffsetZ, relativeX, relativeZ);
+                float cellDistance = distanceMode.compute(relativeX, relativeZ, deltaX + cellSeedOffsetX, deltaZ + cellSeedOffsetZ);
 
                 float factor;
                 if (outputDistance == -1.0f) {
@@ -106,15 +106,7 @@ public record Voronoi(
         return outputValue;
     }
 
-    private float computeCellDistance(float cellSeedX, float cellSeedZ, float relativeX, float relativeZ) {
-        float distanceSq = Mth.square(cellSeedX - relativeX) + Mth.square(cellSeedZ - relativeZ);
-        return switch (distanceMode) {
-            case EUCLIDEAN -> Mth.sqrt(distanceSq);
-            case EUCLIDEAN_SQUARED -> distanceSq;
-        };
-    }
-
-    private static float smoothstep(float x) {
+    public static float smoothstep(float x) {
         if (x <= 0.0f) {
             return 0.0f;
         } else if (x >= 1.0f) {
@@ -159,6 +151,18 @@ public record Voronoi(
 
         DistanceMode(String name) {
             this.name = name;
+        }
+
+        public float compute(float x0, float z0, float x1, float z1) {
+            return compute(x1 - x0, z1 - z0);
+        }
+
+        public float compute(float deltaX, float deltaZ) {
+            float distanceSq = Mth.square(deltaX) + Mth.square(deltaZ);
+            return switch (this) {
+                case EUCLIDEAN -> Mth.sqrt(distanceSq);
+                case EUCLIDEAN_SQUARED -> distanceSq;
+            };
         }
 
         @Override

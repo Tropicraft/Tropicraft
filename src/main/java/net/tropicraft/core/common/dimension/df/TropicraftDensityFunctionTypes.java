@@ -14,4 +14,5 @@ public interface TropicraftDensityFunctionTypes {
     DeferredHolder<MapCodec<? extends DensityFunction>, ?> DOMAIN_WARP = REGISTER.register("domain_warp", () -> DomainWarp.CODEC);
     DeferredHolder<MapCodec<? extends DensityFunction>, ?> SMOOTH_MIN = REGISTER.register("smooth_min", () -> SmoothMin.CODEC);
     DeferredHolder<MapCodec<? extends DensityFunction>, ?> SMOOTH_MAX = REGISTER.register("smooth_max", () -> SmoothMax.CODEC);
+    DeferredHolder<MapCodec<? extends DensityFunction>, ?> ERODE_2D = REGISTER.register("erode_2d", () -> Erode2d.CODEC);
 }
