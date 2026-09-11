@@ -15,11 +15,11 @@ public record AirToCaveAirProcessor() implements StructureProcessor {
     public static final MapCodec<AirToCaveAirProcessor> CODEC = MapCodec.unit(new AirToCaveAirProcessor());
 
     @Override
-    public @Nullable StructureBlockInfo process(LevelReader world, BlockPos pos, BlockPos pos2, StructureBlockInfo originalInfo, StructureBlockInfo blockInfo, StructurePlaceSettings placementSettingsIn, @Nullable StructureTemplate template) {
-        if (blockInfo.state().is(Blocks.AIR)) {
-            return new StructureBlockInfo(blockInfo.pos(), Blocks.CAVE_AIR.defaultBlockState(), blockInfo.nbt());
+    public StructureBlockInfo process(LevelReader level, BlockPos targetPosition, BlockPos referencePos, StructureBlockInfo originalBlockInfo, StructureBlockInfo processedBlockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
+        if (processedBlockInfo.state().is(Blocks.AIR)) {
+            return new StructureBlockInfo(processedBlockInfo.pos(), Blocks.CAVE_AIR.defaultBlockState(), processedBlockInfo.nbt());
         }
-        return null;
+        return processedBlockInfo;
     }
 
     @Override
