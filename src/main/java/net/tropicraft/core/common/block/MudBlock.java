@@ -79,9 +79,7 @@ public final class MudBlock extends Block implements BonemealableBlock {
             }
 
             BlockState blockstate1 = level.getBlockState(blockpos1);
-            if (blockstate1.is(TropicraftTags.Blocks.MUD) && random.nextInt(10) == 0) {
-                ((BonemealableBlock) TropicraftBlocks.MUD.get()).performBonemeal(level, random, blockpos1, blockstate1);
-            } else if (blockstate1.isAir()) {
+            if (blockstate1.isAir()) {
                 if (random.nextInt(2) == 0) {
                     level.setBlock(blockpos1, TropicraftBlocks.REEDS.get().defaultBlockState(), Block.UPDATE_ALL);
                 }
