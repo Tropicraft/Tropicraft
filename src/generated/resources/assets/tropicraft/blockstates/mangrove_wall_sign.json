@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=east": {
+      "model": "tropicraft:block/mangrove_wall_sign",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "tropicraft:block/mangrove_wall_sign",
+      "y": 180
+    },
+    "facing=south": {
       "model": "tropicraft:block/mangrove_wall_sign"
+    },
+    "facing=west": {
+      "model": "tropicraft:block/mangrove_wall_sign",
+      "y": 90
     }
   }
 }

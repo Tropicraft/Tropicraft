@@ -24,6 +24,7 @@ import net.minecraft.advancements.predicates.EnchantmentPredicate;
 import net.minecraft.advancements.predicates.ItemPredicate;
 import net.minecraft.advancements.predicates.MinMaxBounds;
 import net.minecraft.client.color.block.BlockTintSources;
+import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.ConditionBuilder;
 import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
@@ -675,11 +676,11 @@ public class TropicraftBlocks {
     public static final BlockEntry<StandingSignBlock> THATCH_SIGN = standingSign(TropicraftWoodTypes.THATCH, () -> TropicraftItems.THATCH_SIGN.get(), "thatch_end").register();
     public static final BlockEntry<StandingSignBlock> MANGROVE_SIGN = standingSign(TropicraftWoodTypes.MANGROVE, () -> TropicraftItems.MANGROVE_SIGN.get(), "mangrove_planks").register();
 
-    public static final BlockEntry<WallSignBlock> MAHOGANY_WALL_SIGN = wallSign(TropicraftWoodTypes.MAHOGANY, () -> TropicraftItems.MAHOGANY_SIGN.get(), "mahogany_planks").register();
-    public static final BlockEntry<WallSignBlock> PALM_WALL_SIGN = wallSign(TropicraftWoodTypes.PALM, () -> TropicraftItems.PALM_SIGN.get(), "palm_planks").register();
-    public static final BlockEntry<WallSignBlock> BAMBOO_WALL_SIGN = wallSign(TropicraftWoodTypes.BAMBOO, () -> TropicraftItems.BAMBOO_SIGN.get(), "bamboo_end").register();
-    public static final BlockEntry<WallSignBlock> THATCH_WALL_SIGN = wallSign(TropicraftWoodTypes.THATCH, () -> TropicraftItems.THATCH_SIGN.get(), "thatch_end").register();
-    public static final BlockEntry<WallSignBlock> MANGROVE_WALL_SIGN = wallSign(TropicraftWoodTypes.MANGROVE, () -> TropicraftItems.MANGROVE_SIGN.get(), "mangrove_planks").register();
+    public static final BlockEntry<WallSignBlock> MAHOGANY_WALL_SIGN = wallSign(TropicraftWoodTypes.MAHOGANY, () -> TropicraftItems.MAHOGANY_SIGN.get(), MAHOGANY_SIGN, "mahogany_planks").register();
+    public static final BlockEntry<WallSignBlock> PALM_WALL_SIGN = wallSign(TropicraftWoodTypes.PALM, () -> TropicraftItems.PALM_SIGN.get(), PALM_SIGN, "palm_planks").register();
+    public static final BlockEntry<WallSignBlock> BAMBOO_WALL_SIGN = wallSign(TropicraftWoodTypes.BAMBOO, () -> TropicraftItems.BAMBOO_SIGN.get(), BAMBOO_SIGN, "bamboo_end").register();
+    public static final BlockEntry<WallSignBlock> THATCH_WALL_SIGN = wallSign(TropicraftWoodTypes.THATCH, () -> TropicraftItems.THATCH_SIGN.get(), THATCH_SIGN, "thatch_end").register();
+    public static final BlockEntry<WallSignBlock> MANGROVE_WALL_SIGN = wallSign(TropicraftWoodTypes.MANGROVE, () -> TropicraftItems.MANGROVE_SIGN.get(), MANGROVE_SIGN, "mangrove_planks").register();
 
     public static final BlockEntry<ReedsBlock> REEDS = REGISTRATE.block("reeds", ReedsBlock::new)
             .initialProperties(() -> Blocks.SUGAR_CANE)
@@ -1215,20 +1216,20 @@ public class TropicraftBlocks {
                 .initialProperties(() -> Blocks.OAK_SIGN)
                 .tag(BlockTags.STANDING_SIGNS, BlockTags.MINEABLE_WITH_AXE)
                 .blockstate(() -> (ctx, prov) ->
-                        prov.createAirLikeBlock(ctx.get(), prov.modBlockTexture(texture))
+                        Models.generateStandingSignBlock(ctx, prov, prov.modBlockTexture(texture))
                 )
                 .loot((loot, b) -> loot.dropOther(b, item.get()))
                 .setData(ProviderType.LANG, NonNullBiConsumer.noop())
                 .onRegisterAfter(Registries.BLOCK_ENTITY_TYPE, b -> extendBlockEntity(BlockEntityTypes.SIGN, b));
     }
 
-    private static BlockBuilder<WallSignBlock, Registrate> wallSign(WoodType woodType, Supplier<? extends Item> item, String texture) {
+    private static BlockBuilder<WallSignBlock, Registrate> wallSign(WoodType woodType, Supplier<? extends Item> item, BlockEntry<?> standingBlock, String particleTexture) {
         String woodName = Identifier.parse(woodType.name()).getPath();
         return REGISTRATE.block(woodName + "_wall_sign", p -> new WallSignBlock(woodType, p))
                 .initialProperties(() -> Blocks.OAK_SIGN)
                 .tag(BlockTags.WALL_SIGNS, BlockTags.MINEABLE_WITH_AXE)
                 .blockstate(() -> (ctx, prov) ->
-                        prov.createAirLikeBlock(ctx.get(), prov.modBlockTexture(texture))
+                        Models.generateWallSignBlock(ctx, prov, prov.blockTexture(standingBlock.get()), prov.modBlockTexture(particleTexture))
                 )
                 .loot((loot, b) -> loot.dropOther(b, item.get()))
                 .setData(ProviderType.LANG, NonNullBiConsumer.noop())
@@ -2062,6 +2063,25 @@ public class TropicraftBlocks {
         private static void generateAirCompressorItem(DataGenContext<Item, BlockItem> ctx, RegistrateItemModelGenerator prov) {
             Identifier baseModel = TALL_MACHINE.create(ctx.get(), TextureMapping.particle(CHUNK.get()), prov.modelOutput);
             prov.itemModelOutput.accept(ctx.get(), ItemModelUtils.specialModel(baseModel, new AirCompressorSpecialRenderer.Unbaked()));
+        }
+
+        private static void generateStandingSignBlock(DataGenContext<Block, StandingSignBlock> ctx, RegistrateBlockModelGenerator prov, Material particleTexture) {
+            TextureMapping mapping = new TextureMapping()
+                    .put(TextureSlot.ALL, prov.blockTexture(ctx.get()))
+                    .put(TextureSlot.PARTICLE, particleTexture);
+            MultiVariant standingRot0 = plainVariant(ModelTemplates.SIGN_ROT_0.create(ModelLocationUtils.getModelLocation(ctx.get(), "_rot_0"), mapping, prov.modelOutput));
+            MultiVariant standingRot1 = plainVariant(ModelTemplates.SIGN_ROT_1.create(ModelLocationUtils.getModelLocation(ctx.get(), "_rot_1"), mapping, prov.modelOutput));
+            MultiVariant standingRot2 = plainVariant(ModelTemplates.SIGN_ROT_2.create(ModelLocationUtils.getModelLocation(ctx.get(), "_rot_2"), mapping, prov.modelOutput));
+            MultiVariant standingRot3 = plainVariant(ModelTemplates.SIGN_ROT_3.create(ModelLocationUtils.getModelLocation(ctx.get(), "_rot_3"), mapping, prov.modelOutput));
+            prov.blockStateOutput.accept(BlockModelGenerators.createSign(ctx.get(), standingRot0, standingRot1, standingRot2, standingRot3));
+        }
+
+        private static void generateWallSignBlock(DataGenContext<Block, WallSignBlock> ctx, RegistrateBlockModelGenerator prov, Material texture, Material particleTexture) {
+            TextureMapping mapping = new TextureMapping()
+                    .put(TextureSlot.ALL, texture)
+                    .put(TextureSlot.PARTICLE, particleTexture);
+            MultiVariant wallModel = plainVariant(ModelTemplates.WALL_SIGN.create(ctx.get(), mapping, prov.modelOutput));
+            prov.blockStateOutput.accept(MultiVariantGenerator.dispatch(ctx.get(), wallModel).with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING_ALT));
         }
     }
 }
