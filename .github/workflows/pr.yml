@@ -1,6 +1,7 @@
 name: Java CI with Gradle
 
 on:
+  workflow_dispatch:
   pull_request:
     types: [opened, reopened, synchronize]
 jobs:
