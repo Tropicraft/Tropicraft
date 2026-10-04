@@ -1,5 +1,7 @@
 {
+  "parent": "minecraft:block/template_wall_sign",
   "textures": {
+    "all": "tropicraft:block/palm_sign",
     "particle": "tropicraft:block/palm_planks"
   }
 }
