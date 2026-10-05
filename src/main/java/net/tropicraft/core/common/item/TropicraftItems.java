@@ -416,6 +416,7 @@ public class TropicraftItems {
                     .save(prov))
             .register();
 
+    public static final ItemEntry<Item> MUSIC_DISC_BEACH_PARTY = musicDisc(TropicraftJukeboxSongs.BEACH_PARTY).register();
     public static final ItemEntry<Item> MUSIC_DISC_BURIED_TREASURE = musicDisc(TropicraftJukeboxSongs.BURIED_TREASURE).register();
     public static final ItemEntry<Item> MUSIC_DISC_EASTERN_ISLES = musicDisc(TropicraftJukeboxSongs.EASTERN_ISLES).register();
     public static final ItemEntry<Item> MUSIC_DISC_THE_TRIBE = musicDisc(TropicraftJukeboxSongs.THE_TRIBE).register();

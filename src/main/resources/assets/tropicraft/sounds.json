@@ -54,6 +54,14 @@
       }
     ]
   },
+  "beach_party": {
+    "category": "record", "sounds": [
+      {
+        "name": "tropicraft:music/beach_party",
+        "stream": true
+      }
+    ]
+  },
   "buried_treasure": {
     "category": "record", "sounds": [
       {

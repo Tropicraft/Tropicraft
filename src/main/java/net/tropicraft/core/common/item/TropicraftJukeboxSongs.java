@@ -12,6 +12,7 @@ import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.sound.Sounds;
 
 public interface TropicraftJukeboxSongs {
+    ResourceKey<JukeboxSong> BEACH_PARTY = createKey("beach_party");
     ResourceKey<JukeboxSong> BURIED_TREASURE = createKey("buried_treasure");
     ResourceKey<JukeboxSong> EASTERN_ISLES = createKey("eastern_isles");
     ResourceKey<JukeboxSong> THE_TRIBE = createKey("the_tribe");
@@ -20,6 +21,7 @@ public interface TropicraftJukeboxSongs {
     ResourceKey<JukeboxSong> SUMMERING = createKey("summering");
 
     static void bootstrap(BootstrapContext<JukeboxSong> context) {
+        register(context, BEACH_PARTY, Sounds.BEACH_PARTY, "Kevin MacLeod", "https://incompetech.com/music/royalty-free/music.html", 49);
         register(context, BURIED_TREASURE, Sounds.BURIED_TREASURE, "Punchaface", "https://www.youtube.com/watch?v=lPhHWYnUR_4", 362);
         register(context, EASTERN_ISLES, Sounds.EASTERN_ISLES, "Frox", "https://soundcloud.com/froxlab/eastern_isles", 376);
         register(context, THE_TRIBE, Sounds.THE_TRIBE, "Emile Van Krieken", "https://www.youtube.com/watch?v=LvxVDhMvwE4", 154);

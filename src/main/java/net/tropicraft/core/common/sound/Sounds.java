@@ -9,6 +9,7 @@ import net.tropicraft.Tropicraft;
 public class Sounds {
     public static final DeferredRegister<SoundEvent> REGISTER = DeferredRegister.create(Registries.SOUND_EVENT, Tropicraft.ID);
 
+    public static final DeferredHolder<SoundEvent, SoundEvent> BEACH_PARTY = register("beach_party");
     public static final DeferredHolder<SoundEvent, SoundEvent> BURIED_TREASURE = register("buried_treasure");
     public static final DeferredHolder<SoundEvent, SoundEvent> EASTERN_ISLES = register("eastern_isles");
     public static final DeferredHolder<SoundEvent, SoundEvent> LOW_TIDE = register("low_tide");
