@@ -100,7 +100,6 @@ import net.tropicraft.core.client.entity.render.WhiteCollaredOlivebackRenderer;
 import net.tropicraft.core.client.entity.render.WhiteLippedPeccaryRenderer;
 import net.tropicraft.core.client.entity.render.WhiteWingedWarblerRenderer;
 import net.tropicraft.core.common.TropicraftTags;
-import net.tropicraft.core.common.TropicsConfigs;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 import net.tropicraft.core.common.entity.egg.SeaTurtleEggEntity;
@@ -155,6 +154,7 @@ import net.tropicraft.core.common.entity.underdasea.StarfishEntity;
 import net.tropicraft.core.common.entity.underdasea.TropicraftDolphinEntity;
 import net.tropicraft.core.common.entity.underdasea.TropicraftFishUtils;
 import net.tropicraft.core.common.entity.underdasea.TropicraftTropicalFishEntity;
+import net.tropicraft.core.common.gamerule.TropicraftGameRules;
 import net.tropicraft.core.common.item.TropicalFertilizerItem;
 import net.tropicraft.core.common.item.TropicraftItems;
 
@@ -804,13 +804,11 @@ public class TropicraftEntities {
     @SubscribeEvent
     public static void onMobSpawn(MobSpawnEvent.PositionCheck event) {
         ServerLevel level = event.getLevel().getLevel();
-        if (level.dimension() == TropicraftDimension.WORLD) {
-            if (!TropicsConfigs.COMMON.spawnHostileMobsInTropics.get()) {
-                if (event.getSpawnType() == EntitySpawnReason.NATURAL || event.getSpawnType() == EntitySpawnReason.CHUNK_GENERATION) {
-                    Mob mob = event.getEntity();
-                    if (mob.getType() != TropicraftEntities.ASHEN.get() && (mob.getType().getCategory() == MobCategory.MONSTER || mob instanceof Enemy)) {
-                        event.setResult(MobSpawnEvent.PositionCheck.Result.FAIL);
-                    }
+        if (level.dimension() == TropicraftDimension.WORLD && !level.getGameRules().get(TropicraftGameRules.SPAWN_MONSTERS_IN_TROPICS.get())) {
+            if (event.getSpawnType() == EntitySpawnReason.NATURAL || event.getSpawnType() == EntitySpawnReason.CHUNK_GENERATION) {
+                Mob mob = event.getEntity();
+                if (mob.getType() != TropicraftEntities.ASHEN.get() && (mob.getType().getCategory() == MobCategory.MONSTER || mob instanceof Enemy)) {
+                    event.setResult(MobSpawnEvent.PositionCheck.Result.FAIL);
                 }
             }
         }

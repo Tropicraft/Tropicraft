@@ -42,7 +42,6 @@ import net.tropicraft.core.client.TropicraftEquipmentAssets;
 import net.tropicraft.core.client.data.TropicraftLangKeys;
 import net.tropicraft.core.client.entity.render.BambooItemFrameRenderer;
 import net.tropicraft.core.common.TropicraftPackRegistries;
-import net.tropicraft.core.common.TropicsConfigs;
 import net.tropicraft.core.common.attribute.TropicraftAttributes;
 import net.tropicraft.core.common.attribute.TropicraftEnvironmentAttributes;
 import net.tropicraft.core.common.attribute.TropicraftTimelines;
@@ -73,7 +72,7 @@ import net.tropicraft.core.common.dimension.feature.tree.TropicraftFoliagePlacer
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftTreeDecorators;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftTrunkPlacers;
 import net.tropicraft.core.common.drinks.action.TropicraftDrinkActions;
-import net.tropicraft.core.common.entity.TropicraftEntities;
+import net.tropicraft.core.common.gamerule.TropicraftGameRules;
 import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.item.component.TropicraftDataComponents;
 import net.tropicraft.core.common.item.scuba.ScubaData;
@@ -129,7 +128,6 @@ public class Tropicraft {
         modBus.addListener(this::gatherData);
 
         NeoForge.EVENT_BUS.addListener(this::registerCommands);
-        container.registerConfig(ModConfig.Type.COMMON, TropicsConfigs.COMMON_SPEC);
 
         // Registry objects
         Sounds.REGISTER.register(modBus);
@@ -148,6 +146,7 @@ public class Tropicraft {
         ScubaData.ATTACHMENT_TYPES.register(modBus);
         TropicraftDataComponents.REGISTER.register(modBus);
         TropicraftDrinkActions.REGISTER.register(modBus);
+        TropicraftGameRules.REGISTER.register(modBus);
 
         modBus.addListener(TropicraftItems::onItemRegister);
 

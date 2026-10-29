@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.item;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -10,8 +11,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.tropicraft.core.client.data.TropicraftLangKeys;
-import net.tropicraft.core.common.TropicsConfigs;
 import net.tropicraft.core.common.entity.projectile.ExplodingCoconutEntity;
+import net.tropicraft.core.common.gamerule.TropicraftGameRules;
 import net.tropicraft.core.common.item.component.TropicraftDataComponents;
 
 public class ExplodingCoconutItem extends Item {
@@ -23,7 +24,7 @@ public class ExplodingCoconutItem extends Item {
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         ItemStack item = player.getItemInHand(hand);
-        if (level.isClientSide()) {
+        if (!(level instanceof ServerLevel serverLevel)) {
             return InteractionResult.CONSUME;
         }
 
@@ -32,7 +33,7 @@ public class ExplodingCoconutItem extends Item {
 
         boolean requiresPermission = explosionRadius > 0.0f && destroysBlocks;
 
-        boolean canPlayerThrow = player.isCreative() || player.canUseGameMasterBlocks() || TropicsConfigs.COMMON.allowExplodingCoconutsByNonOPs.get();
+        boolean canPlayerThrow = player.isCreative() || player.canUseGameMasterBlocks() || serverLevel.getGameRules().get(TropicraftGameRules.UNRESTRICTED_EXPLODING_COCONUTS.get());
         if (requiresPermission && !canPlayerThrow) {
             player.sendSystemMessage(TropicraftLangKeys.EXPLODING_COCONUT_WARNING.component());
             return InteractionResult.FAIL;

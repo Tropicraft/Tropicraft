@@ -7,6 +7,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Util;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
+import net.tropicraft.core.common.gamerule.TropicraftGameRules;
 
 public enum TropicraftLangKeys {
     NA("general", "na", "N/A"),
@@ -17,7 +18,7 @@ public enum TropicraftLangKeys {
     SCUBA_MAX_DEPTH("scuba", "max_depth", "Max Depth: %s"),
     SCUBA_VISIBILITY_STAT("scuba", "scuba.visibility", "Underwater Fog Reduction"),
 
-    EXPLODING_COCONUT_WARNING("item", "exploding_coconut_warning", "You do not have permission to throw this. Change the config option for exploding coconuts to allow this"),
+    EXPLODING_COCONUT_WARNING("item", "exploding_coconut_warning", "You do not have permission to throw this (game rule " + TropicraftGameRules.UNRESTRICTED_EXPLODING_COCONUTS.getRegisteredName() + "=false)"),
 
     LEMONADE("drink", "lemonade", "Lemonade"),
     LIMEADE("drink", "limeade", "Limeade"),

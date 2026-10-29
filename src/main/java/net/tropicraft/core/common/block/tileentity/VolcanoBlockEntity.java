@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
-import net.tropicraft.core.common.TropicsConfigs;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.dimension.feature.volcano.VolcanoStructurePiece;
 import net.tropicraft.core.common.entity.TropicraftEntities;
@@ -27,6 +26,8 @@ import net.tropicraft.core.common.volcano.VolcanoState;
 import org.jspecify.annotations.Nullable;
 
 public class VolcanoBlockEntity extends BlockEntity {
+    public static final boolean allowVolcanoEruption = false;
+
     private static final int RAND_DORMANT_DURATION = 4000;
     private static final int MAX_LAVA_LEVEL_DURING_RISE = VolcanoStructurePiece.VOLCANO_CRUST - 1;
     private static final int MAX_LAVA_LEVEL_DURING_ERUPTION = VolcanoStructurePiece.VOLCANO_CRUST + 1;
@@ -61,7 +62,7 @@ public class VolcanoBlockEntity extends BlockEntity {
     }
 
     private void tick() {
-        if (!TropicsConfigs.allowVolcanoEruption) {
+        if (!allowVolcanoEruption) {
             return;
         }
 
