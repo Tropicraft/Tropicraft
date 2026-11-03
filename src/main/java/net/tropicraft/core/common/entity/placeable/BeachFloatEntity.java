@@ -130,6 +130,16 @@ public class BeachFloatEntity extends FurnitureEntity {
     }
 
     @Override
+    protected double getDefaultGravity() {
+        return 0.04;
+    }
+
+    @Override
+    protected float getAirDrag() {
+        return 1.0F;
+    }
+
+    @Override
     protected boolean preventMotion() {
         return false;
     }
@@ -240,6 +250,11 @@ public class BeachFloatEntity extends FurnitureEntity {
         }
 
         return waterHeight;
+    }
+
+    @Override
+    public boolean canBeCollidedWith(@Nullable Entity other) {
+        return true;
     }
 
     @Override
