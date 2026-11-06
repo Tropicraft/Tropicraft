@@ -3,6 +3,7 @@ plugins {
     id 'idea'
     id 'java-library'
     id 'net.neoforged.moddev' version '2.0.141'
+    id 'maven-publish'
 }
 
 group = 'net.tropicraft'
@@ -10,16 +11,11 @@ base {
     archivesName = 'Tropicraft'
 }
 
-ext.buildnumber = 0
-
-if (System.getenv('GHA_RELEASE_WORKFLOW')) {
-    version = "${mod_version}"
-} else if (System.getenv('GITHUB_RUN_NUMBER')) {
-    project.buildnumber = System.getenv('GITHUB_RUN_NUMBER')
-    version = "${mod_version}-${release_type}+${buildnumber}-gha"
+def env = System.getenv()
+if (env.RELEASE) {
+    version = mod_version
 } else {
-    project.buildnumber = System.getenv('BUILD_NUMBER') ?: 'custom'
-    version = "${mod_version}-${release_type}+${buildnumber}"
+    version = "$mod_version-SNAPSHOT"
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(25)
@@ -107,5 +103,27 @@ idea {
     module {
         downloadSources = true
         downloadJavadoc = true
+    }
+}
+
+publishing {
+    publications {
+        register('mavenJava', MavenPublication) {
+            from components.java
+        }
+    }
+
+    repositories {
+        if (env.MAVEN_URL) {
+            maven {
+                credentials {
+                    username env.MAVEN_USERNAME
+                    password env.MAVEN_PASSWORD
+                }
+                url env.MAVEN_URL
+            }
+        } else {
+            mavenLocal()
+        }
     }
 }
