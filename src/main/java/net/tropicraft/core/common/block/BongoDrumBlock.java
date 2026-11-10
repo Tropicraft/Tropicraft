@@ -152,9 +152,9 @@ public final class BongoDrumBlock extends Block {
         if (size == Size.SMALL) {
             radiusMax = 8D / 16 / 2D;
         } else if (size == Size.MEDIUM) {
-            radiusMax = 10 / 16 / 2D;
+            radiusMax = 10D / 16 / 2D;
         } else if (size == Size.LARGE) {
-            radiusMax = 12 / 16 / 2D;
+            radiusMax = 12D / 16 / 2D;
         }
         double adjPitch = dist / radiusMax;
         //adjust to auto tuned nths
